@@ -16,6 +16,12 @@ module Fog
 
       class Mock
         def list_zones
+          zone = {
+              :id => '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-resource-group/Microsoft.Network/dnszones/fogtestzone.com',
+              :name => 'fogtestzone.com',
+              :resource_group => 'fog-test-resource-group'
+          }
+          [zone]
         end
       end
     end

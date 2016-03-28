@@ -26,7 +26,7 @@ def location
 end
 
 def fog_resource_group
-  resource_group = azurerm_resources_service.resource_groups.find { |rg| rg.name == rg_name }.first
+  resource_group = azurerm_resources_service.resource_groups.find { |rg| rg.name == rg_name }
   unless resource_group
     resource_group = azurerm_resources_service.resource_groups.create(
       rg_attributes
@@ -36,7 +36,7 @@ def fog_resource_group
 end
 
 def fog_zone
-  zone = azurerm_dns_service.zones.find { |z| z.name == zone_name && z.resource_group == rg_name }.first
+  zone = azurerm_dns_service.zones.find { |z| z.name == zone_name && z.resource_group == rg_name }
   unless zone
     zone = azurerm_dns_service.zones.create(
       name: zone_name, resource_group: rg_name
@@ -46,12 +46,12 @@ def fog_zone
 end
 
 def rg_destroy
-  resource_group = azurerm_resources_service.resource_groups.find { |rg| rg.name == rg_name }.first
+  resource_group = azurerm_resources_service.resource_groups.find { |rg| rg.name == rg_name }
   resource_group.destroy if resource_group
 end
 
 def zone_destroy
-  zone = azurerm_dns_service.zones.find { |z| z.name == zone_name }.first
+  zone = azurerm_dns_service.zones.find { |z| z.name == zone_name }
   zone.destroy if zone
 end
 

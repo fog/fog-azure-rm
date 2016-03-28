@@ -9,7 +9,6 @@ module Fog
 
       class Mock
         def delete_resource_group(name)
-
         end
       end
     end

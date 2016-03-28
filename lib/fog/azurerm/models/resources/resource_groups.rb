@@ -1,5 +1,5 @@
-require "fog/core/collection"
-require "fog/azurerm/models/resources/resource_group"
+require 'fog/core/collection'
+require 'fog/azurerm/models/resources/resource_group'
 
 module Fog
   module Resources
@@ -7,12 +7,12 @@ module Fog
       class ResourceGroups < Fog::Collection
         model Fog::Resources::AzureRM::ResourceGroup
 
-        def all()
+        def all
           resource_groups = []
           service.list_resource_groups.each do |rg|
             hash = {}
             rg.instance_variables.each do |var|
-              hash[var.to_s.delete("@")] = rg.instance_variable_get(var)
+              hash[var.to_s.delete('@')] = rg.instance_variable_get(var)
             end
             resource_groups << hash
           end
@@ -24,7 +24,6 @@ module Fog
         rescue Fog::Errors::NotFound
           nil
         end
-
       end
     end
   end

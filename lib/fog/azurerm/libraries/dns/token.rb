@@ -15,18 +15,15 @@ module Fog
 
         def generate_token
           login_url = "#{AZURE_LOGIN_URL}/#{@tenant_id}/oauth2/token"
-          unless @http_proxy.nil?
-            RestClient.proxy = @http_proxy
-          end
+          RestClient.proxy = @http_proxy unless @http_proxy.nil?
 
           begin
             token_response = RestClient.post(
-                login_url,
-                client_id: @client_id,
-                client_secret: @client_secret,
-                grant_type: AZURE_GRANT_TYPE,
-                resource: "#{AZURE_RESOURCE}/"
-            )
+              login_url,
+              client_id: @client_id,
+              client_secret: @client_secret,
+              grant_type: AZURE_GRANT_TYPE,
+              resource: "#{AZURE_RESOURCE}/")
             token_hash = JSON.parse(token_response)
             token = 'Bearer ' + token_hash['access_token']
             return token

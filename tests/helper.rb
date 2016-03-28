@@ -1,7 +1,7 @@
 require File.expand_path('../../lib/fog/azurerm', __FILE__)
 require File.expand_path('../azurerm_test_helper', __FILE__)
 
-Excon.defaults.merge!(:debug_request => true, :debug_response => true)
+Excon.defaults.merge!(debug_request: true, debug_response: true)
 
 require File.expand_path(File.join(File.dirname(__FILE__), 'helpers', 'mock_helper'))
 

@@ -12,16 +12,22 @@ module Fog
       request :create_zone
       request :delete_zone
       request :list_zones
+      request :create_record_set
+      request :delete_record_set
+      request :list_record_sets
 
       model_path "fog/azurerm/models/dns"
       model :zone
       collection :zones
+      model :record_set
+      collection :record_sets
 
       class Mock
         def initialize(options={})
           begin
             require "fog/azurerm/libraries/dns/zone"
             require "fog/azurerm/libraries/dns/token"
+            require "fog/azurerm/libraries/dns/record_set"
           rescue LoadError => e
             retry if require("rubygems")
             raise e.message
@@ -34,6 +40,7 @@ module Fog
           begin
             require "fog/azurerm/libraries/dns/zone"
             require "fog/azurerm/libraries/dns/token"
+            require "fog/azurerm/libraries/dns/record_set"
           rescue LoadError => e
             retry if require("rubygems")
             raise e.message
@@ -41,6 +48,7 @@ module Fog
           @token = ::Fog::DNS::Libraries::Token.new(options[:tenant_id], options[:client_id], options[:client_secret])
           token = @token.generate_token
           @zone = ::Fog::DNS::Libraries::Zone.new(options[:subscription_id], token)
+          @record_set = ::Fog::DNS::Libraries::RecordSet.new(options[:subscription_id], token)
           @resources = Fog::Resources::AzureRM.new(
              :tenant_id => options[:tenant_id],
              :client_id =>    options[:client_id],

@@ -1,4 +1,5 @@
 require 'fog/azurerm/core'
+require 'fog/azurerm/credentials'
 
 module Fog
   module DNS
@@ -21,7 +22,6 @@ module Fog
         def initialize(options = {})
           begin
             require 'fog/azurerm/libraries/dns/zone'
-            require 'fog/azurerm/libraries/dns/token'
           rescue LoadError => e
             retry if require('rubygems')
             raise e.message
@@ -33,19 +33,18 @@ module Fog
         def initialize(options)
           begin
             require 'fog/azurerm/libraries/dns/zone'
-            require 'fog/azurerm/libraries/dns/token'
           rescue LoadError => e
             retry if require('rubygems')
             raise e.message
           end
-          @token = ::Fog::DNS::Libraries::Token.new(options[:tenant_id], options[:client_id], options[:client_secret])
-          token = @token.generate_token
+
+          token = Fog::Credentials::AzureRM.get_token(options[:tenant_id], options[:client_id], options[:client_secret])
           @zone = ::Fog::DNS::Libraries::Zone.new(options[:subscription_id], token)
           @resources = Fog::Resources::AzureRM.new(
-            tenant_id: options[:tenant_id],
-            client_id: options[:client_id],
-            client_secret: options[:client_secret],
-            subscription_id: options[:subscription_id])
+              tenant_id: options[:tenant_id],
+              client_id: options[:client_id],
+              client_secret: options[:client_secret],
+              subscription_id: options[:subscription_id])
         end
       end
     end

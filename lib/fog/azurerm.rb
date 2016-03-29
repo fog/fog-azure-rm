@@ -1,3 +1,5 @@
+require 'ms_rest_azure'
+require 'erb'
 require 'fog/azurerm/version'
 require 'fog/azurerm/core'
 require 'fog/azurerm/dns'

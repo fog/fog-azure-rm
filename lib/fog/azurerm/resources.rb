@@ -1,4 +1,5 @@
 require 'fog/azurerm/core'
+require 'fog/azurerm/credentials'
 
 module Fog
   module Resources
@@ -36,8 +37,8 @@ module Fog
             retry if require('rubygems')
             raise e.message
           end
-          token_provider = MsRestAzure::ApplicationTokenProvider.new(options[:tenant_id], options[:client_id], options[:client_secret])
-          credentials = MsRest::TokenCredentials.new(token_provider)
+
+          credentials = Fog::Credentials::AzureRM.get_credentials(options[:tenant_id], options[:client_id], options[:client_secret])
           @rmc = ::Azure::ARM::Resources::ResourceManagementClient.new(credentials)
           @rmc.subscription_id = options[:subscription_id]
         end

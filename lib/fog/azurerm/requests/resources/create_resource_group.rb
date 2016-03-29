@@ -9,7 +9,6 @@ module Fog
 
       class Mock
         def create_resource_group(name, parameters)
-
         end
       end
     end

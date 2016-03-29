@@ -15,11 +15,10 @@ module Fog
           resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription}/resourceGroups/#{dns_resource_group}/providers/Microsoft.Network/dnsZones/#{zone_name}?api-version=2015-05-04-preview"
           begin
             dns_response = RestClient.get(
-                resource_url,
-                accept: 'application/json',
-                content_type: 'application/json',
-                authorization: @token
-            )
+              resource_url,
+              accept: 'application/json',
+              content_type: 'application/json',
+              authorization: @token)
             dns_hash = JSON.parse(dns_response)
             if dns_hash.key?('id') && !dns_hash['id'].nil?
               true
@@ -38,7 +37,7 @@ module Fog
         end
 
         def create(dns_resource_group, zone_name)
-          if self.check_for_zone(dns_resource_group, zone_name)
+          if check_for_zone(dns_resource_group, zone_name)
             puts "Zone #{zone_name} Exists, no need to create"
             return
           end
@@ -46,16 +45,16 @@ module Fog
           puts "Creating Zone #{zone_name} ..."
           resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription}/resourceGroups/#{dns_resource_group}/providers/Microsoft.Network/dnsZones/#{zone_name}?api-version=2015-05-04-preview"
           body = {
-              location: 'global',
-              tags: {},
-              properties: {} }
+            location: 'global',
+            tags: {},
+            properties: {} }
           begin
             dns_response = RestClient.put(
-                resource_url,
-                body.to_json,
-                accept: 'application/json',
-                content_type: 'application/json',
-                authorization: @token)
+              resource_url,
+              body.to_json,
+              accept: 'application/json',
+              content_type: 'application/json',
+              authorization: @token)
             response_hash = JSON.parse(dns_response)
             puts "Zone #{zone_name} created successfully."
             response_hash
@@ -73,7 +72,7 @@ module Fog
         end
 
         def delete(dns_resource_group, zone_name)
-          unless self.check_for_zone(dns_resource_group, zone_name)
+          unless check_for_zone(dns_resource_group, zone_name)
             puts "Zone #{zone_name} does not exist, no need to delete"
             return
           end
@@ -81,11 +80,11 @@ module Fog
           puts "Deleting Zone #{zone_name} ..."
           resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription}/resourceGroups/#{dns_resource_group}/providers/Microsoft.Network/dnsZones/#{zone_name}?api-version=2015-05-04-preview"
           begin
-            dns_response = RestClient.delete(
-                resource_url,
-                accept: 'application/json',
-                content_type: 'application/json',
-                authorization: @token)
+            RestClient.delete(
+              resource_url,
+              accept: 'application/json',
+              content_type: 'application/json',
+              authorization: @token)
             puts "Zone #{zone_name} deleted successfully."
             true
           rescue RestClient::Exception => e
@@ -104,10 +103,10 @@ module Fog
           resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription}/resourceGroups/#{dns_resource_group}/providers/Microsoft.Network/dnsZones?api-version=2015-05-04-preview"
           begin
             dns_response = RestClient.get(
-                resource_url,
-                accept: 'application/json',
-                content_type: 'application/json',
-                authorization: @token)
+              resource_url,
+              accept: 'application/json',
+              content_type: 'application/json',
+              authorization: @token)
             response_hash = JSON.parse(dns_response)
             response_hash['value']
           rescue RestClient::Exception => e

@@ -21,8 +21,7 @@ module Fog
         def destroy
           puts "Deleting Resource Group: #{name}."
           promise = service.delete_resource_group(name)
-          result = promise.value!
-          resource_group = result.body
+          promise.value!
           puts "Resource Group #{name} deleted successfully."
         end
       end

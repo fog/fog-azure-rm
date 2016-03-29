@@ -1,5 +1,5 @@
-require "fog/core/collection"
-require "fog/azurerm/models/dns/zone"
+require 'fog/core/collection'
+require 'fog/azurerm/models/dns/zone'
 
 module Fog
   module DNS
@@ -7,7 +7,7 @@ module Fog
       class Zones < Fog::Collection
         model Fog::DNS::AzureRM::Zone
 
-        def all()
+        def all
           zones = []
           service.list_zones.each do |z|
             hash = {}
@@ -24,7 +24,6 @@ module Fog
         rescue Fog::Errors::NotFound
           nil
         end
-
       end
     end
   end

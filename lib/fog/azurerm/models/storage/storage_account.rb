@@ -5,7 +5,6 @@ module Fog
         identity :name
         attribute :location
         attribute :resource_group_name
-        attribute :account_type
 
         def save
           requires :name

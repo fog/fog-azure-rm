@@ -27,7 +27,6 @@ module Fog
       class Mock
         def initialize(options = {})
           begin
-            require "fog/azurerm/libraries/dns/zone"
             require "fog/azurerm/libraries/dns/record_set"
           rescue LoadError => e
             retry if require('rubygems')
@@ -39,7 +38,6 @@ module Fog
       class Real
         def initialize(options)
           begin
-            require "fog/azurerm/libraries/dns/zone"
             require "fog/azurerm/libraries/dns/record_set"
           rescue LoadError => e
             retry if require('rubygems')

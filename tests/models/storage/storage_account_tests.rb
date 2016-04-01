@@ -10,7 +10,6 @@ Shindo.tests('Fog::Storage[:azurerm] | storage_account model', %w(azurerm storag
     tests('have attributes') do
       model_attribute_hash = storage_account.attributes
       attributes = [
-          :id,
           :name,
           :location,
           :resource_group_name

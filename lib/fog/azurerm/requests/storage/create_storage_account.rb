@@ -9,6 +9,12 @@ module Fog
 
       class Mock
         def create_storage_account(resource_group_name, name, params)
+          storage_acc = {
+              name: name,
+              location: params.location,
+              resource_group_name: resource_group_name
+          }
+          storage_acc
         end
       end
     end

@@ -58,7 +58,7 @@ def location
 end
 
 def fog_storage_account
-  storage_account = azurerm_storage_service.storage_accounts.find { |sa| sa.resource_group_name == rg_name && sa.name == storage_account_name }
+  storage_account = azurerm_storage_service.storage_accounts.find { |sa| sa.name == storage_account_name && sa.resource_group_name == rg_name }
   unless storage_account
     storage_account = azurerm_storage_service.storage_accounts.create(
         storage_account_attributes
@@ -94,6 +94,7 @@ def fog_record_set
     )
   end
   rset
+  end
 def storage_account_destroy
   storage_account = azurerm_storage_service.storage_accounts.find { |sa| sa.name == storage_account_name }
   storage_account.destroy if storage_account
@@ -116,11 +117,8 @@ end
 
 at_exit do
   unless Fog.mocking?
-<<<<<<< c004fcfebf7ef43ee61a49b85a40e306027216e3
     record_set_destroy
-=======
     storage_account_destroy
->>>>>>> Added tests for storage account
     zone_destroy
     rg_destroy
   end

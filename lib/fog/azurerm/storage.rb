@@ -12,6 +12,8 @@ module Fog
       request :create_storage_account
       request :list_storage_accounts
       request :delete_storage_account
+      request :list_storage_account_for_rg
+      request :check_storage_account_name_availability
 
       model_path 'fog/azurerm/models/storage'
       model :storage_account

@@ -12,6 +12,7 @@ module Fog
       request_path 'fog/azurerm/requests/dns'
       request :create_zone
       request :delete_zone
+      request :check_for_zone
       request :list_zones
       request :create_record_set
       request :delete_record_set

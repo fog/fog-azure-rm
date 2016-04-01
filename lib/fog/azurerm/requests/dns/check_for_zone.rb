@@ -30,7 +30,7 @@ module Fog
       end
 
       class Mock
-        def create_zone(dns_resource_group, zone_name)
+        def check_for_zone(dns_resource_group, zone_name)
 
         end
       end

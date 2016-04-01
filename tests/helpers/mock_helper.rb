@@ -8,6 +8,5 @@ if Fog.mock?
     client_id: '<CLIENT-ID>',
     client_secret: '<CLIENT-SECRET>',
     subscription_id: '<SUBSCRIPTION-ID>'
-
   }.merge(Fog.credentials)
 end

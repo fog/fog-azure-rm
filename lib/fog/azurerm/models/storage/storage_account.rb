@@ -18,10 +18,8 @@ module Fog
           params = Azure::ARM::Storage::Models::StorageAccountCreateParameters.new
           params.properties = properties
           params.location = location
-          promise =  service.create_storage_account(resource_group_name, name, params)
-          response = promise.value!
-          result = response.body
-          puts "Storage Account #{result.name} created successfully."
+          service.create_storage_account(resource_group_name, name, params)
+          puts "Storage Account created successfully."
         end
 
         def destroy

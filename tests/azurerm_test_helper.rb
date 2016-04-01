@@ -6,11 +6,27 @@ def azurerm_dns_service
   Fog::DNS::AzureRM.new
 end
 
+def azurerm_storage_service
+  Fog::Storage::AzureRM.new
+end
+
+def storage_account_attributes
+  {
+      name: storage_account_name,
+      location: location,
+      resource_group_name: rg_name
+  }
+end
+
 def rg_attributes
   {
     name: rg_name,
     location: location
   }
+end
+
+def storage_account_name
+  'fog-test-storage-account'
 end
 
 def rg_name
@@ -41,6 +57,16 @@ def location
   'West US'
 end
 
+def fog_storage_account
+  storage_account = azurerm_storage_service.storage_accounts.find { |sa| sa.resource_group_name == rg_name && sa.name == storage_account_name }
+  unless storage_account
+    storage_account = azurerm_storage_service.storage_accounts.create(
+        storage_account_attributes
+    )
+  end
+  storage_account
+end
+
 def fog_resource_group
   resource_group = azurerm_resources_service.resource_groups.find { |rg| rg.name == rg_name }
   unless resource_group
@@ -60,7 +86,6 @@ def fog_zone
   end
   zone
 end
-
 def fog_record_set
   rset = azurerm_dns_service.record_sets({:resource_group => rg_name , :zone_name => zone_name}).find{|rs| rs.name == rs_name && rs.type == rs_record_type}
   unless rset
@@ -69,6 +94,9 @@ def fog_record_set
     )
   end
   rset
+def storage_account_destroy
+  storage_account = azurerm_storage_service.storage_accounts.find { |sa| sa.name == storage_account_name }
+  storage_account.destroy if storage_account
 end
 
 def rg_destroy
@@ -88,7 +116,11 @@ end
 
 at_exit do
   unless Fog.mocking?
+<<<<<<< c004fcfebf7ef43ee61a49b85a40e306027216e3
     record_set_destroy
+=======
+    storage_account_destroy
+>>>>>>> Added tests for storage account
     zone_destroy
     rg_destroy
   end

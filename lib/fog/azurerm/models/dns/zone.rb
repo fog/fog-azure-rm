@@ -9,11 +9,20 @@ module Fog
         def save
           requires :name
           requires :resource_group
-          service.create_zone(resource_group, name)
+          if service.check_for_zone(resource_group, name)
+            puts "Zone #{zone_name} Exists, no need to create"
+          else
+            service.create_zone(resource_group, name)
+          end
+
         end
 
         def destroy
-          service.delete_zone(name, resource_group)
+          unless service.check_for_zone(resource_group, name)
+            puts "Zone #{zone_name} does not exist, no need to delete"
+          else
+            service.delete_zone(name, resource_group)
+          end
         end
       end
     end

@@ -1,5 +1,5 @@
 require File.expand_path('../../../helper', __FILE__)
-
+# rubocop:disable LineLength
 Shindo.tests('Fog::Storage[:azurerm] | storage_account model', %w(azurerm storage)) do
   storage_account = fog_storage_account
 
@@ -10,18 +10,18 @@ Shindo.tests('Fog::Storage[:azurerm] | storage_account model', %w(azurerm storag
     tests('have attributes') do
       model_attribute_hash = storage_account.attributes
       attributes = [
-          :name,
-          :location,
-          :resource_group_name
+        :name,
+        :location,
+        :resource_group_name
       ]
       tests('The storage account model should respond to') do
         attributes.each do |attribute|
-          test("#{attribute}") { storage_account.respond_to? attribute }
+          test(attribute) { storage_account.respond_to? attribute }
         end
       end
       tests('The attributes hash should have key') do
         attributes.each do |attribute|
-          test("#{attribute}") { model_attribute_hash.key? attribute }
+          test(attribute) { model_attribute_hash.key? attribute }
         end
       end
     end

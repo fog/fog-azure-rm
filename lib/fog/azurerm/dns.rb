@@ -36,7 +36,6 @@ module Fog
           @client_id = options[:client_id]
           @client_secret = options[:client_secret]
           @subscription_id = options[:subscription_id]
-          token = Fog::Credentials::AzureRM.get_token(options[:tenant_id], options[:client_id], options[:client_secret])
           @resources = Fog::Resources::AzureRM.new(
               tenant_id: options[:tenant_id],
               client_id: options[:client_id],

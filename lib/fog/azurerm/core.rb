@@ -5,5 +5,6 @@ module Fog
     extend Fog::Provider
     service(:resources, 'Resources')
     service(:dns, 'DNS')
+    service(:storage, 'Storage')
   end
 end

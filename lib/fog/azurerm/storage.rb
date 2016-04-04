@@ -1,7 +1,8 @@
 require 'fog/azurerm/core'
-
+# rubocop:disable LineLength
 module Fog
   module Storage
+    # This class registers models, requests and collections
     class AzureRM < Fog::Service
       requires :tenant_id
       requires :client_id
@@ -18,7 +19,7 @@ module Fog
       model_path 'fog/azurerm/models/storage'
       model :storage_account
       collection :storage_accounts
-
+      # This class provides the mock implementation for unit tests.
       class Mock
         def initialize(options = {})
           begin
@@ -27,9 +28,10 @@ module Fog
             retry if require('rubygems')
             raise e.message
           end
+          puts "Tenand Id: #{options[:tenant_id]}"
         end
       end
-
+      # This class provides the actual implemention for service calls.
       class Real
         def initialize(options)
           begin

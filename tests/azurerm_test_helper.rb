@@ -1,3 +1,5 @@
+# rubocop:disable LineLength
+# rubocop:disable AbcSize
 def azurerm_resources_service
   Fog::Resources::AzureRM.new
 end
@@ -12,9 +14,9 @@ end
 
 def storage_account_attributes
   {
-      name: storage_account_name,
-      location: location,
-      resource_group_name: rg_name
+    name: storage_account_name,
+    location: location,
+    resource_group_name: rg_name
   }
 end
 
@@ -60,9 +62,7 @@ end
 def fog_storage_account
   storage_account = azurerm_storage_service.storage_accounts.find { |sa| sa.name == storage_account_name && sa.resource_group_name == rg_name }
   unless storage_account
-    storage_account = azurerm_storage_service.storage_accounts.create(
-        storage_account_attributes
-    )
+    storage_account = azurerm_storage_service.storage_accounts.create(storage_account_attributes)
   end
   storage_account
 end
@@ -70,9 +70,7 @@ end
 def fog_resource_group
   resource_group = azurerm_resources_service.resource_groups.find { |rg| rg.name == rg_name }
   unless resource_group
-    resource_group = azurerm_resources_service.resource_groups.create(
-      rg_attributes
-    )
+    resource_group = azurerm_resources_service.resource_groups.create(rg_attributes)
   end
   resource_group
 end
@@ -80,21 +78,21 @@ end
 def fog_zone
   zone = azurerm_dns_service.zones.find { |z| z.name == zone_name && z.resource_group == rg_name }
   unless zone
-    zone = azurerm_dns_service.zones.create(
-      name: zone_name, resource_group: rg_name
-    )
+    zone = azurerm_dns_service.zones.create(name: zone_name, resource_group: rg_name)
   end
   zone
 end
+
 def fog_record_set
-  rset = azurerm_dns_service.record_sets({:resource_group => rg_name , :zone_name => zone_name}).find{|rs| rs.name == rs_name && rs.type == rs_record_type}
+  rset = azurerm_dns_service.record_sets(resource_group: rg_name, zone_name: zone_name).find { |rs| rs.name == rs_name && rs.type == rs_record_type }
   unless rset
     rset = azurerm_dns_service.record_sets.create(
-      :name => rs_name, :resource_group => rg_name, :zone_name => zone_name, :records => rs_test_records, :type => rs_record_type, :ttl => rs_ttl
+      name: rs_name, resource_group: rg_name, zone_name: zone_name, records: rs_test_records, type: rs_record_type, ttl: rs_ttl
     )
   end
   rset
-  end
+end
+
 def storage_account_destroy
   storage_account = azurerm_storage_service.storage_accounts.find { |sa| sa.name == storage_account_name }
   storage_account.destroy if storage_account
@@ -111,7 +109,7 @@ def zone_destroy
 end
 
 def record_set_destroy
-  rset = azurerm_dns_service.record_sets({:resource_group => rg_name , :zone_name => zone_name}).find { |rs| rs.name == rs_name }
+  rset = azurerm_dns_service.record_sets(resource_group: rg_name, zone_name: zone_name).find { |rs| rs.name == rs_name }
   rset.destroy if rset
 end
 

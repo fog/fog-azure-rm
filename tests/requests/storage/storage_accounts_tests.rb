@@ -1,5 +1,5 @@
 require File.expand_path('../../../helper', __FILE__)
-
+# rubocop:disable LineLength
 Shindo.tests('Fog::Storage[:azurerm] | storage_accounts request', %w(azurerm storage)) do
   tests('#storage_accounts') do
     storage_accounts = azurerm_storage_service.storage_accounts

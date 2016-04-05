@@ -4,13 +4,13 @@ module Fog
     class AzureRM
       # This class provides the actual implemention for service calls.
       class Real
-        def delete_storage_account(resource_group_name, name)
-          @compute_mgmt_client.availability_sets.delete(resource_group_name, name)
+        def delete_availability_set(resource_group, name)
+          @compute_mgmt_client.availability_sets.delete(resource_group, name)
         end
       end
       # This class provides the mock implementation for unit tests.
       class Mock
-        def delete_storage_account(resource_group_name, name)
+        def delete_availability_set(resource_group, name)
         end
       end
     end

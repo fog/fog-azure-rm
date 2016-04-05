@@ -8,12 +8,12 @@ module Fog
       class StorageAccount < Fog::Model
         identity :name
         attribute :location
-        attribute :resource_group_name
+        attribute :resource_group
 
         def save
           requires :name
           requires :location
-          requires :resource_group_name
+          requires :resource_group
           puts "Creating Storage Account: #{name}."
           # Create a model for new storage account.
           properties = Azure::ARM::Storage::Models::StorageAccountPropertiesCreateParameters.new
@@ -22,13 +22,13 @@ module Fog
           params = Azure::ARM::Storage::Models::StorageAccountCreateParameters.new
           params.properties = properties
           params.location = location
-          service.create_storage_account(resource_group_name, name, params)
+          service.create_storage_account(resource_group, name, params)
           puts 'Storage Account created successfully.'
         end
 
         def destroy
           puts "Deleting Storage Account: #{name}."
-          promise = service.delete_storage_account(resource_group_name, name)
+          promise = service.delete_storage_account(resource_group, name)
           promise.value!
           puts "Storage Account #{name} deleted successfully."
         end

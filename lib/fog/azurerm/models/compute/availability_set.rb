@@ -1,13 +1,11 @@
-require 'fog/azurerm/models/compute/availability_sets'
-# rubocop:disable LineLength
 # rubocop:disable MethodLength
+# rubocop:disable AbcSize
 module Fog
   module Compute
     class AzureRM
       # This class is giving implementation of create/save and
       # delete/destroy for Availability Set.
       class AvailabilitySet < Fog::Model
-        model Fog::Compute::AzureRM::AvailabilitySets
         identity  :name
         attribute :location
         attribute :resource_group
@@ -16,25 +14,23 @@ module Fog
           requires :name
           requires :location
           requires :resource_group
-
-          avail_sets_model_obj = Fog::Compute::AzureRM::AvailabilitySets.new
-          # check if it exists
-          existance_promise = avail_sets_model_obj.get(resource_group, name)
-          if !existance_promise.nil?
-
-            Chef::Log.info("Availability Set #{existance_promise.name} exists
-                        in the #{existance_promise.location} region.")
-          else
+          begin
+            reponse_of_get_as = service.get_availability_set(resource_group, name)
+          if !reponse_of_get_as.nil?
+            puts "Availability Set #{name} already exists"
+            return
+          end
+          rescue Exception => e
             # need to create the availability set
-            Chef::Log.info("Creating Availability Set
-                        '#{availability_set}' in #{location} region")
+            puts "Creating Availability Set
+                        '#{name}' in #{location} region."
             avail_set = get_avail_set_properties(location)
             begin
               start_time = Time.now.to_i
               response =
-                  service.create_availability_set(resource_group,
-                                                  name,
-                                                  avail_set).value!
+                service.create_availability_set(resource_group,
+                                                name,
+                                                avail_set).value!
               response.body
               end_time = Time.now.to_i
               duration = end_time - start_time
@@ -63,7 +59,7 @@ module Fog
         # create the properties object for creating availability sets
         def get_avail_set_properties(location)
           avail_set_props =
-              Azure::ARM::Compute::Models::AvailabilitySetProperties.new
+            Azure::ARM::Compute::Models::AvailabilitySetProperties.new
           # At least two domain faults
           avail_set_props.platform_fault_domain_count = 2
           avail_set_props.platform_update_domain_count = 2

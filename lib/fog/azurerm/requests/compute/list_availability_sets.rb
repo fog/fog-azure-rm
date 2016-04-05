@@ -1,4 +1,3 @@
-# rubocop:disable LineLength
 module Fog
   module Compute
     class AzureRM

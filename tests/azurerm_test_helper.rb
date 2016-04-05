@@ -20,7 +20,7 @@ def storage_account_attributes
   {
     name: storage_account_name,
     location: location,
-    resource_group_name: rg_name
+    resource_group: rg_name
   }
 end
 
@@ -68,7 +68,7 @@ def location
 end
 
 def fog_storage_account
-  storage_account = azurerm_storage_service.storage_accounts.find { |sa| sa.name == storage_account_name && sa.resource_group_name == rg_name }
+  storage_account = azurerm_storage_service.storage_accounts.find { |sa| sa.name == storage_account_name && sa.resource_group == rg_name }
   unless storage_account
     storage_account = azurerm_storage_service.storage_accounts.create(storage_account_attributes)
   end

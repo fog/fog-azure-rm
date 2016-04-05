@@ -6,6 +6,7 @@ require 'fog/azurerm/version'
 require 'fog/azurerm/core'
 require 'fog/azurerm/dns'
 require 'fog/azurerm/resources'
+require 'fog/azurerm/network'
 
 module Fog
   module AzureRM

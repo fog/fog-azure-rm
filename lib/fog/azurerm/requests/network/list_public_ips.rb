@@ -18,7 +18,11 @@ module Fog
 
       class Mock
         def list_public_ips(resource_group)
-
+          public_ip = Azure::ARM::Network::Models::PublicIPAddress.new
+          public_ip.name = 'fogtestpublicip'
+          public_ip.location = 'West US'
+          public_ip.type = 'Static'
+          [public_ip]
         end
       end
     end

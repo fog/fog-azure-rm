@@ -107,7 +107,7 @@ end
 
 def fog_public_ip
   pubip = azurerm_network_service.public_ips({:resource_group => rg_name}).find{|pip| pip.name == public_ip_name}
-  unless rset
+  unless pubip
     pubip = azurerm_network_service.public_ips.create(
         :name => public_ip_name, :resource_group => rg_name, :location => location, :type => pubpic_ip_type
     )

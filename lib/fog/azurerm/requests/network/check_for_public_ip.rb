@@ -1,29 +1,25 @@
 module Fog
   module Network
     class AzureRM
+      # Mock class for Network Request
       class Real
         def check_for_public_ip(resource_group, name)
           begin
             promise = @network_client.public_ipaddresses.get(resource_group, name)
-            response = promise.value!
-            result = response.body
+            promise.value!
             return true
-          rescue  MsRestAzure::AzureOperationError =>e
+          rescue MsRestAzure::AzureOperationError => e
             puts "Azure::PublicIp - Exception is: #{e.body}"
-            if(error_response["code"] == "ResourceNotFound")
-              return false
-            else
-              return true
-            end
-          rescue Exception => e
-            msg = "Exception trying to get public ip #{public_ip_name} from resource group: #{resource_group_name}"
-            fail msg
+            return false if e.body.error['code'] == 'ResourceNotFound'
+            return true
           end
         end
       end
 
+      # Mock class for Network Request
       class Mock
-
+        def check_for_public_ip(_resource_group, _name)
+        end
       end
     end
   end

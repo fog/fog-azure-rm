@@ -4,6 +4,7 @@ require 'fog/azurerm/models/network/public_ip'
 module Fog
   module Network
     class AzureRM
+      # PublicIPs collection class for Network Service
       class PublicIps < Fog::Collection
         model Fog::Network::AzureRM::PublicIp
         attribute :resource_group

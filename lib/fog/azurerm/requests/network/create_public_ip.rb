@@ -1,6 +1,7 @@
 module Fog
   module Network
     class AzureRM
+      # Real class for Network Request
       class Real
         def create_public_ip(resource_group, name, public_ip)
           puts "Creating PublicIP #{name} in Resource Group #{resource_group}."
@@ -13,16 +14,13 @@ module Fog
           rescue MsRestAzure::AzureOperationError => ex
             msg = "Exception trying to create/update public ip #{public_ip.name} from resource group: #{resource_group}. #{ex.body}"
             fail msg
-          rescue Exception => e
-            msg = "Exception trying to create/update public ip #{public_ip.name} from resource group: #{resource_group}"
-            fail msg
           end
         end
       end
 
+      # Mock class for Network Request
       class Mock
         def create_public_ip(resource_group, name, public_ip)
-
         end
       end
     end

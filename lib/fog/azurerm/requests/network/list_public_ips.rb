@@ -1,6 +1,7 @@
 module Fog
   module Network
     class AzureRM
+      # Real class for Network Request
       class Real
         def list_public_ips(resource_group)
           puts "Getting list of PublicIPs from Resource Group #{resource_group}."
@@ -9,15 +10,16 @@ module Fog
             response = promise.value!
             result = response.body.value
             return result
-          rescue  MsRestAzure::AzureOperationError =>e
-            msg = "Error Getting list of PublicIPs from ResourceGroup '#{resource_group}'"
+          rescue  MsRestAzure::AzureOperationError => e
+            msg = "Error Getting list of PublicIPs from ResourceGroup '#{resource_group}'. #{e.body}."
             fail msg
           end
         end
       end
 
+      # Mock class for Network Request
       class Mock
-        def list_public_ips(resource_group)
+        def list_public_ips(_resource_group)
           public_ip = Azure::ARM::Network::Models::PublicIPAddress.new
           public_ip.name = 'fogtestpublicip'
           public_ip.location = 'West US'

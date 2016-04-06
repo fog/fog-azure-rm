@@ -15,12 +15,13 @@ module Fog
           requires :location
           requires :resource_group
           begin
-            reponse_of_get_as = service.get_availability_set(resource_group, name)
-          if !reponse_of_get_as.nil?
-            puts "Availability Set #{name} already exists"
-            return
-          end
-          rescue Exception => e
+            reponse_of_get_as = service.get_availability_set(resource_group,
+                                                             name)
+            unless reponse_of_get_as.nil?
+              puts "Availability Set #{name} already exists"
+              return
+            end
+          rescue
             # need to create the availability set
             puts "Creating Availability Set
                         '#{name}' in #{location} region."
@@ -51,8 +52,7 @@ module Fog
 
         def destroy
           puts "Deleting Availability Set: #{name}."
-          promise = service.delete_availability_set(resource_group, name)
-          promise.value!
+          service.delete_availability_set(resource_group, name)
           puts "Availability Set #{name} deleted successfully."
         end
 

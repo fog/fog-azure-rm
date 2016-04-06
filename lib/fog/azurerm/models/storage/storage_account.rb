@@ -23,7 +23,7 @@ module Fog
           params.properties = properties
           params.location = location
           service.create_storage_account(resource_group, name, params)
-          puts 'Storage Account created successfully.'
+          puts "Storage Account created successfully."
         end
 
         def destroy

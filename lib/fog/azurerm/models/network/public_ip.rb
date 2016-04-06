@@ -1,6 +1,7 @@
 module Fog
   module Network
     class AzureRM
+      # PublicIP model class for Network Service
       class PublicIp < Fog::Model
         identity :name
         attribute :type

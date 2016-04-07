@@ -14,40 +14,20 @@ module Fog
           requires :name
           requires :location
           requires :resource_group
-          begin
-            reponse_of_get_as = service.get_availability_set(resource_group,
-                                                             name)
-            unless reponse_of_get_as.nil?
-              puts "Availability Set #{name} already exists"
-              return
-            end
-          rescue
-            # need to create the availability set
-            puts "Creating Availability Set
-                        '#{name}' in #{location} region."
-            avail_set = get_avail_set_properties(location)
-            begin
-              start_time = Time.now.to_i
-              response =
-                service.create_availability_set(resource_group,
-                                                name,
-                                                avail_set).value!
-              response.body
-              end_time = Time.now.to_i
-              duration = end_time - start_time
-              puts "Availability Set created in #{duration} seconds"
-            rescue MsRestAzure::AzureOperationError => e
-              puts("***FAULT:FATAL=#{e.body.values[0]['message']}")
-              e = Exception.new('no backtrace')
-              e.set_backtrace('')
-              raise e
-            rescue => ex
-              puts "***FAULT:FATAL=#{ex.message}"
-              ex = Exception.new('no backtrace')
-              ex.set_backtrace('')
-              raise ex
-            end
+          reponse_of_get_as = service.get_availability_set(resource_group,
+                                                           name)
+          unless reponse_of_get_as.nil?
+            puts "Availability Set #{name} already exists"
+            return
           end
+          # need to create the availability set
+          puts "Creating Availability Set
+                       '#{name}' in #{location} region."
+          avail_set = get_avail_set_properties(location)
+          service.create_availability_set(resource_group,
+                                          name,
+                                          avail_set)
+          puts "Availability Set #{name} created successfully."
         end
 
         def destroy

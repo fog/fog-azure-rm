@@ -28,12 +28,8 @@ module Fog
         end
 
         def get(resource_group, identity)
-          begin
-          response = service.get_availability_set(resource_group, identity)
-          puts "Response of get function: #{response}"
-        rescue => e
-          puts "Not Found #{e}"
-        end
+          all.find { |as| as.resource_group == resource_group && as.name == identity }
+          #service.get_availability_set(resource_group, identity)
         rescue Fog::Errors::NotFound
           nil
         end

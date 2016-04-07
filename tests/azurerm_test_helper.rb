@@ -8,6 +8,10 @@ def azurerm_dns_service
   Fog::DNS::AzureRM.new
 end
 
+def azurerm_network_service
+  Fog::Network::AzureRM.new
+end
+
 def azurerm_storage_service
   Fog::Storage::AzureRM.new
 end
@@ -67,6 +71,14 @@ def fog_storage_account
   storage_account
 end
 
+def pubpic_ip_type
+  'Static'
+end
+
+def public_ip_name
+  'fogtestpublicip'
+end
+
 def fog_resource_group
   resource_group = azurerm_resources_service.resource_groups.find { |rg| rg.name == rg_name }
   unless resource_group
@@ -93,9 +105,14 @@ def fog_record_set
   rset
 end
 
-def storage_account_destroy
-  storage_account = azurerm_storage_service.storage_accounts.find { |sa| sa.name == storage_account_name }
-  storage_account.destroy if storage_account
+def fog_public_ip
+  pubip = azurerm_network_service.public_ips({:resource_group => rg_name}).find{|pip| pip.name == public_ip_name}
+  unless pubip
+    pubip = azurerm_network_service.public_ips.create(
+        :name => public_ip_name, :resource_group => rg_name, :location => location, :type => pubpic_ip_type
+    )
+  end
+  pubip
 end
 
 def rg_destroy
@@ -113,11 +130,22 @@ def record_set_destroy
   rset.destroy if rset
 end
 
+def public_ip_destroy
+  pubip = azurerm_network_service.public_ips({:resource_group => rg_name}).find{|pip| pip.name == public_ip_name}
+  pubip.destroy if pubip
+end
+
+def storage_account_destroy
+  storage_account = azurerm_storage_service.storage_accounts.find { |sa| sa.name == storage_account_name }
+  storage_account.destroy if storage_account
+end
+
 at_exit do
   unless Fog.mocking?
     record_set_destroy
     storage_account_destroy
     zone_destroy
+    public_ip_destroy
     rg_destroy
   end
 end

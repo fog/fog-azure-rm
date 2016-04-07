@@ -29,7 +29,6 @@ module Fog
 
         def get(resource_group, identity)
           all.find { |as| as.resource_group == resource_group && as.name == identity }
-          #service.get_availability_set(resource_group, identity)
         rescue Fog::Errors::NotFound
           nil
         end

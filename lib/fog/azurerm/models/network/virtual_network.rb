@@ -5,18 +5,17 @@ module Fog
         identity :name
         attribute :id
         attribute :location
-        attribute :dns_list
-        attribute :subnet_address_list
-        attribute :network_address_list
-        attribute :network_security_group
         attribute :resource_group
+        attribute :addressPrefixes
+        attribute :dnsServers
+        attribute :subnets
 
         def save
           requires :name
           requires :location
           requires :resource_group
           puts "Creating Virtual Network: #{name}..."
-          service.create_virtual_network(name, location, resource_group, dns_list = nil, subnet_address_list = nil, network_address_list = nil, network_security_group = nil)
+          service.create_virtual_network(name, location, resource_group, dnsServers, subnets, addressPrefixes)
           puts "Virtual Network #{name} created successfully."
         end
 

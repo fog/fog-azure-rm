@@ -15,6 +15,7 @@ module Fog
       model_path 'fog/azurerm/models/network'
       model :virtual_network
       collection :virtual_networks
+
       class Mock
         def initialize(_options = {})
           begin

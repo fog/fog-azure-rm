@@ -2,8 +2,8 @@ module Fog
   module Network
     class AzureRM
       class Real
-        def create_virtual_network(name, location, resource_group_name, dns_list, subnet_address_list, network_address_list, network_security_group)
-          virtual_network = define_vnet_object(location, name, network_address_list, dns_list, subnet_address_list, network_security_group)
+        def create_virtual_network(name, location, resource_group_name, dns_list, subnet_address_list, network_address_list)
+          virtual_network = define_vnet_object(location, name, network_address_list, dns_list, subnet_address_list)
           begin
             promise = @network_client.virtual_networks.create_or_update(resource_group_name, name, virtual_network)
             promise.value!
@@ -15,7 +15,7 @@ module Fog
 
         private
 
-        def define_vnet_object(location, network_name, network_address_list, dns_list, subnet_address_list, network_security_group)
+        def define_vnet_object(location, network_name, network_address_list, dns_list, subnet_address_list)
           virtual_network = Azure::ARM::Network::Models::VirtualNetwork.new
           virtual_network.location = location
           virtual_network_properties = Azure::ARM::Network::Models::VirtualNetworkPropertiesFormat.new
@@ -48,7 +48,7 @@ module Fog
 
           unless subnet_address_list.nil?
             subnet_address_list = subnet_address_list.split(',')
-            sub_nets = define_subnet_objects(network_name, subnet_address_list, network_security_group)
+            sub_nets = define_subnet_objects(network_name, subnet_address_list)
             virtual_network_properties.subnets = sub_nets
           end
 
@@ -56,19 +56,17 @@ module Fog
           virtual_network
         end
 
-        def define_subnet_objects(network_name, subnet_address_list, network_security_group)
+        def define_subnet_objects(network_name, subnet_address_list)
           sub_nets = []
           (0...subnet_address_list.length).each do |i|
             subnet_properties = Azure::ARM::Network::Models::SubnetPropertiesFormat.new
             subnet_properties.address_prefix = subnet_address_list[i].strip
-            subnet_properties.network_security_group = network_security_group unless network_security_group.nil?
 
             subnet = Azure::ARM::Network::Models::Subnet.new
             subnet.name = 'subnet_' + i.to_s + '_' + network_name
             subnet.properties = subnet_properties
             sub_nets.push(subnet)
           end
-
           sub_nets
         end
       end

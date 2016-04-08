@@ -6,9 +6,13 @@ module Fog
       # This class is giving implementation of create/save and
       # delete/destroy for Availability Set.
       class AvailabilitySet < Fog::Model
+        attribute :id
         identity  :name
+        attribute :type
         attribute :location
+        attribute :tags
         attribute :resource_group
+        attribute :properties
 
         def save
           requires :name

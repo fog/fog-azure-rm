@@ -20,21 +20,6 @@ module Fog
           end unless subnets_list.nil?
           subnets
         end
-
-        def get(identity, resource_group)
-          all.find { |f| f.name == identity && f.resource_group == resource_group }
-        rescue Fog::Errors::NotFound
-          nil
-        end
-
-        def check_name_availability(name, resource_group)
-          puts "Checkng if Virtual Network #{name} exists."
-          if service.check_for_virtual_network(name, resource_group)
-            puts "Virtual Network #{name} exists."
-          else
-            puts "Virtual Network #{name} doesn't exists."
-          end
-        end
       end
     end
   end

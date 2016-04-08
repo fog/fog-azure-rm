@@ -12,6 +12,10 @@ def azurerm_storage_service
   Fog::Storage::AzureRM.new
 end
 
+def azurerm_network_service
+  Fog::Network::AzureRM.new
+end
+
 def storage_account_attributes
   {
     name: storage_account_name,
@@ -37,6 +41,10 @@ end
 
 def zone_name
   'fogtestzone.com'
+end
+
+def virtual_network_name
+  'fogtestvnet'
 end
 
 def rs_record_type
@@ -67,6 +75,14 @@ def fog_storage_account
   storage_account
 end
 
+def pubpic_ip_type
+  'Static'
+end
+
+def public_ip_name
+  'fogtestpublicip'
+end
+
 def fog_resource_group
   resource_group = azurerm_resources_service.resource_groups.find { |rg| rg.name == rg_name }
   unless resource_group
@@ -93,9 +109,27 @@ def fog_record_set
   rset
 end
 
+def fog_virtual_network
+  vnet = azurerm_network_service.virtual_networks.find { |v| v.name == virtual_network_name && v.resource_group == rg_name }
+  unless vnet
+    vnet = azurerm_network_service.virtual_networks.create(name: virtual_network_name, location: location, resource_group: rg_name)
+  end
+  vnet
+end
+
 def storage_account_destroy
   storage_account = azurerm_storage_service.storage_accounts.find { |sa| sa.name == storage_account_name }
   storage_account.destroy if storage_account
+end
+
+def fog_public_ip
+  pubip = azurerm_network_service.public_ips({:resource_group => rg_name}).find{|pip| pip.name == public_ip_name}
+  unless pubip
+    pubip = azurerm_network_service.public_ips.create(
+        :name => public_ip_name, :resource_group => rg_name, :location => location, :type => pubpic_ip_type
+    )
+  end
+  pubip
 end
 
 def rg_destroy
@@ -113,11 +147,23 @@ def record_set_destroy
   rset.destroy if rset
 end
 
+def virtual_network_destroy
+  vnet = azurerm_network_service.virtual_networks.find { |vn| vn.name == rs_name && vn.resource_group == rg_name }
+  vnet.destroy if vnet
+end
+
+def public_ip_destroy
+  pubip = azurerm_network_service.public_ips({:resource_group => rg_name}).find{|pip| pip.name == public_ip_name}
+  pubip.destroy if pubip
+end
+
 at_exit do
   unless Fog.mocking?
     record_set_destroy
     storage_account_destroy
     zone_destroy
+    virtual_network_destroy
+    public_ip_destroy
     rg_destroy
   end
 end

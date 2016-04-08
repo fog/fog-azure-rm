@@ -75,6 +75,14 @@ def fog_storage_account
   storage_account
 end
 
+def pubpic_ip_type
+  'Static'
+end
+
+def public_ip_name
+  'fogtestpublicip'
+end
+
 def fog_resource_group
   resource_group = azurerm_resources_service.resource_groups.find { |rg| rg.name == rg_name }
   unless resource_group
@@ -114,6 +122,16 @@ def storage_account_destroy
   storage_account.destroy if storage_account
 end
 
+def fog_public_ip
+  pubip = azurerm_network_service.public_ips({:resource_group => rg_name}).find{|pip| pip.name == public_ip_name}
+  unless pubip
+    pubip = azurerm_network_service.public_ips.create(
+        :name => public_ip_name, :resource_group => rg_name, :location => location, :type => pubpic_ip_type
+    )
+  end
+  pubip
+end
+
 def rg_destroy
   resource_group = azurerm_resources_service.resource_groups.find { |rg| rg.name == rg_name }
   resource_group.destroy if resource_group
@@ -134,12 +152,18 @@ def virtual_network_destroy
   vnet.destroy if vnet
 end
 
+def public_ip_destroy
+  pubip = azurerm_network_service.public_ips({:resource_group => rg_name}).find{|pip| pip.name == public_ip_name}
+  pubip.destroy if pubip
+end
+
 at_exit do
   unless Fog.mocking?
     record_set_destroy
     storage_account_destroy
     zone_destroy
     virtual_network_destroy
+    public_ip_destroy
     rg_destroy
   end
 end

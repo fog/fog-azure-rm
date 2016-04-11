@@ -1,6 +1,5 @@
 require 'fog/core/collection'
 require 'fog/azurerm/models/network/virtual_network'
-require 'fog/azurerm/models/network/subnets'
 
 module Fog
   module Network
@@ -12,13 +11,10 @@ module Fog
           virtual_networks = []
           service.list_virtual_networks.each do |vnet|
             hash = {}
-            hash['id'] = vnet['id']
-            hash['name'] = vnet['name']
-            hash['location'] = vnet['location']
-            hash['resource_group'] = vnet['id'].split('/')[4]
-            hash['addressPrefixes'] = vnet['properties']['addressSpace']['addressPrefixes'] unless vnet['properties']['addressSpace'].nil?
-            hash['dnsServers'] = vnet['properties']['dhcpOptions']['dnsServers'] unless vnet['properties']['dhcpOptions'].nil?
-            hash['subnets'] = Fog::Network::AzureRM::Subnets.deserialize_subnets_list(vnet['properties']['subnets'])
+            vnet.instance_variables.each do |var|
+              hash[var.to_s.delete('@')] = vnet.instance_variable_get(var)
+            end
+            hash['resource_group'] = vnet.instance_variable_get('@id').split('/')[4]
             virtual_networks << hash
           end
           load(virtual_networks)

@@ -20,14 +20,13 @@ module Fog
       collection :availability_sets
       # This class provides the mock implementation for unit tests.
       class Mock
-        def initialize(options = {})
+        def initialize(_options = {})
           begin
             require 'azure_mgmt_compute'
           rescue LoadError => e
             retry if require('rubygems')
             raise e.message
           end
-          puts "Tenand Id: #{options[:tenant_id]}"
         end
       end
       # This class provides the actual implemention for service calls.

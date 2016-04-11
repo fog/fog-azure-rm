@@ -6,6 +6,5 @@ module Fog
     service(:resources, 'Resources')
     service(:dns, 'DNS')
     service(:storage, 'Storage')
-    service(:network, 'Network')
   end
 end

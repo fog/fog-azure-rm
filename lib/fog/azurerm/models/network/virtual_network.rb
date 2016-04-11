@@ -8,7 +8,6 @@ module Fog
         attribute :dns_list
         attribute :subnet_address_list
         attribute :network_address_list
-        attribute :network_security_group
         attribute :resource_group
         attribute :properties
 

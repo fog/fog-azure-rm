@@ -10,6 +10,16 @@ module Fog
       requires :subscription_id
 
       request_path 'fog/azurerm/requests/network'
+      request :create_virtual_network
+      request :delete_virtual_network
+      request :list_virtual_networks
+      request :check_for_virtual_network
+
+      model_path 'fog/azurerm/models/network'
+      model :virtual_network
+      collection :virtual_networks
+
+      request_path 'fog/azurerm/requests/network'
       request :create_public_ip
       request :delete_public_ip
       request :list_public_ips

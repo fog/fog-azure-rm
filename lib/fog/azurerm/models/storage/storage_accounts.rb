@@ -10,12 +10,12 @@ module Fog
       # check name availability for storage account.
       class StorageAccounts < Fog::Collection
         model Fog::Storage::AzureRM::StorageAccount
-        attribute :resource_group_name
+        attribute :resource_group
         def all
           accounts = []
-          if !resource_group_name.nil?
-            requires :resource_group_name
-            hash_of_storage_accounts = service.list_storage_account_for_rg(resource_group_name)
+          if !resource_group.nil?
+            requires :resource_group
+            hash_of_storage_accounts = service.list_storage_account_for_rg(resource_group)
           else
             hash_of_storage_accounts = service.list_storage_accounts
           end

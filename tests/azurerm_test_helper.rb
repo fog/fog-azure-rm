@@ -16,11 +16,23 @@ def azurerm_network_service
   Fog::Network::AzureRM.new
 end
 
+def azurerm_compute_service
+  Fog::Compute::AzureRM.new
+end
+
 def storage_account_attributes
   {
     name: storage_account_name,
     location: location,
-    resource_group_name: rg_name
+    resource_group: rg_name
+  }
+end
+
+def availability_set_attributes
+  {
+    name: availability_set_name,
+    location: location,
+    resource_group: rg_name
   }
 end
 
@@ -29,6 +41,10 @@ def rg_attributes
     name: rg_name,
     location: location
   }
+end
+
+def availability_set_name
+  'fog-test-availability-set'
 end
 
 def storage_account_name
@@ -67,8 +83,16 @@ def location
   'West US'
 end
 
+def fog_availability_set
+  availability_set = azurerm_compute_service.availability_sets(resource_group: rg_name).find { |as| as.name == availability_set_name && as.resource_group == rg_name }
+  unless availability_set
+    availability_set = azurerm_compute_service.availability_sets.create(availability_set_attributes)
+  end
+  availability_set
+end
+
 def fog_storage_account
-  storage_account = azurerm_storage_service.storage_accounts.find { |sa| sa.name == storage_account_name && sa.resource_group_name == rg_name }
+  storage_account = azurerm_storage_service.storage_accounts.find { |sa| sa.name == storage_account_name && sa.resource_group == rg_name }
   unless storage_account
     storage_account = azurerm_storage_service.storage_accounts.create(storage_account_attributes)
   end
@@ -115,6 +139,11 @@ def fog_virtual_network
     vnet = azurerm_network_service.virtual_networks.create(name: virtual_network_name, location: location, resource_group: rg_name)
   end
   vnet
+end
+
+def availability_set_destroy
+  availability_set = azurerm_compute_service.availability_sets(resource_group: rg_name).find { |as| as.name == availability_set_name }
+  availability_set.destroy if availability_set
 end
 
 def storage_account_destroy
@@ -165,5 +194,6 @@ at_exit do
     virtual_network_destroy
     public_ip_destroy
     rg_destroy
+    availability_set_destroy
   end
 end

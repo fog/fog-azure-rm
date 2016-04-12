@@ -106,10 +106,10 @@ def fog_record_set
 end
 
 def fog_public_ip
-  pubip = azurerm_network_service.public_ips({:resource_group => rg_name}).find{|pip| pip.name == public_ip_name}
+  pubip = azurerm_network_service.public_ips(resource_group: rg_name).find { |pip| pip.name == public_ip_name }
   unless pubip
     pubip = azurerm_network_service.public_ips.create(
-        :name => public_ip_name, :resource_group => rg_name, :location => location, :type => pubpic_ip_type
+        name: public_ip_name, resource_group: rg_name, location: location, type: pubpic_ip_type
     )
   end
   pubip
@@ -131,7 +131,7 @@ def record_set_destroy
 end
 
 def public_ip_destroy
-  pubip = azurerm_network_service.public_ips({:resource_group => rg_name}).find{|pip| pip.name == public_ip_name}
+  pubip = azurerm_network_service.public_ips(resource_group: rg_name).find { |pip| pip.name == public_ip_name }
   pubip.destroy if pubip
 end
 

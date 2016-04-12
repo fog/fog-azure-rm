@@ -14,12 +14,12 @@ Shindo.tests('Fog::Network[:azurerm] | public_ip model', %w(azurerm network)) do
       ]
       tests('The public_ip model should respond to') do
         attributes.each do |attribute|
-          test("#{attribute}") { pubip.respond_to? attribute }
+          test(attribute) { pubip.respond_to? attribute }
         end
       end
       tests('The attributes hash should have key') do
         attributes.each do |attribute|
-          test("#{attribute}") { model_attribute_hash.key? attribute }
+          test(attribute) { model_attribute_hash.key? attribute }
         end
       end
     end

@@ -111,6 +111,22 @@ def public_ip_name
   'fogtestpublicip'
 end
 
+def network_interface_name
+  'fogtestnetworkinterface'
+end
+
+def subnet_id_for_network_interface
+  '/subscriptions/XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX/resourceGroups/XXXXXXXX/providers/Microsoft.Network/virtualNetworks/XXXXXXXX/subnets/XXXXXXX'
+end
+
+def ip_configurations_name_for_network_interface
+  'fogtestipconfigs'
+end
+
+def private_ip_allocation_method_for_network_interface
+  'Dynamic'
+end
+
 def fog_resource_group
   resource_group = azurerm_resources_service.resource_groups.find { |rg| rg.name == rg_name }
   unless resource_group
@@ -175,6 +191,16 @@ def fog_subnet
   subnet
 end
 
+def fog_network_interface
+  nic = azurerm_network_service.network_interfaces(resource_group: rg_name).find { |ni| ni.name == network_interface_name }
+  unless nic
+    nic = azurerm_network_service.network_interfaces.create(
+      name: network_interface_name, resource_group: rg_name, location: location, subnet_id: subnet_id_for_network_interface, ip_configurations_name: ip_configurations_name_for_network_interface, private_ip_allocation_method: private_ip_allocation_method_for_network_interface
+    )
+  end
+  nic
+end
+
 def rg_destroy
   resource_group = azurerm_resources_service.resource_groups.find { |rg| rg.name == rg_name }
   resource_group.destroy if resource_group
@@ -203,6 +229,16 @@ end
 def subnet_destroy
   subnet = azurerm_network_service.subnets( { resource_group: rg_name, virtual_network_name: virtual_network_name }).find{ |sn| sn.name == subnet_name }
   subnet.destroy if subnet
+end
+
+def network_interface_destroy
+  nic = azurerm_network_service.network_interfaces(resource_group: rg_name).find { |ni| ni.name == network_interface_name }
+  nic.destroy if nic
+end
+
+def storage_account_destroy
+  storage_account = azurerm_storage_service.storage_accounts.find { |sa| sa.name == storage_account_name }
+  storage_account.destroy if storage_account
 end
 
 at_exit do

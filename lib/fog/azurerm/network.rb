@@ -32,6 +32,12 @@ module Fog
       # Mock class for Network Service
       class Mock
         def initialize(_options = {})
+          begin
+            require 'azure_mgmt_network'
+          rescue LoadError => e
+            retry if require('rubygems')
+            raise e.message
+          end
         end
       end
 

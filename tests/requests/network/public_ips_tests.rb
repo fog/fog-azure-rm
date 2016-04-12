@@ -2,7 +2,7 @@ require File.expand_path('../../../helper', __FILE__)
 
 Shindo.tests('Fog::Network[:azurerm] | public_ips request', %w(azurerm network)) do
   tests('#public_ips') do
-    pubips = azurerm_network_service.public_ips({:resource_group => rg_name})
+    pubips = azurerm_network_service.public_ips(resource_group: rg_name)
     pubips = [fog_public_ip] if pubips.empty?
 
     test 'returns a Array' do

@@ -63,6 +63,10 @@ def virtual_network_name
   'fogtestvnet'
 end
 
+def subnet_name
+  'fogtestsubnet'
+end
+
 def rs_record_type
   'A'
 end
@@ -161,6 +165,16 @@ def fog_public_ip
   pubip
 end
 
+def fog_subnet
+  subnet = azurerm_network_service.subnets({ resource_group: rg_name, virtual_network_name: virtual_network_name }).find{ |sn| sn.name == subnet_name }
+  unless subnet
+    subnet = azurerm_network_service.subnets.create(
+      name: subnet_name, resource_group: rg_name, virtual_network_name: virtual_network_name
+    )
+  end
+  subnet
+end
+
 def rg_destroy
   resource_group = azurerm_resources_service.resource_groups.find { |rg| rg.name == rg_name }
   resource_group.destroy if resource_group
@@ -186,11 +200,17 @@ def public_ip_destroy
   pubip.destroy if pubip
 end
 
+def subnet_destroy
+  subnet = azurerm_network_service.subnets( { resource_group: rg_name, virtual_network_name: virtual_network_name }).find{ |sn| sn.name == subnet_name }
+  subnet.destroy if subnet
+end
+
 at_exit do
   unless Fog.mocking?
     record_set_destroy
     storage_account_destroy
     zone_destroy
+    subnet_destroy
     virtual_network_destroy
     public_ip_destroy
     rg_destroy

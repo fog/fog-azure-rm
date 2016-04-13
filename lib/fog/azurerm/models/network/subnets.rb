@@ -4,21 +4,32 @@ require 'fog/azurerm/models/network/subnet'
 module Fog
   module Network
     class AzureRM
+      # Subnet collection for network service
       class Subnets < Fog::Collection
         model Fog::Network::AzureRM::Subnet
+        attribute :resource_group
+        attribute :virtual_network_name
 
-        def self.deserialize_subnets_list(subnets_list)
+        def all
+          requires :resource_group
+          requires :virtual_network_name
           subnets = []
-          subnets_list.each do |subnet|
-            subnet_obj = Fog::Network::AzureRM::Subnet.new
-            subnet_obj.name = subnet['name']
-            subnet_obj.id = subnet['id']
-            subnet_obj.resource_group = subnet['id'].split('/')[4]
-            subnet_obj.addressPrefix = subnet['properties']['addressPrefix']
-            subnet_obj.ipConfigurations = subnet['properties']['ipConfigurations']
-            subnets << subnet_obj
-          end unless subnets_list.nil?
-          subnets
+          service.list_subnets(resource_group, virtual_network_name).each do |subnet|
+            hash = {}
+            subnet.instance_variables.each do |var|
+              hash[var.to_s.delete('@')] = subnet.instance_variable_get(var)
+            end
+            hash['resource_group'] = subnet.instance_variable_get('@id').split('/')[4]
+            hash['virtual_network_name'] = subnet.instance_variable_get('@id').split('/')[8]
+            subnets << hash
+          end
+          load(subnets)
+        end
+
+        def get(identity)
+          all.find { |f| f.name == identity }
+        rescue Fog::Errors::NotFound
+          nil
         end
       end
     end

@@ -21,6 +21,9 @@ module Fog
       request :create_subnet
       request :list_subnets
       request :delete_subnet
+      request :create_network_interface
+      request :delete_network_interface
+      request :list_network_interfaces
 
       model_path 'fog/azurerm/models/network'
       model :virtual_network
@@ -29,6 +32,8 @@ module Fog
       collection :public_ips
       model :subnet
       collection :subnets
+      model :network_interface
+      collection :network_interfaces
 
       # Mock class for Network Service
       class Mock

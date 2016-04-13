@@ -13,10 +13,6 @@ Shindo.tests('Fog::Network[:azurerm] | virtual_network model', %w(azurerm networ
         :id,
         :name,
         :location,
-        :dns_list,
-        :subnet_address_list,
-        :network_address_list,
-        :resource_group,
         :properties
       ]
       tests('The virtual_network model should respond to') do

@@ -16,10 +16,11 @@ module Fog
 
       class Mock
         def list_virtual_networks
-          vnet = ::Azure::ARM::Network::Models::VirtualNetwork .new
+          vnet = Azure::ARM::Network::Models::VirtualNetwork.new
           vnet.id = '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-resource-group/providers/Microsoft.Network/virtualNetworks/fogtestvnet'
           vnet.name = 'fogtestvnet'
           vnet.location = 'West US'
+          vnet.properties = Azure::ARM::Network::Models::VirtualNetworkPropertiesFormat.new
           [vnet]
         end
       end

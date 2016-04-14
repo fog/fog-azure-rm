@@ -13,12 +13,12 @@ module Fog
                                                              params).value!
             response.body
           rescue MsRestAzure::AzureOperationError => e
-            puts("***FAULT:FATAL=#{e.body.values[0]['message']}")
+            Fog::Logger.warning("***FAULT:FATAL=#{e.body.values[0]['message']}")
             e = Exception.new('no backtrace')
             e.set_backtrace('')
             raise e
           rescue => ex
-            puts "***FAULT:FATAL=#{ex.message}"
+            Fog::Logger.warning "***FAULT:FATAL=#{ex.message}"
             ex = Exception.new('no backtrace')
             ex.set_backtrace('')
             raise ex

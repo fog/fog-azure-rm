@@ -19,9 +19,9 @@ module Fog
           requires :ip_configurations_name
           requires :private_ip_allocation_method
 
-          puts "Creating Network Interface Card: #{name}..."
+          Fog::Logger.debug "Creating Network Interface Card: #{name}..."
           service.create_network_interface(name, location, resource_group, subnet_id, ip_configurations_name, private_ip_allocation_method)
-          puts "Network Interface #{name} created successfully."
+          Fog::Logger.debug "Network Interface #{name} created successfully."
         end
 
         def destroy

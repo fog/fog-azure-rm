@@ -36,9 +36,9 @@ module Fog
         end
 
         def check_name_availability(name)
-          puts "Checking Name availability: #{name}."
+          Fog::Logger.debug "Checking Name availability: #{name}."
           service.check_storage_account_name_availability(name)
-          puts "Name: #{name} is available."
+          Fog::Logger.debug "Name: #{name} is available."
         end
       end
     end

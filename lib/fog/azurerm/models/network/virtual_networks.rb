@@ -27,11 +27,11 @@ module Fog
         end
 
         def check_name_availability(name, resource_group)
-          puts "Checkng if Virtual Network #{name} exists."
+          Fog::Logger.debug "Checkng if Virtual Network #{name} exists."
           if service.check_for_virtual_network(name, resource_group)
-            puts "Virtual Network #{name} exists."
+            Fog::Logger.debug "Virtual Network #{name} exists."
           else
-            puts "Virtual Network #{name} doesn't exists."
+            Fog::Logger.debug "Virtual Network #{name} doesn't exists."
           end
         end
       end

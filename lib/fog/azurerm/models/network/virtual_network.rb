@@ -15,15 +15,15 @@ module Fog
           requires :name
           requires :location
           requires :resource_group
-          puts "Creating Virtual Network: #{name}..."
+          Fog::Logger.debug "Creating Virtual Network: #{name}..."
           service.create_virtual_network(name, location, resource_group, dns_list, subnet_address_list, network_address_list)
-          puts "Virtual Network #{name} created successfully."
+          Fog::Logger.debug "Virtual Network #{name} created successfully."
         end
 
         def destroy
-          puts "Deleting Virtual Network: #{name}..."
+          Fog::Logger.debug "Deleting Virtual Network: #{name}..."
           service.delete_virtual_network(resource_group, name)
-          puts "Virtual Network #{name} deleted successfully."
+          Fog::Logger.debug "Virtual Network #{name} deleted successfully."
         end
       end
     end

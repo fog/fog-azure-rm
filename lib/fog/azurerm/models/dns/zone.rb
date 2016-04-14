@@ -10,7 +10,7 @@ module Fog
           requires :name
           requires :resource_group
           if service.check_for_zone(resource_group, name)
-            puts "Zone #{zone_name} Exists, no need to create"
+            Fog::Logger.debug "Zone #{zone_name} Exists, no need to create"
           else
             service.create_zone(resource_group, name)
           end
@@ -19,7 +19,7 @@ module Fog
 
         def destroy
           unless service.check_for_zone(resource_group, name)
-            puts "Zone #{zone_name} does not exist, no need to delete"
+            Fog::Logger.debug "Zone #{zone_name} does not exist, no need to delete"
           else
             service.delete_zone(name, resource_group)
           end

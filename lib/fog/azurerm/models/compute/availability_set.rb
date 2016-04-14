@@ -21,23 +21,23 @@ module Fog
           reponse_of_get_as = service.get_availability_set(resource_group,
                                                            name)
           unless reponse_of_get_as.nil?
-            puts "Availability Set #{name} already exists"
+            Fog::Logger.debug "Availability Set #{name} already exists"
             return
           end
           # need to create the availability set
-          puts "Creating Availability Set
+          Fog::Logger.debug "Creating Availability Set
                        '#{name}' in #{location} region."
           avail_set = get_avail_set_properties(location)
           service.create_availability_set(resource_group,
                                           name,
                                           avail_set)
-          puts "Availability Set #{name} created successfully."
+          Fog::Logger.debug "Availability Set #{name} created successfully."
         end
 
         def destroy
-          puts "Deleting Availability Set: #{name}."
+          Fog::Logger.debug "Deleting Availability Set: #{name}."
           service.delete_availability_set(resource_group, name)
-          puts "Availability Set #{name} deleted successfully."
+          Fog::Logger.debug "Availability Set #{name} deleted successfully."
         end
 
         # create the properties object for creating availability sets

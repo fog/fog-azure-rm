@@ -4,12 +4,12 @@ module Fog
       # Real class for Network Request
       class Real
         def delete_public_ip(resource_group, name)
-          puts "Deleting PublicIP #{name} from Resource Group #{resource_group}."
+          Fog::Logger.debug "Deleting PublicIP #{name} from Resource Group #{resource_group}."
           begin
             promise = @network_client.public_ipaddresses.delete(resource_group, name)
             response = promise.value!
             result = response.body
-            puts "PublicIP #{name} Deleted Successfully."
+            Fog::Logger.debug "PublicIP #{name} Deleted Successfully."
             return result
           rescue  MsRestAzure::AzureOperationError => e
             msg = "Error Deleting PublicIP '#{name}' from ResourceGroup '#{resource_group}'. #{e.body}"

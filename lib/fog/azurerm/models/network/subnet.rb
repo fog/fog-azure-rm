@@ -17,15 +17,17 @@ module Fog
           requires :name
           requires :resource_group
           requires :virtual_network_name
-          puts "Creating Subnet: #{name}..."
+          Fog::Logger.debug "Creating Subnet: #{name}..."
+          #puts "Creating Subnet: #{name}..."
           service.create_subnet(resource_group, virtual_network_name, name, addressPrefix)
-          puts "Subnet #{name} created successfully."
+          Fog::Logger.debug "Subnet #{name} created successfully."
+          #puts "Subnet #{name} created successfully."
         end
 
         def destroy
-          puts "Deleting Subnet: #{name}..."
+          Fog::Logger.debug "Deleting Subnet: #{name}..."
           service.delete_subnet(resource_group, virtual_network_name, name)
-          puts "Subnet #{name} deleted successfully."
+          Fog::Logger.debug "Subnet #{name} deleted successfully."
         end
       end
     end

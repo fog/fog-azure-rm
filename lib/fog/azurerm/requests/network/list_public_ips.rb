@@ -4,7 +4,7 @@ module Fog
       # Real class for Network Request
       class Real
         def list_public_ips(resource_group)
-          puts "Getting list of PublicIPs from Resource Group #{resource_group}."
+          Fog::Logger.debug "Getting list of PublicIPs from Resource Group #{resource_group}."
           begin
             promise = @network_client.public_ipaddresses.list(resource_group)
             response = promise.value!

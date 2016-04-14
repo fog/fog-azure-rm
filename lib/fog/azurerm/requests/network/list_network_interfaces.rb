@@ -4,7 +4,7 @@ module Fog
       # Real class for Network Request
       class Real
         def list_network_interfaces(resource_group)
-          puts "Getting list of NetworkInterfaces from Resource Group #{resource_group}."
+          Fog::Logger.debug "Getting list of NetworkInterfaces from Resource Group #{resource_group}."
           begin
             promise = @network_client.network_interfaces.list(resource_group)
             response = promise.value!

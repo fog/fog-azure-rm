@@ -4,7 +4,7 @@ module Fog
       class Real
         def create_record_set(dns_resource_group, zone_name, record_set_name, records, record_type, ttl)
           resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription_id}/resourceGroups/#{dns_resource_group}/providers/Microsoft.Network/dnsZones/#{zone_name}/#{record_type}/#{record_set_name}?api-version=2015-05-04-preview"
-          puts "Creating/Updating RecordSet #{record_set_name} of type '#{record_type}' in zone #{zone_name}"
+          Fog::Logger.debug "Creating/Updating RecordSet #{record_set_name} of type '#{record_type}' in zone #{zone_name}"
 
           case record_type
             when 'A'
@@ -42,9 +42,9 @@ module Fog
                 content_type: 'application/json',
                 authorization: token
             )
-            puts "RecordSet #{record_set_name} Created/Updated Successfully!"
+            Fog::Logger.debug "RecordSet #{record_set_name} Created/Updated Successfully!"
           rescue Exception => e
-            puts "Exception setting #{record_type} records for the record set: #{record_set_name}"
+            Fog::Logger.warning "Exception setting #{record_type} records for the record set: #{record_set_name}"
             msg = "AzureDns::RecordSet - Exception is: #{e.message}"
             fail msg
           end

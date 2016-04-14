@@ -11,7 +11,7 @@ module Fog
             result = response.value!
             result.body
           rescue
-            puts 'Not Found'
+            Fog::Logger.debug 'Not Found'
             nil
           end
         end

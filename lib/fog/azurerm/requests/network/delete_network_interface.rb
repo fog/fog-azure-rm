@@ -4,12 +4,12 @@ module Fog
       # Real class for Network Request
       class Real
         def delete_network_interface(resource_group, name)
-          puts "Deleting NetworkInterface #{name} from Resource Group #{resource_group}."
+          Fog::Logger.debug "Deleting NetworkInterface #{name} from Resource Group #{resource_group}."
           begin
             promise = @network_client.network_interfaces.delete(resource_group, name)
             response = promise.value!
             result = response.body
-            puts "NetworkInterface #{name} Deleted Successfully."
+            Fog::Logger.debug "NetworkInterface #{name} Deleted Successfully."
             return result
           rescue  MsRestAzure::AzureOperationError => e
             msg = "Error Deleting NetworkInterface '#{name}' from ResourceGroup '#{resource_group}'. #{e.body.error.message}."

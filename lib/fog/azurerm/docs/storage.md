@@ -67,7 +67,7 @@ Getting a single record of Storage Account
 
 ## Destroy a single record
 
-Getting the storage account object from the get method and then destroying the storage account.
+Get storage account object from the get method and then destroy that storage account.
 
 ```ruby
       storage_acc.destroy

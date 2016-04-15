@@ -18,7 +18,7 @@ Next, create a connection to the Compute Service:
     azure_compute_service = Fog::Compute::AzureRM.new(
         tenant_id: '<Tenantid>',                  # Tenant id of Azure Active Directory Application
         client_id:    '<Clientid>',               # Client id of Azure Active Directory Application
-        client_secret: '<ClientSecret>',         # Client Secret of Azure Active Directory Application
+        client_secret: '<ClientSecret>',          # Client Secret of Azure Active Directory Application
         subscription_id: '<Subscriptionid>'       # Subscription id of an Azure Account
 )
 ```
@@ -35,7 +35,7 @@ Create a new availability set
 ```
 ## List Availability Sets 
 
-##### List availability sets in a resource group
+List availability sets in a resource group
 
 ```ruby
     availability_sets  = azure_compute_service.availability_sets(resource_group: '<Resource Group name>')

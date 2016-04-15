@@ -9,8 +9,9 @@ module Fog
             promise.value!
             return true
           rescue MsRestAzure::AzureOperationError => e
-            Fog::Logger.warning "Azure::PublicIp - Exception is: #{e.body}"
-            return false if e.body.error['code'] == 'ResourceNotFound'
+            msg = "Exception checking name availability: #{e.body['error']['message']}"
+            raise msg if e.body['error']['code'] == 'ResourceGroupNotFound'
+            return false if e.body['error']['code'] == 'ResourceNotFound'
             return true
           end
         end

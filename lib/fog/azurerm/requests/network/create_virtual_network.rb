@@ -8,8 +8,8 @@ module Fog
             promise = @network_client.virtual_networks.create_or_update(resource_group_name, name, virtual_network)
             promise.value!
           rescue  MsRestAzure::AzureOperationError => e
-            msg = "Exception creating Virtual Network: #{e.body['error']['message']}"
-            fail msg
+            msg = "Exception creating Virtual Network #{name} in Resource Group: #{resource_group_name}. #{e.body['error']['message']}"
+            raise msg
           end
         end
 

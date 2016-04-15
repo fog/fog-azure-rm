@@ -11,7 +11,7 @@ module Fog
             result = response.body.value
             return result
           rescue  MsRestAzure::AzureOperationError => e
-            msg = "Error Getting list of NetworkInterfaces from ResourceGroup '#{resource_group}'. #{e.body}."
+            msg = "Error Getting list of NetworkInterfaces from ResourceGroup '#{resource_group}'. #{e.body['error']['message']}."
             fail msg
           end
         end

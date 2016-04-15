@@ -40,11 +40,12 @@ module Fog
           params.name = name
           params.type = 'Microsoft.Storage/storageAccounts'
           Fog::Logger.debug "Checking Name availability: #{name}."
-          name_available_obj = service.check_storage_account_name_availability(name)
-          if name_available_obj['nameAvailable'] == "true"
+          name_available_obj = service.check_storage_account_name_availability(params)
+          if name_available_obj['nameAvailable'] == true
           Fog::Logger.debug "Name: #{name} is available."
           else
           Fog::Logger.debug "Name: #{name} is not available."
+          Fog::Logger.debug "Reason: #{name_available_obj['reason']}."
           end
         end
       end

@@ -23,9 +23,17 @@ Next, create a connection to the Storage Service:
         :subscription_id => '<Subscriptionid>'      # Subscription id of an Azure Account
 )
 ```
-## Storage Account creation
+## Check Name Availability 
 
-Creating a new storage account
+Check Storage Account Name Availability.This operation checks that account name is valid and is not already in use.
+
+```ruby
+    azure_storage_service.storage_accounts.check_name_availability('<Storage Account name>')
+```
+
+## Create Storage Account
+
+Create a new storage account
 
 ```ruby
     azure_storage_service.storage_accounts.create(
@@ -34,9 +42,9 @@ Creating a new storage account
         :resource_group => '<Resource Group name>'
  )
 ```
-## Listing storage accounts
+## List storage accounts
 
-##### Listing storage accounts in a subscription
+##### List storage accounts in a subscription
 
 ```ruby
     azure_storage_service.storage_accounts.each do |storage_acc|
@@ -44,7 +52,7 @@ Creating a new storage account
         puts "#{storage_acc.location}"
     end
 ```
-##### Listing storage accounts in a resource group
+##### List storage accounts in a resource group
 
 ```ruby
     storage_accounts  = azure_storage_service.storage_accounts(resource_group: '<Resource Group name>')
@@ -56,7 +64,7 @@ Creating a new storage account
 
 ## Retrieve a single record
 
-Getting a single record of Storage Account
+Get a single record of Storage Account
 
 ```ruby
       storage_acc = azure_storage_service

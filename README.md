@@ -42,11 +42,11 @@ Fog provides implementation of the services for Microsoft Azure Resource Manager
 
 * #### Compute
 
-  Fog-AzureRM for compute includes implementaion of Virtual Machines and Availability Sets. Readme for the usage of [Compute](fog-azure-rm/lib/fog/azurerm/docs/compute.md) module.
+  Fog-AzureRM for compute includes implementaion of Virtual Machines and Availability Sets. Readme for the usage of [Compute](https://github.com/Confiz/fog-azure-rm/blob/develop/lib/fog/azurerm/docs/compute.md) module.
 
 * #### Resources
 
-  Fog-AzureRM for resources includes implementaion of Resource Groups. Readme for the usage of [Resources](fog-azure-rm/lib/fog/azurerm/docs/resources.md) module.
+  Fog-AzureRM for resources includes implementaion of Resource Groups. Readme for the usage of [Resources](https://github.com/Confiz/fog-azure-rm/blob/develop/lib/fog/azurerm/docs/resources.md) module.
 
 * #### Dns
 
@@ -58,7 +58,7 @@ Fog provides implementation of the services for Microsoft Azure Resource Manager
 
 * #### Storage
 
-  Fog-AzureRM for storage includes implementaion of Storage Accounts. Readme for the usage of [Storage](fog-azure-rm/lib/fog/azurerm/docs/storage.md) module.
+  Fog-AzureRM for storage includes implementaion of Storage Accounts. Readme for the usage of [Storage](https://github.com/Confiz/fog-azure-rm/blob/develop/lib/fog/azurerm/docs/storage.md) module.
   
 ## Contributing
 

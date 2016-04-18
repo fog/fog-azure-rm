@@ -7,13 +7,11 @@ module Fog
           Fog::Logger.debug "Deleting NetworkInterface #{name} from Resource Group #{resource_group}."
           begin
             promise = @network_client.network_interfaces.delete(resource_group, name)
-            response = promise.value!
-            result = response.body
+            promise.value!
             Fog::Logger.debug "NetworkInterface #{name} Deleted Successfully."
-            return result
           rescue  MsRestAzure::AzureOperationError => e
-            msg = "Error Deleting NetworkInterface '#{name}' from ResourceGroup '#{resource_group}'. #{e.body.error.message}."
-            fail msg
+            msg = "Exception deleting Network Interface #{name} in Resource Group: #{resource_group}. #{e.body['error']['message']}"
+            raise msg
           end
         end
       end

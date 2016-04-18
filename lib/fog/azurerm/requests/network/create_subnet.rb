@@ -14,8 +14,8 @@ module Fog
             promise = @network_client.subnets.create_or_update(resource_group, virtual_network_name, subnet_name, subnet)
             promise.value!
           rescue  MsRestAzure::AzureOperationError => e
-            msg = "Exception creating Subnet: #{e.body['error']['message']}"
-            fail msg
+            msg = "Exception creating Subnet #{subnet_name} in Resource Group: #{resource_group}. #{e.body['error']['message']}"
+            raise msg
           end
         end
       end

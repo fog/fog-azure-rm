@@ -11,9 +11,9 @@ module Fog
             result = response.body
             Fog::Logger.debug "PublicIP #{name} Created Successfully!"
             return result
-          rescue MsRestAzure::AzureOperationError => ex
-            msg = "Exception trying to create/update public ip #{public_ip.name} from resource group: #{resource_group}. #{ex.body}"
-            fail msg
+          rescue MsRestAzure::AzureOperationError => e
+            msg = "Exception creating Public IP #{name} in Resource Group: #{resource_group}. #{e.body['error']['message']}"
+            raise msg
           end
         end
       end

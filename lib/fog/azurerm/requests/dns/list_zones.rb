@@ -15,8 +15,8 @@ module Fog
 
         def list_zones(dns_resource_group)
           resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription_id}/resourceGroups/#{dns_resource_group}/providers/Microsoft.Network/dnsZones?api-version=2015-05-04-preview"
-          token = Fog::Credentials::AzureRM.get_token(@tenant_id, @client_id, @client_secret)
           begin
+            token = Fog::Credentials::AzureRM.get_token(@tenant_id, @client_id, @client_secret)
             dns_response = RestClient.get(
                 resource_url,
                 accept: 'application/json',
@@ -32,7 +32,7 @@ module Fog
             else
               msg = "Exception fetching zones: #{body['code']}, #{body['message']}"
             end
-            fail msg
+            raise msg
           end
         end
       end

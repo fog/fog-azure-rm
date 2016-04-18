@@ -6,7 +6,7 @@ module Fog
           begin
             promise = @rmc.resource_groups.list
             response = promise.value!
-            result = response.body.value
+            response.body.value
           rescue  MsRestAzure::AzureOperationError => e
             msg = "Exception listing Resource Groups. #{e.body['error']['message']}"
             raise msg

@@ -35,7 +35,7 @@ module Fog
 
           begin
             token = Fog::Credentials::AzureRM.get_token(@tenant_id, @client_id, @client_secret)
-            dns_response = RestClient.put(
+            RestClient.put(
                 resource_url,
                 body.to_json,
                 accept: 'application/json',

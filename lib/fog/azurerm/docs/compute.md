@@ -2,12 +2,12 @@
 
 This document explains how to get started using Azure Compute Service with Fog.
 
-## Require Gem 
+## Usage 
 
 First of all, you need to require the Fog library by executing:
 
 ```ruby
-        require 'fog/azurerm'
+require 'fog/azurerm'
 ```
 
 ## Create Connection
@@ -64,7 +64,7 @@ Get an availability set object from the get method and then destroy that availab
       availability_set.destroy
 ```
 
-# Support and Feedback
+## Support and Feedback
 Your feedback is appreciated! If you have specific issues with the fog ARM, you should file an issue via Github.
 
 

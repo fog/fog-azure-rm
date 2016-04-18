@@ -3,9 +3,14 @@ module Fog
     class AzureRM
       class Real
         def list_resource_groups
-          response = @rmc.resource_groups.list
-          result = response.value!
-          result.body.value
+          begin
+            promise = @rmc.resource_groups.list
+            response = promise.value!
+            result = response.body.value
+          rescue  MsRestAzure::AzureOperationError => e
+            msg = "Exception listing Resource Groups. #{e.body['error']['message']}"
+            raise msg
+          end
         end
       end
 

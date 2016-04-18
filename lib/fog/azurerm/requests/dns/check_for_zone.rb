@@ -2,10 +2,10 @@ module Fog
   module DNS
     class AzureRM
       class Real
-        def check_for_zone(dns_resource_group, zone_name)
-          resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription_id}/resourceGroups/#{dns_resource_group}/providers/Microsoft.Network/dnsZones/#{zone_name}?api-version=2015-05-04-preview"
-          token = Fog::Credentials::AzureRM.get_token(@tenant_id, @client_id, @client_secret)
+        def check_for_zone(resource_group, name)
+          resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription_id}/resourceGroups/#{resource_group}/providers/Microsoft.Network/dnsZones/#{name}?api-version=2015-05-04-preview"
           begin
+            token = Fog::Credentials::AzureRM.get_token(@tenant_id, @client_id, @client_secret)
             dns_response = RestClient.get(
                 resource_url,
                 accept: 'application/json',
@@ -30,7 +30,7 @@ module Fog
       end
 
       class Mock
-        def check_for_zone(dns_resource_group, zone_name)
+        def check_for_zone(resource_group, name)
 
         end
       end

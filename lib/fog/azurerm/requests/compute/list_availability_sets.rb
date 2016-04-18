@@ -5,13 +5,11 @@ module Fog
       class Real
         def list_availability_sets(resource_group)
           begin
-            response = @compute_mgmt_client.availability_sets
-                                           .list(resource_group)
-            result = response.value!
-            result.body.value
+            promise = @compute_mgmt_client.availability_sets.list(resource_group)
+            response = promise.value!
+            result = response.body.value
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Exception in listing availability sets:
-                  #{e.body['error']['message']}"
+            msg = "Exception listing availability sets in Resource Group #{resource_group}. #{e.body['error']['message']}"
             raise msg
           end
         end

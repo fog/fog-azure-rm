@@ -7,21 +7,11 @@ module Fog
       class Real
         def create_availability_set(resource_group, name, params)
           begin
-            response = @compute_mgmt_client.availability_sets
-                                           .create_or_update(resource_group,
-                                                             name,
-                                                             params).value!
-            response.body
+            promise = @compute_mgmt_client.availability_sets.create_or_update(resource_group, name, params)
+            promise.value!
           rescue MsRestAzure::AzureOperationError => e
-            Fog::Logger.warning("***FAULT:FATAL=#{e.body.values[0]['message']}")
-            e = Exception.new('no backtrace')
-            e.set_backtrace('')
-            raise e
-          rescue => ex
-            Fog::Logger.warning "***FAULT:FATAL=#{ex.message}"
-            ex = Exception.new('no backtrace')
-            ex.set_backtrace('')
-            raise ex
+            msg = "Exception creating Availability Set #{name} in Resource Group: #{resource_group}. #{e.body['error']['message']}"
+            raise msg
           end
         end
       end

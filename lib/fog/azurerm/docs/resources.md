@@ -2,12 +2,12 @@
 
 This document explains how to get started using Azure Resources Service with Fog.
 
-## Require Gem
+## Usage
 
 First of all, you need to require the Fog library by executing:
 
 ```ruby
-        require 'fog/azurerm'
+require 'fog/azurerm'
 ```
 
 ## Create Connection

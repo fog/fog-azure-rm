@@ -8,8 +8,8 @@ module Fog
             result = response.value!
             result.body.value
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Exception listing Virtual Netwroks: #{e.body['error']['message']}"
-            fail msg
+            msg = "Exception listing Virtual Networks. #{e.body['error']['message']}."
+            raise msg
           end
         end
       end

@@ -5,13 +5,12 @@ module Fog
       class Real
         def delete_availability_set(resource_group, name)
           begin
-          @compute_mgmt_client.availability_sets.delete(resource_group,
-                                                        name)
-        rescue MsRestAzure::AzureOperationError => e
-          msg = "Exception in deleting Availability Set:
-                 #{e.body['error']['message']}"
-          raise msg
-        end
+            promise = @compute_mgmt_client.availability_sets.delete(resource_group, name)
+            promise.value!
+          rescue MsRestAzure::AzureOperationError => e
+            msg = "Exception deleting Availability Set #{name} in Resourse Group #{resource_group}. #{e.body['error']['message']}"
+            raise msg
+          end
         end
       end
       # This class provides the mock implementation for unit tests.

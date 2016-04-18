@@ -33,8 +33,8 @@ module Fog
               }
           end
 
-          token = Fog::Credentials::AzureRM.get_token(@tenant_id, @client_id, @client_secret)
           begin
+            token = Fog::Credentials::AzureRM.get_token(@tenant_id, @client_id, @client_secret)
             dns_response = RestClient.put(
                 resource_url,
                 body.to_json,
@@ -46,7 +46,7 @@ module Fog
           rescue Exception => e
             Fog::Logger.warning "Exception setting #{record_type} records for the record set: #{record_set_name}"
             msg = "AzureDns::RecordSet - Exception is: #{e.message}"
-            fail msg
+            raise msg
           end
         end
       end

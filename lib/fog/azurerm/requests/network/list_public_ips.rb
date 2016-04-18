@@ -11,8 +11,8 @@ module Fog
             result = response.body.value
             return result
           rescue  MsRestAzure::AzureOperationError => e
-            msg = "Error Getting list of PublicIPs from ResourceGroup '#{resource_group}'. #{e.body}."
-            fail msg
+            msg = "Exception listing Public IPs from Resource Group '#{resource_group}'. #{e.body['error']['message']}."
+            raise msg
           end
         end
       end

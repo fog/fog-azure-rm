@@ -2,16 +2,18 @@ module Fog
   module DNS
     class AzureRM
       class Real
-
         def create_zone(dns_resource_group, zone_name)
           Fog::Logger.debug "Creating Zone #{zone_name} ..."
           resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription_id}/resourceGroups/#{dns_resource_group}/providers/Microsoft.Network/dnsZones/#{zone_name}?api-version=2015-05-04-preview"
-          token = Fog::Credentials::AzureRM.get_token(@tenant_id, @client_id, @client_secret)
+          
           body = {
               location: 'global',
               tags: {},
-              properties: {} }
+              properties: {}
+          }
+
           begin
+            token = Fog::Credentials::AzureRM.get_token(@tenant_id, @client_id, @client_secret)
             dns_response = RestClient.put(
                 resource_url,
                 body.to_json,
@@ -30,7 +32,7 @@ module Fog
               msg = "Exception creating zone: #{body['code']}, #{body['message']}"
             end
 
-            fail msg
+            raise msg
           end
         end
       end

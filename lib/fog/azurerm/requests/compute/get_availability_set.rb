@@ -5,13 +5,11 @@ module Fog
       class Real
         def get_availability_set(resource_group, name)
           begin
-            response = @compute_mgmt_client.availability_sets
-                                           .get(resource_group,
-                                                name)
-            result = response.value!
-            result.body
+            promise = @compute_mgmt_client.availability_sets.get(resource_group, name)
+            reponse = promise.value!
+            result = reponse.body
           rescue
-            Fog::Logger.debug 'Not Found'
+            Fog::Logger.debug 'Availability Set #{name} Not Found.'
             nil
           end
         end

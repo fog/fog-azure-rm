@@ -34,23 +34,23 @@ see [Developer’s guide to auth with Azure Resource Manager API](http://aka.ms/
 After creating the service principal, you should have three pieces of information, a client id (GUID), client secret
 (string) and tenant id (GUID).
 
-#### Compute
+### Compute
 
   Fog-AzureRM for compute includes implementaion of Virtual Machines and Availability Sets. Readme for the usage of [Compute](https://github.com/Confiz/fog-azure-rm/blob/develop/lib/fog/azurerm/docs/compute.md) module.
 
-#### Resources
+### Resources
 
   Fog-AzureRM for resources includes implementaion of Resource Groups. Readme for the usage of [Resources](https://github.com/Confiz/fog-azure-rm/blob/develop/lib/fog/azurerm/docs/resources.md) module.
 
-#### Dns
+### Dns
 
   Fog-AzureRM for dns includes implementaion of Record sets and Zones. Readme for the usage of [Dns]() module.
 
-#### Network
+### Network
 
   Fog-AzureRM for network includes implementaion of Network Interfaces, Public IPs, Subnets and Virtual Networks. Readme for the usage of [Network]() module.
 
-#### Storage
+### Storage
 
   Fog-AzureRM for storage includes implementaion of Storage Accounts. Readme for the usage of [Storage](https://github.com/Confiz/fog-azure-rm/blob/develop/lib/fog/azurerm/docs/storage.md) module.
   

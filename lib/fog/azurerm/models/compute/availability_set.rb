@@ -18,12 +18,6 @@ module Fog
           requires :name
           requires :location
           requires :resource_group
-          reponse_of_get_as = service.get_availability_set(resource_group,
-                                                           name)
-          unless reponse_of_get_as.nil?
-            Fog::Logger.debug "Availability Set #{name} already exists"
-            return
-          end
           # need to create the availability set
           Fog::Logger.debug "Creating Availability Set
                        '#{name}' in #{location} region."

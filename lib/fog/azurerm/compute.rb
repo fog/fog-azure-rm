@@ -13,7 +13,6 @@ module Fog
       request :create_availability_set
       request :delete_availability_set
       request :list_availability_sets
-      request :get_availability_set
 
       model_path 'fog/azurerm/models/compute'
       model :availability_set

@@ -2,12 +2,12 @@
 
 This document explains how to get started using Azure Resources Service with Fog.
 
-## Require Gem
+## Usage
 
 First of all, you need to require the Fog library by executing:
 
 ```ruby
-        require 'fog/azurerm'
+require 'fog/azurerm'
 ```
 
 ## Create Connection
@@ -60,5 +60,5 @@ Get resource group object from the get method(described above) and then destroy 
       resource_group.destroy
 ```
 
-# Support and Feedback
+## Support and Feedback
 Your feedback is appreciated! If you have specific issues with the fog ARM, you should file an issue via Github.

@@ -7,7 +7,7 @@ module Fog
           begin
             promise = @storage_mgmt_client.storage_accounts.list
             response = promise.value!
-            result = response.body.value
+            response.body.value
           rescue  MsRestAzure::AzureOperationError => e
             msg = "Exception listing Storage Accounts. #{e.body['error']['message']}"
             raise msg

@@ -7,7 +7,7 @@ module Fog
           begin
             promise = @compute_mgmt_client.availability_sets.list(resource_group)
             response = promise.value!
-            result = response.body.value
+            response.body.value
           rescue MsRestAzure::AzureOperationError => e
             msg = "Exception listing availability sets in Resource Group #{resource_group}. #{e.body['error']['message']}"
             raise msg

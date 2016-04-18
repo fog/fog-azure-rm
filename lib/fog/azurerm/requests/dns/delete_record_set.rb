@@ -15,14 +15,15 @@ module Fog
                 authorization: token
             )
             Fog::Logger.debug "RecordSet #{record_set_name} Deleted Successfully!"
-          rescue Exception => e
-            if e.http_code == 404
-              Fog::Logger.warning 'AzureDns::RecordSet - 404 code, trying to delete something that is not there.'
+          rescue RestClient::Exception => e
+            body = JSON.parse(e.http_body)
+            if body.key?('error')
+              body = body['error']
+              msg = "Exception deleting zone: #{body['code']}, #{body['message']}"
             else
-              Fog::Logger.warning "Exception trying to remove #{record_type} records for the record set: #{record_set_name}"
-              msg = "AzureDns::RecordSet - Exception is: #{e.message}"
-              raise msg
+              msg = "Exception deleting zone: #{body['code']}, #{body['message']}"
             end
+            raise msg
           end
         end
       end

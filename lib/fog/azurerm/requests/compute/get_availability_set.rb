@@ -7,7 +7,7 @@ module Fog
           begin
             promise = @compute_mgmt_client.availability_sets.get(resource_group, name)
             reponse = promise.value!
-            result = reponse.body
+            reponse.body
           rescue
             Fog::Logger.debug 'Availability Set #{name} Not Found.'
             nil

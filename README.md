@@ -26,7 +26,7 @@ You can use this gem against the Microsoft Azure Resource Manager Services in th
 
 ### Setup Connection
 
-The next step to use this gem, is authentication and permissioning. For people unfamilar, this concept is important to get familiar with. For a reference on setting up a service principal from the command line see
+The next step to use this gem, is authentication and permissioning. It is important to get familiar with this concept. For a reference on setting up a service principal from the command line see
 [Authenticating a service principal with Azure Resource Manager](http://aka.ms/cli-service-principal) or
 [Unattended Authentication](http://aka.ms/auth-unattended). For a more robust explanation of authentication in Azure,
 see [Developer’s guide to auth with Azure Resource Manager API](http://aka.ms/arm-auth-dev-guide).
@@ -42,7 +42,7 @@ After creating the service principal, you should have three pieces of informatio
 
   Fog-AzureRM for resources includes implementaion of Resource Groups. Readme for the usage of [Resources](https://github.com/Confiz/fog-azure-rm/blob/develop/lib/fog/azurerm/docs/resources.md) module.
 
-### Dns
+### DNS
 
   Fog-AzureRM for dns includes implementaion of Record sets and Zones. Readme for the usage of [Dns]() module.
 

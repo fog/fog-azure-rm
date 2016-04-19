@@ -44,11 +44,11 @@ After creating the service principal, you should have three pieces of informatio
 
 ### DNS
 
-  Fog-AzureRM for dns includes implementaion of Record sets and Zones. Readme for the usage of [Dns]() module.
+  Fog-AzureRM for dns includes implementaion of Record sets and Zones. Readme for the usage of [DNS](https://github.com/Confiz/fog-azure-rm/blob/develop/lib/fog/azurerm/docs/dns.md) module.
 
 ### Network
 
-  Fog-AzureRM for network includes implementaion of Network Interfaces, Public IPs, Subnets and Virtual Networks. Readme for the usage of [Network]() module.
+  Fog-AzureRM for network includes implementaion of Network Interfaces, Public IPs, Subnets and Virtual Networks. Readme for the usage of [Network](https://github.com/Confiz/fog-azure-rm/blob/develop/lib/fog/azurerm/docs/network.md) module.
 
 ### Storage
 

@@ -28,6 +28,10 @@ module Fog
         rescue Fog::Errors::NotFound
           nil
         end
+
+        def get_from_remote(resource_group, name)
+          service.get_virtual_machine(resource_group, name)
+        end
       end
     end
   end

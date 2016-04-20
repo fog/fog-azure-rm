@@ -1,7 +1,7 @@
 module Fog
   module Compute
     class AzureRM
-      class VirtualMachine < Fog::Model
+      class Server < Fog::Model
         identity :name
         attribute :resource_group
 

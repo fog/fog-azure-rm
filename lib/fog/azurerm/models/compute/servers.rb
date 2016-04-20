@@ -1,13 +1,13 @@
 require "fog/core/collection"
-require "fog/azurerm/models/compute/virtual_machine"
+require "fog/azurerm/models/compute/server"
 
 module Fog
   module Compute
     class AzureRM
-      class VirtualMachines < Fog::Collection
+      class Servers < Fog::Collection
         attribute :resource_group
 
-        model Fog::Compute::AzureRM::VirtualMachine
+        model Fog::Compute::AzureRM::Server
 
         def all
           requires :resource_group

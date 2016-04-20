@@ -29,7 +29,7 @@ module Fog
                    :username, :password, :disable_password_authentication,
                    :network_interface_card_id, :publisher, :offer, :sku, :version
 
-          ssh_key_path = '$HOME/.ssh' unless ssh_key_data.nil?
+          ssh_key_path = "/home/#{username}/.ssh/authorized_keys" unless ssh_key_data.nil?
           service.create_virtual_machine(name, location, resource_group, vm_size, storage_account_name,
                                          username, password, disable_password_authentication,
                                          ssh_key_path, ssh_key_data, network_interface_card_id,

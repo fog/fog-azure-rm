@@ -5,12 +5,12 @@ module Fog
       class Real
         def list_subnets(resource_group_name, virtual_network_name)
           begin
-            response = @network_client.subnets.list(resource_group_name, virtual_network_name)
-            result = response.value!
-            result.body.value
+            promise = @network_client.subnets.list(resource_group_name, virtual_network_name)
+            response = promise.value!
+            response.body.value
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Exception listing Subnets: #{e.body['error']['message']}"
-            fail msg
+            msg = "Exception listing Subnets from Resource Group '#{resource_group}' in Virtal Network #{virtual_network_name}. #{e.body['error']['message']}."
+            raise msg
           end
         end
       end

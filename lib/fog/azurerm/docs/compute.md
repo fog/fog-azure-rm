@@ -1,6 +1,6 @@
 # Compute
 
-This document explains how to get started using Azure Compute Service with Fog.
+This document explains how to get started using Azure Compute Service with Fog. With this gem you can create/update/list/delete availability sets and virtual machines.
 
 ## Usage 
 

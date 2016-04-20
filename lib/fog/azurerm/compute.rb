@@ -14,6 +14,16 @@ module Fog
       request :delete_availability_set
       request :list_availability_sets
       request :create_virtual_machine
+      request :delete_virtual_machine
+      request :get_virtual_machine
+      request :list_virtual_machines
+      request :list_available_sizes_for_virtual_machine
+      request :generalize_virtual_machine
+      request :deallocate_virtual_machine
+      request :power_off_virtual_machine
+      request :redeploy_virtual_machine
+      request :restart_virtual_machine
+      request :start_virtual_machine
 
       model_path 'fog/azurerm/models/compute'
       model :availability_set

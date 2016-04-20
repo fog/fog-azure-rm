@@ -4,13 +4,13 @@ module Fog
       class Real
         def list_record_sets(dns_resource_group, zone_name)
           resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription_id}/resourceGroups/#{dns_resource_group}/providers/Microsoft.Network/dnsZones/#{zone_name}/recordsets?api-version=2015-05-04-preview"
-          token = Fog::Credentials::AzureRM.get_token(@tenant_id, @client_id, @client_secret)
           begin
+            token = Fog::Credentials::AzureRM.get_token(@tenant_id, @client_id, @client_secret)
             dns_response = RestClient.get(
-                resource_url,
-                accept: 'application/json',
-                content_type: 'application/json',
-                authorization: token)
+              resource_url,
+              accept: 'application/json',
+              content_type: 'application/json',
+              authorization: token)
             response_hash = JSON.parse(dns_response)
             response_hash['value']
           rescue RestClient::Exception => e
@@ -21,7 +21,7 @@ module Fog
             else
               msg = "Exception fetching record_sets: #{body['code']}, #{body['message']}"
             end
-            fail msg
+            raise msg
           end
         end
       end

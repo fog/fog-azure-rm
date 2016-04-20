@@ -1,40 +1,41 @@
+
 module Fog
   module Network
     class AzureRM
       # Real class for Network Request
       class Real
-        def create_network_interface(name, location, resource_group, subnet_id, ip_configurations_name, private_ip_allocation_method)
-          network_interface = define_network_interface(name, location, subnet_id, ip_configurations_name, private_ip_allocation_method)
+        def create_network_interface(name, location, resource_group, subnet_id, ip_configs_name, prv_ip_alloc_method)
+          network_interface = define_network_interface(name, location, subnet_id, ip_configs_name, prv_ip_alloc_method)
           begin
             promise = @network_client.network_interfaces.create_or_update(resource_group, name, network_interface)
             promise.value!
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Exception creating Network Interface: #{e.body}"
-            fail msg
+            msg = "Exception creating Network Interface #{name} in Resource Group: #{resource_group}. #{e.body['error']['message']}"
+            raise msg
           end
         end
 
         private
 
-        def define_network_interface(name, location, subnet_id, ip_configurations_name, private_ip_allocation_method)
+        def define_network_interface(name, location, subnet_id, ip_configs_name, prv_ip_alloc_method)
           subnet = Azure::ARM::Network::Models::Subnet.new
           subnet.id = subnet_id
 
-          ip_configurations_properties = Azure::ARM::Network::Models::NetworkInterfaceIPConfigurationPropertiesFormat.new
-          ip_configurations_properties.private_ipallocation_method = private_ip_allocation_method
-          ip_configurations_properties.subnet = subnet
+          ip_configs_props = Azure::ARM::Network::Models::NetworkInterfaceIPConfigurationPropertiesFormat.new
+          ip_configs_props.private_ipallocation_method = prv_ip_alloc_method
+          ip_configs_props.subnet = subnet
 
-          ip_configurations = Azure::ARM::Network::Models::NetworkInterfaceIPConfiguration.new
-          ip_configurations.name = ip_configurations_name
-          ip_configurations.properties = ip_configurations_properties
+          ip_configs = Azure::ARM::Network::Models::NetworkInterfaceIPConfiguration.new
+          ip_configs.name = ip_configs_name
+          ip_configs.properties = ip_configs_props
 
-          network_interface_properties = Azure::ARM::Network::Models::NetworkInterfacePropertiesFormat.new
-          network_interface_properties.ip_configurations = [ip_configurations]
+          nic_props = Azure::ARM::Network::Models::NetworkInterfacePropertiesFormat.new
+          nic_props.ip_configurations = [ip_configs]
 
           network_interface = Azure::ARM::Network::Models::NetworkInterface.new
           network_interface.name = name
           network_interface.location = location
-          network_interface.properties = network_interface_properties
+          network_interface.properties = nic_props
 
           network_interface
         end
@@ -42,6 +43,9 @@ module Fog
 
       # Mock class for Network Request
       class Mock
+        def create_network_interface(name, location, resource_group, subnet_id, ip_configs_name, prv_ip_alloc_method)
+
+        end
       end
     end
   end

@@ -13,7 +13,7 @@ module Fog
           rg_properties = ::Azure::ARM::Resources::Models::ResourceGroup.new
           rg_properties.location = location
           service.create_resource_group(name, rg_properties)
-          Fog::Logger.debug "Resource Group #{resource_group.name} created successfully."
+          Fog::Logger.debug "Resource Group #{name} created successfully."
         end
 
         def destroy

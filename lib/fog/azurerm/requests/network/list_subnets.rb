@@ -7,8 +7,7 @@ module Fog
           begin
             promise = @network_client.subnets.list(resource_group_name, virtual_network_name)
             response = promise.value!
-            result = response.body.value
-            return result
+            response.body.value
           rescue MsRestAzure::AzureOperationError => e
             msg = "Exception listing Subnets from Resource Group '#{resource_group}' in Virtal Network #{virtual_network_name}. #{e.body['error']['message']}."
             raise msg

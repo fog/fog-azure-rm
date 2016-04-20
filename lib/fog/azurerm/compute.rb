@@ -13,10 +13,13 @@ module Fog
       request :create_availability_set
       request :delete_availability_set
       request :list_availability_sets
+      request :create_virtual_machine
 
       model_path 'fog/azurerm/models/compute'
       model :availability_set
       collection :availability_sets
+      model :server
+      collection :servers
       # This class provides the mock implementation for unit tests.
       class Mock
         def initialize(_options = {})

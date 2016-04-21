@@ -26,7 +26,6 @@ module Fog
 
         def self.parse(vm)
           hash = {}
-          puts vm
           hash['id'] = vm['id']
           hash['name'] = vm['name']
           hash['location'] = vm['location']

@@ -25,8 +25,9 @@ module Fog
           params.location = location
           begin
             promise = @compute_mgmt_client.virtual_machines.create_or_update(resource_group, name, params)
-            promise.value!
+            result = promise.value!
             Fog::Logger.debug "Virtual Machine #{name} Created Successfully."
+            Azure::ARM::Compute::Models::VirtualMachine.serialize_object(result.body)
           rescue MsRestAzure::AzureOperationError => e
             msg = "Error Creating Virtual Machine '#{name}' in Resource Group '#{resource_group}'. #{e.body['error']['message']}"
             raise msg

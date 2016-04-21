@@ -36,11 +36,33 @@ def availability_set_attributes
   }
 end
 
+def server_attributes
+  {
+      name: server_name,
+      location: location,
+      resource_group: rg_name,
+      vm_size: 'Basic_A0',
+      storage_account_name: storage_account_name,
+      username: 'shaffan',
+      password: 'Confiz=123',
+      disable_password_authentication: false,
+      network_interface_card_id: "/subscriptions/########-####-####-####-############/resourceGroups/#{rg_name}/providers/Microsoft.Network/networkInterfaces/#{network_interface_name}",
+      publisher: 'Canonical',
+      offer: 'UbuntuServer',
+      sku: '14.04.2-LTS',
+      version: 'latest'
+  }
+end
+
 def rg_attributes
   {
     name: rg_name,
     location: location
   }
+end
+
+def server_name
+  'fog-test-server'
 end
 
 def availability_set_name
@@ -161,14 +183,17 @@ def fog_virtual_network
   vnet
 end
 
+def fog_server
+  server = azurerm_compute_service.servers(resource_group: rg_name).find { |s| s.name == server_name && s.resource_group == rg_name }
+  unless server
+    server = azurerm_compute_service.servers.create(server_attributes)
+  end
+  server
+end
+
 def availability_set_destroy
   availability_set = azurerm_compute_service.availability_sets(resource_group: rg_name).find { |as| as.name == availability_set_name }
   availability_set.destroy if availability_set
-end
-
-def storage_account_destroy
-  storage_account = azurerm_storage_service.storage_accounts.find { |sa| sa.name == storage_account_name }
-  storage_account.destroy if storage_account
 end
 
 def fog_public_ip

@@ -13,19 +13,14 @@ module Fog
         def all
           requires :resource_group
           virtual_machines = []
-          service.list_virtual_machines(resource_group).each do |r|
-            hash = {}
-            r.each do |k, v|
-              hash[k] = v
-              hash['resource_group'] = resource_group
-            end
-            virtual_machines << hash
+          service.list_virtual_machines(resource_group).each do |vm|
+            virtual_machines << Fog::Compute::AzureRM::Server.parse(vm)
           end
           load(virtual_machines)
         end
 
-        def get(identity)
-          all.find { |f| f.name == identity}
+        def get(resource_group, identity)
+          all.find { |s| s.name == identity && s.resource_group == resource_group}
         rescue Fog::Errors::NotFound
           nil
         end

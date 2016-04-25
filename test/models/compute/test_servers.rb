@@ -1,5 +1,6 @@
 require File.expand_path '../../test_helper', __dir__
 
+# Test class for Servers Collection
 class TestServers < Minitest::Test
   def setup
     @service = Fog::Compute::AzureRM.new(credentials)
@@ -7,24 +8,18 @@ class TestServers < Minitest::Test
   end
 
   def test_collection_methods
-    response = ApiStub::Models::Compute::Server.create_virtual_machine_response
     methods = [
-        :all,
-        :get,
-        :get_from_remote
+      :all,
+      :get,
+      :get_from_remote
     ]
-    @service.stub :create_virtual_machine, response do
-      methods.each do |method|
-        assert (@servers.respond_to? method), true
-      end
+    methods.each do |method|
+      assert @servers.respond_to? method, true
     end
   end
 
   def test_collection_attributes
-    response = ApiStub::Models::Compute::Server.create_virtual_machine_response
-    @service.stub :create_virtual_machine, response do
-      assert (@servers.respond_to? :resource_group), true
-    end
+    assert @servers.respond_to? :resource_group, true
   end
 
   def test_all_method_response
@@ -41,8 +36,8 @@ class TestServers < Minitest::Test
   def test_get_method_response
     response = [ApiStub::Models::Compute::Server.create_virtual_machine_response]
     @service.stub :list_virtual_machines, response do
-      assert_instance_of Fog::Compute::AzureRM::Server, (@servers.get('fog-test-rg', 'fog-test-server'))
-      assert (@servers.get('fog-test-rg', 'wrong-name')).nil?, true
+      assert_instance_of Fog::Compute::AzureRM::Server, @servers.get('fog-test-rg', 'fog-test-server')
+      assert @servers.get('fog-test-rg', 'wrong-name').nil?, true
     end
   end
 end

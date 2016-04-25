@@ -5,6 +5,7 @@ class TestServers < Minitest::Test
   def setup
     @service = Fog::Compute::AzureRM.new(credentials)
     @servers = Fog::Compute::AzureRM::Servers.new(resource_group: 'fog-test-rg', service: @service)
+    @response = [ApiStub::Models::Compute::Server.create_virtual_machine_response]
   end
 
   def test_collection_methods
@@ -23,8 +24,7 @@ class TestServers < Minitest::Test
   end
 
   def test_all_method_response
-    response = [ApiStub::Models::Compute::Server.create_virtual_machine_response]
-    @service.stub :list_virtual_machines, response do
+    @service.stub :list_virtual_machines, @response do
       assert_instance_of Fog::Compute::AzureRM::Servers, @servers.all
       assert @servers.all.size >= 1
       @servers.all.each do |s|
@@ -34,8 +34,7 @@ class TestServers < Minitest::Test
   end
 
   def test_get_method_response
-    response = [ApiStub::Models::Compute::Server.create_virtual_machine_response]
-    @service.stub :list_virtual_machines, response do
+    @service.stub :list_virtual_machines, @response do
       assert_instance_of Fog::Compute::AzureRM::Server, @servers.get('fog-test-rg', 'fog-test-server')
       assert @servers.get('fog-test-rg', 'wrong-name').nil?, true
     end

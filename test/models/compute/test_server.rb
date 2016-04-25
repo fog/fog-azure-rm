@@ -5,10 +5,10 @@ class TestServer < Minitest::Test
   def setup
     @service = Fog::Compute::AzureRM.new(credentials)
     @server = server(@service)
+    @response = ApiStub::Models::Compute::Server.create_virtual_machine_response
   end
 
   def test_model_methods
-    response = ApiStub::Models::Compute::Server.create_virtual_machine_response
     methods = [
       :save,
       :destroy,
@@ -20,15 +20,12 @@ class TestServer < Minitest::Test
       :redeploy,
       :list_available_sizes
     ]
-    @service.stub :create_virtual_machine, response do
-      methods.each do |method|
-        assert @server.respond_to? method, true
-      end
+    methods.each do |method|
+      assert @server.respond_to? method, true
     end
   end
 
   def test_model_attributes
-    response = ApiStub::Models::Compute::Server.create_virtual_machine_response
     attributes = [
       :id,
       :name,
@@ -50,16 +47,13 @@ class TestServer < Minitest::Test
       :network_interface_card_id,
       :availability_set_id
     ]
-    @service.stub :create_virtual_machine, response do
-      attributes.each do |attribute|
-        assert @server.respond_to? attribute, true
-      end
+    attributes.each do |attribute|
+      assert @server.respond_to? attribute, true
     end
   end
 
   def test_save_method_response
-    response = ApiStub::Models::Compute::Server.create_virtual_machine_response
-    @service.stub :create_virtual_machine, response do
+    @service.stub :create_virtual_machine, @response do
       assert_instance_of Fog::Compute::AzureRM::Server, @server.save
     end
   end

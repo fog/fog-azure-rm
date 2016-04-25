@@ -6,8 +6,7 @@ module Fog
       class Real
         def delete_storage_account(resource_group, name)
           begin
-            promise = @storage_mgmt_client.storage_accounts.delete(resource_group, name)
-            promise.value!
+           @storage_mgmt_client.storage_accounts.delete(resource_group, name)
           rescue  MsRestAzure::AzureOperationError => e
             msg = "Exception deleting Storage Account #{name} in Resource Group #{resource_group}. #{e.body['error']['message']}"
             raise msg

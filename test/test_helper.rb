@@ -1,16 +1,19 @@
+require 'simplecov'
+
+if ENV['COVERAGE'] != 'false'
+  require 'coveralls'
+  SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
+      SimpleCov::Formatter::HTMLFormatter,
+      Coveralls::SimpleCov::Formatter
+  ]
+  SimpleCov.merge_timeout 3600
+  SimpleCov.start
+end
+
 require 'minitest/autorun'
 $LOAD_PATH.unshift(File.expand_path '../lib', __dir__)
 require File.expand_path '../lib/fog/azurerm', __dir__
 require File.expand_path './api_stub', __dir__
-
-def credentials
-  {
-    tenant_id:        '<TENANT-ID>',
-    client_id:        '<CLIENT-ID>',
-    client_secret:    '<CLIENT-SECRET>',
-    subscription_id:  '<SUBSCRIPTION-ID>'
-  }
-end
 
 def server(service)
   Fog::Compute::AzureRM::Server.new(
@@ -39,3 +42,13 @@ def availability_set(service)
     service: service
   )
 end
+
+def credentials
+  {
+      tenant_id:        '<TENANT-ID>',
+      client_id:        '<CLIENT-ID>',
+      client_secret:    '<CLIENT-SECRET>',
+      subscription_id:  '<SUBSCRIPTION-ID>'
+  }
+end
+

@@ -22,7 +22,7 @@ class TestSubnets < Minitest::Test
   def test_collection_attributes
     response = ApiStub::Models::Network::Subnet.create_subnet_response
     @service.stub :create_subnet, response do
-      assert @subnets.respond_to? :resource_group, true
+      assert @subnets.respond_to? :resource_group
       assert @subnets.respond_to? :virtual_network_name
     end
   end

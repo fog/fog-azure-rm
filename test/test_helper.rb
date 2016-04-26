@@ -1,13 +1,9 @@
-require 'simplecov'
-
-if ENV['COVERAGE'] != 'false'
-  require 'coveralls'
-  SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
-      SimpleCov::Formatter::HTMLFormatter,
-      Coveralls::SimpleCov::Formatter
-  ]
-  SimpleCov.merge_timeout 3600
-  SimpleCov.start
+if ENV['COVERAGE']
+  require 'simplecov'
+  SimpleCov.start do
+    add_filter 'test'
+    command_name 'Minitest'
+  end
 end
 
 require 'minitest/autorun'

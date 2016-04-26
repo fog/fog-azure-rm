@@ -1,13 +1,15 @@
 # rubocop:disable MethodLength
 # rubocop:disable LineLength
+# rubocop:disable AbcSize
+# rubocop:disable ClassLength
 require File.expand_path '../../test_helper', __dir__
 require 'minitest/autorun'
 require 'azure_mgmt_compute'
 require 'azure'
 require 'concurrent'
-
+# Storage Account Class
 class StorageAccount < Minitest::Test
-# This class posesses the test cases for the requests of storage account service.
+  # This class posesses the test cases for the requests of storage account service.
   def setup
     @azure_credentials = Fog::Storage::AzureRM.new(credentials)
     client = @azure_credentials.instance_variable_get(:@storage_mgmt_client)
@@ -31,19 +33,19 @@ class StorageAccount < Minitest::Test
     end
     raise_exception = -> { raise MsRestAzure::AzureOperationError.new }
     @storage_accounts.stub :create, raise_exception do
-      assert_raises(Exception) {@azure_credentials.create_storage_account('gateway-RG', 'awain', params) }
+      assert_raises(Exception) { @azure_credentials.create_storage_account('gateway-RG', 'awain', params) }
     end
   end
 
   def test_delete_storage_account
-    @storage_accounts.stub :delete,nil do
+    @storage_accounts.stub :delete, nil do
       assert_equal @azure_credentials.delete_storage_account('gateway-RG', 'awain'), nil
     end
-    assert_raises(ArgumentError){@azure_credentials.delete_storage_account('gateway-RG', 'awain', 'Hi') }
+    assert_raises(ArgumentError) { @azure_credentials.delete_storage_account('gateway-RG', 'awain', 'Hi') }
 
     raise_exception = -> { raise MsRestAzure::AzureOperationError.new }
     @storage_accounts.stub :delete, raise_exception do
-      assert_raises(Exception) {@azure_credentials.delete_availability_set('gateway-RG', 'awain') }
+      assert_raises(Exception) { @azure_credentials.delete_availability_set('gateway-RG', 'awain') }
     end
   end
 
@@ -51,17 +53,17 @@ class StorageAccount < Minitest::Test
     mock_promise = Concurrent::Promise.execute do
     end
     response_body = ApiStub::Requests::Storage::StorageAccount.list_storage_accounts_for_rg
-    result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''),Faraday::Response.new, Azure::ARM::Storage::Models::StorageAccountListResult.deserialize_object(response_body))
+    result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new, Azure::ARM::Storage::Models::StorageAccountListResult.deserialize_object(response_body))
     mock_promise.stub :value!, result do
-      @storage_accounts.stub :list_by_resource_group,mock_promise do
+      @storage_accounts.stub :list_by_resource_group, mock_promise do
         assert @azure_credentials.list_storage_account_for_rg('gateway-RG').size >= 1
-        @azure_credentials.list_storage_account_for_rg('gateway-RG').each do |s|
-          assert_instance_of Azure::ARM::Storage::Models::StorageAccount , s
+          @azure_credentials.list_storage_account_for_rg('gateway-RG').each do |s|
+            assert_instance_of Azure::ARM::Storage::Models::StorageAccount, s
           end
-        end
+      end
     end
     raise_exception = -> { raise MsRestAzure::AzureOperationError.new }
-    @storage_accounts.stub :list_by_resource_group,raise_exception do
+    @storage_accounts.stub :list_by_resource_group, raise_exception do
       assert_raises(Exception) { @azure_credentials.list_storage_account_for_rg('gateway-RG') }
     end
   end
@@ -70,12 +72,12 @@ class StorageAccount < Minitest::Test
     mock_promise = Concurrent::Promise.execute do
     end
     response_body = ApiStub::Requests::Storage::StorageAccount.list_storage_accounts
-    result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('','',''), Faraday::Response.new, Azure::ARM::Storage::Models::StorageAccountListResult.deserialize_object(response_body))
+    result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new, Azure::ARM::Storage::Models::StorageAccountListResult.deserialize_object(response_body))
     mock_promise.stub :value!, result do
-      @storage_accounts.stub :list,mock_promise do
+      @storage_accounts.stub :list, mock_promise do
         assert @azure_credentials.list_storage_accounts.size >= 1
         @azure_credentials.list_storage_accounts.each do |s|
-          assert_instance_of Azure::ARM::Storage::Models::StorageAccount , s
+          assert_instance_of Azure::ARM::Storage::Models::StorageAccount, s
         end
       end
     end
@@ -84,6 +86,7 @@ class StorageAccount < Minitest::Test
       assert_raises(Exception) { @azure_credentials.list_storage_accounts }
     end
   end
+
   def test_check_storage_account_name_availability
     params = Azure::ARM::Storage::Models::StorageAccountCheckNameAvailabilityParameters.new
     params.name = 'teststorageaccount'
@@ -91,12 +94,12 @@ class StorageAccount < Minitest::Test
     mock_promise = Concurrent::Promise.execute do
     end
     true_case_response = ApiStub::Requests::Storage::StorageAccount
-                           .true_case_for_check_name_availability
+                         .true_case_for_check_name_availability
     result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new, Azure::ARM::Storage::Models::CheckNameAvailabilityResult.deserialize_object(true_case_response))
     mock_promise.stub :value!, result do
       @storage_accounts.stub :check_name_availability, mock_promise do
         assert_equal @azure_credentials
-                       .check_storage_account_name_availability(params), true
+          .check_storage_account_name_availability(params), true
       end
     end
     false_case_response = ApiStub::Requests::Storage::StorageAccount.false_case_for_check_name_availability
@@ -114,4 +117,4 @@ class StorageAccount < Minitest::Test
       end
     end
   end
-  end
+end

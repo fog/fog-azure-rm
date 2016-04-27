@@ -1,0 +1,10 @@
+LineLength:
+  Enabled: false
+MethodLength:
+  Enabled: false
+ClassLength:
+  Enabled: false
+ParameterLists:
+  Enabled: false
+AbcSize:
+  Enabled: false

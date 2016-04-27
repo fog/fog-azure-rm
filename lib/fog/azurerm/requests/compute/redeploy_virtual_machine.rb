@@ -7,8 +7,9 @@ module Fog
           Fog::Logger.debug "Redeploying Virtual Machine #{name} in Resource Group #{resource_group}."
           begin
             promise = @compute_mgmt_client.virtual_machines.redeploy(resource_group, name)
-            promise.value!
+            result = promise.value!
             Fog::Logger.debug "Virtual Machine #{name} Redeployed Successfully."
+            result
           rescue  MsRestAzure::AzureOperationError => e
             msg = "Error Redeploying Virtual Machine '#{name}' in Resource Group '#{resource_group}'. #{e.body['error']['message']}"
             raise msg

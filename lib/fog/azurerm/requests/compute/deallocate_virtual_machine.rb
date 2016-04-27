@@ -7,8 +7,9 @@ module Fog
           Fog::Logger.debug "Deallocating Virtual Machine #{name} in Resource Group #{resource_group}."
           begin
             promise = @compute_mgmt_client.virtual_machines.deallocate(resource_group, name)
-            promise.value!
+            result = promise.value!
             Fog::Logger.debug "Virtual Machine #{name} Deallocated Successfully."
+            result
           rescue  MsRestAzure::AzureOperationError => e
             msg = "Error Deallocating Virtual Machine '#{name}' in Resource Group '#{resource_group}'. #{e.body['error']['message']}"
             raise msg

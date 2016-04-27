@@ -7,8 +7,9 @@ module Fog
           Fog::Logger.debug "Starting Virtual Machine #{name} in Resource Group #{resource_group}."
           begin
             promise = @compute_mgmt_client.virtual_machines.start(resource_group, name)
-            promise.value!
+            result = promise.value!
             Fog::Logger.debug "Virtual Machine #{name} started Successfully."
+            result
           rescue  MsRestAzure::AzureOperationError => e
             msg = "Error starting Virtual Machine '#{name}' in Resource Group '#{resource_group}'. #{e.body['error']['message']}"
             raise msg

@@ -1,3 +1,11 @@
+if ENV['COVERAGE']
+  require 'simplecov'
+  SimpleCov.start do
+    add_filter 'test'
+    command_name 'Minitest'
+  end
+end
+
 require 'minitest/autorun'
 $LOAD_PATH.unshift(File.expand_path '../lib', __dir__)
 require File.expand_path '../lib/fog/azurerm', __dir__

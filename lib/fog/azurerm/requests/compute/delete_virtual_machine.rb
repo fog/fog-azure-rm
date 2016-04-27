@@ -7,8 +7,9 @@ module Fog
           Fog::Logger.debug "Deleting Virtual Machine #{name} from Resource Group #{resource_group}."
           begin
             promise = @compute_mgmt_client.virtual_machines.delete(resource_group, name)
-            promise.value!
+            result = promise.value!
             Fog::Logger.debug "Virtual Machine #{name} Deleted Successfully."
+            result
           rescue  MsRestAzure::AzureOperationError => e
             msg = "Error Deleting Virtual Machine '#{name}' from Resource Group '#{resource_group}'. #{e.body['error']['message']}"
             raise msg

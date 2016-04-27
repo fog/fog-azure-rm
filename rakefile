@@ -1,0 +1,11 @@
+require 'rake/testtask'
+task default: :test
+task :test do
+  Dir.glob('**/test_*.rb').each { |file| require File.expand_path file, __dir__ }
+end
+
+desc 'Generates a coverage report'
+task :coverage do
+  ENV['COVERAGE'] = 'true'
+  Rake::Task['test'].execute
+end

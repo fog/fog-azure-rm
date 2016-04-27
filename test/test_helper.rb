@@ -7,6 +7,10 @@ if ENV['COVERAGE']
 end
 
 require 'minitest/autorun'
+require 'azure_mgmt_compute'
+require 'azure'
+require 'concurrent'
+
 $LOAD_PATH.unshift(File.expand_path '../lib', __dir__)
 require File.expand_path '../lib/fog/azurerm', __dir__
 require File.expand_path './api_stub', __dir__
@@ -36,6 +40,14 @@ def availability_set(service)
     location: 'West US',
     resource_group: 'fog-test-rg',
     service: service
+  )
+end
+def storage_account(service)
+  Fog::Storage::AzureRM::StorageAccount.new(
+      name: 'storage-account',
+      location: 'West US',
+      resource_group: 'fog-test-rg',
+      service: service
   )
 end
 

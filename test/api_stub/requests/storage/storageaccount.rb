@@ -71,6 +71,9 @@ module ApiStub
               "message"=> "error message"
           }
         end
+        def self.azure_operation_response(body)
+          MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new, Azure::ARM::Storage::Models::CheckNameAvailabilityResult.deserialize_object(body))
+        end
       end
     end
   end

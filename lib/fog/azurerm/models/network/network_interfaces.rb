@@ -29,15 +29,6 @@ module Fog
         rescue Fog::Errors::NotFound
           nil
         end
-
-        def check_if_exists(resource_group, name)
-          Fog::Logger.debug "Checkng if PublicIP #{name} exists."
-          if service.check_for_public_ip(resource_group, name) == true
-            Fog::Logger.debug "PublicIP #{name} exists."
-          else
-            Fog::Logger.debug "PublicIP #{name} doesn't exists."
-          end
-        end
       end
     end
   end

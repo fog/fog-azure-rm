@@ -8,3 +8,6 @@ ParameterLists:
   Enabled: false
 AbcSize:
   Enabled: false
+NestedParenthesizedCalls:
+  Enabled: false
+

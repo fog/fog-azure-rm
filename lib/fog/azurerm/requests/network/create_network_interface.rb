@@ -4,8 +4,8 @@ module Fog
     class AzureRM
       # Real class for Network Request
       class Real
-        def create_network_interface(name, location, resource_group, subnet_id, ip_configs_name, prv_ip_alloc_method)
-          network_interface = define_network_interface(name, location, subnet_id, ip_configs_name, prv_ip_alloc_method)
+        def create_network_interface(name, location, resource_group, subnet_id, ip_config_name, prv_ip_alloc_method)
+          network_interface = define_network_interface(name, location, subnet_id, ip_config_name, prv_ip_alloc_method)
           begin
             promise = @network_client.network_interfaces.create_or_update(resource_group, name, network_interface)
             promise.value!
@@ -17,7 +17,7 @@ module Fog
 
         private
 
-        def define_network_interface(name, location, subnet_id, ip_configs_name, prv_ip_alloc_method)
+        def define_network_interface(name, location, subnet_id, ip_config_name, prv_ip_alloc_method)
           subnet = Azure::ARM::Network::Models::Subnet.new
           subnet.id = subnet_id
 
@@ -26,7 +26,7 @@ module Fog
           ip_configs_props.subnet = subnet
 
           ip_configs = Azure::ARM::Network::Models::NetworkInterfaceIPConfiguration.new
-          ip_configs.name = ip_configs_name
+          ip_configs.name = ip_config_name
           ip_configs.properties = ip_configs_props
 
           nic_props = Azure::ARM::Network::Models::NetworkInterfacePropertiesFormat.new

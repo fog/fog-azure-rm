@@ -47,3 +47,31 @@ def availability_set(service)
     service: service
   )
 end
+
+def virtual_network(service)
+  Fog::Network::AzureRM::VirtualNetwork.new(
+    name: 'fog-test-virtual-network',
+    id: '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/virtualNetworks/fog-test-virtual-network',
+    resource_group: 'fog-test-rg',
+    location: 'West US',
+    dns_list: '10.1.0.5,10.1.0.6',
+    subnet_address_list: '10.1.0.0/24',
+    network_address_list: '10.1.0.0/16,10.2.0.0/16',
+    properties: nil,
+    service: service
+  )
+end
+
+def network_interface(service)
+  Fog::Network::AzureRM::NetworkInterface.new(
+    name: 'fog-test-network-interface',
+    location: 'West US',
+    resource_group: 'fog-test-rg',
+    subnet_id: '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/virtualNetworks/fog-test-virtual-network/subnets/fog-test-subnet',
+    ip_configuration_name: 'fog-test-ip-configuration',
+    private_ip_allocation_method: 'fog-test-private-ip-allocation-method',
+    properties: nil,
+    service: service
+  )
+end
+

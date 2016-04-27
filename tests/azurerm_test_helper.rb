@@ -220,7 +220,7 @@ def fog_network_interface
   nic = azurerm_network_service.network_interfaces(resource_group: rg_name).find { |ni| ni.name == network_interface_name }
   unless nic
     nic = azurerm_network_service.network_interfaces.create(
-      name: network_interface_name, resource_group: rg_name, location: location, subnet_id: subnet_id_for_network_interface, ip_configurations_name: ip_configurations_name_for_network_interface, private_ip_allocation_method: private_ip_allocation_method_for_network_interface
+      name: network_interface_name, resource_group: rg_name, location: location, subnet_id: subnet_id_for_network_interface, ip_configuration_name: ip_configurations_name_for_network_interface, private_ip_allocation_method: private_ip_allocation_method_for_network_interface
     )
   end
   nic

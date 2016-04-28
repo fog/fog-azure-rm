@@ -1,6 +1,11 @@
-# Fog::AzureRM
+# Fog Azure Resource Manager
 
-Module for the 'fog' gem to support Microsoft Azure Resource Manager
+This document describes how to get started with Fog using Microsoft Azure as a Cloud Resource Management Services Provider.
+
+## Pre-requisites
+
+* Fog supports Ruby version 2.0.0 or later
+* Fog requires Azure SDK For Ruby version 0.2.1. 
 
 ## Installation
 
@@ -24,7 +29,7 @@ Or install it yourself as:
 You can use this gem against the Microsoft Azure Resource Manager Services in the cloud. Of course, to use the Microsoft Azure Resource Manager Services in the cloud, you need to first [create a Microsoft Azure account](http://www.azure.com/en-us/pricing/free-trial/).
 
 
-### Setup Connection
+### Authentication
 
 The next step to use this gem, is authentication and permissioning. It is important to get familiar with this concept. For a reference on setting up a service principal from the command line see
 [Authenticating a service principal with Azure Resource Manager](http://aka.ms/cli-service-principal) or

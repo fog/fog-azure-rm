@@ -39,4 +39,11 @@ class TestServers < Minitest::Test
       assert @servers.get('fog-test-rg', 'wrong-name').nil?, true
     end
   end
+
+  def test_get_from_remote_method_response
+    response = ApiStub::Models::Compute::Server.virtual_machine_response
+    @service.stub :get_virtual_machine, response do
+      assert_instance_of Azure::ARM::Compute::Models::VirtualMachine, @servers.get_from_remote('fog-test-rg', 'fog-test-server')
+    end
+  end
 end

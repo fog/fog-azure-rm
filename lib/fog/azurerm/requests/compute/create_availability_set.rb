@@ -7,9 +7,12 @@ module Fog
       class Real
         def create_availability_set(resource_group, name, location)
           begin
+            Fog::Logger.debug "Creating Availability Set '#{name}' in #{location} region."
             avail_set_props = get_avail_set_properties(location)
             promise = @compute_mgmt_client.availability_sets.create_or_update(resource_group, name, avail_set_props)
-            promise.value!
+            result = promise.value!
+            Fog::Logger.debug "Availability Set #{name} created successfully."
+            result
           rescue MsRestAzure::AzureOperationError => e
             msg = "Exception creating Availability Set #{name} in Resource Group: #{resource_group}. #{e.body['error']['message']}"
             raise msg

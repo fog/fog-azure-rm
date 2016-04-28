@@ -5,7 +5,6 @@ class TestServer < Minitest::Test
   def setup
     @service = Fog::Compute::AzureRM.new(credentials)
     @server = server(@service)
-    @response = ApiStub::Models::Compute::Server.create_virtual_machine_response
   end
 
   def test_model_methods
@@ -53,8 +52,65 @@ class TestServer < Minitest::Test
   end
 
   def test_save_method_response
-    @service.stub :create_virtual_machine, @response do
+    response = ApiStub::Models::Compute::Server.create_virtual_machine_response
+    @service.stub :create_virtual_machine, response do
       assert_instance_of Fog::Compute::AzureRM::Server, @server.save
+    end
+  end
+
+  def test_destroy_method_response
+    response = ApiStub::Models::Compute::Server.delete_virtual_machine_response
+    @service.stub :delete_virtual_machine, response do
+      assert_instance_of MsRestAzure::AzureOperationResponse, @server.destroy
+    end
+  end
+
+  def test_generalize_method_response
+    response = ApiStub::Models::Compute::Server.delete_virtual_machine_response
+    @service.stub :generalize_virtual_machine, response do
+      assert_instance_of MsRestAzure::AzureOperationResponse, @server.generalize
+    end
+  end
+
+  def test_power_off_method_response
+    response = ApiStub::Models::Compute::Server.delete_virtual_machine_response
+    @service.stub :power_off_virtual_machine, response do
+      assert_instance_of MsRestAzure::AzureOperationResponse, @server.power_off
+    end
+  end
+
+  def test_start_method_response
+    response = ApiStub::Models::Compute::Server.delete_virtual_machine_response
+    @service.stub :start_virtual_machine, response do
+      assert_instance_of MsRestAzure::AzureOperationResponse, @server.start
+    end
+  end
+
+  def test_restart_method_response
+    response = ApiStub::Models::Compute::Server.delete_virtual_machine_response
+    @service.stub :restart_virtual_machine, response do
+      assert_instance_of MsRestAzure::AzureOperationResponse, @server.restart
+    end
+  end
+
+  def test_deallocate_method_response
+    response = ApiStub::Models::Compute::Server.delete_virtual_machine_response
+    @service.stub :deallocate_virtual_machine, response do
+      assert_instance_of MsRestAzure::AzureOperationResponse, @server.deallocate
+    end
+  end
+
+  def test_redeploy_method_response
+    response = ApiStub::Models::Compute::Server.delete_virtual_machine_response
+    @service.stub :redeploy_virtual_machine, response do
+      assert_instance_of MsRestAzure::AzureOperationResponse, @server.redeploy
+    end
+  end
+
+  def test_list_available_sizes_method_response
+    response = ApiStub::Models::Compute::Server.list_available_sizes_for_virtual_machine_response
+    @service.stub :list_available_sizes_for_virtual_machine, response do
+      assert_instance_of Array, @server.list_available_sizes
     end
   end
 end

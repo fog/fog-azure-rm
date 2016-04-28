@@ -21,8 +21,6 @@ module Fog
 
         def get(resource_group, identity)
           all.find { |s| s.name == identity && s.resource_group == resource_group}
-        rescue Fog::Errors::NotFound
-          nil
         end
 
         def get_from_remote(resource_group, name)

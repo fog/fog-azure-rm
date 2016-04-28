@@ -5,8 +5,11 @@ module Fog
       class Real
         def delete_availability_set(resource_group, name)
           begin
+            Fog::Logger.debug "Deleting Availability Set: #{name}."
             promise = @compute_mgmt_client.availability_sets.delete(resource_group, name)
-            promise.value!
+            result = promise.value!
+            Fog::Logger.debug "Availability Set #{name} deleted successfully."
+            result
           rescue MsRestAzure::AzureOperationError => e
             msg = "Exception deleting Availability Set #{name} in Resourse Group #{resource_group}. #{e.body['error']['message']}"
             raise msg

@@ -35,7 +35,13 @@ class TestAvailabilitySet < Minitest::Test
 
   def test_save_method_response
     @service.stub :create_availability_set, @response do
-      # TODO: assert_instance_of MsRestAzure::AzureOperationResponse, @availability_set.save
+      assert_instance_of MsRestAzure::AzureOperationResponse, @availability_set.save
+    end
+  end
+
+  def test_destroy_method_response
+    @service.stub :delete_availability_set, @response do
+      assert_instance_of MsRestAzure::AzureOperationResponse, @availability_set.destroy
     end
   end
 end

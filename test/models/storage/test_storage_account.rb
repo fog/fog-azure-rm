@@ -10,8 +10,8 @@ class TestStorageAccount < Minitest::Test
 
   def test_model_methods
     methods = [
-        :save,
-        :destroy
+      :save,
+      :destroy
     ]
     methods.each do |method|
       assert @storage_account.respond_to? method, true
@@ -20,24 +20,24 @@ class TestStorageAccount < Minitest::Test
 
   def test_model_attributes
     attributes = [
-        :id,
-        :name,
-        :type,
-        :location,
-        :tags,
-        :resource_group,
-        :properties
+      :id,
+      :name,
+      :type,
+      :location,
+      :tags,
+      :resource_group,
+      :properties
     ]
-    @service.stub :create_storage_account,  @response do
-    attributes.each do |attribute|
-      assert @storage_account.respond_to? attribute
-    end
+    @service.stub :create_storage_account, @response do
+      attributes.each do |attribute|
+        assert @storage_account.respond_to? attribute
+      end
     end
   end
 
   def test_save_method_response
     @service.stub :create_storage_account, @response do
-       assert_instance_of Azure::ARM::Storage::Models::StorageAccount, @storage_account.save
+      assert_instance_of Azure::ARM::Storage::Models::StorageAccount, @storage_account.save
     end
   end
 end

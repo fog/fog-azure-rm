@@ -74,6 +74,9 @@ module ApiStub
         def self.azure_operation_response(body)
           MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new, Azure::ARM::Storage::Models::CheckNameAvailabilityResult.deserialize_object(body))
         end
+        def self.response_storage_account_list(body)
+          MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new, Azure::ARM::Storage::Models::StorageAccountListResult.deserialize_object(body))
+        end
       end
     end
   end

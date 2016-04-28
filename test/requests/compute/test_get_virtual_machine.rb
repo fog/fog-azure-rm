@@ -20,10 +20,10 @@ class TestGetVirtualMachine < Minitest::Test
   end
 
   def test_get_virtual_machine_failure
-    response = -> { fail MsRestAzure::AzureOperationError }
+    response = -> { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @promise.stub :value!, response do
       @virtual_machines.stub :get, @promise do
-        assert_raises(ArgumentError) { @service.get_virtual_machine('fog-test-rg', 'fog-test-server') }
+        assert_raises(RuntimeError) { @service.get_virtual_machine('fog-test-rg', 'fog-test-server') }
       end
     end
   end

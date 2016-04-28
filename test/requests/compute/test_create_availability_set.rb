@@ -20,10 +20,10 @@ class TestCreateAvailabilitySet < Minitest::Test
   end
 
   def test_create_availability_set_failure
-    response = -> { fail MsRestAzure::AzureOperationError }
+    response = -> { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @promise.stub :value!, response do
       @availability_sets.stub :create_or_update, @promise do
-        assert_raises(ArgumentError) { @service.create_availability_set('fog-test-rg', 'fog-test-as', 'west us') }
+        assert_raises(RuntimeError) { @service.create_availability_set('fog-test-rg', 'fog-test-as', 'west us') }
       end
     end
   end

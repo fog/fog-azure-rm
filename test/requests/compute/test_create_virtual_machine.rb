@@ -23,10 +23,10 @@ class TestCreateVirtualMachine < Minitest::Test
   end
 
   def test_create_virtual_machine_failure
-    response = -> { fail MsRestAzure::AzureOperationError }
+    response = -> { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @promise.stub :value!, response do
       @virtual_machines.stub :create_or_update, @promise do
-        assert_raises ArgumentError do
+        assert_raises RuntimeError do
           @service.create_virtual_machine('fog-test-server', 'westus', 'fog-test-rg', 'Basic_A0', 'fogstrg', 'fog',
                                           'fog', false, '/home', 'key', 'nic-id', 'as-id', 'Canonical',
                                           'UbuntuServer', '14.04.2-LTS', 'latest')

@@ -32,10 +32,12 @@ module Fog
 
         def check_if_exists(resource_group, name)
           Fog::Logger.debug "Checkng if PublicIP #{name} exists."
-          if service.check_for_public_ip(resource_group, name) == true
+          if service.check_for_public_ip(resource_group, name)
             Fog::Logger.debug "PublicIP #{name} exists."
+            true
           else
             Fog::Logger.debug "PublicIP #{name} doesn't exists."
+            false
           end
         end
       end

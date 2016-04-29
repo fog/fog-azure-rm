@@ -7,8 +7,9 @@ module Fog
           Fog::Logger.debug "Deleting PublicIP #{name} from Resource Group #{resource_group}."
           begin
             promise = @network_client.public_ipaddresses.delete(resource_group, name)
-            promise.value!
+            response = promise.value!
             Fog::Logger.debug "PublicIP #{name} Deleted Successfully."
+            response
           rescue  MsRestAzure::AzureOperationError => e
             msg = "Exception deleting Public IP #{name} in Resource Group: #{resource_group}. #{e.body['error']['message']}"
             raise msg

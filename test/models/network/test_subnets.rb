@@ -22,7 +22,7 @@ class TestSubnets < Minitest::Test
   def test_collection_attributes
     response = ApiStub::Models::Network::Subnet.create_subnet_response
     @service.stub :create_subnet, response do
-      assert @subnets.respond_to? :resource_group, true
+      assert @subnets.respond_to? :resource_group
       assert @subnets.respond_to? :virtual_network_name
     end
   end
@@ -42,6 +42,7 @@ class TestSubnets < Minitest::Test
     response = [ApiStub::Models::Network::Subnet.create_subnet_response]
     @service.stub :list_subnets, response do
       assert_instance_of Fog::Network::AzureRM::Subnet, @subnets.get('fog-test-subnet')
+      assert (@subnets.get('wrong-name')).nil?, true
     end
   end
 end

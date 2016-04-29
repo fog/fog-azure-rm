@@ -33,8 +33,9 @@ class TestAvailabilitySets < Minitest::Test
   end
 
   def test_get_method_response
-    @service.stub :list_availability_sets, @response do
-      # TODO: assert_instance_of Fog::Compute::AzureRM::AvailabilitySet, (@availability_sets.get('fog-test-rg', 'fog-test-availability-set'))
+    response = [ApiStub::Models::Compute::AvailabilitySet.availability_set_response]
+    @service.stub :list_availability_sets, response do
+      assert_instance_of Fog::Compute::AzureRM::AvailabilitySet, (@availability_sets.get('fog-test-rg', 'fog-test-availability-set'))
       assert @availability_sets.get('fog-test-rg', 'wrong-name').nil?, true
     end
   end

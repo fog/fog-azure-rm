@@ -47,3 +47,11 @@ def availability_set(service)
     service: service
   )
 end
+
+def resource_group(service)
+  Fog::Resources::AzureRM::ResourceGroup.new(
+      name: 'fog-test-rg',
+      location: 'West US',
+      service: service
+  )
+end

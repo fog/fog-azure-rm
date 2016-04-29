@@ -7,6 +7,14 @@ This document describes how to get started with Fog using Microsoft Azure as a C
 * Fog supports Ruby version 2.0.0 or later
 * Fog requires Azure SDK For Ruby version 0.2.1. 
 
+## Supported Services
+
+Use following command for list of services, Fog provides for Azure Resource Manager.
+
+```ruby
+Fog::AzureRM.services
+```
+
 ## Installation
 
 Add this line to your application's Gemfile:

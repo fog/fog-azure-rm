@@ -33,8 +33,7 @@ module Fog
 
         def destroy
           Fog::Logger.debug "Deleting Storage Account: #{name}."
-          promise = service.delete_storage_account(resource_group, name)
-          promise.value!
+          service.delete_storage_account(resource_group, name)
           Fog::Logger.debug "Storage Account #{name} deleted successfully."
         end
       end

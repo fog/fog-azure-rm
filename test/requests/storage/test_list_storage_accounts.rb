@@ -40,9 +40,9 @@ class TestListStorageAccounts < Minitest::Test
   end
 
   def test_list_storage_accounts_exeception
-    raise_exception = -> { raise MsRestAzure::AzureOperationError.new }
+    raise_exception = -> { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @storage_accounts.stub :list, raise_exception do
-      assert_raises(Exception) { @azure_credentials.list_storage_accounts }
+      assert_raises(RuntimeError) { @azure_credentials.list_storage_accounts }
     end
   end
 end

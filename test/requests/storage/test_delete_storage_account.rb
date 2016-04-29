@@ -10,18 +10,27 @@ class TestDeleteStorageAccount < Minitest::Test
   end
 
   def test_delete_storage_account_success
-    @storage_accounts.stub :delete, nil do
+    mock_promise = Concurrent::Promise.execute do
+    end
+  mock_promise.stub :value!, nil do
+    @storage_accounts.stub :delete, mock_promise do
       assert_equal @azure_credentials.delete_storage_account('gateway-RG', 'awain'), nil
     end
   end
+  end
 
   def test_delete_storage_account_failure
-
     assert_raises(ArgumentError) { @azure_credentials.delete_storage_account('gateway-RG', 'awain', 'Hi') }
+  end
 
-    raise_exception = -> { raise MsRestAzure::AzureOperationError.new }
-    @storage_accounts.stub :delete, raise_exception do
-      assert_raises(Exception) { @azure_credentials.delete_availability_set('gateway-RG', 'awain') }
+  def test_delete_storage_account_exception
+    raise_exception = -> { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
+    mock_promise = Concurrent::Promise.execute do
+    end
+    mock_promise.stub :value!, raise_exception do
+    @storage_accounts.stub :delete, mock_promise do
+      assert_raises(RuntimeError){ @azure_credentials.delete_storage_account('gateway-RG', 'awain') }
+    end
     end
   end
 end

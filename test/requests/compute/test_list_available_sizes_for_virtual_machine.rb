@@ -1,7 +1,7 @@
 require File.expand_path '../../test_helper', __dir__
 
-# Test class for Create Availability Set Request
-class TestlistAvailableSizesForVirtualMachine < Minitest::Test
+# Test class for List Available Sizes For VirtualMachine Request
+class TestListAvailableSizesForVirtualMachine < Minitest::Test
   def setup
     @service = Fog::Compute::AzureRM.new(credentials)
     client = @service.instance_variable_get(:@compute_mgmt_client)

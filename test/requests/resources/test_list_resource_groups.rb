@@ -1,6 +1,6 @@
 require File.expand_path '../../test_helper', __dir__
 
-# Test class for Create Availability Set Request
+# Test class for List Resource Groups Request
 class TestListResourceGroups < Minitest::Test
   def setup
     @service = Fog::Resources::AzureRM.new(credentials)

@@ -1,7 +1,7 @@
 module ApiStub
   module Requests
     module Compute
-      # Mock class for Availability Set Requests
+      # Mock class for Virtual Machine Requests
       class VirtualMachine
         def self.create_virtual_machine_response
           body = '{

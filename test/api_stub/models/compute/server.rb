@@ -1,7 +1,7 @@
 module ApiStub
   module Models
     module Compute
-      # Mock class for Server Set Model
+      # Mock class for Server Model
       class Server
         def self.create_virtual_machine_response
           {

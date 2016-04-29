@@ -7,20 +7,16 @@ if ENV['COVERAGE']
 end
 
 require 'minitest/autorun'
-require 'azure_mgmt_compute'
-require 'azure'
-require 'concurrent'
-
 $LOAD_PATH.unshift(File.expand_path '../lib', __dir__)
 require File.expand_path '../lib/fog/azurerm', __dir__
 require File.expand_path './api_stub', __dir__
 
 def credentials
   {
-      tenant_id:        '<TENANT-ID>',
-      client_id:        '<CLIENT-ID>',
-      client_secret:    '<CLIENT-SECRET>',
-      subscription_id:  '<SUBSCRIPTION-ID>'
+    tenant_id:        '<TENANT-ID>',
+    client_id:        '<CLIENT-ID>',
+    client_secret:    '<CLIENT-SECRET>',
+    subscription_id:  '<SUBSCRIPTION-ID>'
   }
 end
 
@@ -52,30 +48,11 @@ def availability_set(service)
   )
 end
 
-def virtual_network(service)
-  Fog::Network::AzureRM::VirtualNetwork.new(
-    name: 'fog-test-virtual-network',
-    id: '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/virtualNetworks/fog-test-virtual-network',
-    resource_group: 'fog-test-rg',
-    location: 'West US',
-    dns_list: '10.1.0.5,10.1.0.6',
-    subnet_address_list: '10.1.0.0/24',
-    network_address_list: '10.1.0.0/16,10.2.0.0/16',
-    properties: nil,
-    service: service
-  )
-end
-
-def network_interface(service)
-  Fog::Network::AzureRM::NetworkInterface.new(
-    name: 'fog-test-network-interface',
-    location: 'West US',
-    resource_group: 'fog-test-rg',
-    subnet_id: '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/virtualNetworks/fog-test-virtual-network/subnets/fog-test-subnet',
-    ip_configuration_name: 'fog-test-ip-configuration',
-    private_ip_allocation_method: 'fog-test-private-ip-allocation-method',
-    properties: nil,
-    service: service
+def resource_group(service)
+  Fog::Resources::AzureRM::ResourceGroup.new(
+      name: 'fog-test-rg',
+      location: 'West US',
+      service: service
   )
 end
 
@@ -88,3 +65,56 @@ def storage_account(service)
   )
 end
 
+def public_ip(service)
+  Fog::Network::AzureRM::PublicIp.new(
+      name: 'fog-test-public-ip',
+      resource_group: 'fog-test-rg',
+      location: 'West US',
+      type: 'Dynamic',
+      service: service
+  )
+end
+
+def subnet(service)
+  Fog::Network::AzureRM::Subnet.new(
+      name: 'fog-test-subnet',
+      id: '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/virtualNetworks/fog-test-virtual-network/subnets/fog-test-subnet',
+      resource_group: 'fog-test-rg',
+      virtual_network_name: 'fog-test-virtual-network',
+      properties: nil,
+      addressPrefix: '10.1.0.0/24',
+      networkSecurityGroupId: "/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/networkSecurityGroups/fog-test-network-security-group",
+      routeTableId: "/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/routeTables/fog-test-route-table",
+      ipConfigurations:[
+          {id: "/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/networkInterfaces/fog-test-network-interface/ipConfigurations/fog-test-ip-configuration"}
+      ],
+      service: service
+  )
+end
+
+def virtual_network(service)
+  Fog::Network::AzureRM::VirtualNetwork.new(
+      name: 'fog-test-virtual-network',
+      id: '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/virtualNetworks/fog-test-virtual-network',
+      resource_group: 'fog-test-rg',
+      location: 'West US',
+      dns_list: '10.1.0.5,10.1.0.6',
+      subnet_address_list: '10.1.0.0/24',
+      network_address_list: '10.1.0.0/16,10.2.0.0/16',
+      properties: nil,
+      service: service
+  )
+end
+
+def network_interface(service)
+  Fog::Network::AzureRM::NetworkInterface.new(
+      name: 'fog-test-network-interface',
+      location: 'West US',
+      resource_group: 'fog-test-rg',
+      subnet_id: '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/virtualNetworks/fog-test-virtual-network/subnets/fog-test-subnet',
+      ip_configuration_name: 'fog-test-ip-configuration',
+      private_ip_allocation_method: 'fog-test-private-ip-allocation-method',
+      properties: nil,
+      service: service
+  )
+end

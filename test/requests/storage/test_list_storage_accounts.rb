@@ -9,7 +9,6 @@ class TestListStorageAccounts < Minitest::Test
     @storage_accounts = client.storage_accounts
   end
 
-
   def test_list_storage_accounts_success
     mock_promise = Concurrent::Promise.execute do
     end
@@ -33,7 +32,7 @@ class TestListStorageAccounts < Minitest::Test
     mock_promise.stub :value!, result do
       @storage_accounts.stub :list, mock_promise do
         assert_raises ArgumentError do
-        assert @azure_credentials.list_storage_accounts('wrong arg','second wrong arg')
+          assert @azure_credentials.list_storage_accounts('wrong arg', 'second wrong arg')
         end
       end
     end

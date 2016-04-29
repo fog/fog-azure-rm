@@ -37,7 +37,6 @@ module Fog
           params = Azure::ARM::Storage::Models::StorageAccountCheckNameAvailabilityParameters.new
           params.name = name
           params.type = 'Microsoft.Storage/storageAccounts'
-          Fog::Logger.debug "Checking Name availability: #{name}."
           service.check_storage_account_name_availability(params)
         end
       end

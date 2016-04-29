@@ -40,4 +40,10 @@ class TestStorageAccount < Minitest::Test
       assert_instance_of Azure::ARM::Storage::Models::StorageAccount, @storage_account.save
     end
   end
+
+  def test_destroy_method_response
+    @service.stub :delete_storage_account, @response do
+      assert_instance_of Azure::ARM::Storage::Models::StorageAccount, @storage_account.destroy
+    end
+  end
 end

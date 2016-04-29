@@ -4,6 +4,7 @@ module Fog
       # This class provides the actual implemention for service calls.
       class Real
         def check_storage_account_name_availability(params)
+          Fog::Logger.debug "Checking Name availability: #{params.name}."
           begin
             promise = @storage_mgmt_client.storage_accounts.check_name_availability(params)
             result = promise.value!

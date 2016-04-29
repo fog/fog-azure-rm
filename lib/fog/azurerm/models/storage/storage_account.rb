@@ -18,7 +18,6 @@ module Fog
           requires :name
           requires :location
           requires :resource_group
-          Fog::Logger.debug "Creating Storage Account: #{name}."
           # Create a model for new storage account.
           properties = Azure::ARM::Storage::Models::StorageAccountPropertiesCreateParameters.new
           properties.account_type = 'Standard_LRS' # This might change in the near future!
@@ -26,15 +25,11 @@ module Fog
           params = Azure::ARM::Storage::Models::StorageAccountCreateParameters.new
           params.properties = properties
           params.location = location
-          response = service.create_storage_account(resource_group, name, params)
-          Fog::Logger.debug "Storage Account created successfully."
-          response
+          service.create_storage_account(resource_group, name, params)
         end
 
         def destroy
-          Fog::Logger.debug "Deleting Storage Account: #{name}."
           service.delete_storage_account(resource_group, name)
-          Fog::Logger.debug "Storage Account #{name} deleted successfully."
         end
       end
     end

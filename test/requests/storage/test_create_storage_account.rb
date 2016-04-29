@@ -25,6 +25,7 @@ class TestCreateStorageAccount < Minitest::Test
       end
     end
   end
+
   def test_create_storage_account_failure
     mock_promise = Concurrent::Promise.execute do
     end
@@ -37,6 +38,7 @@ class TestCreateStorageAccount < Minitest::Test
       end
     end
   end
+
   def test_create_storage_account_exception
     properties = Azure::ARM::Storage::Models::StorageAccountPropertiesCreateParameters.new
     properties.account_type = 'Standard_LRS' # This might change in the near future!
@@ -47,9 +49,9 @@ class TestCreateStorageAccount < Minitest::Test
     end
     raise_exception = -> { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     mock_promise.stub :value!, raise_exception do
-    @storage_accounts.stub :create, mock_promise do
-      assert_raises(RuntimeError) { @azure_credentials.create_storage_account('gateway-RG', 'awain', params) }
-    end
+      @storage_accounts.stub :create, mock_promise do
+        assert_raises(RuntimeError) { @azure_credentials.create_storage_account('gateway-RG', 'awain', params) }
+      end
     end
   end
 end

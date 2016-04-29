@@ -15,16 +15,15 @@ class TestCheckStorageAccountNameAvailability < Minitest::Test
     params.type = 'Microsoft.Storage/storageAccounts'
     mock_promise = Concurrent::Promise.execute do
     end
-    true_case_response = ApiStub::Requests::Storage::StorageAccount
-                             .true_case_for_check_name_availability
-    result = ApiStub::Requests::Storage::StorageAccount
-                 .azure_operation_response(true_case_response)
+    true_case_response = ApiStub::Requests::Storage::StorageAccount.true_case_for_check_name_availability
+    result = ApiStub::Requests::Storage::StorageAccount.azure_operation_response(true_case_response)
     mock_promise.stub :value!, result do
       @storage_accounts.stub :check_name_availability, mock_promise do
         assert_equal @azure_credentials.check_storage_account_name_availability(params), true
       end
     end
   end
+
   def test_check_storage_account_name_availability_failure
     params = Azure::ARM::Storage::Models::StorageAccountCheckNameAvailabilityParameters.new
     params.name = 'teststorageaccount'
@@ -33,7 +32,7 @@ class TestCheckStorageAccountNameAvailability < Minitest::Test
     end
     false_case_response = ApiStub::Requests::Storage::StorageAccount.false_case_for_check_name_availability
     result = ApiStub::Requests::Storage::StorageAccount
-                 .azure_operation_response(false_case_response)
+             .azure_operation_response(false_case_response)
     mock_promise.stub :value!, result do
       @storage_accounts.stub :check_name_availability, mock_promise do
         assert_equal @azure_credentials.check_storage_account_name_availability(params), false
@@ -48,13 +47,13 @@ class TestCheckStorageAccountNameAvailability < Minitest::Test
     params = Azure::ARM::Storage::Models::StorageAccountCheckNameAvailabilityParameters.new
     params.name = 'teststorageaccount'
     params.type = 'Microsoft.Storage/storageAccounts'
-    raise_exception = -> { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception','code' => 'ResourceGroupNotFound' }) }
+    raise_exception = -> { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceGroupNotFound' }) }
     mock_promise = Concurrent::Promise.execute do
     end
-    mock_promise.stub :value!,raise_exception do
-    @storage_accounts.stub :check_name_availability, mock_promise do
-      assert_raises(RuntimeError){ @azure_credentials.check_storage_account_name_availability(params)}
-    end
+    mock_promise.stub :value!, raise_exception do
+      @storage_accounts.stub :check_name_availability, mock_promise do
+        assert_raises(RuntimeError) { @azure_credentials.check_storage_account_name_availability(params) }
+      end
     end
   end
 end

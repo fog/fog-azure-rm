@@ -2,4 +2,4 @@
 *.gem
 Gemfile.lock
 .arcconfig
-coverage/
+coverage

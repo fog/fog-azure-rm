@@ -31,15 +31,12 @@ module Fog
 
         def get(identity)
           all.find { |f| f.name == identity }
-        rescue Fog::Errors::NotFound
-          nil
         end
 
         def check_name_availability(name)
           params = Azure::ARM::Storage::Models::StorageAccountCheckNameAvailabilityParameters.new
           params.name = name
           params.type = 'Microsoft.Storage/storageAccounts'
-          Fog::Logger.debug "Checking Name availability: #{name}."
           service.check_storage_account_name_availability(params)
         end
       end

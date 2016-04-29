@@ -7,16 +7,20 @@ if ENV['COVERAGE']
 end
 
 require 'minitest/autorun'
+require 'azure_mgmt_compute'
+require 'azure'
+require 'concurrent'
+
 $LOAD_PATH.unshift(File.expand_path '../lib', __dir__)
 require File.expand_path '../lib/fog/azurerm', __dir__
 require File.expand_path './api_stub', __dir__
 
 def credentials
   {
-    tenant_id:        '<TENANT-ID>',
-    client_id:        '<CLIENT-ID>',
-    client_secret:    '<CLIENT-SECRET>',
-    subscription_id:  '<SUBSCRIPTION-ID>'
+      tenant_id:        '<TENANT-ID>',
+      client_id:        '<CLIENT-ID>',
+      client_secret:    '<CLIENT-SECRET>',
+      subscription_id:  '<SUBSCRIPTION-ID>'
   }
 end
 
@@ -72,6 +76,15 @@ def network_interface(service)
     private_ip_allocation_method: 'fog-test-private-ip-allocation-method',
     properties: nil,
     service: service
+  )
+end
+
+def storage_account(service)
+  Fog::Storage::AzureRM::StorageAccount.new(
+      name: 'storage-account',
+      location: 'West US',
+      resource_group: 'fog-test-rg',
+      service: service
   )
 end
 

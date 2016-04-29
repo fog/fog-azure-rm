@@ -4,6 +4,10 @@ MethodLength:
   Enabled: false
 ClassLength:
   Enabled: false
+SignalException:
+  Enabled: false
+RaiseArgs:
+  Enabled: false
 ParameterLists:
   Enabled: false
 AbcSize:

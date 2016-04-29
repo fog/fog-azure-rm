@@ -5,9 +5,12 @@ module Fog
       # This class provides the actual implemention for service calls.
       class Real
         def create_storage_account(resource_group, name, params)
+          Fog::Logger.debug "Creating Storage Account: #{name}."
           begin
             promise = @storage_mgmt_client.storage_accounts.create(resource_group, name, params)
-            promise.value!
+            response = promise.value!
+            Fog::Logger.debug "Storage Account created successfully."
+            response
           rescue MsRestAzure::AzureOperationError => e
             msg = "Exception creating Storage Account #{name} in Resource Group #{resource_group}. #{e.body['error']['message']}"
             raise msg

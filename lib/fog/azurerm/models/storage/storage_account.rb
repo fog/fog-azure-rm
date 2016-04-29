@@ -6,15 +6,18 @@ module Fog
       # This class is giving implementation of create/save and
       # delete/destroy for storage account.
       class StorageAccount < Fog::Model
-        identity :name
+        attribute :id
+        identity  :name
+        attribute :type
         attribute :location
+        attribute :tags
         attribute :resource_group
+        attribute :properties
 
         def save
           requires :name
           requires :location
           requires :resource_group
-          Fog::Logger.debug "Creating Storage Account: #{name}."
           # Create a model for new storage account.
           properties = Azure::ARM::Storage::Models::StorageAccountPropertiesCreateParameters.new
           properties.account_type = 'Standard_LRS' # This might change in the near future!
@@ -23,14 +26,10 @@ module Fog
           params.properties = properties
           params.location = location
           service.create_storage_account(resource_group, name, params)
-          Fog::Logger.debug "Storage Account created successfully."
         end
 
         def destroy
-          Fog::Logger.debug "Deleting Storage Account: #{name}."
-          promise = service.delete_storage_account(resource_group, name)
-          promise.value!
-          Fog::Logger.debug "Storage Account #{name} deleted successfully."
+          service.delete_storage_account(resource_group, name)
         end
       end
     end

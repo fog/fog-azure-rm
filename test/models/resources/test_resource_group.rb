@@ -10,8 +10,8 @@ class TestResourceGroup < Minitest::Test
 
   def test_model_methods
     methods = [
-        :save,
-        :destroy
+      :save,
+      :destroy
     ]
     methods.each do |method|
       assert @resource_group.respond_to? method, true
@@ -20,9 +20,9 @@ class TestResourceGroup < Minitest::Test
 
   def test_model_attributes
     attributes = [
-        :id,
-        :name,
-        :location
+      :id,
+      :name,
+      :location
     ]
     attributes.each do |attribute|
       assert @resource_group.respond_to? attribute, true

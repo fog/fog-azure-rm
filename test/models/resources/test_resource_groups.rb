@@ -10,8 +10,8 @@ class TestResourceGroups < Minitest::Test
 
   def test_collection_methods
     methods = [
-        :all,
-        :get
+      :all,
+      :get
     ]
     methods.each do |method|
       assert @resource_groups.respond_to? method, true

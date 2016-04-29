@@ -50,8 +50,8 @@ end
 
 def resource_group(service)
   Fog::Resources::AzureRM::ResourceGroup.new(
-      name: 'fog-test-rg',
-      location: 'West US',
-      service: service
+    name: 'fog-test-rg',
+    location: 'West US',
+    service: service
   )
 end

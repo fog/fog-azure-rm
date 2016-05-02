@@ -22,6 +22,59 @@ Next, create a connection to the Compute Service:
         subscription_id: '<Subscriptionid>'       # Subscription id of an Azure Account
 )
 ```
+
+## Create Server
+
+Create a new server
+
+```ruby
+    azure_compute_service.servers.create(
+        name: '<VM Name>',
+        location: 'West US',
+        resource_group: '<Resource Group Name>',
+        vm_size: 'Basic_A0',
+        storage_account_name: '<Storage Account Name>',
+        username: '<Username for VM>',
+        password: '<Password for VM>',
+        disable_password_authentication: false,
+        network_interface_card_id: '/subscriptions/{Subscription-Id}/resourceGroups/{Resource-Group-Name}/providers/Microsoft.Network/networkInterfaces/{Network-Interface-Id}',
+        publisher: 'Canonical',
+        offer: 'UbuntuServer',
+        sku: '14.04.2-LTS',
+        version: 'latest'
+    )
+```
+## List Servers
+
+List servers in a resource group
+
+```ruby
+    servers  = azure_compute_service.servers(resource_group: '<Resource Group name>')
+    servers.each do |server|
+        puts "#{server.name}"
+        puts "#{server.location}"
+    end
+```
+
+## Retrieve a single record
+
+Get a single record of Server
+
+```ruby
+      server = azure_compute_service
+                          .servers(resource_group: '<Resource Group name>')
+                          .get('<Resource Group name>', 'Server name>')
+      puts "#{server.name}"
+```
+
+## Destroy a single record
+
+Get a server object from the get method(described above) and then destroy that server.
+
+```ruby
+      server.destroy
+```
+
 ## Create Availability Set
 
 Create a new availability set

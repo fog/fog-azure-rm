@@ -5,7 +5,7 @@ module Fog
         def list_zones
           zone_hash_array = []
           @resources.resource_groups.each do |rg|
-            list_zones(rg.name).each do |zone_hash|
+            list_zones_by_rg(rg.name).each do |zone_hash|
               zone_hash['resource_group'] = rg.name              
               zone_hash_array << zone_hash
             end
@@ -13,7 +13,9 @@ module Fog
           zone_hash_array
         end
 
-        def list_zones(dns_resource_group)
+        private
+
+        def list_zones_by_rg(dns_resource_group)
           resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription_id}/resourceGroups/#{dns_resource_group}/providers/Microsoft.Network/dnsZones?api-version=2015-05-04-preview"
           begin
             token = Fog::Credentials::AzureRM.get_token(@tenant_id, @client_id, @client_secret)

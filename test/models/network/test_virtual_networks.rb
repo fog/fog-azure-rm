@@ -7,24 +7,18 @@ class TestVirtualNetworks < Minitest::Test
   end
 
   def test_collection_methods
-    response = ApiStub::Models::Network::VirtualNetwork.create_virtual_network_response
     methods = [
       :all,
       :get,
       :check_if_exists
     ]
-    @service.stub :create_virtual_network, response do
-      methods.each do |method|
-        assert @virtual_networks.respond_to? method
-      end
+    methods.each do |method|
+      assert @virtual_networks.respond_to? method
     end
   end
 
   def test_collection_attributes
-    response = ApiStub::Models::Network::VirtualNetwork.create_virtual_network_response
-    @service.stub :create_virtual_network, response do
-      assert @virtual_networks.respond_to? :resource_group
-    end
+    assert @virtual_networks.respond_to? :resource_group
   end
 
   def test_all_method_response
@@ -42,6 +36,7 @@ class TestVirtualNetworks < Minitest::Test
     response = [ApiStub::Models::Network::VirtualNetwork.create_virtual_network_response]
     @service.stub :list_virtual_networks, response do
       assert_instance_of Fog::Network::AzureRM::VirtualNetwork, @virtual_networks.get('fog-test-virtual-network', 'fog-test-rg')
+      assert @virtual_networks.get('wrong-name', 'fog-test-rg').nil?, true
     end
   end
 

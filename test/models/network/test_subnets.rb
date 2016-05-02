@@ -7,24 +7,18 @@ class TestSubnets < Minitest::Test
   end
 
   def test_collection_methods
-    response = ApiStub::Models::Network::Subnet.create_subnet_response
     methods = [
       :all,
       :get
     ]
-    @service.stub :create_subnet, response do
-      methods.each do |method|
-        assert @subnets.respond_to? method
-      end
+    methods.each do |method|
+      assert @subnets.respond_to? method
     end
   end
 
   def test_collection_attributes
-    response = ApiStub::Models::Network::Subnet.create_subnet_response
-    @service.stub :create_subnet, response do
-      assert @subnets.respond_to? :resource_group
-      assert @subnets.respond_to? :virtual_network_name
-    end
+    assert @subnets.respond_to? :resource_group
+    assert @subnets.respond_to? :virtual_network_name
   end
 
   def test_all_method_response
@@ -42,6 +36,7 @@ class TestSubnets < Minitest::Test
     response = [ApiStub::Models::Network::Subnet.create_subnet_response]
     @service.stub :list_subnets, response do
       assert_instance_of Fog::Network::AzureRM::Subnet, @subnets.get('fog-test-subnet')
+      assert @subnets.get('wrong-name').nil?, true
     end
   end
 end

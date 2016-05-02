@@ -7,24 +7,18 @@ class TestPublicIps < Minitest::Test
   end
 
   def test_collection_methods
-    response = ApiStub::Models::Network::PublicIp.create_public_ip_response
     methods = [
       :all,
       :get,
       :check_if_exists
     ]
-    @service.stub :create_public_ip, response do
-      methods.each do |method|
-        assert @public_ips.respond_to? method
-      end
+    methods.each do |method|
+      assert @public_ips.respond_to? method
     end
   end
 
   def test_collection_attributes
-    response = ApiStub::Models::Network::PublicIp.create_public_ip_response
-    @service.stub :create_public_ip, response do
-      assert @public_ips.respond_to? :resource_group
-    end
+    assert @public_ips.respond_to? :resource_group
   end
 
   def test_all_method_response
@@ -42,6 +36,7 @@ class TestPublicIps < Minitest::Test
     response = [ApiStub::Models::Network::PublicIp.create_public_ip_response]
     @service.stub :list_public_ips, response do
       assert_instance_of Fog::Network::AzureRM::PublicIp, @public_ips.get('fog-test-public-ip')
+      assert @public_ips.get('wrong-name').nil?, true
     end
   end
 

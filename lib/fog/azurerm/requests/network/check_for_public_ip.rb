@@ -12,7 +12,6 @@ module Fog
             msg = "Exception checking name availability: #{e.body['error']['message']}"
             raise msg if e.body['error']['code'] == 'ResourceGroupNotFound'
             return false if e.body['error']['code'] == 'ResourceNotFound'
-            return true
           end
         end
       end

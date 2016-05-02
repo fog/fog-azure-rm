@@ -7,23 +7,17 @@ class TestNetworkInterfaces < Minitest::Test
   end
 
   def test_collection_methods
-    response = ApiStub::Models::Network::NetworkInterface.create_network_interface_response
     methods = [
       :all,
       :get
     ]
-    @service.stub :create_network_interface, response do
-      methods.each do |method|
-        assert @network_interfaces.respond_to? method
-      end
+    methods.each do |method|
+      assert @network_interfaces.respond_to? method
     end
   end
 
   def test_collection_attributes
-    response = ApiStub::Models::Network::NetworkInterface.create_network_interface_response
-    @service.stub :create_network_interface, response do
-      assert @network_interfaces.respond_to? :resource_group
-    end
+    assert @network_interfaces.respond_to? :resource_group
   end
 
   def test_all_method_response
@@ -41,6 +35,7 @@ class TestNetworkInterfaces < Minitest::Test
     response = [ApiStub::Models::Network::NetworkInterface.create_network_interface_response]
     @service.stub :list_network_interfaces, response do
       assert_instance_of Fog::Network::AzureRM::NetworkInterface, @network_interfaces.get('fog-test-network-interface')
+      assert @network_interfaces.get('wrong-name').nil?, true
     end
   end
 end

@@ -2,9 +2,9 @@ module Fog
   module Network
     class AzureRM
       class Real
-        def list_virtual_networks
+        def list_virtual_networks(resource_group)
           begin
-            response = @network_client.virtual_networks.list_all
+            response = @network_client.virtual_networks.list(resource_group)
             result = response.value!
             result.body.value
           rescue MsRestAzure::AzureOperationError => e

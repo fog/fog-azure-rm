@@ -6,10 +6,12 @@ module Fog
     class AzureRM
       class VirtualNetworks < Fog::Collection
         model Fog::Network::AzureRM::VirtualNetwork
+        attribute :resource_group
 
         def all
+          requires :resource_group
           virtual_networks = []
-          service.list_virtual_networks.each do |vnet|
+          service.list_virtual_networks(resource_group).each do |vnet|
             hash = {}
             vnet.instance_variables.each do |var|
               hash[var.to_s.delete('@')] = vnet.instance_variable_get(var)

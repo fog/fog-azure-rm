@@ -14,15 +14,7 @@ module Fog
           requires :location
           requires :resource_group
 
-          properties = Azure::ARM::Network::Models::PublicIPAddressPropertiesFormat.new
-          properties.public_ipallocation_method = type
-
-          public_ip = Azure::ARM::Network::Models::PublicIPAddress.new
-          public_ip.name = name
-          public_ip.location = location
-          public_ip.properties = properties
-
-          service.create_public_ip(resource_group, name, public_ip)
+          service.create_public_ip(resource_group, name, location, type)
         end
 
         def destroy

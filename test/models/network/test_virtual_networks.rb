@@ -20,6 +20,13 @@ class TestVirtualNetworks < Minitest::Test
     end
   end
 
+  def test_collection_attributes
+    response = ApiStub::Models::Network::VirtualNetwork.create_virtual_network_response
+    @service.stub :create_virtual_network, response do
+      assert @virtual_networks.respond_to? :resource_group
+    end
+  end
+
   def test_all_method_response
     response = [ApiStub::Models::Network::VirtualNetwork.create_virtual_network_response]
     @service.stub :list_virtual_networks, response do

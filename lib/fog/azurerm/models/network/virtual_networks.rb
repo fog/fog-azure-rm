@@ -24,8 +24,6 @@ module Fog
 
         def get(identity, resource_group)
           all.find { |f| f.name == identity && f.resource_group == resource_group }
-        rescue Fog::Errors::NotFound
-          nil
         end
 
         def check_if_exists(name, resource_group)

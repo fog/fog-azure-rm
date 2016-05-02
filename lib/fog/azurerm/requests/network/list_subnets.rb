@@ -9,7 +9,7 @@ module Fog
             response = promise.value!
             response.body.value
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Exception listing Subnets from Resource Group '#{resource_group}' in Virtal Network #{virtual_network_name}. #{e.body['error']['message']}."
+            msg = "Exception listing Subnets from Resource Group '#{resource_group_name}' in Virtal Network #{virtual_network_name}. #{e.body['error']['message']}."
             raise msg
           end
         end

@@ -3,9 +3,9 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'fog/azurerm/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'fog-azurerm'
+  spec.name          = 'fog-azure-rm'
   spec.version       = Fog::AzureRM::VERSION
-  spec.authors       = ['Shaffan Chaudhry', 'Samawia Moin']
+  spec.authors       = ['Shaffan Chaudhry', 'Samawia Moin', 'Adnan Khalil']
   spec.summary       = %q{Module for the 'fog' gem to support Azure Resource Manager cloud services.}
   spec.description   = %q{This library can be used as a module for `fog` or as standalone provider
                         to use the Azure Resource Manager cloud services in applications..}
@@ -13,6 +13,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
   spec.add_development_dependency 'rake',    '~> 10.0'
   spec.add_development_dependency 'shindo',  '~> 0.3'
+  spec.add_development_dependency 'minitest',  '~> 5.8.4'
   spec.add_dependency 'fog-core',  '~> 1.27'
   spec.add_dependency 'fog-json',  '~> 1.0'
   spec.add_dependency 'fog-xml',   '~> 0.1'

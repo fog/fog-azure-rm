@@ -12,7 +12,7 @@ Shindo.tests('Fog::Storage[:azurerm] | storage_account model', %w(azurerm storag
       attributes = [
         :name,
         :location,
-        :resource_group_name
+        :resource_group
       ]
       tests('The storage account model should respond to') do
         attributes.each do |attribute|

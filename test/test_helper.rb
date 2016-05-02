@@ -118,3 +118,24 @@ def network_interface(service)
       service: service
   )
 end
+
+def zone(service)
+  Fog::DNS::AzureRM::Zone.new(
+    name: 'fog-test-zone.com',
+    id: '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/dnszones/fog-test-zone.com',
+    resource_group: 'fog-test-rg',
+    service: service
+  )
+end
+
+def record_set(service)
+  Fog::DNS::AzureRM::RecordSet.new(
+    name: 'fog-test-record_set',
+    resource_group: 'fog-test-rg',
+    zone_name: 'fog-test-zone.com',
+    records: ["1.2.3.4","1.2.3.3"],
+    type: 'A',
+    ttl: 60,
+    service: service
+  )
+end

@@ -15,6 +15,7 @@ module Fog
                 authorization: token
             )
             Fog::Logger.debug "RecordSet #{record_set_name} Deleted Successfully!"
+            true
           rescue RestClient::Exception => e
             body = JSON.parse(e.http_body)
             if body.key?('error')

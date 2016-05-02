@@ -35,8 +35,6 @@ module Fog
 
         def get(identity, type)
           all.find { |f| f.name == identity && f.type == "Microsoft.Network/dnszones/#{type}"}
-        rescue Fog::Errors::NotFound
-          nil
         end
       end
     end

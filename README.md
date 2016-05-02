@@ -12,7 +12,7 @@ This document describes how to get started with Fog using Microsoft Azure as a c
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'fog-azurerm'
+gem 'fog-azure-rm'
 ```
 
 And then execute:
@@ -21,7 +21,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install fog-azurerm
+    $ gem install fog-azure-rm
     
     
 ## Usage

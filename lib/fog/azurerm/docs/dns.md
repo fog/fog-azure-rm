@@ -41,7 +41,7 @@ Create a new Zone
     end
 ```
 
-## Retrieve a single record
+## Retrieve a single Zone
 
 Get a single record of Zone
 
@@ -52,7 +52,7 @@ Get a single record of Zone
       puts "#{zone.name}"
 ```
 
-## Destroy a single record
+## Destroy a single Zone
 
 Get Zone object from the get method(described above) and then destroy that Zone.
 
@@ -86,7 +86,7 @@ Create a new Record Set
     end
 ```
 
-## Retrieve a single record
+## Retrieve a single Record Set
 
 Get a single record of Record Set
 
@@ -100,7 +100,7 @@ Get a single record of Record Set
       puts "#{record_set.name}"
 ```
 
-## Destroy a single record
+## Destroy a single Record Set
 
 Get Record Set object from the get method(described above) and then destroy that Record Set.
 

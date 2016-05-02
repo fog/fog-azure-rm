@@ -56,7 +56,7 @@ List all virtual networks in a subscription
     end
 ```
 
-## Retrieve a single record
+## Retrieve a single Virtual Network
 
 Get a single record of virtual network
 
@@ -67,7 +67,7 @@ Get a single record of virtual network
         puts "#{vnet.name}"
 ```
 
-## Destroy a single record
+## Destroy a single virtual network
 
 Get virtual network object from the get method and then destroy that virtual network.
 
@@ -100,7 +100,7 @@ List subnets in a resource group and a virtual network
     end
 ```
 
-## Retrieve a single record
+## Retrieve a single Subnet
 
 Get a single record of Subnet
 
@@ -111,7 +111,7 @@ Get a single record of Subnet
         puts "#{subnet.name}"
 ```
 
-## Destroy a single record
+## Destroy a single Subnet
 
 Get a subnet object from the get method and then destroy that subnet.
 
@@ -145,7 +145,7 @@ List network interfaces in a resource group
     end
 ```
 
-## Retrieve a single record
+## Retrieve a single Network Interface
 
 Get a single record of Network Interface
 
@@ -156,7 +156,7 @@ Get a single record of Network Interface
         puts "#{nic.name}"
 ```
 
-## Destroy a single record
+## Destroy a single Network Interface
 
 Get a network interface object from the get method and then destroy that network interface.
 
@@ -196,7 +196,7 @@ List network interfaces in a resource group
     end
 ```
 
-## Retrieve a single record
+## Retrieve a single Public Ip
 
 Get a single record of Public Ip
 
@@ -207,7 +207,7 @@ Get a single record of Public Ip
         puts "#{pubip.name}"
 ```
 
-## Destroy a single record
+## Destroy a single Public Ip
 
 Get a Public IP object from the get method and then destroy that public IP.
 

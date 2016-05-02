@@ -32,7 +32,7 @@ Create a new resource group
         location: 'West US'
  )
 ```
-## List resource groups
+## List Resource Groups
 
 ```ruby
     azure_resources_service.resource_groups.each do |resource_group|
@@ -41,7 +41,7 @@ Create a new resource group
     end
 ```
 
-## Retrieve a single record
+## Retrieve a single Resource Group
 
 Get a single record of Resource Group
 
@@ -52,7 +52,7 @@ Get a single record of Resource Group
       puts "#{resource_group.name}"
 ```
 
-## Destroy a single record
+## Destroy a single Resource Group
 
 Get resource group object from the get method(described above) and then destroy that resource group.
 

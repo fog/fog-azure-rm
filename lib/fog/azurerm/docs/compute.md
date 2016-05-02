@@ -56,7 +56,7 @@ List servers in a resource group
     end
 ```
 
-## Retrieve a single record
+## Retrieve a single Server
 
 Get a single record of Server
 
@@ -67,7 +67,7 @@ Get a single record of Server
       puts "#{server.name}"
 ```
 
-## Destroy a single record
+## Destroy a single Server
 
 Get a server object from the get method(described above) and then destroy that server.
 
@@ -98,7 +98,7 @@ List availability sets in a resource group
     end
 ```
 
-## Retrieve a single record
+## Retrieve a single Availability Set
 
 Get a single record of Availability Set
 
@@ -109,7 +109,7 @@ Get a single record of Availability Set
         puts "#{availability_set.name}"
 ```
 
-## Destroy a single record
+## Destroy a single Availability Set
 
 Get an availability set object from the get method and then destroy that availability set.
 

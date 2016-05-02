@@ -61,7 +61,7 @@ Create a new storage account
     end
 ```
 
-## Retrieve a single record
+## Retrieve a single Storage Account
 
 Get a single record of Storage Account
 
@@ -72,7 +72,7 @@ Get a single record of Storage Account
         puts "#{storage_acc.name}"
 ```
 
-## Destroy a single record
+## Destroy a single Storage Account
 
 Get storage account object from the get method and then destroy that storage account.
 

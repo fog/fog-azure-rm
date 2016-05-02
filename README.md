@@ -1,19 +1,11 @@
 # Fog Azure Resource Manager
 
-This document describes how to get started with Fog using Microsoft Azure as a Cloud Resource Management Services Provider.
+This document describes how to get started with Fog using Microsoft Azure as a cloud resource management services provider.
 
 ## Pre-requisites
 
 * Fog supports Ruby version 2.0.0 or later
 * Fog requires Azure SDK For Ruby version 0.2.1. 
-
-## Supported Services
-
-Use following command for list of services, Fog provides for Azure Resource Manager.
-
-```ruby
-Fog::AzureRM.services
-```
 
 ## Installation
 
@@ -67,13 +59,22 @@ After creating the service principal, you should have three pieces of informatio
 
   Fog-AzureRM for storage includes implementaion of Storage Accounts. Readme for the usage of [Storage](https://github.com/Confiz/fog-azure-rm/blob/develop/lib/fog/azurerm/docs/storage.md) module.
   
+## Supported Services
+
+Use following command for the complete list of services, Fog provides for Azure Resource Manager.
+
+```ruby
+Fog::AzureRM.services
+```
+
+  
 ## Contributing
 
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+See [CONTRIBUTING.md](https://github.com/Confiz/fog-azure-rm/blob/develop/CONTRIBUTING.md) in this repository.
+
+## License
+
+The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
 
 
 

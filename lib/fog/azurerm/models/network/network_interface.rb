@@ -4,6 +4,7 @@ module Fog
       # NetworkInterface model class for Network Service
       class NetworkInterface < Fog::Model
         identity :name
+        attribute :id
         attribute :location
         attribute :resource_group
         attribute :subnet_id

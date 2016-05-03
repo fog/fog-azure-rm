@@ -1,3 +1,5 @@
+[![Gem Version](https://badge.fury.io/rb/fog-azure-rm.svg)](https://badge.fury.io/rb/fog-azure-rm)
+
 # Fog Azure Resource Manager
 
 This document describes how to get started with Fog using Microsoft Azure as a cloud resource management services provider.

@@ -43,23 +43,23 @@ After creating the service principal, you should have three pieces of informatio
 
 ### Compute
 
-  Fog-AzureRM for compute includes implementaion of Virtual Machines and Availability Sets. Readme for the usage of [Compute](https://github.com/Confiz/fog-azure-rm/blob/develop/lib/fog/azurerm/docs/compute.md) module.
+  Fog-AzureRM for compute includes implementaion of Virtual Machines and Availability Sets. Readme for the usage of [Compute](https://github.com/fog/fog-azure-rm/blob/master/lib/fog/azurerm/docs/compute.md) module.
 
 ### Resources
 
-  Fog-AzureRM for resources includes implementaion of Resource Groups. Readme for the usage of [Resources](https://github.com/Confiz/fog-azure-rm/blob/develop/lib/fog/azurerm/docs/resources.md) module.
+  Fog-AzureRM for resources includes implementaion of Resource Groups. Readme for the usage of [Resources](https://github.com/fog/fog-azure-rm/blob/master/lib/fog/azurerm/docs/resources.md) module.
 
 ### DNS
 
-  Fog-AzureRM for dns includes implementaion of Record sets and Zones. Readme for the usage of [DNS](https://github.com/Confiz/fog-azure-rm/blob/develop/lib/fog/azurerm/docs/dns.md) module.
+  Fog-AzureRM for dns includes implementaion of Record sets and Zones. Readme for the usage of [DNS](https://github.com/fog/fog-azure-rm/blob/master/lib/fog/azurerm/docs/dns.md) module.
 
 ### Network
 
-  Fog-AzureRM for network includes implementaion of Network Interfaces, Public IPs, Subnets and Virtual Networks. Readme for the usage of [Network](https://github.com/Confiz/fog-azure-rm/blob/develop/lib/fog/azurerm/docs/network.md) module.
+  Fog-AzureRM for network includes implementaion of Network Interfaces, Public IPs, Subnets and Virtual Networks. Readme for the usage of [Network](https://github.com/fog/fog-azure-rm/blob/master/lib/fog/azurerm/docs/network.md) module.
 
 ### Storage
 
-  Fog-AzureRM for storage includes implementaion of Storage Accounts. Readme for the usage of [Storage](https://github.com/Confiz/fog-azure-rm/blob/develop/lib/fog/azurerm/docs/storage.md) module.
+  Fog-AzureRM for storage includes implementaion of Storage Accounts. Readme for the usage of [Storage](https://github.com/fog/fog-azure-rm/blob/master/lib/fog/azurerm/docs/storage.md) module.
   
 ## Supported Services
 
@@ -72,7 +72,7 @@ Fog::AzureRM.services
   
 ## Contributing
 
-See [CONTRIBUTING.md](https://github.com/Confiz/fog-azure-rm/blob/develop/CONTRIBUTING.md) in this repository.
+See [CONTRIBUTING.md](https://github.com/fog/fog-azure-rm/blob/master/CONTRIBUTING.md) in this repository.
 
 ## License
 

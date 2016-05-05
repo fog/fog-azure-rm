@@ -1,6 +1,8 @@
 module Fog
   module DNS
     class AzureRM
+      # This class is giving implementation of create/save and
+      # delete/destroy for Zone.
       class Zone < Fog::Model
         identity :name
         attribute :id

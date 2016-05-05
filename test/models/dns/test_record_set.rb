@@ -11,7 +11,8 @@ class TestRecordSet < Minitest::Test
   def test_model_methods
     methods = [
       :save,
-      :destroy
+      :destroy,
+      :get_records
     ]
     methods.each do |method|
       assert @record_set.respond_to? method, true

@@ -11,7 +11,8 @@ class TestZones < Minitest::Test
   def test_collection_methods
     methods = [
       :all,
-      :get
+      :get,
+      :check_for_zone
     ]
     methods.each do |method|
       assert @zones.respond_to? method, true

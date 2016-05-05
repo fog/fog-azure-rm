@@ -26,6 +26,14 @@ module ApiStub
           result.body = Azure::ARM::Resources::Models::ResourceGroupListResult.deserialize_object(JSON.load(body))
           result
         end
+
+        def self.list_resource_groups_for_zones
+          resource_group = ::Azure::ARM::Resources::Models::ResourceGroup.new
+          resource_group.id = '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-resource-group'
+          resource_group.name = 'fog-test-resource-group'
+          resource_group.location = 'West US'
+          [resource_group]
+        end
       end
     end
   end

@@ -1,6 +1,8 @@
 module Fog
   module DNS
     class AzureRM
+      # This class is giving implementation of create/save and
+      # delete/destroy for RecordSet.
       class RecordSet < Fog::Model
         identity :name
         attribute :resource_group
@@ -20,7 +22,11 @@ module Fog
         end
 
         def destroy
-          service.delete_record_set(name, resource_group, zone_name, type.split("/").last)
+          service.delete_record_set(name, resource_group, zone_name, type.split('/').last)
+        end
+
+        def get_records(record_set_name, dns_resource_group, zone_name, record_type)
+          service.get_records_from_record_set(record_set_name, dns_resource_group, zone_name, record_type)
         end
       end
     end

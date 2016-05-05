@@ -4,6 +4,8 @@ require 'fog/azurerm/models/dns/zone'
 module Fog
   module DNS
     class AzureRM
+      # This class is giving implementation of
+      # all/get for Zones.
       class Zones < Fog::Collection
         model Fog::DNS::AzureRM::Zone
 
@@ -21,6 +23,10 @@ module Fog
 
         def get(identity, resource_group)
           all.find { |f| f.name == identity && f.resource_group == resource_group }
+        end
+
+        def check_for_zone(resource_group, name)
+          service.check_for_zone(resource_group, name)
         end
       end
     end

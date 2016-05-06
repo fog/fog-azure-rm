@@ -44,7 +44,7 @@ module Fog
               authorization: token)
             Fog::Logger.debug "RecordSet #{record_set_name} Created/Updated Successfully!"
             response
-          rescue => e
+          rescue Exception => e
             Fog::Logger.warning "Exception creating recordset #{record_set_name} in zone #{zone_name}."
             msg = "AzureDns::RecordSet - Exception is: #{e.message}"
             raise msg

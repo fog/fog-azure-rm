@@ -17,7 +17,7 @@ module Fog
             )
             Fog::Logger.debug "RecordSet #{record_set_name} Deleted Successfully!"
             true
-          rescue => e
+          rescue Exception => e
             Fog::Logger.warning "Exception deleting record set #{record_set_name} from resource group #{dns_resource_group}"
             msg = "AzureDns::RecordSet - Exception is: #{e.message}"
             raise msg

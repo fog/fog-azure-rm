@@ -13,7 +13,7 @@ module Fog
               content_type: 'application/json',
               authorization: token)
             dns_response['value']
-          rescue => e
+          rescue Exception => e
             Fog::Logger.warning "Exception listing recordsets in zone #{zone_name} in resource group #{dns_resource_group}"
             msg = "AzureDns::RecordSet - Exception is: #{e.message}"
             raise msg

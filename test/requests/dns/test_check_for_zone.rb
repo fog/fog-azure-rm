@@ -18,9 +18,17 @@ class TestCheckForZone < Minitest::Test
   end
 
   def test_check_for_zone_success_if_not_found
-    @token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
-      RestClient.stub :get, {} do
-        assert !@service.check_for_zone('fog-test-rg', 'fog-test-zone')
+    response = -> { fail RestClient::Exception.new('{"error": {"code": "ResourceNotFound"}}') }
+    @token_provider.stub :get_authentication_header, response do
+      assert !@service.check_for_zone('fog-test-rg', 'fog-test-zone')
+    end
+  end
+
+  def test_check_for_zone_success_if_not_found_failure
+    response = -> { fail RestClient::Exception.new('{"error": {"code": "InvalidCode"}}') }
+    @token_provider.stub :get_authentication_header, response do
+      assert_raises Exception do
+        @service.check_for_zone('fog-test-rg', 'fog-test-zone')
       end
     end
   end

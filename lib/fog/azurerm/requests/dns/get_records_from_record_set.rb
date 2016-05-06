@@ -16,7 +16,7 @@ module Fog
               content_type: 'application/json',
               authorization: token
             )
-          rescue => e
+          rescue Exception => e
             Fog::Logger.warning "Exception trying to get existing #{record_type} records for the record set: #{record_set_name}"
             msg = "AzureDns::RecordSet - Exception is: #{e.message}"
             raise msg
@@ -35,7 +35,7 @@ module Fog
               existing_records.push(dns_hash['properties']['CNAMERecord']['cname'])
             end
             return existing_records
-          rescue => e
+          rescue Exception => e
             Fog::Logger.warning "Exception trying to parse response: #{dns_response}"
             msg = "AzureDns::RecordSet - Exception is: #{e.message}"
             raise msg

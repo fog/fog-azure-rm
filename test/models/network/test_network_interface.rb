@@ -23,6 +23,7 @@ class TestNetworkInterface < Minitest::Test
     response = ApiStub::Models::Network::NetworkInterface.create_network_interface_response
     attributes = [
       :name,
+      :id,
       :location,
       :resource_group,
       :subnet_id,

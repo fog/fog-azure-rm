@@ -15,7 +15,8 @@ require 'fog/azurerm'
 Next, create a connection to the Storage Service:
 
 ```ruby
-    azure_storage_service = Fog::Storage::AzureRM.new(
+    azure_storage_service = Fog::Storage.new(
+        :provider => 'AzureRM',
         :tenant_id => '<Tenantid>',                 # Tenant id of Azure Active Directory Application
         :client_id =>    '<Clientid>',              # Client id of Azure Active Directory Application
         :client_secret => '<ClientSecret>',         # Client Secret of Azure Active Directory Application

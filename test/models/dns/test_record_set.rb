@@ -11,7 +11,8 @@ class TestRecordSet < Minitest::Test
   def test_model_methods
     methods = [
       :save,
-      :destroy
+      :destroy,
+      :get_records
     ]
     methods.each do |method|
       assert @record_set.respond_to? method, true
@@ -47,6 +48,12 @@ class TestRecordSet < Minitest::Test
   def test_destroy_method_false_response
     @service.stub :delete_record_set, false do
       assert !@record_set.destroy
+    end
+  end
+
+  def test_get_records_response
+    @service.stub :get_records_from_record_set, ['4.3.2.1', '5.3.2.1'] do
+      assert_equal @record_set.get_records('fog-test-record-set', 'fog-test-rg', 'fog-test-zone', 'A'), ['4.3.2.1', '5.3.2.1']
     end
   end
 end

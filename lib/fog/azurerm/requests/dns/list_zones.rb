@@ -1,12 +1,13 @@
 module Fog
   module DNS
     class AzureRM
+      # Real class for DNS Request
       class Real
         def list_zones
           zone_hash_array = []
           @resources.resource_groups.each do |rg|
             list_zones_by_rg(rg.name).each do |zone_hash|
-              zone_hash['resource_group'] = rg.name              
+              zone_hash['resource_group'] = rg.name
               zone_hash_array << zone_hash
             end
           end
@@ -20,25 +21,20 @@ module Fog
           begin
             token = Fog::Credentials::AzureRM.get_token(@tenant_id, @client_id, @client_secret)
             dns_response = RestClient.get(
-                resource_url,
-                accept: 'application/json',
-                content_type: 'application/json',
-                authorization: token)
-            response_hash = JSON.parse(dns_response)
-            response_hash['value']
-          rescue RestClient::Exception => e
-            body = JSON.parse(e.http_body)
-            if body.key?('error')
-              body = body['error']
-              msg = "Exception fetching zones: #{body['code']}, #{body['message']}"
-            else
-              msg = "Exception fetching zones: #{body['code']}, #{body['message']}"
-            end
+              resource_url,
+              accept: 'application/json',
+              content_type: 'application/json',
+              authorization: token)
+            dns_response
+          rescue Exception => e
+            Fog::Logger.warning "Exception listing zones in resource group #{dns_resource_group}"
+            msg = "AzureDns::RecordSet - Exception is: #{e.message}"
             raise msg
           end
         end
       end
 
+      # Mock class for DNS Request
       class Mock
         def list_zones
           zone = {

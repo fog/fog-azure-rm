@@ -1,3 +1,11 @@
+if ENV['COVERAGE'] == 'true'
+  require 'simplecov'
+  SimpleCov.start do
+    add_filter 'tests'
+    command_name 'Shindo'
+  end
+end
+
 require File.expand_path('../../lib/fog/azurerm', __FILE__)
 require File.expand_path('../azurerm_test_helper', __FILE__)
 

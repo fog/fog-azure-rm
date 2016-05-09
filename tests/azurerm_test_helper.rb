@@ -22,17 +22,17 @@ end
 
 def storage_account_attributes
   {
-    name: storage_account_name,
-    location: location,
-    resource_group: rg_name
+      name: storage_account_name,
+      location: location,
+      resource_group: rg_name
   }
 end
 
 def availability_set_attributes
   {
-    name: availability_set_name,
-    location: location,
-    resource_group: rg_name
+      name: availability_set_name,
+      location: location,
+      resource_group: rg_name
   }
 end
 
@@ -56,8 +56,8 @@ end
 
 def rg_attributes
   {
-    name: rg_name,
-    location: location
+      name: rg_name,
+      location: location
   }
 end
 
@@ -169,7 +169,7 @@ def fog_record_set
   rset = azurerm_dns_service.record_sets(resource_group: rg_name, zone_name: zone_name).find { |rs| rs.name == rs_name && rs.type == rs_record_type }
   unless rset
     rset = azurerm_dns_service.record_sets.create(
-      name: rs_name, resource_group: rg_name, zone_name: zone_name, records: rs_test_records, type: rs_record_type, ttl: rs_ttl
+        name: rs_name, resource_group: rg_name, zone_name: zone_name, records: rs_test_records, type: rs_record_type, ttl: rs_ttl
     )
   end
   rset
@@ -210,7 +210,7 @@ def fog_subnet
   subnet = azurerm_network_service.subnets({ resource_group: rg_name, virtual_network_name: virtual_network_name }).find{ |sn| sn.name == subnet_name }
   unless subnet
     subnet = azurerm_network_service.subnets.create(
-      name: subnet_name, resource_group: rg_name, virtual_network_name: virtual_network_name
+        name: subnet_name, resource_group: rg_name, virtual_network_name: virtual_network_name
     )
   end
   subnet
@@ -220,7 +220,7 @@ def fog_network_interface
   nic = azurerm_network_service.network_interfaces(resource_group: rg_name).find { |ni| ni.name == network_interface_name }
   unless nic
     nic = azurerm_network_service.network_interfaces.create(
-      name: network_interface_name, resource_group: rg_name, location: location, subnet_id: subnet_id_for_network_interface, ip_configuration_name: ip_configurations_name_for_network_interface, private_ip_allocation_method: private_ip_allocation_method_for_network_interface
+        name: network_interface_name, resource_group: rg_name, location: location, subnet_id: subnet_id_for_network_interface, ip_configuration_name: ip_configurations_name_for_network_interface, private_ip_allocation_method: private_ip_allocation_method_for_network_interface
     )
   end
   nic

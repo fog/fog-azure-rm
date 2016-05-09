@@ -2,7 +2,7 @@ require File.expand_path('../../../helper', __FILE__)
 
 Shindo.tests('Fog::Network[:azurerm] | virtual_network request', %w(azurerm network)) do
   tests('#virtual_networks') do
-    virtual_networks = azurerm_network_service.virtual_networks
+    virtual_networks = azurerm_network_service.virtual_networks(resource_group: fog_resource_group)
     virtual_networks = [fog_virtual_network] if virtual_networks.empty?
 
     test 'returns a Array' do

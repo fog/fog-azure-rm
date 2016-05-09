@@ -176,7 +176,7 @@ def fog_record_set
 end
 
 def fog_virtual_network
-  vnet = azurerm_network_service.virtual_networks.find { |v| v.name == virtual_network_name && v.resource_group == rg_name }
+  vnet = azurerm_network_service.virtual_networks(resource_group: rg_name).find { |v| v.name == virtual_network_name && v.resource_group == rg_name }
   unless vnet
     vnet = azurerm_network_service.virtual_networks.create(name: virtual_network_name, location: location, resource_group: rg_name)
   end

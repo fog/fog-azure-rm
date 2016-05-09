@@ -15,7 +15,7 @@ module Fog
       end
 
       class Mock
-        def list_virtual_networks
+        def list_virtual_networks(_resource_group)
           vnet = Azure::ARM::Network::Models::VirtualNetwork.new
           vnet.id = '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-resource-group/providers/Microsoft.Network/virtualNetworks/fogtestvnet'
           vnet.name = 'fogtestvnet'

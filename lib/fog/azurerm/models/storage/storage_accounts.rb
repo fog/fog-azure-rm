@@ -24,6 +24,7 @@ module Fog
             account.instance_variables.each do |var|
               hash[var.to_s.delete('@')] = account.instance_variable_get(var)
             end
+            hash['resource_group'] = resource_group
             accounts << hash
           end
           load(accounts)

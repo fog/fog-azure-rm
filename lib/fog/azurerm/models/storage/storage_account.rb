@@ -14,6 +14,18 @@ module Fog
         attribute :resource_group
         attribute :properties
 
+        def self.parse(storaqe_account)
+          hash = {}
+          hash['id'] = storaqe_account['id']
+          hash['name'] = storaqe_account['name']
+          hash['type'] = storaqe_account['type']
+          hash['location'] = storaqe_account['location']
+          hash['tags'] = storaqe_account['tags']
+          hash['resource_group'] = storaqe_account['resource_group']
+          hash['properties'] = storaqe_account['properties']
+          hash
+        end
+
         def save
           requires :name
           requires :location
@@ -25,7 +37,9 @@ module Fog
           params = Azure::ARM::Storage::Models::StorageAccountCreateParameters.new
           params.properties = properties
           params.location = location
-          service.create_storage_account(resource_group, name, params)
+          storage_acc = service.create_storage_account(resource_group, name, params)
+          puts "Storage account: #{storage_acc.inspect}"
+          merge_attributes(Fog::Storage::AzureRM::StorageAccount.parse(storage_acc))
         end
 
         def destroy

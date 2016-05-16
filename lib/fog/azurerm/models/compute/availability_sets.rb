@@ -16,12 +16,10 @@ module Fog
             service.list_availability_sets(resource_group)
           unless list_of_availability_sets.nil?
             list_of_availability_sets.each do |account|
-              hash = {}
-              account.instance_variables.each do |var|
-                hash[var.to_s.delete('@')] = account.instance_variable_get(var)
-              end
-              hash['resource_group'] = resource_group
-              accounts << hash
+              puts "Account: #{account.inspect}"
+              parse_response = Fog::Compute::AzureRM::AvailabilitySet.parse(account)
+              accounts << parse_response
+              puts "Account: #{accounts}"
             end
           end
           load(accounts)

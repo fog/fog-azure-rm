@@ -12,7 +12,7 @@ module Fog
             promise = @compute_mgmt_client.availability_sets.create_or_update(resource_group, name, avail_set_props)
             result = promise.value!
             Fog::Logger.debug "Availability Set #{name} created successfully."
-            result
+            Azure::ARM::Compute::Models::AvailabilitySet.serialize_object(result.body)
           rescue MsRestAzure::AzureOperationError => e
             msg = "Exception creating Availability Set #{name} in Resource Group: #{resource_group}. #{e.body['error']['message']}"
             raise msg

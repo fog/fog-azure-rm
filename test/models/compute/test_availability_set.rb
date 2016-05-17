@@ -24,23 +24,24 @@ class TestAvailabilitySet < Minitest::Test
       :name,
       :type,
       :location,
-      :tags,
       :resource_group,
-      :properties
+      :platformUpdateDomainCount,
+      :platformFaultDomainCount
     ]
     attributes.each do |attribute|
-      assert @availability_set.respond_to? attribute, true
+      assert_respond_to @availability_set, attribute
     end
   end
 
   def test_save_method_response
     @service.stub :create_availability_set, @response do
-      assert_instance_of MsRestAzure::AzureOperationResponse, @availability_set.save
+      assert_instance_of Fog::Compute::AzureRM::AvailabilitySet, @availability_set.save
     end
   end
 
   def test_destroy_method_response
-    @service.stub :delete_availability_set, @response do
+    response = ApiStub::Models::Compute::AvailabilitySet.delete_availability_set_response
+    @service.stub :delete_availability_set, response do
       assert_instance_of MsRestAzure::AzureOperationResponse, @availability_set.destroy
     end
   end

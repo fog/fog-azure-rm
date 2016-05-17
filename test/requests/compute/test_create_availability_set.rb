@@ -14,8 +14,8 @@ class TestCreateAvailabilitySet < Minitest::Test
     response = ApiStub::Requests::Compute::AvailabilitySet.create_availability_set_response
     @promise.stub :value!, response do
       @availability_sets.stub :create_or_update, @promise do
-        assert_equal @service.create_availability_set('fog-test-rg', 'fog-test-as', 'west us'), response
-      end
+       assert_equal @service.create_availability_set('fog-test-rg', 'fog-test-as', 'west us'), Azure::ARM::Compute::Models::AvailabilitySet.serialize_object(response.body)
+        end
     end
   end
 

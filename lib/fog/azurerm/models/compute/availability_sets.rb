@@ -16,10 +16,8 @@ module Fog
             service.list_availability_sets(resource_group)
           unless list_of_availability_sets.nil?
             list_of_availability_sets.each do |account|
-              puts "Account: #{account.inspect}"
               parse_response = Fog::Compute::AzureRM::AvailabilitySet.parse(account)
               accounts << parse_response
-              puts "Account: #{accounts}"
             end
           end
           load(accounts)

@@ -15,15 +15,15 @@ module Fog
         attribute :platformFaultDomainCount
 
         def self.parse(as)
-        hash = {}
-        hash['id'] = as['id']
-        hash['name'] = as['name']
-        hash['type'] = as['type']
-        hash['location'] = as['location']
-        hash['resource_group'] = as['id'].split('/')[4]
-        hash['platformUpdateDomainCount'] = as['properties']['platformUpdateDomainCount']
-        hash['platformFaultDomainCount'] = as['properties']['platformFaultDomainCount']
-        hash
+          hash = {}
+          hash['id'] = as['id']
+          hash['name'] = as['name']
+          hash['type'] = as['type']
+          hash['location'] = as['location']
+          hash['resource_group'] = as['id'].split('/')[4]
+          hash['platformUpdateDomainCount'] = as['properties']['platformUpdateDomainCount']
+          hash['platformFaultDomainCount'] = as['properties']['platformFaultDomainCount']
+          hash
         end
 
         def save

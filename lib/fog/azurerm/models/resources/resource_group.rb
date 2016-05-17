@@ -9,7 +9,8 @@ module Fog
         def save
           requires :name
           requires :location
-          service.create_resource_group(name, location)
+          resource_group = service.create_resource_group(name, location)
+          merge_attributes(resource_group)
         end
 
         def destroy

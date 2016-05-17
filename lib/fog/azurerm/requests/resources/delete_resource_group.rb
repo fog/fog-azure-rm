@@ -8,7 +8,7 @@ module Fog
             promise = @rmc.resource_groups.delete(name)
             result = promise.value!
             Fog::Logger.debug "Resource Group #{name} deleted successfully."
-            result
+            true
           rescue  MsRestAzure::AzureOperationError => e
             msg = "Exception deleting Resource Group #{name}. #{e.body['error']['message']}"
             raise msg

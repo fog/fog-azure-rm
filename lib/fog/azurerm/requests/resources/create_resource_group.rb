@@ -10,7 +10,7 @@ module Fog
             promise = @rmc.resource_groups.create_or_update(name, rg_properties)
             result = promise.value!
             Fog::Logger.debug "Resource Group #{name} created successfully."
-            result
+            Azure::ARM::Resources::Models::ResourceGroup.serialize_object(result.body)
           rescue  MsRestAzure::AzureOperationError => e
             msg = "Exception creating Resource Group #{name}. #{e.body['error']['message']}"
             raise msg

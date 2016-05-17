@@ -12,7 +12,7 @@ module Fog
             promise = @compute_mgmt_client.availability_sets.create_or_update(resource_group, name, avail_set_props)
             result = promise.value!
             Fog::Logger.debug "Availability Set #{name} created successfully."
-            result
+            Azure::ARM::Compute::Models::AvailabilitySet.serialize_object(result.body)
           rescue MsRestAzure::AzureOperationError => e
             msg = "Exception creating Availability Set #{name} in Resource Group: #{resource_group}. #{e.body['error']['message']}"
             raise msg
@@ -38,6 +38,16 @@ module Fog
       # This class provides the mock implementation for unit tests.
       class Mock
         def create_availability_set(resource_group, name, params)
+          {
+              "location"=>"westus",
+              "id"=>"/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/Fog_test_rg/providers/Microsoft.Compute/availabilitySets/fogtestas",
+              "name"=>"fogtestas",
+              "type"=>"Microsoft.Compute/availabilitySets",
+              "properties"=>{
+                  "platformUpdateDomainCount"=>2,
+                             "platformFaultDomainCount"=>2
+              }
+          }
         end
       end
     end

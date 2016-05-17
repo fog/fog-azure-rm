@@ -10,16 +10,30 @@ module Fog
         identity  :name
         attribute :type
         attribute :location
-        attribute :tags
         attribute :resource_group
-        attribute :properties
+        attribute :platform_update_domain_count
+        attribute :platform_fault_domain_count
+
+        def self.parse(as)
+          hash = {}
+          hash['id'] = as['id']
+          hash['name'] = as['name']
+          hash['type'] = as['type']
+          hash['location'] = as['location']
+          hash['resource_group'] = as['id'].split('/')[4]
+          hash['platform_update_domain_count'] = as['properties']['platformUpdateDomainCount']
+          hash['platform_fault_domain_count'] = as['properties']['platformFaultDomainCount']
+          hash
+        end
 
         def save
           requires :name
           requires :location
           requires :resource_group
           # need to create the availability set
-          service.create_availability_set(resource_group, name, location)
+          as = service.create_availability_set(resource_group, name, location)
+          hash = Fog::Compute::AzureRM::AvailabilitySet.parse(as)
+          merge_attributes(hash)
         end
 
         def destroy

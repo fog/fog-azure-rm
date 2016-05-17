@@ -1,5 +1,5 @@
 require File.expand_path('../../../helper', __FILE__)
-# rubocop:disable LineLength
+
 Shindo.tests('Fog::Compute[:azurerm] | availability_set model', %w(azurerm compute)) do
   availability_set = fog_availability_set
 
@@ -10,9 +10,13 @@ Shindo.tests('Fog::Compute[:azurerm] | availability_set model', %w(azurerm compu
     tests('have attributes') do
       model_attribute_hash = availability_set.attributes
       attributes = [
+        :id,
         :name,
+        :type,
         :location,
-        :resource_group
+        :resource_group,
+        :platformUpdateDomainCount,
+        :platformFaultDomainCount
       ]
       tests('The availability set model should respond to') do
         attributes.each do |attribute|

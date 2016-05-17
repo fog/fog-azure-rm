@@ -13,11 +13,11 @@ end
 desc 'Generates a coverage report for minitest-cases'
 task :minitest_coverage do
   ENV['COVERAGE'] = 'true'
-  Rake::Task['mini_test'].execute
+  Dir.glob('**/test_*.rb').each { |file| require File.expand_path file, __dir__ }
 end
 
 desc 'Generates a coverage report for shindotest-cases'
 task :shindo_coverage do
   ENV['COVERAGE'] = 'true'
-  Rake::Task['shindo_test'].execute
+  sh "shindo tests"
 end

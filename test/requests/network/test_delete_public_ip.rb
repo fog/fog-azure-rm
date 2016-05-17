@@ -14,7 +14,7 @@ class TestDeletePublicIp < Minitest::Test
     response = ApiStub::Requests::Network::PublicIp.delete_public_ip_response
     @promise.stub :value!, response do
       @public_ips.stub :delete, @promise do
-        assert_equal @service.delete_public_ip('fog-test-rg', 'fog-test-public-ip'), response
+        assert @service.delete_public_ip('fog-test-rg', 'fog-test-public-ip')
       end
     end
   end

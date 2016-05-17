@@ -26,7 +26,6 @@ class TestSubnet < Minitest::Test
       :id,
       :resource_group,
       :virtual_network_name,
-      :properties,
       :addressPrefix,
       :networkSecurityGroupId,
       :routeTableId,
@@ -42,14 +41,13 @@ class TestSubnet < Minitest::Test
   def test_save_method_response
     response = ApiStub::Models::Network::Subnet.create_subnet_response
     @service.stub :create_subnet, response do
-      assert_instance_of Azure::ARM::Network::Models::Subnet, @subnet.save
+      assert_instance_of Fog::Network::AzureRM::Subnet, @subnet.save
     end
   end
 
   def test_destroy_method_response
-    response = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
-    @service.stub :delete_subnet, response do
-      assert_instance_of MsRestAzure::AzureOperationResponse, @subnet.destroy
+    @service.stub :delete_subnet, true do
+      assert @subnet.destroy
     end
   end
 end

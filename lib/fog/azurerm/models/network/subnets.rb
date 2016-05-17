@@ -15,13 +15,7 @@ module Fog
           requires :virtual_network_name
           subnets = []
           service.list_subnets(resource_group, virtual_network_name).each do |subnet|
-            hash = {}
-            subnet.instance_variables.each do |var|
-              hash[var.to_s.delete('@')] = subnet.instance_variable_get(var)
-            end
-            hash['resource_group'] = subnet.instance_variable_get('@id').split('/')[4]
-            hash['virtual_network_name'] = subnet.instance_variable_get('@id').split('/')[8]
-            subnets << hash
+            subnets << Fog::Network::AzureRM::Subnet.parse(subnet)
           end
           load(subnets)
         end

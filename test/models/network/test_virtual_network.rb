@@ -28,8 +28,7 @@ class TestVirtualNetwork < Minitest::Test
       :dns_list,
       :subnet_address_list,
       :network_address_list,
-      :resource_group,
-      :properties
+      :resource_group
     ]
     @service.stub :create_virtual_network, response do
       attributes.each do |attribute|
@@ -41,7 +40,7 @@ class TestVirtualNetwork < Minitest::Test
   def test_save_method_response
     response = ApiStub::Models::Network::VirtualNetwork.create_virtual_network_response
     @service.stub :create_virtual_network, response do
-      assert_instance_of Azure::ARM::Network::Models::VirtualNetwork, @virtual_network.save
+      assert_instance_of Fog::Network::AzureRM::VirtualNetwork, @virtual_network.save
     end
   end
 

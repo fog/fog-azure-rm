@@ -5,10 +5,13 @@ module Fog
       # Real class for Network Request
       class Real
         def create_network_interface(name, location, resource_group, subnet_id, ip_config_name, prv_ip_alloc_method)
+          Fog::Logger.debug "Creating Network Interface Card: #{name}..."
           network_interface = define_network_interface(name, location, subnet_id, ip_config_name, prv_ip_alloc_method)
           begin
             promise = @network_client.network_interfaces.create_or_update(resource_group, name, network_interface)
-            promise.value!
+            result = promise.value!
+            Fog::Logger.debug "Network Interface #{name} created successfully."
+            Azure::ARM::Network::Models::NetworkInterface.serialize_object(result.body)
           rescue MsRestAzure::AzureOperationError => e
             msg = "Exception creating Network Interface #{name} in Resource Group: #{resource_group}. #{e.body['error']['message']}"
             raise msg

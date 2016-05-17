@@ -12,14 +12,8 @@ module Fog
         def all
           requires :resource_group
           public_ips = []
-          pubip_list = service.list_public_ips(resource_group)
-          pubip_list.each do |pip|
-            hash = {}
-            pip.instance_variables.each do |var|
-              hash[var.to_s.delete('@')] = pip.instance_variable_get(var)
-            end
-            hash['resource_group'] = resource_group
-            public_ips << hash
+          service.list_public_ips(resource_group).each do |pip|
+            public_ips << Fog::Network::AzureRM::PublicIp.parse(pip)
           end
           load(public_ips)
         end

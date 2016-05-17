@@ -11,19 +11,21 @@ class TestCreateVirtualNetwork < Minitest::Test
   end
 
   def test_create_virtual_network_success
-    response = ApiStub::Requests::Network::VirtualNetwork.create_virtual_network_response
-    @promise.stub :value!, response do
+    mocked_response = ApiStub::Requests::Network::VirtualNetwork.create_virtual_network_response
+    expected_response = Azure::ARM::Network::Models::VirtualNetwork.serialize_object(mocked_response.body)
+    @promise.stub :value!, mocked_response do
       @virtual_networks.stub :create_or_update, @promise do
-        assert_equal @service.create_virtual_network('fog-test-virtual-network', 'westus', 'fog-test-rg', '10.1.0.0/24', '10.1.0.5,10.1.0.6', '10.1.0.0/16,10.2.0.0/16'), response
+        assert_equal @service.create_virtual_network('fog-test-virtual-network', 'westus', 'fog-test-rg', '10.1.0.0/24', '10.1.0.5,10.1.0.6', '10.1.0.0/16,10.2.0.0/16'), expected_response
       end
     end
   end
 
   def test_create_virtual_network_success_with_network_address_list_nil
-    response = ApiStub::Requests::Network::VirtualNetwork.create_virtual_network_response
-    @promise.stub :value!, response do
+    mocked_response = ApiStub::Requests::Network::VirtualNetwork.create_virtual_network_response
+    expected_response = Azure::ARM::Network::Models::VirtualNetwork.serialize_object(mocked_response.body)
+    @promise.stub :value!, mocked_response do
       @virtual_networks.stub :create_or_update, @promise do
-        assert_equal @service.create_virtual_network('fog-test-virtual-network', 'westus', 'fog-test-rg', '10.1.0.0/24', '10.1.0.5,10.1.0.6', nil), response
+        assert_equal @service.create_virtual_network('fog-test-virtual-network', 'westus', 'fog-test-rg', '10.1.0.0/24', '10.1.0.5,10.1.0.6', nil), expected_response
       end
     end
   end

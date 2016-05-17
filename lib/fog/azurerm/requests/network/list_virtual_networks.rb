@@ -6,7 +6,7 @@ module Fog
           begin
             response = @network_client.virtual_networks.list(resource_group)
             result = response.value!
-            result.body.value
+            Azure::ARM::Network::Models::VirtualNetworkListResult.serialize_object(result.body)['value']
           rescue MsRestAzure::AzureOperationError => e
             msg = "Exception listing Virtual Networks. #{e.body['error']['message']}."
             raise msg

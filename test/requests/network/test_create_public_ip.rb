@@ -11,10 +11,11 @@ class TestCreatePublicIp < Minitest::Test
   end
 
   def test_create_public_ip_success
-    response = ApiStub::Requests::Network::PublicIp.create_public_ip_response
-    @promise.stub :value!, response do
+    mocked_response = ApiStub::Requests::Network::PublicIp.create_public_ip_response
+    expected_response = Azure::ARM::Network::Models::PublicIPAddress.serialize_object(mocked_response.body)
+    @promise.stub :value!, mocked_response do
       @public_ips.stub :create_or_update, @promise do
-        assert_equal @service.create_public_ip('fog-test-rg', 'fog-test-public-ip', 'West US', 'Dynamic'), response
+        assert_equal @service.create_public_ip('fog-test-rg', 'fog-test-public-ip', 'West US', 'Dynamic'), expected_response
       end
     end
   end

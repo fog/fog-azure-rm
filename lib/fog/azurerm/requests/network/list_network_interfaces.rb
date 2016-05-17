@@ -7,9 +7,8 @@ module Fog
           Fog::Logger.debug "Getting list of NetworkInterfaces from Resource Group #{resource_group}."
           begin
             promise = @network_client.network_interfaces.list(resource_group)
-            response = promise.value!
-            result = response.body.value
-            return result
+            result = promise.value!
+            Azure::ARM::Network::Models::NetworkInterfaceListResult.serialize_object(result.body)['value']
           rescue  MsRestAzure::AzureOperationError => e
             msg = "Exception listing Network Interfaces from Resource Group '#{resource_group}'. #{e.body['error']['message']}."
             raise msg

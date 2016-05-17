@@ -14,7 +14,7 @@ class TestDeleteNetworkInterface < Minitest::Test
     response = ApiStub::Requests::Network::NetworkInterface.delete_network_interface_response
     @promise.stub :value!, response do
       @network_interfaces.stub :delete, @promise do
-        assert_equal @service.delete_network_interface('fog-test-rg', 'fog-test-network-interface'), response
+        assert @service.delete_network_interface('fog-test-rg', 'fog-test-network-interface'), response
       end
     end
   end

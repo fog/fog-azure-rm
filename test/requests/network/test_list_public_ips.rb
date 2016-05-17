@@ -11,10 +11,11 @@ class TestListPublicIps < Minitest::Test
   end
 
   def test_list_public_ips_success
-    response = ApiStub::Requests::Network::PublicIp.list_public_ips_response
-    @promise.stub :value!, response do
+    mocked_response = ApiStub::Requests::Network::PublicIp.list_public_ips_response
+    expected_response = Azure::ARM::Network::Models::PublicIPAddressListResult.serialize_object(mocked_response.body)
+    @promise.stub :value!, mocked_response do
       @public_ips.stub :list, @promise do
-        assert @service.list_public_ips('fog-test-rg'), response
+        assert_equal @service.list_public_ips('fog-test-rg'), expected_response['value']
       end
     end
   end

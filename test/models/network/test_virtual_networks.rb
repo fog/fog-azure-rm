@@ -35,8 +35,8 @@ class TestVirtualNetworks < Minitest::Test
   def test_get_method_response
     response = [ApiStub::Models::Network::VirtualNetwork.create_virtual_network_response]
     @service.stub :list_virtual_networks, response do
-      assert_instance_of Fog::Network::AzureRM::VirtualNetwork, @virtual_networks.get('fog-test-virtual-network', 'fog-test-rg')
-      assert @virtual_networks.get('wrong-name', 'fog-test-rg').nil?, true
+      assert_instance_of Fog::Network::AzureRM::VirtualNetwork, @virtual_networks.get('fog-test-virtual-network')
+      assert @virtual_networks.get('wrong-name').nil?, true
     end
   end
 

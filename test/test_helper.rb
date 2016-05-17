@@ -70,7 +70,7 @@ def public_ip(service)
       name: 'fog-test-public-ip',
       resource_group: 'fog-test-rg',
       location: 'West US',
-      type: 'Dynamic',
+      public_ip_allocation_method: 'Dynamic',
       service: service
   )
 end

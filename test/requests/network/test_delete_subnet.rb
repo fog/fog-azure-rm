@@ -14,7 +14,7 @@ class TestDeleteSubnet < Minitest::Test
     response = ApiStub::Requests::Network::Subnet.delete_subnet_response
     @promise.stub :value!, response do
       @subnets.stub :delete, @promise do
-        assert_equal @service.delete_subnet('fog-test-rg', 'fog-test-virtual-network', 'fog-test-subnet'), response
+        assert @service.delete_subnet('fog-test-rg', 'fog-test-virtual-network', 'fog-test-subnet')
       end
     end
   end

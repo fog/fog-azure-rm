@@ -23,9 +23,16 @@ class TestPublicIp < Minitest::Test
     response = ApiStub::Models::Network::PublicIp.create_public_ip_response
     attributes = [
       :name,
-      :type,
+      :id,
       :location,
-      :resource_group
+      :resource_group,
+      :ip_address,
+      :public_ip_allocation_method,
+      :idle_timeout_in_minutes,
+      :ip_configuration_id,
+      :domain_name_label,
+      :fqdn,
+      :reverse_fqdn
     ]
     @service.stub :create_public_ip, response do
       attributes.each do |attribute|
@@ -37,7 +44,7 @@ class TestPublicIp < Minitest::Test
   def test_save_method_response
     response = ApiStub::Models::Network::PublicIp.create_public_ip_response
     @service.stub :create_public_ip, response do
-      assert_instance_of Azure::ARM::Network::Models::PublicIPAddress, @public_ip.save
+      assert_instance_of Fog::Network::AzureRM::PublicIp, @public_ip.save
     end
   end
 

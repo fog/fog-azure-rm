@@ -14,7 +14,7 @@ class TestDeleteVirtualNetwork < Minitest::Test
     response = ApiStub::Requests::Network::VirtualNetwork.delete_virtual_network_response
     @promise.stub :value!, response do
       @virtual_networks.stub :delete, @promise do
-        assert_equal @service.delete_virtual_network('fog-test-rg', 'fog-test-virtual-network'), response
+        assert @service.delete_virtual_network('fog-test-rg', 'fog-test-virtual-network')
       end
     end
   end

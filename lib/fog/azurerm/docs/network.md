@@ -129,7 +129,7 @@ Create a new network interface. The parameter, private_ip_allocation_method can 
         resource_group: '<Resource Group name>',
         location: 'eastus',
         subnet_id: '/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/virtualNetworks/<Virtual Network name>/subnets/<Subnet name>',
-        ip_configurations_name: '<Ip Configuration Name>',
+        ip_configuration_name: '<Ip Configuration Name>',
         private_ip_allocation_method: 'Dynamic'
  )
 ```
@@ -173,7 +173,7 @@ Create a new public IP. The parameter, type can be Dynamic or Static.
             name: '<Public IP name>',
             resource_group: '<Resource Group name>',
             location: 'westus',
-            type: 'Static'
+            public_ip_allocation_method: 'Static'
       )
 ```
 

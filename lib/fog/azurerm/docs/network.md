@@ -84,7 +84,7 @@ Create a new Subnet
         name: '<Subnet name>',
         resource_group: '<Resource Group name>',
         virtual_network_name: '<Virtual Network name>',
-        addressPrefix: '10.1.0.0/24'
+        address_prefix: '10.1.0.0/24'
     )   
  )
 ```

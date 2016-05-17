@@ -11,10 +11,11 @@ class TestListVirtualNetworks < Minitest::Test
   end
 
   def test_list_virtual_networks_success
-    response = ApiStub::Requests::Network::VirtualNetwork.list_virtual_networks_response
-    @promise.stub :value!, response do
+    mocked_response = ApiStub::Requests::Network::VirtualNetwork.list_virtual_networks_response
+    expected_response = Azure::ARM::Network::Models::VirtualNetworkListResult.serialize_object(mocked_response.body)
+    @promise.stub :value!, mocked_response do
       @virtual_networks.stub :list, @promise do
-        assert @service.list_virtual_networks('fog-test-rg'), response
+        assert_equal @service.list_virtual_networks('fog-test-rg'), expected_response['value']
       end
     end
   end

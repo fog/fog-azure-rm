@@ -8,7 +8,7 @@ module Fog
           begin
             promise = @network_client.public_ipaddresses.list(resource_group)
             result = promise.value!
-            Azure::ARM::Network::Models::PublicIPAddressListResult.serialize_object(result.body)
+            Azure::ARM::Network::Models::PublicIPAddressListResult.serialize_object(result.body)['value']
           rescue  MsRestAzure::AzureOperationError => e
             msg = "Exception listing Public IPs from Resource Group '#{resource_group}'. #{e.body['error']['message']}."
             raise msg

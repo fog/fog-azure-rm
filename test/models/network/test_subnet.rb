@@ -26,10 +26,10 @@ class TestSubnet < Minitest::Test
       :id,
       :resource_group,
       :virtual_network_name,
-      :addressPrefix,
-      :networkSecurityGroupId,
-      :routeTableId,
-      :ipConfigurations
+      :address_prefix,
+      :network_security_group_id,
+      :route_table_id,
+      :ip_configurations_ids
     ]
     @service.stub :create_subnet, response do
       attributes.each do |attribute|

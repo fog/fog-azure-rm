@@ -11,8 +11,8 @@ module Fog
         attribute :type
         attribute :location
         attribute :resource_group
-        attribute :platformUpdateDomainCount
-        attribute :platformFaultDomainCount
+        attribute :platform_update_domain_count
+        attribute :platform_fault_domain_count
 
         def self.parse(as)
           hash = {}
@@ -21,8 +21,8 @@ module Fog
           hash['type'] = as['type']
           hash['location'] = as['location']
           hash['resource_group'] = as['id'].split('/')[4]
-          hash['platformUpdateDomainCount'] = as['properties']['platformUpdateDomainCount']
-          hash['platformFaultDomainCount'] = as['properties']['platformFaultDomainCount']
+          hash['platform_update_domain_count'] = as['properties']['platformUpdateDomainCount']
+          hash['platform_fault_domain_count'] = as['properties']['platformFaultDomainCount']
           hash
         end
 

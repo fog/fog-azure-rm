@@ -7,7 +7,6 @@ module Fog
           zone_hash_array = []
           @resources.resource_groups.each do |rg|
             list_zones_by_rg(rg.name).each do |zone_hash|
-              zone_hash['resource_group'] = rg.name
               zone_hash_array << zone_hash
             end
           end
@@ -25,7 +24,8 @@ module Fog
               accept: 'application/json',
               content_type: 'application/json',
               authorization: token)
-            dns_response
+            parsed_zone = JSON.parse(dns_response)
+            parsed_zone['value']
           rescue Exception => e
             Fog::Logger.warning "Exception listing zones in resource group #{dns_resource_group}"
             msg = "AzureDns::RecordSet - Exception is: #{e.message}"

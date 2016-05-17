@@ -16,8 +16,8 @@ class TestListZones < Minitest::Test
 
     client.stub :resource_groups, list_resources_response do
       @token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
-        RestClient.stub :get, [list_zones_response] do
-          assert_equal @service.list_zones, [list_zones_response]
+        RestClient.stub :get, list_zones_response do
+          assert_equal @service.list_zones, JSON.parse(list_zones_response)['value']
         end
       end
     end

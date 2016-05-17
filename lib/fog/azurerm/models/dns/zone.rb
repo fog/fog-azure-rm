@@ -4,8 +4,8 @@ module Fog
       # This class is giving implementation of create/save and
       # delete/destroy for Zone.
       class Zone < Fog::Model
-        identity :name
         attribute :id
+        identity :name
         attribute :resource_group
         attribute :location
         attribute :type
@@ -18,13 +18,14 @@ module Fog
           hash = {}
           hash['id'] = zone['id']
           hash['name'] = zone['name']
-          hash['resource_group'] = zone['resource_group']
+          hash['resource_group'] = zone['id'].split('/')[4]
           hash['location'] = zone['location']
           hash['type'] = zone['type']
           hash['tags'] = zone['tags']
           hash['etag'] = zone['etag']
-          hash['number_of_record_sets'] = zone['numberOfRecordSets']
-          hash['max_number_of_recordsets'] = zone['maxNumberOfRecordSets']
+          hash['number_of_record_sets'] = zone['properties']['numberOfRecordSets']
+          hash['max_number_of_recordsets'] = zone['properties']['maxNumberOfRecordSets']
+          hash
         end
 
         def save

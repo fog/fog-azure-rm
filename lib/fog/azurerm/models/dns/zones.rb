@@ -12,11 +12,7 @@ module Fog
         def all
           zones = []
           service.list_zones.each do |z|
-            hash = {}
-            z.each do |k, v|
-              hash[k] = v
-            end
-            zones << hash
+            zones << Fog::DNS::AzureRM::Zone.parse(z)
           end
           load(zones)
         end

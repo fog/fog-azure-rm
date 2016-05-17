@@ -11,10 +11,11 @@ class TestListResourceGroups < Minitest::Test
   end
 
   def test_list_resource_group_success
-    response = ApiStub::Requests::Resources::ResourceGroup.list_resource_group_response
-    @promise.stub :value!, response do
+    mokced_response = ApiStub::Requests::Resources::ResourceGroup.list_resource_group_response
+    expected_response = Azure::ARM::Resources::Models::ResourceGroupListResult.serialize_object(mokced_response.body)['value']
+    @promise.stub :value!, mokced_response do
       @resource_groups.stub :list, @promise do
-        assert_equal @service.list_resource_groups, response.body.value
+        assert_equal @service.list_resource_groups, expected_response
       end
     end
   end

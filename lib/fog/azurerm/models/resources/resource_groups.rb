@@ -8,15 +8,7 @@ module Fog
         model Fog::Resources::AzureRM::ResourceGroup
 
         def all
-          resource_groups = []
-          service.list_resource_groups.each do |rg|
-            hash = {}
-            rg.instance_variables.each do |var|
-              hash[var.to_s.delete('@')] = rg.instance_variable_get(var)
-            end
-            resource_groups << hash
-          end
-          load(resource_groups)
+          load(service.list_resource_groups)
         end
 
         def get(identity)

@@ -31,13 +31,13 @@ class TestResourceGroup < Minitest::Test
 
   def test_save_method_response
     @service.stub :create_resource_group, @response do
-      assert_instance_of MsRestAzure::AzureOperationResponse, @resource_group.save
+      assert_instance_of Fog::Resources::AzureRM::ResourceGroup, @resource_group.save
     end
   end
 
   def test_destroy_method_response
     @service.stub :delete_resource_group, @response do
-      assert_instance_of MsRestAzure::AzureOperationResponse, @resource_group.destroy
+      assert @resource_group.destroy
     end
   end
 end

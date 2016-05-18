@@ -17,17 +17,8 @@ module Fog
           requires :resource_group
           requires :zone_name
           record_sets = []
-          exclude = false
           service.list_record_sets(resource_group, zone_name).each do |r|
-            hash = {}
-            r.each do |k, v|
-              exclude = true if k == 'name' && v == '@'
-              hash[k] = v
-              hash['zone_name'] = zone_name
-              hash['resource_group'] = resource_group
-            end
-            record_sets << hash unless exclude
-            exclude = false
+            record_sets << Fog::DNS::AzureRM::RecordSet.parse(r)
           end
           load(record_sets)
         end

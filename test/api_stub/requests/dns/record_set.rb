@@ -4,73 +4,59 @@ module ApiStub
       # Mock class for Record Set
       class RecordSet
         def self.rest_client_put_method_for_record_set_A_Type_response
-          {
-            'id' => '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/dnszones/fog-test-zone.com/A/fog-test-record_set',
-            'name' => 'fog-test-record_set',
-            'type' => 'Microsoft.Network/dnszones/A',
-            'etag' => '3376a38f-a53f-4ed0-a2e7-dfaba67dbb40',
-            'location' => 'global',
-            'properties' =>
-              {
-                'metadata' => nil,
-                'fqdn' => 'fog-test-record_set.fog-test-zone.com.',
-                'TTL' => 60,
-                'ARecords' =>
-                [
-                  {
-                    'ipv4Address' => '1.2.3.4'
-                  },
-                  {
-                    'ipv4Address' => '1.2.3.3'
-                  }
-                ]
-              }
-          }
+          '{
+              "id":"\/subscriptions\/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb\/resourceGroups\/Fog_test_rg\/providers\/Microsoft.Network\/dnszones\/fog-test-zone.com\/CNAME\/fog-test-record_set",
+              "name":"fog-test-record_set",
+              "type":"Microsoft.Network\/dnszones\/A",
+              "etag":"2cce3e93-fc64-43e4-835c-27581c28502b",
+              "location":"global",
+              "tags":{},
+              "properties":
+                          {
+                              "metadata":{},
+                              "fqdn":"fog-test-record_set.fog-test-zone.com.",
+                              "TTL":60,
+                              "ARecords":[{"ipv4Address":"1.2.3.4"},{"ipv4Address":"1.2.3.3"}]
+                          }
+          }'
         end
 
         def self.rest_client_put_method_for_record_set_cname_Type_response
-          {
-            'id' => '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/dnszones/fog-test-zone.com/A/fog-test-record_set',
-            'name' => 'fog-test-record_set',
-            'type' => 'Microsoft.Network/dnszones/A',
-            'etag' => '3376a38f-a53f-4ed0-a2e7-dfaba67dbb40',
-            'location' => 'global',
-            'properties' =>
-            {
-              'metadata' => nil,
-              'fqdn' => 'fog-test-record_set.fog-test-zone.com.',
-              'TTL' => 60,
-              'CNAMERecords' =>
-              {
-                'cname' => 'test.fog.com'
-              }
-            }
-          }
+          '{
+              "id":"\/subscriptions\/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb\/resourceGroups\/Fog_test_rg\/providers\/Microsoft.Network\/dnszones\/fog-test-zone.com\/CNAME\/fog-test-record_set",
+              "name":"fog-test-record_set",
+              "type":"Microsoft.Network\/dnszones\/CNAME",
+              "etag":"2cce3e93-fc64-43e4-835c-27581c28502b",
+              "location":"global",
+              "tags":{},
+              "properties":
+                          {
+                              "metadata":{},
+                              "fqdn":"fog-test-record_set.fog-test-zone.com.",
+                              "TTL":60,
+                              "CNAMERecord":{"cname":"1.2.3.4"}
+                          }
+          }'
         end
 
         def self.list_record_sets_response
-          {
-            'id' => '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/dnszones/fog-test-zone.com/A/fog-test-record_set',
-            'name' => 'fog-test-record_set',
-            'type' => 'Microsoft.Network/dnszones/A',
-            'etag' => '3376a38f-a53f-4ed0-a2e7-dfaba67dbb40',
-            'location' => 'global',
-            'properties' =>
-            {
-              'metadata' => nil,
-              'fqdn' => 'fog-test-record_set.fog-test-zone.com.',
-              'TTL' => 60,
-              'ARecords' =>
-              [
-                {
-                  'ipv4Address' => '1.2.3.4'
-                },
-                {
-                  'ipv4Address' => '1.2.3.3'
-                }
-              ]
-            }
-          }
+          '{
+              "value": [{
+              "id":"\/subscriptions\/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb\/resourceGroups\/Fog_test_rg\/providers\/Microsoft.Network\/dnszones\/fog-test-zone.com\/CNAME\/fog-test-record_set",
+              "name":"fog-test-record_set",
+              "type":"Microsoft.Network\/dnszones\/A",
+              "etag":"2cce3e93-fc64-43e4-835c-27581c28502b",
+              "location":"global",
+              "tags":{},
+              "properties":
+                          {
+                              "metadata":{},
+                              "fqdn":"fog-test-record_set.fog-test-zone.com.",
+                              "TTL":60,
+                              "ARecords":[{"ipv4Address":"1.2.3.4"},{"ipv4Address":"1.2.3.3"}]
+                          }
+          }]
+          }'
         end
 
         def self.get_records_from_record_set_for_A_type_response

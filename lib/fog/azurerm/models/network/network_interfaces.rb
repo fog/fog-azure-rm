@@ -12,14 +12,8 @@ module Fog
         def all
           requires :resource_group
           network_interfaces = []
-          network_interface_list = service.list_network_interfaces(resource_group)
-          network_interface_list.each do |nic|
-            hash = {}
-            nic.instance_variables.each do |var|
-              hash[var.to_s.delete('@')] = nic.instance_variable_get(var)
-            end
-            hash['resource_group'] = resource_group
-            network_interfaces << hash
+          service.list_network_interfaces(resource_group).each do |nic|
+            network_interfaces << Fog::Network::AzureRM::NetworkInterface.parse(nic)
           end
           load(network_interfaces)
         end

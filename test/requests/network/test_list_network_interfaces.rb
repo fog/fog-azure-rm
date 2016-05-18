@@ -11,10 +11,11 @@ class TestListNetworkInterfaces < Minitest::Test
   end
 
   def test_list_network_interfaces_success
-    response = ApiStub::Requests::Network::NetworkInterface.list_network_interfaces_response
-    @promise.stub :value!, response do
+    mocked_response = ApiStub::Requests::Network::NetworkInterface.list_network_interfaces_response
+    expected_response = Azure::ARM::Network::Models::NetworkInterfaceListResult.serialize_object(mocked_response.body)
+    @promise.stub :value!, mocked_response do
       @network_interfaces.stub :list, @promise do
-        assert @service.list_network_interfaces('fog-test-rg'), response
+        assert_equal @service.list_network_interfaces('fog-test-rg'), expected_response['value']
       end
     end
   end

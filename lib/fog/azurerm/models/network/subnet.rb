@@ -7,22 +7,30 @@ module Fog
         attribute :id
         attribute :resource_group
         attribute :virtual_network_name
-        attribute :properties
-        attribute :addressPrefix
-        attribute :networkSecurityGroupId
-        attribute :routeTableId
-        attribute :ipConfigurations
+        attribute :address_prefix
+        attribute :network_security_group_id
+        attribute :route_table_id
+        attribute :ip_configurations_ids
+
+        def self.parse(subnet)
+          hash = {}
+          hash['id'] = subnet['id']
+          hash['name'] = subnet['name']
+          hash['resource_group'] = subnet['id'].split('/')[4]
+          hash['virtual_network_name'] = subnet['id'].split('/')[8]
+          hash['address_prefix'] = subnet['properties']['addressPrefix']
+          hash['network_security_group_id'] = subnet['properties']['networkSecurityGroup']['id'] unless subnet['properties']['networkSecurityGroup'].nil?
+          hash['route_table_id'] = subnet['properties']['routeTable']['id'] unless subnet['properties']['routeTable'].nil?
+          hash['ip_configurations_ids'] = subnet['properties']['ipConfigurations'].map{ |item| item['id'] } unless subnet['properties']['ipConfigurations'].nil?
+          hash
+        end
 
         def save
           requires :name
           requires :resource_group
           requires :virtual_network_name
-          Fog::Logger.debug "Creating Subnet: #{name}..."
-          #puts "Creating Subnet: #{name}..."
-          subnet = service.create_subnet(resource_group, virtual_network_name, name, addressPrefix)
-          Fog::Logger.debug "Subnet #{name} created successfully."
-          #puts "Subnet #{name} created successfully."
-          subnet
+          subnet = service.create_subnet(resource_group, virtual_network_name, name, address_prefix)
+          merge_attributes(Fog::Network::AzureRM::Subnet.parse(subnet))
         end
 
         def destroy

@@ -12,18 +12,13 @@ module Fog
           requires :resource_group
           virtual_networks = []
           service.list_virtual_networks(resource_group).each do |vnet|
-            hash = {}
-            vnet.instance_variables.each do |var|
-              hash[var.to_s.delete('@')] = vnet.instance_variable_get(var)
-            end
-            hash['resource_group'] = vnet.instance_variable_get('@id').split('/')[4]
-            virtual_networks << hash
+            virtual_networks << Fog::Network::AzureRM::VirtualNetwork.parse(vnet)
           end
           load(virtual_networks)
         end
 
-        def get(identity, resource_group)
-          all.find { |f| f.name == identity && f.resource_group == resource_group }
+        def get(identity)
+          all.find { |f| f.name == identity }
         end
 
         def check_if_exists(name, resource_group)

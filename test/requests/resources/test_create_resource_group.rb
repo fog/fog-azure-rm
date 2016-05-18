@@ -11,10 +11,11 @@ class TestCreateResourceGroup < Minitest::Test
   end
 
   def test_create_resource_group_success
-    response = ApiStub::Requests::Resources::ResourceGroup.create_resource_group_response
-    @promise.stub :value!, response do
+    mocked_response = ApiStub::Requests::Resources::ResourceGroup.create_resource_group_response
+    expected_response = Azure::ARM::Resources::Models::ResourceGroup.serialize_object(mocked_response.body)
+    @promise.stub :value!, mocked_response do
       @resource_groups.stub :create_or_update, @promise do
-        assert_equal @service.create_resource_group('fog-test-rg', 'west us'), response
+        assert_equal @service.create_resource_group('fog-test-rg', 'west us'), expected_response
       end
     end
   end

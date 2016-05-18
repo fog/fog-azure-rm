@@ -14,7 +14,7 @@ class TestDeleteResourceGroup < Minitest::Test
     response = ApiStub::Requests::Resources::ResourceGroup.create_resource_group_response
     @promise.stub :value!, response do
       @resource_groups.stub :delete, @promise do
-        assert_equal @service.delete_resource_group('fog-test-rg'), response
+        assert @service.delete_resource_group('fog-test-rg')
       end
     end
   end

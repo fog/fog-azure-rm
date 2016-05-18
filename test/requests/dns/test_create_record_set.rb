@@ -12,7 +12,7 @@ class TestCreateRecordSet < Minitest::Test
     response = ApiStub::Requests::DNS::RecordSet.rest_client_put_method_for_record_set_A_Type_response
     @token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
       RestClient.stub :put, response do
-        assert_equal @service.create_record_set('fog-test-rg', 'fog-test-zone', 'fog-test-record-set', ['1.2.3.4', '1.2.3.3'], 'A', 60), response
+        assert_equal @service.create_record_set('fog-test-rg', 'fog-test-zone', 'fog-test-record-set', ['1.2.3.4', '1.2.3.3'], 'A', 60), JSON.parse(response)
       end
     end
   end
@@ -21,7 +21,7 @@ class TestCreateRecordSet < Minitest::Test
     response = ApiStub::Requests::DNS::RecordSet.rest_client_put_method_for_record_set_cname_Type_response
     @token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
       RestClient.stub :put, response do
-        assert_equal @service.create_record_set('fog-test-rg', 'fog-test-zone', 'fog-test-record-set', ['test.fog.com'], 'CNAME', 60), response
+        assert_equal @service.create_record_set('fog-test-rg', 'fog-test-zone', 'fog-test-record-set', ['test.fog.com'], 'CNAME', 60), JSON.parse(response)
       end
     end
   end

@@ -12,7 +12,7 @@ class TestListRecordSets < Minitest::Test
     response = ApiStub::Requests::DNS::RecordSet.list_record_sets_response
     @token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
       RestClient.stub :get, response do
-        assert_equal @service.list_record_sets('fog-test-rg', 'fog-test-zone'), response['value']
+        assert_equal @service.list_record_sets('fog-test-rg', 'fog-test-zone'), JSON.parse(response)['value']
       end
     end
   end

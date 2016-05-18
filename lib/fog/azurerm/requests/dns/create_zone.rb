@@ -22,7 +22,8 @@ module Fog
               content_type: 'application/json',
               authorization: token)
             Fog::Logger.debug "Zone #{zone_name} created successfully."
-            response
+            parsed_response = JSON.parse(response)
+            parsed_response
           rescue Exception => e
             Fog::Logger.warning "Exception creating zone #{zone_name} in resource group #{dns_resource_group}"
             msg = "AzureDns::Zone - Exception is: #{e.message}"

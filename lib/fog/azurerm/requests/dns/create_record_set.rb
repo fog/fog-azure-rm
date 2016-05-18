@@ -43,7 +43,8 @@ module Fog
               content_type: 'application/json',
               authorization: token)
             Fog::Logger.debug "RecordSet #{record_set_name} Created/Updated Successfully!"
-            response
+            parsed_response = JSON.parse(response)
+            parsed_response
           rescue Exception => e
             Fog::Logger.warning "Exception creating recordset #{record_set_name} in zone #{zone_name}."
             msg = "AzureDns::RecordSet - Exception is: #{e.message}"

@@ -12,7 +12,7 @@ class TestCreateZone < Minitest::Test
     response = ApiStub::Requests::DNS::Zone.rest_client_put_method_for_zone_resonse
     @token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
       RestClient.stub :put, response do
-        assert_equal @service.create_zone('fog-test-rg', 'fog-test-zone'), response
+        assert_equal @service.create_zone('fog-test-rg', 'fog-test-zone'), JSON.parse(response)
       end
     end
   end

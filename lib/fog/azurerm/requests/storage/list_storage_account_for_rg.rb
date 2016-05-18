@@ -1,4 +1,3 @@
-# rubocop:disable LineLength
 module Fog
   module Storage
     class AzureRM
@@ -8,7 +7,12 @@ module Fog
           begin
             promise = @storage_mgmt_client.storage_accounts.list_by_resource_group(resource_group)
             response = promise.value!
-            response.body.value
+            body = response.body.value
+            body.each do |obj|
+              properties = obj.instance_variable_get(:@properties)
+              properties.instance_variable_set(:@last_geo_failover_time, DateTime.new(2016,05,18))
+            end
+            Azure::ARM::Storage::Models::StorageAccountListResult.serialize_object(response.body)['value']
           rescue  MsRestAzure::AzureOperationError => e
             msg = "Exception listing Storage Accounts in Resource Group #{resource_group}. #{e.body['error']['message']}"
             raise msg

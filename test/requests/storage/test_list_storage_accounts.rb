@@ -18,7 +18,7 @@ class TestListStorageAccounts < Minitest::Test
       @storage_accounts.stub :list, mock_promise do
         assert @azure_credentials.list_storage_accounts.size >= 1
         @azure_credentials.list_storage_accounts.each do |s|
-          assert_instance_of Azure::ARM::Storage::Models::StorageAccount, s
+          assert_equal s, response_body['value'][0]
         end
       end
     end

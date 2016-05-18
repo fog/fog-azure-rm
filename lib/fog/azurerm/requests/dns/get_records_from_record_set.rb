@@ -34,7 +34,6 @@ module Fog
               Fog::Logger.debug "AzureDns:RecordSet - CNAME record is: #{dns_hash['properties']['CNAMERecord']['cname']}"
               existing_records.push(dns_hash['properties']['CNAMERecord']['cname'])
             end
-            puts "Existing Records: #{existing_records}"
             existing_records
           rescue Exception => e
             Fog::Logger.warning "Exception trying to parse response: #{dns_response}"

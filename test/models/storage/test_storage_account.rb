@@ -20,30 +20,33 @@ class TestStorageAccount < Minitest::Test
 
   def test_model_attributes
     attributes = [
-      :id,
       :name,
-      :type,
       :location,
-      :tags,
       :resource_group,
-      :properties
+      :account_type
     ]
     @service.stub :create_storage_account, @response do
       attributes.each do |attribute|
-        assert @storage_account.respond_to? attribute
+        assert_respond_to @storage_account, attribute
       end
     end
   end
 
   def test_save_method_response
     @service.stub :create_storage_account, @response do
-      assert_instance_of Azure::ARM::Storage::Models::StorageAccount, @storage_account.save
+      assert_instance_of Fog::Storage::AzureRM::StorageAccount, @storage_account.save
     end
   end
 
-  def test_destroy_method_response
-    @service.stub :delete_storage_account, @response do
-      assert_instance_of Azure::ARM::Storage::Models::StorageAccount, @storage_account.destroy
+  def test_destroy_method_true_response
+    @service.stub :delete_storage_account, true do
+      assert @storage_account.destroy
+    end
+  end
+
+  def test_destroy_method_false_response
+    @service.stub :delete_storage_account, false do
+      assert !@storage_account.destroy
     end
   end
 end

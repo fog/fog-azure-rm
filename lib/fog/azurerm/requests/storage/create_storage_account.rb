@@ -1,4 +1,3 @@
-# rubocop:disable LineLength
 module Fog
   module Storage
     class AzureRM
@@ -10,7 +9,11 @@ module Fog
             promise = @storage_mgmt_client.storage_accounts.create(resource_group, name, params)
             response = promise.value!
             Fog::Logger.debug "Storage Account created successfully."
-            response
+            body = response.body
+            body.properties.last_geo_failover_time = DateTime.parse(Time.now.to_s)
+            body.properties.creation_time = DateTime.parse(Time.now.to_s)
+            result = Azure::ARM::Storage::Models::StorageAccount.serialize_object(response.body)
+            result
           rescue MsRestAzure::AzureOperationError => e
             msg = "Exception creating Storage Account #{name} in Resource Group #{resource_group}. #{e.body['error']['message']}"
             raise msg

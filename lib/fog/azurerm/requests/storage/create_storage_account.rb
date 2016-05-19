@@ -10,9 +10,8 @@ module Fog
             response = promise.value!
             Fog::Logger.debug "Storage Account created successfully."
             body = response.body
-            properties = body.instance_variable_get(:@properties)
-            properties.instance_variable_set(:@last_geo_failover_time, DateTime.new(2016,05,16))
-            properties.instance_variable_set(:@creation_time, DateTime.new(2016,05,16))
+            body.properties.last_geo_failover_time = DateTime.parse(Time.now.to_s)
+            body.properties.creation_time = DateTime.parse(Time.now.to_s)
             result = Azure::ARM::Storage::Models::StorageAccount.serialize_object(response.body)
             result
           rescue MsRestAzure::AzureOperationError => e

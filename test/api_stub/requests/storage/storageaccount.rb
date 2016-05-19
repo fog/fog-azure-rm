@@ -36,7 +36,7 @@ module ApiStub
                       },
                       "type"=> "Microsoft.Storage/StorageAccount",
                       "properties"=> {
-                          "lastGeoFailoverTime" => "2016-05-18T00:00:00Z",
+                          "lastGeoFailoverTime" => "",
                           "creationTime" => "2016-05-18T07:24:40Z"
                       }
                   }
@@ -49,20 +49,21 @@ module ApiStub
                   {
                       "id"=> "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}",
                       "name"=> "accountName1",
+                      "type"=> "Microsoft.Storage/StorageAccount",
                       "location"=> "account geo region",
                       "tags"=> {
                           "key1"=> "value1",
                           "key2"=> "value2"
                       },
-                      "type"=> "Microsoft.Storage/StorageAccount",
                       "properties"=> {
-                          "lastGeoFailoverTime" => "2016-05-18T00:00:00Z",
+                          "lastGeoFailoverTime" => "",
                           "creationTime" => "2016-05-18T07:24:40Z"
                       }
                   }
               ]
           }
         end
+
         def self.true_case_for_check_name_availability
           {
               "nameAvailable"=> true,

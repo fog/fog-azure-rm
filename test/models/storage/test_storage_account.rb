@@ -38,10 +38,15 @@ class TestStorageAccount < Minitest::Test
     end
   end
 
-  def test_destroy_method_response
-    response = ApiStub::Models::Storage::StorageAccount.delete_storage_account
-    @service.stub :delete_storage_account, response do
-      assert_instance_of Azure::ARM::Storage::Models::StorageAccount, @storage_account.destroy
+  def test_destroy_method_true_response
+    @service.stub :delete_storage_account, true do
+      assert @storage_account.destroy
+    end
+  end
+
+  def test_destroy_method_false_response
+    @service.stub :delete_storage_account, false do
+      assert !@storage_account.destroy
     end
   end
 end

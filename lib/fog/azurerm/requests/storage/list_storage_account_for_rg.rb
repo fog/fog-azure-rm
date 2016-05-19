@@ -9,8 +9,7 @@ module Fog
             response = promise.value!
             body = response.body.value
             body.each do |obj|
-              properties = obj.instance_variable_get(:@properties)
-              properties.instance_variable_set(:@last_geo_failover_time, DateTime.new(2016,05,18))
+              obj.properties.last_geo_failover_time = DateTime.parse(Time.now.to_s)
             end
             Azure::ARM::Storage::Models::StorageAccountListResult.serialize_object(response.body)['value']
           rescue  MsRestAzure::AzureOperationError => e

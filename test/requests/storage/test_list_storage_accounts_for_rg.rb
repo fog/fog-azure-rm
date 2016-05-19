@@ -18,7 +18,7 @@ class TestListStorageAccountsForRG < Minitest::Test
       @storage_accounts.stub :list_by_resource_group, mock_promise do
         assert @azure_credentials.list_storage_account_for_rg('gateway-RG').size >= 1
         @azure_credentials.list_storage_account_for_rg('gateway-RG').each do |s|
-          assert_instance_of Azure::ARM::Storage::Models::StorageAccount, s
+          assert_equal  s['name'], response_body['value'][0]['name']
         end
       end
     end

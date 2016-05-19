@@ -2,11 +2,21 @@ module ApiStub
   module Requests
     module Storage
       class StorageAccount
-
+        def self.storage_account_request
+          body = ' {
+              "location": "west us",
+              "properties":{
+                  "accountType": "Standard_LRS"
+              }
+          }'
+          result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
+          result.body = Azure::ARM::Storage::Models::StorageAccount.deserialize_object(JSON.load(body))
+          result
+        end
         def self.create_storage_account
           storage_acc_obj = Azure::ARM::Storage::Models::StorageAccount.new
           storage_acc_obj.id = '1'
-          storage_acc_obj.name = 'awain'
+          storage_acc_obj.name = 'fog_test_storage_account'
           storage_acc_obj.type = nil
           storage_acc_obj.location = 'west us'
           storage_acc_obj.tags = nil
@@ -25,12 +35,10 @@ module ApiStub
                           "key2"=> "value2"
                       },
                       "type"=> "Microsoft.Storage/StorageAccount",
-                      "properties"=> {},
-                      "sku"=> {
-                          "name"=> "Standard_LRS|Standard_ZRS|Standard_GRS|Standard_RAGRS|Premium_LRS",
-                          "tier"=> "Standard|Premium"
-                      },
-                      "kind"=> "Storage"
+                      "properties"=> {
+                          "lastGeoFailoverTime" => "",
+                          "creationTime" => "2016-05-18T07:24:40Z"
+                      }
                   }
               ]
           }
@@ -41,22 +49,21 @@ module ApiStub
                   {
                       "id"=> "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}",
                       "name"=> "accountName1",
+                      "type"=> "Microsoft.Storage/StorageAccount",
                       "location"=> "account geo region",
                       "tags"=> {
                           "key1"=> "value1",
                           "key2"=> "value2"
                       },
-                      "type"=> "Microsoft.Storage/StorageAccount",
-                      "properties"=> {},
-                      "sku"=> {
-                          "name"=> "Standard_LRS|Standard_ZRS|Standard_GRS|Standard_RAGRS|Premium_LRS",
-                          "tier"=> "Standard|Premium"
-                      },
-                      "kind"=> "Storage"
+                      "properties"=> {
+                          "lastGeoFailoverTime" => "",
+                          "creationTime" => "2016-05-18T07:24:40Z"
+                      }
                   }
               ]
           }
         end
+
         def self.true_case_for_check_name_availability
           {
               "nameAvailable"=> true,

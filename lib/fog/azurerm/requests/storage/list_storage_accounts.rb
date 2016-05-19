@@ -7,7 +7,12 @@ module Fog
           begin
             promise = @storage_mgmt_client.storage_accounts.list
             response = promise.value!
-            response.body.value
+            body = response.body.value
+            body.each do |obj|
+              obj.properties.last_geo_failover_time = DateTime.parse(Time.now.to_s)
+            end
+            result = Azure::ARM::Storage::Models::StorageAccountListResult.serialize_object(response.body)['value']
+            result
           rescue  MsRestAzure::AzureOperationError => e
             msg = "Exception listing Storage Accounts. #{e.body['error']['message']}"
             raise msg

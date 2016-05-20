@@ -1,5 +1,6 @@
 require 'fog/core/collection'
 require 'fog/azurerm/models/storage/storage_account'
+
 module Fog
   module Storage
     class AzureRM

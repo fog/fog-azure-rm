@@ -23,12 +23,15 @@ module Fog
       # This class provides the mock implementation for unit tests.
       class Mock
         def create_storage_account(resource_group, name, params)
-          storage_acc = {
-            name: name,
-            location: params.location,
-            resource_group: resource_group
+          {
+            'location' => params.location,
+            'properties' =>
+                {
+                    'accountType' => params.properties.account_type,
+                    'lastGeoFailoverTime' => DateTime.parse(Time.now.to_s).strftime('%FT%TZ'),
+                    'creationTime' => DateTime.parse(Time.now.to_s).strftime('%FT%TZ')
+                }
           }
-          storage_acc
         end
       end
     end

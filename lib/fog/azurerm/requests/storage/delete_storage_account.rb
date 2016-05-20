@@ -19,6 +19,8 @@ module Fog
       # This class provides the mock implementation for unit tests.
       class Mock
         def delete_storage_account(resource_group, name)
+          Fog::Logger.debug "Storage Account #{name} from Resource group #{resource_group} deleted successfully."
+          return true
         end
       end
     end

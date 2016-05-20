@@ -24,6 +24,9 @@ module Fog
       request :create_network_interface
       request :delete_network_interface
       request :list_network_interfaces
+      request :create_network_security_group
+      request :delete_network_security_group
+      request :list_network_security_groups
 
       model_path 'fog/azurerm/models/network'
       model :virtual_network
@@ -34,6 +37,9 @@ module Fog
       collection :subnets
       model :network_interface
       collection :network_interfaces
+      model :network_security_group
+      collection :network_security_groups
+      model :network_security_rule
 
       # Mock class for Network Service
       class Mock

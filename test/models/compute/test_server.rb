@@ -59,9 +59,8 @@ class TestServer < Minitest::Test
   end
 
   def test_destroy_method_response
-    response = ApiStub::Models::Compute::Server.delete_virtual_machine_response
-    @service.stub :delete_virtual_machine, response do
-      assert_instance_of MsRestAzure::AzureOperationResponse, @server.destroy
+    @service.stub :delete_virtual_machine, true do
+      assert @server.destroy
     end
   end
 

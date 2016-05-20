@@ -19,6 +19,8 @@ module Fog
       # This class provides the mock implementation for unit tests.
       class Mock
         def delete_availability_set(resource_group, name)
+          Fog::Logger.debug "Availability Set #{name} from Resource group #{resource_group} deleted successfully."
+          return true
         end
       end
     end

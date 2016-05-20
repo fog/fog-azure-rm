@@ -92,7 +92,65 @@ module Fog
       end
       # This class provides the mock implementation for unit tests.
       class Mock
-        def create_virtual_machine
+        def create_virtual_machine(name, location, resource_group, vm_size, storage_account_name,
+                                   username, password, disable_password_authentication,
+                                   ssh_key_path, ssh_key_data, network_interface_card_id,
+                                   availability_set_id, publisher, offer, sku, version)
+          {
+            "location"=>location,
+            "id"=>"/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Compute/virtualMachines/#{name}",
+            "name"=>name,
+            "type"=>"Microsoft.Compute/virtualMachines",
+            "properties"=>
+              {
+                "hardwareProfile"=>
+                  {
+                    "vmSize"=>vm_size
+                  },
+                "storageProfile"=>
+                  {
+                    "imageReference"=>
+                      {
+                        "publisher"=>publisher,
+                        "offer"=>offer,
+                        "sku"=>sku,
+                        "version"=>version
+                      },
+                    "osDisk"=>
+                      {
+                        "name"=>"#{name}_os_disk",
+                        "vhd"=>
+                          {
+                            "uri"=>"http://#{storage_account_name}.blob.core.windows.net/vhds/#{name}_os_disk.vhd"
+                          },
+                        "createOption"=>"FromImage",
+                        "osType"=>"Linux",
+                        "caching"=>"ReadWrite"
+                      },
+                    "dataDisks"=>[]
+                  },
+                "osProfile"=>
+                  {
+                    "computerName"=>name,
+                    "adminUsername"=>username,
+                    "linuxConfiguration"=>
+                      {
+                        "disablePasswordAuthentication"=>disable_password_authentication
+                      },
+                    "secrets"=>[]
+                  },
+                "networkProfile"=>
+                  {
+                    "networkInterfaces"=>
+                      [
+                        {
+                          "id"=>"/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkInterfaces/#{network_interface_card_id.split('/')[8]}"
+                        }
+                      ]
+                  },
+                "provisioningState"=>"Succeeded"
+              }
+          }
         end
       end
     end

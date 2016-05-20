@@ -40,8 +40,8 @@ module Fog
         def create_availability_set(resource_group, name, params)
           {
               "location"=>"westus",
-              "id"=>"/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/Fog_test_rg/providers/Microsoft.Compute/availabilitySets/fogtestas",
-              "name"=>"fogtestas",
+              "id"=>"/subscriptions/########-####-####-####-############/resourceGroups/Fog_test_rg/providers/Microsoft.Compute/availabilitySets/fog_test_as",
+              "name"=>"fog_test_as",
               "type"=>"Microsoft.Compute/availabilitySets",
               "properties"=>{
                   "platformUpdateDomainCount"=>2,

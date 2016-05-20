@@ -39,10 +39,15 @@ class TestAvailabilitySet < Minitest::Test
     end
   end
 
-  def test_destroy_method_response
-    response = ApiStub::Models::Compute::AvailabilitySet.delete_availability_set_response
-    @service.stub :delete_availability_set, response do
-      assert_instance_of MsRestAzure::AzureOperationResponse, @availability_set.destroy
+  def test_destroy_method_true_response
+    @service.stub :delete_availability_set, true do
+      assert @availability_set.destroy
+    end
+  end
+
+  def test_destroy_method_false_response
+    @service.stub :delete_availability_set, false do
+      assert !@availability_set.destroy
     end
   end
 end

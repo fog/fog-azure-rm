@@ -12,9 +12,10 @@ class TestListAvailableSizesForVirtualMachine < Minitest::Test
 
   def test_list_available_sizes_for_virtual_machine_success
     response = ApiStub::Requests::Compute::VirtualMachine.list_available_sizes_for_virtual_machine_response
+    compare_value = Azure::ARM::Compute::Models::VirtualMachineSizeListResult.serialize_object(response.body)['value']
     @promise.stub :value!, response do
       @virtual_machines.stub :list_available_sizes, @promise do
-        assert_equal @service.list_available_sizes_for_virtual_machine('fog-test-rg', 'fog-test-server'), response.body.value
+        assert_equal compare_value, @service.list_available_sizes_for_virtual_machine('fog-test-rg', 'fog-test-server')
       end
     end
   end

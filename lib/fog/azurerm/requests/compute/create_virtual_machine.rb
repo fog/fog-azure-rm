@@ -3,7 +3,7 @@ module Fog
     class AzureRM
       # This class provides the actual implementation for service calls.
       class Real
-        def create_virtual_machine(name, location, resource_group, vm_size, storage_account_name,
+        def create_virtual_machine(resource_group, name, location, vm_size, storage_account_name,
                                    username, password, disable_password_authentication,
                                    ssh_key_path, ssh_key_data, network_interface_card_id,
                                    availability_set_id, publisher, offer, sku, version)
@@ -92,7 +92,7 @@ module Fog
       end
       # This class provides the mock implementation for unit tests.
       class Mock
-        def create_virtual_machine(name, location, resource_group, vm_size, storage_account_name,
+        def create_virtual_machine(resource_group, name, location, vm_size, storage_account_name,
                                    username, password, disable_password_authentication,
                                    ssh_key_path, ssh_key_data, network_interface_card_id,
                                    availability_set_id, publisher, offer, sku, version)

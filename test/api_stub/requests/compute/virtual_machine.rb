@@ -81,6 +81,110 @@ module ApiStub
           result
         end
 
+        def self.get_virtual_machine
+          {
+            "location"=>"westus",
+            "id"=>"/subscriptions/{subscription-id}/resourceGroups/fog-test-rg/providers/Microsoft.Compute/virtualMachines/fog-test-server",
+            "name"=>"fog-test-server",
+            "type"=>"Microsoft.Compute/virtualMachines",
+            "tags"=>
+              {
+                "department"=>"finance"
+              },
+            "properties"=>
+              {
+                "hardwareProfile"=>
+                  {
+                    "vmSize"=>"Standard_A0"
+                  },
+                "storageProfile"=>
+                  {
+                    "imageReference"=>
+                      {
+                        "publisher"=>"MicrosoftWindowsServerEssentials",
+                        "offer"=>"WindowsServerEssentials",
+                        "sku"=>"WindowsServerEssentials",
+                        "version"=>"latest"
+                      },
+                    "osDisk"=>
+                      {
+                        "name"=>"myosdisk1",
+                        "vhd"=>
+                          {
+                            "uri"=>"http://mystorage1.blob.core.windows.net/vhds/myosdisk1.vhd"
+                          },
+                        "createOption"=>"FromImage",
+                        "caching"=>"ReadWrite"
+                      },
+                    "dataDisks"=>
+                      [
+                        {
+                          "lun"=>0,
+                          "name"=>"mydatadisk1",
+                          "vhd"=>
+                            {
+                              "uri"=>"http://mystorage1.blob.core.windows.net/vhds/mydatadisk1.vhd"
+                            },
+                          "createOption"=>"Empty",
+                          "diskSizeGB"=>1
+                        }
+                      ]
+                  },
+                "osProfile" =>
+                  {
+                    "computerName"=>"fog-test-server",
+                    "adminUsername"=>"fog",
+                    "adminPassword"=>"fog",
+                    "customData"=>"",
+                    "windowsConfiguration"=>
+                      {
+                        "provisionVMAgent"=>true,
+                        "enableAutomaticUpdates"=>true,
+                        "winRM"=>
+                          {
+                            "listeners"=>
+                              [
+                                {
+                                    "protocol"=>"https",
+                                    "certificateUrl"=>"url-to-certificate"
+                                }
+                              ]
+                          }
+                      },
+                    "secrets"=>
+                      [
+                        {
+                          "sourceVault"=>
+                            {
+                              "id"=>"/subscriptions/{subscription-id}/resourceGroups/myresourcegroup1/providers/Microsoft.KeyVault/vaults/myvault1"
+                            },
+                          "vaultCertificates"=>
+                            [
+                              {
+                                "certificateUrl"=>"https://myvault1.vault.azure.net/secrets/{secretName}/{secretVersion}",
+                                "certificateStore"=>"{certificateStoreName}"
+                              }
+                            ]
+                        }
+                      ]
+                  },
+                "networkProfile"=>
+                  {
+                    "networkInterfaces"=>
+                      [
+                        {
+                          "id"=>"/subscriptions/{subscription-id}/resourceGroups/myresourceGroup1/providers /Microsoft.Network/networkInterfaces/mynic1"
+                        }
+                      ]
+                  },
+                "availabilitySet"=>
+                  {
+                    "id"=>"/subscriptions/{subscription-id}/resourceGroups/myresourcegroup1/providers/Microsoft.Compute/availabilitySets/myav1"
+                  }
+              }
+          }
+        end
+
         def self.list_virtual_machines_response
           body = '{
             "value": [
@@ -179,10 +283,6 @@ module ApiStub
           result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
           result.body = Azure::ARM::Compute::Models::VirtualMachineSizeListResult.deserialize_object(JSON.load(body))
           result
-        end
-
-        def self.deallocate_virtual_machine_response
-          MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
         end
       end
     end

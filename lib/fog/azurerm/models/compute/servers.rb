@@ -24,7 +24,9 @@ module Fog
         end
 
         def get_from_remote(resource_group, name)
-          service.get_virtual_machine(resource_group, name)
+          result_obj = service.get_virtual_machine(resource_group, name)
+          model_obj = Fog::Compute::AzureRM::Server.new
+          model_obj.merge_attributes(Fog::Compute::AzureRM::Server.parse(result_obj))
         end
       end
     end

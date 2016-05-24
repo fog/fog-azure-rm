@@ -15,10 +15,6 @@ module ApiStub
               }
           }
         end
-
-        def self.delete_availability_set_response
-          MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
-        end
       end
     end
   end

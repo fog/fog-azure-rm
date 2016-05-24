@@ -11,10 +11,9 @@ class TestDeallocateVirtualMachine < Minitest::Test
   end
 
   def test_deallocate_virtual_machine_success
-    response = ApiStub::Requests::Compute::VirtualMachine.deallocate_virtual_machine_response
-    @promise.stub :value!, response do
+    @promise.stub :value!, true do
       @virtual_machines.stub :deallocate, @promise do
-        assert_equal @service.deallocate_virtual_machine('fog-test-rg', 'fog-test-server'), response
+        assert @service.deallocate_virtual_machine('fog-test-rg', 'fog-test-server')
       end
     end
   end

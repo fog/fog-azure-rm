@@ -41,46 +41,6 @@ module Fog
               "resourceDiskSizeInMB"=>138240,
               "memoryInMB"=>3584,
               "maxDataDiskCount"=>4
-            },
-            {
-              "name"=>"Standard_A3",
-              "numberOfCores"=>4,
-              "osDiskSizeInMB"=>1047552,
-              "resourceDiskSizeInMB"=>291840,
-              "memoryInMB"=>7168,
-              "maxDataDiskCount"=>8
-            },
-            {
-              "name"=>"Standard_A5",
-              "numberOfCores"=>2,
-              "osDiskSizeInMB"=>1047552,
-              "resourceDiskSizeInMB"=>138240,
-              "memoryInMB"=>14336,
-              "maxDataDiskCount"=>4
-            },
-            {
-              "name"=>"Standard_A4",
-              "numberOfCores"=>8,
-              "osDiskSizeInMB"=>1047552,
-              "resourceDiskSizeInMB"=>619520,
-              "memoryInMB" =>14336,
-              "maxDataDiskCount"=>16
-            },
-            {
-              "name"=>"Standard_A6",
-              "numberOfCores"=>4,
-              "osDiskSizeInMB"=>1047552,
-              "resourceDiskSizeInMB"=>291840,
-              "memoryInMB"=>28672,
-              "maxDataDiskCount"=>8
-            },
-            {
-              "name"=>"Standard_A7",
-              "numberOfCores"=>8,
-              "osDiskSizeInMB"=>1047552,
-              "resourceDiskSizeInMB"=>619520,
-              "memoryInMB"=>57344,
-              "maxDataDiskCount"=>16
             }
         ]
         end

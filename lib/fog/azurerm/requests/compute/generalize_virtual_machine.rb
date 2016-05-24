@@ -7,7 +7,7 @@ module Fog
           Fog::Logger.debug "Generalizing Virtual Machine #{name} in Resource Group #{resource_group}."
           begin
             promise = @compute_mgmt_client.virtual_machines.generalize(resource_group, name)
-            result = promise.value!
+            promise.value!
             Fog::Logger.debug "Virtual Machine #{name} Generalized Successfully."
             true
           rescue  MsRestAzure::AzureOperationError => e

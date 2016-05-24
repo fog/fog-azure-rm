@@ -35,6 +35,28 @@ module Fog
       # Mock class for DNS Request
       class Mock
         def create_zone(_dns_resource_group, _zone_name)
+          {
+            "id" => "/subscriptions/########-####-####-####-############/resourceGroups/#{_dns_resource_group}/providers/Microsoft.Network/dnszones/#{_zone_name}",
+            "name" => _zone_name,
+            "type" => "Microsoft.Network/dnszones",
+            "etag" => "00000002-0000-0000-76c2-f7ad90b5d101",
+            "location" => "global",
+            "tags" => {},
+            "properties" =>
+              {
+                "maxNumberOfRecordSets" => 5000,
+                "nameServers" =>
+                [
+                  "ns1-05.azure-dns.com.",
+                  "ns2-05.azure-dns.net.",
+                  "ns3-05.azure-dns.org.",
+                  "ns4-05.azure-dns.info."
+                ],
+                "numberOfRecordSets" => 2,
+                "parentResourceGroupName" => _dns_resource_group
+              }
+          }
+
         end
       end
     end

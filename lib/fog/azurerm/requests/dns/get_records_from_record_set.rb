@@ -46,6 +46,11 @@ module Fog
       # Mock class for DNS Request
       class Mock
         def get_records_from_record_set(_record_set_name, _dns_resource_group, _zone_name, _record_type)
+          [
+            "1.2.3.4",
+            "1.2.3.5",
+            "1.2.3.6"
+          ]
         end
       end
     end

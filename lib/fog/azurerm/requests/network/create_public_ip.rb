@@ -26,7 +26,7 @@ module Fog
 
       # Mock class for Network Request
       class Mock
-        def create_public_ip(resource_group, name, public_ip)
+        def create_public_ip(_resource_group, _name, _location, _public_ip_allocation_method)
         end
       end
     end

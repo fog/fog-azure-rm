@@ -17,7 +17,7 @@ module Fog
           load(zones)
         end
 
-        def get(identity, resource_group)
+        def get(resource_group, identity)
           all.find { |f| f.name == identity && f.resource_group == resource_group }
         end
 

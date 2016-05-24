@@ -14,7 +14,7 @@ class TestDeleteSubnet < Minitest::Test
     response = ApiStub::Requests::Network::Subnet.delete_subnet_response
     @promise.stub :value!, response do
       @subnets.stub :delete, @promise do
-        assert @service.delete_subnet('fog-test-rg', 'fog-test-virtual-network', 'fog-test-subnet')
+        assert @service.delete_subnet('fog-test-rg', 'fog-test-subnet', 'fog-test-virtual-network')
       end
     end
   end
@@ -23,7 +23,7 @@ class TestDeleteSubnet < Minitest::Test
     response = -> { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @promise.stub :value!, response do
       @subnets.stub :delete, @promise do
-        assert_raises(RuntimeError) { @service.delete_subnet('fog-test-rg', 'fog-test-virtual-network', 'fog-test-subnet') }
+        assert_raises(RuntimeError) { @service.delete_subnet('fog-test-rg', 'fog-test-subnet', 'fog-test-virtual-network') }
       end
     end
   end

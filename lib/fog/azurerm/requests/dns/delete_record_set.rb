@@ -28,6 +28,8 @@ module Fog
       # Mock class for DNS Request
       class Mock
         def delete_record_set(_record_set_name, _dns_resource_group, _zone_name, _record_type)
+          Fog::Logger.debug "Record Set #{_record_set_name} deleted successfully."
+          return true
         end
       end
     end

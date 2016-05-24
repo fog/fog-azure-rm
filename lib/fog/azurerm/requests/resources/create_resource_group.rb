@@ -22,7 +22,7 @@ module Fog
         def create_resource_group(name, location)
           {
               "location" => location,
-              "id" => "/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/#{name}",
+              "id" => "/subscriptions/########-####-####-####-############/resourceGroups/#{name}",
               "name" => name,
               "properties" =>
                 {

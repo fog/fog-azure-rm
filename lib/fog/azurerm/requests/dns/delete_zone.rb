@@ -26,6 +26,8 @@ module Fog
       # Mock class for DNS Request
       class Mock
         def delete_zone(_zone_name, _dns_resource_group)
+          Fog::Logger.debug "Zone #{_name} deleted successfully."
+          return true
         end
       end
     end

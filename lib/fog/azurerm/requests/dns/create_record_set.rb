@@ -56,6 +56,47 @@ module Fog
       # Mock class for DNS Request
       class Mock
         def create_record_set(_dns_resource_group, _zone_name, _record_set_name, _records, _record_type, _ttl)
+          if _record_type == 'A'
+            {
+              "id"=>"/subscriptions/########-####-####-####-############/resourceGroups/#{_dns_resource_group}/providers/Microsoft.Network/dnszones/#{_zone_name}/#{_record_type}/#{_record_set_name}",
+              "name"=>_record_set_name,
+              "type"=>"Microsoft.Network/dnszones/#{_record_type}",
+              "etag"=>"7f159cb1-653d-4920-bc03-153c700412a2",
+              "location"=>"global",
+              "tags"=>{},
+              "properties"=>
+                {
+                  "metadata"=>{},
+                  "fqdn"=>"#{_record_set_name}.#{_zone_name}.",
+                  "TTL"=>_ttl,
+                  "ARecords"=>
+                    [
+                      {
+                        "ipv4Address"=>_records[0]
+                      }
+                    ]
+                }
+            }
+          elsif _record_type == 'CNAME'
+            {
+              "id"=>"/subscriptions/########-####-####-####-############/resourceGroups/#{_dns_resource_group}/providers/Microsoft.Network/dnszones/#{_zone_name}/#{_record_type}/#{_record_set_name}",
+              "name"=>_record_set_name,
+              "type"=>"Microsoft.Network/dnszones/#{_record_type}",
+              "etag"=>"cc5ceb6e-16ad-4a5f-bbd7-9bc31c12d0cf",
+              "location"=>"global",
+              "tags"=>{},
+              "properties"=>
+                {
+                  "metadata"=>{},
+                  "fqdn"=>"#{_record_set_name}.#{_zone_name}.",
+                  "TTL"=>_ttl,
+                  "CNAMERecord"=>
+                    {
+                      "cname"=>_records[0]
+                    }
+                }
+            }
+          end
         end
       end
     end

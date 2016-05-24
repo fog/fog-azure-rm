@@ -19,7 +19,16 @@ module Fog
       end
 
       class Mock
-        def create_resource_group(name, parameters)
+        def create_resource_group(name, location)
+          {
+              "location" => location,
+              "id" => "/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/#{name}",
+              "name" => name,
+              "properties" =>
+                {
+                  "provisioningState" => "Succeeded"
+                }
+          }
         end
       end
     end

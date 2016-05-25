@@ -47,7 +47,42 @@ module Fog
       # Mock class for Network Request
       class Mock
         def create_network_interface(_resource_group, _name, _location, _subnet_id, _ip_configs_name, _prv_ip_alloc_method)
-
+          {
+              "id" => "/subscriptions/########-####-####-####-############/resourceGroups/#{_resource_group}/providers/Microsoft.Network/networkInterfaces/#{_name}",
+              "name" => _name,
+              "type" => "Microsoft.Network/networkInterfaces",
+              "location" => _location,
+              "properties" =>
+                  {
+                      "ipConfigurations" =>
+                          [
+                              {
+                                  "id" => "/subscriptions/########-####-####-####-############/resourceGroups/#{_resource_group}/providers/Microsoft.Network/networkInterfaces/#{_name}/ipConfigurations/#{_ip_configs_name}",
+                                  "properties" =>
+                                      {
+                                          "privateIPAddress" => "10.0.0.5",
+                                          "privateIPAllocationMethod" => _prv_ip_alloc_method,
+                                          "subnet" =>
+                                              {
+                                                  "id" => _subnet_id
+                                              },
+                                          "provisioningState"=>"Succeeded"
+                                      },
+                                  "name" => _ip_configs_name,
+                                  "etag" => "W/\"e6c8e5c3-f28d-44f3-babe-0e8e934a591e\""
+                              }
+                          ],
+                      "dnsSettings"=>
+                          {
+                              "dnsServers"=>[],
+                              "appliedDnsServers"=>[]
+                          },
+                      "enableIPForwarding"=>false,
+                      "resourceGuid"=>"2bff0fad-623b-4773-82b8-dc875f3aacd2",
+                      "provisioningState"=>"Succeeded"
+                  },
+              "etag"=>"W/\"e6c8e5c3-f28d-44f3-babe-0e8e934a591e\""
+          }
         end
       end
     end

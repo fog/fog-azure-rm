@@ -12,8 +12,8 @@ Gem::Specification.new do |spec|
   spec.files         = Dir['{lib}/**/*.rb', 'bin/*', 'LICENSE', '*.md']
   spec.require_paths = ['lib']
   spec.add_development_dependency 'rake',    '~> 10.0'
-  spec.add_development_dependency 'shindo',  '~> 0.3'
   spec.add_development_dependency 'minitest',  '~> 5.8.4'
+  spec.add_development_dependency 'simplecov',  '~> 0.11.2'
   spec.add_dependency 'fog-core',  '~> 1.27'
   spec.add_dependency 'fog-json',  '~> 1.0'
   spec.add_dependency 'fog-xml',   '~> 0.1'

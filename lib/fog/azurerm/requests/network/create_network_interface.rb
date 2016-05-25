@@ -48,27 +48,27 @@ module Fog
       class Mock
         def create_network_interface(_resource_group, _name, _location, _subnet_id, _ip_configs_name, _prv_ip_alloc_method)
           {
-            'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkInterfaces/#{name}",
-            'name' => name,
+            'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{_resource_group}/providers/Microsoft.Network/networkInterfaces/#{_name}",
+            'name' => _name,
             'type' => 'Microsoft.Network/networkInterfaces',
-            'location' => location,
+            'location' =>  _location,
             'properties' =>
               {
                 'ipConfigurations' =>
                   [
                     {
-                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkInterfaces/#{name}/ipConfigurations/#{ip_configs_name}",
+                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{_resource_group}/providers/Microsoft.Network/networkInterfaces/#{_name}/ipConfigurations/#{_ip_configs_name}",
                       'properties' =>
                         {
                           'privateIPAddress' => '10.0.0.5',
-                          'privateIPAllocationMethod' => prv_ip_alloc_method,
+                          'privateIPAllocationMethod' => _prv_ip_alloc_method,
                           'subnet' =>
                             {
-                              'id' => subnet_id
+                              'id' => _subnet_id
                             },
                           'provisioningState' => 'Succeeded'
                         },
-                      'name' => ip_configs_name,
+                      'name' => _ip_configs_name,
                       'etag' => "W/\"e6c8e5c3-f28d-44f3-babe-0e8e934a591e\""
                     }
                   ],

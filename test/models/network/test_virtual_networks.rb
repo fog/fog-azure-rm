@@ -42,13 +42,13 @@ class TestVirtualNetworks < Minitest::Test
 
   def test_check_if_exists_method_success
     @service.stub :check_for_virtual_network, true do
-      assert @virtual_networks.check_if_exists('fog-test-virtual-network', 'fog-test-rg')
+      assert @virtual_networks.check_if_exists('fog-test-rg', 'fog-test-virtual-network')
     end
   end
 
   def test_check_if_exists_method_failure
     @service.stub :check_for_virtual_network, false do
-      assert !@virtual_networks.check_if_exists('fog-test-virtual-network', 'fog-test-rg')
+      assert !@virtual_networks.check_if_exists('fog-test-rg', 'fog-test-virtual-network')
     end
   end
 end

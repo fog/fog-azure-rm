@@ -17,9 +17,13 @@ module Fog
       end
 
       class Mock
+<<<<<<< HEAD
         def delete_resource_group(name)
           Fog::Logger.debug "Resource Group #{name} deleted successfully."
           return true
+=======
+        def delete_resource_group(_name)
+>>>>>>> Implementation Standardization
         end
       end
     end

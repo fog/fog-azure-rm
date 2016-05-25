@@ -39,16 +39,16 @@ module Fog
           requires :records
           requires :type
           requires :ttl
-          record_set = service.create_record_set(resource_group, zone_name, name, records, type, ttl)
+          record_set = service.create_record_set(resource_group, name, zone_name, records, type, ttl)
           merge_attributes(Fog::DNS::AzureRM::RecordSet.parse(record_set))
         end
 
         def destroy
-          service.delete_record_set(name, resource_group, zone_name, type.split('/').last)
+          service.delete_record_set(resource_group, name, zone_name, type.split('/').last)
         end
 
-        def get_records(record_set_name, dns_resource_group, zone_name, record_type)
-          service.get_records_from_record_set(record_set_name, dns_resource_group, zone_name, record_type)
+        def get_records(resource_group, name, zone_name, record_type)
+          service.get_records_from_record_set(resource_group, name, zone_name, record_type)
         end
       end
     end

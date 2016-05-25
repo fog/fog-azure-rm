@@ -21,7 +21,7 @@ module Fog
           all.find { |f| f.name == identity }
         end
 
-        def check_if_exists(name, resource_group)
+        def check_if_exists(resource_group, name)
           Fog::Logger.debug "Checkng if Virtual Network #{name} exists."
           if service.check_for_virtual_network(name, resource_group)
             Fog::Logger.debug "Virtual Network #{name} exists."

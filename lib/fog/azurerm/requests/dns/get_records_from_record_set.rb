@@ -3,9 +3,9 @@ module Fog
     class AzureRM
       # Real class for DNS Request
       class Real
-        def get_records_from_record_set(record_set_name, dns_resource_group, zone_name, record_type)
-          resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription_id}/resourceGroups/#{dns_resource_group}/providers/Microsoft.Network/dnsZones/#{zone_name}/#{record_type}/#{record_set_name}?api-version=2015-05-04-preview"
-          Fog::Logger.debug "Getting all records from RecordSet #{record_set_name} of type '#{record_type}' in zone #{zone_name}"
+        def get_records_from_record_set(resource_group, name, zone_name, record_type)
+          resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription_id}/resourceGroups/#{resource_group}/providers/Microsoft.Network/dnsZones/#{zone_name}/#{record_type}/#{name}?api-version=2015-05-04-preview"
+          Fog::Logger.debug "Getting all records from RecordSet #{name} of type '#{record_type}' in zone #{zone_name}"
 
           existing_records = []
           begin
@@ -17,7 +17,7 @@ module Fog
               authorization: token
             )
           rescue Exception => e
-            Fog::Logger.warning "Exception trying to get existing #{record_type} records for the record set: #{record_set_name}"
+            Fog::Logger.warning "Exception trying to get existing #{record_type} records for the record set: #{name}"
             msg = "AzureDns::RecordSet - Exception is: #{e.message}"
             raise msg
           end
@@ -45,7 +45,7 @@ module Fog
 
       # Mock class for DNS Request
       class Mock
-        def get_records_from_record_set(_record_set_name, _dns_resource_group, _zone_name, _record_type)
+        def get_records_from_record_set(_resource_group, _name, _zone_name, _record_type)
           [
             "1.2.3.4",
             "1.2.3.5",

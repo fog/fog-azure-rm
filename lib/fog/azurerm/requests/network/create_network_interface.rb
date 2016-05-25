@@ -4,7 +4,7 @@ module Fog
     class AzureRM
       # Real class for Network Request
       class Real
-        def create_network_interface(name, location, resource_group, subnet_id, ip_config_name, prv_ip_alloc_method)
+        def create_network_interface(resource_group, name, location, subnet_id, ip_config_name, prv_ip_alloc_method)
           Fog::Logger.debug "Creating Network Interface Card: #{name}..."
           network_interface = define_network_interface(name, location, subnet_id, ip_config_name, prv_ip_alloc_method)
           begin
@@ -46,7 +46,7 @@ module Fog
 
       # Mock class for Network Request
       class Mock
-        def create_network_interface(name, location, resource_group, subnet_id, ip_configs_name, prv_ip_alloc_method)
+        def create_network_interface(_resource_group, _name, _location, _subnet_id, _ip_configs_name, _prv_ip_alloc_method)
 
         end
       end

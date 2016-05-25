@@ -20,6 +20,8 @@ module Fog
       # Mock class for Network Request
       class Mock
         def delete_public_ip(_resource_group, _name)
+          Fog::Logger.debug "Public IP #{_name} from Resource group #{_resource_group} deleted successfully."
+          return true
         end
       end
     end

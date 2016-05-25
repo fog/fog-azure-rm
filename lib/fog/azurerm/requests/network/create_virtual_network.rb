@@ -76,6 +76,38 @@ module Fog
 
       class Mock
         def create_virtual_network(_resource_group, _name, _location, _dns_list, _subnet_address_list, _network_address_list)
+          {
+            'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{_resource_group}/providers/Microsoft.Network/virtualNetworks/#{_name}",
+            'name' => _name,
+            'type' => 'Microsoft.Network/virtualNetworks',
+            'location' => _location,
+            'properties' =>
+              {
+                'addressSpace' =>
+                  {
+                    'addressPrefixes' =>
+                      [
+                          _network_address_list
+                      ]
+                  },
+                'subnets' =>
+                  [
+                    {
+                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{_resource_group}providers/Microsoft.Network/virtualNetworks/#{_name}/subnets/subnet_0_#{_name}",
+                      'properties' =>
+                        {
+                          'addressPrefix' => _subnet_address_list,
+                          'provisioningState' => 'Succeeded'
+                        },
+                      'name' => "subnet_0_#{_name}",
+                      'etag' => "W/\"ffbb0f61-b2bb-404e-9d20-79d854536f62\""
+                     }
+                  ],
+                'resourceGuid' => 'c573f8e2-d916-493f-8b25-a681c31269ef',
+                'provisioningState' => 'Succeeded'
+              },
+            'etag' => "W/\"ffbb0f61-b2bb-404e-9d20-79d854536f62\""
+          }
         end
       end
     end

@@ -19,11 +19,44 @@ module Fog
       # Mock class for Network Request
       class Mock
         def list_network_interfaces(_resource_group)
-          nic = Azure::ARM::Network::Models::NetworkInterface.new
-          nic.name = 'fogtestnetworkinterface'
-          nic.location = 'West US'
-          nic.properties = Azure::ARM::Network::Models::NetworkInterfacePropertiesFormat.new
-          [nic]
+          [
+            {
+              'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{_resource_group}/providers/Microsoft.Network/networkInterfaces/test-NIC",
+              'name' => 'test-NIC',
+              'type' => 'Microsoft.Network/networkInterfaces',
+              'location' => 'westus',
+              'properties' =>
+                {
+                  'ipConfigurations' =>
+                    [
+                      {
+                        'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{_resource_group}/providers/Microsoft.Network/networkInterfaces/test-NIC/ipConfigurations/ipconfig1",
+                        'properties' =>
+                          {
+                            'privateIPAddress' => '10.2.0.4',
+                            'privateIPAllocationMethod' => 'Dynamic',
+                            'subnet' =>
+                               {
+                                 'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{_resource_group}/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/fog-test-subnet"
+                               },
+                            'provisioningState' => 'Succeeded'
+                          },
+                        'name' => 'ipconfig1',
+                        'etag' => "W/\"b5dd021a-fcce-43b2-9e07-01407a3a6a98\""
+                      }
+                    ],
+                  'dnsSettings' =>
+                    {
+                      'dnsServers' => [],
+                      'appliedDnsServers' => []
+                    },
+                  'enableIPForwarding' =>false,
+                  'resourceGuid' => '51e01337-fb15-4b04-b9de-e91537c764fd',
+                  'provisioningState' => 'Succeeded'
+                },
+              'etag' =>"W/\"b5dd021a-fcce-43b2-9e07-01407a3a6a98\""
+            }
+          ]
         end
       end
     end

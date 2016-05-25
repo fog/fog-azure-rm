@@ -7,7 +7,6 @@ module Fog
           Fog::Logger.debug "Creating PublicIP #{name} in Resource Group #{resource_group}."
           properties = Azure::ARM::Network::Models::PublicIPAddressPropertiesFormat.new
           properties.public_ipallocation_method = public_ip_allocation_method
-          
           public_ip = Azure::ARM::Network::Models::PublicIPAddress.new
           public_ip.name = name
           public_ip.location = location

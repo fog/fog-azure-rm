@@ -19,7 +19,6 @@ module Fog
       end
 
       class Mock
-<<<<<<< HEAD
         def create_resource_group(name, location)
           {
               "location" => location,
@@ -30,9 +29,6 @@ module Fog
                   "provisioningState" => "Succeeded"
                 }
           }
-=======
-        def create_resource_group(_name, _parameters)
->>>>>>> Implementation Standardization
         end
       end
     end

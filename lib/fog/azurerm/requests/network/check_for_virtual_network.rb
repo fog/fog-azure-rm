@@ -18,8 +18,8 @@ module Fog
 
       # Mock class for Network Request
       class Mock
-        def check_for_virtual_network(_resource_group, _name)
-          Fog::Logger.debug "Virtual Network #{_name} from Resource group #{_resource_group} is available."
+        def check_for_virtual_network(resource_group, name)
+          Fog::Logger.debug "Virtual Network #{name} from Resource group #{resource_group} is available."
           return true
         end
       end

@@ -46,29 +46,29 @@ module Fog
 
       # Mock class for Network Request
       class Mock
-        def create_network_interface(_resource_group, _name, _location, _subnet_id, _ip_configs_name, _prv_ip_alloc_method)
+        def create_network_interface(resource_group, name, location, subnet_id, ip_configs_name, prv_ip_alloc_method)
           {
-            'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{_resource_group}/providers/Microsoft.Network/networkInterfaces/#{_name}",
-            'name' => _name,
+            'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkInterfaces/#{name}",
+            'name' => name,
             'type' => 'Microsoft.Network/networkInterfaces',
-            'location' =>  _location,
+            'location' =>  location,
             'properties' =>
               {
                 'ipConfigurations' =>
                   [
                     {
-                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{_resource_group}/providers/Microsoft.Network/networkInterfaces/#{_name}/ipConfigurations/#{_ip_configs_name}",
+                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkInterfaces/#{name}/ipConfigurations/#{ip_configs_name}",
                       'properties' =>
                         {
                           'privateIPAddress' => '10.0.0.5',
-                          'privateIPAllocationMethod' => _prv_ip_alloc_method,
+                          'privateIPAllocationMethod' => prv_ip_alloc_method,
                           'subnet' =>
                             {
-                              'id' => _subnet_id
+                              'id' => subnet_id
                             },
                           'provisioningState' => 'Succeeded'
                         },
-                      'name' => _ip_configs_name,
+                      'name' => ip_configs_name,
                       'etag' => "W/\"e6c8e5c3-f28d-44f3-babe-0e8e934a591e\""
                     }
                   ],

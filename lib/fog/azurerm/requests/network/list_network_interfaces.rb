@@ -18,10 +18,10 @@ module Fog
 
       # Mock class for Network Request
       class Mock
-        def list_network_interfaces(_resource_group)
+        def list_network_interfaces(resource_group)
           [
             {
-              'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{_resource_group}/providers/Microsoft.Network/networkInterfaces/test-NIC",
+              'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkInterfaces/test-NIC",
               'name' => 'test-NIC',
               'type' => 'Microsoft.Network/networkInterfaces',
               'location' => 'westus',
@@ -30,14 +30,14 @@ module Fog
                   'ipConfigurations' =>
                     [
                       {
-                        'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{_resource_group}/providers/Microsoft.Network/networkInterfaces/test-NIC/ipConfigurations/ipconfig1",
+                        'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkInterfaces/test-NIC/ipConfigurations/ipconfig1",
                         'properties' =>
                           {
                             'privateIPAddress' => '10.2.0.4',
                             'privateIPAllocationMethod' => 'Dynamic',
                             'subnet' =>
                                {
-                                 'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{_resource_group}/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/fog-test-subnet"
+                                 'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/fog-test-subnet"
                                },
                             'provisioningState' => 'Succeeded'
                           },

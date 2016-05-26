@@ -18,10 +18,10 @@ module Fog
 
       # Mock class for Network Request
       class Mock
-        def list_network_security_groups(_resource_group)
+        def list_network_security_groups(resource_group)
           [
             {
-              'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{_resource_group}/providers/Microsoft.Network/networkSecurityGroups/testGroup",
+              'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/testGroup",
               'name' => 'testGroup',
               'type' => 'Microsoft.Network/networkSecurityGroups',
               'location' => 'westus',
@@ -30,7 +30,7 @@ module Fog
                   'securityRules' =>
                     [
                       {
-                        'id' =>"/subscriptions/########-####-####-####-############/resourceGroups/#{_resource_group}/providers/Microsoft.Network/networkSecurityGroups/testGroup/securityRules/testRule",
+                        'id' =>"/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/testGroup/securityRules/testRule",
                         'properties' =>
                           {
                             'protocol' => 'tcp',
@@ -50,7 +50,7 @@ module Fog
                   'defaultSecurityRules' =>
                     [
                       {
-                        'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{_resource_group}/providers/Microsoft.Network/networkSecurityGroups/testGroup/defaultSecurityRules/AllowVnetInBound",
+                        'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/testGroup/defaultSecurityRules/AllowVnetInBound",
                         'properties' =>
                           {
                             'protocol' => '*',
@@ -68,7 +68,7 @@ module Fog
                         'etag' => "W/\"c034669d-9bbb-470b-9561-0ffc4ba322f1\""
                       },
                       {
-                        'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{_resource_group}/providers/Microsoft.Network/networkSecurityGroups/testGroup/defaultSecurityRules/AllowAzureLoadBalancerInBound",
+                        'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/testGroup/defaultSecurityRules/AllowAzureLoadBalancerInBound",
                         'properties' =>
                           {
                             'protocol' => '*',
@@ -86,7 +86,7 @@ module Fog
                         'etag' => "W/\"c034669d-9bbb-470b-9561-0ffc4ba322f1\""
                       },
                       {
-                        'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{_resource_group}/providers/Microsoft.Network/networkSecurityGroups/testGroup/defaultSecurityRules/DenyAllInBound",
+                        'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/testGroup/defaultSecurityRules/DenyAllInBound",
                         'properties' =>
                           {
                             'protocol' => '*',
@@ -104,7 +104,7 @@ module Fog
                         'etag' => "W/\"c034669d-9bbb-470b-9561-0ffc4ba322f1\""
                       },
                       {
-                          'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{_resource_group}/providers/Microsoft.Network/networkSecurityGroups/testGroup/defaultSecurityRules/AllowVnetOutBound",
+                          'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/testGroup/defaultSecurityRules/AllowVnetOutBound",
                           'properties' =>
                             {
                               'protocol' => '*',
@@ -122,7 +122,7 @@ module Fog
                           'etag' => "W/\"c034669d-9bbb-470b-9561-0ffc4ba322f1\""
                       },
                       {
-                        'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{_resource_group}/providers/Microsoft.Network/networkSecurityGroups/testGroup/defaultSecurityRules/AllowInternetOutBound",
+                        'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/testGroup/defaultSecurityRules/AllowInternetOutBound",
                         'properties' =>
                           {
                             'protocol' => '*',
@@ -140,7 +140,7 @@ module Fog
                         'etag' =>"W/\"c034669d-9bbb-470b-9561-0ffc4ba322f1\""
                       },
                       {
-                        'id' =>"/subscriptions/########-####-####-####-############/resourceGroups/#{_resource_group}/providers/Microsoft.Network/networkSecurityGroups/testGroup/defaultSecurityRules/DenyAllOutBound",
+                        'id' =>"/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/testGroup/defaultSecurityRules/DenyAllOutBound",
                         'properties' =>
                           {
                             'protocol' => '*',

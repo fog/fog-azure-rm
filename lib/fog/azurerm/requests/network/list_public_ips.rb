@@ -18,10 +18,10 @@ module Fog
 
       # Mock class for Network Request
       class Mock
-        def list_public_ips(_resource_group)
+        def list_public_ips(resource_group)
           [
             {
-              'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{_resource_group}/providers/Microsoft.Network/publicIPAddresses/test-PubIP",
+              'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/publicIPAddresses/test-PubIP",
               'name' => 'test-PubIP',
               'type' => 'Microsoft.Network/publicIPAddresses',
               'location' => 'westus',

@@ -15,10 +15,10 @@ module Fog
       end
 
       class Mock
-        def list_virtual_networks(_resource_group)
+        def list_virtual_networks(resource_group)
           [
             {
-              'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{_resource_group}/providers/Microsoft.Network/virtualNetworks/testVnet",
+              'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/virtualNetworks/testVnet",
               'name' => 'testVnet',
               'type' => 'Microsoft.Network/virtualNetworks',
               'location' => 'westus',
@@ -35,7 +35,7 @@ module Fog
                   'subnets' =>
                     [
                       {
-                        'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{_resource_group}/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/subnet_0_testVnet",
+                        'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/subnet_0_testVnet",
                         'properties' =>
                           {
                             'addressPrefix' => '10.1.0.0/24',
@@ -45,14 +45,14 @@ module Fog
                         'etag' => "W/\"8d90d220-7911-4376-bba0-88b0473e1d16\""
                       },
                       {
-                        'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{_resource_group}/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/fog-test-subnet",
+                        'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/fog-test-subnet",
                         'properties' =>
                           {
                             'addressPrefix' => '10.2.0.0/16',
                             'ipConfigurations' =>
                               [
                                 {
-                                  'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{_resource_group}/providers/Microsoft.Network/networkInterfaces/test-NIC/ipConfigurations/ipconfig1"
+                                  'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkInterfaces/test-NIC/ipConfigurations/ipconfig1"
                                 }
                               ],
                             'provisioningState' => 'Succeeded'

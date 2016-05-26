@@ -25,15 +25,15 @@ module Fog
 
       # Mock class for Network Request
       class Mock
-        def create_public_ip(_resource_group, _name, _location, _public_ip_allocation_method)
+        def create_public_ip(resource_group, name, location, public_ip_allocation_method)
           {
-            'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{_resource_group}/providers/Microsoft.Network/publicIPAddresses/#{_name}",
-            'name' => _name,
+            'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/publicIPAddresses/#{name}",
+            'name' => name,
             'type' => 'Microsoft.Network/publicIPAddresses',
-            'location' => _location,
+            'location' => location,
             'properties' =>
               {
-                'publicIPAllocationMethod' => _public_ip_allocation_method,
+                'publicIPAllocationMethod' => public_ip_allocation_method,
                 'ipAddress' => '13.91.253.67',
                 'idleTimeoutInMinutes' => 4,
                 'resourceGuid' => '767b1955-94de-433c-8e4a-ea0ad25e8d0c',

@@ -11,7 +11,7 @@ class TestDeleteLoadBalancer < Minitest::Test
   end
 
   def test_delete_load_balancer_success
-    response = ApiStub::Requests::Network::LoadBalancer.delete_load_balancer_response
+    response = true
     @promise.stub :value!, response do
       @load_balancers.stub :delete, @promise do
         assert @service.delete_load_balancer('fog-test-rg', 'fog-test-load-balancer'), response

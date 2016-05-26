@@ -143,7 +143,6 @@ module ApiStub
                   ]
                   }
 }'
-
           result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
           result.body = Azure::ARM::Network::Models::LoadBalancer.deserialize_object(JSON.load(response))
           result
@@ -286,7 +285,6 @@ module ApiStub
         def self.frontend_ip_config
           fic =
               [{
-
                    name: 'fic',
                    private_ipallocation_method: 'Dynamic',
                    public_ipaddress_id: '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourcegroups/fogRM-rg/providers/Microsoft.Network/publicIPAddresses/pip',

@@ -19,7 +19,9 @@ module Fog
 
       # Mock class for Network Request
       class Mock
-        def delete_subnet(_resource_group, _name, _virtual_network_name)
+        def delete_subnet(resource_group, name, virtual_network_name)
+          Fog::Logger.debug "Subnet #{name} of Virtual Network #{virtual_network_name} from Resource group #{resource_group} deleted successfully."
+          return true
         end
       end
     end

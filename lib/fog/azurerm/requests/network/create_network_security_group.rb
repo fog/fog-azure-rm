@@ -49,7 +49,150 @@ module Fog
 
       # Mock class for Network Request
       class Mock
-        def create_network_security_group(_resource_group, _name, _location, _security_rules)
+        def create_network_security_group(resource_group, name, location, security_rules)
+          {
+            'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/#{name}",
+            'name' => name,
+            'type' => 'Microsoft.Network/networkSecurityGroups',
+            'location' => location,
+            'properties' =>
+              {
+                'securityRules' =>
+                  [
+                    {
+                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/#{name}/securityRules/testRule",
+                      'properties' =>
+                        {
+                          'protocol' => 'tcp',
+                          'sourceAddressPrefix' => '0.0.0.0/0',
+                          'destinationAddressPrefix' => '0.0.0.0/0',
+                          'access' => 'Allow',
+                          'direction' => 'Inbound',
+                          'sourcePortRange' => '22',
+                          'destinationPortRange' => '22',
+                          'priority' => 100,
+                          'provisioningState' => 'Updating'
+                        },
+                      'name' => 'testRule',
+                      'etag' => "W/\"0fded34d-08bb-4862-a766-f3ce67044920\""
+                    }
+                  ],
+                'defaultSecurityRules' =>
+                  [
+                    {
+                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/#{name}/defaultSecurityRules/AllowVnetInBound",
+                      'properties' =>
+                        {
+                          'protocol' => '*',
+                          'sourceAddressPrefix' => 'VirtualNetwork',
+                          'destinationAddressPrefix' => 'VirtualNetwork',
+                          'access' => 'Allow',
+                          'direction' => 'Inbound',
+                          'description' => 'Allow inbound traffic from all VMs in VNET',
+                          'sourcePortRange' => '*',
+                          'destinationPortRange' => '*',
+                          'priority' => 65000,
+                          'provisioningState' => 'Updating'
+                        },
+                      'name' => 'AllowVnetInBound',
+                      'etag' => "W/\"0fded34d-08bb-4862-a766-f3ce67044920\""
+                    },
+                    {
+                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/#{name}/defaultSecurityRules/AllowAzureLoadBalancerInBound",
+                      'properties' =>
+                        {
+                          'protocol' => '*',
+                          'sourceAddressPrefix' => 'AzureLoadBalancer',
+                          'destinationAddressPrefix' => '*',
+                          'access' => 'Allow',
+                          'direction' => 'Inbound',
+                          'description' => 'Allow inbound traffic from azure load balancer',
+                          'sourcePortRange' => '*',
+                          'destinationPortRange' => '*',
+                          'priority' => 65001,
+                          'provisioningState' => 'Updating'
+                        },
+                      'name' => 'AllowAzureLoadBalancerInBound',
+                      'etag' => "W/\"0fded34d-08bb-4862-a766-f3ce67044920\""
+                    },
+                    {
+                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/#{name}/defaultSecurityRules/DenyAllInBound",
+                      'properties' =>
+                        {
+                          'protocol' => '*',
+                          'sourceAddressPrefix' => '*',
+                          'destinationAddressPrefix' => '*',
+                          'access' => 'Deny',
+                          'direction' => 'Inbound',
+                          'description' => 'Deny all inbound traffic',
+                          'sourcePortRange' => '*',
+                          'destinationPortRange' => '*',
+                          'priority' => 65500,
+                          'provisioningState' => 'Updating'
+                        },
+                      'name' => 'DenyAllInBound',
+                      'etag' => "W/\"0fded34d-08bb-4862-a766-f3ce67044920\""
+                    },
+                    {
+                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/#{name}/defaultSecurityRules/AllowVnetOutBound",
+                      'properties' =>
+                        {
+                          'protocol' => '*',
+                          'sourceAddressPrefix' => 'VirtualNetwork',
+                          'destinationAddressPrefix' => 'VirtualNetwork',
+                          'access' => 'Allow',
+                          'direction' => 'Outbound',
+                          'description' => 'Allow outbound traffic from all VMs to all VMs in VNET',
+                          'sourcePortRange' => '*',
+                          'destinationPortRange' => '*',
+                          'priority' => 65000,
+                          'provisioningState' => 'Updating'
+                        },
+                      'name' => 'AllowVnetOutBound',
+                      'etag' => "W/\"0fded34d-08bb-4862-a766-f3ce67044920\""
+                    },
+                    {
+                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/#{name}/defaultSecurityRules/AllowInternetOutBound",
+                      'properties' =>
+                        {
+                          'protocol' => '*',
+                          'sourceAddressPrefix' => '*',
+                          'destinationAddressPrefix' => 'Internet',
+                          'access' => 'Allow',
+                          'direction' => 'Outbound',
+                          'description' => 'Allow outbound traffic from all VMs to Internet',
+                          'sourcePortRange' => '*',
+                          'destinationPortRange' => '*',
+                          'priority' => 65001,
+                          'provisioningState' => 'Updating'
+                        },
+                      'name' => 'AllowInternetOutBound',
+                      'etag' => "W/\"0fded34d-08bb-4862-a766-f3ce67044920\""
+                    },
+                    {
+                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/#{name}/defaultSecurityRules/DenyAllOutBound",
+                      'properties' =>
+                        {
+                          'protocol' => '*',
+                          'sourceAddressPrefix' => '*',
+                          'destinationAddressPrefix' => '*',
+                          'access' => 'Deny',
+                          'direction' => 'Outbound',
+                          'description' => 'Deny all outbound traffic',
+                          'sourcePortRange' => '*',
+                          'destinationPortRange' => '*',
+                          'priority' => 65500,
+                          'provisioningState' => 'Updating'
+                        },
+                      'name' => 'DenyAllOutBound',
+                      'etag' => "W/\"0fded34d-08bb-4862-a766-f3ce67044920\""
+                    }
+                  ],
+                'resourceGuid' => '9dca97e6-4789-4ebd-86e3-52b8b0da6cd4',
+                'provisioningState' => 'Updating'
+              },
+            'etag' => "W/\"0fded34d-08bb-4862-a766-f3ce67044920\""
+          }
         end
       end
     end

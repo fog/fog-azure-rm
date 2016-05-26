@@ -19,7 +19,9 @@ module Fog
 
       # Mock class for Network Request
       class Mock
-        def delete_network_interface(_resource_group, _name)
+        def delete_network_interface(resource_group, name)
+          Fog::Logger.debug "Network Interface #{name} from Resource group #{resource_group} deleted successfully."
+          return true
         end
       end
     end

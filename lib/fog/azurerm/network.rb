@@ -24,6 +24,9 @@ module Fog
       request :create_network_interface
       request :delete_network_interface
       request :list_network_interfaces
+      request :create_load_balancer
+      request :delete_load_balancer
+      request :list_load_balancers
 
       model_path 'fog/azurerm/models/network'
       model :virtual_network
@@ -34,6 +37,13 @@ module Fog
       collection :subnets
       model :network_interface
       collection :network_interfaces
+      model :load_balancer
+      collection :load_balancers
+      model :frontend_ip_configuration
+      model :inbound_nat_pool
+      model :inbound_nat_rule
+      model :load_balancing_rule
+      model :probe
 
       # Mock class for Network Service
       class Mock

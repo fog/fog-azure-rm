@@ -13,38 +13,38 @@ require File.expand_path './api_stub', __dir__
 
 def credentials
   {
-    tenant_id:        '<TENANT-ID>',
-    client_id:        '<CLIENT-ID>',
-    client_secret:    '<CLIENT-SECRET>',
-    subscription_id:  '<SUBSCRIPTION-ID>'
+      tenant_id: '<TENANT-ID>',
+      client_id: '<CLIENT-ID>',
+      client_secret: '<CLIENT-SECRET>',
+      subscription_id: '<SUBSCRIPTION-ID>'
   }
 end
 
 def server(service)
   Fog::Compute::AzureRM::Server.new(
-    name: 'fog-test-server',
-    location: 'West US',
-    resource_group: 'fog-test-rg',
-    vm_size: 'Basic_A0',
-    storage_account_name: 'shaffanstrg',
-    username: 'shaffan',
-    password: 'Confiz=123',
-    disable_password_authentication: false,
-    network_interface_card_id: '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/shaffanRG/providers/Microsoft.Network/networkInterfaces/testNIC',
-    publisher: 'Canonical',
-    offer: 'UbuntuServer',
-    sku: '14.04.2-LTS',
-    version: 'latest',
-    service: service
+      name: 'fog-test-server',
+      location: 'West US',
+      resource_group: 'fog-test-rg',
+      vm_size: 'Basic_A0',
+      storage_account_name: 'shaffanstrg',
+      username: 'shaffan',
+      password: 'Confiz=123',
+      disable_password_authentication: false,
+      network_interface_card_id: '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/shaffanRG/providers/Microsoft.Network/networkInterfaces/testNIC',
+      publisher: 'Canonical',
+      offer: 'UbuntuServer',
+      sku: '14.04.2-LTS',
+      version: 'latest',
+      service: service
   )
 end
 
 def availability_set(service)
   Fog::Compute::AzureRM::AvailabilitySet.new(
-    name: 'availability-set',
-    location: 'West US',
-    resource_group: 'fog-test-rg',
-    service: service
+      name: 'availability-set',
+      location: 'West US',
+      resource_group: 'fog-test-rg',
+      service: service
   )
 end
 
@@ -85,7 +85,7 @@ def subnet(service)
       addressPrefix: '10.1.0.0/24',
       networkSecurityGroupId: "/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/networkSecurityGroups/fog-test-network-security-group",
       routeTableId: "/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/routeTables/fog-test-route-table",
-      ipConfigurations:[
+      ipConfigurations: [
           {id: "/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/networkInterfaces/fog-test-network-interface/ipConfigurations/fog-test-ip-configuration"}
       ],
       service: service
@@ -119,23 +119,79 @@ def network_interface(service)
   )
 end
 
+def load_balancer(service)
+  Fog::Network::AzureRM::LoadBalancer.new(
+      name: 'lb',
+      resource_group: 'fogRM-rg',
+      location: 'westus',
+
+      frontend_ip_configurations: [{
+                                       name: 'fic',
+                                       private_ipallocation_method: 'Dynamic',
+                                       public_ipaddress_id: '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourcegroups/fogRM-rg/providers/Microsoft.Network/publicIPAddresses/pip',
+                                       subnet_id: '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourcegroups/fogRM-rg/providers/Microsoft.Network/virtualNetworks/vnet/subnets/sb1'
+                                   }],
+      backend_address_pool_names:
+          [
+              'pool1'
+          ],
+      load_balancing_rules:
+          [
+              {
+                  name: 'lb_rule_1',
+                  frontend_ip_configuration_id: '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/fogRM-rg/providers/Microsoft.Network/loadBalancers/lb/frontendIPConfigurations/fic',
+                  backend_address_pool_id: '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/fogRM-rg/providers/Microsoft.Network/loadBalancers/lb/backendAddressPools/pool1',
+                  protocol: 'Tcp',
+                  frontend_port: '80',
+                  backend_port: '8080',
+                  enable_floating_ip: false,
+                  idle_timeout_in_minutes: 4,
+                  load_distribution: "Default"
+              }
+          ],
+      inbound_nat_rules: [{
+                              name: 'RDP-Traffic',
+                              frontend_ip_configuration_id: '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/fogRM-rg/providers/Microsoft.Network/loadBalancers/lb/frontendIPConfigurations/fic',
+                              protocol: 'Tcp',
+                              frontend_port: 3389,
+                              backend_port: 3389
+                          }],
+      probes: [{
+                   name: 'probe1',
+                   protocol: 'Tcp',
+                   port: 8080,
+                   request_path: "myprobeapp1/myprobe1.svc",
+                   interval_in_seconds: 5,
+                   number_of_probes: 16
+               }],
+      inbound_nat_pools: [{
+                              name: 'RDPForVMSS1',
+                              protocol: 'Tcp',
+                              frontend_port_range_start: 50000,
+                              frontend_port_range_end: 50500,
+                              backend_port: 3389
+                          }],
+      service: service
+  )
+end
+
 def zone(service)
   Fog::DNS::AzureRM::Zone.new(
-    name: 'fog-test-zone.com',
-    id: '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/dnszones/fog-test-zone.com',
-    resource_group: 'fog-test-rg',
-    service: service
+      name: 'fog-test-zone.com',
+      id: '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/dnszones/fog-test-zone.com',
+      resource_group: 'fog-test-rg',
+      service: service
   )
 end
 
 def record_set(service)
   Fog::DNS::AzureRM::RecordSet.new(
-    name: 'fog-test-record_set',
-    resource_group: 'fog-test-rg',
-    zone_name: 'fog-test-zone.com',
-    records: ["1.2.3.4","1.2.3.3"],
-    type: 'A',
-    ttl: 60,
-    service: service
+      name: 'fog-test-record_set',
+      resource_group: 'fog-test-rg',
+      zone_name: 'fog-test-zone.com',
+      records: ["1.2.3.4", "1.2.3.3"],
+      type: 'A',
+      ttl: 60,
+      service: service
   )
 end

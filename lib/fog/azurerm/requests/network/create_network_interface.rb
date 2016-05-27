@@ -4,7 +4,7 @@ module Fog
     class AzureRM
       # Real class for Network Request
       class Real
-        def create_network_interface(name, location, resource_group, subnet_id, ip_config_name, prv_ip_alloc_method)
+        def create_network_interface(resource_group, name, location, subnet_id, ip_config_name, prv_ip_alloc_method)
           Fog::Logger.debug "Creating Network Interface Card: #{name}..."
           network_interface = define_network_interface(name, location, subnet_id, ip_config_name, prv_ip_alloc_method)
           begin
@@ -46,8 +46,43 @@ module Fog
 
       # Mock class for Network Request
       class Mock
-        def create_network_interface(name, location, resource_group, subnet_id, ip_configs_name, prv_ip_alloc_method)
-
+        def create_network_interface(resource_group, name, location, subnet_id, ip_configs_name, prv_ip_alloc_method)
+          {
+            'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkInterfaces/#{name}",
+            'name' => name,
+            'type' => 'Microsoft.Network/networkInterfaces',
+            'location' =>  location,
+            'properties' =>
+              {
+                'ipConfigurations' =>
+                  [
+                    {
+                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkInterfaces/#{name}/ipConfigurations/#{ip_configs_name}",
+                      'properties' =>
+                        {
+                          'privateIPAddress' => '10.0.0.5',
+                          'privateIPAllocationMethod' => prv_ip_alloc_method,
+                          'subnet' =>
+                            {
+                              'id' => subnet_id
+                            },
+                          'provisioningState' => 'Succeeded'
+                        },
+                      'name' => ip_configs_name,
+                      'etag' => "W/\"e6c8e5c3-f28d-44f3-babe-0e8e934a591e\""
+                    }
+                  ],
+                'dnsSettings' =>
+                  {
+                    'dnsServers' => [],
+                    'appliedDnsServers' => []
+                  },
+                'enableIPForwarding' => false,
+                'resourceGuid' => '2bff0fad-623b-4773-82b8-dc875f3aacd2',
+                'provisioningState' => 'Succeeded'
+              },
+            'etag' => "W/\"e6c8e5c3-f28d-44f3-babe-0e8e934a591e\""
+          }
         end
       end
     end

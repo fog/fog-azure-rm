@@ -3,9 +3,9 @@ module Fog
     class AzureRM
       # Real class for DNS Request
       class Real
-        def delete_record_set(record_set_name, dns_resource_group, zone_name, record_type)
-          resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription_id}/resourceGroups/#{dns_resource_group}/providers/Microsoft.Network/dnsZones/#{zone_name}/#{record_type}/#{record_set_name}?api-version=2015-05-04-preview"
-          Fog::Logger.debug "Deleting RecordSet #{record_set_name} of type '#{record_type}' in zone #{zone_name}"
+        def delete_record_set(resource_group, name, zone_name, record_type)
+          resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription_id}/resourceGroups/#{resource_group}/providers/Microsoft.Network/dnsZones/#{zone_name}/#{record_type}/#{name}?api-version=2015-05-04-preview"
+          Fog::Logger.debug "Deleting RecordSet #{name} of type '#{record_type}' in zone #{zone_name}"
 
           begin
             token = Fog::Credentials::AzureRM.get_token(@tenant_id, @client_id, @client_secret)
@@ -15,10 +15,10 @@ module Fog
               content_type: 'application/json',
               authorization: token
             )
-            Fog::Logger.debug "RecordSet #{record_set_name} Deleted Successfully!"
+            Fog::Logger.debug "RecordSet #{name} Deleted Successfully!"
             true
           rescue Exception => e
-            Fog::Logger.warning "Exception deleting record set #{record_set_name} from resource group #{dns_resource_group}"
+            Fog::Logger.warning "Exception deleting record set #{name} from resource group #{resource_group}"
             msg = "AzureDns::RecordSet - Exception is: #{e.message}"
             raise msg
           end
@@ -27,7 +27,9 @@ module Fog
 
       # Mock class for DNS Request
       class Mock
-        def delete_record_set(_record_set_name, _dns_resource_group, _zone_name, _record_type)
+        def delete_record_set(_resource_group, _name, _zone_name, _record_type)
+          Fog::Logger.debug "Record Set #{_name} deleted successfully."
+          return true
         end
       end
     end

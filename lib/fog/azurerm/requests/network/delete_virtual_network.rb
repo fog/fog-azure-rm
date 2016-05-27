@@ -3,15 +3,15 @@ module Fog
     class AzureRM
       # Real class for Network Request
       class Real
-        def delete_virtual_network(resource_group_name, name)
+        def delete_virtual_network(resource_group, name)
           Fog::Logger.debug "Deleting Virtual Network: #{name}..."
           begin
-            promise = @network_client.virtual_networks.delete(resource_group_name, name)
+            promise = @network_client.virtual_networks.delete(resource_group, name)
             promise.value!
             Fog::Logger.debug "Virtual Network #{name} deleted successfully."
             true
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Exception deleting Virtual Network #{name} in Resource Group: #{resource_group_name}. #{e.body['error']['message']}"
+            msg = "Exception deleting Virtual Network #{name} in Resource Group: #{resource_group}. #{e.body['error']['message']}"
             raise msg
           end
         end
@@ -19,7 +19,9 @@ module Fog
 
       # Mock class for Network Request
       class Mock
-        def delete_virtual_network(_resource_group_name, _name)
+        def delete_virtual_network(resource_group, name)
+          Fog::Logger.debug "Virtual Network #{name} from Resource group #{resource_group} deleted successfully."
+          return true
         end
       end
     end

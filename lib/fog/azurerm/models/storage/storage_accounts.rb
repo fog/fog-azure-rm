@@ -1,8 +1,6 @@
 require 'fog/core/collection'
 require 'fog/azurerm/models/storage/storage_account'
-# rubocop:disable LineLength
-# rubocop:disable MethodLength
-# rubocop:disable AbcSize
+
 module Fog
   module Storage
     class AzureRM
@@ -21,9 +19,10 @@ module Fog
           end
           hash_of_storage_accounts.each do |account|
             hash = {}
-            account.instance_variables.each do |var|
-              hash[var.to_s.delete('@')] = account.instance_variable_get(var)
-            end
+            hash['name'] = account['name']
+            hash['location'] = account['location']
+            hash['resource_group'] = account['id'].split('/')[4]
+            hash['account_type'] =  account['properties']['accountType']
             accounts << hash
           end
           load(accounts)

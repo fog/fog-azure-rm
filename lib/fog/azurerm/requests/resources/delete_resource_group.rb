@@ -6,7 +6,7 @@ module Fog
           begin
             Fog::Logger.debug "Deleting Resource Group: #{name}."
             promise = @rmc.resource_groups.delete(name)
-            result = promise.value!
+            promise.value!
             Fog::Logger.debug "Resource Group #{name} deleted successfully."
             true
           rescue  MsRestAzure::AzureOperationError => e
@@ -18,6 +18,8 @@ module Fog
 
       class Mock
         def delete_resource_group(name)
+          Fog::Logger.debug "Resource Group #{name} deleted successfully."
+          return true
         end
       end
     end

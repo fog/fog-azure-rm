@@ -29,12 +29,12 @@ module Fog
           requires :name
           requires :resource_group
           requires :virtual_network_name
-          subnet = service.create_subnet(resource_group, virtual_network_name, name, address_prefix)
+          subnet = service.create_subnet(resource_group, name, virtual_network_name, address_prefix)
           merge_attributes(Fog::Network::AzureRM::Subnet.parse(subnet))
         end
 
         def destroy
-          service.delete_subnet(resource_group, virtual_network_name, name)
+          service.delete_subnet(resource_group, name, virtual_network_name)
         end
       end
     end

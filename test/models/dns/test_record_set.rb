@@ -53,7 +53,7 @@ class TestRecordSet < Minitest::Test
 
   def test_get_records_response
     @service.stub :get_records_from_record_set, ['4.3.2.1', '5.3.2.1'] do
-      assert_equal @record_set.get_records('fog-test-record-set', 'fog-test-rg', 'fog-test-zone', 'A'), ['4.3.2.1', '5.3.2.1']
+      assert_equal @record_set.get_records('fog-test-rg', 'fog-test-record-set', 'fog-test-zone', 'A'), ['4.3.2.1', '5.3.2.1']
     end
   end
 end

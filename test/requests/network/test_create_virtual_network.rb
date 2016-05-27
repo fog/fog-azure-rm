@@ -15,7 +15,7 @@ class TestCreateVirtualNetwork < Minitest::Test
     expected_response = Azure::ARM::Network::Models::VirtualNetwork.serialize_object(mocked_response.body)
     @promise.stub :value!, mocked_response do
       @virtual_networks.stub :create_or_update, @promise do
-        assert_equal @service.create_virtual_network('fog-test-virtual-network', 'westus', 'fog-test-rg', '10.1.0.0/24', '10.1.0.5,10.1.0.6', '10.1.0.0/16,10.2.0.0/16'), expected_response
+        assert_equal @service.create_virtual_network('fog-test-rg', 'fog-test-virtual-network', 'westus', '10.1.0.0/24', '10.1.0.5,10.1.0.6', '10.1.0.0/16,10.2.0.0/16'), expected_response
       end
     end
   end
@@ -25,7 +25,7 @@ class TestCreateVirtualNetwork < Minitest::Test
     expected_response = Azure::ARM::Network::Models::VirtualNetwork.serialize_object(mocked_response.body)
     @promise.stub :value!, mocked_response do
       @virtual_networks.stub :create_or_update, @promise do
-        assert_equal @service.create_virtual_network('fog-test-virtual-network', 'westus', 'fog-test-rg', '10.1.0.0/24', '10.1.0.5,10.1.0.6', nil), expected_response
+        assert_equal @service.create_virtual_network('fog-test-rg', 'fog-test-virtual-network', 'westus', '10.1.0.0/24', '10.1.0.5,10.1.0.6', nil), expected_response
       end
     end
   end
@@ -35,7 +35,7 @@ class TestCreateVirtualNetwork < Minitest::Test
     @promise.stub :value!, response do
       @virtual_networks.stub :create_or_update, @promise do
         assert_raises ArgumentError do
-          @service.create_virtual_network('fog-test-virtual-network', 'westus', 'fog-test-rg', '10.1.0.0/24', '10.1.0.5,10.1.0.6')
+          @service.create_virtual_network('fog-test-rg', 'fog-test-virtual-network', 'westus', '10.1.0.0/24', '10.1.0.5,10.1.0.6')
         end
       end
     end
@@ -46,7 +46,7 @@ class TestCreateVirtualNetwork < Minitest::Test
     @promise.stub :value!, response do
       @virtual_networks.stub :create_or_update, @promise do
         assert_raises RuntimeError do
-          @service.create_virtual_network('fog-test-virtual-network', 'westus', 'fog-test-rg', '10.1.0.0/24', '10.1.0.5,10.1.0.6', '10.1.0.0/16,10.2.0.0/16')
+          @service.create_virtual_network('fog-test-rg', 'fog-test-virtual-network', 'westus', '10.1.0.0/24', '10.1.0.5,10.1.0.6', '10.1.0.0/16,10.2.0.0/16')
         end
       end
     end

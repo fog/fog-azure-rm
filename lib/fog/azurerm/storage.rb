@@ -28,7 +28,6 @@ module Fog
             retry if require('rubygems')
             raise e.message
           end
-          puts "Tenand Id: #{options[:tenant_id]}"
         end
       end
       # This class provides the actual implemention for service calls.

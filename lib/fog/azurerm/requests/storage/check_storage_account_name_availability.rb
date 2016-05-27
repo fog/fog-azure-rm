@@ -26,6 +26,8 @@ module Fog
       # This class provides the mock implementation for unit tests.
       class Mock
         def check_storage_account_name_availability(params)
+          Fog::Logger.debug "Name: #{params.name} is available."
+          return true
         end
       end
     end

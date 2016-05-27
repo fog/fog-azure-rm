@@ -27,6 +27,9 @@ module Fog
       request :create_load_balancer
       request :delete_load_balancer
       request :list_load_balancers
+      request :create_network_security_group
+      request :delete_network_security_group
+      request :list_network_security_groups
 
       model_path 'fog/azurerm/models/network'
       model :virtual_network
@@ -44,6 +47,9 @@ module Fog
       model :inbound_nat_rule
       model :load_balancing_rule
       model :probe
+      model :network_security_group
+      collection :network_security_groups
+      model :network_security_rule
 
       # Mock class for Network Service
       class Mock

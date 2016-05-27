@@ -44,10 +44,6 @@ module ApiStub
           }
         end
 
-        def self.delete_virtual_machine_response
-          MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
-        end
-
         def self.list_available_sizes_for_virtual_machine_response
           body = '{
             "value": [
@@ -64,10 +60,6 @@ module ApiStub
           result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
           result.body = Azure::ARM::Compute::Models::VirtualMachineSizeListResult.deserialize_object(JSON.load(body))
           result.body.value
-        end
-
-        def self.virtual_machine_response
-          Azure::ARM::Compute::Models::VirtualMachine.deserialize_object(create_virtual_machine_response)
         end
       end
     end

@@ -24,40 +24,15 @@ New contributors are always welcome, when it doubt please ask questions. We stri
 * Write and help edit [documentation](https://github.com/fog/fog-azure-rm/tree/master/lib/fog/azurerm/docs).
 
 ## Testing 
-
-Two directories for testing are as follows
-
-* The `test` directory contains the `Minitest` tests, which currently covers the real classes for each service.
-* The `tests` directory contains the `shindo` tests, which covers the mock classes for each service. `shindo` tests generally pass if mocking is turned on.
-
-#### Minitest
 You can run `Minitest` tests by running this command in the root directory.
 
 ```shell
-$ rake minitest_test
-```
-
-#### Shindo 
-You can run `Shindo` tests by running this command in the root directory.
-
-```shell
-$ rake shindo_test
+$ rake test
 ```
 
 ## Code Coverage
-We are using Simplecov Gem for code coverage. Simplecov will show the report of code coverage for both testing scenarios.
-
-#### Minitest 
-You can see the report of Minitest's Code Coverage by running this command in the root directory.
+We are using Simplecov Gem for code coverage. You can see the report of  Code Coverage by running this command in the root directory.
 
 ```shell
-$ rake minitest_coverage
+$ rake coverage
 ```
-
-#### Shindo
-You can see the report of Shindo's Code Coverage by running this command in the root directory.
-
-```shell
-$ rake shindo_coverage
-```
-

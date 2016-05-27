@@ -36,7 +36,7 @@ module Fog
         end
 
         def destroy
-          service.delete_zone(name, resource_group)
+          service.delete_zone(resource_group, name)
         end
       end
     end

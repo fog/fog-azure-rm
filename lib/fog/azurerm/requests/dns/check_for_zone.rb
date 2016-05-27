@@ -29,6 +29,8 @@ module Fog
       # Mock class for DNS Request
       class Mock
         def check_for_zone(_resource_group, _name)
+          Fog::Logger.debug "Zone name #{_name} is available."
+          return true
         end
       end
     end

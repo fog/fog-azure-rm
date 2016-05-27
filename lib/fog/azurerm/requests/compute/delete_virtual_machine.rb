@@ -7,9 +7,9 @@ module Fog
           Fog::Logger.debug "Deleting Virtual Machine #{name} from Resource Group #{resource_group}."
           begin
             promise = @compute_mgmt_client.virtual_machines.delete(resource_group, name)
-            result = promise.value!
+            promise.value!
             Fog::Logger.debug "Virtual Machine #{name} Deleted Successfully."
-            result
+            true
           rescue  MsRestAzure::AzureOperationError => e
             msg = "Error Deleting Virtual Machine '#{name}' from Resource Group '#{resource_group}'. #{e.body['error']['message']}"
             raise msg
@@ -19,6 +19,8 @@ module Fog
       # This class provides the mock implementation for unit tests.
       class Mock
         def delete_virtual_machine(resource_group, name)
+          Fog::Logger.debug "Virtual Machine #{name} from Resource group #{resource_group} deleted successfully."
+          return true
         end
       end
     end

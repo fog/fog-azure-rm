@@ -11,10 +11,9 @@ class TestGeneralizeVirtualMachine < Minitest::Test
   end
 
   def test_generalize_virtual_machine_success
-    response = ApiStub::Requests::Compute::VirtualMachine.deallocate_virtual_machine_response
-    @promise.stub :value!, response do
+    @promise.stub :value!, true do
       @virtual_machines.stub :generalize, @promise do
-        assert_equal @service.generalize_virtual_machine('fog-test-rg', 'fog-test-server'), response
+        assert @service.generalize_virtual_machine('fog-test-rg', 'fog-test-server')
       end
     end
   end

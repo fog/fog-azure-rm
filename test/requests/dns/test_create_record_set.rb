@@ -12,7 +12,7 @@ class TestCreateRecordSet < Minitest::Test
     response = ApiStub::Requests::DNS::RecordSet.rest_client_put_method_for_record_set_A_Type_response
     @token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
       RestClient.stub :put, response do
-        assert_equal @service.create_record_set('fog-test-rg', 'fog-test-zone', 'fog-test-record-set', ['1.2.3.4', '1.2.3.3'], 'A', 60), JSON.parse(response)
+        assert_equal @service.create_record_set('fog-test-rg', 'fog-test-record-set', 'fog-test-zone', ['1.2.3.4', '1.2.3.3'], 'A', 60), JSON.parse(response)
       end
     end
   end
@@ -21,7 +21,7 @@ class TestCreateRecordSet < Minitest::Test
     response = ApiStub::Requests::DNS::RecordSet.rest_client_put_method_for_record_set_cname_Type_response
     @token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
       RestClient.stub :put, response do
-        assert_equal @service.create_record_set('fog-test-rg', 'fog-test-zone', 'fog-test-record-set', ['test.fog.com'], 'CNAME', 60), JSON.parse(response)
+        assert_equal @service.create_record_set('fog-test-rg', 'fog-test-record-set', 'fog-test-zone', ['test.fog.com'], 'CNAME', 60), JSON.parse(response)
       end
     end
   end
@@ -29,7 +29,7 @@ class TestCreateRecordSet < Minitest::Test
   def test_create_record_set_failure
     @token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
       assert_raises ArgumentError do
-        @service.create_record_set('fog-test-rg', 'fog-test-zone', 'fog-test-record-set', ['test.fog.com'], 'CNAME')
+        @service.create_record_set('fog-test-rg', 'fog-test-record-set', 'fog-test-zone', ['test.fog.com'], 'CNAME')
       end
     end
   end
@@ -38,7 +38,7 @@ class TestCreateRecordSet < Minitest::Test
     response = -> { fail Exception.new('mocked exception') }
     @token_provider.stub :get_authentication_header, response do
       assert_raises Exception do
-        @service.create_record_set('fog-test-rg', 'fog-test-zone', 'fog-test-record-set', ['test.fog.com'], 'CNAME', 60)
+        @service.create_record_set('fog-test-rg', 'fog-test-record-set', 'fog-test-zone', ['test.fog.com'], 'CNAME', 60)
       end
     end
   end

@@ -7,7 +7,13 @@ module Fog
           begin
             promise = @storage_mgmt_client.storage_accounts.list
             response = promise.value!
-            response.body.value
+            body = response.body.value
+            body.each do |obj|
+              obj.properties.last_geo_failover_time = DateTime.parse(Time.now.to_s)
+            end
+            result = Azure::ARM::Storage::Models::StorageAccountListResult.serialize_object(response.body)['value']
+            puts "Result: #{result}"
+            result
           rescue  MsRestAzure::AzureOperationError => e
             msg = "Exception listing Storage Accounts. #{e.body['error']['message']}"
             raise msg
@@ -17,10 +23,31 @@ module Fog
       # This class provides the mock implementation for unit tests.
       class Mock
         def list_storage_accounts
-          storage_acc = ::Azure::ARM::Storage::Models::StorageAccount.new
-          storage_acc.name = 'fog-test-storage-account'
-          storage_acc.location = 'West US'
-          [storage_acc]
+          [
+            {
+              "id"=>"/subscriptions/{subscriptionId}/resourceGroups/mock_test_resource_group/providers/Microsoft.Storage/storageAccounts/mock_test_storage_account",
+              "name"=>"mock_test_storage_account",
+              "type"=>"Microsoft.Storage/storageAccounts",
+              "location"=>"westus",
+              "tags"=>{},
+              "properties"=>
+                  {
+                      "provisioningState"=>"Succeeded",
+                      "accountType"=>"Standard_LRS",
+                      "primaryEndpoints"=>
+                          {
+                          "blob"=>"https://mock_test_storage_account.blob.core.windows.net/",
+                          "queue"=>"https://mock_test_storage_account.queue.core.windows.net/",
+                          "table"=>"https://mock_test_storage_account.table.core.windows.net/",
+                          "file"=>"https://mock_test_storage_account.file.core.windows.net/"
+                          },
+                      "primaryLocation"=>"westus",
+                      "statusOfPrimary" =>"available",
+                      "lastGeoFailoverTime"=>"2016-05-19T09:49:07Z",
+                      "creationTime"=>"2016-05-19T05:24:36Z"
+                  }
+            }
+          ]
         end
       end
     end

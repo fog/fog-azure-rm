@@ -3,15 +3,15 @@ module Fog
     class AzureRM
       # Real class for Network Request
       class Real
-        def delete_subnet(resource_group, virtual_network_name, subnet_name)
-          Fog::Logger.debug "Deleting Subnet: #{subnet_name}..."
+        def delete_subnet(resource_group, name, virtual_network_name)
+          Fog::Logger.debug "Deleting Subnet: #{name}..."
           begin
-            promise = @network_client.subnets.delete(resource_group, virtual_network_name, subnet_name)
+            promise = @network_client.subnets.delete(resource_group, virtual_network_name, name)
             promise.value!
-            Fog::Logger.debug "Subnet #{subnet_name} deleted successfully."
+            Fog::Logger.debug "Subnet #{name} deleted successfully."
             true
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Exception deleting Subnet #{subnet_name} in Resource Group: #{resource_group}. #{e.body['error']['message']}"
+            msg = "Exception deleting Subnet #{name} in Resource Group: #{resource_group}. #{e.body['error']['message']}"
             raise msg
           end
         end
@@ -19,7 +19,9 @@ module Fog
 
       # Mock class for Network Request
       class Mock
-        def delete_subnet(_resource_group, _virtual_network_name, _subnet_name)
+        def delete_subnet(resource_group, name, virtual_network_name)
+          Fog::Logger.debug "Subnet #{name} of Virtual Network #{virtual_network_name} from Resource group #{resource_group} deleted successfully."
+          return true
         end
       end
     end

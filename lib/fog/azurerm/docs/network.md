@@ -215,6 +215,86 @@ Get a Public IP object from the get method and then destroy that public IP.
       pubip.destroy
 ```
 
-## Support and Feedback
-Your feedback is appreciated! If you have specific issues with the fog ARM, you should file an issue via Github.
+## Create Load Balancer
 
+Create a new load balancer.
+
+```ruby
+    lb = azure_network_service.load_balancers.create(
+    name: '<Load Balancer name>',
+    resource_group: '<Resource Group name>',
+    location: 'westus',
+
+    frontend_ip_configurations: 
+                                [
+                                    {
+                                         #id: '/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/loadBalancers/<Load Balancer name>/frontendIPConfigurations/fic',
+                                         name: 'fic',
+                                         private_ipallocation_method: 'Dynamic',
+                                         # public_ipaddress_id: '/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/publicIPAddresses/pip',
+                                         subnet_id: '/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/virtualNetworks/vnet/subnets/sb1'
+                                    }
+                                ],
+    backend_address_pool_names:
+                                [
+                                    'pool1'
+                                ],
+    load_balancing_rules:
+                                [
+                                    {
+                                        name: 'lb_rule_1',
+                                        frontend_ip_configuration_id: '/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/loadBalancers/<Load Balancer name>/frontendIPConfigurations/fic',
+                                        backend_address_pool_id: '/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/loadBalancers/<Load Balancer name>/backendAddressPools/pool1',
+                                        protocol: 'Tcp',
+                                        frontend_port: '80',
+                                        backend_port: '8080',
+                                        enable_floating_ip: false,
+                                        idle_timeout_in_minutes: 4,
+                                        load_distribution: "Default"
+                                    }
+                                ],
+    inbound_nat_rules: 
+                                [
+                                    {
+                                        name: 'RDP-Traffic',
+                                        frontend_ip_configuration_id: '/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/loadBalancers/<Load Balancer name>/frontendIPConfigurations/fic',
+                                        protocol: 'Tcp',
+                                        frontend_port: 3389,
+                                        backend_port: 3389
+                                    }
+                                ]
+)
+```
+
+## List Load Balancers
+
+List all load balancers in a resource group
+
+```ruby
+    lbs = azure_network_service.load_balancers(resource_group: '<Resource Group name>')       
+    lbs.each do |lb|
+        puts "#{lb.name}"
+    end
+```
+
+## Retrieve a single Load Balancer
+
+Get a single record of Load Balancer
+
+```ruby
+    lb = azure_network_service
+                  .load_balancers(resource_group: '<Resource Group name>')
+                  .get('<Load Balancer name>')
+    puts "#{lb.name}"
+```
+
+## Destroy a single Network Interface
+
+Get a load balancer object from the get method and then destroy that load balancer.
+
+```ruby
+    lb.destroy
+```
+
+## Support and Feedback
+Your feedback is highly appreciated! If you have specific issues with the fog ARM, you should file an issue via Github.

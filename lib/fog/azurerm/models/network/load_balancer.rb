@@ -61,19 +61,11 @@ module Fog
         def save
           requires :name, :location, :resource_group
 
-          unless frontend_ip_configurations.nil?
-            validate_frontend_ip_configurations(frontend_ip_configurations)
-          end
-          unless load_balancing_rules.nil?
-            validate_load_balancing_rules(load_balancing_rules)
-          end
+          validate_frontend_ip_configurations(frontend_ip_configurations) unless frontend_ip_configurations.nil?
+          validate_load_balancing_rules(load_balancing_rules) unless load_balancing_rules.nil?
           validate_probes(probes) unless probes.nil?
-          unless inbound_nat_rules.nil?
-            validate_inbound_nat_rules(inbound_nat_rules)
-          end
-          unless inbound_nat_pools.nil?
-            validate_inbound_nat_pools(inbound_nat_pools)
-          end
+          validate_inbound_nat_rules(inbound_nat_rules) unless inbound_nat_rules.nil?
+          validate_inbound_nat_pools(inbound_nat_pools) unless inbound_nat_pools.nil?
 
           load_balancer = service.create_load_balancer(name, location, resource_group, frontend_ip_configurations, backend_address_pool_names, load_balancing_rules, probes, inbound_nat_rules, inbound_nat_pools)
 
@@ -98,14 +90,14 @@ module Fog
           end
         end
 
-        def validate_load_balancing_rule_params(lbr)
+        def validate_load_balancing_rule_params(load_balancing_rule)
           required_params = [
             :name,
             :protocol,
             :frontend_port,
             :backend_port
           ]
-          missing = required_params.select { |p| p unless lbr.key?(p) }
+          missing = required_params.select { |p| p unless load_balancing_rule.key?(p) }
           if missing.length == 1
             raise(ArgumentError, "#{missing.first} is required for this operation")
           elsif missing.any?
@@ -131,7 +123,7 @@ module Fog
           end
         end
 
-        def validate_probe_params(prb)
+        def validate_probe_params(probe)
           required_params = [
             :name,
             :port,
@@ -139,7 +131,7 @@ module Fog
             :interval_in_seconds,
             :number_of_probes
           ]
-          missing = required_params.select { |p| p unless prb.key?(p) }
+          missing = required_params.select { |p| p unless probe.key?(p) }
           if missing.length == 1
             raise(ArgumentError, "#{missing.first} is required for this operation")
           elsif missing.any?
@@ -165,14 +157,14 @@ module Fog
           end
         end
 
-        def validate_inbound_nat_rule_params(inr)
+        def validate_inbound_nat_rule_params(inbound_nat_rule)
           required_params = [
             :name,
             :protocol,
             :frontend_port,
             :backend_port
           ]
-          missing = required_params.select { |p| p unless inr.key?(p) }
+          missing = required_params.select { |p| p unless inbound_nat_rule.key?(p) }
           if missing.length == 1
             raise(ArgumentError, "#{missing.first} is required for this operation")
           elsif missing.any?
@@ -198,7 +190,7 @@ module Fog
           end
         end
 
-        def validate_inbound_nat_pool_params(inp)
+        def validate_inbound_nat_pool_params(inbound_nat_pool)
           required_params = [
             :name,
             :protocol,
@@ -206,7 +198,7 @@ module Fog
             :frontend_port_range_end,
             :backend_port
           ]
-          missing = required_params.select { |p| p unless inp.key?(p) }
+          missing = required_params.select { |p| p unless inbound_nat_pool.key?(p) }
           if missing.length == 1
             raise(ArgumentError, "#{missing.first} is required for this operation")
           elsif missing.any?
@@ -217,7 +209,7 @@ module Fog
         def validate_frontend_ip_configurations(frontend_ip_configurations)
           if frontend_ip_configurations.is_a?(Array)
             if frontend_ip_configurations.any?
-              frontend_ip_configurations.each do |fic|
+              frontend_ip_configurations.each do |frontend_ip_configuration|
                 if fic.is_a?(Hash)
                   validate_frontend_ip_configuration_params(fic)
                 else
@@ -232,18 +224,18 @@ module Fog
           end
         end
 
-        def validate_frontend_ip_configuration_params(fic)
+        def validate_frontend_ip_configuration_params(frontend_ip_configuration)
           required_params = [
             :name,
             :private_ipallocation_method
           ]
-          missing = required_params.select { |p| p unless fic.key?(p) }
+          missing = required_params.select { |p| p unless frontend_ip_configuration.key?(p) }
           if missing.length == 1
             raise(ArgumentError, "#{missing.first} is required for this operation")
           elsif missing.any?
             raise(ArgumentError, "#{missing[0...-1].join(', ')} and #{missing[-1]} are required for this operation")
           end
-          unless fic.key?(:subnet_id) || fic.key?(:public_ipaddress_id)
+          unless frontend_ip_configuration.key?(:subnet_id) || frontend_ip_configuration.key?(:public_ipaddress_id)
             raise(ArgumentError, 'subnet_id and public_id can not be empty at the same time.')
           end
         end

@@ -121,57 +121,68 @@ end
 
 def load_balancer(service)
   Fog::Network::AzureRM::LoadBalancer.new(
-      name: 'lb',
-      resource_group: 'fogRM-rg',
-      location: 'westus',
-
-      frontend_ip_configurations: [{
-                                       name: 'fic',
-                                       private_ipallocation_method: 'Dynamic',
-                                       public_ipaddress_id: '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourcegroups/fogRM-rg/providers/Microsoft.Network/publicIPAddresses/pip',
-                                       subnet_id: '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourcegroups/fogRM-rg/providers/Microsoft.Network/virtualNetworks/vnet/subnets/sb1'
-                                   }],
-      backend_address_pool_names:
-          [
-              'pool1'
-          ],
-      load_balancing_rules:
-          [
-              {
-                  name: 'lb_rule_1',
-                  frontend_ip_configuration_id: '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/fogRM-rg/providers/Microsoft.Network/loadBalancers/lb/frontendIPConfigurations/fic',
-                  backend_address_pool_id: '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/fogRM-rg/providers/Microsoft.Network/loadBalancers/lb/backendAddressPools/pool1',
-                  protocol: 'Tcp',
-                  frontend_port: '80',
-                  backend_port: '8080',
-                  enable_floating_ip: false,
-                  idle_timeout_in_minutes: 4,
-                  load_distribution: "Default"
-              }
-          ],
-      inbound_nat_rules: [{
-                              name: 'RDP-Traffic',
-                              frontend_ip_configuration_id: '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/fogRM-rg/providers/Microsoft.Network/loadBalancers/lb/frontendIPConfigurations/fic',
-                              protocol: 'Tcp',
-                              frontend_port: 3389,
-                              backend_port: 3389
-                          }],
-      probes: [{
-                   name: 'probe1',
-                   protocol: 'Tcp',
-                   port: 8080,
-                   request_path: "myprobeapp1/myprobe1.svc",
-                   interval_in_seconds: 5,
-                   number_of_probes: 16
-               }],
-      inbound_nat_pools: [{
-                              name: 'RDPForVMSS1',
-                              protocol: 'Tcp',
-                              frontend_port_range_start: 50000,
-                              frontend_port_range_end: 50500,
-                              backend_port: 3389
-                          }],
-      service: service
+    name: 'lb',
+    resource_group: 'fogRM-rg',
+    location: 'westus',
+    frontend_ip_configurations:
+      [
+        {
+          name: 'fic',
+          private_ipallocation_method: 'Dynamic',
+          public_ipaddress_id: '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourcegroups/fogRM-rg/providers/Microsoft.Network/publicIPAddresses/pip',
+          subnet_id: '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourcegroups/fogRM-rg/providers/Microsoft.Network/virtualNetworks/vnet/subnets/sb1'
+        }
+      ],
+    backend_address_pool_names:
+      [
+        'pool1'
+      ],
+    load_balancing_rules:
+      [
+        {
+          name: 'lb_rule_1',
+          frontend_ip_configuration_id: '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/fogRM-rg/providers/Microsoft.Network/loadBalancers/lb/frontendIPConfigurations/fic',
+          backend_address_pool_id: '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/fogRM-rg/providers/Microsoft.Network/loadBalancers/lb/backendAddressPools/pool1',
+          protocol: 'Tcp',
+          frontend_port: '80',
+          backend_port: '8080',
+          enable_floating_ip: false,
+          idle_timeout_in_minutes: 4,
+          load_distribution: 'Default'
+        }
+      ],
+    inbound_nat_rules:
+      [
+        {
+          name: 'RDP-Traffic',
+          frontend_ip_configuration_id: '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/fogRM-rg/providers/Microsoft.Network/loadBalancers/lb/frontendIPConfigurations/fic',
+          protocol: 'Tcp',
+          frontend_port: 3389,
+          backend_port: 3389
+        }
+      ],
+    probes:
+      [
+        {
+          name: 'probe1',
+          protocol: 'Tcp',
+          port: 8080,
+          request_path: 'myprobeapp1/myprobe1.svc',
+          interval_in_seconds: 5,
+          number_of_probes: 16
+        }
+      ],
+    inbound_nat_pools:
+      [
+        {
+          name: 'RDPForVMSS1',
+          protocol: 'Tcp',
+          frontend_port_range_start: 500,
+          frontend_port_range_end: 505,
+          backend_port: 3389
+        }
+      ],
+    service: service
   )
 end
 
@@ -189,7 +200,7 @@ def record_set(service)
       name: 'fog-test-record_set',
       resource_group: 'fog-test-rg',
       zone_name: 'fog-test-zone.com',
-      records: ["1.2.3.4", "1.2.3.3"],
+      records: %w(1.2.3.4 1.2.3.3),
       type: 'A',
       ttl: 60,
       service: service

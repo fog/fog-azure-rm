@@ -1,6 +1,7 @@
 module Fog
   module Network
     class AzureRM
+      # Real class for Network Request
       class Real
         def create_virtual_network(resource_group, name, location, dns_list, subnet_address_list, network_address_list)
           Fog::Logger.debug "Creating Virtual Network: #{name}..."
@@ -26,7 +27,7 @@ module Fog
           if network_address_list.nil?
             address_space = Azure::ARM::Network::Models::AddressSpace.new
             address_space.address_prefixes = ['10.2.0.0/16']
-            virtual_network_properties.address_space = address_space
+
           else
             network_address_list = network_address_list.split(',')
             na_list = []
@@ -35,8 +36,8 @@ module Fog
             end
             address_space = Azure::ARM::Network::Models::AddressSpace.new
             address_space.address_prefixes = na_list
-            virtual_network_properties.address_space = address_space
           end
+          virtual_network_properties.address_space = address_space
 
           unless dns_list.nil?
             dns_list = dns_list.split(',')
@@ -74,6 +75,7 @@ module Fog
         end
       end
 
+      # Mock class for Network Request
       class Mock
         def create_virtual_network(resource_group, name, location, dns_list, subnet_address_list, network_address_list)
           {

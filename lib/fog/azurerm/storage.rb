@@ -1,5 +1,4 @@
 require 'fog/azurerm/core'
-# rubocop:disable LineLength
 module Fog
   module Storage
     # This class registers models, requests and collections
@@ -21,7 +20,7 @@ module Fog
       collection :storage_accounts
       # This class provides the mock implementation for unit tests.
       class Mock
-        def initialize(options = {})
+        def initialize(_options = {})
           begin
             require 'azure_mgmt_storage'
           rescue LoadError => e

@@ -37,7 +37,7 @@ module Fog
         private
 
         def define_hardware_profile(vm_size)
-          hw_profile =  Azure::ARM::Compute::Models::HardwareProfile.new
+          hw_profile = Azure::ARM::Compute::Models::HardwareProfile.new
           hw_profile.vm_size = vm_size
           hw_profile
         end
@@ -93,63 +93,63 @@ module Fog
       # This class provides the mock implementation for unit tests.
       class Mock
         def create_virtual_machine(resource_group, name, location, vm_size, storage_account_name,
-                                   username, password, disable_password_authentication,
-                                   ssh_key_path, ssh_key_data, network_interface_card_id,
-                                   availability_set_id, publisher, offer, sku, version)
+                                   username, _password, disable_password_authentication,
+                                   _ssh_key_path, _ssh_key_data, network_interface_card_id,
+                                   _availability_set_id, publisher, offer, sku, version)
           {
-            "location"=>location,
-            "id"=>"/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Compute/virtualMachines/#{name}",
-            "name"=>name,
-            "type"=>"Microsoft.Compute/virtualMachines",
-            "properties"=>
-              {
-                "hardwareProfile"=>
-                  {
-                    "vmSize"=>vm_size
-                  },
-                "storageProfile"=>
-                  {
-                    "imageReference"=>
-                      {
-                        "publisher"=>publisher,
-                        "offer"=>offer,
-                        "sku"=>sku,
-                        "version"=>version
-                      },
-                    "osDisk"=>
-                      {
-                        "name"=>"#{name}_os_disk",
-                        "vhd"=>
-                          {
-                            "uri"=>"http://#{storage_account_name}.blob.core.windows.net/vhds/#{name}_os_disk.vhd"
-                          },
-                        "createOption"=>"FromImage",
-                        "osType"=>"Linux",
-                        "caching"=>"ReadWrite"
-                      },
-                    "dataDisks"=>[]
-                  },
-                "osProfile"=>
-                  {
-                    "computerName"=>name,
-                    "adminUsername"=>username,
-                    "linuxConfiguration"=>
-                      {
-                        "disablePasswordAuthentication"=>disable_password_authentication
-                      },
-                    "secrets"=>[]
-                  },
-                "networkProfile"=>
-                  {
-                    "networkInterfaces"=>
-                      [
+            'location' => location,
+            'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Compute/virtualMachines/#{name}",
+            'name' => name,
+            'type' => 'Microsoft.Compute/virtualMachines',
+            'properties' =>
+            {
+              'hardwareProfile' =>
+                {
+                  'vmSize' => vm_size
+                },
+              'storageProfile' =>
+                {
+                  'imageReference' =>
+                    {
+                      'publisher' => publisher,
+                      'offer' => offer,
+                      'sku' => sku,
+                      'version' => version
+                    },
+                  'osDisk' =>
+                    {
+                      'name' => "#{name}_os_disk",
+                      'vhd' =>
                         {
-                          "id"=>"/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkInterfaces/#{network_interface_card_id.split('/')[8]}"
-                        }
-                      ]
-                  },
-                "provisioningState"=>"Succeeded"
-              }
+                          'uri' => "http://#{storage_account_name}.blob.core.windows.net/vhds/#{name}_os_disk.vhd"
+                        },
+                      'createOption' => 'FromImage',
+                      'osType' => 'Linux',
+                      'caching' => 'ReadWrite'
+                    },
+                  'dataDisks' => []
+                },
+              'osProfile' =>
+                {
+                  'computerName' => name,
+                  'adminUsername' => username,
+                  'linuxConfiguration' =>
+                    {
+                      'disablePasswordAuthentication' => disable_password_authentication
+                    },
+                  'secrets' => []
+                },
+              'networkProfile' =>
+                {
+                  'networkInterfaces' =>
+                    [
+                      {
+                        'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkInterfaces/#{network_interface_card_id.split('/')[8]}"
+                      }
+                    ]
+                },
+              'provisioningState' => 'Succeeded'
+            }
           }
         end
       end

@@ -20,7 +20,8 @@ module Fog
               body.to_json,
               accept: 'application/json',
               content_type: 'application/json',
-              authorization: token)
+              authorization: token
+            )
             Fog::Logger.debug "Zone #{name} created successfully."
             parsed_response = JSON.parse(response)
             parsed_response
@@ -34,26 +35,26 @@ module Fog
 
       # Mock class for DNS Request
       class Mock
-        def create_zone(_resource_group, _name)
+        def create_zone(resource_group, name)
           {
-            "id" => "/subscriptions/########-####-####-####-############/resourceGroups/#{_resource_group}/providers/Microsoft.Network/dnszones/#{_name}",
-            "name" => _name,
-            "type" => "Microsoft.Network/dnszones",
-            "etag" => "00000002-0000-0000-76c2-f7ad90b5d101",
-            "location" => "global",
-            "tags" => {},
-            "properties" =>
+            'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/dnszones/#{name}",
+            'name' => name,
+            'type' => 'Microsoft.Network/dnszones',
+            'etag' => '00000002-0000-0000-76c2-f7ad90b5d101',
+            'location' => 'global',
+            'tags' => {},
+            'properties' =>
               {
-                "maxNumberOfRecordSets" => 5000,
-                "nameServers" =>
+                'maxNumberOfRecordSets' => 5000,
+                'nameServers' =>
                 [
-                  "ns1-05.azure-dns.com.",
-                  "ns2-05.azure-dns.net.",
-                  "ns3-05.azure-dns.org.",
-                  "ns4-05.azure-dns.info."
+                  'ns1-05.azure-dns.com.',
+                  'ns2-05.azure-dns.net.',
+                  'ns3-05.azure-dns.org.',
+                  'ns4-05.azure-dns.info.'
                 ],
-                "numberOfRecordSets" => 2,
-                "parentResourceGroupName" => _resource_group
+                'numberOfRecordSets' => 2,
+                'parentResourceGroupName' => resource_group
               }
           }
         end

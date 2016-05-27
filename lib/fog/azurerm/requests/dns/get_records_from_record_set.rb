@@ -47,9 +47,9 @@ module Fog
       class Mock
         def get_records_from_record_set(_resource_group, _name, _zone_name, _record_type)
           [
-            "1.2.3.4",
-            "1.2.3.5",
-            "1.2.3.6"
+            '1.2.3.4',
+            '1.2.3.5',
+            '1.2.3.6'
           ]
         end
       end

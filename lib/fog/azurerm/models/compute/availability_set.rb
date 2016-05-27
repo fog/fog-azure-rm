@@ -1,5 +1,3 @@
-# rubocop:disable MethodLength
-# rubocop:disable AbcSize
 module Fog
   module Compute
     class AzureRM

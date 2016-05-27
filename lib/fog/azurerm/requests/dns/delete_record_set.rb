@@ -27,9 +27,9 @@ module Fog
 
       # Mock class for DNS Request
       class Mock
-        def delete_record_set(_resource_group, _name, _zone_name, _record_type)
-          Fog::Logger.debug "Record Set #{_name} deleted successfully."
-          return true
+        def delete_record_set(_resource_group, name, _zone_name, _record_type)
+          Fog::Logger.debug "Record Set #{name} deleted successfully."
+          true
         end
       end
     end

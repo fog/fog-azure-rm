@@ -1,6 +1,8 @@
 module Fog
   module Network
     class AzureRM
+      # This class is giving implementation of create/save and
+      # delete/destroy for virtual network.
       class VirtualNetwork < Fog::Model
         identity :name
         attribute :id

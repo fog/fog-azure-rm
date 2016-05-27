@@ -1,5 +1,3 @@
-# rubocop:disable AbcSize
-# rubocop:disable MethodLength
 module Fog
   module Compute
     class AzureRM
@@ -21,8 +19,7 @@ module Fog
 
         # create the properties object for creating availability sets
         def get_avail_set_properties(location)
-          avail_set_props =
-              Azure::ARM::Compute::Models::AvailabilitySetProperties.new
+          avail_set_props = Azure::ARM::Compute::Models::AvailabilitySetProperties.new
           # At least two domain faults
           avail_set_props.platform_fault_domain_count = 2
           avail_set_props.platform_update_domain_count = 2
@@ -44,10 +41,10 @@ module Fog
             'name' => name,
             'type' => 'Microsoft.Compute/availabilitySets',
             'properties' =>
-               {
-                 'platformUpdateDomainCount' => 2,
-                 'platformFaultDomainCount' => 2
-               }
+            {
+              'platformUpdateDomainCount' => 2,
+              'platformFaultDomainCount' => 2
+            }
           }
         end
       end

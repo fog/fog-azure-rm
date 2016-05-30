@@ -30,6 +30,12 @@ module Fog
       request :create_network_security_group
       request :delete_network_security_group
       request :list_network_security_groups
+      request :create_traffic_manager_profile
+      request :get_traffic_manager_profile
+      request :delete_traffic_manager_profile
+      request :list_traffic_manager_profiles
+      request :create_traffic_manager_endpoint
+      request :delete_traffic_manager_endpoint
 
       model_path 'fog/azurerm/models/network'
       model :virtual_network
@@ -50,6 +56,10 @@ module Fog
       model :network_security_group
       collection :network_security_groups
       model :network_security_rule
+      model :traffic_manager_profile
+      collection :traffic_manager_profiles
+      model :traffic_manager_end_point
+      collection :traffic_manager_end_points
 
       # Mock class for Network Service
       class Mock
@@ -76,6 +86,10 @@ module Fog
           credentials = Fog::Credentials::AzureRM.get_credentials(options[:tenant_id], options[:client_id], options[:client_secret])
           @network_client = ::Azure::ARM::Network::NetworkManagementClient.new(credentials)
           @network_client.subscription_id = options[:subscription_id]
+          @tenant_id = options[:tenant_id]
+          @client_id = options[:client_id]
+          @client_secret = options[:client_secret]
+          @subscription_id = options[:subscription_id]
         end
       end
     end

@@ -16,7 +16,7 @@ module Fog
         end
 
         def get(identity)
-          all.find { |p| p.name == identity }
+          all.find { |profile| profile.name == identity }
         end
       end
     end

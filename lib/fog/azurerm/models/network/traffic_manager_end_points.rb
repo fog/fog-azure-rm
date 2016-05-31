@@ -21,7 +21,7 @@ module Fog
         end
 
         def get(identity)
-          all.find { |ep| ep.name == identity }
+          all.find { |endpoint| endpoint.name == identity }
         end
       end
     end

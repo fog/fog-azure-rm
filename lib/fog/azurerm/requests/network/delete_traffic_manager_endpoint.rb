@@ -27,7 +27,8 @@ module Fog
 
       # Mock class for Network Request
       class Mock
-        def delete_traffic_manager_endpoint(_resource_group, _name, _traffic_manager_profile_name, _type)
+        def delete_traffic_manager_endpoint(resource_group, name, _traffic_manager_profile_name, _type)
+          Fog::Logger.debug "Traffic Manager End Point #{name} from Resource group #{resource_group} deleted successfully."
           true
         end
       end

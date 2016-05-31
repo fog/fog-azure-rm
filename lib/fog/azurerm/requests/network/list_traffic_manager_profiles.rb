@@ -28,70 +28,69 @@ module Fog
       # Mock class for Network Request
       class Mock
         def list_traffic_manager_profiles(resource_group)
-          response = '[
+          [
             {
-              "location": "global",
-              "tags": {},
-              "id": "/subscriptions/####/resourceGroups/' + resource_group + '/Microsoft.Network/trafficManagerProfiles/testprofile",
-              "name": "{profile-name}",
-              "type": "Microsoft.Network/trafficManagerProfiles",
-              "properties": {
-                "profileStatus": "Enabled",
-                "trafficRoutingMethod": "Performance",
-                "dnsConfig": {
-                  "relativeName": "myapp",
-                  "fqdn": "myapp.trafficmanager.net",
-                  "ttl": 30
+              location: 'global',
+              tags: {},
+              id: "/subscriptions/####/resourceGroups/#{resource_group}/Microsoft.Network/trafficManagerProfiles/testprofile",
+              name: 'testprofile',
+              type: 'Microsoft.Network/trafficManagerProfiles',
+              properties: {
+                profileStatus: 'Enabled',
+                trafficRoutingMethod: 'Performance',
+                dnsConfig: {
+                  relativeName: 'myapp',
+                  fqdn: 'myapp.trafficmanager.net',
+                  ttl: 30
                 },
-                "monitorConfig": {
-                  "profileMonitorStatus": "Online",
-                  "protocol": "http",
-                  "port": 80,
-                  "path": "/monitorpage.aspx"
+                monitorConfig: {
+                  profileMonitorStatus: 'Online',
+                  protocol: 'http',
+                  port: 80,
+                  path: '/monitorpage.aspx'
                 },
-
-                "endpoints": [{
-                  "id": "/subscriptions/####/resourceGroups/' + resource_group + '/Microsoft.Network/trafficManagerProfiles/testprofile/azureEndpoints/endpoint-name1",
-                  "name": "endpoint-name1",
-                  "type": "Microsoft.Network/trafficManagerProfiles/azureEndpoints",
-                  "properties": {
-                    "endpointStatus": "Enabled",
-                    "endpointMonitorStatus": "Online",
-                    "targetResourceId": "{resource ID of target resource in Azure}",
-                    "target": "myapp.azurewebsites.net",
-                    "weight": 10,
-                    "priority": 3,
-                    "endpointLocation": "centralus"
+                endpoints: [{
+                  id: "/subscriptions/####/resourceGroups/#{resource_group}/Microsoft.Network/trafficManagerProfiles/testprofile/azureEndpoints/endpoint-name1",
+                  name: 'endpoint-name1',
+                  type: 'Microsoft.Network/trafficManagerProfiles/azureEndpoints',
+                  properties: {
+                    endpointStatus: 'Enabled',
+                    endpointMonitorStatus: 'Online',
+                    targetResourceId: "/subscriptions/####/resourceGroups/#{resource_group}/Microsoft.Network",
+                    target: 'myapp.azurewebsites.net',
+                    weight: 10,
+                    priority: 3,
+                    endpointLocation: 'centralus'
                   }
                 }, {
-                  "id": "/subscriptions/####/resourceGroups/' + resource_group + '/Microsoft.Network/trafficManagerProfiles/testprofile/externalEndpoints/endpoint-name2",
-                  "name": "endpoint-name2",
-                  "type": "Microsoft.Network/trafficManagerProfiles/externalEndpoints",
-                  "properties": {
-                    "endpointStatus": "Enabled",
-                    "endpointMonitorStatus": "Online",
-                    "target": "myendpoint.contoso.com",
-                    "weight": 10,
-                    "priority": 5,
-                    "endpointLocation": "northeurope"
+                  id: "/subscriptions/####/resourceGroups/resource_group/Microsoft.Network/trafficManagerProfiles/testprofile/externalEndpoints/endpoint-name2",
+                  name: 'endpoint-name2',
+                  type: 'Microsoft.Network/trafficManagerProfiles/externalEndpoints',
+                  properties: {
+                    endpointStatus: 'Enabled',
+                    endpointMonitorStatus: 'Online',
+                    target: 'myendpoint.contoso.com',
+                    weight: 10,
+                    priority: 5,
+                    endpointLocation: 'northeurope'
                   }
                 }, {
-                  "id": "/subscriptions/####/resourceGroups/' + resource_group + '/Microsoft.Network/trafficManagerProfiles/testprofile/nestedEndpoints/endpoint-name3",
-                  "name": "endpoint-name3",
-                  "type": "Microsoft.Network/trafficManagerProfiles/nestedEndpoints",
-                  "properties": {
-                    "endpointStatus": "Enabled",
-                    "endpointMonitorStatus": "Online",
-                    "targetResourceId": "####",
-                    "weight": 10,
-                    "priority": 1,
-                    "endpointLocation": "westeurope",
-                    "minChildEndpoints": 1
+                  id: "/subscriptions/####/resourceGroups/#{resource_group}/Microsoft.Network/trafficManagerProfiles/testprofile/nestedEndpoints/endpoint-name3",
+                  name: 'endpoint-name3',
+                  type: 'Microsoft.Network/trafficManagerProfiles/nestedEndpoints',
+                  properties: {
+                    endpointStatus: 'Enabled',
+                    endpointMonitorStatus: 'Online',
+                    targetResourceId: "/subscriptions/####/resourceGroups/#{resource_group}/Microsoft.Network",
+                    weight: 10,
+                    priority: 1,
+                    endpointLocation: 'westeurope',
+                    minChildEndpoints: 1
                   }
                 }]
               }
-            }]'
-          JSON.parse(response)
+            }
+          ]
         end
       end
     end

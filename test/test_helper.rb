@@ -239,3 +239,29 @@ def network_security_rule(service)
     service: service
   )
 end
+
+def traffic_manager_end_point(service)
+  Fog::Network::AzureRM::TrafficManagerEndPoint.new(
+    name: 'fog-test-end-point',
+    traffic_manager_profile_name: 'fog-test-profile',
+    resource_group: 'fog-test-rg',
+    type: 'external',
+    target: 'test.com',
+    endpoint_location: 'West US',
+    service: service
+  )
+end
+
+def traffic_manager_profile(service)
+  Fog::Network::AzureRM::TrafficManagerProfile.new(
+      name: 'fog-test-profile',
+      resource_group: 'fog-test-rg',
+      traffic_routing_method: 'Performance',
+      relative_name: 'fog-test-app',
+      ttl: '30',
+      protocol: 'http',
+      port: '80',
+      path: '/monitorpage.aspx',
+      service: service
+  )
+end

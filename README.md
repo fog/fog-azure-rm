@@ -1,4 +1,5 @@
 [![Gem Version](https://badge.fury.io/rb/fog-azure-rm.svg)](https://badge.fury.io/rb/fog-azure-rm)
+[![Code Climate](https://codeclimate.com/github/fog/fog-azure-rm/badges/gpa.svg)](https://codeclimate.com/github/fog/fog-azure-rm)
 
 # Fog Azure Resource Manager
 

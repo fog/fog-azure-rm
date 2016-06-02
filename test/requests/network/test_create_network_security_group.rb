@@ -14,7 +14,7 @@ class TestCreateNetworkSecurityGroup < Minitest::Test
     mocked_response = ApiStub::Requests::Network::NetworkSecurityGroup.create_network_security_group_response
     expected_response = Azure::ARM::Network::Models::NetworkSecurityGroup.serialize_object(mocked_response.body)
     security_rule = {
-	    name: 'testRule',
+      name: 'testRule',
       protocol: 'tcp',
       source_port_range: '22',
       destination_port_range: '22',
@@ -24,7 +24,7 @@ class TestCreateNetworkSecurityGroup < Minitest::Test
       priority: '100',
       direction: 'Inbound',
       description: 'This is a test rule'
-	  }
+    }
     @promise.stub :value!, mocked_response do
       @network_security_groups.stub :begin_create_or_update, @promise do
         assert_equal @service.create_network_security_group('fog-test-rg', 'fog-test-nsg', 'West US', [security_rule]), expected_response

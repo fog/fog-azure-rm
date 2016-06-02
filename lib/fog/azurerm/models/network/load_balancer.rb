@@ -210,8 +210,8 @@ module Fog
           if frontend_ip_configurations.is_a?(Array)
             if frontend_ip_configurations.any?
               frontend_ip_configurations.each do |frontend_ip_configuration|
-                if fic.is_a?(Hash)
-                  validate_frontend_ip_configuration_params(fic)
+                if frontend_ip_configuration.is_a?(Hash)
+                  validate_frontend_ip_configuration_params(frontend_ip_configuration)
                 else
                   raise(ArgumentError, ':frontend_ip_configurations must be an Array of Hashes')
                 end

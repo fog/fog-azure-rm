@@ -1,3 +1,5 @@
+# Fog custom enforced styles
+
 LineLength:
   Enabled: false
 MethodLength:

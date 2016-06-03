@@ -14,5 +14,13 @@ ParameterLists:
   Enabled: false
 AbcSize:
   Enabled: false
+RedundantBegin:
+  Enabled: false
+PerceivedComplexity:
+  Enabled: false
+CyclomaticComplexity:
+  Enabled: false
+RescueException:
+  Enabled: false
 NestedParenthesizedCalls:
   Enabled: false

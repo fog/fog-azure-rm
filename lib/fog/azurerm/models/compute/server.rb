@@ -50,10 +50,12 @@ module Fog
                    :network_interface_card_id, :publisher, :offer, :sku, :version
 
           ssh_key_path = "/home/#{username}/.ssh/authorized_keys" unless ssh_key_data.nil?
-          vm = service.create_virtual_machine(resource_group, name, location, vm_size, storage_account_name,
-                                         username, password, disable_password_authentication,
-                                         ssh_key_path, ssh_key_data, network_interface_card_id,
-                                         availability_set_id, publisher, offer, sku, version)
+          vm = service.create_virtual_machine(
+            resource_group, name, location, vm_size, storage_account_name,
+            username, password, disable_password_authentication,
+            ssh_key_path, ssh_key_data, network_interface_card_id,
+            availability_set_id, publisher, offer, sku, version
+          )
           merge_attributes(Fog::Compute::AzureRM::Server.parse(vm))
         end
 

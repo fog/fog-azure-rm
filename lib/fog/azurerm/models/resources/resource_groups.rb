@@ -4,6 +4,8 @@ require 'fog/azurerm/models/resources/resource_group'
 module Fog
   module Resources
     class AzureRM
+      # This class is giving implementation of all/list, get and
+      # check name availability for resource groups.
       class ResourceGroups < Fog::Collection
         model Fog::Resources::AzureRM::ResourceGroup
 

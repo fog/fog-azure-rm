@@ -16,33 +16,33 @@ module Fog
       end
       # This class provides the mock implementation for unit tests.
       class Mock
-        def list_available_sizes_for_virtual_machine(resource_group, name)
+        def list_available_sizes_for_virtual_machine(_resource_group, _name)
           [
             {
-              "name"=>"Standard_A0",
-              "numberOfCores"=>1,
-              "osDiskSizeInMB"=>1047552,
-              "resourceDiskSizeInMB"=>20480,
-              "memoryInMB"=>768,
-              "maxDataDiskCount"=>1
+              'name' => 'Standard_A0',
+              'numberOfCores' => 1,
+              'osDiskSizeInMB' => 1_047_552,
+              'resourceDiskSizeInMB' => 20_480,
+              'memoryInMB' => 768,
+              'maxDataDiskCount' => 1
             },
             {
-              "name"=>"Standard_A1",
-              "numberOfCores"=>1,
-              "osDiskSizeInMB"=>1047552,
-              "resourceDiskSizeInMB"=>71680,
-              "memoryInMB"=>1792,
-              "maxDataDiskCount"=>2
+              'name' => 'Standard_A1',
+              'numberOfCores' => 1,
+              'osDiskSizeInMB' => 1_047_552,
+              'resourceDiskSizeInMB' => 71_680,
+              'memoryInMB' => 1792,
+              'maxDataDiskCount' => 2
             },
             {
-              "name"=>"Standard_A2",
-              "numberOfCores"=>2,
-              "osDiskSizeInMB"=>1047552,
-              "resourceDiskSizeInMB"=>138240,
-              "memoryInMB"=>3584,
-              "maxDataDiskCount"=>4
+              'name' => 'Standard_A2',
+              'numberOfCores' => 2,
+              'osDiskSizeInMB' => 1_047_552,
+              'resourceDiskSizeInMB' => 138_240,
+              'memoryInMB' => 3584,
+              'maxDataDiskCount' => 4
             }
-        ]
+          ]
         end
       end
     end

@@ -1,6 +1,8 @@
 module Fog
   module Resources
     class AzureRM
+      # This class is giving implementation of create/save and
+      # delete/destroy for resource group.
       class ResourceGroup < Fog::Model
         identity :name
         attribute :id

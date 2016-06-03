@@ -20,7 +20,7 @@ module Fog
       class Mock
         def redeploy_virtual_machine(resource_group, name)
           Fog::Logger.debug "Virtual Machine #{name} from Resource group #{resource_group} Redeployed successfully."
-          return true
+          true
         end
       end
     end

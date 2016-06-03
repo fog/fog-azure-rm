@@ -1,6 +1,5 @@
 require 'fog/core/collection'
 require 'fog/azurerm/models/compute/availability_set'
-# rubocop:disable MethodLength
 module Fog
   module Compute
     class AzureRM

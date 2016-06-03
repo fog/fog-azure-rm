@@ -1,6 +1,7 @@
 module Fog
   module Resources
     class AzureRM
+      # This class provides the actual implemention for service calls.
       class Real
         def delete_resource_group(name)
           begin
@@ -16,10 +17,11 @@ module Fog
         end
       end
 
+      # This class provides the mock implementation for unit tests.
       class Mock
         def delete_resource_group(name)
           Fog::Logger.debug "Resource Group #{name} deleted successfully."
-          return true
+          true
         end
       end
     end

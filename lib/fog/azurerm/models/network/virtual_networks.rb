@@ -4,6 +4,8 @@ require 'fog/azurerm/models/network/virtual_network'
 module Fog
   module Network
     class AzureRM
+      # This class is giving implementation of all/list, get and
+      # check name availability for virtual network.
       class VirtualNetworks < Fog::Collection
         model Fog::Network::AzureRM::VirtualNetwork
         attribute :resource_group

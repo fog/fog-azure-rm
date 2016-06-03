@@ -11,7 +11,8 @@ module Fog
               resource_url,
               accept: 'application/json',
               content_type: 'application/json',
-              authorization: token)
+              authorization: token
+            )
             parsed_zone = JSON.parse(dns_response)
             parsed_zone['value']
           rescue Exception => e
@@ -24,43 +25,43 @@ module Fog
 
       # Mock class for DNS Request
       class Mock
-        def list_record_sets(_resource_group, _zone_name)
+        def list_record_sets(resource_group, zone_name)
           [
             {
-              "id"=>"/subscriptions/########-####-####-####-############/resourceGroups/#{_resource_group}/providers/Microsoft.Network/dnszones/#{_zone_name}/A/test_record",
-              "name"=>"test_record",
-              "type"=>"Microsoft.Network/dnszones/A",
-              "etag"=>"7f159cb1-653d-4920-bc03-153c700412a2",
-              "location"=>"global",
-              "properties"=>
-                {
-                  "metadata"=>nil,
-                  "fqdn"=>"test_record.#{_zone_name}.",
-                  "TTL"=>60,
-                  "ARecords"=>
-                    [
-                      {
-                        "ipv4Address"=>"1.2.3.4"
-                      }
-                    ]
-                }
+              'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/dnszones/#{zone_name}/A/test_record",
+              'name' => 'test_record',
+              'type' => 'Microsoft.Network/dnszones/A',
+              'etag' => '7f159cb1-653d-4920-bc03-153c700412a2',
+              'location' => 'global',
+              'properties' =>
+              {
+                'metadata' => nil,
+                'fqdn' => "test_record.#{zone_name}.",
+                'TTL' => 60,
+                'ARecords' =>
+                [
+                  {
+                    'ipv4Address' => '1.2.3.4'
+                  }
+                ]
+              }
             },
             {
-              "id"=>"/subscriptions/########-####-####-####-############/resourceGroups/#{_resource_group}/providers/Microsoft.Network/dnszones/#{_zone_name}/CNAME/test_record1",
-              "name"=>"test_record1",
-              "type"=>"Microsoft.Network/dnszones/CNAME",
-              "etag"=>"cc5ceb6e-16ad-4a5f-bbd7-9bc31c12d0cf",
-              "location"=>"global",
-              "properties"=>
+              'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/dnszones/#{zone_name}/CNAME/test_record1",
+              'name' => 'test_record1',
+              'type' => 'Microsoft.Network/dnszones/CNAME',
+              'etag' => 'cc5ceb6e-16ad-4a5f-bbd7-9bc31c12d0cf',
+              'location' => 'global',
+              'properties' =>
+              {
+                'metadata' => nil,
+                'fqdn' => "test_record1.#{zone_name}.",
+                'TTL' => 60,
+                'CNAMERecord' =>
                 {
-                  "metadata"=>nil,
-                  "fqdn"=>"test_record1.#{_zone_name}.",
-                  "TTL"=>60,
-                  "CNAMERecord"=>
-                    {
-                      "cname"=>"1.2.3.4"
-                    }
+                  'cname' => '1.2.3.4'
                 }
+              }
             }
           ]
         end

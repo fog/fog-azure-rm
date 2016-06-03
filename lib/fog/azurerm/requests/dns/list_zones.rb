@@ -23,7 +23,8 @@ module Fog
               resource_url,
               accept: 'application/json',
               content_type: 'application/json',
-              authorization: token)
+              authorization: token
+            )
             parsed_zone = JSON.parse(dns_response)
             parsed_zone['value']
           rescue Exception => e
@@ -39,48 +40,48 @@ module Fog
         def list_zones
           [
             {
-              "id"=>"/subscriptions/########-####-####-####-############/resourceGroups/fog_test_rg/providers/Microsoft.Network/dnszones/testfog1.com",
-              "name"=>"testfog1.com",
-              "type"=>"Microsoft.Network/dnszones",
-              "etag"=> "00000002-0000-0000-76c2-f7ad90b5d101",
-              "location"=>"global",
-              "tags"=>{},
-              "properties"=>
-                {
-                  "maxNumberOfRecordSets"=>5000,
-                  "nameServers"=>
-                    [
-                      "ns1-05.azure-dns.com.",
-                      "ns2-05.azure-dns.net.",
-                      "ns3-05.azure-dns.org.",
-                      "ns4-05.azure-dns.info."
-                    ],
-                  "numberOfRecordSets"=>2,
-                  "parentResourceGroupName"=>"fog_test_rg"
-                }
+              'id' => '/subscriptions/########-####-####-####-############/resourceGroups/fog_test_rg/providers/Microsoft.Network/dnszones/testfog1.com',
+              'name' => 'testfog1.com',
+              'type' => 'Microsoft.Network/dnszones',
+              'etag' =>  '00000002-0000-0000-76c2-f7ad90b5d101',
+              'location' => 'global',
+              'tags' => {},
+              'properties' =>
+              {
+                'maxNumberOfRecordSets' => 5000,
+                'nameServers' =>
+                  [
+                    'ns1-05.azure-dns.com.',
+                    'ns2-05.azure-dns.net.',
+                    'ns3-05.azure-dns.org.',
+                    'ns4-05.azure-dns.info.'
+                  ],
+                'numberOfRecordSets' => 2,
+                'parentResourceGroupName' => 'fog_test_rg'
+              }
             },
             {
-              "id"=>"/subscriptions/########-####-####-####-############/resourceGroups/fog_test_rg/providers/Microsoft.Network/dnszones/testfog.com",
-              "name"=>"testfog.com",
-              "type"=>"Microsoft.Network/dnszones",
-              "etag"=>"00000002-0000-0000-4215-c21c8fb5d101",
-              "location"=>"global",
-              "tags"=>{},
-              "properties"=>
-                {
-                  "maxNumberOfRecordSets"=>5000,
-                  "nameServers"=>
-                    [
-                      "ns1-02.azure-dns.com.",
-                      "ns2-02.azure-dns.net.",
-                      "ns3-02.azure-dns.org.",
-                      "ns4-02.azure-dns.info."
-                    ],
-                  "numberOfRecordSets"=>2,
-                  "parentResourceGroupName"=>"fog_test_rg"
-                }
+              'id' => '/subscriptions/########-####-####-####-############/resourceGroups/fog_test_rg/providers/Microsoft.Network/dnszones/testfog.com',
+              'name' => 'testfog.com',
+              'type' => 'Microsoft.Network/dnszones',
+              'etag' => '00000002-0000-0000-4215-c21c8fb5d101',
+              'location' => 'global',
+              'tags' => {},
+              'properties' =>
+              {
+                'maxNumberOfRecordSets' => 5000,
+                'nameServers' =>
+                [
+                  'ns1-02.azure-dns.com.',
+                  'ns2-02.azure-dns.net.',
+                  'ns3-02.azure-dns.org.',
+                  'ns4-02.azure-dns.info.'
+                ],
+                'numberOfRecordSets' => 2,
+                'parentResourceGroupName' => 'fog_test_rg'
               }
-            ]
+            }
+          ]
         end
       end
     end

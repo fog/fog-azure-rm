@@ -1,7 +1,7 @@
 module Fog
   module Credentials
+    # This class is managing credentials token
     class AzureRM
-
       def self.get_credentials(tenant_id, client_id, client_secret)
         if @credentials.nil? || new_client(tenant_id, client_id, client_secret)
           get_new_credentials(tenant_id, client_id, client_secret)
@@ -26,8 +26,8 @@ module Fog
 
       def self.new_client(tenant_id, client_id, client_secret)
         @tenant_id != tenant_id ||
-            @client_id != client_id ||
-            @client_secret != client_secret
+          @client_id != client_id ||
+          @client_secret != client_secret
       end
 
       private_class_method :get_new_credentials

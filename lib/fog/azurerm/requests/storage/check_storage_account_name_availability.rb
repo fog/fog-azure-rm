@@ -11,11 +11,11 @@ module Fog
             name_available_obj = Azure::ARM::Storage::Models::CheckNameAvailabilityResult.serialize_object(result.body)
             if name_available_obj['nameAvailable'] == true
               Fog::Logger.debug "Name: #{params.name} is available."
-              return true
+              true
             else
               Fog::Logger.debug "Name: #{params.name} is not available."
               Fog::Logger.debug "Reason: #{name_available_obj['reason']}."
-              return false
+              false
             end
           rescue MsRestAzure::AzureOperationError => e
             msg = "Exception checking name availability: #{e.body['error']['message']}"
@@ -27,7 +27,7 @@ module Fog
       class Mock
         def check_storage_account_name_availability(params)
           Fog::Logger.debug "Name: #{params.name} is available."
-          return true
+          true
         end
       end
     end

@@ -18,61 +18,60 @@ module Fog
       class Mock
         def get_virtual_machine(resource_group, name)
           {
-              "location"=>"westus",
-              "id"=>"/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Compute/virtualMachines/#{name}",
-              "name"=>name,
-              "type"=>"Microsoft.Compute/virtualMachines",
-              "properties"=>
-                  {
-                      "hardwareProfile"=>
-                          {
-                              "vmSize"=>"Basic_A0"
-                          },
-                      "storageProfile"=>
-                          {
-                              "imageReference"=>
-                                  {
-                                      "publisher"=>"Canonical",
-                                      "offer"=>"UbuntuServer",
-                                      "sku"=>"14.04.2-LTS",
-                                      "version"=>"latest"
-                                  },
-                              "osDisk"=>
-                                  {
-                                      "name"=>"#{name}_os_disk",
-                                      "vhd"=>
-                                          {
-                                              "uri"=>"http://fogtestsafirst.blob.core.windows.net/vhds/testVM_os_disk.vhd"
-                                          },
-                                      "createOption"=>"FromImage",
-                                      "osType"=>"Linux",
-                                      "caching"=>"ReadWrite"
-                                  },
-                              "dataDisks"=>[]
-                          },
-                      "osProfile"=>
-                          {
-                              "computerName"=>name,
-                              "adminUsername"=>"testfog",
-                              "linuxConfiguration"=>
-                                  {
-                                      "disablePasswordAuthentication"=>false
-                                  },
-                              "secrets"=>[]
-                          },
-                      "networkProfile"=>
-                          {
-                              "networkInterfaces"=>
-                                  [
-                                      {
-                                          "id"=>"/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkInterfaces/testNIC"
-                                      }
-                                  ]
-                          },
-                      "provisioningState"=>"Succeeded"
-                  }
+            'location' => 'westus',
+            'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Compute/virtualMachines/#{name}",
+            'name' => name,
+            'type' => 'Microsoft.Compute/virtualMachines',
+            'properties' =>
+            {
+              'hardwareProfile' =>
+                {
+                  'vmSize' => 'Basic_A0'
+                },
+              'storageProfile' =>
+                {
+                  'imageReference' =>
+                    {
+                      'publisher' => 'Canonical',
+                      'offer' => 'UbuntuServer',
+                      'sku' => '14.04.2-LTS',
+                      'version' => 'latest'
+                    },
+                  'osDisk' =>
+                    {
+                      'name' => "#{name}_os_disk",
+                      'vhd' =>
+                        {
+                          'uri' => 'http://fogtestsafirst.blob.core.windows.net/vhds/testVM_os_disk.vhd'
+                        },
+                      'createOption' => 'FromImage',
+                      'osType' => 'Linux',
+                      'caching' => 'ReadWrite'
+                    },
+                  'dataDisks' => []
+                },
+              'osProfile' =>
+                {
+                  'computerName' => name,
+                  'adminUsername' => 'testfog',
+                  'linuxConfiguration' =>
+                    {
+                      'disablePasswordAuthentication' => false
+                    },
+                  'secrets' => []
+                },
+              'networkProfile' =>
+                {
+                  'networkInterfaces' =>
+                    [
+                      {
+                        'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkInterfaces/testNIC"
+                      }
+                    ]
+                },
+              'provisioningState' => 'Succeeded'
+            }
           }
-
         end
       end
     end

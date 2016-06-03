@@ -1,1 +1,1 @@
-AZURE_RESOURCE = 'https://management.azure.com'
+AZURE_RESOURCE = 'https://management.azure.com'.freeze

@@ -24,7 +24,7 @@ module Fog
               'location' => 'West US',
               'properties' => {
                 'hardwareProfile' => {
-                    'vmSize' => 'Basic_A0'
+                  'vmSize' => 'Basic_A0'
                 },
                 'storageProfile' => {
                   'imageReference' => {
@@ -44,13 +44,13 @@ module Fog
                   'computerName' => 'fog-test-server',
                   'adminUsername' => 'shaffan',
                   'linuxConfiguration' => {
-                      'disablePasswordAuthentication' => false
+                    'disablePasswordAuthentication' => false
                   }
                 },
                 'networkProfile' => {
                   'networkInterfaces' => [
                     {
-                        'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkInterfaces/fogtestnetworkinterface"
+                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkInterfaces/fogtestnetworkinterface"
                     }
                   ]
                 }

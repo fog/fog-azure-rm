@@ -63,7 +63,7 @@ module Fog
                     endpointLocation: 'centralus'
                   }
                 }, {
-                  id: "/subscriptions/####/resourceGroups/resource_group/Microsoft.Network/trafficManagerProfiles/testprofile/externalEndpoints/endpoint-name2",
+                  id: '/subscriptions/####/resourceGroups/resource_group/Microsoft.Network/trafficManagerProfiles/testprofile/externalEndpoints/endpoint-name2',
                   name: 'endpoint-name2',
                   type: 'Microsoft.Network/trafficManagerProfiles/externalEndpoints',
                   properties: {

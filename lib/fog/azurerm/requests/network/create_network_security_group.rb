@@ -49,7 +49,7 @@ module Fog
 
       # Mock class for Network Request
       class Mock
-        def create_network_security_group(resource_group, name, location, security_rules)
+        def create_network_security_group(resource_group, name, location, _security_rules)
           {
             'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/#{name}",
             'name' => name,
@@ -73,8 +73,7 @@ module Fog
                           'priority' => 100,
                           'provisioningState' => 'Updating'
                         },
-                      'name' => 'testRule',
-                      'etag' => "W/\"0fded34d-08bb-4862-a766-f3ce67044920\""
+                      'name' => 'testRule'
                     }
                   ],
                 'defaultSecurityRules' =>
@@ -91,11 +90,10 @@ module Fog
                           'description' => 'Allow inbound traffic from all VMs in VNET',
                           'sourcePortRange' => '*',
                           'destinationPortRange' => '*',
-                          'priority' => 65000,
+                          'priority' => 65_000,
                           'provisioningState' => 'Updating'
                         },
-                      'name' => 'AllowVnetInBound',
-                      'etag' => "W/\"0fded34d-08bb-4862-a766-f3ce67044920\""
+                      'name' => 'AllowVnetInBound'
                     },
                     {
                       'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/#{name}/defaultSecurityRules/AllowAzureLoadBalancerInBound",
@@ -109,11 +107,10 @@ module Fog
                           'description' => 'Allow inbound traffic from azure load balancer',
                           'sourcePortRange' => '*',
                           'destinationPortRange' => '*',
-                          'priority' => 65001,
+                          'priority' => 65_001,
                           'provisioningState' => 'Updating'
                         },
-                      'name' => 'AllowAzureLoadBalancerInBound',
-                      'etag' => "W/\"0fded34d-08bb-4862-a766-f3ce67044920\""
+                      'name' => 'AllowAzureLoadBalancerInBound'
                     },
                     {
                       'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/#{name}/defaultSecurityRules/DenyAllInBound",
@@ -127,11 +124,10 @@ module Fog
                           'description' => 'Deny all inbound traffic',
                           'sourcePortRange' => '*',
                           'destinationPortRange' => '*',
-                          'priority' => 65500,
+                          'priority' => 65_500,
                           'provisioningState' => 'Updating'
                         },
-                      'name' => 'DenyAllInBound',
-                      'etag' => "W/\"0fded34d-08bb-4862-a766-f3ce67044920\""
+                      'name' => 'DenyAllInBound'
                     },
                     {
                       'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/#{name}/defaultSecurityRules/AllowVnetOutBound",
@@ -145,11 +141,10 @@ module Fog
                           'description' => 'Allow outbound traffic from all VMs to all VMs in VNET',
                           'sourcePortRange' => '*',
                           'destinationPortRange' => '*',
-                          'priority' => 65000,
+                          'priority' => 65_000,
                           'provisioningState' => 'Updating'
                         },
-                      'name' => 'AllowVnetOutBound',
-                      'etag' => "W/\"0fded34d-08bb-4862-a766-f3ce67044920\""
+                      'name' => 'AllowVnetOutBound'
                     },
                     {
                       'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/#{name}/defaultSecurityRules/AllowInternetOutBound",
@@ -163,11 +158,10 @@ module Fog
                           'description' => 'Allow outbound traffic from all VMs to Internet',
                           'sourcePortRange' => '*',
                           'destinationPortRange' => '*',
-                          'priority' => 65001,
+                          'priority' => 65_001,
                           'provisioningState' => 'Updating'
                         },
-                      'name' => 'AllowInternetOutBound',
-                      'etag' => "W/\"0fded34d-08bb-4862-a766-f3ce67044920\""
+                      'name' => 'AllowInternetOutBound'
                     },
                     {
                       'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/#{name}/defaultSecurityRules/DenyAllOutBound",
@@ -181,17 +175,15 @@ module Fog
                           'description' => 'Deny all outbound traffic',
                           'sourcePortRange' => '*',
                           'destinationPortRange' => '*',
-                          'priority' => 65500,
+                          'priority' => 65_500,
                           'provisioningState' => 'Updating'
                         },
-                      'name' => 'DenyAllOutBound',
-                      'etag' => "W/\"0fded34d-08bb-4862-a766-f3ce67044920\""
+                      'name' => 'DenyAllOutBound'
                     }
                   ],
                 'resourceGuid' => '9dca97e6-4789-4ebd-86e3-52b8b0da6cd4',
                 'provisioningState' => 'Updating'
-              },
-            'etag' => "W/\"0fded34d-08bb-4862-a766-f3ce67044920\""
+              }
           }
         end
       end

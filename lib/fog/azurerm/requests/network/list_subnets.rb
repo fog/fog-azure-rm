@@ -26,24 +26,22 @@ module Fog
                   'addressPrefix' => '10.1.0.0/24',
                   'provisioningState' => 'Succeeded'
                 },
-              'name' => 'subnet_0_testVnet',
-              'etag' => "W/\"8d90d220-7911-4376-bba0-88b0473e1d16\""
+              'name' => 'subnet_0_testVnet'
             },
             {
-              'id' =>"/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/virtualNetworks/#{virtual_network_name}/subnets/fog-test-subnet",
+              'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/virtualNetworks/#{virtual_network_name}/subnets/fog-test-subnet",
               'properties' =>
                 {
                   'addressPrefix' => '10.2.0.0/16',
                   'ipConfigurations' =>
                     [
                       {
-                        'id' =>"/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkInterfaces/test-NIC/ipConfigurations/ipconfig1"
+                        'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkInterfaces/test-NIC/ipConfigurations/ipconfig1"
                       }
                     ],
                   'provisioningState' => 'Succeeded'
                 },
-              'name' => 'fog-test-subnet',
-              'etag' => "W/\"8d90d220-7911-4376-bba0-88b0473e1d16\""
+              'name' => 'fog-test-subnet'
             }
           ]
         end

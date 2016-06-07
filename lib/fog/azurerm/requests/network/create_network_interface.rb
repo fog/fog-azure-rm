@@ -51,7 +51,7 @@ module Fog
             'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkInterfaces/#{name}",
             'name' => name,
             'type' => 'Microsoft.Network/networkInterfaces',
-            'location' =>  location,
+            'location' => location,
             'properties' =>
               {
                 'ipConfigurations' =>
@@ -68,8 +68,7 @@ module Fog
                             },
                           'provisioningState' => 'Succeeded'
                         },
-                      'name' => ip_configs_name,
-                      'etag' => "W/\"e6c8e5c3-f28d-44f3-babe-0e8e934a591e\""
+                      'name' => ip_configs_name
                     }
                   ],
                 'dnsSettings' =>
@@ -80,8 +79,7 @@ module Fog
                 'enableIPForwarding' => false,
                 'resourceGuid' => '2bff0fad-623b-4773-82b8-dc875f3aacd2',
                 'provisioningState' => 'Succeeded'
-              },
-            'etag' => "W/\"e6c8e5c3-f28d-44f3-babe-0e8e934a591e\""
+              }
           }
         end
       end

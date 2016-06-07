@@ -62,21 +62,21 @@ module Fog
             location: 'global',
             tags: {},
             id: "/subscriptions/####/resourceGroups/#{resource_group}/Microsoft.Network/trafficManagerProfiles/#{name}",
-            name: "#{name}",
+            name: name,
             type: 'Microsoft.Network/trafficManagerProfiles',
             properties: {
               profileStatus: 'Enabled',
-              trafficRoutingMethod: "#{traffic_routing_method}",
+              trafficRoutingMethod: traffic_routing_method,
               dnsConfig: {
-                relativeName: "#{relative_name}",
+                relativeName: relative_name,
                 fqdn: 'myapp.trafficmanager.net',
                 ttl: ttl
               },
               monitorConfig: {
                 profileMonitorStatus: 'Online',
-                protocol: "#{protocol}",
+                protocol: protocol,
                 port: port,
-                path: "#{path}"
+                path: path
               },
 
               endpoints: [{

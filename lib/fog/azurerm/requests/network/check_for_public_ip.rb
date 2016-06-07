@@ -20,7 +20,7 @@ module Fog
       class Mock
         def check_for_public_ip(resource_group, name)
           Fog::Logger.debug "Public IP #{name} from Resource group #{resource_group} is available."
-          return true
+          true
         end
       end
     end

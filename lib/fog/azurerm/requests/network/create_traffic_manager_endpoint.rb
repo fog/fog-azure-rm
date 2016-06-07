@@ -9,7 +9,7 @@ module Fog
           Fog::Logger.debug "Creating Traffic Manager Endpoint: #{name}..."
           resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription_id}/resourceGroups/#{resource_group}/providers/Microsoft.Network/trafficManagerProfiles/#{traffic_manager_profile_name}/#{type}Endpoints/#{name}?api-version=2015-11-01"
           payload = serialize_endpoint_request(name, type, target_resource_id, target, weight, priority, endpoint_location,
-                                      min_child_endpoints)
+                                               min_child_endpoints)
           begin
             token = Fog::Credentials::AzureRM.get_token(@tenant_id, @client_id, @client_secret)
             response = RestClient.put(
@@ -32,7 +32,7 @@ module Fog
         private
 
         def serialize_endpoint_request(name, type, target_resource_id, target, weight, priority, endpoint_location,
-                              min_child_endpoints)
+                                       min_child_endpoints)
 
           properties = {}
           properties['targetResourceId'] = target_resource_id unless target_resource_id.nil?

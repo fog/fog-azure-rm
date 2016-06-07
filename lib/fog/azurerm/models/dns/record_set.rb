@@ -17,19 +17,19 @@ module Fog
         attribute :a_record
 
         def self.parse(recordset)
-        hash = {}
-        hash['id'] = recordset['id']
-        hash['name'] = recordset['name']
-        hash['resource_group'] = recordset['id'].split('/')[4]
-        hash['location'] = recordset['location']
-        hash['zone_name'] = recordset['id'].split('/')[8]
-        hash['type'] = recordset['type']
-        type = recordset['type'].split('/')[2]
-        hash['a_record'] = recordset['properties']['ARecords'] if type == 'A'
-        hash['cname_record'] = recordset['properties']['CNAMERecord'] if type == 'CNAME'
-        hash['ttl'] = recordset['properties']['TTL']
-        hash['fqdn'] = recordset['properties']['fqdn']
-        hash
+          hash = {}
+          hash['id'] = recordset['id']
+          hash['name'] = recordset['name']
+          hash['resource_group'] = recordset['id'].split('/')[4]
+          hash['location'] = recordset['location']
+          hash['zone_name'] = recordset['id'].split('/')[8]
+          hash['type'] = recordset['type']
+          type = recordset['type'].split('/')[2]
+          hash['a_record'] = recordset['properties']['ARecords'] if type == 'A'
+          hash['cname_record'] = recordset['properties']['CNAMERecord'] if type == 'CNAME'
+          hash['ttl'] = recordset['properties']['TTL']
+          hash['fqdn'] = recordset['properties']['fqdn']
+          hash
         end
 
         def save

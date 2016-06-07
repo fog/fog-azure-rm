@@ -1,6 +1,7 @@
 module Fog
   module Network
     class AzureRM
+      # This class provides the actual implemention for service calls.
       class Real
         def list_virtual_networks(resource_group)
           begin
@@ -14,6 +15,7 @@ module Fog
         end
       end
 
+      # This class provides the mock implementation for unit tests.
       class Mock
         def list_virtual_networks(resource_group)
           [

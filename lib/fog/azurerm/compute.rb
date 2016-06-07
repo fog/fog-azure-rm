@@ -1,5 +1,4 @@
 require 'fog/azurerm/core'
-# rubocop:disable LineLength
 module Fog
   module Compute
     # This class registers models, requests and collections

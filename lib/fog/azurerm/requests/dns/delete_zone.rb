@@ -12,7 +12,8 @@ module Fog
               resource_url,
               accept: 'application/json',
               content_type: 'application/json',
-              authorization: token)
+              authorization: token
+            )
             Fog::Logger.debug "Zone #{name} deleted successfully."
             true
           rescue Exception => e
@@ -25,9 +26,9 @@ module Fog
 
       # Mock class for DNS Request
       class Mock
-        def delete_zone(_resource_group, _name)
-          Fog::Logger.debug "Zone #{_name} deleted successfully."
-          return true
+        def delete_zone(_resource_group, name)
+          Fog::Logger.debug "Zone #{name} deleted successfully."
+          true
         end
       end
     end

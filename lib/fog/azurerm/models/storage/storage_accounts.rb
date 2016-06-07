@@ -22,7 +22,7 @@ module Fog
             hash['name'] = account['name']
             hash['location'] = account['location']
             hash['resource_group'] = account['id'].split('/')[4]
-            hash['account_type'] =  account['properties']['accountType']
+            hash['account_type'] = account['properties']['accountType']
             accounts << hash
           end
           load(accounts)

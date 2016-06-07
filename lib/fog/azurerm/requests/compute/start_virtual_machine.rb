@@ -20,7 +20,7 @@ module Fog
       class Mock
         def start_virtual_machine(resource_group, name)
           Fog::Logger.debug "Virtual Machine #{name} from Resource group #{resource_group} started successfully."
-          return true
+          true
         end
       end
     end

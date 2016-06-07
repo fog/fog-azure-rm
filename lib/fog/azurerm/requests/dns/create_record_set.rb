@@ -41,7 +41,8 @@ module Fog
               body.to_json,
               accept: 'application/json',
               content_type: 'application/json',
-              authorization: token)
+              authorization: token
+            )
             Fog::Logger.debug "RecordSet #{name} Created/Updated Successfully!"
             parsed_response = JSON.parse(response)
             parsed_response
@@ -55,44 +56,44 @@ module Fog
 
       # Mock class for DNS Request
       class Mock
-        def create_record_set(_resource_group, _name, _zone_name, _records, _record_type, _ttl)
-          if _record_type == 'A'
+        def create_record_set(resource_group, name, zone_name, records, record_type, ttl)
+          if record_type == 'A'
             {
-              "id"=>"/subscriptions/########-####-####-####-############/resourceGroups/#{_dns_resource_group}/providers/Microsoft.Network/dnszones/#{_zone_name}/#{_record_type}/#{_name}",
-              "name"=>_name,
-              "type"=>"Microsoft.Network/dnszones/#{_record_type}",
-              "etag"=>"7f159cb1-653d-4920-bc03-153c700412a2",
-              "location"=>"global",
-              "tags"=>{},
-              "properties"=>
+              'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/dnszones/#{zone_name}/#{record_type}/#{name}",
+              'name' => name,
+              'type' => "Microsoft.Network/dnszones/#{record_type}",
+              'etag' => '7f159cb1-653d-4920-bc03-153c700412a2',
+              'location' => 'global',
+              'tags' => {},
+              'properties' =>
                 {
-                  "metadata"=>{},
-                  "fqdn"=>"#{_name}.#{_zone_name}.",
-                  "TTL"=>_ttl,
-                  "ARecords"=>
+                  'metadata' => {},
+                  'fqdn' => "#{name}.#{zone_name}.",
+                  'TTL' => ttl,
+                  'ARecords' =>
                     [
                       {
-                        "ipv4Address"=>_records[0]
+                        'ipv4Address' => records[0]
                       }
                     ]
                 }
             }
-          elsif _record_type == 'CNAME'
+          elsif record_type == 'CNAME'
             {
-              "id"=>"/subscriptions/########-####-####-####-############/resourceGroups/#{_resource_group}/providers/Microsoft.Network/dnszones/#{_zone_name}/#{_record_type}/#{_name}",
-              "name"=>_name,
-              "type"=>"Microsoft.Network/dnszones/#{_record_type}",
-              "etag"=>"cc5ceb6e-16ad-4a5f-bbd7-9bc31c12d0cf",
-              "location"=>"global",
-              "tags"=>{},
-              "properties"=>
+              'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/dnszones/#{zone_name}/#{record_type}/#{name}",
+              'name' => name,
+              'type' => "Microsoft.Network/dnszones/#{record_type}",
+              'etag' => 'cc5ceb6e-16ad-4a5f-bbd7-9bc31c12d0cf',
+              'location' => 'global',
+              'tags' => {},
+              'properties' =>
                 {
-                  "metadata"=>{},
-                  "fqdn"=>"#{_name}.#{_zone_name}.",
-                  "TTL"=>_ttl,
-                  "CNAMERecord"=>
+                  'metadata' => {},
+                  'fqdn' => "#{name}.#{zone_name}.",
+                  'TTL' => ttl,
+                  'CNAMERecord' =>
                     {
-                      "cname"=>_records[0]
+                      'cname' => records[0]
                     }
                 }
             }

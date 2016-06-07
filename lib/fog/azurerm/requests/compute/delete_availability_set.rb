@@ -20,7 +20,7 @@ module Fog
       class Mock
         def delete_availability_set(resource_group, name)
           Fog::Logger.debug "Availability Set #{name} from Resource group #{resource_group} deleted successfully."
-          return true
+          true
         end
       end
     end

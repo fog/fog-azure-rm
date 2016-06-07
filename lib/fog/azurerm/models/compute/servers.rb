@@ -1,5 +1,5 @@
-require "fog/core/collection"
-require "fog/azurerm/models/compute/server"
+require 'fog/core/collection'
+require 'fog/azurerm/models/compute/server'
 
 module Fog
   module Compute
@@ -20,7 +20,7 @@ module Fog
         end
 
         def get(resource_group, identity)
-          all.find { |s| s.name == identity && s.resource_group == resource_group}
+          all.find { |s| s.name == identity && s.resource_group == resource_group }
         end
 
         def get_from_remote(resource_group, name)

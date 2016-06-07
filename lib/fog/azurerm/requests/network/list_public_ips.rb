@@ -32,11 +32,9 @@ module Fog
                   'idleTimeoutInMinutes' => 4,
                   'resourceGuid' => 'c78f0c95-d8b9-409b-897c-74260b686392',
                   'provisioningState' => 'Succeeded'
-                },
-              'etag' => "W/\"528b34bf-93ad-4dfc-a563-4005ff48e86d\""
+                }
             }
           ]
-
         end
       end
     end

@@ -41,8 +41,7 @@ module Fog
                                },
                             'provisioningState' => 'Succeeded'
                           },
-                        'name' => 'ipconfig1',
-                        'etag' => "W/\"b5dd021a-fcce-43b2-9e07-01407a3a6a98\""
+                        'name' => 'ipconfig1'
                       }
                     ],
                   'dnsSettings' =>
@@ -50,11 +49,10 @@ module Fog
                       'dnsServers' => [],
                       'appliedDnsServers' => []
                     },
-                  'enableIPForwarding' =>false,
+                  'enableIPForwarding' => false,
                   'resourceGuid' => '51e01337-fb15-4b04-b9de-e91537c764fd',
                   'provisioningState' => 'Succeeded'
-                },
-              'etag' =>"W/\"b5dd021a-fcce-43b2-9e07-01407a3a6a98\""
+                }
             }
           ]
         end

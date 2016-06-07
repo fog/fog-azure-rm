@@ -21,7 +21,7 @@ module Fog
       class Mock
         def delete_network_security_group(resource_group, name)
           Fog::Logger.debug "Network Security Group #{name} from Resource group #{resource_group} deleted successfully."
-          return true
+          true
         end
       end
     end

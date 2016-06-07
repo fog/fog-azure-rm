@@ -30,8 +30,8 @@ module Fog
                     {
                       'addressPrefixes' =>
                         [
-                          "10.1.0.0/16",
-                          "10.2.0.0/16"
+                          '10.1.0.0/16',
+                          '10.2.0.0/16'
                         ]
                     },
                   'subnets' =>
@@ -43,8 +43,7 @@ module Fog
                             'addressPrefix' => '10.1.0.0/24',
                             'provisioningState' => 'Succeeded'
                           },
-                        'name' => 'subnet_0_testVnet',
-                        'etag' => "W/\"8d90d220-7911-4376-bba0-88b0473e1d16\""
+                        'name' => 'subnet_0_testVnet'
                       },
                       {
                         'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/fog-test-subnet",
@@ -59,14 +58,12 @@ module Fog
                               ],
                             'provisioningState' => 'Succeeded'
                           },
-                        'name' => 'fog-test-subnet',
-                        'etag' => "W/\"8d90d220-7911-4376-bba0-88b0473e1d16\""
+                        'name' => 'fog-test-subnet'
                       }
                     ],
                   'resourceGuid' => 'c573f8e2-d916-493f-8b25-a681c31269ef',
                   'provisioningState' => 'Succeeded'
-                },
-              'etag' => "W/\"8d90d220-7911-4376-bba0-88b0473e1d16\""
+                }
             }
           ]
         end

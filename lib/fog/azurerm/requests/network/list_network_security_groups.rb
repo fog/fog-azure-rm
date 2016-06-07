@@ -30,7 +30,7 @@ module Fog
                   'securityRules' =>
                     [
                       {
-                        'id' =>"/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/testGroup/securityRules/testRule",
+                        'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/testGroup/securityRules/testRule",
                         'properties' =>
                           {
                             'protocol' => 'tcp',
@@ -43,8 +43,7 @@ module Fog
                             'priority' => 100,
                             'provisioningState' => 'Succeeded'
                           },
-                        'name' => 'testRule',
-                        'etag' => "W/\"c034669d-9bbb-470b-9561-0ffc4ba322f1\""
+                        'name' => 'testRule'
                       }
                     ],
                   'defaultSecurityRules' =>
@@ -61,11 +60,10 @@ module Fog
                             'description' => 'Allow inbound traffic from all VMs in VNET',
                             'sourcePortRange' => '*',
                             'destinationPortRange' => '*',
-                            'priority' => 65000,
+                            'priority' => 65_000,
                             'provisioningState' => 'Succeeded'
                           },
-                        'name' => 'AllowVnetInBound',
-                        'etag' => "W/\"c034669d-9bbb-470b-9561-0ffc4ba322f1\""
+                        'name' => 'AllowVnetInBound'
                       },
                       {
                         'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/testGroup/defaultSecurityRules/AllowAzureLoadBalancerInBound",
@@ -79,11 +77,10 @@ module Fog
                             'description' => 'Allow inbound traffic from azure load balancer',
                             'sourcePortRange' => '*',
                             'destinationPortRange' => '*',
-                            'priority' => 65001,
+                            'priority' => 65_001,
                             'provisioningState' => 'Succeeded'
                           },
-                        'name' => 'AllowAzureLoadBalancerInBound',
-                        'etag' => "W/\"c034669d-9bbb-470b-9561-0ffc4ba322f1\""
+                        'name' => 'AllowAzureLoadBalancerInBound'
                       },
                       {
                         'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/testGroup/defaultSecurityRules/DenyAllInBound",
@@ -97,29 +94,27 @@ module Fog
                             'description' => 'Deny all inbound traffic',
                             'sourcePortRange' => '*',
                             'destinationPortRange' => '*',
-                            'priority' => 65500,
+                            'priority' => 65_500,
                             'provisioningState' => 'Succeeded'
                           },
-                        'name' => 'DenyAllInBound',
-                        'etag' => "W/\"c034669d-9bbb-470b-9561-0ffc4ba322f1\""
+                        'name' => 'DenyAllInBound'
                       },
                       {
-                          'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/testGroup/defaultSecurityRules/AllowVnetOutBound",
-                          'properties' =>
-                            {
-                              'protocol' => '*',
-                              'sourceAddressPrefix' => 'VirtualNetwork',
-                              'destinationAddressPrefix' => 'VirtualNetwork',
-                              'access' => 'Allow',
-                              'direction' => 'Outbound',
-                              'description' => 'Allow outbound traffic from all VMs to all VMs in VNET',
-                              'sourcePortRange' => '*',
-                              'destinationPortRange' => '*',
-                              'priority' => 65000,
-                              'provisioningState' => 'Succeeded'
-                            },
-                          'name' => 'AllowVnetOutBound',
-                          'etag' => "W/\"c034669d-9bbb-470b-9561-0ffc4ba322f1\""
+                        'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/testGroup/defaultSecurityRules/AllowVnetOutBound",
+                        'properties' =>
+                          {
+                            'protocol' => '*',
+                            'sourceAddressPrefix' => 'VirtualNetwork',
+                            'destinationAddressPrefix' => 'VirtualNetwork',
+                            'access' => 'Allow',
+                            'direction' => 'Outbound',
+                            'description' => 'Allow outbound traffic from all VMs to all VMs in VNET',
+                            'sourcePortRange' => '*',
+                            'destinationPortRange' => '*',
+                            'priority' => 65_000,
+                            'provisioningState' => 'Succeeded'
+                          },
+                        'name' => 'AllowVnetOutBound'
                       },
                       {
                         'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/testGroup/defaultSecurityRules/AllowInternetOutBound",
@@ -133,14 +128,13 @@ module Fog
                             'description' => 'Allow outbound traffic from all VMs to Internet',
                             'sourcePortRange' => '*',
                             'destinationPortRange' => '*',
-                            'priority' => 65001,
+                            'priority' => 65_001,
                             'provisioningState' => 'Succeeded'
                           },
-                        'name' => 'AllowInternetOutBound',
-                        'etag' =>"W/\"c034669d-9bbb-470b-9561-0ffc4ba322f1\""
+                        'name' => 'AllowInternetOutBound'
                       },
                       {
-                        'id' =>"/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/testGroup/defaultSecurityRules/DenyAllOutBound",
+                        'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/testGroup/defaultSecurityRules/DenyAllOutBound",
                         'properties' =>
                           {
                             'protocol' => '*',
@@ -151,17 +145,15 @@ module Fog
                             'description' => 'Deny all outbound traffic',
                             'sourcePortRange' => '*',
                             'destinationPortRange' => '*',
-                            'priority' => 65500,
+                            'priority' => 65_500,
                             'provisioningState' => 'Succeeded'
                           },
-                        'name' => 'DenyAllOutBound',
-                        'etag' => "W/\"c034669d-9bbb-470b-9561-0ffc4ba322f1\""
+                        'name' => 'DenyAllOutBound'
                       }
                     ],
                   'resourceGuid' => '9dca97e6-4789-4ebd-86e3-52b8b0da6cd4',
                   'provisioningState' => 'Succeeded'
-                },
-              'etag' => "W/\"c034669d-9bbb-470b-9561-0ffc4ba322f1\""
+                }
             }
           ]
         end

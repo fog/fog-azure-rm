@@ -25,16 +25,15 @@ module Fog
 
       # Mock class for Network Request
       class Mock
-        def create_subnet(resource_group, name, virtual_network_name, addressPrefix)
+        def create_subnet(resource_group, name, virtual_network_name, address_prefix)
           {
-              'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/virtualNetworks/#{virtual_network_name}/subnets/#{name}",
-              'properties' =>
-                  {
-                      'addressPrefix' => addressPrefix,
-                      'provisioningState' => 'Succeeded'
-                  },
-              'name' => name,
-              'etag' => "W/\"88188301-2b72-4243-a734-996d4851c308\""
+            'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/virtualNetworks/#{virtual_network_name}/subnets/#{name}",
+            'properties' =>
+              {
+                'addressPrefix' => address_prefix,
+                'provisioningState' => 'Succeeded'
+              },
+            'name' => name
           }
         end
       end

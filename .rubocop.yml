@@ -28,10 +28,6 @@ NestedParenthesizedCalls:
 # This is the default configuration file. Enabling and disabling is configured
 # in separate files. This file adds all other parameters apart from Enabled.
 
-inherit_from:
-  - enabled.yml
-  - disabled.yml
-
 # Common configuration.
 AllCops:
   # Include common Ruby source files.
@@ -672,12 +668,6 @@ Style/MethodName:
     - snake_case
     - camelCase
 
-Style/ModuleFunction:
-  EnforcedStyle: module_function
-  SupportedStyles:
-    - module_function
-    - extend_self
-
 Style/MultilineArrayBraceLayout:
   EnforcedStyle: symmetrical
   SupportedStyles:
@@ -1055,12 +1045,6 @@ Style/WordArray:
   # The regular expression WordRegex decides what is considered a word.
   WordRegex: !ruby/regexp '/\A[\p{Word}\n\t]+\z/'
 
-# RequestReferer enforces consistent request.referer usage.
-Style/RequestReferer:
-  EnforcedStyle: referer
-  SupportedStyles:
-    - referer
-    - referrer
 
 ##################### Metrics ##################################
 

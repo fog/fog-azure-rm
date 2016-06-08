@@ -3,7 +3,7 @@ module ApiStub
     module Network
       # Mock class for Traffic Manager Profile Model
       class TrafficManagerProfile
-        def self.get_traffic_manager_profile_response
+        def self.traffic_manager_profile_response
           profile = '{
             "location": "global",
             "tags": {},

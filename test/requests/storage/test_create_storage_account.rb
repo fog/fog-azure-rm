@@ -15,13 +15,12 @@ class TestCreateStorageAccount < Minitest::Test
     storage_acc_obj = ApiStub::Requests::Storage::StorageAccount.storage_account_request
     properties = Azure::ARM::Storage::Models::StorageAccountPropertiesCreateParameters.new
     properties.account_type = 'Standard_LRS' # This might change in the near future!
-
     params = Azure::ARM::Storage::Models::StorageAccountCreateParameters.new
     params.properties = properties
     params.location = location
     mock_promise.stub :value!, storage_acc_obj do
       @storage_accounts.stub :create, mock_promise do
-        assert_equal @azure_credentials.create_storage_account('gateway-RG', 'fog_test_storage_account', params),Azure::ARM::Storage::Models::StorageAccount.serialize_object(storage_acc_obj.body)
+        assert_equal @azure_credentials.create_storage_account('gateway-RG', 'fog_test_storage_account', params), Azure::ARM::Storage::Models::StorageAccount.serialize_object(storage_acc_obj.body)
       end
     end
   end

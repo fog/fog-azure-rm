@@ -3,7 +3,7 @@ module ApiStub
     module DNS
       # Mock class for Record Set
       class RecordSet
-        def self.rest_client_put_method_for_record_set_A_Type_response
+        def self.rest_client_put_method_for_record_set_a_type_response
           '{
               "id":"\/subscriptions\/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb\/resourceGroups\/Fog_test_rg\/providers\/Microsoft.Network\/dnszones\/fog-test-zone.com\/CNAME\/fog-test-record_set",
               "name":"fog-test-record_set",
@@ -21,7 +21,7 @@ module ApiStub
           }'
         end
 
-        def self.rest_client_put_method_for_record_set_cname_Type_response
+        def self.rest_client_put_method_for_record_set_cname_type_response
           '{
               "id":"\/subscriptions\/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb\/resourceGroups\/Fog_test_rg\/providers\/Microsoft.Network\/dnszones\/fog-test-zone.com\/CNAME\/fog-test-record_set",
               "name":"fog-test-record_set",
@@ -59,7 +59,7 @@ module ApiStub
           }'
         end
 
-        def self.get_records_from_record_set_for_A_type_response
+        def self.record_set_response_for_a_type_response
           '{
             "id": "/subscriptions/6bb4a28a-db84-4e8a-b1dc-fabf7bd9f0b2/resourceGroups/EdgeMonitoring2/providers/Microsoft.Network/dnszones/edgemonitoring2.com./A/www",
             "location": "global",
@@ -81,7 +81,7 @@ module ApiStub
           }'
         end
 
-        def self.get_records_from_record_set_for_CNAME_type_response
+        def self.record_set_response_for_cname_type
           '{
             "id": "/subscriptions/6bb4a28a-db84-4e8a-b1dc-fabf7bd9f0b2/resourceGroups/EdgeMonitoring2/providers/Microsoft.Network/dnszones/edgemonitoring2.com./A/www",
             "location": "global",

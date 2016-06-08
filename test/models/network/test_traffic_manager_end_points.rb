@@ -5,7 +5,7 @@ class TestTrafficManagerEndPoints < Minitest::Test
   def setup
     @service = Fog::Network::AzureRM.new(credentials)
     @traffic_manager_end_points = Fog::Network::AzureRM::TrafficManagerEndPoints.new(resource_group: 'fog-test-rg', traffic_manager_profile_name: 'fog-test-profile', service: @service)
-    @response = ApiStub::Models::Network::TrafficManagerProfile.get_traffic_manager_profile_response
+    @response = ApiStub::Models::Network::TrafficManagerProfile.traffic_manager_profile_response
   end
 
   def test_collection_methods

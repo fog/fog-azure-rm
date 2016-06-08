@@ -288,8 +288,8 @@ module ApiStub
               {
                 name: 'fic',
                 private_ipallocation_method: 'Dynamic',
-                public_ipaddress_id: '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourcegroups/fogRM-rg/providers/Microsoft.Network/publicIPAddresses/pip',
-                subnet_id: '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourcegroups/fogRM-rg/providers/Microsoft.Network/virtualNetworks/vnet/subnets/sb1'
+                public_ipaddress_id: '/subscriptions/{guid}/resourcegroups/fogRM-rg/providers/Microsoft.Network/publicIPAddresses/pip',
+                subnet_id: '/subscriptions/{guid}/resourcegroups/fogRM-rg/providers/Microsoft.Network/virtualNetworks/vnet/subnets/sb1'
               }
             ]
           fic
@@ -321,8 +321,8 @@ module ApiStub
             [
               {
                 name: 'lb_rule_1',
-                frontend_ip_configuration_id: '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/fogRM-rg/providers/Microsoft.Network/loadBalancers/lb/frontendIPConfigurations/fic',
-                backend_address_pool_id: '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/fogRM-rg/providers/Microsoft.Network/loadBalancers/lb/backendAddressPools/pool1',
+                frontend_ip_configuration_id: '/subscriptions/{guid}/resourceGroups/fogRM-rg/providers/Microsoft.Network/loadBalancers/lb/frontendIPConfigurations/fic',
+                backend_address_pool_id: '/subscriptions/{guid}/resourceGroups/fogRM-rg/providers/Microsoft.Network/loadBalancers/lb/backendAddressPools/pool1',
                 protocol: 'Tcp',
                 probe_id: '/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/myLB1/probes/probe1',
                 frontend_port: '80',
@@ -339,7 +339,7 @@ module ApiStub
           inr = [
             {
               name: 'RDP-Traffic',
-              frontend_ip_configuration_id: '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/fogRM-rg/providers/Microsoft.Network/loadBalancers/lb/frontendIPConfigurations/fic',
+              frontend_ip_configuration_id: '/subscriptions/{guid}/resourceGroups/fogRM-rg/providers/Microsoft.Network/loadBalancers/lb/frontendIPConfigurations/fic',
               protocol: 'Tcp',
               frontend_port: 3389,
               backend_port: 3389

@@ -81,105 +81,105 @@ module ApiStub
           result
         end
 
-        def self.get_virtual_machine
+        def self.virtual_machine_response
           {
-            "location"=>"westus",
-            "id"=>"/subscriptions/{subscription-id}/resourceGroups/fog-test-rg/providers/Microsoft.Compute/virtualMachines/fog-test-server",
-            "name"=>"fog-test-server",
-            "type"=>"Microsoft.Compute/virtualMachines",
-            "tags"=>
+            'location' => 'westus',
+            'id' => '/subscriptions/{subscription-id}/resourceGroups/fog-test-rg/providers/Microsoft.Compute/virtualMachines/fog-test-server',
+            'name' => 'fog-test-server',
+            'type' => 'Microsoft.Compute/virtualMachines',
+            'tags' =>
               {
-                "department"=>"finance"
+                'department' => 'finance'
               },
-            "properties"=>
+            'properties' =>
               {
-                "hardwareProfile"=>
+                'hardwareProfile' =>
                   {
-                    "vmSize"=>"Standard_A0"
+                    'vmSize' => 'Standard_A0'
                   },
-                "storageProfile"=>
+                'storageProfile' =>
                   {
-                    "imageReference"=>
+                    'imageReference' =>
                       {
-                        "publisher"=>"MicrosoftWindowsServerEssentials",
-                        "offer"=>"WindowsServerEssentials",
-                        "sku"=>"WindowsServerEssentials",
-                        "version"=>"latest"
+                        'publisher' => 'MicrosoftWindowsServerEssentials',
+                        'offer' => 'WindowsServerEssentials',
+                        'sku' => 'WindowsServerEssentials',
+                        'version' => 'latest'
                       },
-                    "osDisk"=>
+                    'osDisk' =>
                       {
-                        "name"=>"myosdisk1",
-                        "vhd"=>
+                        'name' => 'myosdisk1',
+                        'vhd' =>
                           {
-                            "uri"=>"http://mystorage1.blob.core.windows.net/vhds/myosdisk1.vhd"
+                            'uri' => 'http://mystorage1.blob.core.windows.net/vhds/myosdisk1.vhd'
                           },
-                        "createOption"=>"FromImage",
-                        "caching"=>"ReadWrite"
+                        'createOption' => 'FromImage',
+                        'caching' => 'ReadWrite'
                       },
-                    "dataDisks"=>
+                    'dataDisks' =>
                       [
                         {
-                          "lun"=>0,
-                          "name"=>"mydatadisk1",
-                          "vhd"=>
+                          'lun' => 0,
+                          'name' => 'mydatadisk1',
+                          'vhd' =>
                             {
-                              "uri"=>"http://mystorage1.blob.core.windows.net/vhds/mydatadisk1.vhd"
+                              'uri' => 'http://mystorage1.blob.core.windows.net/vhds/mydatadisk1.vhd'
                             },
-                          "createOption"=>"Empty",
-                          "diskSizeGB"=>1
+                          'createOption' => 'Empty',
+                          'diskSizeGB' => 1
                         }
                       ]
                   },
-                "osProfile" =>
+                'osProfile' =>
                   {
-                    "computerName"=>"fog-test-server",
-                    "adminUsername"=>"fog",
-                    "adminPassword"=>"fog",
-                    "customData"=>"",
-                    "windowsConfiguration"=>
+                    'computerName' => 'fog-test-server',
+                    'adminUsername' => 'fog',
+                    'adminPassword' => 'fog',
+                    'customData' => '',
+                    'windowsConfiguration' =>
                       {
-                        "provisionVMAgent"=>true,
-                        "enableAutomaticUpdates"=>true,
-                        "winRM"=>
+                        'provisionVMAgent' => true,
+                        'enableAutomaticUpdates' => true,
+                        'winRM' =>
                           {
-                            "listeners"=>
+                            'listeners' =>
                               [
                                 {
-                                    "protocol"=>"https",
-                                    "certificateUrl"=>"url-to-certificate"
+                                  'protocol' => 'https',
+                                  'certificateUrl' => 'url-to-certificate'
                                 }
                               ]
                           }
                       },
-                    "secrets"=>
+                    'secrets' =>
                       [
                         {
-                          "sourceVault"=>
+                          'sourceVault' =>
                             {
-                              "id"=>"/subscriptions/{subscription-id}/resourceGroups/myresourcegroup1/providers/Microsoft.KeyVault/vaults/myvault1"
+                              'id' => '/subscriptions/{subscription-id}/resourceGroups/myresourcegroup1/providers/Microsoft.KeyVault/vaults/myvault1'
                             },
-                          "vaultCertificates"=>
+                          'vaultCertificates' =>
                             [
                               {
-                                "certificateUrl"=>"https://myvault1.vault.azure.net/secrets/{secretName}/{secretVersion}",
-                                "certificateStore"=>"{certificateStoreName}"
+                                'certificateUrl' => 'https://myvault1.vault.azure.net/secrets/{secretName}/{secretVersion}',
+                                'certificateStore' => '{certificateStoreName}'
                               }
                             ]
                         }
                       ]
                   },
-                "networkProfile"=>
+                'networkProfile' =>
                   {
-                    "networkInterfaces"=>
+                    'networkInterfaces' =>
                       [
                         {
-                          "id"=>"/subscriptions/{subscription-id}/resourceGroups/myresourceGroup1/providers /Microsoft.Network/networkInterfaces/mynic1"
+                          'id' => '/subscriptions/{subscription-id}/resourceGroups/myresourceGroup1/providers /Microsoft.Network/networkInterfaces/mynic1'
                         }
                       ]
                   },
-                "availabilitySet"=>
+                'availabilitySet' =>
                   {
-                    "id"=>"/subscriptions/{subscription-id}/resourceGroups/myresourcegroup1/providers/Microsoft.Compute/availabilitySets/myav1"
+                    'id' => '/subscriptions/{subscription-id}/resourceGroups/myresourcegroup1/providers/Microsoft.Compute/availabilitySets/myav1'
                   }
               }
           }

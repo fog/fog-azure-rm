@@ -35,8 +35,8 @@ class TestServers < Minitest::Test
 
   def test_get_method_response
     @service.stub :list_virtual_machines, @response do
-      assert_instance_of Fog::Compute::AzureRM::Server, @servers.get('fog-test-rg', 'fog-test-server')
-      assert @servers.get('fog-test-rg', 'wrong-name').nil?, true
+      assert_instance_of Fog::Compute::AzureRM::Server, @servers.get('fog-test-server')
+      assert @servers.get('wrong-name').nil?, true
     end
   end
 

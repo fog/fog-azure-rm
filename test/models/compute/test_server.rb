@@ -51,10 +51,18 @@ class TestServer < Minitest::Test
     end
   end
 
-  def test_save_method_response
-    response = ApiStub::Models::Compute::Server.create_virtual_machine_response
+  def test_save_method_response_for_linux_vm
+    response = ApiStub::Models::Compute::Server.create_linux_virtual_machine_response
     @service.stub :create_virtual_machine, response do
       assert_instance_of Fog::Compute::AzureRM::Server, @server.save
+    end
+  end
+
+  def test_save_method_response_for_windows_vm
+    response = ApiStub::Models::Compute::Server.create_windows_virtual_machine_response
+    @service.stub :create_virtual_machine, response do
+      assert_instance_of Fog::Compute::AzureRM::Server, @server.save
+      refute @server.save.disable_password_authentication
     end
   end
 

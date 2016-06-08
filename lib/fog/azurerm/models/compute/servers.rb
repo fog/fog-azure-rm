@@ -19,8 +19,8 @@ module Fog
           load(virtual_machines)
         end
 
-        def get(resource_group, identity)
-          all.find { |s| s.name == identity && s.resource_group == resource_group }
+        def get(identity)
+          all.find { |s| s.name == identity }
         end
 
         def get_from_remote(resource_group, name)

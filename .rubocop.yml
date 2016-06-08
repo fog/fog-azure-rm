@@ -25,7 +25,17 @@ RescueException:
 NestedParenthesizedCalls:
   Enabled: false
 
-Include:
+# This is the default configuration file. Enabling and disabling is configured
+# in separate files. This file adds all other parameters apart from Enabled.
+
+inherit_from:
+  - enabled.yml
+  - disabled.yml
+
+# Common configuration.
+AllCops:
+  # Include common Ruby source files.
+  Include:
     - '**/*.gemspec'
     - '**/*.podspec'
     - '**/*.jbuilder'

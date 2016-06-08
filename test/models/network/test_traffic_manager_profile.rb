@@ -40,7 +40,7 @@ class TestTrafficManagerProfile < Minitest::Test
   end
 
   def test_save_method_response
-    response = ApiStub::Models::Network::TrafficManagerProfile.get_traffic_manager_profile_response
+    response = ApiStub::Models::Network::TrafficManagerProfile.traffic_manager_profile_response
     @service.stub :create_traffic_manager_profile, response do
       assert_instance_of Fog::Network::AzureRM::TrafficManagerProfile, @traffic_manager_profile.save
     end

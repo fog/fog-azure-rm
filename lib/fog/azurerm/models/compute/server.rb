@@ -38,7 +38,11 @@ module Fog
           hash['sku'] = vm['properties']['storageProfile']['imageReference']['sku']
           hash['version'] = vm['properties']['storageProfile']['imageReference']['version']
           hash['username'] = vm['properties']['osProfile']['adminUsername']
-          hash['disable_password_authentication'] = vm['properties']['osProfile']['linuxConfiguration']['disablePasswordAuthentication']
+          if vm['properties']['osProfile']['linuxConfiguration'].nil?
+            hash['disable_password_authentication'] = false
+          else
+            hash['disable_password_authentication'] = vm['properties']['osProfile']['linuxConfiguration']['disablePasswordAuthentication']
+          end
           hash['network_interface_card_id'] = vm['properties']['networkProfile']['networkInterfaces'][0]['id']
           hash['availability_set_id'] = vm['properties']['availabilitySet']['id'] unless vm['properties']['availabilitySet'].nil?
           hash

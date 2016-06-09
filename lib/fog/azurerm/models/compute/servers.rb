@@ -19,7 +19,7 @@ module Fog
           load(virtual_machines)
         end
 
-        def get(identity)
+        def get(identity, _resource_group)
           all.find { |s| s.name == identity }
         end
 

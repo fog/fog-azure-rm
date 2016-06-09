@@ -97,7 +97,7 @@ module Fog
         end
 
         def vm_status
-          service.vm_status(resource_group, name)
+          service.check_vm_status(resource_group, name)
         end
       end
     end

@@ -3,12 +3,11 @@ module Fog
     class AzureRM
       # This class provides the actual implemention for service calls.
       class Real
-        def vm_status(resource_group, name)
+        def check_vm_status(resource_group, name)
           Fog::Logger.debug "Checking Virtual Machine #{name} status."
           begin
             # Pass 'instanceView' in get method, as argument, to get Virtual Machine status.
             promise = @compute_mgmt_client.virtual_machines.get(resource_group, name, 'instanceView')
-            promise.value!
             response = promise.value!
             virtual_machine = response.body
             get_status(virtual_machine)
@@ -32,7 +31,7 @@ module Fog
       end
       # This class provides the mock implementation for unit tests.
       class Mock
-        def vm_status(_resource_group, _name)
+        def check_vm_status(_resource_group, _name)
           'running'
         end
       end

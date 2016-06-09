@@ -109,8 +109,8 @@ class TestServer < Minitest::Test
   end
 
   def test_vm_status_method_response
-    @service.stub :vm_status, 'running' do
-      assert @server.vm_status
+    @service.stub :check_vm_status, 'running' do
+      assert_equal @server.vm_status, 'running'
     end
   end
 

@@ -7,7 +7,7 @@ if ENV['COVERAGE']
 end
 
 if ENV['CODECLIMATE_REPO_TOKEN']
-  require "codeclimate-test-reporter"
+  require 'codeclimate-test-reporter'
   CodeClimate::TestReporter.start
 end
 
@@ -17,10 +17,10 @@ require File.expand_path '../lib/fog/azurerm', __dir__
 require File.expand_path './api_stub', __dir__
 def credentials
   {
-      tenant_id: '<TENANT-ID>',
-      client_id: '<CLIENT-ID>',
-      client_secret: '<CLIENT-SECRET>',
-      subscription_id: '<SUBSCRIPTION-ID>'
+    tenant_id: '<TENANT-ID>',
+    client_id: '<CLIENT-ID>',
+    client_secret: '<CLIENT-SECRET>',
+    subscription_id: '<SUBSCRIPTION-ID>'
   }
 end
 
@@ -45,10 +45,10 @@ end
 
 def availability_set(service)
   Fog::Compute::AzureRM::AvailabilitySet.new(
-      name: 'availability-set',
-      location: 'West US',
-      resource_group: 'fog-test-rg',
-      service: service
+    name: 'availability-set',
+    location: 'West US',
+    resource_group: 'fog-test-rg',
+    service: service
   )
 end
 
@@ -189,22 +189,22 @@ end
 
 def zone(service)
   Fog::DNS::AzureRM::Zone.new(
-      name: 'fog-test-zone.com',
-      id: '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/dnszones/fog-test-zone.com',
-      resource_group: 'fog-test-rg',
-      service: service
+    name: 'fog-test-zone.com',
+    id: '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/dnszones/fog-test-zone.com',
+    resource_group: 'fog-test-rg',
+    service: service
   )
 end
 
 def record_set(service)
   Fog::DNS::AzureRM::RecordSet.new(
-      name: 'fog-test-record_set',
-      resource_group: 'fog-test-rg',
-      zone_name: 'fog-test-zone.com',
-      records: %w(1.2.3.4 1.2.3.3),
-      type: 'A',
-      ttl: 60,
-      service: service
+    name: 'fog-test-record_set',
+    resource_group: 'fog-test-rg',
+    zone_name: 'fog-test-zone.com',
+    records: %w(1.2.3.4 1.2.3.3),
+    type: 'A',
+    ttl: 60,
+    service: service
   )
 end
 
@@ -259,14 +259,14 @@ end
 
 def traffic_manager_profile(service)
   Fog::Network::AzureRM::TrafficManagerProfile.new(
-      name: 'fog-test-profile',
-      resource_group: 'fog-test-rg',
-      traffic_routing_method: 'Performance',
-      relative_name: 'fog-test-app',
-      ttl: '30',
-      protocol: 'http',
-      port: '80',
-      path: '/monitorpage.aspx',
-      service: service
+    name: 'fog-test-profile',
+    resource_group: 'fog-test-rg',
+    traffic_routing_method: 'Performance',
+    relative_name: 'fog-test-app',
+    ttl: '30',
+    protocol: 'http',
+    port: '80',
+    path: '/monitorpage.aspx',
+    service: service
   )
 end

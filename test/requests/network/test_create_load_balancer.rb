@@ -31,7 +31,7 @@ class TestCreateLoadBalancer < Minitest::Test
     @promise.stub :value!, response do
       @load_balancers.stub :create_or_update, @promise do
         assert_raises ArgumentError do
-          @service.create_network_interface('fog-test-lb', 'West US', 'fog-test-rg')
+          @service.create_load_balancer('fog-test-lb', 'West US', 'fog-test-rg')
         end
       end
     end

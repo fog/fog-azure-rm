@@ -108,6 +108,12 @@ class TestServer < Minitest::Test
     end
   end
 
+  def test_vm_status_method_response
+    @service.stub :vm_status, 'running' do
+      assert @server.vm_status
+    end
+  end
+
   def test_list_available_sizes_method_response
     response = ApiStub::Models::Compute::Server.list_available_sizes_for_virtual_machine_response
     @service.stub :list_available_sizes_for_virtual_machine, response do

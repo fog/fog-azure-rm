@@ -25,20 +25,20 @@ module ApiStub
 
         def self.create_zone_obj
           {
-              'id' => '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/dnszones/fog-test-zone.com',
-              'name' => 'fog-test-zone.com',
-              'type' => 'Microsoft.Network/dnszones',
-              'etag' => '00000003-0000-0000-bd66-02b337a4d101',
-              'location' => 'global',
-              'tags' => {},
-              'properties' =>
-                  {
-                      'maxNumberOfRecordSets' => 100_00,
-                      'nameServers' => nil,
-                      'numberOfRecordSets' => 2,
-                      'parentResourceGroupName' => 'fog-test-rg'
-                  },
-              'resource_group' => 'fog-test-rg'
+            'id' => '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/dnszones/fog-test-zone.com',
+            'name' => 'fog-test-zone.com',
+            'type' => 'Microsoft.Network/dnszones',
+            'etag' => '00000003-0000-0000-bd66-02b337a4d101',
+            'location' => 'global',
+            'tags' => {},
+            'properties' =>
+              {
+                'maxNumberOfRecordSets' => 100_00,
+                'nameServers' => nil,
+                'numberOfRecordSets' => 2,
+                'parentResourceGroupName' => 'fog-test-rg'
+              },
+            'resource_group' => 'fog-test-rg'
           }
         end
       end

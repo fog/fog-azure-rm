@@ -82,8 +82,8 @@ def subnet(service)
     virtual_network_name: 'fog-test-virtual-network',
     properties: nil,
     addressPrefix: '10.1.0.0/24',
-    networkSecurityGroupId: "/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/networkSecurityGroups/fog-test-network-security-group",
-    routeTableId: "/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/routeTables/fog-test-route-table",
+    networkSecurityGroupId: '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/networkSecurityGroups/fog-test-network-security-group',
+    routeTableId: '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/routeTables/fog-test-route-table',
     service: service
   )
 end
@@ -129,7 +129,7 @@ def record_set(service)
     name: 'fog-test-record_set',
     resource_group: 'fog-test-rg',
     zone_name: 'fog-test-zone.com',
-    records: ["1.2.3.4","1.2.3.3"],
+    records: ['1.2.3.4', '1.2.3.3'],
     type: 'A',
     ttl: 60,
     service: service
@@ -169,6 +169,86 @@ def network_security_rule(service)
     access: 'Allow',
     priority: '100',
     direction: 'Inbound',
+    service: service
+  )
+end
+
+def application_gateway(service)
+  Fog::Network::AzureRM::ApplicationGateway.new(
+    name: 'gateway',
+    location: 'eastus',
+    resource_group: 'fogRM-rg',
+    skuName: 'Standard_Medium',
+    skuTier: 'Standard',
+    skuCapacity: '2',
+    gatewayIpConfigurations:
+      [
+        {
+          name: 'gatewayIpConfigName',
+          subnet: '/subscriptions/########-####-####-####-############/resourcegroups/fogRM-rg/providers/Microsoft.Network/virtualNetworks/vnet/subnets/subnetName'
+        }
+      ],
+    frontendIpConfigurations:
+      [
+        {
+          name: 'frontendIpConfig',
+          privateIPAllocationMethod: 'Dynamic',
+          publicIpAddressId: '/subscriptions/########-####-####-####-############/resourcegroups/fogRM-rg/providers/Microsoft.Network/publicIPAddresses/publicIp',
+          privateIPAddress: '10.0.1.5'
+        }
+      ],
+    frontendPorts:
+      [
+        {
+          name: 'frontendPort',
+          port: 443
+        }
+      ],
+    backendAddressPools:
+      [
+        {
+          name: 'backendAddressPool',
+          ipaddresses: [
+            {
+              ipAddress: '10.0.1.6'
+            }
+          ]
+        }
+      ],
+    backendHttpSettingsList:
+      [
+        {
+          name: 'gateway_settings',
+          port: 80,
+          protocol: 'Http',
+          cookieBasedAffinity: 'Enabled',
+          requestTimeout: '30',
+          probe: ''
+        }
+      ],
+    httpListeners:
+      [
+        {
+          name: 'gateway_listener',
+          frontendIp: '/subscriptions/########-####-####-####-############/resourceGroups/fogRM-rg/providers/Microsoft.Network/applicationGateways/gateway/frontendIPConfigurations/frontend_ip_config',
+          frontendPort: '/subscriptions/########-####-####-####-############/resourceGroups/fogRM-rg/providers/Microsoft.Network/applicationGateways/gateway/frontendPorts/gateway_front_port',
+          protocol: 'Https',
+          hostName: '',
+          sslCert: '/subscriptions/########-####-####-####-############/resourceGroups/fogRM-rg/providers/Microsoft.Network/applicationGateways/gateway/sslCertificates/ssl_certificate',
+          requireServerNameIndication: 'false'
+        }
+      ],
+    requestRoutingRules:
+      [
+        {
+          name: 'gateway_request_route_rule',
+          type: 'Basic',
+          httpListener: '/subscriptions/########-####-####-####-############/resourceGroups/fogRM-rg/providers/Microsoft.Network/applicationGateways/gateway/httpListeners/gateway_listener',
+          backendAddressPool: '/subscriptions/########-####-####-####-############/resourceGroups/fogRM-rg/providers/Microsoft.Network/applicationGateways/gateway/backendAddressPools/AG-BackEndAddressPool',
+          backendHttpSettings: '/subscriptions/########-####-####-####-############/resourceGroups/fogRM-rg/providers/Microsoft.Network/applicationGateways/gateway/backendHttpSettingsCollection/gateway_settings',
+          urlPathMap: ''
+        }
+      ],
     service: service
   )
 end

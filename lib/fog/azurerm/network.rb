@@ -27,6 +27,9 @@ module Fog
       request :create_network_security_group
       request :delete_network_security_group
       request :list_network_security_groups
+      request :create_application_gateway
+      request :delete_application_gateway
+      request :list_application_gateways
 
       model_path 'fog/azurerm/models/network'
       model :virtual_network
@@ -40,6 +43,19 @@ module Fog
       model :network_security_group
       collection :network_security_groups
       model :network_security_rule
+      model :application_gateway
+      collection :application_gateways
+      model :backend_address_pool
+      model :backend_http_setting
+      model :frontend_ip_configuration
+      model :frontend_port
+      model :gateway_ip_configuration
+      model :http_listener
+      model :path_rule
+      model :probe
+      model :request_routing_rule
+      model :ssl_certificate
+      model :url_path_map
 
       # Mock class for Network Service
       class Mock

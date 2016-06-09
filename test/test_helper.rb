@@ -7,7 +7,7 @@ if ENV['COVERAGE']
 end
 
 if ENV['CODECLIMATE_REPO_TOKEN']
-  require "codeclimate-test-reporter"
+  require 'codeclimate-test-reporter'
   CodeClimate::TestReporter.start
 end
 
@@ -17,10 +17,10 @@ require File.expand_path '../lib/fog/azurerm', __dir__
 require File.expand_path './api_stub', __dir__
 def credentials
   {
-      tenant_id: '<TENANT-ID>',
-      client_id: '<CLIENT-ID>',
-      client_secret: '<CLIENT-SECRET>',
-      subscription_id: '<SUBSCRIPTION-ID>'
+    tenant_id: '<TENANT-ID>',
+    client_id: '<CLIENT-ID>',
+    client_secret: '<CLIENT-SECRET>',
+    subscription_id: '<SUBSCRIPTION-ID>'
   }
 end
 
@@ -45,10 +45,10 @@ end
 
 def availability_set(service)
   Fog::Compute::AzureRM::AvailabilitySet.new(
-      name: 'availability-set',
-      location: 'West US',
-      resource_group: 'fog-test-rg',
-      service: service
+    name: 'availability-set',
+    location: 'West US',
+    resource_group: 'fog-test-rg',
+    service: service
   )
 end
 
@@ -130,8 +130,8 @@ def load_balancer(service)
         {
           name: 'fic',
           private_ipallocation_method: 'Dynamic',
-          public_ipaddress_id: '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourcegroups/fogRM-rg/providers/Microsoft.Network/publicIPAddresses/pip',
-          subnet_id: '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourcegroups/fogRM-rg/providers/Microsoft.Network/virtualNetworks/vnet/subnets/sb1'
+          public_ipaddress_id: '/subscriptions/########-####-####-####-############/resourcegroups/fogRM-rg/providers/Microsoft.Network/publicIPAddresses/pip',
+          subnet_id: '/subscriptions/########-####-####-####-############/resourcegroups/fogRM-rg/providers/Microsoft.Network/virtualNetworks/vnet/subnets/sb1'
         }
       ],
     backend_address_pool_names:
@@ -142,8 +142,8 @@ def load_balancer(service)
       [
         {
           name: 'lb_rule_1',
-          frontend_ip_configuration_id: '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/fogRM-rg/providers/Microsoft.Network/loadBalancers/lb/frontendIPConfigurations/fic',
-          backend_address_pool_id: '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/fogRM-rg/providers/Microsoft.Network/loadBalancers/lb/backendAddressPools/pool1',
+          frontend_ip_configuration_id: '/subscriptions/########-####-####-####-############/resourceGroups/fogRM-rg/providers/Microsoft.Network/loadBalancers/lb/frontendIPConfigurations/fic',
+          backend_address_pool_id: '/subscriptions/########-####-####-####-############/resourceGroups/fogRM-rg/providers/Microsoft.Network/loadBalancers/lb/backendAddressPools/pool1',
           protocol: 'Tcp',
           frontend_port: '80',
           backend_port: '8080',
@@ -156,7 +156,7 @@ def load_balancer(service)
       [
         {
           name: 'RDP-Traffic',
-          frontend_ip_configuration_id: '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/fogRM-rg/providers/Microsoft.Network/loadBalancers/lb/frontendIPConfigurations/fic',
+          frontend_ip_configuration_id: '/subscriptions/########-####-####-####-############/resourceGroups/fogRM-rg/providers/Microsoft.Network/loadBalancers/lb/frontendIPConfigurations/fic',
           protocol: 'Tcp',
           frontend_port: 3389,
           backend_port: 3389
@@ -189,22 +189,22 @@ end
 
 def zone(service)
   Fog::DNS::AzureRM::Zone.new(
-      name: 'fog-test-zone.com',
-      id: '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/dnszones/fog-test-zone.com',
-      resource_group: 'fog-test-rg',
-      service: service
+    name: 'fog-test-zone.com',
+    id: '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/dnszones/fog-test-zone.com',
+    resource_group: 'fog-test-rg',
+    service: service
   )
 end
 
 def record_set(service)
   Fog::DNS::AzureRM::RecordSet.new(
-      name: 'fog-test-record_set',
-      resource_group: 'fog-test-rg',
-      zone_name: 'fog-test-zone.com',
-      records: %w(1.2.3.4 1.2.3.3),
-      type: 'A',
-      ttl: 60,
-      service: service
+    name: 'fog-test-record_set',
+    resource_group: 'fog-test-rg',
+    zone_name: 'fog-test-zone.com',
+    records: %w(1.2.3.4 1.2.3.3),
+    type: 'A',
+    ttl: 60,
+    service: service
   )
 end
 
@@ -259,14 +259,14 @@ end
 
 def traffic_manager_profile(service)
   Fog::Network::AzureRM::TrafficManagerProfile.new(
-      name: 'fog-test-profile',
-      resource_group: 'fog-test-rg',
-      traffic_routing_method: 'Performance',
-      relative_name: 'fog-test-app',
-      ttl: '30',
-      protocol: 'http',
-      port: '80',
-      path: '/monitorpage.aspx',
-      service: service
+    name: 'fog-test-profile',
+    resource_group: 'fog-test-rg',
+    traffic_routing_method: 'Performance',
+    relative_name: 'fog-test-app',
+    ttl: '30',
+    protocol: 'http',
+    port: '80',
+    path: '/monitorpage.aspx',
+    service: service
   )
 end

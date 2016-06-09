@@ -68,6 +68,18 @@ Get a single record of Server
       puts "#{server.name}"
 ```
 
+## Get a Server's status
+
+Check the status of a Server
+
+```ruby 
+      status = azure_compute_service
+                          .servers(resource_group: '<Resource Group name>')
+                          .get('<Server name>')
+                          .vm_status
+      puts status
+```
+
 ## Destroy a single Server
 
 Get a server object from the get method(described above) and then destroy that server.

@@ -95,6 +95,10 @@ module Fog
         def list_available_sizes
           service.list_available_sizes_for_virtual_machine(resource_group, name)
         end
+
+        def vm_status
+          service.check_vm_status(resource_group, name)
+        end
       end
     end
   end

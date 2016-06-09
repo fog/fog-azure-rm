@@ -23,6 +23,7 @@ module Fog
       request :redeploy_virtual_machine
       request :restart_virtual_machine
       request :start_virtual_machine
+      request :check_vm_status
 
       model_path 'fog/azurerm/models/compute'
       model :availability_set

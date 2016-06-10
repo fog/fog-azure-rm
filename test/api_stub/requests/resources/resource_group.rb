@@ -12,7 +12,7 @@ module ApiStub
               "tagname1": "tagvalue1"
             },
             "properties": {
-              "provisioningState": "Succeeded"
+              "provisioning_state": "Succeeded"
             }
           }'
           result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
@@ -30,7 +30,7 @@ module ApiStub
                 "tagname1": "tagvalue1"
               },
               "properties": {
-                "provisioningState": "Succeeded"
+                "provisioning_state": "Succeeded"
               }
             } ],
             "nextLink": "https://management.azure.com/subscriptions/########-####-####-####-############/resourcegroups?api-version=2015-01-01&$skiptoken=######"

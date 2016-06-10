@@ -12,7 +12,7 @@ module ApiStub
               "tagname1": "tagvalue1"
             },
             "properties": {
-              "provisioningState": "Succeeded"
+              "provisioning_state": "Succeeded"
             }
           }'
           JSON.load(body)
@@ -27,7 +27,7 @@ module ApiStub
               "tagname1": "tagvalue1"
             },
             "properties": {
-              "provisioningState": "Succeeded"
+              "provisioning_state": "Succeeded"
             }
           }'
           JSON.load(body)

@@ -141,8 +141,8 @@ module Fog
 
         def validate_gateway_ip_configuration_params(gateway_ip_configuration)
           required_params = [
-              :name,
-              :subnet_id
+            :name,
+            :subnet_id
           ]
           missing = required_params.select { |p| p unless gateway_ip_configuration.key?(p) }
           if missing.length == 1
@@ -172,10 +172,10 @@ module Fog
 
         def validate_ssl_certificate_params(ssl_certificate)
           required_params = [
-              :name,
-              :data,
-              :password,
-              :public_cert_data
+            :name,
+            :data,
+            :password,
+            :public_cert_data
           ]
           missing = required_params.select { |p| p unless ssl_certificate.key?(p) }
           if missing.length == 1
@@ -205,10 +205,10 @@ module Fog
 
         def validate_frontend_ip_configuration_params(frontend_ip_configuration)
           required_params = [
-              :name,
-              :public_ip_address_id,
-              :private_ip_allocation_method,
-              :private_ip_address
+            :name,
+            :public_ip_address_id,
+            :private_ip_allocation_method,
+            :private_ip_address
           ]
           missing = required_params.select { |p| p unless frontend_ip_configuration.key?(p) }
           if missing.length == 1
@@ -238,8 +238,8 @@ module Fog
 
         def validate_frontend_port_params(frontend_port)
           required_params = [
-              :name,
-              :port
+            :name,
+            :port
           ]
           missing = required_params.select { |p| p unless frontend_port.key?(p) }
           if missing.length == 1
@@ -269,13 +269,13 @@ module Fog
 
         def validate_probe_params(probe)
           required_params = [
-              :name,
-              :protocol,
-              :host,
-              :path,
-              :interval,
-              :timeout,
-              :unhealthy_threshold
+            :name,
+            :protocol,
+            :host,
+            :path,
+            :interval,
+            :timeout,
+            :unhealthy_threshold
           ]
           missing = required_params.select { |p| p unless probe.key?(p) }
           if missing.length == 1
@@ -305,8 +305,8 @@ module Fog
 
         def validate_backend_address_pool_params(backend_address_pool)
           required_params = [
-              :name,
-              :ip_addresses
+            :name,
+            :ip_addresses
           ]
           missing = required_params.select { |p| p unless backend_address_pool.key?(p) }
           if missing.length == 1
@@ -336,11 +336,11 @@ module Fog
 
         def validate_backend_http_settings_params(backend_http_settings)
           required_params = [
-              :name,
-              :port,
-              :protocol,
-              :cookie_based_affinity,
-              :request_timeout
+            :name,
+            :port,
+            :protocol,
+            :cookie_based_affinity,
+            :request_timeout
           ]
           missing = required_params.select { |p| p unless backend_http_settings.key?(p) }
           if missing.length == 1
@@ -370,10 +370,10 @@ module Fog
 
         def validate_http_listener_params(http_listener)
           required_params = [
-              :name,
-              :frontend_ip_config_id,
-              :frontend_port_id,
-              :protocol
+            :name,
+            :frontend_ip_config_id,
+            :frontend_port_id,
+            :protocol
           ]
           missing = required_params.select { |p| p unless http_listener.key?(p) }
           if missing.length == 1
@@ -403,10 +403,10 @@ module Fog
 
         def validate_url_path_map_params(url_path_map)
           required_params = [
-              :name,
-              :default_backend_address_pool_id,
-              :default_backend_http_settings_id,
-              :path_rules
+            :name,
+            :default_backend_address_pool_id,
+            :default_backend_http_settings_id,
+            :path_rules
           ]
           missing = required_params.select { |p| p unless url_path_map.key?(p) }
           if missing.length == 1
@@ -436,8 +436,8 @@ module Fog
 
         def validate_request_routing_rule_params(request_routing_rule)
           required_params = [
-              :type,
-              :http_listener_id
+            :type,
+            :http_listener_id
           ]
           missing = required_params.select { |p| p unless request_routing_rule.key?(p) }
           if missing.length == 1

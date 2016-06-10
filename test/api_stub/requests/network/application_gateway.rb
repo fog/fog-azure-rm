@@ -353,7 +353,7 @@ module ApiStub
                 name: 'backendAddressPool',
                 ip_addresses: [
                   {
-                      ipAddress: '10.0.1.6'
+                    ipAddress: '10.0.1.6'
                   }
                 ]
               }
@@ -404,7 +404,7 @@ module ApiStub
                     backend_address_pool_id: '/subscriptions/########-####-####-####-############/resourceGroups/fogRM-rg/providers/Microsoft.Network/applicationGateways/gateway/backendAddressPools/AG-BackEndAddressPool',
                     backend_http_settings_id: '/subscriptions/########-####-####-####-############/resourceGroups/fogRM-rg/providers/Microsoft.Network/applicationGateways/gateway/backendHttpSettingsCollection/gateway_settings',
                     paths: [
-                        %w'/usr','/etc'
+                      %w('/usr', '/etc')
                     ]
                   }
                 ]

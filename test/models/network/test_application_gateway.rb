@@ -22,22 +22,22 @@ class TestApplicationGateway < Minitest::Test
   def test_model_attributes
     response = ApiStub::Models::Network::ApplicationGateway.create_application_gateway_response
     attributes = [
-        :name,
-        :location,
-        :resource_group,
-        :sku_name,
-        :sku_tier,
-        :sku_capacity,
-        :gateway_ip_configurations,
-        :ssl_certificates,
-        :frontend_ip_configurations,
-        :frontend_ports,
-        :probes,
-        :backend_address_pools,
-        :backend_http_settings_list,
-        :http_listeners,
-        :url_path_maps,
-        :request_routing_rules
+      :name,
+      :location,
+      :resource_group,
+      :sku_name,
+      :sku_tier,
+      :sku_capacity,
+      :gateway_ip_configurations,
+      :ssl_certificates,
+      :frontend_ip_configurations,
+      :frontend_ports,
+      :probes,
+      :backend_address_pools,
+      :backend_http_settings_list,
+      :http_listeners,
+      :url_path_maps,
+      :request_routing_rules
     ]
     @service.stub :create_application_gateway, response do
       attributes.each do |attribute|

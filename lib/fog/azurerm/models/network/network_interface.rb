@@ -59,9 +59,10 @@ module Fog
           requires :location
           requires :resource_group
           requires :subnet_id
+          requires :public_ip_address_id
           requires :ip_configuration_name
           requires :private_ip_allocation_method
-          network_interface = service.create_network_interface(resource_group, name, location, subnet_id, ip_configuration_name, private_ip_allocation_method)
+          network_interface = service.create_network_interface(resource_group, name, location, subnet_id, public_ip_address_id, ip_configuration_name, private_ip_allocation_method)
           merge_attributes(Fog::Network::AzureRM::NetworkInterface.parse(network_interface))
         end
 

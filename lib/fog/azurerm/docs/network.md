@@ -129,6 +129,7 @@ Create a new network interface. The parameter, private_ip_allocation_method can 
         resource_group: '<Resource Group name>',
         location: 'eastus',
         subnet_id: '/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/virtualNetworks/<Virtual Network name>/subnets/<Subnet name>',
+        public_ip_address_id: '/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/publicIPAddresses/<Public IP name>',
         ip_configuration_name: '<Ip Configuration Name>',
         private_ip_allocation_method: 'Dynamic'
  )

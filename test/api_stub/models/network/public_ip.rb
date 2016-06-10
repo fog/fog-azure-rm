@@ -13,7 +13,7 @@ module ApiStub
              "etag": "W/\"00000000-0000-0000-0000-000000000000\"",
              "properties": {
                 "resourceGuid":"0CB6BF8A-FFBD-486A-A6A2-DA6633481B50",
-                "provisioning_state": "Succeeded",
+                "provisioningState": "Succeeded",
                 "ipAddress": "1.1.1.1",
                 "publicIPAllocationMethod": "Dynamic",
                 "idleTimeoutInMinutes": 4,

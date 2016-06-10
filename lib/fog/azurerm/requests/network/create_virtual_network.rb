@@ -1,17 +1,18 @@
 module Fog
   module Network
     class AzureRM
+      # Real class for Network Request
       class Real
-        def create_virtual_network(name, location, resource_group_name, dns_list, subnet_address_list, network_address_list)
+        def create_virtual_network(resource_group, name, location, dns_list, subnet_address_list, network_address_list)
           Fog::Logger.debug "Creating Virtual Network: #{name}..."
           virtual_network = define_vnet_object(location, name, network_address_list, dns_list, subnet_address_list)
           begin
-            promise = @network_client.virtual_networks.create_or_update(resource_group_name, name, virtual_network)
+            promise = @network_client.virtual_networks.create_or_update(resource_group, name, virtual_network)
             result = promise.value!
             Fog::Logger.debug "Virtual Network #{name} created successfully."
             Azure::ARM::Network::Models::VirtualNetwork.serialize_object(result.body)
           rescue  MsRestAzure::AzureOperationError => e
-            msg = "Exception creating Virtual Network #{name} in Resource Group: #{resource_group_name}. #{e.body['error']['message']}"
+            msg = "Exception creating Virtual Network #{name} in Resource Group: #{resource_group}. #{e.body['error']['message']}"
             raise msg
           end
         end
@@ -26,7 +27,7 @@ module Fog
           if network_address_list.nil?
             address_space = Azure::ARM::Network::Models::AddressSpace.new
             address_space.address_prefixes = ['10.2.0.0/16']
-            virtual_network_properties.address_space = address_space
+
           else
             network_address_list = network_address_list.split(',')
             na_list = []
@@ -35,8 +36,8 @@ module Fog
             end
             address_space = Azure::ARM::Network::Models::AddressSpace.new
             address_space.address_prefixes = na_list
-            virtual_network_properties.address_space = address_space
           end
+          virtual_network_properties.address_space = address_space
 
           unless dns_list.nil?
             dns_list = dns_list.split(',')
@@ -74,8 +75,39 @@ module Fog
         end
       end
 
+      # Mock class for Network Request
       class Mock
-        def create_virtual_network(_name, _location, _dns_list, _subnet_address_list, _network_address_list, _resource_group_name)
+        def create_virtual_network(resource_group, name, location, _dns_list, subnet_address_list, network_address_list)
+          {
+            'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/virtualNetworks/#{name}",
+            'name' => name,
+            'type' => 'Microsoft.Network/virtualNetworks',
+            'location' => location,
+            'properties' =>
+              {
+                'addressSpace' =>
+                  {
+                    'addressPrefixes' =>
+                      [
+                        network_address_list
+                      ]
+                  },
+                'subnets' =>
+                  [
+                    {
+                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}providers/Microsoft.Network/virtualNetworks/#{name}/subnets/subnet_0_#{name}",
+                      'properties' =>
+                        {
+                          'addressPrefix' => subnet_address_list,
+                          'provisioningState' => 'Succeeded'
+                        },
+                      'name' => "subnet_0_#{name}"
+                    }
+                  ],
+                'resourceGuid' => 'c573f8e2-d916-493f-8b25-a681c31269ef',
+                'provisioningState' => 'Succeeded'
+              }
+          }
         end
       end
     end

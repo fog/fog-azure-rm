@@ -6,16 +6,21 @@ if ENV['COVERAGE']
   end
 end
 
+if ENV['CODECLIMATE_REPO_TOKEN']
+  require 'codeclimate-test-reporter'
+  CodeClimate::TestReporter.start
+end
+
 require 'minitest/autorun'
 $LOAD_PATH.unshift(File.expand_path '../lib', __dir__)
 require File.expand_path '../lib/fog/azurerm', __dir__
 require File.expand_path './api_stub', __dir__
 def credentials
   {
-    tenant_id:        '<TENANT-ID>',
-    client_id:        '<CLIENT-ID>',
-    client_secret:    '<CLIENT-SECRET>',
-    subscription_id:  '<SUBSCRIPTION-ID>'
+    tenant_id: '<TENANT-ID>',
+    client_id: '<CLIENT-ID>',
+    client_secret: '<CLIENT-SECRET>',
+    subscription_id: '<SUBSCRIPTION-ID>'
   }
 end
 
@@ -108,9 +113,77 @@ def network_interface(service)
     location: 'West US',
     resource_group: 'fog-test-rg',
     subnet_id: '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/virtualNetworks/fog-test-virtual-network/subnets/fog-test-subnet',
+    public_ip_address_id: '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/publicIPAddresses/fog-test-public-ip',
     ip_configuration_name: 'fog-test-ip-configuration',
     private_ip_allocation_method: 'fog-test-private-ip-allocation-method',
     properties: nil,
+    service: service
+  )
+end
+
+def load_balancer(service)
+  Fog::Network::AzureRM::LoadBalancer.new(
+    name: 'lb',
+    resource_group: 'fogRM-rg',
+    location: 'westus',
+    frontend_ip_configurations:
+      [
+        {
+          name: 'fic',
+          private_ipallocation_method: 'Dynamic',
+          public_ipaddress_id: '/subscriptions/########-####-####-####-############/resourcegroups/fogRM-rg/providers/Microsoft.Network/publicIPAddresses/pip',
+          subnet_id: '/subscriptions/########-####-####-####-############/resourcegroups/fogRM-rg/providers/Microsoft.Network/virtualNetworks/vnet/subnets/sb1'
+        }
+      ],
+    backend_address_pool_names:
+      [
+        'pool1'
+      ],
+    load_balancing_rules:
+      [
+        {
+          name: 'lb_rule_1',
+          frontend_ip_configuration_id: '/subscriptions/########-####-####-####-############/resourceGroups/fogRM-rg/providers/Microsoft.Network/loadBalancers/lb/frontendIPConfigurations/fic',
+          backend_address_pool_id: '/subscriptions/########-####-####-####-############/resourceGroups/fogRM-rg/providers/Microsoft.Network/loadBalancers/lb/backendAddressPools/pool1',
+          protocol: 'Tcp',
+          frontend_port: '80',
+          backend_port: '8080',
+          enable_floating_ip: false,
+          idle_timeout_in_minutes: 4,
+          load_distribution: 'Default'
+        }
+      ],
+    inbound_nat_rules:
+      [
+        {
+          name: 'RDP-Traffic',
+          frontend_ip_configuration_id: '/subscriptions/########-####-####-####-############/resourceGroups/fogRM-rg/providers/Microsoft.Network/loadBalancers/lb/frontendIPConfigurations/fic',
+          protocol: 'Tcp',
+          frontend_port: 3389,
+          backend_port: 3389
+        }
+      ],
+    probes:
+      [
+        {
+          name: 'probe1',
+          protocol: 'Tcp',
+          port: 8080,
+          request_path: 'myprobeapp1/myprobe1.svc',
+          interval_in_seconds: 5,
+          number_of_probes: 16
+        }
+      ],
+    inbound_nat_pools:
+      [
+        {
+          name: 'RDPForVMSS1',
+          protocol: 'Tcp',
+          frontend_port_range_start: 500,
+          frontend_port_range_end: 505,
+          backend_port: 3389
+        }
+      ],
     service: service
   )
 end
@@ -129,7 +202,7 @@ def record_set(service)
     name: 'fog-test-record_set',
     resource_group: 'fog-test-rg',
     zone_name: 'fog-test-zone.com',
-    records: ['1.2.3.4', '1.2.3.3'],
+    records: %w(1.2.3.4 1.2.3.3),
     type: 'A',
     ttl: 60,
     service: service
@@ -287,6 +360,32 @@ def application_gateway(service)
           url_path_map: ''
         }
       ],
+    service: service
+  )
+end
+
+def traffic_manager_end_point(service)
+  Fog::Network::AzureRM::TrafficManagerEndPoint.new(
+    name: 'fog-test-end-point',
+    traffic_manager_profile_name: 'fog-test-profile',
+    resource_group: 'fog-test-rg',
+    type: 'external',
+    target: 'test.com',
+    endpoint_location: 'West US',
+    service: service
+  )
+end
+
+def traffic_manager_profile(service)
+  Fog::Network::AzureRM::TrafficManagerProfile.new(
+    name: 'fog-test-profile',
+    resource_group: 'fog-test-rg',
+    traffic_routing_method: 'Performance',
+    relative_name: 'fog-test-app',
+    ttl: '30',
+    protocol: 'http',
+    port: '80',
+    path: '/monitorpage.aspx',
     service: service
   )
 end

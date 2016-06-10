@@ -1,5 +1,5 @@
-require "fog/core/collection"
-require "fog/azurerm/models/compute/server"
+require 'fog/core/collection'
+require 'fog/azurerm/models/compute/server'
 
 module Fog
   module Compute
@@ -19,12 +19,14 @@ module Fog
           load(virtual_machines)
         end
 
-        def get(resource_group, identity)
-          all.find { |s| s.name == identity && s.resource_group == resource_group}
+        def get(identity)
+          all.find { |s| s.name == identity }
         end
 
         def get_from_remote(resource_group, name)
-          service.get_virtual_machine(resource_group, name)
+          result_obj = service.get_virtual_machine(resource_group, name)
+          model_obj = Fog::Compute::AzureRM::Server.new
+          model_obj.merge_attributes(Fog::Compute::AzureRM::Server.parse(result_obj))
         end
       end
     end

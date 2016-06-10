@@ -129,6 +129,7 @@ Create a new network interface. The parameter, private_ip_allocation_method can 
         resource_group: '<Resource Group name>',
         location: 'eastus',
         subnet_id: '/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/virtualNetworks/<Virtual Network name>/subnets/<Subnet name>',
+        public_ip_address_id: '/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/publicIPAddresses/<Public IP name>',
         ip_configuration_name: '<Ip Configuration Name>',
         private_ip_allocation_method: 'Dynamic'
  )
@@ -215,6 +216,178 @@ Get a Public IP object from the get method and then destroy that public IP.
       pubip.destroy
 ```
 
-## Support and Feedback
-Your feedback is appreciated! If you have specific issues with the fog ARM, you should file an issue via Github.
+## Create Load Balancer
 
+Create a new load balancer.
+
+```ruby
+    lb = azure_network_service.load_balancers.create(
+    name: '<Load Balancer name>',
+    resource_group: '<Resource Group name>',
+    location: 'westus',
+
+    frontend_ip_configurations: 
+                                [
+                                    {
+                                         #id: '/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/loadBalancers/<Load Balancer name>/frontendIPConfigurations/fic',
+                                         name: 'fic',
+                                         private_ipallocation_method: 'Dynamic',
+                                         # public_ipaddress_id: '/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/publicIPAddresses/pip',
+                                         subnet_id: '/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/virtualNetworks/vnet/subnets/sb1'
+                                    }
+                                ],
+    backend_address_pool_names:
+                                [
+                                    'pool1'
+                                ],
+    load_balancing_rules:
+                                [
+                                    {
+                                        name: 'lb_rule_1',
+                                        frontend_ip_configuration_id: '/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/loadBalancers/<Load Balancer name>/frontendIPConfigurations/fic',
+                                        backend_address_pool_id: '/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/loadBalancers/<Load Balancer name>/backendAddressPools/pool1',
+                                        protocol: 'Tcp',
+                                        frontend_port: '80',
+                                        backend_port: '8080',
+                                        enable_floating_ip: false,
+                                        idle_timeout_in_minutes: 4,
+                                        load_distribution: "Default"
+                                    }
+                                ],
+    inbound_nat_rules: 
+                                [
+                                    {
+                                        name: 'RDP-Traffic',
+                                        frontend_ip_configuration_id: '/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/loadBalancers/<Load Balancer name>/frontendIPConfigurations/fic',
+                                        protocol: 'Tcp',
+                                        frontend_port: 3389,
+                                        backend_port: 3389
+                                    }
+                                ]
+)
+```
+
+## List Load Balancers
+
+List all load balancers in a resource group
+
+```ruby
+    lbs = azure_network_service.load_balancers(resource_group: '<Resource Group name>')       
+    lbs.each do |lb|
+        puts "#{lb.name}"
+    end
+```
+
+## Retrieve a single Load Balancer
+
+Get a single record of Load Balancer
+
+```ruby
+    lb = azure_network_service
+                  .load_balancers(resource_group: '<Resource Group name>')
+                  .get('<Load Balancer name>')
+    puts "#{lb.name}"
+```
+
+## Destroy a single Network Interface
+
+Get a load balancer object from the get method and then destroy that load balancer.
+
+```ruby
+    lb.destroy
+```
+
+## Create Traffic Manager Profile
+
+Create a new Traffic Manager Profile. The parameter, traffic_routing_method can be Performance, Weighted or Priority.
+
+```ruby
+      profile = azure_network_service.traffic_manager_profiles.create(
+                  name: '<Profile Name>',
+                  resource_group: '<Resource Group Name>',
+                  traffic_routing_method: 'Performance',
+                  relative_name: '<Profile Relative Name>',
+                  ttl: '30',
+                  protocol: 'http',
+                  port: '80',
+                  path: '/monitorpage.aspx'
+      )
+```
+
+## List Traffic Manager Profiles
+
+List Traffic Manager Profiles in a resource group
+
+```ruby
+    profiles  = azure_network_service.traffic_manager_profiles(resource_group: '<Resource Group name>')
+    profiles.each do |profile|
+        puts "#{profile.name}"
+    end
+```
+
+## Retrieve a single Traffic Manager Profile
+
+Get a single record of Traffic Manager Profile
+
+```ruby
+      profile = azure_network_service
+                    .traffic_manager_profiles(resource_group: '<Resource Group name>')
+                    .get('<Profile name>')
+        puts "#{profile.name}"
+```
+
+## Destroy a single Traffic Manager Profile
+
+Get a Traffic Manager Profile object from the get method and then destroy that Traffic Manager Profile.
+
+```ruby
+      profile.destroy
+```
+
+## Create Traffic Manager Endpoint
+
+Create a new Traffic Manager Endpoint. The parameter, type can be external, azure or nested.
+
+```ruby
+      profile = azure_network_service.traffic_manager_end_points.create(
+                  name: '<Endpoint Name>',
+                  traffic_manager_profile_name: '<Profile Name>',
+                  resource_group: '<Resource Group Name>',
+                  type: 'external',
+                  target: 'test.com',
+                  endpoint_location: 'West US'
+      )
+```
+
+## List Traffic Manager Endpoints
+
+List Traffic Manager Endpoints in a resource group
+
+```ruby
+    endpoints  = azure_network_service.traffic_manager_end_points(resource_group: '<Resource Group name>', traffic_manager_profile_name: '<Profile Name>')
+    endpoints.each do |endpoint|
+        puts "#{endpoint.name}"
+    end
+```
+
+## Retrieve a single Traffic Manager Endpoint
+
+Get a single record of Traffic Manager Endpoint
+
+```ruby
+      endpoint = azure_network_service
+                    .traffic_manager_end_points(resource_group: '<Resource Group name>', traffic_manager_profile_name: '<Profile Name>')
+                    .get('<Endpoint name>')
+        puts "#{endpoint.name}"
+```
+
+## Destroy a single Traffic Manager Endpoint
+
+Get a Traffic Manager Endpoint object from the get method and then destroy that Traffic Manager Endpoint.
+
+```ruby
+      endpoint.destroy
+```
+
+## Support and Feedback
+Your feedback is highly appreciated! If you have specific issues with the fog ARM, you should file an issue via Github.

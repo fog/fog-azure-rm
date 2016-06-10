@@ -1,5 +1,3 @@
-# rubocop:disable AbcSize
-# rubocop:disable MethodLength
 module Fog
   module Compute
     class AzureRM
@@ -21,8 +19,7 @@ module Fog
 
         # create the properties object for creating availability sets
         def get_avail_set_properties(location)
-          avail_set_props =
-              Azure::ARM::Compute::Models::AvailabilitySetProperties.new
+          avail_set_props = Azure::ARM::Compute::Models::AvailabilitySetProperties.new
           # At least two domain faults
           avail_set_props.platform_fault_domain_count = 2
           avail_set_props.platform_update_domain_count = 2
@@ -37,16 +34,17 @@ module Fog
       end
       # This class provides the mock implementation for unit tests.
       class Mock
-        def create_availability_set(resource_group, name, params)
+        def create_availability_set(resource_group, name, location)
           {
-              "location"=>"westus",
-              "id"=>"/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/Fog_test_rg/providers/Microsoft.Compute/availabilitySets/fogtestas",
-              "name"=>"fogtestas",
-              "type"=>"Microsoft.Compute/availabilitySets",
-              "properties"=>{
-                  "platformUpdateDomainCount"=>2,
-                             "platformFaultDomainCount"=>2
-              }
+            'location' => location,
+            'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Compute/availabilitySets/#{name}",
+            'name' => name,
+            'type' => 'Microsoft.Compute/availabilitySets',
+            'properties' =>
+            {
+              'platformUpdateDomainCount' => 2,
+              'platformFaultDomainCount' => 2
+            }
           }
         end
       end

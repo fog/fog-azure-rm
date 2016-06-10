@@ -6,10 +6,10 @@ module Fog
         def delete_storage_account(resource_group, name)
           Fog::Logger.debug "Deleting Storage Account: #{name}."
           begin
-           promise = @storage_mgmt_client.storage_accounts.delete(resource_group, name)
-           promise.value!
-           Fog::Logger.debug "Storage Account #{name} deleted successfully."
-           true
+            promise = @storage_mgmt_client.storage_accounts.delete(resource_group, name)
+            promise.value!
+            Fog::Logger.debug "Storage Account #{name} deleted successfully."
+            true
           rescue  MsRestAzure::AzureOperationError => e
             msg = "Exception deleting Storage Account #{name} in Resource Group #{resource_group}. #{e.body['error']['message']}"
             raise msg
@@ -20,7 +20,7 @@ module Fog
       class Mock
         def delete_storage_account(resource_group, name)
           Fog::Logger.debug "Storage Account #{name} from Resource group #{resource_group} deleted successfully."
-          return true
+          true
         end
       end
     end

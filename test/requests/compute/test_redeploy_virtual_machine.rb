@@ -11,10 +11,9 @@ class TestRedeployVirtualMachine < Minitest::Test
   end
 
   def test_redeploy_virtual_machine_success
-    response = ApiStub::Requests::Compute::VirtualMachine.deallocate_virtual_machine_response
-    @promise.stub :value!, response do
+    @promise.stub :value!, true do
       @virtual_machines.stub :redeploy, @promise do
-        assert_equal @service.redeploy_virtual_machine('fog-test-rg', 'fog-test-server'), response
+        assert @service.redeploy_virtual_machine('fog-test-rg', 'fog-test-server')
       end
     end
   end

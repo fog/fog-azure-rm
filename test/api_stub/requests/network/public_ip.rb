@@ -1,8 +1,8 @@
 module ApiStub
   module Requests
-  	module Network
-  	  class PublicIp
-  	  	def self.create_public_ip_response
+    module Network
+      class PublicIp
+        def self.create_public_ip_response
           body = '{
              "name": "fog-test-public-ip",
              "id": "/subscriptions/{guid}/resourceGroups/fog-test-rg/Microsoft.Network/publicIpAddresses/fog-test-public-ip",
@@ -30,7 +30,7 @@ module ApiStub
           result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
           result.body = Azure::ARM::Network::Models::PublicIPAddress.deserialize_object(JSON.load(body))
           result
-  	  	end
+        end
 
         def self.list_public_ips_response
           body = '{
@@ -47,8 +47,8 @@ module ApiStub
                 "provisioningState": "Succeeded",
                 "ipAddress": "1.1.1.1",
                 "publicIPAllocationMethod": "Static",
-                "idleTimeoutInMinutes": 4, 
-                "ipConfiguration": { 
+                "idleTimeoutInMinutes": 4,
+                "ipConfiguration": {
                   "id": "/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces/vm1nic1/ipConfigurations/ip1"
                 },
                 "dnsSettings": {
@@ -67,7 +67,7 @@ module ApiStub
         def self.delete_public_ip_response
           MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
         end
-  	  end
-  	end
+      end
+    end
   end
 end

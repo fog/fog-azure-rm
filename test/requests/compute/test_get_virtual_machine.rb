@@ -12,9 +12,10 @@ class TestGetVirtualMachine < Minitest::Test
 
   def test_get_virtual_machine_success
     response = ApiStub::Requests::Compute::VirtualMachine.create_virtual_machine_response
+    compare_result = ApiStub::Requests::Compute::VirtualMachine.virtual_machine_response
     @promise.stub :value!, response do
       @virtual_machines.stub :get, @promise do
-        assert_equal @service.get_virtual_machine('fog-test-rg', 'fog-test-server'), response.body
+        assert_equal compare_result, @service.get_virtual_machine('fog-test-rg', 'fog-test-server')
       end
     end
   end

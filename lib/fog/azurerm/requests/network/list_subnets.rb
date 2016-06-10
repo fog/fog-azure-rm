@@ -3,13 +3,13 @@ module Fog
     class AzureRM
       # Real class for Network Request
       class Real
-        def list_subnets(resource_group_name, virtual_network_name)
+        def list_subnets(resource_group, virtual_network_name)
           begin
-            promise = @network_client.subnets.list(resource_group_name, virtual_network_name)
+            promise = @network_client.subnets.list(resource_group, virtual_network_name)
             result = promise.value!
             Azure::ARM::Network::Models::SubnetListResult.serialize_object(result.body)['value']
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Exception listing Subnets from Resource Group '#{resource_group_name}' in Virtal Network #{virtual_network_name}. #{e.body['error']['message']}."
+            msg = "Exception listing Subnets from Resource Group '#{resource_group}' in Virtal Network #{virtual_network_name}. #{e.body['error']['message']}."
             raise msg
           end
         end
@@ -17,12 +17,33 @@ module Fog
 
       # Mock class for Network Request
       class Mock
-        def list_subnets(resource_group_name, virtual_network_name)
-          subnet = Azure::ARM::Network::Models::Subnet.new
-          subnet.id = "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group_name}/providers/Microsoft.Network/virtualNetworks/#{virtual_network_name}/subnets/fogtestsubnet"
-          subnet.name = 'fogtestsubnet'
-          subnet.properties = Azure::ARM::Network::Models::SubnetPropertiesFormat.new
-          [subnet]
+        def list_subnets(resource_group, virtual_network_name)
+          [
+            {
+              'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/virtualNetworks/#{virtual_network_name}/subnets/subnet_0_testVnet",
+              'properties' =>
+                {
+                  'addressPrefix' => '10.1.0.0/24',
+                  'provisioningState' => 'Succeeded'
+                },
+              'name' => 'subnet_0_testVnet'
+            },
+            {
+              'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/virtualNetworks/#{virtual_network_name}/subnets/fog-test-subnet",
+              'properties' =>
+                {
+                  'addressPrefix' => '10.2.0.0/16',
+                  'ipConfigurations' =>
+                    [
+                      {
+                        'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkInterfaces/test-NIC/ipConfigurations/ipconfig1"
+                      }
+                    ],
+                  'provisioningState' => 'Succeeded'
+                },
+              'name' => 'fog-test-subnet'
+            }
+          ]
         end
       end
     end

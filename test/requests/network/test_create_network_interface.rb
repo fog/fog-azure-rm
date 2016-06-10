@@ -15,7 +15,7 @@ class TestCreateNetworkInterface < Minitest::Test
     expected_response = Azure::ARM::Network::Models::NetworkInterface.serialize_object(mocked_response.body)
     @promise.stub :value!, mocked_response do
       @network_interfaces.stub :create_or_update, @promise do
-        assert_equal @service.create_network_interface('fog-test-network-interface', 'West US', 'fog-test-rg', 'fog-test-subnet-id', 'fog-test-ip-configuration', 'Dynamic'), expected_response
+        assert_equal @service.create_network_interface('fog-test-rg', 'fog-test-network-interface', 'West US', 'fog-test-subnet-id', 'fog-test-ip-address-id', 'fog-test-ip-configuration', 'Dynamic'), expected_response
       end
     end
   end
@@ -25,7 +25,7 @@ class TestCreateNetworkInterface < Minitest::Test
     @promise.stub :value!, response do
       @network_interfaces.stub :create_or_update, @promise do
         assert_raises ArgumentError do
-          @service.create_network_interface('fog-test-network-interface', 'West US', 'fog-test-rg', 'fog-test-subnet-id', 'fog-test-ip-configuration')
+          @service.create_network_interface('fog-test-rg', 'fog-test-network-interface', 'West US', 'fog-test-subnet-id', 'fog-test-ip-address-id', 'fog-test-ip-configuration')
         end
       end
     end
@@ -36,7 +36,7 @@ class TestCreateNetworkInterface < Minitest::Test
     @promise.stub :value!, response do
       @network_interfaces.stub :create_or_update, @promise do
         assert_raises RuntimeError do
-          @service.create_network_interface('fog-test-network-interface', 'West US', 'fog-test-rg', 'fog-test-subnet-id', 'fog-test-ip-configuration', 'Dynamic')
+          @service.create_network_interface('fog-test-rg', 'fog-test-network-interface', 'West US', 'fog-test-subnet-id', 'fog-test-ip-address-id', 'fog-test-ip-configuration', 'Dynamic')
         end
       end
     end

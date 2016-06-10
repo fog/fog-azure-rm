@@ -14,7 +14,7 @@ class TestCreateVirtualMachine < Minitest::Test
     response = ApiStub::Requests::Compute::VirtualMachine.create_virtual_machine_response
     @promise.stub :value!, response do
       @virtual_machines.stub :create_or_update, @promise do
-        assert_equal @service.create_virtual_machine('fog-test-server', 'westus', 'fog-test-rg', 'Basic_A0',
+        assert_equal @service.create_virtual_machine('fog-test-rg', 'fog-test-server', 'westus', 'Basic_A0',
                                                      'fogstrg', 'fog', 'fog', false, '/home', 'key', 'nic-id',
                                                      'as-id', 'Canonical', 'UbuntuServer', '14.04.2-LTS', 'latest'),
                      Azure::ARM::Compute::Models::VirtualMachine.serialize_object(response.body)
@@ -27,7 +27,7 @@ class TestCreateVirtualMachine < Minitest::Test
     @promise.stub :value!, response do
       @virtual_machines.stub :create_or_update, @promise do
         assert_raises RuntimeError do
-          @service.create_virtual_machine('fog-test-server', 'westus', 'fog-test-rg', 'Basic_A0', 'fogstrg', 'fog',
+          @service.create_virtual_machine('fog-test-rg', 'fog-test-server', 'westus', 'Basic_A0', 'fogstrg', 'fog',
                                           'fog', false, '/home', 'key', 'nic-id', 'as-id', 'Canonical',
                                           'UbuntuServer', '14.04.2-LTS', 'latest')
         end

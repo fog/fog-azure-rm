@@ -25,27 +25,27 @@ module Fog
         def list_storage_accounts
           [
             {
-              "id"=>"/subscriptions/{subscriptionId}/resourceGroups/mock_test_resource_group/providers/Microsoft.Storage/storageAccounts/mock_test_storage_account",
-              "name"=>"mock_test_storage_account",
-              "type"=>"Microsoft.Storage/storageAccounts",
-              "location"=>"westus",
-              "tags"=>{},
-              "properties"=>
-                  {
-                      "provisioning_state"=>"Succeeded",
-                      "accountType"=>"Standard_LRS",
-                      "primaryEndpoints"=>
-                          {
-                          "blob"=>"https://mock_test_storage_account.blob.core.windows.net/",
-                          "queue"=>"https://mock_test_storage_account.queue.core.windows.net/",
-                          "table"=>"https://mock_test_storage_account.table.core.windows.net/",
-                          "file"=>"https://mock_test_storage_account.file.core.windows.net/"
-                          },
-                      "primaryLocation"=>"westus",
-                      "statusOfPrimary" =>"available",
-                      "lastGeoFailoverTime"=>"2016-05-19T09:49:07Z",
-                      "creationTime"=>"2016-05-19T05:24:36Z"
-                  }
+              'id' => '/subscriptions/{subscriptionId}/resourceGroups/mock_test_resource_group/providers/Microsoft.Storage/storageAccounts/mock_test_storage_account',
+              'name' => 'mock_test_storage_account',
+              'type' => 'Microsoft.Storage/storageAccounts',
+              'location' => 'westus',
+              'tags' => {},
+              'properties' =>
+              {
+                'provisioningState' => 'Succeeded',
+                'accountType' => 'Standard_LRS',
+                'primaryEndpoints' =>
+                {
+                  'blob' => 'https://mock_test_storage_account.blob.core.windows.net/',
+                  'queue' => 'https://mock_test_storage_account.queue.core.windows.net/',
+                  'table' => 'https://mock_test_storage_account.table.core.windows.net/',
+                  'file' => 'https://mock_test_storage_account.file.core.windows.net/'
+                },
+                'primaryLocation' => 'westus',
+                'statusOfPrimary' => 'available',
+                'lastGeoFailoverTime' => '2016-05-19T09:49:07Z',
+                'creationTime' => '2016-05-19T05:24:36Z'
+              }
             }
           ]
         end

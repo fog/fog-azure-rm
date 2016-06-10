@@ -8,7 +8,7 @@ module Fog
           begin
             promise = @storage_mgmt_client.storage_accounts.create(resource_group, name, params)
             response = promise.value!
-            Fog::Logger.debug "Storage Account created successfully."
+            Fog::Logger.debug 'Storage Account created successfully.'
             body = response.body
             body.properties.last_geo_failover_time = DateTime.parse(Time.now.to_s)
             body.properties.creation_time = DateTime.parse(Time.now.to_s)
@@ -22,15 +22,15 @@ module Fog
       end
       # This class provides the mock implementation for unit tests.
       class Mock
-        def create_storage_account(resource_group, name, params)
+        def create_storage_account(_resource_group, _name, params)
           {
             'location' => params.location,
             'properties' =>
-                {
-                    'accountType' => params.properties.account_type,
-                    'lastGeoFailoverTime' => DateTime.parse(Time.now.to_s).strftime('%FT%TZ'),
-                    'creationTime' => DateTime.parse(Time.now.to_s).strftime('%FT%TZ')
-                }
+            {
+              'accountType' => params.properties.account_type,
+              'lastGeoFailoverTime' => DateTime.parse(Time.now.to_s).strftime('%FT%TZ'),
+              'creationTime' => DateTime.parse(Time.now.to_s).strftime('%FT%TZ')
+            }
           }
         end
       end

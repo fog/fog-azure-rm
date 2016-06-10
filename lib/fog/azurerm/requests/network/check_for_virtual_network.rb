@@ -3,7 +3,7 @@ module Fog
     class AzureRM
       # Mock class for Network Request
       class Real
-        def check_for_virtual_network(name, resource_group)
+        def check_for_virtual_network(resource_group, name)
           begin
             promise = @network_client.virtual_networks.get(resource_group, name)
             promise.value!
@@ -18,7 +18,9 @@ module Fog
 
       # Mock class for Network Request
       class Mock
-        def check_for_virtual_network(_name, _resource_group)
+        def check_for_virtual_network(resource_group, name)
+          Fog::Logger.debug "Virtual Network #{name} from Resource group #{resource_group} is available."
+          true
         end
       end
     end

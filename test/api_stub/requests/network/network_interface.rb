@@ -74,53 +74,53 @@ module ApiStub
               "name":"mynic1",
               "id":"/subscriptions/{guid}/resourceGroups/myrg1/providers/Microsoft.Network/networkInterfaces/vm1mynic1",
               "location":"North US",
-              "tags":{ 
+              "tags":{
                 "key":"value"
               },
               "etag":"W/\"00000000-0000-0000-0000-000000000000\"",
               "properties":{
                 "resourceGuid":"5ED47B81-9F1C-4ACE-97A5-7B8CE08C5002", 
                 "provisioningState":"Succeeded",
-                "virtualMachine":{ 
+                "virtualMachine":{
                    "id":"/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/vm1"
                 },
                 "macAddress":"00-00-00-00-00-00",
-                "networkSecurityGroup":{ 
+                "networkSecurityGroup":{
                    "id":"/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups/myNSG1"
                 },
-                "ipConfigurations":[ 
-                   { 
+                "ipConfigurations":[
+                   {
                       "name":"myip1",
                       "id":"/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces/vm1mynic1/ipConfigurations/myip1",
                       "etag":"W/\"00000000-0000-0000-0000-000000000000\"",
-                      "properties":{ 
+                      "properties":{
                          "provisioningState":"Succeeded",
-                         "subnet":{ 
+                         "subnet":{
                             "id":"/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/myvnet1/subnets/mysub1"
                          },
                          "privateIPAddress":"10.0.0.8",
                          "privateIPAllocationMethod":"Static",
-                         "publicIPAddress":{ 
+                         "publicIPAddress":{
                             "id":"/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPAddresses/mypip1"
                          },
-                         "loadBalancerBackendAddressPools":[ 
-                            { 
+                         "loadBalancerBackendAddressPools":[
+                            {
                                "id":"/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/mylb1/backendAddressPools/pool1"
                             }
                          ],
-                         "loadBalancerInboundNatRules":[ 
-                            { 
+                         "loadBalancerInboundNatRules":[
+                            {
                                "id":"/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/mylb1/inboundNatRules/rdp for myvm1"
                             },
-                            { 
+                            {
                                "id":"/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/mylb1/inboundNatRules/powershell for myvm1"
                             }
                          ]
                       }
                    }
                 ],
-                "dnsSettings":{ 
-                   "dnsServers":[ 
+                "dnsSettings":{
+                   "dnsServers":[
                       "10.0.0.4",
                       "10.0.0.5"
                    ],

@@ -81,6 +81,110 @@ module ApiStub
           result
         end
 
+        def self.virtual_machine_response
+          {
+            'location' => 'westus',
+            'id' => '/subscriptions/{subscription-id}/resourceGroups/fog-test-rg/providers/Microsoft.Compute/virtualMachines/fog-test-server',
+            'name' => 'fog-test-server',
+            'type' => 'Microsoft.Compute/virtualMachines',
+            'tags' =>
+              {
+                'department' => 'finance'
+              },
+            'properties' =>
+              {
+                'hardwareProfile' =>
+                  {
+                    'vmSize' => 'Standard_A0'
+                  },
+                'storageProfile' =>
+                  {
+                    'imageReference' =>
+                      {
+                        'publisher' => 'MicrosoftWindowsServerEssentials',
+                        'offer' => 'WindowsServerEssentials',
+                        'sku' => 'WindowsServerEssentials',
+                        'version' => 'latest'
+                      },
+                    'osDisk' =>
+                      {
+                        'name' => 'myosdisk1',
+                        'vhd' =>
+                          {
+                            'uri' => 'http://mystorage1.blob.core.windows.net/vhds/myosdisk1.vhd'
+                          },
+                        'createOption' => 'FromImage',
+                        'caching' => 'ReadWrite'
+                      },
+                    'dataDisks' =>
+                      [
+                        {
+                          'lun' => 0,
+                          'name' => 'mydatadisk1',
+                          'vhd' =>
+                            {
+                              'uri' => 'http://mystorage1.blob.core.windows.net/vhds/mydatadisk1.vhd'
+                            },
+                          'createOption' => 'Empty',
+                          'diskSizeGB' => 1
+                        }
+                      ]
+                  },
+                'osProfile' =>
+                  {
+                    'computerName' => 'fog-test-server',
+                    'adminUsername' => 'fog',
+                    'adminPassword' => 'fog',
+                    'customData' => '',
+                    'windowsConfiguration' =>
+                      {
+                        'provisionVMAgent' => true,
+                        'enableAutomaticUpdates' => true,
+                        'winRM' =>
+                          {
+                            'listeners' =>
+                              [
+                                {
+                                  'protocol' => 'https',
+                                  'certificateUrl' => 'url-to-certificate'
+                                }
+                              ]
+                          }
+                      },
+                    'secrets' =>
+                      [
+                        {
+                          'sourceVault' =>
+                            {
+                              'id' => '/subscriptions/{subscription-id}/resourceGroups/myresourcegroup1/providers/Microsoft.KeyVault/vaults/myvault1'
+                            },
+                          'vaultCertificates' =>
+                            [
+                              {
+                                'certificateUrl' => 'https://myvault1.vault.azure.net/secrets/{secretName}/{secretVersion}',
+                                'certificateStore' => '{certificateStoreName}'
+                              }
+                            ]
+                        }
+                      ]
+                  },
+                'networkProfile' =>
+                  {
+                    'networkInterfaces' =>
+                      [
+                        {
+                          'id' => '/subscriptions/{subscription-id}/resourceGroups/myresourceGroup1/providers /Microsoft.Network/networkInterfaces/mynic1'
+                        }
+                      ]
+                  },
+                'availabilitySet' =>
+                  {
+                    'id' => '/subscriptions/{subscription-id}/resourceGroups/myresourcegroup1/providers/Microsoft.Compute/availabilitySets/myav1'
+                  }
+              }
+          }
+        end
+
         def self.list_virtual_machines_response
           body = '{
             "value": [
@@ -181,8 +285,66 @@ module ApiStub
           result
         end
 
-        def self.deallocate_virtual_machine_response
-          MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
+        def self.virtual_machine_instance_view_response
+          body = '{
+            "id":"/subscriptions/{subscription-id}/resourceGroups/fog-test-rg/providers/Microsoft.Compute/virtualMachines/fog-test-server",
+            "name":"fog-test-server",
+            "type":"Microsoft.Compute/virtualMachines",
+            "location":"westus",
+            "tags": {
+              "department":"finance"
+            },
+            "properties":
+              {
+                "instanceView":
+                  {
+                    "platformUpdateDomain": 0,
+                    "platformFaultDomain": 0,
+                    "vmAgent":
+                      {
+                        "vmAgentVersion": "2.5.1198.709",
+                        "statuses": [
+                          {
+                            "code": "ProvisioningState/succeeded",
+                            "level": "Info",
+                            "displayStatus": "Ready",
+                            "message": "GuestAgent is running and accepting new configurations.",
+                            "time": "2015-04-21T11:42:44-07:00"
+                          }]
+                      },
+                    "disks": [
+                      {
+                        "name": "msvm-os-20150410-074408-487548",
+                        "statuses": [
+                          {
+                            "code": "ProvisioningState/succeeded",
+                            "level": "Info",
+                            "displayStatus": "Provisioning succeeded",
+                            "time": "2015-04-10T12:44:10.4562812-07:00"
+                          }]
+                      }],
+                    "statuses": [
+                      {
+                        "code": "ProvisioningState/succeeded",
+                        "level": "Info",
+                        "displayStatus": "Provisioning succeeded",
+                        "time": "2015-04-10T12:50:09.0031588-07:00"
+                      },
+                      {
+                        "code": "PowerState/running",
+                        "level": "Info",
+                        "displayStatus": "VM running"
+                      }]
+                  }
+              }
+            }'
+          result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
+          result.body = Azure::ARM::Compute::Models::VirtualMachine.deserialize_object(JSON.load(body))
+          result
+        end
+
+        def self.vm_status_response
+          'running'
         end
       end
     end

@@ -1,6 +1,8 @@
 module Fog
   module Network
     class AzureRM
+      # This class is giving implementation of create/save and
+      # delete/destroy for virtual network.
       class VirtualNetwork < Fog::Model
         identity :name
         attribute :id
@@ -30,7 +32,7 @@ module Fog
           requires :name
           requires :location
           requires :resource_group
-          vnet = service.create_virtual_network(name, location, resource_group, dns_list, subnet_address_list, network_address_list)
+          vnet = service.create_virtual_network(resource_group, name, location, dns_list, subnet_address_list, network_address_list)
           merge_attributes(Fog::Network::AzureRM::VirtualNetwork.parse(vnet))
         end
 

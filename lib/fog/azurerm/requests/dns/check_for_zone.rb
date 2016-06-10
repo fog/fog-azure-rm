@@ -11,11 +11,12 @@ module Fog
               resource_url,
               accept: 'application/json',
               content_type: 'application/json',
-              authorization: token)
+              authorization: token
+            )
             true
           rescue RestClient::Exception => e
             body = JSON.parse(e.response)
-            if(body['error']['code']) == 'ResourceNotFound'
+            if (body['error']['code']) == 'ResourceNotFound'
               false
             else
               Fog::Logger.warning "Exception checking if the zone exists in resource group #{resource_group}"
@@ -28,7 +29,9 @@ module Fog
 
       # Mock class for DNS Request
       class Mock
-        def check_for_zone(_resource_group, _name)
+        def check_for_zone(_resource_group, name)
+          Fog::Logger.debug "Zone name #{name} is available."
+          true
         end
       end
     end

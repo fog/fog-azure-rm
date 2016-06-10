@@ -1,6 +1,7 @@
 module Fog
   module Resources
     class AzureRM
+      # This class provides the actual implemention for service calls.
       class Real
         def create_resource_group(name, location)
           begin
@@ -18,8 +19,18 @@ module Fog
         end
       end
 
+      # This class provides the mock implementation for unit tests.
       class Mock
-        def create_resource_group(name, parameters)
+        def create_resource_group(name, location)
+          {
+            'location' => location,
+            'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{name}",
+            'name' => name,
+            'properties' =>
+            {
+              'provisioningState' => 'Succeeded'
+            }
+          }
         end
       end
     end

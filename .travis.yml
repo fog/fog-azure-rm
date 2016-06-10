@@ -1,0 +1,14 @@
+language: ruby
+sudo: false
+matrix:
+  fast_finish: true
+  include:
+    - rvm: 2.1
+    - rvm: 2.2
+
+notifications:
+  email: false
+  
+addons:
+    code_climate:
+        repo_token: b1401494baa004d90402414cb33a7fc6420fd3693e60c677a120ddefd7d84cfd

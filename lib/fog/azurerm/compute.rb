@@ -1,5 +1,4 @@
 require 'fog/azurerm/core'
-# rubocop:disable LineLength
 module Fog
   module Compute
     # This class registers models, requests and collections
@@ -24,6 +23,7 @@ module Fog
       request :redeploy_virtual_machine
       request :restart_virtual_machine
       request :start_virtual_machine
+      request :check_vm_status
 
       model_path 'fog/azurerm/models/compute'
       model :availability_set

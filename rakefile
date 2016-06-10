@@ -1,23 +1,21 @@
 require 'rake/testtask'
-task default: :mini_test
-task :mini_test do
+task default: :cc_coverage
+task :test do
   ENV['COVERAGE'] = nil
+  ENV['CODECLIMATE_REPO_TOKEN'] = nil
   Dir.glob('**/test_*.rb').each { |file| require File.expand_path file, __dir__ }
 end
 
-task :shindo_test do
-  ENV['COVERAGE'] = nil
-  sh "shindo tests"
-end
-
-desc 'Generates a coverage report for minitest-cases'
-task :minitest_coverage do
+desc 'Generates a coverage report for minitest-cases using simple-cov'
+task :coverage do
+  ENV['CODECLIMATE_REPO_TOKEN'] = nil
   ENV['COVERAGE'] = 'true'
   Dir.glob('**/test_*.rb').each { |file| require File.expand_path file, __dir__ }
 end
 
-desc 'Generates a coverage report for shindotest-cases'
-task :shindo_coverage do
-  ENV['COVERAGE'] = 'true'
-  sh "shindo tests"
+desc 'Generates a coverage report for minitest-cases using code-climate'
+task :cc_coverage do
+  ENV['COVERAGE'] = nil
+  ENV['CODECLIMATE_REPO_TOKEN'] = 'b1401494baa004d90402414cb33a7fc6420fd3693e60c677a120ddefd7d84cfd'
+  Dir.glob('**/test_*.rb').each { |file| require File.expand_path file, __dir__ }
 end

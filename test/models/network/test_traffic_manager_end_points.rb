@@ -1,0 +1,42 @@
+require File.expand_path '../../test_helper', __dir__
+
+# Test class for Traffic Manager End Point Collection
+class TestTrafficManagerEndPoints < Minitest::Test
+  def setup
+    @service = Fog::Network::AzureRM.new(credentials)
+    @traffic_manager_end_points = Fog::Network::AzureRM::TrafficManagerEndPoints.new(resource_group: 'fog-test-rg', traffic_manager_profile_name: 'fog-test-profile', service: @service)
+    @response = ApiStub::Models::Network::TrafficManagerProfile.traffic_manager_profile_response
+  end
+
+  def test_collection_methods
+    methods = [
+      :all,
+      :get
+    ]
+    methods.each do |method|
+      assert @traffic_manager_end_points.respond_to? method
+    end
+  end
+
+  def test_collection_attributes
+    assert @traffic_manager_end_points.respond_to? :resource_group
+    assert @traffic_manager_end_points.respond_to? :traffic_manager_profile_name
+  end
+
+  def test_all_method_response
+    @service.stub :get_traffic_manager_profile, @response do
+      assert_instance_of Fog::Network::AzureRM::TrafficManagerEndPoints, @traffic_manager_end_points.all
+      assert @traffic_manager_end_points.all.size >= 1
+      @traffic_manager_end_points.all.each do |endpoint|
+        assert_instance_of Fog::Network::AzureRM::TrafficManagerEndPoint, endpoint
+      end
+    end
+  end
+
+  def test_get_method_response
+    @service.stub :get_traffic_manager_profile, @response do
+      assert_instance_of Fog::Network::AzureRM::TrafficManagerEndPoint, @traffic_manager_end_points.get('endpoint-name1')
+      assert @traffic_manager_end_points.get('wrong-name').nil?
+    end
+  end
+end

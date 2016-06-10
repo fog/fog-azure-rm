@@ -9,7 +9,7 @@ class TestCheckForZone < Minitest::Test
   end
 
   def test_check_for_zone_success
-    response = ApiStub::Requests::DNS::Zone.get_zone_response
+    response = ApiStub::Requests::DNS::Zone.zone_response
     @token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
       RestClient.stub :get, response do
         assert @service.check_for_zone('fog-test-rg', 'fog-test-zone')

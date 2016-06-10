@@ -43,8 +43,8 @@ module Fog
             hash['private_ip_allocation_method'] = nic_ip_configuration_properties['privateIPAllocationMethod']
             hash['private_ip_address'] = nic_ip_configuration_properties['privateIPAddress']
             hash['public_ip_address_id'] = nic_ip_configuration_properties['publicIPAddress']['id'] unless nic_ip_configuration_properties['publicIPAddress'].nil?
-            hash['load_balancer_backend_address_pools_ids'] = nic_ip_configuration_properties['loadBalancerBackendAddressPools'].map{ |item| item['id'] } unless nic_ip_configuration_properties['loadBalancerBackendAddressPools'].nil?
-            hash['load_balancer_inbound_nat_rules_ids'] = nic_ip_configuration_properties['loadBalancerInboundNatRules'].map{ |item| item['id'] } unless nic_ip_configuration_properties['loadBalancerInboundNatRules'].nil?
+            hash['load_balancer_backend_address_pools_ids'] = nic_ip_configuration_properties['loadBalancerBackendAddressPools'].map { |item| item['id'] } unless nic_ip_configuration_properties['loadBalancerBackendAddressPools'].nil?
+            hash['load_balancer_inbound_nat_rules_ids'] = nic_ip_configuration_properties['loadBalancerInboundNatRules'].map { |item| item['id'] } unless nic_ip_configuration_properties['loadBalancerInboundNatRules'].nil?
           end
 
           hash['dns_servers'] = nic_properties['dnsSettings']['dnsServers']
@@ -59,9 +59,10 @@ module Fog
           requires :location
           requires :resource_group
           requires :subnet_id
+          requires :public_ip_address_id
           requires :ip_configuration_name
           requires :private_ip_allocation_method
-          network_interface = service.create_network_interface(name, location, resource_group, subnet_id, ip_configuration_name, private_ip_allocation_method)
+          network_interface = service.create_network_interface(resource_group, name, location, subnet_id, public_ip_address_id, ip_configuration_name, private_ip_allocation_method)
           merge_attributes(Fog::Network::AzureRM::NetworkInterface.parse(network_interface))
         end
 

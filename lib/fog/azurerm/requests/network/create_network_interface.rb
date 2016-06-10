@@ -4,9 +4,9 @@ module Fog
     class AzureRM
       # Real class for Network Request
       class Real
-        def create_network_interface(resource_group, name, location, subnet_id, ip_config_name, prv_ip_alloc_method)
+        def create_network_interface(resource_group, name, location, subnet_id, public_ip_address_id, ip_config_name, prv_ip_alloc_method)
           Fog::Logger.debug "Creating Network Interface Card: #{name}..."
-          network_interface = define_network_interface(name, location, subnet_id, ip_config_name, prv_ip_alloc_method)
+          network_interface = define_network_interface(name, location, subnet_id, public_ip_address_id, ip_config_name, prv_ip_alloc_method)
           begin
             promise = @network_client.network_interfaces.create_or_update(resource_group, name, network_interface)
             result = promise.value!
@@ -20,12 +20,16 @@ module Fog
 
         private
 
-        def define_network_interface(name, location, subnet_id, ip_config_name, prv_ip_alloc_method)
+        def define_network_interface(name, location, subnet_id, public_ip_address_id, ip_config_name, prv_ip_alloc_method)
           subnet = Azure::ARM::Network::Models::Subnet.new
           subnet.id = subnet_id
 
+          public_ipaddress = Azure::ARM::Network::Models::PublicIPAddress.new
+          public_ipaddress.id = public_ip_address_id
+
           ip_configs_props = Azure::ARM::Network::Models::NetworkInterfaceIPConfigurationPropertiesFormat.new
           ip_configs_props.private_ipallocation_method = prv_ip_alloc_method
+          ip_configs_props.public_ipaddress = public_ipaddress
           ip_configs_props.subnet = subnet
 
           ip_configs = Azure::ARM::Network::Models::NetworkInterfaceIPConfiguration.new
@@ -46,7 +50,7 @@ module Fog
 
       # Mock class for Network Request
       class Mock
-        def create_network_interface(resource_group, name, location, subnet_id, ip_configs_name, prv_ip_alloc_method)
+        def create_network_interface(resource_group, name, location, subnet_id, public_ip_address_id, ip_configs_name, prv_ip_alloc_method)
           {
             'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkInterfaces/#{name}",
             'name' => name,
@@ -65,6 +69,10 @@ module Fog
                           'subnet' =>
                             {
                               'id' => subnet_id
+                            },
+                          "publicIPAddress" =>
+                            {
+                              "id" => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/publicIPAddresses/#{public_ip_address_id}"
                             },
                           'provisioningState' => 'Succeeded'
                         },

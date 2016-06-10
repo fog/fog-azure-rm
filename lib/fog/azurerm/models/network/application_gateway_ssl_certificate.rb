@@ -2,7 +2,7 @@ module Fog
   module Network
     class AzureRM
       # SSL Certificate model class for Network Service
-      class SslCertificate < Fog::Model
+      class ApplicationGatewaySslCertificate < Fog::Model
         identity :name
         attribute :data
         attribute :password

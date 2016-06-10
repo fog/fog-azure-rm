@@ -2,7 +2,7 @@ module Fog
   module Network
     class AzureRM
       # Request Routing Rule model class for Network Service
-      class RequestRoutingRule < Fog::Model
+      class ApplicationGatewayRequestRoutingRule < Fog::Model
         identity :name
         attribute :type
         attribute :httpListener

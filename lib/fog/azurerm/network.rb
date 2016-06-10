@@ -45,17 +45,17 @@ module Fog
       model :network_security_rule
       model :application_gateway
       collection :application_gateways
-      model :backend_address_pool
-      model :backend_http_setting
-      model :frontend_ip_configuration
-      model :frontend_port
-      model :gateway_ip_configuration
-      model :http_listener
+      model :application_gateway_backend_address_pool
+      model :application_gateway_backend_http_setting
+      model :application_gateway_frontend_ip_configuration
+      model :application_gateway_frontend_port
+      model :application_gateway_ip_configuration
+      model :application_gateway_http_listener
       model :path_rule
-      model :probe
-      model :request_routing_rule
-      model :ssl_certificate
-      model :url_path_map
+      model :application_gateway_probe
+      model :application_gateway_request_routing_rule
+      model :application_gateway_ssl_certificate
+      model :application_gateway_url_path_map
 
       # Mock class for Network Service
       class Mock

@@ -22,7 +22,7 @@ class TestCreateApplicationGateway < Minitest::Test
       http_listeners = ApiStub::Requests::Network::ApplicationGateway.http_listeners
       request_routing_rules = ApiStub::Requests::Network::ApplicationGateway.request_routing_rules
       @gateways.stub :create_or_update, @promise do
-        assert_equal @service.create_application_gateway('gateway', 'East US', 'fogRM-rg', 'Standard_Medium', 'Standard', 2, gateway_ip_configurations, frontend_ip_configurations, frontend_ports, backend_address_pools, backend_http_settings_list, http_listeners, request_routing_rules), expected_response
+        assert_equal @service.create_application_gateway('gateway', 'East US', 'fogRM-rg', 'Standard_Medium', 'Standard', 2, gateway_ip_configurations, nil, frontend_ip_configurations, frontend_ports, nil, backend_address_pools, backend_http_settings_list, http_listeners, nil, request_routing_rules), expected_response
       end
     end
   end
@@ -42,15 +42,18 @@ class TestCreateApplicationGateway < Minitest::Test
     response = -> { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @promise.stub :value!, response do
       gateway_ip_configurations = ApiStub::Requests::Network::ApplicationGateway.gateway_ip_configurations
+      ssl_certificates = ApiStub::Requests::Network::ApplicationGateway.ssl_certificates
       frontend_ip_configurations = ApiStub::Requests::Network::ApplicationGateway.frontend_ip_configurations
       frontend_ports = ApiStub::Requests::Network::ApplicationGateway.frontend_ports
+      probes = ApiStub::Requests::Network::ApplicationGateway.probes
       backend_address_pools = ApiStub::Requests::Network::ApplicationGateway.backend_address_pools
       backend_http_settings_list = ApiStub::Requests::Network::ApplicationGateway.backend_http_settings_list
       http_listeners = ApiStub::Requests::Network::ApplicationGateway.http_listeners
+      url_path_paths = ApiStub::Requests::Network::ApplicationGateway.url_path_maps
       request_routing_rules = ApiStub::Requests::Network::ApplicationGateway.request_routing_rules
       @gateways.stub :create_or_update, @promise do
         assert_raises RuntimeError do
-          @service.create_application_gateway('gateway', 'East US', 'fogRM-rg', 'Standard_Medium', 'Standard', 2, gateway_ip_configurations, frontend_ip_configurations, frontend_ports, backend_address_pools, backend_http_settings_list, http_listeners, request_routing_rules)
+          @service.create_application_gateway('gateway', 'East US', 'fogRM-rg', 'Standard_Medium', 'Standard', 2, gateway_ip_configurations, ssl_certificates, frontend_ip_configurations, frontend_ports, probes, backend_address_pools, backend_http_settings_list, http_listeners, url_path_paths, request_routing_rules)
         end
       end
     end

@@ -14,14 +14,14 @@ module ApiStub
              "etag":"W/\"00000000-0000-0000-0000-000000000000\"",
              "properties":{
                 "resourceGuid":"AF6A2C41-9F74-46B3-9F65-F5286FFEE3DE",
-                "provisioningState":"Succeeded",
+                "provisioning_state":"Succeeded",
                 "securityRules":[
                    {
                       "name":"myNsRule",
                       "id":"/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups/myNsg/securityRules/myNsRule",
                       "etag":"W/\"00000000-0000-0000-0000-000000000000\"",
                       "properties":{
-                         "provisioningState":"Succeeded",
+                         "provisioning_state":"Succeeded",
                          "description":"description-of-this-rule",
                          "protocol": "*",
                          "sourcePortRange":"source-port-range",
@@ -40,7 +40,7 @@ module ApiStub
                       "id":"/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups/myNsg/defaultSecurityRules/AllowVnetInBound",
                       "etag":"W/\"00000000-0000-0000-0000-000000000000\"",
                       "properties":{
-                         "provisioningState":"Succeeded",
+                         "provisioning_state":"Succeeded",
                          "description":"description-of-this-rule",
                          "protocol": "*",
                          "sourcePortRange":"*",

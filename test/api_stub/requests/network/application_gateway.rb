@@ -21,7 +21,7 @@ module ApiStub
                                         "subnet": {
                                             "id": "/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/vnet/subnets/GatewaySubnet"
                                         },
-                                        "provisioningState": "Succeeded"
+                                        "provisioning_state": "Succeeded"
                                     },
                                     "name": "ag-GatewayIP"
                                 }
@@ -31,7 +31,7 @@ module ApiStub
                                     "id": "/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/gateway/sslCertificates/ssl_certificate",
                                     "properties": {
                                         "publicCertData": "MIIDiDCCAnACCQCwYkR0Mxy+QTANBgkqhkiG9w0BAQUFADCBhTELMAkGA1UEBhMCUEsxDzANBgNVBAgTBlB1bmphYjEPMA0GA1UEBxMGTGFob3JlMQ8wDQYDVQQKEwZDb25maXoxDDAKBgNVBAsTA0RldjEPMA0GA1UEAxMGaGFpZGVyMSQwIgYJKoZIhvcNAQkBFhVoYWlkZXIuYWxpQGNvbmZpei5jb20wHhcNMTYwMzAyMTE0NTM2WhcNMTcwMzAyMTE0NTM2WjCBhTELMAkGA1UEBhMCUEsxDzANBgNVBAgTBlB1bmphYjEPMA0GA1UEBxMGTGFob3JlMQ8wDQYDVQQKEwZDb25maXoxDDAKBgNVBAsTA0RldjEPMA0GA1UEAxMGaGFpZGVyMSQwIgYJKoZIhvcNAQkBFhVoYWlkZXIuYWxpQGNvbmZpei5jb20wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCuJrPbvOG+4oXQRamkOALlpdK98m+atJue9zOcCCagY8IJI4quYL13d8VItmrZf7erA+siqpYlWEuk1+lmmUY7T4AWAL8mXeR2vc7hWF601WDUjeVPK19+IcC8emMLOlBpvjXC9nbvADLQuR0PGitfjCqFoG66EOqJmLDNBsyHWmy+qhb8J4WXitruNAJDPe/20h6L23vD6z4tvwBjh4zkrfskGlKCNcAuvG1NI0FAS8261Jvs3lf+8oFyI+oSXGtknrkeQv3PbXyeEe3KO5a/M61Uebo04Uwd4yCvdu6H0sF+YYA4bfFdanuFmrZvf9cZSwknQid+vOdzyGkTHTPFAgMBAAEwDQYJKoZIhvcNAQEFBQADggEBAKtPhYpfvn5OxP+BcChsWaQA4KZQj0THGdiAjHsvfjsgteFvhkzqZBkhKYtsAWV5tB5/GDl+o4c6PQJ2/TXhOJn3pSNaUzrCJIGtKS5DknbqTQxCwVlxyBtPHLAYWqKcPMlH282rw3VY0OYTL96XOgZ/WZjcN6A7ku+uWsNCql443FoWL+N3Gpaab45OyIluFUOH+yc0ToHNlP3iOpI3rVpi2xwmGrSyUKsGUma3nrBq7TWjkDE1E+oJoybaMNZzgXGIPSJC1HYIF1U8GSoFkZpAFxXecD0FinXWDRwUP6K54iti3i6a/Ox73WhwfI4mVCqsOy1WYWtKYhMVe6Kj4Nw=",
-                                        "provisioningState": "Succeeded"
+                                        "provisioning_state": "Succeeded"
                                     },
                                     "name": "ssl_certificate"
                                 }
@@ -44,7 +44,7 @@ module ApiStub
                                         "publicIPAddress": {
                                             "id": "/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPAddresses/ag_publicip-672835"
                                         },
-                                        "provisioningState": "Succeeded"
+                                        "provisioning_state": "Succeeded"
                                     },
                                     "name": "frontend_ip_config"
                                 }
@@ -54,7 +54,7 @@ module ApiStub
                                     "id": "/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/gateway/frontendPorts/gateway_front_port",
                                     "properties": {
                                         "port": 443,
-                                        "provisioningState": "Succeeded"
+                                        "provisioning_state": "Succeeded"
                                     },
                                     "name": "gateway_front_port"
                                 }
@@ -72,7 +72,7 @@ module ApiStub
                                                 "ipAddress": "10.0.0.5"
                                             }
                                         ],
-                                        "provisioningState": "Succeeded"
+                                        "provisioning_state": "Succeeded"
                                     },
                                     "name": "AG-BackEndAddressPool"
                                 }
@@ -85,7 +85,7 @@ module ApiStub
                                         "protocol": "Http",
                                         "cookieBasedAffinity": "Enabled",
                                         "requestTimeout": 30,
-                                        "provisioningState": "Succeeded"
+                                        "provisioning_state": "Succeeded"
                                     },
                                     "name": "gateway_settings"
                                 }
@@ -105,7 +105,7 @@ module ApiStub
                                             "id": "/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/gateway/sslCertificates/ssl_certificate"
                                         },
                                         "requireServerNameIndication": false,
-                                        "provisioningState": "Succeeded"
+                                        "provisioning_state": "Succeeded"
                                     },
                                     "name": "gateway_listener"
                                 }
@@ -125,13 +125,13 @@ module ApiStub
                                         "httpListener": {
                                             "id": "/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/gateway/httpListeners/gateway_listener"
                                         },
-                                        "provisioningState": "Succeeded"
+                                        "provisioning_state": "Succeeded"
                                     },
                                     "name": "gateway_request_route_rule"
                                 }
                             ],
                             "resourceGuid": "b3db5ebf-10f8-4666-9596-d1459530f64b",
-                            "provisioningState": "Succeeded"
+                            "provisioning_state": "Succeeded"
                         }
                     }'
           result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
@@ -159,7 +159,7 @@ module ApiStub
                           "subnet": {
                               "id": "/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/vnet/subnets/GatewaySubnet"
                           },
-                          "provisioningState": "Succeeded"
+                          "provisioning_state": "Succeeded"
                       },
                       "name": "ag-GatewayIP"
                   }
@@ -169,7 +169,7 @@ module ApiStub
                       "id": "/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/gateway/sslCertificates/ssl_certificate",
                       "properties": {
                           "publicCertData": "MIIDiDCCAnACCQCwYkR0Mxy+QTANBgkqhkiG9w0BAQUFADCBhTELMAkGA1UEBhMCUEsxDzANBgNVBAgTBlB1bmphYjEPMA0GA1UEBxMGTGFob3JlMQ8wDQYDVQQKEwZDb25maXoxDDAKBgNVBAsTA0RldjEPMA0GA1UEAxMGaGFpZGVyMSQwIgYJKoZIhvcNAQkBFhVoYWlkZXIuYWxpQGNvbmZpei5jb20wHhcNMTYwMzAyMTE0NTM2WhcNMTcwMzAyMTE0NTM2WjCBhTELMAkGA1UEBhMCUEsxDzANBgNVBAgTBlB1bmphYjEPMA0GA1UEBxMGTGFob3JlMQ8wDQYDVQQKEwZDb25maXoxDDAKBgNVBAsTA0RldjEPMA0GA1UEAxMGaGFpZGVyMSQwIgYJKoZIhvcNAQkBFhVoYWlkZXIuYWxpQGNvbmZpei5jb20wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCuJrPbvOG+4oXQRamkOALlpdK98m+atJue9zOcCCagY8IJI4quYL13d8VItmrZf7erA+siqpYlWEuk1+lmmUY7T4AWAL8mXeR2vc7hWF601WDUjeVPK19+IcC8emMLOlBpvjXC9nbvADLQuR0PGitfjCqFoG66EOqJmLDNBsyHWmy+qhb8J4WXitruNAJDPe/20h6L23vD6z4tvwBjh4zkrfskGlKCNcAuvG1NI0FAS8261Jvs3lf+8oFyI+oSXGtknrkeQv3PbXyeEe3KO5a/M61Uebo04Uwd4yCvdu6H0sF+YYA4bfFdanuFmrZvf9cZSwknQid+vOdzyGkTHTPFAgMBAAEwDQYJKoZIhvcNAQEFBQADggEBAKtPhYpfvn5OxP+BcChsWaQA4KZQj0THGdiAjHsvfjsgteFvhkzqZBkhKYtsAWV5tB5/GDl+o4c6PQJ2/TXhOJn3pSNaUzrCJIGtKS5DknbqTQxCwVlxyBtPHLAYWqKcPMlH282rw3VY0OYTL96XOgZ/WZjcN6A7ku+uWsNCql443FoWL+N3Gpaab45OyIluFUOH+yc0ToHNlP3iOpI3rVpi2xwmGrSyUKsGUma3nrBq7TWjkDE1E+oJoybaMNZzgXGIPSJC1HYIF1U8GSoFkZpAFxXecD0FinXWDRwUP6K54iti3i6a/Ox73WhwfI4mVCqsOy1WYWtKYhMVe6Kj4Nw=",
-                          "provisioningState": "Succeeded"
+                          "provisioning_state": "Succeeded"
                       },
                       "name": "ssl_certificate"
                   }
@@ -182,7 +182,7 @@ module ApiStub
                           "publicIPAddress": {
                               "id": "/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPAddresses/ag_publicip-672835"
                           },
-                          "provisioningState": "Succeeded"
+                          "provisioning_state": "Succeeded"
                       },
                       "name": "frontend_ip_config"
                   }
@@ -192,7 +192,7 @@ module ApiStub
                       "id": "/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/gateway/frontendPorts/gateway_front_port",
                       "properties": {
                           "port": 443,
-                          "provisioningState": "Succeeded"
+                          "provisioning_state": "Succeeded"
                       },
                       "name": "gateway_front_port"
                   }
@@ -210,7 +210,7 @@ module ApiStub
                                   "ipAddress": "10.0.0.5"
                               }
                           ],
-                          "provisioningState": "Succeeded"
+                          "provisioning_state": "Succeeded"
                       },
                       "name": "AG-BackEndAddressPool"
                   }
@@ -223,7 +223,7 @@ module ApiStub
                           "protocol": "Http",
                           "cookieBasedAffinity": "Enabled",
                           "requestTimeout": 30,
-                          "provisioningState": "Succeeded"
+                          "provisioning_state": "Succeeded"
                       },
                       "name": "gateway_settings"
                   }
@@ -243,7 +243,7 @@ module ApiStub
                               "id": "/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/gateway/sslCertificates/ssl_certificate"
                           },
                           "requireServerNameIndication": false,
-                          "provisioningState": "Succeeded"
+                          "provisioning_state": "Succeeded"
                       },
                       "name": "gateway_listener"
                   }
@@ -263,13 +263,13 @@ module ApiStub
                           "httpListener": {
                               "id": "/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/gateway/httpListeners/gateway_listener"
                           },
-                          "provisioningState": "Succeeded"
+                          "provisioning_state": "Succeeded"
                       },
                       "name": "gateway_request_route_rule"
                   }
               ],
               "resourceGuid": "b3db5ebf-10f8-4666-9596-d1459530f64b",
-              "provisioningState": "Succeeded"
+              "provisioning_state": "Succeeded"
           }
           }]
 }'
@@ -287,10 +287,23 @@ module ApiStub
             [
               {
                 name: 'gatewayIpConfigName',
-                subnet: '/subscriptions/{guid}/resourcegroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/vnet/subnets/subnetName'
+                subnet_id: '/subscriptions/{guid}/resourcegroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/vnet/subnets/subnetName'
               }
             ]
           gateway_ip_config
+        end
+
+        def self.ssl_certificates
+          certificates =
+            [
+              {
+                name: 'certificate',
+                data: 'data',
+                password: '123',
+                public_cert_data: 'MIIDiDCCAnACCQCwYkR0Mxy+QTANBgkqhkiG9w0BAQUFADCBhTELMAkGA1UEBhMCUEsxDzANBgNVBAgTBlB1bmphYjEPMA0GA1UEBxMGTGFob3JlMQ8wDQYDVQQKEwZDb25maXoxDDAKBgNVBAsTA0RldjEPMA0GA1UEAxMGaGFpZGVyMSQwIgYJKoZIhvcNAQkBFhVoYWlkZXIuYWxpQGNvbmZpei5jb20wHhcNMTYwMzAyMTE0NTM2WhcNMTcwMzAyMTE0NTM2WjCBhTELMAkGA1UEBhMCUEsxDzANBgNVBAgTBlB1bmphYjEPMA0GA1UEBxMGTGFob3JlMQ8wDQYDVQQKEwZDb25maXoxDDAKBgNVBAsTA0RldjEPMA0GA1UEAxMGaGFpZGVyMSQwIgYJKoZIhvcNAQkBFhVoYWlkZXIuYWxpQGNvbmZpei5jb20wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCuJrPbvOG+4oXQRamkOALlpdK98m+atJue9zOcCCagY8IJI4quYL13d8VItmrZf7erA+siqpYlWEuk1+lmmUY7T4AWAL8mXeR2vc7hWF601WDUjeVPK19+IcC8emMLOlBpvjXC9nbvADLQuR0PGitfjCqFoG66EOqJmLDNBsyHWmy+qhb8J4WXitruNAJDPe/20h6L23vD6z4tvwBjh4zkrfskGlKCNcAuvG1NI0FAS8261Jvs3lf+8oFyI+oSXGtknrkeQv3PbXyeEe3KO5a/M61Uebo04Uwd4yCvdu6H0sF+YYA4bfFdanuFmrZvf9cZSwknQid+vOdzyGkTHTPFAgMBAAEwDQYJKoZIhvcNAQEFBQADggEBAKtPhYpfvn5OxP+BcChsWaQA4KZQj0THGdiAjHsvfjsgteFvhkzqZBkhKYtsAWV5tB5/GDl+o4c6PQJ2/TXhOJn3pSNaUzrCJIGtKS5DknbqTQxCwVlxyBtPHLAYWqKcPMlH282rw3VY0OYTL96XOgZ/WZjcN6A7ku+uWsNCql443FoWL+N3Gpaab45OyIluFUOH+yc0ToHNlP3iOpI3rVpi2xwmGrSyUKsGUma3nrBq7TWjkDE1E+oJoybaMNZzgXGIPSJC1HYIF1U8GSoFkZpAFxXecD0FinXWDRwUP6K54iti3i6a/Ox73WhwfI4mVCqsOy1WYWtKYhMVe6Kj4Nw='
+              }
+            ]
+          certificates
         end
 
         def self.frontend_ip_configurations
@@ -298,9 +311,9 @@ module ApiStub
             [
               {
                 name: 'frontendIpConfig',
-                privateIPAllocationMethod: 'Dynamic',
-                publicIpAddressId: '/subscriptions/{guid}/resourcegroups/{resourceGroupName}/providers/Microsoft.Network/publicIPAddresses/publicIp',
-                privateIPAddress: '10.0.1.5'
+                private_ip_allocation_method: 'Dynamic',
+                public_ip_address_id: '/subscriptions/{guid}/resourcegroups/{resourceGroupName}/providers/Microsoft.Network/publicIPAddresses/publicIp',
+                private_ip_address: '10.0.1.5'
               }
             ]
           frontend_ip_config
@@ -317,12 +330,28 @@ module ApiStub
           ports
         end
 
+        def self.probes
+          probes =
+            [
+              {
+                name: 'probe1',
+                protocol: 'tcp',
+                host: 'localhost',
+                path: '/usr/',
+                interval: 30,
+                timeout: 20,
+                unhealthy_threshold: 20
+              }
+            ]
+          probes
+        end
+
         def self.backend_address_pools
           address_pool =
             [
               {
                 name: 'backendAddressPool',
-                ipaddresses: [
+                ip_addresses: [
                   {
                       ipAddress: '10.0.1.6'
                   }
@@ -339,8 +368,8 @@ module ApiStub
                 name: 'gateway_settings',
                 port: 80,
                 protocol: 'Http',
-                cookieBasedAffinity: 'Enabled',
-                requestTimeout: '30',
+                cookie_based_affinity: 'Enabled',
+                request_timeout: '30',
                 probe: ''
               }
             ]
@@ -352,15 +381,36 @@ module ApiStub
             [
               {
                 name: 'gateway_listener',
-                frontendIp: '/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/gateway/frontendIPConfigurations/frontend_ip_config',
-                frontendPort: '/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/gateway/frontendPorts/gateway_front_port',
+                frontend_ip_config_id: '/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/gateway/frontendIPConfigurations/frontend_ip_config',
+                frontend_port_id: '/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/gateway/frontendPorts/gateway_front_port',
                 protocol: 'Https',
-                hostName: '',
-                sslCert: '/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/gateway/sslCertificates/ssl_certificate',
-                requireServerNameIndication: 'false'
+                host_name: '',
+                ssl_certificate_id: '/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/gateway/sslCertificates/ssl_certificate',
+                require_server_name_indication: 'false'
               }
             ]
           listener
+        end
+
+        def self.url_path_maps
+          path_map =
+            [
+              {
+                name: 'map1',
+                default_backend_address_pool_id: '/subscriptions/########-####-####-####-############/resourceGroups/fogRM-rg/providers/Microsoft.Network/applicationGateways/gateway/backendAddressPools/AG-BackEndAddressPool',
+                default_backend_http_settings_id: '/subscriptions/########-####-####-####-############/resourceGroups/fogRM-rg/providers/Microsoft.Network/applicationGateways/gateway/backendHttpSettingsCollection/gateway_settings',
+                path_rules: [
+                  {
+                    backend_address_pool_id: '/subscriptions/########-####-####-####-############/resourceGroups/fogRM-rg/providers/Microsoft.Network/applicationGateways/gateway/backendAddressPools/AG-BackEndAddressPool',
+                    backend_http_settings_id: '/subscriptions/########-####-####-####-############/resourceGroups/fogRM-rg/providers/Microsoft.Network/applicationGateways/gateway/backendHttpSettingsCollection/gateway_settings',
+                    paths: [
+                        %w'/usr','/etc'
+                    ]
+                  }
+                ]
+              }
+            ]
+          path_map
         end
 
         def self.request_routing_rules
@@ -369,10 +419,10 @@ module ApiStub
               {
                 name: 'gateway_request_route_rule',
                 type: 'Basic',
-                httpListener: '/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/gateway/httpListeners/gateway_listener',
-                backendAddressPool: '/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/gateway/backendAddressPools/AG-BackEndAddressPool',
-                backendHttpSettings: '/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/gateway/backendHttpSettingsCollection/gateway_settings',
-                urlPathMap: ''
+                http_listener_id: '/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/gateway/httpListeners/gateway_listener',
+                backend_address_pool_id: '/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/gateway/backendAddressPools/AG-BackEndAddressPool',
+                backend_http_settings_id: '/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/gateway/backendHttpSettingsCollection/gateway_settings',
+                url_path_map: ''
               }
             ]
           routing_rule

@@ -5,10 +5,10 @@ module Fog
       class ApplicationGatewayRequestRoutingRule < Fog::Model
         identity :name
         attribute :type
-        attribute :httpListener
-        attribute :backendAddressPool
-        attribute :backendHttpSettings
-        attribute :urlPathMap
+        attribute :http_listener_id
+        attribute :backend_address_pool_id
+        attribute :backend_http_settings_id
+        attribute :url_path_map
 
         def self.parse(request_routing_rule)
           request_routing_rule_properties = request_routing_rule['properties']
@@ -18,13 +18,13 @@ module Fog
           unless request_routing_rule_properties.nil?
             hash['type'] = request_routing_rule_properties['ruleType']
             unless request_routing_rule_properties['httpListener'].nil?
-              hash['httpListener'] = request_routing_rule_properties['httpListener']['id']
+              hash['http_listener_id'] = request_routing_rule_properties['httpListener']['id']
             end
             unless request_routing_rule_properties['backendAddressPool'].nil?
-              hash['backendAddressPool'] = request_routing_rule_properties['backendAddressPool']['id']
+              hash['backend_address_pool_id'] = request_routing_rule_properties['backendAddressPool']['id']
             end
             unless request_routing_rule_properties['backendHttpSettings'].nil?
-              hash['backendHttpSettings'] = request_routing_rule_properties['backendHttpSettings']['id']
+              hash['backend_http_settings_id'] = request_routing_rule_properties['backendHttpSettings']['id']
             end
           end
           hash

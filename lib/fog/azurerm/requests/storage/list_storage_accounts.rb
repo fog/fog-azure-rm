@@ -32,7 +32,7 @@ module Fog
               "tags"=>{},
               "properties"=>
                   {
-                      "provisioningState"=>"Succeeded",
+                      "provisioning_state"=>"Succeeded",
                       "accountType"=>"Standard_LRS",
                       "primaryEndpoints"=>
                           {

@@ -4,8 +4,8 @@ module Fog
       # Path Rule model class for Network Service
       class PathRule < Fog::Model
         attribute :paths
-        attribute :backendAddressPool
-        attribute :backendHttpSettings
+        attribute :backend_address_pool_id
+        attribute :backend_http_settings_id
 
         def self.parse(path_rule)
           paths = path_rule['paths']
@@ -17,10 +17,10 @@ module Fog
           end unless paths.nil?
 
           unless path_rule['backendAddressPool'].nil?
-            hash['backendAddressPool'] = path_rule['backendAddressPool']['id']
+            hash['backend_address_pool_id'] = path_rule['backendAddressPool']['id']
           end
           unless path_rule['backendHttpsettings'].nil?
-            hash['backendHttpSettings'] = path_rule['backendHttpsettings']['id']
+            hash['backend_http_settings_id'] = path_rule['backendHttpsettings']['id']
           end
           hash
         end

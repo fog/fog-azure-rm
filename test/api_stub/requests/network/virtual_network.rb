@@ -13,7 +13,7 @@ module ApiStub
              "etag":"W/\"00000000-0000-0000-0000-000000000000\"",
              "properties":{
                 "resourceGuid":"FA0F0F1A-158F-4725-ACCE-C7B6D5CD937F",
-                "provisioningState":"Succeeded",
+                "provisioning_state":"Succeeded",
                 "addressSpace":{
                    "addressPrefixes":[
                       "10.1.0.0/16",
@@ -32,7 +32,7 @@ module ApiStub
                       "id":"/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/myvnet1/subnets/mysubnet1",
                       "etag":"W/\"00000000-0000-0000-0000-000000000000\"",
                       "properties":{
-                         "provisioningState":"Succeeded",
+                         "provisioning_state":"Succeeded",
                          "addressPrefix":"10.1.0.0/24",
                          "networkSecurityGroup":{
                             "id":"/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups/myNSG1"
@@ -70,7 +70,7 @@ module ApiStub
               "etag":"W/\"00000000-0000-0000-0000-000000000000\"",
               "properties":{
                 "resourceGuid":"FA0F0F1A-158F-4725-ACCE-C7B6D5CD937F", 
-                "provisioningState":"Succeeded",
+                "provisioning_state":"Succeeded",
                 "addressSpace":{ 
                   "addressPrefixes":[ 
                     "10.1.0.0/16",
@@ -89,7 +89,7 @@ module ApiStub
                     "id":"/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/myvnet1/subnets/mysubnet1",
                     "etag":"W/\"00000000-0000-0000-0000-000000000000\"",
                     "properties":{ 
-                      "provisioningState":"Succeeded",
+                      "provisioning_state":"Succeeded",
                       "addressPrefix":"10.1.0.0/24",
                       "networkSecurityGroup":{ 
                         "id":"/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups/myNSG1"

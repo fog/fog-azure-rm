@@ -8,7 +8,7 @@ module ApiStub
              "id":"/subscriptions/{guid}/resourceGroups/fog-test-rg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/fog-test-subnet",
              "etag":"W/\"00000000-0000-0000-0000-000000000000\"",
              "properties":{
-                "provisioningState":"Succeeded",
+                "provisioning_state":"Succeeded",
                 "addressPrefix":"10.1.0.0/24",
                 "networkSecurityGroup":{
                    "id":"/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups/myNSG1"

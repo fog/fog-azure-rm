@@ -6,7 +6,7 @@ module Fog
         identity :name
         attribute :data
         attribute :password
-        attribute :publicCertData
+        attribute :public_cert_data
 
         def self.parse(ssl_certificate)
           ssl_certificate_properties = ssl_certificate['properties']
@@ -16,7 +16,7 @@ module Fog
           unless ssl_certificate_properties.nil?
             hash['data'] = ssl_certificate_properties['data']
             hash['password'] = ssl_certificate_properties['password']
-            hash['publicCertData'] = ssl_certificate_properties['publicCertData']
+            hash['public_cert_data'] = ssl_certificate_properties['publicCertData']
           end
           hash
         end

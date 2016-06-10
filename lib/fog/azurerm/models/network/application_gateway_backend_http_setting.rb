@@ -6,8 +6,8 @@ module Fog
         identity :name
         attribute :port
         attribute :protocol
-        attribute :cookieBasedAffinity
-        attribute :requestTimeout
+        attribute :cookie_based_affinity
+        attribute :request_timeout
         attribute :probe
 
         def self.parse(backend_http_setting)
@@ -18,8 +18,8 @@ module Fog
           unless backend_http_setting_properties.nil?
             hash['port'] = backend_http_setting_properties['port']
             hash['protocol'] = backend_http_setting_properties['protocol']
-            hash['cookieBasedAffinity'] = backend_http_setting_properties['cookieBasedAffinity']
-            hash['requestTimeout'] = backend_http_setting_properties['requestTimeout']
+            hash['cookie_based_affinity'] = backend_http_setting_properties['cookieBasedAffinity']
+            hash['request_timeout'] = backend_http_setting_properties['requestTimeout']
             hash['probe'] = backend_http_setting_properties['probe']
             hash
           end

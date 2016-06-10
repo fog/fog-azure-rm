@@ -4,25 +4,29 @@ module Fog
       # Http Listener class for Network Service
       class ApplicationGatewayHttpListener < Fog::Model
         identity :name
-        attribute :frontendIp
-        attribute :frontendPort
+        attribute :frontend_ip_config_id
+        attribute :frontend_port_id
         attribute :protocol
-        attribute :hostName
-        attribute :sslCert
-        attribute :requireServerNameIndication
+        attribute :host_name
+        attribute :ssl_certificate_id
+        attribute :require_server_name_indication
 
         def self.parse(http_listener)
           http_listener_properties = http_listener['properties']
           hash = {}
           hash['name'] = http_listener['name']
           unless http_listener_properties.nil?
-            hash['frontendIp'] = http_listener_properties['frontendIPConfiguration']['id']
-            hash['frontendPort'] = http_listener_properties['frontendPort']['id']
+            unless http_listener_properties['frontendIPConfiguration'].nil?
+              hash['frontend_ip_config_id'] = http_listener_properties['frontendIPConfiguration']['id']
+            end
+            unless http_listener_properties['frontendPort'].nil?
+              hash['frontend_port_id'] = http_listener_properties['frontendPort']['id']
+            end
             hash['protocol'] = http_listener_properties['protocol']
-            hash['hostName'] = http_listener_properties['hostName']
+            hash['host_name'] = http_listener_properties['hostName']
             unless http_listener_properties['sslCertificate'].nil?
-              hash['sslCert'] = http_listener_properties['sslCertificate']['id']
-              hash['requireServerNameIndication'] = http_listener_properties['sslCertificate']['requireServerNameIndication']
+              hash['ssl_certificate_id'] = http_listener_properties['sslCertificate']['id']
+              hash['require_server_name_indication'] = http_listener_properties['sslCertificate']['requireServerNameIndication']
             end
           end
           hash

@@ -178,75 +178,113 @@ def application_gateway(service)
     name: 'gateway',
     location: 'eastus',
     resource_group: 'fogRM-rg',
-    skuName: 'Standard_Medium',
-    skuTier: 'Standard',
-    skuCapacity: '2',
-    gatewayIpConfigurations:
+    sku_name: 'Standard_Medium',
+    sku_tier: 'Standard',
+    sku_capacity: '2',
+    gateway_ip_configurations:
       [
         {
           name: 'gatewayIpConfigName',
-          subnet: '/subscriptions/########-####-####-####-############/resourcegroups/fogRM-rg/providers/Microsoft.Network/virtualNetworks/vnet/subnets/subnetName'
+          subnet_id: '/subscriptions/########-####-####-####-############/resourcegroups/fogRM-rg/providers/Microsoft.Network/virtualNetworks/vnet/subnets/subnetName'
         }
       ],
-    frontendIpConfigurations:
+    ssl_certificates:
+      [
+        {
+          name: 'certificate',
+          data: 'data',
+          password: '123',
+          public_cert_data: 'MIIDiDCCAnACCQCwYkR0Mxy+QTANBgkqhkiG9w0BAQUFADCBhTELMAkGA1UEBhMCUEsxDzANBgNVBAgTBlB1bmphYjEPMA0GA1UEBxMGTGFob3JlMQ8wDQYDVQQKEwZDb25maXoxDDAKBgNVBAsTA0RldjEPMA0GA1UEAxMGaGFpZGVyMSQwIgYJKoZIhvcNAQkBFhVoYWlkZXIuYWxpQGNvbmZpei5jb20wHhcNMTYwMzAyMTE0NTM2WhcNMTcwMzAyMTE0NTM2WjCBhTELMAkGA1UEBhMCUEsxDzANBgNVBAgTBlB1bmphYjEPMA0GA1UEBxMGTGFob3JlMQ8wDQYDVQQKEwZDb25maXoxDDAKBgNVBAsTA0RldjEPMA0GA1UEAxMGaGFpZGVyMSQwIgYJKoZIhvcNAQkBFhVoYWlkZXIuYWxpQGNvbmZpei5jb20wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCuJrPbvOG+4oXQRamkOALlpdK98m+atJue9zOcCCagY8IJI4quYL13d8VItmrZf7erA+siqpYlWEuk1+lmmUY7T4AWAL8mXeR2vc7hWF601WDUjeVPK19+IcC8emMLOlBpvjXC9nbvADLQuR0PGitfjCqFoG66EOqJmLDNBsyHWmy+qhb8J4WXitruNAJDPe/20h6L23vD6z4tvwBjh4zkrfskGlKCNcAuvG1NI0FAS8261Jvs3lf+8oFyI+oSXGtknrkeQv3PbXyeEe3KO5a/M61Uebo04Uwd4yCvdu6H0sF+YYA4bfFdanuFmrZvf9cZSwknQid+vOdzyGkTHTPFAgMBAAEwDQYJKoZIhvcNAQEFBQADggEBAKtPhYpfvn5OxP+BcChsWaQA4KZQj0THGdiAjHsvfjsgteFvhkzqZBkhKYtsAWV5tB5/GDl+o4c6PQJ2/TXhOJn3pSNaUzrCJIGtKS5DknbqTQxCwVlxyBtPHLAYWqKcPMlH282rw3VY0OYTL96XOgZ/WZjcN6A7ku+uWsNCql443FoWL+N3Gpaab45OyIluFUOH+yc0ToHNlP3iOpI3rVpi2xwmGrSyUKsGUma3nrBq7TWjkDE1E+oJoybaMNZzgXGIPSJC1HYIF1U8GSoFkZpAFxXecD0FinXWDRwUP6K54iti3i6a/Ox73WhwfI4mVCqsOy1WYWtKYhMVe6Kj4Nw='
+        }
+      ],
+    frontend_ip_configurations:
       [
         {
           name: 'frontendIpConfig',
-          privateIPAllocationMethod: 'Dynamic',
-          publicIpAddressId: '/subscriptions/########-####-####-####-############/resourcegroups/fogRM-rg/providers/Microsoft.Network/publicIPAddresses/publicIp',
-          privateIPAddress: '10.0.1.5'
+          private_ip_allocation_method: 'Dynamic',
+          public_ip_address_id: '/subscriptions/########-####-####-####-############/resourcegroups/fogRM-rg/providers/Microsoft.Network/publicIPAddresses/publicIp',
+          private_ip_address: '10.0.1.5'
         }
       ],
-    frontendPorts:
+    frontend_ports:
       [
         {
           name: 'frontendPort',
           port: 443
         }
       ],
-    backendAddressPools:
+    probes:
+      [
+        {
+          name: 'probe1',
+          protocol: 'tcp',
+          host: 'localhost',
+          path: '/usr/',
+          interval: 30,
+          timeout: 20,
+          unhealthy_threshold: 20
+        }
+      ],
+    backend_address_pools:
       [
         {
           name: 'backendAddressPool',
-          ipaddresses: [
+          ip_addresses: [
             {
               ipAddress: '10.0.1.6'
             }
           ]
         }
       ],
-    backendHttpSettingsList:
+    backend_http_settings_list:
       [
         {
           name: 'gateway_settings',
           port: 80,
           protocol: 'Http',
-          cookieBasedAffinity: 'Enabled',
-          requestTimeout: '30',
+          cookie_based_affinity: 'Enabled',
+          request_timeout: '30',
           probe: ''
         }
       ],
-    httpListeners:
+    http_listeners:
       [
         {
           name: 'gateway_listener',
-          frontendIp: '/subscriptions/########-####-####-####-############/resourceGroups/fogRM-rg/providers/Microsoft.Network/applicationGateways/gateway/frontendIPConfigurations/frontend_ip_config',
-          frontendPort: '/subscriptions/########-####-####-####-############/resourceGroups/fogRM-rg/providers/Microsoft.Network/applicationGateways/gateway/frontendPorts/gateway_front_port',
+          frontend_ip_config_id: '/subscriptions/########-####-####-####-############/resourceGroups/fogRM-rg/providers/Microsoft.Network/applicationGateways/gateway/frontendIPConfigurations/frontend_ip_config',
+          frontend_port_id: '/subscriptions/########-####-####-####-############/resourceGroups/fogRM-rg/providers/Microsoft.Network/applicationGateways/gateway/frontendPorts/gateway_front_port',
           protocol: 'Https',
-          hostName: '',
-          sslCert: '/subscriptions/########-####-####-####-############/resourceGroups/fogRM-rg/providers/Microsoft.Network/applicationGateways/gateway/sslCertificates/ssl_certificate',
-          requireServerNameIndication: 'false'
+          host_name: '',
+          ssl_certificate_id: '/subscriptions/########-####-####-####-############/resourceGroups/fogRM-rg/providers/Microsoft.Network/applicationGateways/gateway/sslCertificates/ssl_certificate',
+          require_server_name_indication: 'false'
         }
       ],
-    requestRoutingRules:
+    url_path_maps:
+      [
+        {
+          name: 'map1',
+          default_backend_address_pool_id: '/subscriptions/########-####-####-####-############/resourceGroups/fogRM-rg/providers/Microsoft.Network/applicationGateways/gateway/backendAddressPools/AG-BackEndAddressPool',
+          default_backend_http_settings_id: '/subscriptions/########-####-####-####-############/resourceGroups/fogRM-rg/providers/Microsoft.Network/applicationGateways/gateway/backendHttpSettingsCollection/gateway_settings',
+          path_rules: [
+            {
+              backend_address_pool_id: '/subscriptions/########-####-####-####-############/resourceGroups/fogRM-rg/providers/Microsoft.Network/applicationGateways/gateway/backendAddressPools/AG-BackEndAddressPool',
+              backend_http_settings_id: '/subscriptions/########-####-####-####-############/resourceGroups/fogRM-rg/providers/Microsoft.Network/applicationGateways/gateway/backendHttpSettingsCollection/gateway_settings',
+              paths: [
+                  %w'/usr','/etc'
+              ]
+            }
+          ]
+        }
+      ],
+    request_routing_rules:
       [
         {
           name: 'gateway_request_route_rule',
           type: 'Basic',
-          httpListener: '/subscriptions/########-####-####-####-############/resourceGroups/fogRM-rg/providers/Microsoft.Network/applicationGateways/gateway/httpListeners/gateway_listener',
-          backendAddressPool: '/subscriptions/########-####-####-####-############/resourceGroups/fogRM-rg/providers/Microsoft.Network/applicationGateways/gateway/backendAddressPools/AG-BackEndAddressPool',
-          backendHttpSettings: '/subscriptions/########-####-####-####-############/resourceGroups/fogRM-rg/providers/Microsoft.Network/applicationGateways/gateway/backendHttpSettingsCollection/gateway_settings',
-          urlPathMap: ''
+          http_listener_id: '/subscriptions/########-####-####-####-############/resourceGroups/fogRM-rg/providers/Microsoft.Network/applicationGateways/gateway/httpListeners/gateway_listener',
+          backend_address_pool_id: '/subscriptions/########-####-####-####-############/resourceGroups/fogRM-rg/providers/Microsoft.Network/applicationGateways/gateway/backendAddressPools/AG-BackEndAddressPool',
+          backend_http_settings_id: '/subscriptions/########-####-####-####-############/resourceGroups/fogRM-rg/providers/Microsoft.Network/applicationGateways/gateway/backendHttpSettingsCollection/gateway_settings',
+          url_path_map: ''
         }
       ],
     service: service

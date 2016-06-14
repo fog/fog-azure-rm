@@ -289,7 +289,7 @@ Get a single record of Load Balancer
     puts "#{lb.name}"
 ```
 
-## Destroy a single Network Interface
+## Destroy a Load Balancer
 
 Get a load balancer object from the get method and then destroy that load balancer.
 

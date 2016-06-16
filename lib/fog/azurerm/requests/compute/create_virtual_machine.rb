@@ -6,7 +6,8 @@ module Fog
         def create_virtual_machine(resource_group, name, location, vm_size, storage_account_name,
                                    username, password, disable_password_authentication,
                                    ssh_key_path, ssh_key_data, network_interface_card_id,
-                                   availability_set_id, publisher, offer, sku, version)
+                                   availability_set_id, publisher, offer, sku, version,
+                                   platform, provision_vm_agent, enable_automatic_updates)
           Fog::Logger.debug "Creating Virtual Machine #{name} in Resource Group #{resource_group}."
           params = Azure::ARM::Compute::Models::VirtualMachine.new
           vm_properties = Azure::ARM::Compute::Models::VirtualMachineProperties.new
@@ -19,7 +20,11 @@ module Fog
 
           vm_properties.hardware_profile = define_hardware_profile(vm_size)
           vm_properties.storage_profile = define_storage_profile(name, storage_account_name, publisher, offer, sku, version)
-          vm_properties.os_profile = define_os_profile(name, username, password, disable_password_authentication, ssh_key_path, ssh_key_data)
+          vm_properties.os_profile = if platform.casecmp('windows') == 0
+                                       define_windows_os_profile(name, username, password, provision_vm_agent, enable_automatic_updates)
+                                     else
+                                       define_linux_os_profile(name, username, password, disable_password_authentication, ssh_key_path, ssh_key_data)
+                                     end
           vm_properties.network_profile = define_network_profile(network_interface_card_id)
           params.properties = vm_properties
           params.location = location
@@ -61,7 +66,20 @@ module Fog
           storage_profile
         end
 
-        def define_os_profile(vm_name, username, password, disable_password_authentication, ssh_key_path, ssh_key_data)
+        def define_windows_os_profile(vm_name, username, password, provision_vm_agent, enable_automatic_updates)
+          os_profile = Azure::ARM::Compute::Models::OSProfile.new
+          windows_config = Azure::ARM::Compute::Models::WindowsConfiguration.new
+          windows_config.provision_vmagent = provision_vm_agent
+          windows_config.enable_automatic_updates = enable_automatic_updates
+
+          os_profile.windows_configuration = windows_config
+          os_profile.computer_name = vm_name
+          os_profile.admin_username = username
+          os_profile.admin_password = password
+          os_profile
+        end
+
+        def define_linux_os_profile(vm_name, username, password, disable_password_authentication, ssh_key_path, ssh_key_data)
           os_profile = Azure::ARM::Compute::Models::OSProfile.new
           linux_config = Azure::ARM::Compute::Models::LinuxConfiguration.new
 
@@ -95,7 +113,8 @@ module Fog
         def create_virtual_machine(resource_group, name, location, vm_size, storage_account_name,
                                    username, _password, disable_password_authentication,
                                    _ssh_key_path, _ssh_key_data, network_interface_card_id,
-                                   _availability_set_id, publisher, offer, sku, version)
+                                   _availability_set_id, publisher, offer, sku, version,
+                                   _platform, _provision_vm_agent, _enable_automatic_updates)
           {
             'location' => location,
             'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Compute/virtualMachines/#{name}",

@@ -21,6 +21,9 @@ module Fog
         attribute :disable_password_authentication
         attribute :ssh_key_path
         attribute :ssh_key_data
+        attribute :platform
+        attribute :provision_vm_agent
+        attribute :enable_automatic_updates
         attribute :network_interface_card_id
         attribute :availability_set_id
 
@@ -44,6 +47,10 @@ module Fog
             else
               vm['properties']['osProfile']['linuxConfiguration']['disablePasswordAuthentication']
             end
+          if vm['properties']['osProfile']['windowsConfiguration']
+            hash['provision_vm_agent'] = vm['properties']['osProfile']['windowsConfiguration']['provisionVMAgent']
+            hash['enable_automatic_updates'] = vm['properties']['osProfile']['windowsConfiguration']['enableAutomaticUpdates']
+          end
           hash['network_interface_card_id'] = vm['properties']['networkProfile']['networkInterfaces'][0]['id']
           hash['availability_set_id'] = vm['properties']['availabilitySet']['id'] unless vm['properties']['availabilitySet'].nil?
           hash
@@ -51,15 +58,16 @@ module Fog
 
         def save
           requires :name, :location, :resource_group, :vm_size, :storage_account_name,
-                   :username, :password, :disable_password_authentication,
-                   :network_interface_card_id, :publisher, :offer, :sku, :version
+                   :username, :password, :network_interface_card_id, :publisher, :offer, :sku, :version
+          requires :disable_password_authentication if platform.casecmp('linux') == 0
 
           ssh_key_path = "/home/#{username}/.ssh/authorized_keys" unless ssh_key_data.nil?
           vm = service.create_virtual_machine(
             resource_group, name, location, vm_size, storage_account_name,
             username, password, disable_password_authentication,
             ssh_key_path, ssh_key_data, network_interface_card_id,
-            availability_set_id, publisher, offer, sku, version
+            availability_set_id, publisher, offer, sku, version,
+            platform, provision_vm_agent, enable_automatic_updates
           )
           merge_attributes(Fog::Compute::AzureRM::Server.parse(vm))
         end

@@ -26,7 +26,7 @@ Next, create a connection to the Compute Service:
 
 ## Create Server
 
-Create a new server
+Create a new linux server
 
 ```ruby
     azure_compute_service.servers.create(
@@ -42,9 +42,31 @@ Create a new server
         publisher: 'Canonical',
         offer: 'UbuntuServer',
         sku: '14.04.2-LTS',
-        version: 'latest'
+        version: 'latest',
+        platform: 'Linux'
     )
 ```
+Create a new windows server
+
+```ruby
+    azure_compute_service.servers.create(
+        name: '<VM Name>',
+        location: 'West US',
+        resource_group: '<Resource Group Name>',
+        vm_size: 'Basic_A0',
+        storage_account_name: '<Storage Account Name>',
+        username: '<Username for VM>',
+        password: '<Password for VM>',
+        disable_password_authentication: false,
+        network_interface_card_id: '/subscriptions/{Subscription-Id}/resourceGroups/{Resource-Group-Name}/providers/Microsoft.Network/networkInterfaces/{Network-Interface-Id}',
+        publisher: 'MicrosoftWindowsServerEssentials',
+        offer: 'WindowsServerEssentials',
+        sku: 'WindowsServerEssentials',
+        version: 'latest',
+        platform: 'Windows'
+    )
+```
+
 ## List Servers
 
 List servers in a resource group

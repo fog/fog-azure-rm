@@ -55,9 +55,9 @@ module ApiStub
               },
               'storageProfile' => {
                 'imageReference' => {
-                  'publisher' => 'Canonical',
-                  'offer' => 'UbuntuServer',
-                  'sku' => '14.04.2-LTS',
+                  'publisher' => 'MicrosoftWindowsServerEssentials',
+                  'offer' => 'WindowsServerEssentials',
+                  'sku' => 'WindowsServerEssentials',
                   'version' => 'latest'
                 },
                 'osDisk' => {

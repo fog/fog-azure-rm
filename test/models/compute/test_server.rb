@@ -17,7 +17,9 @@ class TestServer < Minitest::Test
       :restart,
       :deallocate,
       :redeploy,
-      :list_available_sizes
+      :list_available_sizes,
+      :attach_data_disk,
+      :detach_data_disk
     ]
     methods.each do |method|
       assert @server.respond_to? method, true
@@ -33,13 +35,14 @@ class TestServer < Minitest::Test
       :vm_size,
       :storage_account_name,
       :os_disk_name,
-      :vhd_uri,
+      :os_disk_vhd_uri,
       :publisher,
       :offer,
       :sku,
       :version,
       :username,
       :password,
+      :data_disks,
       :disable_password_authentication,
       :ssh_key_path,
       :ssh_key_data,
@@ -121,6 +124,20 @@ class TestServer < Minitest::Test
     response = ApiStub::Models::Compute::Server.list_available_sizes_for_virtual_machine_response
     @service.stub :list_available_sizes_for_virtual_machine, response do
       assert_instance_of Array, @server.list_available_sizes
+    end
+  end
+
+  def test_attach_data_disk_response
+    response = ApiStub::Models::Compute::Server.attach_data_disk_response
+    @service.stub :attach_data_disk_to_vm, response do
+      assert_instance_of Fog::Compute::AzureRM::Server, @server.attach_data_disk('disk1', '10', 'mystorage1')
+    end
+  end
+
+  def test_detach_data_disk_response
+    response = ApiStub::Models::Compute::Server.create_linux_virtual_machine_response
+    @service.stub :detach_data_disk_from_vm, response do
+      assert_instance_of Fog::Compute::AzureRM::Server, @server.detach_data_disk('disk1')
     end
   end
 end

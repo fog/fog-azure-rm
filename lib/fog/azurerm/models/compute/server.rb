@@ -59,7 +59,7 @@ module Fog
         def save
           requires :name, :location, :resource_group, :vm_size, :storage_account_name,
                    :username, :password, :network_interface_card_id, :publisher, :offer, :sku, :version
-          requires :disable_password_authentication if platform.eql?('linux')
+          requires :disable_password_authentication if platform.casecmp('linux') == 0
 
           ssh_key_path = "/home/#{username}/.ssh/authorized_keys" unless ssh_key_data.nil?
           vm = service.create_virtual_machine(

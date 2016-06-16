@@ -24,7 +24,17 @@ module ApiStub
                   'vhd' => {
                     'uri' => 'http://storageAccount.blob.core.windows.net/vhds/fog-test-server_os_disk.vhd'
                   }
-                }
+                },
+                'dataDisks' => [
+                  {
+                    'name' => 'disk1',
+                    'diskSizeGB' => '10',
+                    'lun' => 0,
+                    'vhd' => {
+                      'uri' => 'http://mystorage1.blob.core.windows.net/vhds/disk1.vhd'
+                    }
+                  }
+                ]
               },
               'osProfile' => {
                 'computerName' => 'fog-test-server',
@@ -115,6 +125,65 @@ module ApiStub
           result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
           result.body = Azure::ARM::Compute::Models::VirtualMachineSizeListResult.deserialize_object(JSON.load(body))
           result.body.value
+        end
+
+        def self.attach_data_disk_response
+          {
+            'id' => '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Compute/virtualMachines/fog-test-server',
+            'name' => 'fog-test-server',
+            'location' => 'West US',
+            'properties' => {
+              'hardwareProfile' => {
+                'vmSize' => 'Basic_A0'
+              },
+              'storageProfile' => {
+                'imageReference' => {
+                  'publisher' => 'Canonical',
+                  'offer' => 'UbuntuServer',
+                  'sku' => '14.04.2-LTS',
+                  'version' => 'latest'
+                },
+                'osDisk' => {
+                  'name' => 'fog-test-server_os_disk',
+                  'vhd' => {
+                    'uri' => 'http://storageAccount.blob.core.windows.net/vhds/fog-test-server_os_disk.vhd'
+                  }
+                },
+                'dataDisks' => [
+                  {
+                    'name' => 'disk1',
+                    'diskSizeGB' => '10',
+                    'lun' => 0,
+                    'vhd' => {
+                      'uri' => 'http://mystorage1.blob.core.windows.net/vhds/disk1.vhd'
+                    }
+                  },
+                  {
+                    'name' => 'disk2',
+                    'diskSizeGB' => '10',
+                    'lun' => 0,
+                    'vhd' => {
+                      'uri' => 'http://mystorage1.blob.core.windows.net/vhds/disk2.vhd'
+                    }
+                  }
+                ]
+              },
+              'osProfile' => {
+                'computerName' => 'fog-test-server',
+                'adminUsername' => 'shaffan',
+                'linuxConfiguration' => {
+                  'disablePasswordAuthentication' => false
+                }
+              },
+              'networkProfile' => {
+                'networkInterfaces' => [
+                  {
+                    'id' => '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/networkInterfaces/fogtestnetworkinterface'
+                  }
+                ]
+              }
+            }
+          }
         end
       end
     end

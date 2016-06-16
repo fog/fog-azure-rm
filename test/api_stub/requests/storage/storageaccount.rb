@@ -96,6 +96,16 @@ module ApiStub
         def self.response_storage_account_list(body)
           MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new, Azure::ARM::Storage::Models::StorageAccountListResult.deserialize_object(body))
         end
+
+        def self.list_keys_response
+          body = '{
+            "key1": "key1 value",
+            "key2": "key2 value"
+          }'
+          result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
+          result.body = Azure::ARM::Storage::Models::StorageAccountKeys.deserialize_object(JSON.load(body))
+          result
+        end
       end
     end
   end

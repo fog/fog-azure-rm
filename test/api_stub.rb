@@ -1,5 +1,6 @@
 require File.expand_path 'api_stub/models/compute/server', __dir__
 require File.expand_path 'api_stub/models/compute/availability_set', __dir__
+require File.expand_path 'api_stub/models/compute/data_disk', __dir__
 require File.expand_path 'api_stub/models/resources/resource_group', __dir__
 require File.expand_path 'api_stub/models/storage/storageaccount', __dir__
 require File.expand_path 'api_stub/models/network/public_ip', __dir__

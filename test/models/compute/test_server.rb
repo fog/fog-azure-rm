@@ -43,6 +43,9 @@ class TestServer < Minitest::Test
       :disable_password_authentication,
       :ssh_key_path,
       :ssh_key_data,
+      :platform,
+      :provision_vm_agent,
+      :enable_automatic_updates,
       :network_interface_card_id,
       :availability_set_id
     ]

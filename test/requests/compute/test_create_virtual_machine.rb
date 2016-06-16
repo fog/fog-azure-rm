@@ -10,26 +10,39 @@ class TestCreateVirtualMachine < Minitest::Test
     end
   end
 
-  def test_create_virtual_machine_success
+  def test_create_linux_virtual_machine_success
     response = ApiStub::Requests::Compute::VirtualMachine.create_virtual_machine_response
     @promise.stub :value!, response do
       @virtual_machines.stub :create_or_update, @promise do
         assert_equal @service.create_virtual_machine('fog-test-rg', 'fog-test-server', 'westus', 'Basic_A0',
                                                      'fogstrg', 'fog', 'fog', false, '/home', 'key', 'nic-id',
-                                                     'as-id', 'Canonical', 'UbuntuServer', '14.04.2-LTS', 'latest'),
+                                                     'as-id', 'Canonical', 'UbuntuServer', '14.04.2-LTS', 'latest', 'Linux', nil, nil),
+                     Azure::ARM::Compute::Models::VirtualMachine.serialize_object(response.body)
+      end
+    end
+  end
+
+  def test_create_windows_virtual_machine_success
+    response = ApiStub::Requests::Compute::VirtualMachine.create_virtual_machine_response
+    @promise.stub :value!, response do
+      @virtual_machines.stub :create_or_update, @promise do
+        assert_equal @service.create_virtual_machine('fog-test-rg', 'fog-test-server', 'westus', 'Basic_A0',
+                                                     'fogstrg', 'fog', 'fog', nil, '/home', 'key', 'nic-id',
+                                                     'as-id', 'MicrosoftWindowsServerEssentials', 'WindowsServerEssentials',
+                                                     'WindowsServerEssentials', 'latest', 'Windows', true, true),
                      Azure::ARM::Compute::Models::VirtualMachine.serialize_object(response.body)
       end
     end
   end
 
   def test_create_virtual_machine_failure
-    response = -> { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
+    response = -> { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @promise.stub :value!, response do
       @virtual_machines.stub :create_or_update, @promise do
         assert_raises RuntimeError do
           @service.create_virtual_machine('fog-test-rg', 'fog-test-server', 'westus', 'Basic_A0', 'fogstrg', 'fog',
                                           'fog', false, '/home', 'key', 'nic-id', 'as-id', 'Canonical',
-                                          'UbuntuServer', '14.04.2-LTS', 'latest')
+                                          'UbuntuServer', '14.04.2-LTS', 'latest', 'Linux', nil, nil)
         end
       end
     end

@@ -20,6 +20,16 @@ class TestCreateNetworkInterface < Minitest::Test
     end
   end
 
+  def test_create_network_interface_without_public_ip_success
+    mocked_response = ApiStub::Requests::Network::NetworkInterface.create_network_interface_response
+    expected_response = Azure::ARM::Network::Models::NetworkInterface.serialize_object(mocked_response.body)
+    @promise.stub :value!, mocked_response do
+      @network_interfaces.stub :create_or_update, @promise do
+        assert_equal @service.create_network_interface('fog-test-rg', 'fog-test-network-interface', 'West US', 'fog-test-subnet-id', nil, 'fog-test-ip-configuration', 'Dynamic'), expected_response
+      end
+    end
+  end
+
   def test_create_network_interface_argument_error_failure
     response = ApiStub::Requests::Network::NetworkInterface.create_network_interface_response
     @promise.stub :value!, response do

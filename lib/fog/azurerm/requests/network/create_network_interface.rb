@@ -72,9 +72,9 @@ module Fog
                             {
                               'id' => subnet_id
                             },
-                          "publicIPAddress" =>
+                          'publicIPAddress' =>
                             {
-                              "id" => public_ip_address_id
+                              'id' => public_ip_address_id
                             },
                           'provisioningState' => 'Succeeded'
                         },

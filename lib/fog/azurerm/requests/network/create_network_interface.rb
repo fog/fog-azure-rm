@@ -24,8 +24,10 @@ module Fog
           subnet = Azure::ARM::Network::Models::Subnet.new
           subnet.id = subnet_id
 
-          public_ipaddress = Azure::ARM::Network::Models::PublicIPAddress.new
-          public_ipaddress.id = public_ip_address_id
+          if public_ip_address_id
+            public_ipaddress = Azure::ARM::Network::Models::PublicIPAddress.new
+            public_ipaddress.id = public_ip_address_id
+          end
 
           ip_configs_props = Azure::ARM::Network::Models::NetworkInterfaceIPConfigurationPropertiesFormat.new
           ip_configs_props.private_ipallocation_method = prv_ip_alloc_method
@@ -70,9 +72,9 @@ module Fog
                             {
                               'id' => subnet_id
                             },
-                          "publicIPAddress" =>
+                          'publicIPAddress' =>
                             {
-                              "id" => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/publicIPAddresses/#{public_ip_address_id}"
+                              'id' => public_ip_address_id
                             },
                           'provisioningState' => 'Succeeded'
                         },

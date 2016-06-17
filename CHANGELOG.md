@@ -1,25 +1,20 @@
-# Changelog
-
 ## 0.0.3
 
 **Added:**
-- Minitest Unit Tests - All Services
-- Mock Classes - All Services
-- Documentation - All Services
-- Compute Service - Availability Set
-- Compute Service - Server
-- Network Service - Traffic Manager
-- Network Service - Load Balancer
+- Compute Service: Support for Attach Data Disk & Detach Data Disk in Server
+- Compute Service: Support for Windows VM in create Server
 - Network Service - Application Gateway
-- Network Service - Network Security Group
-- Network Service - Network Interface
-- Network Service - Virtual Network
-- Network Service - Subnet
-- Network Service - Public IP
-- Storage Service - Storage Account
-- Resource Service - Resource Manager
-- DNS Service - Record Set
-- DNS Service - Zone
+- Compute Service- check_vm_status method in Server as per: https://github.com/fog/fog-azure-rm/issues/38
+- Badges in Readme.md file
+
+**Fixed:**
+- Code Climate Issues
+- Rubocop Offences
+- Compute service - Bug in Sever model as per: https://github.com/fog/fog-azure-rm/issues/36
+- Network Service - Bug in Network Interface as per: https://github.com/fog/fog-azure-rm/issues/65
+
+**Removed:**
+- Shindo Unit Tests
 
 **Integrated:**
 - Code Climate
@@ -28,19 +23,42 @@
 - Gemnasium
 - Waffle
 
+
+## 0.0.2
+
+**Added:**
+- Network Service - Network Security Group
+- Network Service - Load Balancer
+- Network Service - Traffic Manager
+- Minitest Unit Tests - DNS Requests
+- Response Parser: Compute, Network, DNS, Storage
+- Mock class implementation in all services
+
+**Changed:**
+- Response related changes in all services
+- Network Service - Subnet attributes names
+- Code standardization in all services
+
+
+## 0.0.1
+
 **Fixed:**
-- Code Climate Issues
-- Rubocop Offences
+- Network Service - Network Interface Card
 
-<!---
-All tasks will be categorized into following sub-headings: 
-    **Added:**
-    **Integrated:**
-    **Fixed:**
-    **Changed:**
-    **Removed:**
 
-Will release this changelog with next version i.e. 0.0.3.
-We should also tag the gem on github on each version update.
-Will remove this comment before the next release.
---->
+## 0.0.0
+
+**Added:**
+- Shindo Unit Tests - All
+- Minitest Unit Tests - Compute, Storage, Network, Resources, DNS Models
+- Documentation - All Services 
+- Compute Service - Server
+- Compute Service - Availability Set
+- Network Service - Network Interface
+- Network Service - Subnet
+- Network Service - Virtual Network
+- Network Service - Public IP
+- Storage Service - Storage Account
+- Resource Service - Resource Manager
+- DNS Service - Record Set
+- DNS Service - Zone

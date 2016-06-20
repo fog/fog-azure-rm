@@ -18,6 +18,8 @@ module Fog
       model_path 'fog/azurerm/models/storage'
       model :storage_account
       collection :storage_accounts
+      model :data_disk
+
       # This class provides the mock implementation for unit tests.
       class Mock
         def initialize(_options = {})

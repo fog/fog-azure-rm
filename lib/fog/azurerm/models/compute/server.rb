@@ -1,3 +1,4 @@
+require 'fog/azurerm/models/storage/data_disk'
 module Fog
   module Compute
     class AzureRM
@@ -45,8 +46,8 @@ module Fog
           hash['data_disks'] = []
 
           vm['properties']['storageProfile']['dataDisks'].each do |disk|
-            data_disk = Fog::Compute::AzureRM::DataDisk.new
-            hash['data_disks'] << data_disk.merge_attributes(Fog::Compute::AzureRM::DataDisk.parse(disk))
+            data_disk = Fog::Storage::AzureRM::DataDisk.new
+            hash['data_disks'] << data_disk.merge_attributes(Fog::Storage::AzureRM::DataDisk.parse(disk))
           end unless vm['properties']['storageProfile']['dataDisks'].nil?
 
           hash['disable_password_authentication'] =

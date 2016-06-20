@@ -1,7 +1,7 @@
 module Fog
-  module Compute
+  module Storage
     class AzureRM
-      # DataDisk Model for Compute Service
+      # DataDisk Model for Storage Service
       class DataDisk < Fog::Model
         identity  :name
         attribute :disk_size_gb

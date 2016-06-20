@@ -3,8 +3,7 @@ require File.expand_path '../../test_helper', __dir__
 # Test class for Data Disk Model
 class TestDataDisk < Minitest::Test
   def setup
-    @service = Fog::Compute::AzureRM.new(credentials)
-    @data_disk = Fog::Compute::AzureRM::DataDisk.new
+    @data_disk = Fog::Storage::AzureRM::DataDisk.new
   end
 
   def test_model_attributes
@@ -22,8 +21,8 @@ class TestDataDisk < Minitest::Test
   end
 
   def test_parse_method_response
-    mocked_response = ApiStub::Models::Compute::DataDisk.create_data_disk_response
-    expected_response = ApiStub::Models::Compute::DataDisk.expected_create_data_disk_response
-    assert_equal Fog::Compute::AzureRM::DataDisk.parse(mocked_response), expected_response
+    mocked_response = ApiStub::Models::Storage::DataDisk.create_data_disk_response
+    expected_response = ApiStub::Models::Storage::DataDisk.expected_create_data_disk_response
+    assert_equal Fog::Storage::AzureRM::DataDisk.parse(mocked_response), expected_response
   end
 end

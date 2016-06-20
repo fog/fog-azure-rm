@@ -1,6 +1,6 @@
 module ApiStub
   module Models
-    module Compute
+    module Storage
       # Mock class for Data Disk Model
       class DataDisk
         def self.create_data_disk_response

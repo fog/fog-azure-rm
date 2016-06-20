@@ -32,7 +32,6 @@ module Fog
       collection :availability_sets
       model :server
       collection :servers
-      model :data_disk
 
       # This class provides the mock implementation for unit tests.
       class Mock

@@ -3,7 +3,7 @@ engines:
     enabled: true
     config:
       languages:
-        - ruby
-    checks:
-      Similar code:
-        enabled: false
+        ruby:
+          mass_threshold: 80
+  rubocop:
+    enabled: true

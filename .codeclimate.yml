@@ -1,4 +1,6 @@
 engines:
+  rubocop:
+    enabled: true
   duplication:
     enabled: true
     config:
@@ -9,5 +11,7 @@ engines:
         enabled: false
       Identical code:
         enabled: false
-  rubocop:
-    enabled: true
+ratings:
+  paths:
+  - lib/**
+  - test/**

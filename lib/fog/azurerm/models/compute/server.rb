@@ -1,3 +1,4 @@
+require 'fog/azurerm/models/storage/data_disk'
 module Fog
   module Compute
     class AzureRM

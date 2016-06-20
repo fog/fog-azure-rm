@@ -1,6 +1,9 @@
 engines:
   duplication:
     enabled: true
+    config:
+      languages:
+        - ruby
     checks:
       Similar code:
         enabled: false

@@ -10,14 +10,14 @@ module Fog
         attribute :caching
         attribute :create_option
 
-        def self.parse(vm)
+        def self.parse(disk)
           hash = {}
-          hash['name'] = vm['name']
-          hash['disk_size_gb'] = vm['diskSizeGB']
-          hash['lun'] = vm['lun']
-          hash['vhd_uri'] = vm['vhd']['uri']
-          hash['caching'] = vm['caching'] unless vm['caching'].nil?
-          hash['create_option'] = vm['createOption']
+          hash['name'] = disk['name']
+          hash['disk_size_gb'] = disk['diskSizeGB']
+          hash['lun'] = disk['lun']
+          hash['vhd_uri'] = disk['vhd']['uri']
+          hash['caching'] = disk['caching'] unless vm['caching'].nil?
+          hash['create_option'] = disk['createOption']
           hash
         end
       end

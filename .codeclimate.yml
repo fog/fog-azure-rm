@@ -1,6 +1,17 @@
 engines:
+  rubocop:
+    enabled: true
   duplication:
     enabled: true
+    config:
+      languages:
+      - ruby
     checks:
       Similar code:
         enabled: false
+      Identical code:
+        enabled: false
+ratings:
+  paths:
+  - lib/**
+  - test/**

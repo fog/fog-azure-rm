@@ -1,3 +1,4 @@
+require 'fog/azurerm/models/storage/data_disk'
 module Fog
   module Compute
     class AzureRM
@@ -11,13 +12,14 @@ module Fog
         attribute :vm_size
         attribute :storage_account_name
         attribute :os_disk_name
-        attribute :vhd_uri
+        attribute :os_disk_vhd_uri
         attribute :publisher
         attribute :offer
         attribute :sku
         attribute :version
         attribute :username
         attribute :password
+        attribute :data_disks
         attribute :disable_password_authentication
         attribute :ssh_key_path
         attribute :ssh_key_data
@@ -35,12 +37,19 @@ module Fog
           hash['resource_group'] = vm['id'].split('/')[4]
           hash['vm_size'] = vm['properties']['hardwareProfile']['vmSize']
           hash['os_disk_name'] = vm['properties']['storageProfile']['osDisk']['name']
-          hash['vhd_uri'] = vm['properties']['storageProfile']['osDisk']['vhd']['uri']
+          hash['os_disk_vhd_uri'] = vm['properties']['storageProfile']['osDisk']['vhd']['uri']
           hash['publisher'] = vm['properties']['storageProfile']['imageReference']['publisher']
           hash['offer'] = vm['properties']['storageProfile']['imageReference']['offer']
           hash['sku'] = vm['properties']['storageProfile']['imageReference']['sku']
           hash['version'] = vm['properties']['storageProfile']['imageReference']['version']
           hash['username'] = vm['properties']['osProfile']['adminUsername']
+          hash['data_disks'] = []
+
+          vm['properties']['storageProfile']['dataDisks'].each do |disk|
+            data_disk = Fog::Storage::AzureRM::DataDisk.new
+            hash['data_disks'] << data_disk.merge_attributes(Fog::Storage::AzureRM::DataDisk.parse(disk))
+          end unless vm['properties']['storageProfile']['dataDisks'].nil?
+
           hash['disable_password_authentication'] =
             if vm['properties']['osProfile']['linuxConfiguration'].nil?
               false
@@ -106,6 +115,16 @@ module Fog
 
         def vm_status
           service.check_vm_status(resource_group, name)
+        end
+
+        def attach_data_disk(disk_name, disk_size, storage_account_name)
+          vm = service.attach_data_disk_to_vm(resource_group, name, disk_name, disk_size, storage_account_name)
+          merge_attributes(Fog::Compute::AzureRM::Server.parse(vm))
+        end
+
+        def detach_data_disk(disk_name)
+          vm = service.detach_data_disk_from_vm(resource_group, name, disk_name)
+          merge_attributes(Fog::Compute::AzureRM::Server.parse(vm))
         end
       end
     end

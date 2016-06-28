@@ -24,12 +24,15 @@ module Fog
       request :restart_virtual_machine
       request :start_virtual_machine
       request :check_vm_status
+      request :attach_data_disk_to_vm
+      request :detach_data_disk_from_vm
 
       model_path 'fog/azurerm/models/compute'
       model :availability_set
       collection :availability_sets
       model :server
       collection :servers
+
       # This class provides the mock implementation for unit tests.
       class Mock
         def initialize(_options = {})
@@ -46,6 +49,8 @@ module Fog
         def initialize(options)
           begin
             require 'azure_mgmt_compute'
+            require 'azure_mgmt_storage'
+            require 'azure/storage'
           rescue LoadError => e
             retry if require('rubygems')
             raise e.message
@@ -54,6 +59,8 @@ module Fog
           credentials = Fog::Credentials::AzureRM.get_credentials(options[:tenant_id], options[:client_id], options[:client_secret])
           @compute_mgmt_client = ::Azure::ARM::Compute::ComputeManagementClient.new(credentials)
           @compute_mgmt_client.subscription_id = options[:subscription_id]
+          @storage_mgmt_client = ::Azure::ARM::Storage::StorageManagementClient.new(credentials)
+          @storage_mgmt_client.subscription_id = options[:subscription_id]
         end
       end
     end

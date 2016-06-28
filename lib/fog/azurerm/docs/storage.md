@@ -81,6 +81,14 @@ Get storage account object from the get method and then destroy that storage acc
       storage_acc.destroy
 ```
 
+## Delete a Disk
+
+Delete a Disk from a storage account. Disk must be in unlocked state i.e detached from server(virtual machine) to successfully perform this action.
+
+```ruby
+      azure_storage_service.delete_disk('<Resource Group name>', '<Storage Account name>', '<Data Disk Name>')
+```
+
 ## Support and Feedback
 Your feedback is appreciated! If you have specific issues with the fog ARM, you should file an issue via Github.
 

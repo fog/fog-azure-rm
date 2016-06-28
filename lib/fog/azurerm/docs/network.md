@@ -121,7 +121,7 @@ Get a subnet object from the get method and then destroy that subnet.
 
 ## Create Network Interface
 
-Create a new network interface. The parameter, private_ip_allocation_method can be Dynamic or Static.
+Create a new network interface. Skip public_ip_address_id parameter to create network interface without PublicIP. The parameter, private_ip_allocation_method can be Dynamic or Static.
 
 ```ruby
     nic = azure_network_service.network_interfaces.create(

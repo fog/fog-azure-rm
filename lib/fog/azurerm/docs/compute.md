@@ -86,8 +86,24 @@ Get a single record of Server
 ```ruby
       server = azure_compute_service
                           .servers(resource_group: '<Resource Group name>')
-                          .get('<Resource Group name>', 'Server name>')
+                          .get('Server name>')
       puts "#{server.name}"
+```
+
+## Attach a Data Disk to Server
+
+Get the server object and attach a Data Disk to it.
+
+```ruby
+      server.attach_data_disk('<Disk Name>', <Size in GB>, '<Storage Account Name>)
+```
+
+## Detach a Data Disk from Server
+
+Get the server object and detach a Data Disk from it.
+
+```ruby
+      server.detach_data_disk('<Disk Name>')
 ```
 
 ## Get a Server's status
@@ -154,7 +170,3 @@ Get an availability set object from the get method and then destroy that availab
 
 ## Support and Feedback
 Your feedback is appreciated! If you have specific issues with the fog ARM, you should file an issue via Github.
-
-
-
-

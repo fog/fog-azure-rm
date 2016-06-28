@@ -14,10 +14,13 @@ module Fog
       request :delete_storage_account
       request :list_storage_account_for_rg
       request :check_storage_account_name_availability
+      request :delete_disk
 
       model_path 'fog/azurerm/models/storage'
       model :storage_account
       collection :storage_accounts
+      model :data_disk
+
       # This class provides the mock implementation for unit tests.
       class Mock
         def initialize(_options = {})
@@ -34,6 +37,7 @@ module Fog
         def initialize(options)
           begin
             require 'azure_mgmt_storage'
+            require 'azure/storage'
           rescue LoadError => e
             retry if require('rubygems')
             raise e.message

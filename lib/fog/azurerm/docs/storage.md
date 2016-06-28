@@ -81,12 +81,12 @@ Get storage account object from the get method and then destroy that storage acc
       storage_acc.destroy
 ```
 
-## Delete a Data Disk
+## Delete a Disk
 
-Delete a Data Disk from a storage account. Data Disk must be in unlocked state i.e detached from server to successfully perform this action.
+Delete a Disk from a storage account. Disk must be in unlocked state i.e detached from server(virtual machine) to successfully perform this action.
 
 ```ruby
-      azure_storage_service.delete_data_disk('<Resource Group name>', '<Storage Account name>', '<Data Disk Name>')
+      azure_storage_service.delete_disk('<Resource Group name>', '<Storage Account name>', '<Data Disk Name>')
 ```
 
 ## Support and Feedback

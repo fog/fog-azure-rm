@@ -14,7 +14,7 @@ module Fog
       request :delete_storage_account
       request :list_storage_account_for_rg
       request :check_storage_account_name_availability
-      request :delete_data_disk
+      request :delete_disk
 
       model_path 'fog/azurerm/models/storage'
       model :storage_account

@@ -1,6 +1,5 @@
 # Fog
-Whether you need compute, dns, storage, or a multitude of other services, fog provides an accessible entry point and facilitates cross service compatibility.
- fog delivers the knowledge of cloud experts to you, helping you to bootstrap your cloud usage and guiding you as your own expertise develops.
+Whether you need compute, dns, storage, or a multitude of other services, fog provides an accessible entry point and facilitates cross service compatibility. Fog delivers the knowledge of cloud experts to you, helping you to bootstrap your cloud usage and guiding you as your own expertise develops.
  
 By coding with fog from the start you avoid vendor lock-in and give yourself more flexibility to provide value. Whether you are writing a library, designing a software as a service product or just hacking on the weekend this flexibility is a huge boon.
 

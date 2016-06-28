@@ -2,6 +2,8 @@
 
 New contributors are always welcome, when it doubt please ask questions. We strive to be an open and welcoming community. Please be nice to one another.
 
+For structure information of fog click [here](https://github.com/fog/fog-azure-rm/blob/master/lib/fog/azurerm/docs/structure.md)
+
 ### Coding
 
 * Pick a task:

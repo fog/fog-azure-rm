@@ -61,6 +61,16 @@ def resource_group(service)
   )
 end
 
+def deployment(service)
+  Fog::Resources::AzureRM::Deployment.new(
+    name: 'fog-test-deployment',
+    resource_group: 'fog-test-rg',
+    template_link: 'https://test.com/template.json',
+    parameters_link: 'https://test.com/parameters.json',
+    service: service
+  )
+end
+
 def storage_account(service)
   Fog::Storage::AzureRM::StorageAccount.new(
     name: 'storage-account',

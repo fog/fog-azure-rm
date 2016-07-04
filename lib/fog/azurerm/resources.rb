@@ -14,10 +14,18 @@ module Fog
       request :create_resource_group
       request :list_resource_groups
       request :delete_resource_group
+      request :create_deployment
+      request :delete_deployment
+      request :list_deployments
 
       model_path 'fog/azurerm/models/resources'
       model :resource_group
       collection :resource_groups
+      model :deployment
+      collection :deployments
+      model :dependency
+      model :provider
+      model :provider_resource_type
 
       # This class provides the mock implementation for unit tests.
       class Mock

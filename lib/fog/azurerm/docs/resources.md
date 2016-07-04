@@ -60,5 +60,46 @@ Get resource group object from the get method(described above) and then destroy 
       resource_group.destroy
 ```
 
+## Create Deployment
+
+Create a Deployment
+
+```ruby
+    azure_resources_service.deployments.create(
+        name:            '<Deployment name>',
+        resource_group:  '<Resource Group name>',
+        template_link:   '<Template Link>',
+        parameters_link: '<Parameters Link>'
+ )
+```
+## List Deployments
+
+List Deployments in a resource group
+
+```ruby
+    azure_resources_service.deployments(resource_group: '<Resource Group Name>').each do |deployment|
+        puts "#{deployment.name}"
+    end
+```
+
+## Retrieve a single Deployment
+
+Get a single record of Deployment
+
+```ruby
+      deployment = azure_resources_service
+                          .deployments(resource_group: '<Resource Group name>')
+                          .get('<Deployment name>')
+      puts "#{deployment.name}"
+```
+
+## Destroy a single Deployment
+
+Get Deployment object from the get method(described above) and then destroy that Deployment.
+
+```ruby
+      deployment.destroy
+```
+
 ## Support and Feedback
 Your feedback is appreciated! If you have specific issues with the fog ARM, you should file an issue via Github.

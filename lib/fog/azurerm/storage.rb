@@ -3,10 +3,17 @@ module Fog
   module Storage
     # This class registers models, requests and collections
     class AzureRM < Fog::Service
-      requires :tenant_id
-      requires :client_id
-      requires :client_secret
-      requires :subscription_id
+      # Recognizes when creating management client
+      recognizes :tenant_id
+      recognizes :client_id
+      recognizes :client_secret
+      recognizes :subscription_id
+
+      # Recognizes when creating data client
+      recognizes :azure_storage_account_name
+      recognizes :azure_storage_access_key
+      recognizes :azure_storage_connection_string
+      recognizes :debug
 
       request_path 'fog/azurerm/requests/storage'
       request :create_storage_account
@@ -15,11 +22,18 @@ module Fog
       request :list_storage_account_for_rg
       request :check_storage_account_name_availability
       request :delete_disk
+      request :create_container
+      request :delete_container
+      request :list_containers
+      request :get_container_properties
+      request :get_container_access_control_list
 
       model_path 'fog/azurerm/models/storage'
       model :storage_account
       collection :storage_accounts
       model :data_disk
+      collection :containers
+      model :container
 
       # This class provides the mock implementation for unit tests.
       class Mock
@@ -32,20 +46,36 @@ module Fog
           end
         end
       end
+
       # This class provides the actual implemention for service calls.
       class Real
         def initialize(options)
           begin
             require 'azure_mgmt_storage'
             require 'azure/storage'
+            @debug = ENV["DEBUG"] || options[:debug]
+            require "azure/core/http/debug_filter" if @debug
           rescue LoadError => e
             retry if require('rubygems')
             raise e.message
           end
 
           credentials = Fog::Credentials::AzureRM.get_credentials(options[:tenant_id], options[:client_id], options[:client_secret])
-          @storage_mgmt_client = ::Azure::ARM::Storage::StorageManagementClient.new(credentials)
-          @storage_mgmt_client.subscription_id = options[:subscription_id]
+          unless credentials.nil?
+            @storage_mgmt_client = ::Azure::ARM::Storage::StorageManagementClient.new(credentials)
+            @storage_mgmt_client.subscription_id = options[:subscription_id]
+          end
+
+          if Fog::Credentials::AzureRM.new_account_credential? options
+            Azure::Storage.setup(
+              storage_account_name: options[:azure_storage_account_name],
+              storage_access_key: options[:azure_storage_access_key],
+              storage_connection_string: options[:azure_storage_connection_string])
+
+            @blob_client = Azure::Storage::Blob::BlobService.new
+            @blob_client.with_filter(Azure::Storage::Core::Filter::ExponentialRetryPolicyFilter.new)
+            @blob_client.with_filter(Azure::Core::Http::DebugFilter.new) if @debug
+          end
         end
       end
     end

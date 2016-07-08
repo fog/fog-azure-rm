@@ -24,6 +24,13 @@ def credentials
   }
 end
 
+def storage_account_credentials
+  {
+    azure_storage_account_name: 'mockaccount',
+    azure_storage_access_key: 'YWNjZXNzLWtleQ=='
+  }
+end
+
 def server(service)
   Fog::Compute::AzureRM::Server.new(
     name: 'fog-test-server',
@@ -66,6 +73,23 @@ def storage_account(service)
     name: 'storage-account',
     location: 'West US',
     resource_group: 'fog-test-rg',
+    service: service
+  )
+end
+
+def storage_container(service)
+  Fog::Storage::AzureRM::Container.new(
+    name: 'storage-test-container',
+    last_modified: 'Tue, 04 Aug 2015 06:01:08 GMT',
+    etag: '0x8D29C92176C8352',
+    lease_status: 'unlocked',
+    lease_state: 'available',
+    lease_duration: nil,
+    metadata: {
+      'key1' => 'value1',
+      'key2' => 'value2'
+    },
+    public_access_level: nil,
     service: service
   )
 end

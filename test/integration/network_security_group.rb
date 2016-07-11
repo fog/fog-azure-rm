@@ -6,58 +6,62 @@ require 'yaml'
 ######################                              Keep it Uncommented!                          ######################
 ########################################################################################################################
 
-azureCredentials = YAML.load_file('credentials/azure.yml')
+azure_credentials = YAML.load_file('credentials/azure.yml')
 
 rs = Fog::Resources::AzureRM.new(
-    tenant_id: azureCredentials['tenant_id'],
-    client_id: azureCredentials['client_id'],
-    client_secret: azureCredentials['client_secret'],
-    subscription_id: azureCredentials['subscription_id']
+  tenant_id: azure_credentials['tenant_id'],
+  client_id: azure_credentials['client_id'],
+  client_secret: azure_credentials['client_secret'],
+  subscription_id: azure_credentials['subscription_id']
 )
 
 network = Fog::Network::AzureRM.new(
-    tenant_id: azureCredentials['tenant_id'],
-    client_id: azureCredentials['client_id'],
-    client_secret: azureCredentials['client_secret'],
-    subscription_id: azureCredentials['subscription_id']
+  tenant_id: azure_credentials['tenant_id'],
+  client_id: azure_credentials['client_id'],
+  client_secret: azure_credentials['client_secret'],
+  subscription_id: azure_credentials['subscription_id']
 )
 
 ########################################################################################################################
 ######################                                 Prerequisites                              ######################
 ########################################################################################################################
 
-rg = rs.resource_groups.create(
-    :name => 'TestRG-PB',
-    :location => 'eastus'
+rs.resource_groups.create(
+  name: 'TestRG-NSG',
+  location: 'eastus'
 )
 
 ########################################################################################################################
-######################                             Check if PublicIP exists                       ######################
+######################                          Create Network Security Group                     ######################
 ########################################################################################################################
 
-network.public_ips.check_if_exists('mypubip','TestRG-PB')
-
-########################################################################################################################
-######################                               Create Public IP                             ######################
-########################################################################################################################
-
-pubip = network.public_ips.create(
-    name: 'mypubip',
-    resource_group: 'TestRG-PB',
-    location: 'eastus',
-    public_ip_allocation_method: 'Static'
+network.network_security_groups.create(
+  name: 'testGroup',
+  resource_group: 'TestRG-NSG',
+  location: 'eastus',
+  security_rules: [{
+    name: 'testRule',
+    protocol: 'tcp',
+    source_port_range: '22',
+    destination_port_range: '22',
+    source_address_prefix: '0.0.0.0/0',
+    destination_address_prefix: '0.0.0.0/0',
+    access: 'Allow',
+    priority: '100',
+    direction: 'Inbound'
+  }]
 )
 
 ########################################################################################################################
-######################                           Get and Delete Public IP                         ######################
+######################                    Get and Destroy Network Security Group                  ######################
 ########################################################################################################################
 
-pubip = network.public_ips(resource_group: 'TestRG-PB').get('mypubip')
-pubip.destroy
+nsg = network.network_security_groups(resource_group: 'TestRG-NSG').get('testGroup')
+nsg.destroy
 
 ########################################################################################################################
 ######################                                   CleanUp                                  ######################
 ########################################################################################################################
 
-rg = rs.resource_groups.get('TestRG-PB')
+rg = rs.resource_groups.get('TestRG-NSG')
 rg.destroy

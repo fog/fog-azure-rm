@@ -6,60 +6,59 @@ require 'yaml'
 ######################                              Keep it Uncommented!                          ######################
 ########################################################################################################################
 
-azureCredentials = YAML.load_file('credentials/azure.yml')
+azure_credentials = YAML.load_file('credentials/azure.yml')
 
 rs = Fog::Resources::AzureRM.new(
-    tenant_id: azureCredentials['tenant_id'],
-    client_id: azureCredentials['client_id'],
-    client_secret: azureCredentials['client_secret'],
-    subscription_id: azureCredentials['subscription_id']
+  tenant_id: azure_credentials['tenant_id'],
+  client_id: azure_credentials['client_id'],
+  client_secret: azure_credentials['client_secret'],
+  subscription_id: azure_credentials['subscription_id']
 )
 
-network = Fog::Network::AzureRM.new(
-    tenant_id: azureCredentials['tenant_id'],
-    client_id: azureCredentials['client_id'],
-    client_secret: azureCredentials['client_secret'],
-    subscription_id: azureCredentials['subscription_id']
+dns = Fog::DNS.new(
+  provider: 'AzureRM',
+  tenant_id: azure_credentials['tenant_id'],
+  client_id: azure_credentials['client_id'],
+  client_secret: azure_credentials['client_secret'],
+  subscription_id: azure_credentials['subscription_id']
 )
 
 ########################################################################################################################
 ######################                                 Prerequisites                              ######################
 ########################################################################################################################
 
-rg = rs.resource_groups.create(
-    :name => 'TestRG-VN',
-    :location => 'eastus'
+rs.resource_groups.create(
+  name: 'TestRG-ZN',
+  location: 'eastus'
 )
 
 ########################################################################################################################
-######################                   Check Virtual Network name Availability                  ######################
+######################                                Create Zone                                 ######################
 ########################################################################################################################
 
-network.virtual_networks.check_name_availability('testVnet','TestRG-VN')
-
-########################################################################################################################
-######################            Create Virtual Network with complete parameters list            ######################
-########################################################################################################################
-
-vnet = network.virtual_networks.create(
-    name:             'testVnet',
-    location:         'eastus',
-    resource_group:   'TestRG-VN',
-    subnet_address_list:          '10.1.0.0/24',
-    dns_list:       '10.1.0.5,10.1.0.6',
-    network_address_list:  '10.1.0.0/16,10.2.0.0/16'
+dns.zones.create(
+  name: 'test-zone.com',
+  resource_group: 'TestRG-ZN'
 )
 
 ########################################################################################################################
-######################                      Get and Destroy Virtual Network                       ######################
+######################                    Get All Zones in a Subscription                         ######################
 ########################################################################################################################
 
-vnet = network.virtual_networks.get('testVnet', 'TestRG-VN')
-vnet.destroy
+dns.zones.each do |z|
+  puts "Resource Group:#{z.resource_group} name:#{z.name}"
+end
+
+########################################################################################################################
+######################               Get and Destroy Zone in a Resource Group                     ######################
+########################################################################################################################
+
+zone = dns.zones.get('test-zone.com', 'TestRG-ZN')
+zone.destroy
 
 ########################################################################################################################
 ######################                                   CleanUp                                  ######################
 ########################################################################################################################
 
-rg = rs.resource_groups.get('TestRG-VN')
+rg = rs.resource_groups.get('TestRG-ZN')
 rg.destroy

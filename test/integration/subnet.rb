@@ -6,62 +6,62 @@ require 'yaml'
 ######################                              Keep it Uncommented!                          ######################
 ########################################################################################################################
 
-azureCredentials = YAML.load_file('credentials/azure.yml')
+azure_credentials = YAML.load_file('credentials/azure.yml')
 
 rs = Fog::Resources::AzureRM.new(
-    tenant_id: azureCredentials['tenant_id'],
-    client_id: azureCredentials['client_id'],
-    client_secret: azureCredentials['client_secret'],
-    subscription_id: azureCredentials['subscription_id']
+  tenant_id: azure_credentials['tenant_id'],
+  client_id: azure_credentials['client_id'],
+  client_secret: azure_credentials['client_secret'],
+  subscription_id: azure_credentials['subscription_id']
 )
 
 network = Fog::Network::AzureRM.new(
-    tenant_id: azureCredentials['tenant_id'],
-    client_id: azureCredentials['client_id'],
-    client_secret: azureCredentials['client_secret'],
-    subscription_id: azureCredentials['subscription_id']
+  tenant_id: azure_credentials['tenant_id'],
+  client_id: azure_credentials['client_id'],
+  client_secret: azure_credentials['client_secret'],
+  subscription_id: azure_credentials['subscription_id']
 )
 
 ########################################################################################################################
 ######################                                 Prerequisites                              ######################
 ########################################################################################################################
 
-rg = rs.resource_groups.create(
-    :name => 'TestRG-NSG',
-    :location => 'eastus'
+rs.resource_groups.create(
+  name: 'TestRG-SN',
+  location: 'eastus'
+)
+
+network.virtual_networks.create(
+  name:             'testVnet',
+  location:         'eastus',
+  resource_group:   'TestRG-SN',
+  network_address_list:  '10.1.0.0/16,10.2.0.0/16'
 )
 
 ########################################################################################################################
-######################                          Create Network Security Group                     ######################
+######################                                Create Subnet                               ######################
 ########################################################################################################################
 
-nsg = network.network_security_groups.create(
-    name: 'testGroup',
-    resource_group: 'TestRG-NSG',
-    location: 'eastus',
-    security_rules: [{
-                         name: 'testRule',
-                         protocol: 'tcp',
-                         source_port_range: '22',
-                         destination_port_range: '22',
-                         source_address_prefix: '0.0.0.0/0',
-                         destination_address_prefix: '0.0.0.0/0',
-                         access: 'Allow',
-                         priority: '100',
-                         direction: 'Inbound'
-                     }]
+network.subnets.create(
+  name: 'mysubnet',
+  resource_group: 'TestRG-SN',
+  virtual_network_name: 'testVnet',
+  address_prefix: '10.1.0.0/24'
 )
 
 ########################################################################################################################
-######################                    Get and Destroy Network Security Group                  ######################
+######################                             Get and Delete Subnet                          ######################
 ########################################################################################################################
 
-nsg = network.network_security_groups(resource_group: 'TestRG-NSG').get('testGroup')
-nsg.destroy
+subnet = network.subnets(resource_group: 'TestRG-SN', virtual_network_name: 'testVnet').get('mysubnet')
+subnet.destroy
 
 ########################################################################################################################
 ######################                                   CleanUp                                  ######################
 ########################################################################################################################
 
-rg = rs.resource_groups.get('TestRG-NSG')
+vnet = network.virtual_networks(resource_group: 'TestRG-SN').get('testVnet')
+vnet.destroy
+
+rg = rs.resource_groups.get('TestRG-SN')
 rg.destroy

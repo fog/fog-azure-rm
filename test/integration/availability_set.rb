@@ -6,62 +6,51 @@ require 'yaml'
 ######################                              Keep it Uncommented!                          ######################
 ########################################################################################################################
 
-azureCredentials = YAML.load_file('credentials/azure.yml')
+azure_credentials = YAML.load_file('credentials/azure.yml')
 
 rs = Fog::Resources::AzureRM.new(
-    tenant_id: azureCredentials['tenant_id'],
-    client_id: azureCredentials['client_id'],
-    client_secret: azureCredentials['client_secret'],
-    subscription_id: azureCredentials['subscription_id']
+  tenant_id: azure_credentials['tenant_id'],
+  client_id: azure_credentials['client_id'],
+  client_secret: azure_credentials['client_secret'],
+  subscription_id: azure_credentials['subscription_id']
 )
 
-network = Fog::Network::AzureRM.new(
-    tenant_id: azureCredentials['tenant_id'],
-    client_id: azureCredentials['client_id'],
-    client_secret: azureCredentials['client_secret'],
-    subscription_id: azureCredentials['subscription_id']
+compute = Fog::Compute::AzureRM.new(
+  tenant_id: azure_credentials['tenant_id'],
+  client_id: azure_credentials['client_id'],
+  client_secret: azure_credentials['client_secret'],
+  subscription_id: azure_credentials['subscription_id']
 )
 
 ########################################################################################################################
 ######################                                 Prerequisites                              ######################
 ########################################################################################################################
 
-rg = rs.resource_groups.create(
-    :name => 'TestRG-SN',
-    :location => 'eastus'
-)
-
-vnet = network.virtual_networks.create(
-    name:             'testVnet',
-    location:         'eastus',
-    resource_group:   'TestRG-SN',
-    network_address_list:  '10.1.0.0/16,10.2.0.0/16'
+rs.resource_groups.create(
+  name: 'TestRG-AS',
+  location: 'eastus'
 )
 
 ########################################################################################################################
-######################                                Create Subnet                               ######################
+######################                             Create Availability Set                        ######################
 ########################################################################################################################
 
-subnet = network.subnets.create(
-    name: 'mysubnet',
-    resource_group: 'TestRG-SN',
-    virtual_network_name: 'testVnet',
-    address_prefix: '10.1.0.0/24'
+compute.availability_sets.create(
+  name: 'test-availability-set',
+  location: 'eastus',
+  resource_group: 'TestRG-AS'
 )
 
 ########################################################################################################################
-######################                             Get and Delete Subnet                          ######################
+######################                       Get and Delete Availability Set                      ######################
 ########################################################################################################################
 
-subnet = network.subnets(resource_group: 'TestRG-SN', virtual_network_name: 'testVnet').get('mysubnet')
-subnet.destroy
+avail_set = compute.availability_sets(resource_group: 'TestRG-AS').get('test-availability-set')
+avail_set.destroy
 
 ########################################################################################################################
 ######################                                   CleanUp                                  ######################
 ########################################################################################################################
 
-vnet = network.virtual_networks(resource_group: 'TestRG-SN').get('testVnet')
-vnet.destroy
-
-rg = rs.resource_groups.get('TestRG-SN')
+rg = rs.resource_groups.get('TestRG-AS')
 rg.destroy

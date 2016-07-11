@@ -6,57 +6,58 @@ require 'yaml'
 ######################                              Keep it Uncommented!                          ######################
 ########################################################################################################################
 
-azureCredentials = YAML.load_file('credentials/azure.yml')
+azure_credentials = YAML.load_file('credentials/azure.yml')
 
 rs = Fog::Resources::AzureRM.new(
-    tenant_id: azureCredentials['tenant_id'],
-    client_id: azureCredentials['client_id'],
-    client_secret: azureCredentials['client_secret'],
-    subscription_id: azureCredentials['subscription_id']
+  tenant_id: azure_credentials['tenant_id'],
+  client_id: azure_credentials['client_id'],
+  client_secret: azure_credentials['client_secret'],
+  subscription_id: azure_credentials['subscription_id']
 )
 
-storage = Fog::Storage::AzureRM.new(
-    tenant_id: azureCredentials['tenant_id'],
-    client_id: azureCredentials['client_id'],
-    client_secret: azureCredentials['client_secret'],
-    subscription_id: azureCredentials['subscription_id']
+network = Fog::Network::AzureRM.new(
+  tenant_id: azure_credentials['tenant_id'],
+  client_id: azure_credentials['client_id'],
+  client_secret: azure_credentials['client_secret'],
+  subscription_id: azure_credentials['subscription_id']
 )
 
 ########################################################################################################################
 ######################                                 Prerequisites                              ######################
 ########################################################################################################################
 
-rg = rs.resource_groups.create(
-    :name => 'TestRG-SA',
-    :location => 'eastus'
+rs.resource_groups.create(
+  name: 'TestRG-PB',
+  location: 'eastus'
 )
 
 ########################################################################################################################
-######################                    Check Storage Account name Availability                 ######################
+######################                             Check if PublicIP exists                       ######################
 ########################################################################################################################
 
-storage.storage_accounts.check_name_availability('test-storage')
+network.public_ips.check_if_exists('mypubip', 'TestRG-PB')
 
 ########################################################################################################################
-######################                             Create Storage Account                         ######################
+######################                               Create Public IP                             ######################
 ########################################################################################################################
 
-storage = storage.storage_accounts.create(
-    :name => 'test-storage',
-    :location => 'eastus',
-    :resource_group => 'TestRG-SA'
+network.public_ips.create(
+  name: 'mypubip',
+  resource_group: 'TestRG-PB',
+  location: 'eastus',
+  public_ip_allocation_method: 'Static'
 )
 
 ########################################################################################################################
-######################                         Get and Delete Storage Account                     ######################
+######################                           Get and Delete Public IP                         ######################
 ########################################################################################################################
 
-storage = storage.storage_accounts(:resource_group => 'TestRG-SA').get('test-storage')
-storage.destroy
+pubip = network.public_ips(resource_group: 'TestRG-PB').get('mypubip')
+pubip.destroy
 
 ########################################################################################################################
 ######################                                   CleanUp                                  ######################
 ########################################################################################################################
 
-rg = rs.resource_groups.get('TestRG-SA')
+rg = rs.resource_groups.get('TestRG-PB')
 rg.destroy

@@ -6,52 +6,57 @@ require 'yaml'
 ######################                              Keep it Uncommented!                          ######################
 ########################################################################################################################
 
-azureCredentials = YAML.load_file('credentials/azure.yml')
+azure_credentials = YAML.load_file('credentials/azure.yml')
 
 rs = Fog::Resources::AzureRM.new(
-    tenant_id: azureCredentials['tenant_id'],
-    client_id: azureCredentials['client_id'],
-    client_secret: azureCredentials['client_secret'],
-    subscription_id: azureCredentials['subscription_id']
+  tenant_id: azure_credentials['tenant_id'],
+  client_id: azure_credentials['client_id'],
+  client_secret: azure_credentials['client_secret'],
+  subscription_id: azure_credentials['subscription_id']
 )
 
-compute = Fog::Compute::AzureRM.new(
-    tenant_id: azureCredentials['tenant_id'],
-    client_id: azureCredentials['client_id'],
-    client_secret: azureCredentials['client_secret'],
-    subscription_id: azureCredentials['subscription_id']
+storage = Fog::Storage::AzureRM.new(
+  tenant_id: azure_credentials['tenant_id'],
+  client_id: azure_credentials['client_id'],
+  client_secret: azure_credentials['client_secret'],
+  subscription_id: azure_credentials['subscription_id']
 )
-
 
 ########################################################################################################################
 ######################                                 Prerequisites                              ######################
 ########################################################################################################################
 
-rg = rs.resource_groups.create(
-    :name => 'TestRG-AS',
-    :location => 'eastus'
+rs.resource_groups.create(
+  name: 'TestRG-SA',
+  location: 'eastus'
 )
 
 ########################################################################################################################
-######################                             Create Availability Set                        ######################
+######################                    Check Storage Account name Availability                 ######################
 ########################################################################################################################
 
-avail_set = compute.availability_sets.create(
-    :name => 'test-availability-set',
-    :location => 'eastus',
-    :resource_group => 'TestRG-AS'
+storage.storage_accounts.check_name_availability('test-storage')
+
+########################################################################################################################
+######################                             Create Storage Account                         ######################
+########################################################################################################################
+
+storage = storage.storage_accounts.create(
+  name: 'test-storage',
+  location: 'eastus',
+  resource_group: 'TestRG-SA'
 )
 
 ########################################################################################################################
-######################                       Get and Delete Availability Set                      ######################
+######################                         Get and Delete Storage Account                     ######################
 ########################################################################################################################
 
-avail_set = compute.availability_sets(:resource_group => 'TestRG-AS').get('test-availability-set')
-avail_set.destroy
+storage = storage.storage_accounts(resource_group: 'TestRG-SA').get('test-storage')
+storage.destroy
 
 ########################################################################################################################
 ######################                                   CleanUp                                  ######################
 ########################################################################################################################
 
-rg = rs.resource_groups.get('TestRG-AS')
+rg = rs.resource_groups.get('TestRG-SA')
 rg.destroy

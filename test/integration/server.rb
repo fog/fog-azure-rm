@@ -6,92 +6,92 @@ require 'yaml'
 ######################                              Keep it Uncommented!                          ######################
 ########################################################################################################################
 
-azureCredentials = YAML.load_file('credentials/azure.yml')
+azure_credentials = YAML.load_file('credentials/azure.yml')
 
 rs = Fog::Resources::AzureRM.new(
-    tenant_id: azureCredentials['tenant_id'],
-    client_id: azureCredentials['client_id'],
-    client_secret: azureCredentials['client_secret'],
-    subscription_id: azureCredentials['subscription_id']
+  tenant_id: azure_credentials['tenant_id'],
+  client_id: azure_credentials['client_id'],
+  client_secret: azure_credentials['client_secret'],
+  subscription_id: azure_credentials['subscription_id']
 )
 
 compute = Fog::Compute::AzureRM.new(
-    tenant_id: azureCredentials['tenant_id'],
-    client_id: azureCredentials['client_id'],
-    client_secret: azureCredentials['client_secret'],
-    subscription_id: azureCredentials['subscription_id']
+  tenant_id: azure_credentials['tenant_id'],
+  client_id: azure_credentials['client_id'],
+  client_secret: azure_credentials['client_secret'],
+  subscription_id: azure_credentials['subscription_id']
 )
 
 storage = Fog::Storage::AzureRM.new(
-    tenant_id: azureCredentials['tenant_id'],
-    client_id: azureCredentials['client_id'],
-    client_secret: azureCredentials['client_secret'],
-    subscription_id: azureCredentials['subscription_id']
+  tenant_id: azure_credentials['tenant_id'],
+  client_id: azure_credentials['client_id'],
+  client_secret: azure_credentials['client_secret'],
+  subscription_id: azure_credentials['subscription_id']
 )
 
 network = Fog::Network::AzureRM.new(
-    tenant_id: azureCredentials['tenant_id'],
-    client_id: azureCredentials['client_id'],
-    client_secret: azureCredentials['client_secret'],
-    subscription_id: azureCredentials['subscription_id']
+  tenant_id: azure_credentials['tenant_id'],
+  client_id: azure_credentials['client_id'],
+  client_secret: azure_credentials['client_secret'],
+  subscription_id: azure_credentials['subscription_id']
 )
 
 ########################################################################################################################
 ######################                                 Prerequisites                              ######################
 ########################################################################################################################
 
-rg = rs.resource_groups.create(
-    :name => 'TestRG-VM',
-    :location => 'eastus'
+rs.resource_groups.create(
+  name: 'TestRG-VM',
+  location: 'eastus'
 )
 
-storage_account = storage.storage_accounts.create(
-    :name => 'test-storage',
-    :location => 'eastus',
-    :resource_group => 'TestRG-VM'
+storage.storage_accounts.create(
+  name: 'test-storage',
+  location: 'eastus',
+  resource_group: 'TestRG-VM'
 )
 
-vnet = network.virtual_networks.create(
-    name:             'testVnet',
-    location:         'eastus',
-    resource_group:   'TestRG-VM',
-    network_address_list:  '10.1.0.0/16,10.2.0.0/16'
+network.virtual_networks.create(
+  name:             'testVnet',
+  location:         'eastus',
+  resource_group:   'TestRG-VM',
+  network_address_list:  '10.1.0.0/16,10.2.0.0/16'
 )
 
-subnet = network.subnets.create(
-    name: 'mysubnet',
-    resource_group: 'TestRG-VM',
-    virtual_network_name: 'testVnet',
-    address_prefix: '10.1.0.0/24'
+network.subnets.create(
+  name: 'mysubnet',
+  resource_group: 'TestRG-VM',
+  virtual_network_name: 'testVnet',
+  address_prefix: '10.1.0.0/24'
 )
 
-nic = network.network_interfaces.create(
-    name: 'NetInt',
-    resource_group: 'TestRG-VM',
-    location: 'eastus',
-    subnet_id: "/subscriptions/#{azureCredentials['subscription_id']}/resourceGroups/TestRG-VM/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/mysubnet",
-    ip_configuration_name: 'testIpConfiguration',
-    private_ip_allocation_method: 'Dynamic'
+network.network_interfaces.create(
+  name: 'NetInt',
+  resource_group: 'TestRG-VM',
+  location: 'eastus',
+  subnet_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-VM/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/mysubnet",
+  ip_configuration_name: 'testIpConfiguration',
+  private_ip_allocation_method: 'Dynamic'
 )
 
 ########################################################################################################################
 ######################                                Create Server                               ######################
 ########################################################################################################################
 
-server = compute.servers.create(
-    name: 'TestVM',
-    location: 'test-storage',
-    resource_group: 'TestRG-VM',
-    vm_size: 'Basic_A0',
-    storage_account_name: 'test-storage',
-    username: 'testuser',
-    password: 'Confiz=123',
-    disable_password_authentication: false,
-    network_interface_card_id: "/subscriptions/#{azureCredentials['subscription_id']}/resourceGroups/TestRG-VM/providers/Microsoft.Network/networkInterfaces/testNIC",
-    publisher: 'Canonical',
-    offer: 'UbuntuServer',
-    sku: '14.04.2-LTS',
-    version: 'latest'
+compute.servers.create(
+  name: 'TestVM',
+  location: 'test-storage',
+  resource_group: 'TestRG-VM',
+  vm_size: 'Basic_A0',
+  storage_account_name: 'test-storage',
+  username: 'testuser',
+  password: 'Confiz=123',
+  disable_password_authentication: false,
+  network_interface_card_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-VM/providers/Microsoft.Network/networkInterfaces/testNIC",
+  publisher: 'Canonical',
+  offer: 'UbuntuServer',
+  sku: '14.04.2-LTS',
+  version: 'latest'
 )
 
 ########################################################################################################################
@@ -118,7 +118,7 @@ storage.delete_data_disk('TestRG-VM', 'test-storage', 'datadisk1')
 ######################                            Get and Delete Server                           ######################
 ########################################################################################################################
 
-server = compute.servers(:resource_group => 'TestRG-VM').get('TestVM')
+server = compute.servers(resource_group: 'TestRG-VM').get('TestVM')
 server.destroy
 
 ########################################################################################################################

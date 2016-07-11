@@ -98,6 +98,7 @@ Get resource object from the get method(described above) and remove tag from tha
     resource.destroy('<Tag-Key>', '<Tag-Value>')
 ```
 OR
+
 ```ruby
     resource.destroy('<Tag-Key>')
 ```

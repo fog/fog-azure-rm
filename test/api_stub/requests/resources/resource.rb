@@ -2,8 +2,8 @@ module ApiStub
   module Requests
     module Resources
       # Mock class for Tag Requests
-      class Tag
-        def self.tag_resource
+      class AzureResource
+        def self.azure_resource_response
           body = '{
             "id": "/subscriptions/########-####-####-####-############/resourceGroups/{RESOURCE-GROUP}/providers/Microsoft.Network/{PROVIDER-NAME}/{RESOURCE-NAME}",
             "name": "your-resource-name",

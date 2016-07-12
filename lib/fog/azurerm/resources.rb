@@ -18,7 +18,7 @@ module Fog
       request :delete_deployment
       request :list_deployments
       request :delete_resource_tag
-      request :list_taged_resources
+      request :list_tagged_resources
       request :tag_resource
 
       model_path 'fog/azurerm/models/resources'
@@ -29,8 +29,8 @@ module Fog
       model :dependency
       model :provider
       model :provider_resource_type
-      model :tag
-      collection :tags
+      model :azure_resource
+      collection :azure_resources
 
       # This class provides the mock implementation for unit tests.
       class Mock

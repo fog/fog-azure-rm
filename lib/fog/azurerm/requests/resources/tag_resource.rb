@@ -24,9 +24,9 @@ module Fog
             resource.tags = {} if resource.tags.nil?
             resource.tags[tag_name] = tag_value
             promise = @rmc.resources.create_or_update(resource_group_name, resource_provider_namespace, parent_resource_id, resource_type, resource_name, api_version, resource)
-            response = promise.value!
+            promise.value!
             Fog::Logger.debug "Tag #{tag_name} created successfully for Resource #{resource_name}"
-            Azure::ARM::Resources::Models::GenericResource.serialize_object(response.body)
+            true
           rescue MsRestAzure::AzureOperationError => e
             msg = "Exception creating Tag #{tag_name}. #{e.body['error']['message']}"
             raise msg
@@ -36,21 +36,9 @@ module Fog
 
       # This class provides the mock implementation for unit tests.
       class Mock
-        def tag_resource(resource_id, tag_name, tag_value)
-          {
-            'id' => resource_id,
-            'name' => 'your-resource-name',
-            'type' => 'providernamespace/resourcetype',
-            'location' => 'westus',
-            'tags' =>
-              {
-                tag_name => tag_value
-              },
-            'plan' =>
-              {
-                'name' => 'free'
-              }
-          }
+        def tag_resource(_resource_id, tag_name, _tag_value)
+          Fog::Logger.debug "Tag #{tag_name} created successfully for Resource 'resource_name'"
+          true
         end
       end
     end

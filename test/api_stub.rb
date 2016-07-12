@@ -2,7 +2,7 @@ require File.expand_path 'api_stub/models/compute/server', __dir__
 require File.expand_path 'api_stub/models/compute/availability_set', __dir__
 require File.expand_path 'api_stub/models/resources/resource_group', __dir__
 require File.expand_path 'api_stub/models/resources/deployment', __dir__
-require File.expand_path 'api_stub/models/resources/tag', __dir__
+require File.expand_path 'api_stub/models/resources/resource', __dir__
 require File.expand_path 'api_stub/models/storage/storageaccount', __dir__
 require File.expand_path 'api_stub/models/storage/data_disk', __dir__
 require File.expand_path 'api_stub/models/network/public_ip', __dir__
@@ -21,7 +21,7 @@ require File.expand_path 'api_stub/requests/compute/availability_set', __dir__
 require File.expand_path 'api_stub/requests/compute/virtual_machine', __dir__
 require File.expand_path 'api_stub/requests/resources/resource_group', __dir__
 require File.expand_path 'api_stub/requests/resources/deployment', __dir__
-require File.expand_path 'api_stub/requests/resources/tag', __dir__
+require File.expand_path 'api_stub/requests/resources/resource', __dir__
 require File.expand_path 'api_stub/requests/storage/storageaccount', __dir__
 require File.expand_path 'api_stub/requests/network/public_ip', __dir__
 require File.expand_path 'api_stub/requests/network/subnet', __dir__

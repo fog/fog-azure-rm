@@ -5,19 +5,19 @@ class TestDeleteResourceTag < Minitest::Test
   def setup
     @service = Fog::Resources::AzureRM.new(credentials)
     client = @service.instance_variable_get(:@rmc)
-    @tags = client.resources
+    @resources = client.resources
   end
 
   def test_delete_resource_tag_success
-    response = ApiStub::Requests::Resources::Tag.tag_resource
+    response = ApiStub::Requests::Resources::AzureResource.azure_resource_response
     promise_get = Concurrent::Promise.execute do
     end
     promise_update = Concurrent::Promise.execute do
     end
     promise_get.stub :value!, response do
-      @tags.stub :get, promise_get do
+      @resources.stub :get, promise_get do
         promise_update.stub :value!, response do
-          @tags.stub :create_or_update, promise_update do
+          @resources.stub :create_or_update, promise_update do
             resource_id = '/subscriptions/########-####-####-####-############/resourceGroups/{RESOURCE-GROUP}/providers/Microsoft.Network/{PROVIDER-NAME}/{RESOURCE-NAME}'
             assert @service.delete_resource_tag(resource_id, 'tag_name', 'tag_value')
           end
@@ -33,9 +33,9 @@ class TestDeleteResourceTag < Minitest::Test
     promise_update = Concurrent::Promise.execute do
     end
     promise_get.stub :value!, response do
-      @tags.stub :get, promise_get do
+      @resources.stub :get, promise_get do
         promise_update.stub :value!, response do
-          @tags.stub :create_or_update, promise_update do
+          @resources.stub :create_or_update, promise_update do
             resource_id = '/subscriptions/########-####-####-####-############/resourceGroups/{RESOURCE-GROUP}/providers/Microsoft.Network/{PROVIDER-NAME}/{RESOURCE-NAME}'
             assert_raises(RuntimeError) { @service.delete_resource_tag(resource_id, 'tag_name', 'tag_value') }
           end

@@ -71,15 +71,6 @@ def deployment(service)
   )
 end
 
-def tag(service)
-  Fog::Resources::AzureRM::Tag.new(
-    resource_id: '/subscriptions/########-####-####-####-############/resourceGroups/{RESOURCE-GROUP}/providers/Microsoft.Network/{PROVIDER-NAME}/{RESOURCE-NAME}',
-    tag_name: 'fog-key',
-    tag_value: 'fog-value',
-    service: service
-  )
-end
-
 def storage_account(service)
   Fog::Storage::AzureRM::StorageAccount.new(
     name: 'storage-account',

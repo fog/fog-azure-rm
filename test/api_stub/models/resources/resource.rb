@@ -2,8 +2,8 @@ module ApiStub
   module Models
     module Resources
       # Mock class for Tag Model
-      class Tag
-        def self.create_tag_response
+      class Resource
+        def self.create_response_response
           body = '{
             "id": "/subscriptions/########-####-####-####-############/resourceGroups/{RESOURCE-GROUP}/providers/Microsoft.Network/{PROVIDER-NAME}/{RESOURCE-NAME}",
             "name": "your-resource-name",
@@ -19,7 +19,7 @@ module ApiStub
           JSON.load(body)
         end
 
-        def self.list_tags_response
+        def self.list_resources_response
           body = '[{
             "id": "/subscriptions/########-####-####-####-############/resourceGroups/{RESOURCE-GROUP}/providers/Microsoft.Network/{PROVIDER-NAME}/{RESOURCE-NAME}",
             "name": "your-resource-name",

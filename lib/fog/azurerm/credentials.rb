@@ -30,6 +30,11 @@ module Fog
           @client_secret != client_secret
       end
 
+      def self.new_account_credential?(options={})
+        @storage_account_name != options[:azure_storage_account_name] ||
+        @storage_access_key != options[:azure_storage_access_key]
+      end
+
       private_class_method :get_new_credentials
       private_class_method :new_client
     end

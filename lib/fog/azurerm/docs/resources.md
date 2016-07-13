@@ -59,6 +59,56 @@ Get resource group object from the get method(described above) and then destroy 
 ```ruby
       resource_group.destroy
 ```
+## Tagging a Resource
+
+You can tag a Resource as following:
+
+```ruby
+    azure_resources_service.tag_resource(
+        '<Resource-ID>',
+        '<Tag-Key>',
+        '<Tag-Value>'
+    )
+```
+
+## List Tagged Resources in a Subscription
+
+```ruby
+    azure_resources_service.resources(tag_name: '<Tag-Key>', tag_value: '<Tag-Value>').each do |resource|
+        puts "#{resource.name}"
+        puts "#{resource.location}"
+        puts "#{resource.type}"        
+    end
+```
+OR
+```ruby
+    azure_resources_service.resources(tag_name: '<Tag-Key>').each do |resource|
+        puts "#{resource.name}"
+        puts "#{resource.location}"
+        puts "#{resource.type}"        
+    end
+```
+## Retrieve a single Resource
+
+Get a single record of Tagged Resources
+
+```ruby
+    resource = azure_resources_service
+                          .resources(tag_name: '<Tag-Key>')
+                          .get('<Resource-ID>')
+    puts "#{resource.name}"
+```
+## Remove tag from a Resource
+
+Remove tag from a resource as following:
+
+```ruby
+    azure_resources_service.delete_resource_tag(
+        '<Resource-ID>',
+        '<Tag-Key>',
+        '<Tag-Value>'
+        )
+```
 
 ## Create Deployment
 

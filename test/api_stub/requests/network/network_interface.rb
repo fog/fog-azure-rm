@@ -79,7 +79,7 @@ module ApiStub
               },
               "etag":"W/\"00000000-0000-0000-0000-000000000000\"",
               "properties":{
-                "resourceGuid":"5ED47B81-9F1C-4ACE-97A5-7B8CE08C5002", 
+                "resourceGuid":"5ED47B81-9F1C-4ACE-97A5-7B8CE08C5002",
                 "provisioningState":"Succeeded",
                 "virtualMachine":{
                    "id":"/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/vm1"

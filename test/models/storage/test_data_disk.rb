@@ -3,6 +3,7 @@ require File.expand_path '../../test_helper', __dir__
 # Test class for Data Disk Model
 class TestDataDisk < Minitest::Test
   def setup
+    @service = Fog::Storage::AzureRM.new(credentials)
     @data_disk = Fog::Storage::AzureRM::DataDisk.new
   end
 

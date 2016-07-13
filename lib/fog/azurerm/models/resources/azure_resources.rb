@@ -1,5 +1,5 @@
 require 'fog/core/collection'
-require 'fog/azurerm/models/resources/resource'
+require 'fog/azurerm/models/resources/azure_resource'
 
 module Fog
   module Resources

@@ -14,7 +14,7 @@ class TestContainer < Minitest::Test
     methods = [
       :save,
       :create,
-      :delete
+      :destroy
     ]
     methods.each do |method|
       assert @container.respond_to? method, true
@@ -61,7 +61,7 @@ class TestContainer < Minitest::Test
 
   def test_delete_method_true_response
     @service.stub :delete_container, true do
-      assert @container.delete
+      assert @container.destroy
     end
   end
 end

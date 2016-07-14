@@ -11,24 +11,7 @@ module Fog
         def all(options = { :metadata => true })
           containers = []
           service.list_containers(options).each do |container|
-            hash = {}
-            if container.is_a? Hash
-              hash['name'] = container['name']
-              hash['last_modified'] = container['properties']['last_modified']
-              hash['etag'] = container['properties']['etag']
-              hash['lease_duration'] = container['properties']['lease_duration']
-              hash['lease_status'] = container['properties']['lease_status']
-              hash['lease_state'] = container['properties']['lease_state']
-              hash['metadata'] = container['metadata']
-            else
-              hash['name'] = container.name
-              hash['last_modified'] = container.properties[:last_modified]
-              hash['etag'] = container.properties[:etag]
-              hash['lease_duration'] = container.properties[:lease_duration]
-              hash['lease_status'] = container.properties[:lease_status]
-              hash['lease_state'] = container.properties[:lease_state]
-              hash['metadata'] = container.metadata
-            end
+            hash = Container.parse container
             hash['public_access_level'] = 'unknown'
             containers << hash
           end

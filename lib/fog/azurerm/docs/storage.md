@@ -121,7 +121,9 @@ azure_storage_service.delete_disk('<Resource Group name>', '<Storage Account nam
 Create a storage container in the current storage account.
 
 ```ruby
-container = azure_storage_service.create_container('<container name>')
+container = azure_storage_service.create_container(
+  name: '<container name>'
+)
 puts "#{container.name}"
 ```
 
@@ -130,8 +132,7 @@ puts "#{container.name}"
 List all the storage containers in the current storage accounts.
 
 ```ruby
-containers = azure_storage_service.create_container('<container name>')
-containers.each do |container|
+azure_storage_service.containers.each do |container|
   puts "#{container.name}"
 end
 ```
@@ -141,7 +142,8 @@ end
 Get the storage container properties. The properties will not fetch the access control list. Call `get_container_access_control_list` to fetch it.
 
 ```ruby
-properties = azure_storage_service.get_container_properties('<container name>')
+container = azure_storage_service.containers.get('<container name>')
+properties = container.get_properties
 puts "#{properties.inspect}"
 ```
 
@@ -150,7 +152,8 @@ puts "#{properties.inspect}"
 Get the permissions for the specified container. The permissions indicate whether container data may be accessed publicly.
 
 ```ruby
-access_control_list = azure_storage_service.get_container_access_control_list('<container name>')
+container = azure_storage_service.containers.get('<container name>')
+access_control_list = container.get_access_control_list('<container name>')
 puts "#{access_control_list.inspect}"
 ```
 
@@ -159,7 +162,8 @@ puts "#{access_control_list.inspect}"
 Mark the specified container for deletion. The container and any blobs contained within it are later deleted during garbage collection.
 
 ```ruby
-result = azure_storage_service.delete_container('<container name>')
+container = azure_storage_service.containers.get('<container name>')
+result = container.destroy
 puts "#{result}"
 ```
 

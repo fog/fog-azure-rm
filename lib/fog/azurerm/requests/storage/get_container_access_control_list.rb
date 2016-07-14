@@ -6,9 +6,9 @@ module Fog
         def get_container_access_control_list(name, options = {})
           Fog::Logger.debug "Get container ACL: #{name}."
           begin
-            container = @blob_client.get_container_acl(name, options)
+            container_acl = @blob_client.get_container_acl(name, options)
             Fog::Logger.debug 'Getting ACL of container #{name} successfully.'
-            container
+            container_acl
           rescue Azure::Core::Http::HTTPError => ex
             raise "Exception in getting ACL of container #{name}: #{ex.inspect}"
           end

@@ -26,23 +26,38 @@ module Fog
 
         def get_access_control_list(options = {})
           requires :name
-          merge_attributes(service.get_container_access_control_list(name, options)[0])
+          merge_attributes(Container.parse(service.get_container_access_control_list(name, options)[0]))
         end
 
-        def delete(options = {})
+        def destroy(options = {})
           requires :name
           service.delete_container name, options
         end
 
         def self.parse(container)
-          return container unless container.key?('properties')
-          container['etag'] = container['properties']['etag']
-          container['last_modified'] = container['properties']['last_modified']
-          container['lease_duration'] = container['properties']['lease_duration']
-          container['lease_state'] = container['properties']['lease_state']
-          container['lease_status'] = container['properties']['lease_status']
-          container.delete 'properties'
-          container
+          hash = {}
+          if container.is_a? Hash
+            hash['name'] = container['name']
+            hash['metadata'] = container['metadata']
+            return hash unless container.key?('properties')
+
+            hash['last_modified'] = container['properties']['last_modified']
+            hash['etag'] = container['properties']['etag']
+            hash['lease_duration'] = container['properties']['lease_duration']
+            hash['lease_status'] = container['properties']['lease_status']
+            hash['lease_state'] = container['properties']['lease_state']
+          else
+            hash['name'] = container.name
+            hash['metadata'] = container.metadata
+            return hash unless container.respond_to?('properties')
+
+            hash['last_modified'] = container.properties[:last_modified]
+            hash['etag'] = container.properties[:etag]
+            hash['lease_duration'] = container.properties[:lease_duration]
+            hash['lease_status'] = container.properties[:lease_status]
+            hash['lease_state'] = container.properties[:lease_state]
+          end
+          hash
         end
       end
     end

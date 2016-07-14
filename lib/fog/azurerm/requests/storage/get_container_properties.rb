@@ -6,9 +6,9 @@ module Fog
         def get_container_properties(name, options = {})
           Fog::Logger.debug "Get container properties: #{name}."
           begin
-            container = @blob_client.get_container_properties(name, options)
+            container_properties = @blob_client.get_container_properties(name, options)
             Fog::Logger.debug "Getting properties of container #{name} successfully."
-            container
+            container_properties
           rescue Azure::Core::Http::HTTPError => ex
             raise "Exception in getting properties of container #{name}: #{ex.inspect}"
           end

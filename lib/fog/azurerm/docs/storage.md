@@ -21,8 +21,8 @@ Next, create a connection to the Storage Service:
         :client_id =>    '<Clientid>',              # Client id of Azure Active Directory Application
         :client_secret => '<ClientSecret>',         # Client Secret of Azure Active Directory Application
         :subscription_id => '<Subscriptionid>'      # Subscription id of an Azure Account
-        :azure_storage_account_name => 'haidersa',
-        :azure_storage_access_key => 'XTqLFT90JC5S42MhsO0cSW0pYmGoOesCkAtKX+WsD5js60rXKR2fCyhRMwBYBD0GmrsDS1LaCPcK7wj2Uez9zQ=='
+        :azure_storage_account_name => '<Storage Account name>',    
+        :azure_storage_access_key => '<Storage Account access key>'  # Storage account access key of storage account
 )
 ```
 
@@ -43,8 +43,8 @@ If you only want to manage blobs, you can create the connection like this
 ```ruby
     azure_storage_service = Fog::Storage.new(
         :provider => 'AzureRM',
-        :azure_storage_account_name => 'haidersa',
-        :azure_storage_access_key => 'XTqLFT90JC5S42MhsO0cSW0pYmGoOesCkAtKX+WsD5js60rXKR2fCyhRMwBYBD0GmrsDS1LaCPcK7wj2Uez9zQ=='
+        :azure_storage_account_name => '<Storage Account name>',
+        :azure_storage_access_key => '<Storage Account access key>'   # Storage account access key of storage account
 )
 ```
 

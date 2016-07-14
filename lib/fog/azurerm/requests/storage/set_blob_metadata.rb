@@ -9,8 +9,8 @@ module Fog
             @blob_client.set_blob_metadata(container_name, name, metadata)
             Fog::Logger.debug "Setting metadata of blob #{name} successfully."
             true
-          rescue Azure::Core::Http::HTTPError => ex
-            raise "Exception in setting metadata of Blob #{name}: #{ex.inspect}"
+          rescue Exception => ex
+            raise "Exception in setting metadata of Blob #{name}: #{ex.message}"
           end
         end
       end

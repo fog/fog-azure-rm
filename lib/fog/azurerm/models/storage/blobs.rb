@@ -14,7 +14,7 @@ module Fog
         end
 
         def set_blob_metadata(container_name, name, metadata)
-          service.set_container_metadata(container_name, name, metadata)
+          service.set_blob_metadata(container_name, name, metadata)
         end
       end
     end

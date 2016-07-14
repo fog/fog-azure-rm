@@ -4,6 +4,8 @@ require File.expand_path 'api_stub/models/resources/resource_group', __dir__
 require File.expand_path 'api_stub/models/resources/deployment', __dir__
 require File.expand_path 'api_stub/models/storage/storageaccount', __dir__
 require File.expand_path 'api_stub/models/storage/data_disk', __dir__
+require File.expand_path 'api_stub/models/storage/blob', __dir__
+require File.expand_path 'api_stub/models/storage/container', __dir__
 require File.expand_path 'api_stub/models/network/public_ip', __dir__
 require File.expand_path 'api_stub/models/network/subnet', __dir__
 require File.expand_path 'api_stub/models/network/virtual_network', __dir__
@@ -21,6 +23,8 @@ require File.expand_path 'api_stub/requests/compute/virtual_machine', __dir__
 require File.expand_path 'api_stub/requests/resources/resource_group', __dir__
 require File.expand_path 'api_stub/requests/resources/deployment', __dir__
 require File.expand_path 'api_stub/requests/storage/storageaccount', __dir__
+require File.expand_path 'api_stub/requests/storage/blob', __dir__
+require File.expand_path 'api_stub/requests/storage/container', __dir__
 require File.expand_path 'api_stub/requests/network/public_ip', __dir__
 require File.expand_path 'api_stub/requests/network/subnet', __dir__
 require File.expand_path 'api_stub/requests/network/virtual_network', __dir__

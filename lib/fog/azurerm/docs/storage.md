@@ -21,8 +21,33 @@ Next, create a connection to the Storage Service:
         :client_id =>    '<Clientid>',              # Client id of Azure Active Directory Application
         :client_secret => '<ClientSecret>',         # Client Secret of Azure Active Directory Application
         :subscription_id => '<Subscriptionid>'      # Subscription id of an Azure Account
+        :azure_storage_account_name => 'haidersa',
+        :azure_storage_access_key => 'XTqLFT90JC5S42MhsO0cSW0pYmGoOesCkAtKX+WsD5js60rXKR2fCyhRMwBYBD0GmrsDS1LaCPcK7wj2Uez9zQ=='
 )
 ```
+
+If you only want to manage storage accounts, you can create the connection without the storage account information:
+
+```ruby
+    azure_storage_service = Fog::Storage.new(
+        :provider => 'AzureRM',
+        :tenant_id => '<Tenantid>',                 # Tenant id of Azure Active Directory Application
+        :client_id =>    '<Clientid>',              # Client id of Azure Active Directory Application
+        :client_secret => '<ClientSecret>',         # Client Secret of Azure Active Directory Application
+        :subscription_id => '<Subscriptionid>'      # Subscription id of an Azure Account
+)
+```
+
+If you only want to manage blobs, you can create the connection like this 
+
+```ruby
+    azure_storage_service = Fog::Storage.new(
+        :provider => 'AzureRM',
+        :azure_storage_account_name => 'haidersa',
+        :azure_storage_access_key => 'XTqLFT90JC5S42MhsO0cSW0pYmGoOesCkAtKX+WsD5js60rXKR2fCyhRMwBYBD0GmrsDS1LaCPcK7wj2Uez9zQ=='
+)
+```
+
 ## Check Name Availability 
 
 Check Storage Account Name Availability.This operation checks that account name is valid and is not already in use.
@@ -87,6 +112,44 @@ Delete a Disk from a storage account. Disk must be in unlocked state i.e detache
 
 ```ruby
       azure_storage_service.delete_disk('<Resource Group name>', '<Storage Account name>', '<Data Disk Name>')
+```
+
+### Metadata
+
+Metadata allows us to provide descriptive information about specific containers or blobs. This is simply providing name/value pairs of data we want to set on the container or blob.
+
+## Get Blob Metadata
+
+```ruby
+      azure_storage_service.blobs.get_blob_metadata('<Container name>', '<Blob name>')
+```
+
+## Set Blob Metadata
+
+```ruby
+      metadata = {
+        "Category" => "Images",
+        "Resolution" => "High"
+      }
+      azure_storage_service.blobs.set_blob_metadata('<Container name>', '<Blob name>', metadata)
+```
+
+## Get Container Metadata
+
+```ruby
+      azure_storage_service.containers.get_container_metadata('<Container name>')
+```
+
+## Set Container Metadata
+
+```ruby
+      metadata = {
+        "CreatedBy" => "Samawia",
+        "SourceMachine" => "Mymachine",
+        "category" => "guidance",
+        "docType" => "textDocuments"
+       }
+      azure_storage_service.containers.set_container_metadata('<Container name>', metadata)
 ```
 
 ## Support and Feedback

@@ -19,6 +19,7 @@ module Fog
         @tenant_id = tenant_id
         @client_id = client_id
         @client_secret = client_secret
+        return if @tenant_id.nil? || @client_id.nil? || @client_secret.nil?
         @token_provider = MsRestAzure::ApplicationTokenProvider.new(@tenant_id, @client_id, @client_secret)
         @credentials = MsRest::TokenCredentials.new(@token_provider)
         @credentials
@@ -30,9 +31,9 @@ module Fog
           @client_secret != client_secret
       end
 
-      def self.new_account_credential?(options={})
+      def self.new_account_credential?(options = {})
         @storage_account_name != options[:azure_storage_account_name] ||
-        @storage_access_key != options[:azure_storage_access_key]
+          @storage_access_key != options[:azure_storage_access_key]
       end
 
       private_class_method :get_new_credentials

@@ -3,10 +3,13 @@ module Fog
   module Storage
     # This class registers models, requests and collections
     class AzureRM < Fog::Service
-      requires :tenant_id
-      requires :client_id
-      requires :client_secret
-      requires :subscription_id
+      recognizes :tenant_id
+      recognizes :client_id
+      recognizes :client_secret
+      recognizes :subscription_id
+
+      recognizes :azure_storage_account_name
+      recognizes :azure_storage_access_key
 
       request_path 'fog/azurerm/requests/storage'
       request :create_storage_account
@@ -28,7 +31,6 @@ module Fog
       collection :containers
       model :blob
       collection :blobs
-
 
       # This class provides the mock implementation for unit tests.
       class Mock
@@ -60,14 +62,12 @@ module Fog
 
           if Fog::Credentials::AzureRM.new_account_credential? options
             client_obj = ::Azure::Storage::Client.new(storage_account_name: options[:azure_storage_account_name],
-                                                    storage_access_key: options[:azure_storage_access_key])
-
+                                                      storage_access_key: options[:azure_storage_access_key])
             # Create an azure storage blob service object after you set up the credentials
             @blob_client = ::Azure::Storage::Blob::BlobService.new(client: client_obj)
             # Add retry filter to the service object
             @blob_client.with_filter(Azure::Storage::Core::Filter::ExponentialRetryPolicyFilter.new)
           end
-
         end
       end
     end

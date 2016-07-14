@@ -9,8 +9,8 @@ module Fog
             container = @blob_client.get_container_metadata(name)
             Fog::Logger.debug "Getting metadata of container #{name} successfully."
             container.metadata
-          rescue Azure::Core::Http::HTTPError => ex
-            raise "Exception in getting metadata of Container #{name}: #{ex.inspect}"
+          rescue Exception => ex
+            raise "Exception in getting metadata of Container #{name}: #{ex.message}"
           end
         end
       end
@@ -18,11 +18,11 @@ module Fog
       class Mock
         def get_container_metadata(name)
           {
-              "container-name" => name,
-              "created-by" => "User",
-              "source-machine"=>"Test-machine",
-              "category"=>"guidance",
-              "doctype"=>"textDocuments"
+            'container-name' => name,
+            'created-by' => 'User',
+            'source-machine' => 'Test-machine',
+            'category' => 'guidance',
+            'doctype' => 'textDocuments'
           }
         end
       end

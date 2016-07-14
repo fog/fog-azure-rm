@@ -6,7 +6,6 @@ module Fog
       class Container < Fog::Model
         identity  :name
         attribute :metadata
-
       end
     end
   end

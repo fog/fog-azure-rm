@@ -6,11 +6,11 @@ module Fog
         def get_blob_metadata(container_name, name)
           Fog::Logger.debug "Get Blob #{name} metadata in container #{container_name}."
           begin
-            blob = @blob_client.get_blob_metadata(container_name, name)
-            Fog::Logger.debug "Getting metadata of blob #{name} successfully."
-            blob.metadata
-            rescue Azure::Core::Http::HTTPError => ex
-            raise "Exception in getting metadata of Blob #{name}: #{ex.inspect}"
+              blob = @blob_client.get_blob_metadata(container_name, name)
+              Fog::Logger.debug "Getting metadata of blob #{name} successfully."
+              blob.metadata
+            rescue Exception => ex
+              raise "Exception in getting metadata of Blob #{name}: #{ex.message}"
             end
         end
       end
@@ -18,10 +18,10 @@ module Fog
       class Mock
         def get_blob_metadata(container_name, name)
           {
-              "container-name" => container_name,
-              "blob-name" => name,
-              "category" => "Images",
-              "resolution" => "High"
+            'container-name' => container_name,
+            'blob-name' => name,
+            'category' => 'Images',
+            'resolution' => 'High'
           }
         end
       end

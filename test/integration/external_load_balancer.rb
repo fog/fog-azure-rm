@@ -45,7 +45,7 @@ network.subnets.create(
   address_prefix: '10.1.0.0/24'
 )
 
-network.public_ips.create(
+pip = network.public_ips.create(
   name: 'mypubip',
   resource_group: 'TestRG-LB',
   location: 'westus',
@@ -65,7 +65,7 @@ network.load_balancers.create(
     {
       name: 'fic',
       private_ipallocation_method: 'Dynamic',
-      public_ipaddress_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourcegroups/TestRG-LB/providers/Microsoft.Network/publicIPAddresses/mypubip"
+      public_ipaddress_id: pip.id
     }
   ],
   backend_address_pool_names:

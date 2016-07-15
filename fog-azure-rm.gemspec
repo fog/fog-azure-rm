@@ -23,5 +23,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'azure_mgmt_resources', '~> 0.2.1'
   spec.add_dependency 'azure_mgmt_storage', '~> 0.2.1'
   spec.add_dependency 'azure_mgmt_network', '~> 0.2.1'
-  spec.add_dependency 'azure-storage', '~> 0.10.1.preview'
+  spec.add_dependency 'azure-storage', '0.10.2.preview'
 end

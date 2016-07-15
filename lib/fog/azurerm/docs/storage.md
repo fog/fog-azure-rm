@@ -15,14 +15,41 @@ require 'fog/azurerm'
 Next, create a connection to the Storage Service:
 
 ```ruby
-    azure_storage_service = Fog::Storage.new(
-        :provider => 'AzureRM',
-        :tenant_id => '<Tenantid>',                 # Tenant id of Azure Active Directory Application
-        :client_id =>    '<Clientid>',              # Client id of Azure Active Directory Application
-        :client_secret => '<ClientSecret>',         # Client Secret of Azure Active Directory Application
-        :subscription_id => '<Subscriptionid>'      # Subscription id of an Azure Account
+azure_storage_service = Fog::Storage.new(
+  :provider => 'AzureRM',
+  :tenant_id => '<Tenantid>',                                     # Tenant id of Azure Active Directory Application
+  :client_id =>    '<Clientid>',                                  # Client id of Azure Active Directory Application
+  :client_secret => '<ClientSecret>',                             # Client Secret of Azure Active Directory Application
+  :subscription_id => '<Subscriptionid>'                          # Subscription id of an Azure Account
+  :azure_storage_account_name => '<StorageAccountName>'           # Name of an Azure Storage Account
+  :azure_storage_access_key => '<StorageAccountKey>'              # Key of an Azure Storage Account
+  :azure_storage_connection_string => '<StorageConnectionString>' # Connection String of an Azure Storage Account
 )
 ```
+
+If you only want to manage the storage accounts, you can create the connection without the storage account information:
+
+```ruby
+azure_storage_service = Fog::Storage.new(
+  :provider => 'AzureRM',
+  :tenant_id => '<Tenantid>',                                     # Tenant id of Azure Active Directory Application
+  :client_id =>    '<Clientid>',                                  # Client id of Azure Active Directory Application
+  :client_secret => '<ClientSecret>',                             # Client Secret of Azure Active Directory Application
+  :subscription_id => '<Subscriptionid>'                          # Subscription id of an Azure Account
+)
+```
+
+If you only want to manage the storage data, you can create the connection without the Azure subscription information:
+
+```ruby
+azure_storage_service = Fog::Storage.new(
+  :provider => 'AzureRM',
+  :azure_storage_account_name => '<StorageAccountName>'           # Name of an Azure Storage Account
+  :azure_storage_access_key => '<StorageAccountKey>'              # Key of an Azure Storage Account
+  :azure_storage_connection_string => '<StorageConnectionString>' # Connection String of an Azure Storage Account (optional)
+)
+```
+
 ## Check Name Availability 
 
 Check Storage Account Name Availability.This operation checks that account name is valid and is not already in use.
@@ -36,30 +63,30 @@ Check Storage Account Name Availability.This operation checks that account name 
 Create a new storage account
 
 ```ruby
-    azure_storage_service.storage_accounts.create(
-        :name => '<Storage Account name>',
-        :location => 'West US',
-        :resource_group => '<Resource Group name>'
- )
+azure_storage_service.storage_accounts.create(
+  :name => '<Storage Account name>',
+  :location => 'West US',
+  :resource_group => '<Resource Group name>'
+)
 ```
 ## List storage accounts
 
 ##### List storage accounts in a subscription
 
 ```ruby
-    azure_storage_service.storage_accounts.each do |storage_acc|
-        puts "#{storage_acc.name}"
-        puts "#{storage_acc.location}"
-    end
+azure_storage_service.storage_accounts.each do |storage_acc|
+  puts "#{storage_acc.name}"
+  puts "#{storage_acc.location}"
+end
 ```
 ##### List storage accounts in a resource group
 
 ```ruby
-    storage_accounts  = azure_storage_service.storage_accounts(resource_group: '<Resource Group name>')
-    storage_accounts.each do |storage_acc|
-        puts "#{storage_acc.name}"
-        puts "#{storage_acc.location}"
-    end
+storage_accounts  = azure_storage_service.storage_accounts(resource_group: '<Resource Group name>')
+storage_accounts.each do |storage_acc|
+  puts "#{storage_acc.name}"
+  puts "#{storage_acc.location}"
+end
 ```
 
 ## Retrieve a single Storage Account
@@ -67,10 +94,10 @@ Create a new storage account
 Get a single record of Storage Account
 
 ```ruby
-      storage_acc = azure_storage_service
-                          .storage_accounts(resource_group: '<Resource Group name>')
-                          .get('<Storage Account name>')
-        puts "#{storage_acc.name}"
+storage_acc = azure_storage_service
+                .storage_accounts(resource_group: '<Resource Group name>')
+                .get('<Storage Account name>')
+puts "#{storage_acc.name}"
 ```
 
 ## Destroy a single Storage Account
@@ -78,7 +105,7 @@ Get a single record of Storage Account
 Get storage account object from the get method and then destroy that storage account.
 
 ```ruby
-      storage_acc.destroy
+storage_acc.destroy
 ```
 
 ## Delete a Disk
@@ -86,7 +113,58 @@ Get storage account object from the get method and then destroy that storage acc
 Delete a Disk from a storage account. Disk must be in unlocked state i.e detached from server(virtual machine) to successfully perform this action.
 
 ```ruby
-      azure_storage_service.delete_disk('<Resource Group name>', '<Storage Account name>', '<Data Disk Name>')
+azure_storage_service.delete_disk('<Resource Group name>', '<Storage Account name>', '<Data Disk Name>')
+```
+
+## Create a storage container
+
+Create a storage container in the current storage account.
+
+```ruby
+container = azure_storage_service.create_container(
+  name: '<container name>'
+)
+puts "#{container.name}"
+```
+
+## List storage containers
+
+List all the storage containers in the current storage accounts.
+
+```ruby
+azure_storage_service.containers.each do |container|
+  puts "#{container.name}"
+end
+```
+
+## Get storage container properties
+
+Get the storage container properties. The properties will not fetch the access control list. Call `get_container_access_control_list` to fetch it.
+
+```ruby
+container = azure_storage_service.containers.get('<container name>')
+properties = container.get_properties
+puts "#{properties.inspect}"
+```
+
+## Get the access control list of the storage container
+
+Get the permissions for the specified container. The permissions indicate whether container data may be accessed publicly.
+
+```ruby
+container = azure_storage_service.containers.get('<container name>')
+access_control_list = container.get_access_control_list('<container name>')
+puts "#{access_control_list.inspect}"
+```
+
+## Delete the storage container
+
+Mark the specified container for deletion. The container and any blobs contained within it are later deleted during garbage collection.
+
+```ruby
+container = azure_storage_service.containers.get('<container name>')
+result = container.destroy
+puts "#{result}"
 ```
 
 ## Support and Feedback

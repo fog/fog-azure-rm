@@ -25,10 +25,10 @@ def credentials
 end
 
 def storage_account_credentials
- {
-   azure_storage_account_name: 'mockaccount',
-   azure_storage_access_key: 'YWNjZXNzLWtleQ=='
- }
+  {
+    azure_storage_account_name: 'mockaccount',
+    azure_storage_access_key: 'YWNjZXNzLWtleQ=='
+  }
 end
 
 def server(service)
@@ -424,4 +424,3 @@ def traffic_manager_profile(service)
     service: service
   )
 end
-

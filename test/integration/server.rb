@@ -46,7 +46,7 @@ rs.resource_groups.create(
 )
 
 storage.storage_accounts.create(
-  name: 'test-storage',
+  name: 'fogstorageac',
   location: 'eastus',
   resource_group: 'TestRG-VM'
 )
@@ -80,18 +80,19 @@ network.network_interfaces.create(
 
 compute.servers.create(
   name: 'TestVM',
-  location: 'test-storage',
+  location: 'eastus',
   resource_group: 'TestRG-VM',
   vm_size: 'Basic_A0',
-  storage_account_name: 'test-storage',
+  storage_account_name: 'fogstorageac',
   username: 'testuser',
   password: 'Confiz=123',
   disable_password_authentication: false,
-  network_interface_card_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-VM/providers/Microsoft.Network/networkInterfaces/testNIC",
+  network_interface_card_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-VM/providers/Microsoft.Network/networkInterfaces/NetInt",
   publisher: 'Canonical',
   offer: 'UbuntuServer',
   sku: '14.04.2-LTS',
-  version: 'latest'
+  version: 'latest',
+  platform: 'linux'
 )
 
 ########################################################################################################################
@@ -99,7 +100,7 @@ compute.servers.create(
 ########################################################################################################################
 
 server = compute.servers(resource_group: 'TestRG-VM').get('TestVM')
-server.attach_data_disk('datadisk1', 10, 'test-storage')
+server.attach_data_disk('datadisk1', 10, 'fogstorageac')
 
 ########################################################################################################################
 ######################                          Detach Data Disk to Server                        ######################
@@ -112,7 +113,7 @@ server.detach_data_disk('datadisk1')
 ######################                                Delete Data Disk                            ######################
 ########################################################################################################################
 
-storage.delete_data_disk('TestRG-VM', 'test-storage', 'datadisk1')
+storage.delete_disk('TestRG-VM', 'fogstorageac', 'datadisk1')
 
 ########################################################################################################################
 ######################                            Get and Delete Server                           ######################
@@ -131,10 +132,7 @@ nic.destroy
 vnet = network.virtual_networks(resource_group: 'TestRG-VM').get('testVnet')
 vnet.destroy
 
-pubip = network.public_ips(resource_group: 'TestRG-VM').get('mypubip')
-pubip.destroy
-
-storage = storage.storage_accounts(resource_group: 'TestRG-VM').get('test-storage')
+storage = storage.storage_accounts(resource_group: 'TestRG-VM').get('fogstorageac')
 storage.destroy
 
 rg = rs.resource_groups.get('TestRG-VM')

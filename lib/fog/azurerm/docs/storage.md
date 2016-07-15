@@ -144,7 +144,7 @@ Metadata allows us to provide descriptive information about specific containers 
 
 ```ruby
       metadata = {
-        "CreatedBy" => "Samawia",
+        "CreatedBy" => "User",
         "SourceMachine" => "Mymachine",
         "category" => "guidance",
         "docType" => "textDocuments"

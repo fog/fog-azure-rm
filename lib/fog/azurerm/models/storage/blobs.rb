@@ -4,7 +4,7 @@ require 'fog/azurerm/models/storage/blob'
 module Fog
   module Storage
     class AzureRM
-      # This class is giving implementation of listing containers.
+      # This class is giving implementation of listing blobs.
       class Blobs < Fog::Collection
         model Fog::Storage::AzureRM::Blob
         attribute :container_name

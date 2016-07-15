@@ -9,8 +9,8 @@ module Fog
             container = @blob_client.get_container_metadata(name)
             Fog::Logger.debug "Getting metadata of container #{name} successfully."
             container.metadata
-          rescue Exception => ex
-            raise "Exception in getting metadata of Container #{name}: #{ex.message}"
+          rescue Azure::Core::Http::HTTPError => ex
+            raise "Exception in getting metadata of Container #{name}: #{ex.inspect}"
           end
         end
       end

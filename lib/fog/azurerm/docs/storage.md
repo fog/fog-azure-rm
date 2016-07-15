@@ -167,6 +167,44 @@ result = container.destroy
 puts "#{result}"
 ```
 
+### Metadata
+
+Metadata allows us to provide descriptive information about specific containers or blobs. This is simply providing name/value pairs of data we want to set on the container or blob.
+
+## Get Blob Metadata
+
+```ruby
+      azure_storage_service.blobs.get_blob_metadata('<Container name>', '<Blob name>')
+```
+
+## Set Blob Metadata
+
+```ruby
+      metadata = {
+        "Category" => "Images",
+        "Resolution" => "High"
+      }
+      azure_storage_service.blobs.set_blob_metadata('<Container name>', '<Blob name>', metadata)
+```
+
+## Get Container Metadata
+
+```ruby
+      azure_storage_service.containers.get_container_metadata('<Container name>')
+```
+
+## Set Container Metadata
+
+```ruby
+      metadata = {
+        "CreatedBy" => "User",
+        "SourceMachine" => "Mymachine",
+        "category" => "guidance",
+        "docType" => "textDocuments"
+       }
+      azure_storage_service.containers.set_container_metadata('<Container name>', metadata)
+```
+
 ## Support and Feedback
 Your feedback is appreciated! If you have specific issues with the fog ARM, you should file an issue via Github.
 

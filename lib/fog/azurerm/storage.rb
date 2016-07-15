@@ -22,6 +22,10 @@ module Fog
       request :list_storage_account_for_rg
       request :check_storage_account_name_availability
       request :delete_disk
+      request :get_blob_metadata
+      request :get_container_metadata
+      request :set_blob_metadata
+      request :set_container_metadata
       request :create_container
       request :delete_container
       request :list_containers
@@ -32,8 +36,10 @@ module Fog
       model :storage_account
       collection :storage_accounts
       model :data_disk
-      collection :containers
       model :container
+      collection :containers
+      model :blob
+      collection :blobs
 
       # This class provides the mock implementation for unit tests.
       class Mock

@@ -30,6 +30,14 @@ module Fog
                                           end
           container
         end
+
+        def get_container_metadata(name)
+          service.get_container_metadata(name)
+        end
+
+        def set_container_metadata(name, metadata)
+          service.set_container_metadata(name, metadata)
+        end
       end
     end
   end

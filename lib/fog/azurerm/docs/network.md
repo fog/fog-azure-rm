@@ -216,7 +216,60 @@ Get a Public IP object from the get method and then destroy that public IP.
       pubip.destroy
 ```
 
-## Create Load Balancer
+## Create Network Security Group
+
+Network security group requires a resource group to create. 
+
+```ruby
+      azure_network_service.network_security_groups.create(
+      name: '<Network Security Group name>',
+      resource_group: '<Resource Group name>',
+      location: 'eastus',
+      security_rules: [{
+        name: '<Security Rule name>',
+        protocol: 'tcp',
+        source_port_range: '22',
+        destination_port_range: '22',
+        source_address_prefix: '0.0.0.0/0',
+        destination_address_prefix: '0.0.0.0/0',
+        access: 'Allow',
+        priority: '100',
+        direction: 'Inbound'
+  }]
+)
+```
+
+## List Network Security Groups 
+
+List all the network security groups in a resource group
+
+```ruby
+    network_security_groups = azure_network_service.network_security_groups(resource_group: '<Resource Group name>')       
+    network_security_groups.each do |nsg|
+        puts "#{nsg.name}"
+    end
+```
+
+## Retrieve a single Network Security Group
+
+Get a single record of Network Security Group
+
+```ruby
+    nsg = azure_network_service
+                  .network_security_groups(resource_group: '<Resource Group name>')
+                  .get('<Network Security Group name>')
+    puts "#{nsg.name}"
+```
+
+## Destroy a Network Security Group
+
+Get a network security group object from the get method and then destroy that network security group.
+
+```ruby
+    nsg.destroy
+```
+
+## Create External Load Balancer
 
 Create a new load balancer.
 
@@ -228,12 +281,10 @@ Create a new load balancer.
 
     frontend_ip_configurations: 
                                 [
-                                    {
-                                         #id: '/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/loadBalancers/<Load Balancer name>/frontendIPConfigurations/fic',
+                                    {                                         
                                          name: 'fic',
                                          private_ipallocation_method: 'Dynamic',
-                                         # public_ipaddress_id: '/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/publicIPAddresses/pip',
-                                         subnet_id: '/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/virtualNetworks/vnet/subnets/sb1'
+                                         public_ipaddress_id: '/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/publicIPAddresses/<Public-IP-Name>'                                         
                                     }
                                 ],
     backend_address_pool_names:
@@ -265,6 +316,70 @@ Create a new load balancer.
                                     }
                                 ]
 )
+```
+
+## Create Internal Load Balancer
+
+```ruby
+
+    lb = azure_network_service.load_balancers.create(
+    name: '<Load Balancer name>',
+    resource_group: '<Resource Group name>',
+    location: 'westus',
+    frontend_ip_configurations:
+        [
+        {
+            name: 'LB-Frontend',
+            private_ipallocation_method: 'Static',
+            private_ipaddress: '10.1.2.5',
+            subnet_id: subnet.id
+        }
+        ],
+    backend_address_pool_names:
+        [
+        'LB-backend'
+        ],
+    load_balancing_rules:
+        [
+        {
+            name: 'HTTP',
+            frontend_ip_configuration_id: "/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/loadBalancers/<Load-Balancer-Name>/frontendIPConfigurations/LB-Frontend",
+            backend_address_pool_id: "/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/loadBalancers/<Load-Balancer-Name>/backendAddressPools/LB-backend",
+            probe_id: "/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/loadBalancers<Load-Balancer-Name>lb/probes/HealthProbe",
+            protocol: 'Tcp',
+            frontend_port: '80',
+            backend_port: '80'
+        }
+        ],
+    inbound_nat_rules:
+        [
+        {
+            name: 'RDP1',
+            frontend_ip_configuration_id: "/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/loadBalancers/<Load-Balancer-Name>/frontendIPConfigurations/LB-Frontend",
+            protocol: 'Tcp',
+            frontend_port: 3441,
+            backend_port: 3389
+        },
+        {
+            name: 'RDP2',
+            frontend_ip_configuration_id: "/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/loadBalancers/<Load-Balancer-Name>/frontendIPConfigurations/LB-Frontend",
+            protocol: 'Tcp',
+            frontend_port: 3442,
+            backend_port: 3389
+        }
+        ],
+    probes:
+        [
+        {
+            name: 'HealthProbe',
+            protocol: 'http',
+            request_path: 'HealthProbe.aspx',
+            port: '80',
+            interval_in_seconds: 15,
+            number_of_probes: 2
+        }
+        ]
+    )
 ```
 
 ## List Load Balancers

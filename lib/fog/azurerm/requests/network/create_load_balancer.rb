@@ -1,7 +1,7 @@
 module Fog
   module Network
     class AzureRM
-      # Real class for Network Request
+      # Real class for Load-Balancer Request
       class Real
         def create_load_balancer(name, location, resource_group, frontend_ip_configurations, backend_address_pool_names, load_balancing_rules, probes, inbound_nat_rules, inbound_nat_pools)
           Fog::Logger.debug "Creating Load-Balancer: #{name}..."
@@ -23,7 +23,7 @@ module Fog
           lb_props = Azure::ARM::Network::Models::LoadBalancerPropertiesFormat.new
 
           if frontend_ip_configurations
-            frontend_ip_configuration_arr = define_frontend_ip_configurations(frontend_ip_configurations)
+            frontend_ip_configuration_arr = define_lb_frontend_ip_configurations(frontend_ip_configurations)
             lb_props.frontend_ipconfigurations = []
             lb_props.frontend_ipconfigurations = frontend_ip_configuration_arr
           end
@@ -172,7 +172,7 @@ module Fog
           load_balancing_rule_arr
         end
 
-        def define_frontend_ip_configurations(frontend_ip_configurations)
+        def define_lb_frontend_ip_configurations(frontend_ip_configurations)
           frontend_ip_configuration_arr = []
           frontend_ip_configurations.each do |fic|
             frontend_ip_configuration = Azure::ARM::Network::Models::FrontendIPConfiguration.new
@@ -198,7 +198,7 @@ module Fog
         end
       end
 
-      # Mock class for Network Request
+      # Mock class for Load-Balancer Request
       class Mock
         def create_load_balancer(_name, _location, _resource_group, _frontend_ip_configuration_name, _subnet_id, _private_ip_address, _private_ip_allocation_method, _public_ip_address_id, _backend_address_pool_names, _load_balancing_rules, _probes, _inbound_nat_rules, _inbound_nat_pools)
         end

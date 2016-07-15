@@ -16,9 +16,13 @@ module Fog
           hash['name'] = frontend_ip_configuration['name']
           subnet = frontend_ip_configuration['properties']['subnet']
           hash['subnet_id'] = subnet['id'] unless subnet.nil?
-          private_ip_address = frontend_ip_configuration['properties']['privateIPAllocationMethod']
+          private_ip_address = frontend_ip_configuration['properties']['private_ipaddress']
           unless private_ip_address.nil?
             hash['private_ipaddress'] = private_ip_address
+          end
+          private_ipallocation_method = frontend_ip_configuration['properties']['privateIPAllocationMethod']
+          unless private_ipallocation_method.nil?
+            hash['private_ipallocation_method'] = private_ipallocation_method
           end
           public_ip_address = frontend_ip_configuration['properties']['publicIPAddress']
           unless public_ip_address.nil?

@@ -87,6 +87,23 @@ def storage_account(service)
   )
 end
 
+def storage_container(service)
+  Fog::Storage::AzureRM::Container.new(
+    name: 'storage-test-container',
+    last_modified: 'Tue, 04 Aug 2015 06:01:08 GMT',
+    etag: '0x8D29C92176C8352',
+    lease_status: 'unlocked',
+    lease_state: 'available',
+    lease_duration: nil,
+    metadata: {
+      'key1' => 'value1',
+      'key2' => 'value2'
+    },
+    public_access_level: nil,
+    service: service
+  )
+end
+
 def public_ip(service)
   Fog::Network::AzureRM::PublicIp.new(
     name: 'fog-test-public-ip',

@@ -3,13 +3,17 @@ module Fog
   module Storage
     # This class registers models, requests and collections
     class AzureRM < Fog::Service
+      # Recognizes when creating management client
       recognizes :tenant_id
       recognizes :client_id
       recognizes :client_secret
       recognizes :subscription_id
 
+      # Recognizes when creating data client
       recognizes :azure_storage_account_name
       recognizes :azure_storage_access_key
+      recognizes :azure_storage_connection_string
+      recognizes :debug
 
       request_path 'fog/azurerm/requests/storage'
       request :create_storage_account
@@ -22,6 +26,11 @@ module Fog
       request :get_container_metadata
       request :set_blob_metadata
       request :set_container_metadata
+      request :create_container
+      request :delete_container
+      request :list_containers
+      request :get_container_properties
+      request :get_container_access_control_list
 
       model_path 'fog/azurerm/models/storage'
       model :storage_account
@@ -43,12 +52,15 @@ module Fog
           end
         end
       end
+
       # This class provides the actual implemention for service calls.
       class Real
         def initialize(options)
           begin
             require 'azure_mgmt_storage'
             require 'azure/storage'
+            @debug = ENV["DEBUG"] || options[:debug]
+            require "azure/core/http/debug_filter" if @debug
           rescue LoadError => e
             retry if require('rubygems')
             raise e.message
@@ -61,12 +73,14 @@ module Fog
           end
 
           if Fog::Credentials::AzureRM.new_account_credential? options
-            client_obj = ::Azure::Storage::Client.new(storage_account_name: options[:azure_storage_account_name],
-                                                      storage_access_key: options[:azure_storage_access_key])
-            # Create an azure storage blob service object after you set up the credentials
-            @blob_client = ::Azure::Storage::Blob::BlobService.new(client: client_obj)
-            # Add retry filter to the service object
+            Azure::Storage.setup(
+              storage_account_name: options[:azure_storage_account_name],
+              storage_access_key: options[:azure_storage_access_key],
+              storage_connection_string: options[:azure_storage_connection_string])
+
+            @blob_client = Azure::Storage::Blob::BlobService.new
             @blob_client.with_filter(Azure::Storage::Core::Filter::ExponentialRetryPolicyFilter.new)
+            @blob_client.with_filter(Azure::Core::Http::DebugFilter.new) if @debug
           end
         end
       end

@@ -39,11 +39,10 @@ storage_account = storage.storage_accounts.create(
 
 access_key = storage_account.get_access_keys['key1']
 
-
 storage_data = Fog::Storage.new(
-  :provider => 'AzureRM',
-  :azure_storage_account_name => storage_account.name,
-  :azure_storage_access_key => access_key
+  provider: 'AzureRM',
+  azure_storage_account_name: storage_account.name,
+  azure_storage_access_key: access_key
 )
 
 ########################################################################################################################

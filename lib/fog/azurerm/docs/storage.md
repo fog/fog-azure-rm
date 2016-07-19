@@ -100,6 +100,15 @@ storage_acc = azure_storage_service
 puts "#{storage_acc.name}"
 ```
 
+## Get Access Keys
+
+Get access keys of a storage account
+
+```ruby
+keys_hash = storage_acc.get_access_keys
+puts "#{keys_hash['key1']} #{keys_hash['key2']}"
+```
+
 ## Destroy a single Storage Account
 
 Get storage account object from the get method and then destroy that storage account.

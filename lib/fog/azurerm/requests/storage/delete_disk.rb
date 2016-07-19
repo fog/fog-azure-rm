@@ -5,7 +5,7 @@ module Fog
       class Real
         def delete_disk(resource_group, storage_account_name, blob_name)
           Fog::Logger.debug "Deleting Disk: #{blob_name}."
-          access_key = get_storage_access_key(resource_group, storage_account_name)
+          access_key = get_storage_access_keys(resource_group, storage_account_name)['key2']
           client = Azure::Storage::Client.new(storage_account_name: storage_account_name, storage_access_key: access_key)
           blob_service = Azure::Storage::Blob::BlobService.new(client: client)
           begin
@@ -19,18 +19,6 @@ module Fog
             end
           rescue Azure::Core::Http::HTTPError => e
             msg = "Error deleting Disk. #{e.description}"
-            raise msg
-          end
-        end
-
-        private
-
-        def get_storage_access_key(resource_group, storage_account_name)
-          begin
-            storage_account_keys = @storage_mgmt_client.storage_accounts.list_keys(resource_group, storage_account_name).value!
-            storage_account_keys.body.key2
-          rescue MsRestAzure::AzureOperationError => e
-            msg = "Error deleting Disk. #{e.body['error']['message']}"
             raise msg
           end
         end

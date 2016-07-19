@@ -10,7 +10,8 @@ class TestStorageAccount < Minitest::Test
   def test_model_methods
     methods = [
       :save,
-      :destroy
+      :destroy,
+      :get_access_keys
     ]
     methods.each do |method|
       assert @storage_account.respond_to? method, true
@@ -34,6 +35,16 @@ class TestStorageAccount < Minitest::Test
   def test_save_method_response
     @service.stub :create_storage_account, @response do
       assert_instance_of Fog::Storage::AzureRM::StorageAccount, @storage_account.save
+    end
+  end
+
+  def test_get_access_keys_method_response
+    response = {
+      'key1' => 'key1 value',
+      'key2' => 'key2 value'
+    }
+    @service.stub :get_storage_access_keys, response do
+      assert_equal @storage_account.get_access_keys, response
     end
   end
 

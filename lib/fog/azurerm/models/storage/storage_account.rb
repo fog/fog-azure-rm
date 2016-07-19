@@ -26,6 +26,10 @@ module Fog
           merge_attributes(hash)
         end
 
+        def get_access_keys(options = {})
+          service.get_storage_access_keys(resource_group, name, options)
+        end
+
         def destroy
           service.delete_storage_account(resource_group, name)
         end

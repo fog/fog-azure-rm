@@ -21,6 +21,7 @@ module Fog
       request :delete_storage_account
       request :list_storage_account_for_rg
       request :check_storage_account_name_availability
+      request :get_storage_access_keys
       request :delete_disk
       request :get_blob_metadata
       request :get_container_metadata
@@ -59,8 +60,8 @@ module Fog
           begin
             require 'azure_mgmt_storage'
             require 'azure/storage'
-            @debug = ENV["DEBUG"] || options[:debug]
-            require "azure/core/http/debug_filter" if @debug
+            @debug = ENV['DEBUG'] || options[:debug]
+            require 'azure/core/http/debug_filter' if @debug
           rescue LoadError => e
             retry if require('rubygems')
             raise e.message
@@ -73,10 +74,9 @@ module Fog
           end
 
           if Fog::Credentials::AzureRM.new_account_credential? options
-            Azure::Storage.setup(
-              storage_account_name: options[:azure_storage_account_name],
-              storage_access_key: options[:azure_storage_access_key],
-              storage_connection_string: options[:azure_storage_connection_string])
+            Azure::Storage.setup(storage_account_name: options[:azure_storage_account_name],
+                                 storage_access_key: options[:azure_storage_access_key],
+                                 storage_connection_string: options[:azure_storage_connection_string])
 
             @blob_client = Azure::Storage::Blob::BlobService.new
             @blob_client.with_filter(Azure::Storage::Core::Filter::ExponentialRetryPolicyFilter.new)

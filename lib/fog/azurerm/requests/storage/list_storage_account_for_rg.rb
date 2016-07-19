@@ -12,7 +12,6 @@ module Fog
               obj.properties.last_geo_failover_time = DateTime.parse(Time.now.to_s)
             end
             result = Azure::ARM::Storage::Models::StorageAccountListResult.serialize_object(response.body)['value']
-            puts "Result: #{result}"
             result
           rescue  MsRestAzure::AzureOperationError => e
             msg = "Exception listing Storage Accounts in Resource Group #{resource_group}. #{e.body['error']['message']}"

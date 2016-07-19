@@ -7,7 +7,7 @@ module Fog
           Fog::Logger.debug "Get container ACL: #{name}."
           begin
             container_acl = @blob_client.get_container_acl(name, options)
-            Fog::Logger.debug 'Getting ACL of container #{name} successfully.'
+            Fog::Logger.debug "Getting ACL of container #{name} successfully."
             container_acl
           rescue Azure::Core::Http::HTTPError => ex
             raise "Exception in getting ACL of container #{name}: #{ex.inspect}"

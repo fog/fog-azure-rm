@@ -3,10 +3,19 @@ module Fog
     class AzureRM
       # Real class for Network Request
       class Real
-        def create_subnet(resource_group, name, virtual_network_name, address_prefix)
-          Fog::Logger.debug "Creating Subnet: #{name}..."
+        def create_subnet(resource_group, name, virtual_network_name, address_prefix, network_security_group_id, route_table_id)
+          Fog::Logger.debug "Creating Subnet: #{name}."
+
+          network_security_group = Azure::ARM::Network::Models::NetworkSecurityGroup.new
+          network_security_group.id = network_security_group_id
+
+          route_table = Azure::ARM::Network::Models::RouteTable.new
+          route_table.id = route_table_id
+
           subnet_properties = Azure::ARM::Network::Models::SubnetPropertiesFormat.new
           subnet_properties.address_prefix = address_prefix unless address_prefix.nil?
+          subnet_properties.network_security_group = network_security_group unless network_security_group_id.nil?
+          subnet_properties.route_table = route_table unless route_table_id.nil?
 
           subnet = Azure::ARM::Network::Models::Subnet.new
           subnet.name = name

@@ -1,5 +1,6 @@
 require File.expand_path '../../test_helper', __dir__
 
+# Test class for VirtualNetwork Model
 class TestVirtualNetwork < Minitest::Test
   def setup
     @service = Fog::Network::AzureRM.new(credentials)
@@ -25,9 +26,9 @@ class TestVirtualNetwork < Minitest::Test
       :name,
       :id,
       :location,
-      :dns_list,
-      :subnet_address_list,
-      :network_address_list,
+      :dns_servers,
+      :subnets,
+      :address_prefixes,
       :resource_group
     ]
     @service.stub :create_virtual_network, response do

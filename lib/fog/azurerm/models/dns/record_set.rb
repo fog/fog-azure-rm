@@ -25,6 +25,17 @@ module Fog
           hash['zone_name'] = recordset['id'].split('/')[8]
           hash['type'] = recordset['type']
           type = recordset['type'].split('/')[2]
+          hash['records'] = []
+          if type == 'A'
+            record_entries = recordset['properties']['ARecords']
+            record_entries.each do |record|
+              hash['records'] << record['ipv4Address']
+            end
+          end
+          if type == 'CNAME'
+            record_entries = recordset['properties']['CNAMERecord']['cname']
+            hash['records'] << record_entries
+          end
           hash['a_record'] = recordset['properties']['ARecords'] if type == 'A'
           hash['cname_record'] = recordset['properties']['CNAMERecord'] if type == 'CNAME'
           hash['ttl'] = recordset['properties']['TTL']
@@ -49,6 +60,36 @@ module Fog
 
         def get_records(resource_group, name, zone_name, record_type)
           service.get_records_from_record_set(resource_group, name, zone_name, record_type)
+        end
+
+        def update(options)
+          if !options[:name].nil? || !options[:resource_group].nil? || !options[:zone_name].nil? || !options[:id].nil?
+            raise "This attribute cannot be updated."
+            return
+          end
+          if !options[:records].nil?
+            raise "Records cannot be updated. You can add/remove A type record in existing records."
+            return
+          end
+          if !options[:type].nil?
+            self.type = options[:type]
+            self.type = "Microsoft.Network/dnszones/" + self.type
+          end
+          self.ttl = options[:ttl] if !options[:ttl].nil?
+          record_set = service.create_record_set(resource_group, name, zone_name, records, type.split('/').last, ttl)
+          merge_attributes(Fog::DNS::AzureRM::RecordSet.parse(record_set))
+        end
+
+        def add_a_type_record(record)
+          records << record
+          record_set = service.create_record_set(resource_group, name, zone_name, records, type.split('/').last, ttl)
+          merge_attributes(Fog::DNS::AzureRM::RecordSet.parse(record_set))
+        end
+
+        def remove_a_type_record(record)
+          records.delete(record)
+          record_set = service.create_record_set(resource_group, name, zone_name, records, type.split('/').last, ttl)
+          merge_attributes(Fog::DNS::AzureRM::RecordSet.parse(record_set))
         end
       end
     end

@@ -56,4 +56,24 @@ class TestRecordSet < Minitest::Test
       assert_equal @record_set.get_records('fog-test-rg', 'fog-test-record-set', 'fog-test-zone', 'A'), ['4.3.2.1', '5.3.2.1']
     end
   end
+
+  def test_update_response
+    @service.stub :get_records_from_record_set, ['4.3.2.1', '5.3.2.1'] do
+      @service.stub :create_record_set, @response do
+        assert_instance_of Fog::DNS::AzureRM::RecordSet, @record_set.update
+      end
+    end
+  end
+
+  def test_add_a_type_record_response
+    @service.stub :create_record_set, @response do
+      assert_instance_of Fog::DNS::AzureRM::RecordSet, @record_set.add_a_type_record("5.3.2.1")
+    end
+  end
+
+  def test_remove_a_type_record_response
+    @service.stub :create_record_set, @response do
+      assert_instance_of Fog::DNS::AzureRM::RecordSet, @record_set.remove_a_type_record("5.3.2.1")
+    end
+  end
 end

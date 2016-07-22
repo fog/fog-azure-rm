@@ -15,10 +15,12 @@ module Fog
       request :delete_zone
       request :check_for_zone
       request :list_zones
+      request :get_zone
       request :create_record_set
       request :delete_record_set
       request :list_record_sets
       request :get_records_from_record_set
+      request :get_record_set
 
       model_path 'fog/azurerm/models/dns'
       model :zone

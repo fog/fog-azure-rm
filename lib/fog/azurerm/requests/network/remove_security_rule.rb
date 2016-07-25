@@ -38,25 +38,7 @@ module Fog
             'location' => 'location',
             'properties' =>
               {
-                'securityRules' =>
-                  [
-                    {
-                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/#{name}/securityRules/testRule",
-                      'properties' =>
-                        {
-                          'protocol' => 'tcp',
-                          'sourceAddressPrefix' => '0.0.0.0/0',
-                          'destinationAddressPrefix' => '0.0.0.0/0',
-                          'access' => 'Allow',
-                          'direction' => 'Inbound',
-                          'sourcePortRange' => '22',
-                          'destinationPortRange' => '22',
-                          'priority' => 100,
-                          'provisioningState' => 'Succeed'
-                        },
-                      'name' => 'testRule'
-                    }
-                  ],
+                'securityRules' => [],
                 'defaultSecurityRules' =>
                   [
                     {

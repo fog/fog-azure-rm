@@ -1,7 +1,7 @@
 module Fog
   module Network
     class AzureRM
-      # Subnet model for Network Security Group
+      # Network Security Group model for Network Service
       class NetworkSecurityGroup < Fog::Model
         identity :name
         attribute :id
@@ -11,11 +11,6 @@ module Fog
         attribute :subnets_ids
         attribute :security_rules
         attribute :default_security_rules
-
-        # def name=(value)
-        #   puts name
-        #   self.name = value
-        # end
 
         def self.parse(nsg)
           hash = {}
@@ -54,15 +49,18 @@ module Fog
         end
 
         def update(hash = {})
+          raise('Provided hash can not be empty.') if hash.empty? || hash.nil?
+
           if !hash[:name].nil? || !hash[:location].nil? || !hash[:resource_group].nil? || !hash[:id].nil?
             raise('You can not modify id:, name:, location: or resource_group:')
           end
           unless hash[:security_rules].nil?
             validate_security_rules(hash[:security_rules])
+            merge_attributes(hash)
+            nsg = service.create_network_security_group(resource_group, name, location, security_rules)
+            return merge_attributes(Fog::Network::AzureRM::NetworkSecurityGroup.parse(nsg))
           end
-          merge_attributes(hash)
-          nsg = service.create_network_security_group(resource_group, name, location, security_rules)
-          merge_attributes(Fog::Network::AzureRM::NetworkSecurityGroup.parse(nsg))
+          raise 'Invalid hash key.'
         end
 
         def add_security_rules(resource_group, security_group_name, security_rules)

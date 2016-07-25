@@ -58,11 +58,15 @@ class TestRecordSet < Minitest::Test
   end
 
   def test_update_response
-    @service.stub :get_records_from_record_set, ['4.3.2.1', '5.3.2.1'] do
       @service.stub :create_record_set, @response do
-        assert_instance_of Fog::DNS::AzureRM::RecordSet, @record_set.update
+        assert_instance_of Fog::DNS::AzureRM::RecordSet, @record_set.update(:ttl => 70)
+        assert_raises RuntimeError do
+          @record_set.update(:ttl => 70, :name => 'fog-test-record-set')
+        end
+        assert_raises RuntimeError do
+          @record_set.update(:records => ['4.3.2.1', '5.3.2.1'])
+        end
       end
-    end
   end
 
   def test_add_a_type_record_response

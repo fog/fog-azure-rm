@@ -74,6 +74,7 @@ Create a new Record Set
         ttl:            <Time to live(Integer)>
  )
 ```
+
 ## List Record Sets
 
 ```ruby
@@ -92,12 +93,31 @@ Get a single record of Record Set
 
 ```ruby
       record_set = azure_dns_service
-                      .record_sets(
-                           resource_group: '<Resource Group Name>',
-                           zone_name:      '<Zone Name>'
-                      )
-                      .get('<Record Set name>', '<Record Type>')
+                      .record_sets
+                      .get('<Resource Group Name>', '<Record Set name>', '<Zone Name>', '<Record Type>')
       puts "#{record_set.name}"
+```
+
+## Update Record Set
+
+Get an object of record set and then update that object
+
+```ruby
+      record_set.update(
+        ttl:            '<Time to live(Integer)>,
+        type:           '<Record Type(A/CNAME)>'
+)
+```
+
+Note: You cannot modify name Record set name, resource group, zone name, and id.
+You can add or remove an A-type record in existing record sets, but cannot modify it.
+
+## Add/Remove Record set in Existing Record sets
+
+Add a record set by giving the value of record set in the form of string.
+
+```ruby
+      record_set.add_a_type_record("1.2.3.8")
 ```
 
 ## Destroy a single Record Set

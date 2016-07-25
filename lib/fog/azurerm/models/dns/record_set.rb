@@ -64,18 +64,12 @@ module Fog
 
         def update(options)
           if !options[:name].nil? || !options[:resource_group].nil? || !options[:zone_name].nil? || !options[:id].nil?
-            raise "This attribute cannot be updated."
-            return
+            raise RuntimeError, "This attribute cannot be updated."
           end
           if !options[:records].nil?
-            raise "Records cannot be updated. You can add/remove A type record in existing records."
-            return
+            raise RuntimeError, "Records cannot be updated. You can add/remove A type record in existing records."
           end
-          if !options[:type].nil?
-            self.type = options[:type]
-            self.type = "Microsoft.Network/dnszones/" + self.type
-          end
-          self.ttl = options[:ttl] if !options[:ttl].nil?
+          merge_attributes(options)
           record_set = service.create_record_set(resource_group, name, zone_name, records, type.split('/').last, ttl)
           merge_attributes(Fog::DNS::AzureRM::RecordSet.parse(record_set))
         end

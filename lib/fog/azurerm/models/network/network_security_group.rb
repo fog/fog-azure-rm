@@ -12,6 +12,11 @@ module Fog
         attribute :security_rules
         attribute :default_security_rules
 
+        # def name=(value)
+        #   puts name
+        #   self.name = value
+        # end
+
         def self.parse(nsg)
           hash = {}
           hash['id'] = nsg['id']
@@ -46,6 +51,29 @@ module Fog
 
         def destroy
           service.delete_network_security_group(resource_group, name)
+        end
+
+        def update(hash = {})
+          if !hash[:name].nil? || !hash[:location].nil? || !hash[:resource_group].nil? || !hash[:id].nil?
+            raise('You can not modify id:, name:, location: or resource_group:')
+          end
+          unless hash[:security_rules].nil?
+            validate_security_rules(hash[:security_rules])
+          end
+          merge_attributes(hash)
+          nsg = service.create_network_security_group(resource_group, name, location, security_rules)
+          merge_attributes(Fog::Network::AzureRM::NetworkSecurityGroup.parse(nsg))
+        end
+
+        def add_security_rules(resource_group, security_group_name, security_rules)
+          validate_security_rules(security_rules)
+          nsg = service.add_security_rules(resource_group, security_group_name, security_rules)
+          merge_attributes(Fog::Network::AzureRM::NetworkSecurityGroup.parse(nsg))
+        end
+
+        def remove_security_rule(resource_group, name, security_rule_name)
+          nsg = service.remove_security_rule(resource_group, name, security_rule_name)
+          merge_attributes(Fog::Network::AzureRM::NetworkSecurityGroup.parse(nsg))
         end
 
         private

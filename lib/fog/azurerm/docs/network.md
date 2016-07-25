@@ -256,9 +256,66 @@ Get a single record of Network Security Group
 
 ```ruby
     nsg = azure_network_service
-                  .network_security_groups(resource_group: '<Resource Group name>')
-                  .get('<Network Security Group name>')
+                  .network_security_groups
+                  .get('<Resource Group Name>','<Network Security Group name>')
     puts "#{nsg.name}"
+```
+
+## Update Network Security Group
+
+You can update a network security group by passing the modified attributes in the form of hash.  
+
+```ruby
+      nsg.update(
+        security_rules:
+            [
+                {
+                    name: '<Security Rule name>',
+                    protocol: 'tcp',
+                    source_port_range: '*',
+                    destination_port_range: '*',
+                    source_address_prefix: '0.0.0.0/0',
+                    destination_address_prefix: '0.0.0.0/0',
+                    access: 'Allow',
+                    priority: '100',
+                    direction: 'Inbound'
+                }
+            ]
+      )
+```
+`Note: You can't modify Id, Name, Location or Resource-Group.`
+
+## Add and Remove Security Rules in a Network Security Group
+
+Add array of security rules in the form of hash.
+
+```ruby
+      nsg.add_security_rules(
+        '<Resource Group Name>',
+        '<Network Security Group name>',
+            [
+                {
+                    name: '<Security Rule name>',
+                    protocol: 'tcp',
+                    source_port_range: '3389',
+                    destination_port_range: '3389',
+                    source_address_prefix: '0.0.0.0/0',
+                    destination_address_prefix: '0.0.0.0/0',
+                    access: 'Allow',
+                    priority: '102',
+                    direction: 'Inbound'
+                }
+            ]
+      )
+```
+
+Delete security rule by providing its name.
+
+```ruby
+      nsg.remove_security_rule(
+        '<Resource Group Name>', 
+        '<Network Security Group name>',
+        '<Security Rule name>')
 ```
 
 ## Destroy a Network Security Group

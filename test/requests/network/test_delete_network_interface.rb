@@ -20,7 +20,7 @@ class TestDeleteNetworkInterface < Minitest::Test
   end
 
   def test_delete_network_interface_failure
-    response = -> { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
+    response = -> { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @promise.stub :value!, response do
       @network_interfaces.stub :delete, @promise do
         assert_raises(RuntimeError) { @service.delete_network_interface('fog-test-rg', 'fog-test-network-interface') }

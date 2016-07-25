@@ -4,7 +4,7 @@ module Fog
       # Real class for Network Request
       class Real
         def create_network_security_group(resource_group, name, location, security_rules)
-          Fog::Logger.debug "Creating Network Security Group #{name} in Resource Group #{resource_group}."
+          Fog::Logger.debug "Creating/Updating Network Security Group #{name} in Resource Group #{resource_group}."
           properties = Azure::ARM::Network::Models::NetworkSecurityGroupPropertiesFormat.new
           properties.security_rules = define_security_rules(security_rules)
 
@@ -14,10 +14,10 @@ module Fog
           begin
             promise = @network_client.network_security_groups.begin_create_or_update(resource_group, name, params)
             result = promise.value!
-            Fog::Logger.debug "Network Security Group #{name} Created Successfully!"
+            Fog::Logger.debug "Network Security Group #{name} Created/Updated Successfully!"
             Azure::ARM::Network::Models::NetworkSecurityGroup.serialize_object(result.body)
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Exception creating Network Security Group #{name} in Resource Group: #{resource_group}. #{e.body['error']['message']}"
+            msg = "Exception creating/updating Network Security Group #{name} in Resource Group: #{resource_group}. #{e.body['error']['message']}"
             raise msg
           end
         end

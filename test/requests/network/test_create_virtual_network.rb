@@ -42,7 +42,7 @@ class TestCreateVirtualNetwork < Minitest::Test
   end
 
   def test_create_virtual_network_exception_failure
-    response = -> { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
+    response = -> { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @promise.stub :value!, response do
       @virtual_networks.stub :create_or_update, @promise do
         assert_raises RuntimeError do

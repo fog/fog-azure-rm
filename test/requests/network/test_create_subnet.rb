@@ -32,7 +32,7 @@ class TestCreateSubnet < Minitest::Test
   end
 
   def test_create_subnet_exception_failure
-    response = -> { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
+    response = -> { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @promise.stub :value!, response do
       @subnets.stub :create_or_update, @promise do
         assert_raises RuntimeError do

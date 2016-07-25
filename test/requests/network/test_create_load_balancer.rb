@@ -38,7 +38,7 @@ class TestCreateLoadBalancer < Minitest::Test
   end
 
   def test_create_load_balancer_exception_failure
-    response = -> { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
+    response = -> { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @promise.stub :value!, response do
       frontend_ip_config = ApiStub::Requests::Network::LoadBalancer.frontend_ip_config
       backend_address_pool = ApiStub::Requests::Network::LoadBalancer.backend_address_pool

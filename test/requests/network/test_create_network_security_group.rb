@@ -33,7 +33,7 @@ class TestCreateNetworkSecurityGroup < Minitest::Test
   end
 
   def test_create_network_security_group_failure
-    response = -> { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
+    response = -> { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @promise.stub :value!, response do
       @network_security_groups.stub :begin_create_or_update, @promise do
         assert_raises RuntimeError do

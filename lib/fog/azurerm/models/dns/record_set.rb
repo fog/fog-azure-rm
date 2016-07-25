@@ -64,10 +64,17 @@ module Fog
 
         def update(options)
           if !options[:name].nil? || !options[:resource_group].nil? || !options[:zone_name].nil? || !options[:id].nil?
-            raise RuntimeError, "This attribute cannot be updated."
+            raise 'This attribute cannot be updated.'
           end
-          if !options[:records].nil?
-            raise RuntimeError, "Records cannot be updated. You can add/remove A type record in existing records."
+          if type.split('/').last == 'A'
+            if options[:type].nil? || options[:type] == 'A'
+              unless options[:records].nil?
+                raise 'A-type Records cannot be updated. You can add/remove A type record in existing records.'
+              end
+            end
+            if options[:type] == 'CNAME'
+              raise 'Conflict! A-type Record cannot be updated as CNAME type record.'
+            end
           end
           merge_attributes(options)
           record_set = service.create_record_set(resource_group, name, zone_name, records, type.split('/').last, ttl)

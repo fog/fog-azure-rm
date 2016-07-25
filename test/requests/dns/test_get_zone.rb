@@ -1,6 +1,6 @@
 require File.expand_path '../../test_helper', __dir__
 
-# Test class for Get Record Set
+# Test class for Get Zone
 class TestGetZone < Minitest::Test
   def setup
     @service = Fog::DNS::AzureRM.new(credentials)
@@ -16,6 +16,7 @@ class TestGetZone < Minitest::Test
       end
     end
   end
+
   def test_get_zone_failure
     @token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
       assert_raises ArgumentError do

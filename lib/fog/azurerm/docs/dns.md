@@ -105,19 +105,27 @@ Get an object of record set and then update that object
 ```ruby
       record_set.update(
         ttl:            '<Time to live(Integer)>,
-        type:           '<Record Type(A/CNAME)>'
+        type:           '<Record Type(A/CNAME)>'  
 )
 ```
 
-Note: You cannot modify name Record set name, resource group, zone name, and id.
-You can add or remove an A-type record in existing record sets, but cannot modify it.
+Note: 
+* You cannot modify name Record set name, resource group, zone name, and id.
+* You can add or remove an A-type record in existing record sets, but cannot modify it.
+* If record set object has type 'A', then you cannot give 'CNAME' in update. Its a conflict.
 
 ## Add/Remove Record set in Existing Record sets
 
-Add a record set by giving the value of record set in the form of string.
+Add a record by giving the value of record set in the form of string.
 
 ```ruby
-      record_set.add_a_type_record("1.2.3.8")
+      record_set.add_a_type_record('<Record>')
+```
+
+Remove record from existing records by giving its value in the form of string.
+
+```ruby
+      record_set.remove_a_type_record('<Record>')
 ```
 
 ## Destroy a single Record Set

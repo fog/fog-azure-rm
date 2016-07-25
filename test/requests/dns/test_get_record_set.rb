@@ -16,6 +16,7 @@ class TestGetRecordSet < Minitest::Test
       end
     end
   end
+
   def test_get_record_set_failure
     @token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
       assert_raises ArgumentError do

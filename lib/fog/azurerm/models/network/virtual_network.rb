@@ -50,7 +50,7 @@ module Fog
           if subnets.is_a?(Array)
             subnets.each do |subnet|
               if subnet.is_a?(Hash)
-                validate_params([:name] ,subnet)
+                validate_params([:name], subnet)
               else
                 raise(ArgumentError, ':subnets must be an Array of Hashes')
               end

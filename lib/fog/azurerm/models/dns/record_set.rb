@@ -64,7 +64,7 @@ module Fog
 
         def update(options)
           if !options[:name].nil? || !options[:resource_group].nil? || !options[:zone_name].nil? || !options[:id].nil?
-            raise 'This attribute cannot be updated.'
+            raise 'You cannot modify :name, :resource group, :zone_name, and :id'
           end
           if type.split('/').last == 'A'
             if options[:type].nil? || options[:type] == 'A'

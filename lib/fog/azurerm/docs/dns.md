@@ -110,7 +110,7 @@ Get an object of record set and then update that object
 ```
 
 Note: 
-* You cannot modify name Record set name, resource group, zone name, and id.
+* You cannot modify Record set name, resource group, zone name, and id.
 * You can add or remove an A-type record in existing record sets, but cannot modify it.
 * If record set object has type 'A', then you cannot give 'CNAME' in update. Its a conflict.
 

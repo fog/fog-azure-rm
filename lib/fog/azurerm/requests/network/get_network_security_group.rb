@@ -3,14 +3,14 @@ module Fog
     class AzureRM
       # Real class for Network Security Group Request
       class Real
-        def get_network_security_group(resource_group, name)
-          Fog::Logger.debug "Getting Network Security Group #{name} from Resource Group #{resource_group}."
+        def get_network_security_group(resource_group_name, security_group_name)
+          Fog::Logger.debug "Getting Network Security Group #{security_group_name} from Resource Group #{resource_group_name}."
           begin
-            promise = @network_client.network_security_groups.get(resource_group, name)
+            promise = @network_client.network_security_groups.get(resource_group_name, security_group_name)
             result = promise.value!
             Azure::ARM::Network::Models::NetworkSecurityGroup.serialize_object(result.body)
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Exception getting Network Security Group #{name} from Resource Group '#{resource_group}'. #{e.body['error']['message']}."
+            msg = "Exception getting Network Security Group #{security_group_name} from Resource Group '#{resource_group_name}'. #{e.body['error']['message']}."
             raise msg
           end
         end
@@ -18,10 +18,10 @@ module Fog
 
       # Mock class for Network Security Group Request
       class Mock
-        def get_network_security_group(resource_group, name)
+        def get_network_security_group(resource_group_name, security_group_name)
           {
-            'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/#{name}",
-            'name' => name,
+            'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group_name}/providers/Microsoft.Network/networkSecurityGroups/#{security_group_name}",
+            'name' => security_group_name,
             'type' => 'Microsoft.Network/networkSecurityGroups',
             'location' => 'westus',
             'properties' =>
@@ -29,7 +29,7 @@ module Fog
                 'securityRules' =>
                   [
                     {
-                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/#{name}/securityRules/testRule",
+                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group_name}/providers/Microsoft.Network/networkSecurityGroups/#{security_group_name}/securityRules/testRule",
                       'properties' =>
                         {
                           'protocol' => 'tcp',
@@ -48,7 +48,7 @@ module Fog
                 'defaultSecurityRules' =>
                   [
                     {
-                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/#{name}/defaultSecurityRules/AllowVnetInBound",
+                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group_name}/providers/Microsoft.Network/networkSecurityGroups/#{security_group_name}/defaultSecurityRules/AllowVnetInBound",
                       'properties' =>
                         {
                           'protocol' => '*',
@@ -65,7 +65,7 @@ module Fog
                       'name' => 'AllowVnetInBound'
                     },
                     {
-                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/#{name}/defaultSecurityRules/AllowAzureLoadBalancerInBound",
+                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group_name}/providers/Microsoft.Network/networkSecurityGroups/#{security_group_name}/defaultSecurityRules/AllowAzureLoadBalancerInBound",
                       'properties' =>
                         {
                           'protocol' => '*',
@@ -82,7 +82,7 @@ module Fog
                       'name' => 'AllowAzureLoadBalancerInBound'
                     },
                     {
-                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/#{name}/defaultSecurityRules/DenyAllInBound",
+                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group_name}/providers/Microsoft.Network/networkSecurityGroups/#{security_group_name}/defaultSecurityRules/DenyAllInBound",
                       'properties' =>
                         {
                           'protocol' => '*',
@@ -99,7 +99,7 @@ module Fog
                       'name' => 'DenyAllInBound'
                     },
                     {
-                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/#{name}/defaultSecurityRules/AllowVnetOutBound",
+                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group_name}/providers/Microsoft.Network/networkSecurityGroups/#{security_group_name}/defaultSecurityRules/AllowVnetOutBound",
                       'properties' =>
                         {
                           'protocol' => '*',
@@ -116,7 +116,7 @@ module Fog
                       'name' => 'AllowVnetOutBound'
                     },
                     {
-                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/#{name}/defaultSecurityRules/AllowInternetOutBound",
+                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group_name}/providers/Microsoft.Network/networkSecurityGroups/#{security_group_name}/defaultSecurityRules/AllowInternetOutBound",
                       'properties' =>
                         {
                           'protocol' => '*',
@@ -133,7 +133,7 @@ module Fog
                       'name' => 'AllowInternetOutBound'
                     },
                     {
-                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/#{name}/defaultSecurityRules/DenyAllOutBound",
+                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group_name}/providers/Microsoft.Network/networkSecurityGroups/#{security_group_name}/defaultSecurityRules/DenyAllOutBound",
                       'properties' =>
                         {
                           'protocol' => '*',

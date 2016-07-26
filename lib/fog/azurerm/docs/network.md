@@ -261,12 +261,12 @@ Get a single record of Network Security Group
     puts "#{nsg.name}"
 ```
 
-## Update Network Security Group
+## Update Security Rules
 
-You can update a network security group by passing the modified attributes in the form of hash.  
+You can update security rules by passing the modified attributes in the form of hash.  
 
 ```ruby
-      nsg.update(
+      nsg.update_security_rules(
         security_rules:
             [
                 {
@@ -283,7 +283,7 @@ You can update a network security group by passing the modified attributes in th
             ]
       )
 ```
-`Note: You can't modify Id, Name, Location or Resource-Group.`
+`Note: You can't modify Name of a security rule.`
 
 ## Add and Remove Security Rules in a Network Security Group
 
@@ -291,8 +291,6 @@ Add array of security rules in the form of hash.
 
 ```ruby
       nsg.add_security_rules(
-        '<Resource Group Name>',
-        '<Network Security Group name>',
             [
                 {
                     name: '<Security Rule name>',
@@ -312,10 +310,7 @@ Add array of security rules in the form of hash.
 Delete security rule by providing its name.
 
 ```ruby
-      nsg.remove_security_rule(
-        '<Resource Group Name>', 
-        '<Network Security Group name>',
-        '<Security Rule name>')
+      nsg.remove_security_rule('<Security Rule name>')
 ```
 
 ## Destroy a Network Security Group

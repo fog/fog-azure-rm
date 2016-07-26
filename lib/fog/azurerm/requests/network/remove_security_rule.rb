@@ -3,15 +3,15 @@ module Fog
     class AzureRM
       # Real class for Network Request
       class Real
-        def remove_security_rule(resource_group, security_group_name, security_rule_name)
+        def remove_security_rule(resource_group_name, security_group_name, security_rule_name)
           Fog::Logger.debug "Deleting security rule #{security_rule_name} from Network Security Group #{security_group_name}."
-          promise = @network_client.network_security_groups.get(resource_group, security_group_name)
+          promise = @network_client.network_security_groups.get(resource_group_name, security_group_name)
           result = promise.value!
           nsg = result.body
           updated_security_rule_list = remove_security_rule_from_list(nsg.properties.security_rules, security_rule_name)
           nsg.properties.security_rules = updated_security_rule_list
           begin
-            promise = @network_client.network_security_groups.begin_create_or_update(resource_group, security_group_name, nsg)
+            promise = @network_client.network_security_groups.begin_create_or_update(resource_group_name, security_group_name, nsg)
             result = promise.value!
             Fog::Logger.debug "Security Rule #{security_rule_name} deleted from Network Security Group #{security_group_name} successfully!"
             Azure::ARM::Network::Models::NetworkSecurityGroup.serialize_object(result.body)
@@ -30,10 +30,10 @@ module Fog
 
       # Mock class for Network Request
       class Mock
-        def remove_security_rule(resource_group, name, _security_rules)
+        def remove_security_rule(resource_group_name, security_group_name, _security_rule_name)
           {
-            'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/#{name}",
-            'name' => name,
+            'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group_name}/providers/Microsoft.Network/networkSecurityGroups/#{name}",
+            'name' => security_group_name,
             'type' => 'Microsoft.Network/networkSecurityGroups',
             'location' => 'location',
             'properties' =>
@@ -42,7 +42,7 @@ module Fog
                 'defaultSecurityRules' =>
                   [
                     {
-                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/#{name}/defaultSecurityRules/AllowVnetInBound",
+                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group_name}/providers/Microsoft.Network/networkSecurityGroups/#{security_group_name}/defaultSecurityRules/AllowVnetInBound",
                       'properties' =>
                         {
                           'protocol' => '*',
@@ -59,7 +59,7 @@ module Fog
                       'name' => 'AllowVnetInBound'
                     },
                     {
-                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/#{name}/defaultSecurityRules/AllowAzureLoadBalancerInBound",
+                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group_name}/providers/Microsoft.Network/networkSecurityGroups/#{security_group_name}/defaultSecurityRules/AllowAzureLoadBalancerInBound",
                       'properties' =>
                         {
                           'protocol' => '*',
@@ -76,7 +76,7 @@ module Fog
                       'name' => 'AllowAzureLoadBalancerInBound'
                     },
                     {
-                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/#{name}/defaultSecurityRules/DenyAllInBound",
+                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group_name}/providers/Microsoft.Network/networkSecurityGroups/#{security_group_name}/defaultSecurityRules/DenyAllInBound",
                       'properties' =>
                         {
                           'protocol' => '*',
@@ -93,7 +93,7 @@ module Fog
                       'name' => 'DenyAllInBound'
                     },
                     {
-                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/#{name}/defaultSecurityRules/AllowVnetOutBound",
+                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group_name}/providers/Microsoft.Network/networkSecurityGroups/#{security_group_name}/defaultSecurityRules/AllowVnetOutBound",
                       'properties' =>
                         {
                           'protocol' => '*',
@@ -110,7 +110,7 @@ module Fog
                       'name' => 'AllowVnetOutBound'
                     },
                     {
-                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/#{name}/defaultSecurityRules/AllowInternetOutBound",
+                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group_name}/providers/Microsoft.Network/networkSecurityGroups/#{security_group_name}/defaultSecurityRules/AllowInternetOutBound",
                       'properties' =>
                         {
                           'protocol' => '*',
@@ -127,7 +127,7 @@ module Fog
                       'name' => 'AllowInternetOutBound'
                     },
                     {
-                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/#{name}/defaultSecurityRules/DenyAllOutBound",
+                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group_name}/providers/Microsoft.Network/networkSecurityGroups/#{security_group_name}/defaultSecurityRules/DenyAllOutBound",
                       'properties' =>
                         {
                           'protocol' => '*',

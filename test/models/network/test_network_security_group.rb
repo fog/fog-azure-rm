@@ -11,7 +11,7 @@ class TestNetworkSecurityGroup < Minitest::Test
     methods = [
       :save,
       :destroy,
-      :update,
+      :update_security_rules,
       :add_security_rules,
       :remove_security_rule
     ]
@@ -38,7 +38,7 @@ class TestNetworkSecurityGroup < Minitest::Test
 
   def test_save_method_response
     response = ApiStub::Models::Network::NetworkSecurityGroup.create_network_security_group_response
-    @service.stub :create_network_security_group, response do
+    @service.stub :create_or_update_network_security_group, response do
       assert_instance_of Fog::Network::AzureRM::NetworkSecurityGroup, @network_security_group.save
     end
   end
@@ -51,9 +51,9 @@ class TestNetworkSecurityGroup < Minitest::Test
 
   def test_update_method_response
     response = ApiStub::Models::Network::NetworkSecurityGroup.create_network_security_group_response
-    @service.stub :create_network_security_group, response do
+    @service.stub :create_or_update_network_security_group, response do
       assert_instance_of Fog::Network::AzureRM::NetworkSecurityGroup,
-                         @network_security_group.update(
+                         @network_security_group.update_security_rules(
                            security_rules:
                              [
                                {
@@ -75,14 +75,14 @@ class TestNetworkSecurityGroup < Minitest::Test
   def test_add_security_rules_method_response
     response = ApiStub::Models::Network::NetworkSecurityGroup.create_network_security_group_response
     @service.stub :add_security_rules, response do
-      assert_instance_of Fog::Network::AzureRM::NetworkSecurityGroup, @network_security_group.add_security_rules('fog-test-rg', 'fog-test-nsg', ApiStub::Models::Network::NetworkSecurityGroup.security_rules_array)
+      assert_instance_of Fog::Network::AzureRM::NetworkSecurityGroup, @network_security_group.add_security_rules(ApiStub::Models::Network::NetworkSecurityGroup.security_rules_array)
     end
   end
 
   def test_remove_security_rule_method_response
     response = ApiStub::Models::Network::NetworkSecurityGroup.create_network_security_group_response
     @service.stub :remove_security_rule, response do
-      assert_instance_of Fog::Network::AzureRM::NetworkSecurityGroup, @network_security_group.remove_security_rule('fog-test-rg', 'fog-test-nsg', 'myNsRule')
+      assert_instance_of Fog::Network::AzureRM::NetworkSecurityGroup, @network_security_group.remove_security_rule('myNsRule')
     end
   end
 end

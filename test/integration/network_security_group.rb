@@ -57,14 +57,14 @@ network.network_security_groups.create(
 ########################################################################################################################
 
 nsg = network.network_security_groups.get('TestRG-NSG', 'testGroup')
-nsg.update(
+nsg.update_security_rules(
   security_rules:
     [
       {
         name: 'testRule',
         protocol: 'tcp',
         source_port_range: '*',
-        destination_port_range: '*',
+        destination_port_range: '22',
         source_address_prefix: '0.0.0.0/0',
         destination_address_prefix: '0.0.0.0/0',
         access: 'Allow',
@@ -79,8 +79,6 @@ nsg.update(
 ########################################################################################################################
 
 nsg.add_security_rules(
-  'TestRG-NSG',
-  'testGroup',
   [
     {
       name: 'testRule2',
@@ -95,8 +93,7 @@ nsg.add_security_rules(
     }
   ]
 )
-
-nsg.remove_security_rule('TestRG-NSG', 'testGroup', 'testRule')
+nsg.remove_security_rule('testRule')
 
 ########################################################################################################################
 ######################                                   CleanUp                                  ######################

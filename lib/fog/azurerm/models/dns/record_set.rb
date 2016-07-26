@@ -50,7 +50,7 @@ module Fog
           requires :records
           requires :type
           requires :ttl
-          record_set = service.create_record_set(resource_group, name, zone_name, records, type, ttl)
+          record_set = service.create_or_update_record_set(resource_group, name, zone_name, records, type, ttl)
           merge_attributes(Fog::DNS::AzureRM::RecordSet.parse(record_set))
         end
 
@@ -63,19 +63,19 @@ module Fog
         end
 
         def update_ttl(ttl)
-          record_set = service.create_record_set(resource_group, name, zone_name, records, type.split('/').last, ttl)
+          record_set = service.create_or_update_record_set(resource_group, name, zone_name, records, type.split('/').last, ttl)
           merge_attributes(Fog::DNS::AzureRM::RecordSet.parse(record_set))
         end
 
         def add_A_type_record(record)
           records << record
-          record_set = service.create_record_set(resource_group, name, zone_name, records, type.split('/').last, ttl)
+          record_set = service.create_or_update_record_set(resource_group, name, zone_name, records, type.split('/').last, ttl)
           merge_attributes(Fog::DNS::AzureRM::RecordSet.parse(record_set))
         end
 
         def remove_A_type_record(record)
           records.delete(record)
-          record_set = service.create_record_set(resource_group, name, zone_name, records, type.split('/').last, ttl)
+          record_set = service.create_or_update_record_set(resource_group, name, zone_name, records, type.split('/').last, ttl)
           merge_attributes(Fog::DNS::AzureRM::RecordSet.parse(record_set))
         end
       end

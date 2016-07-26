@@ -34,12 +34,12 @@ class TestRecordSet < Minitest::Test
   end
 
   def test_save_method_response
-    @service.stub :create_record_set, @response do
+    @service.stub :create_or_update_record_set, @response do
       assert_instance_of Fog::DNS::AzureRM::RecordSet, @record_set.save
     end
     record_set_cname = record_set_cname(@service)
     response = ApiStub::Models::DNS::RecordSet.response_for_cname
-    @service.stub :create_record_set, response do
+    @service.stub :create_or_update_record_set, response do
       assert_instance_of Fog::DNS::AzureRM::RecordSet, record_set_cname.save
     end
   end
@@ -63,22 +63,22 @@ class TestRecordSet < Minitest::Test
   end
 
   def test_update_ttl_response
-    @service.stub :create_record_set, @response do
+    @service.stub :create_or_update_record_set, @response do
       assert_instance_of Fog::DNS::AzureRM::RecordSet, @record_set.update_ttl(70)
       assert_raises ArgumentError do
-        @record_set.update_ttl(70,'fog-test-record-set')
+        @record_set.update_ttl(70, 'fog-test-record-set')
       end
     end
   end
 
-  def test_add_A_type_record_response
-    @service.stub :create_record_set, @response do
+  def test_add_a_type_record_response
+    @service.stub :create_or_update_record_set, @response do
       assert_instance_of Fog::DNS::AzureRM::RecordSet, @record_set.add_A_type_record('5.3.2.1')
     end
   end
 
-  def test_remove_A_type_record_response
-    @service.stub :create_record_set, @response do
+  def test_remove_a_type_record_response
+    @service.stub :create_or_update_record_set, @response do
       assert_instance_of Fog::DNS::AzureRM::RecordSet, @record_set.remove_A_type_record('5.3.2.1')
     end
   end

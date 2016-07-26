@@ -16,7 +16,7 @@ class TestDeleteRecordSet < Minitest::Test
     end
   end
 
-  def test_delte_record_set_failure
+  def test_delete_record_set_failure
     @token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
       assert_raises ArgumentError do
         @service.delete_record_set('fog-test-rg', 'fog-test-record-set', 'fog-test-zone')
@@ -24,7 +24,7 @@ class TestDeleteRecordSet < Minitest::Test
     end
   end
 
-  def test_create_record_set_exception
+  def test_delete_record_set_exception
     response = -> { fail Exception.new('mocked exception') }
     @token_provider.stub :get_authentication_header, response do
       assert_raises Exception do

@@ -16,7 +16,7 @@ class TestDeleteZone < Minitest::Test
     end
   end
 
-  def test_delte_zone_failure
+  def test_delete_zone_failure
     @token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
       assert_raises ArgumentError do
         @service.delete_zone('fog-test-zone')
@@ -24,7 +24,7 @@ class TestDeleteZone < Minitest::Test
     end
   end
 
-  def test_create_zone_exception
+  def test_delete_zone_exception
     response = -> { fail Exception.new('mocked exception') }
     @token_provider.stub :get_authentication_header, response do
       assert_raises Exception do

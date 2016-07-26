@@ -3,7 +3,7 @@ module Fog
     class AzureRM
       # Real class for DNS Request
       class Real
-        def create_record_set(resource_group, name, zone_name, records, record_type, ttl)
+        def create_or_update_record_set(resource_group, name, zone_name, records, record_type, ttl)
           resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription_id}/resourceGroups/#{resource_group}/providers/Microsoft.Network/dnsZones/#{zone_name}/#{record_type}/#{name}?api-version=2015-05-04-preview"
           Fog::Logger.debug "Creating/Updating RecordSet #{name} of type '#{record_type}' in zone #{zone_name}"
 
@@ -56,7 +56,7 @@ module Fog
 
       # Mock class for DNS Request
       class Mock
-        def create_record_set(resource_group, name, zone_name, records, record_type, ttl)
+        def create_or_update_record_set(resource_group, name, zone_name, records, record_type, ttl)
           if record_type == 'A'
             {
               'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/dnszones/#{zone_name}/#{record_type}/#{name}",

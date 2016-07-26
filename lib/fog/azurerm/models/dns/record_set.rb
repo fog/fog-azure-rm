@@ -63,7 +63,6 @@ module Fog
         end
 
         def update_ttl(ttl)
-          self.ttl =
           record_set = service.create_record_set(resource_group, name, zone_name, records, type.split('/').last, ttl)
           merge_attributes(Fog::DNS::AzureRM::RecordSet.parse(record_set))
         end

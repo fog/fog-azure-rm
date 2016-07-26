@@ -29,6 +29,7 @@ module Fog
       request :create_network_interface
       request :delete_network_interface
       request :list_network_interfaces
+      request :get_network_interface
       request :create_load_balancer
       request :delete_load_balancer
       request :list_load_balancers

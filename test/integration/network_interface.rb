@@ -70,7 +70,8 @@ network.network_interfaces.create(
 ######################                       Get and Delete Network Interface                     ######################
 ########################################################################################################################
 
-nic = network.network_interfaces(resource_group: 'TestRG-NI').get('NetInt')
+nic = network.network_interfaces.get('TestRG-NI','NetInt')
+puts nic.inspect
 nic.destroy
 
 ########################################################################################################################

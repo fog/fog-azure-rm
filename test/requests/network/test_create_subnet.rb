@@ -15,7 +15,7 @@ class TestCreateSubnet < Minitest::Test
     expected_response = Azure::ARM::Network::Models::Subnet.serialize_object(mocked_response.body)
     @promise.stub :value!, mocked_response do
       @subnets.stub :create_or_update, @promise do
-        assert_equal @service.create_subnet('fog-test-rg', 'fog-test-subnet', 'fog-test-virtual-network', '10.1.0.0/24'), expected_response
+        assert_equal @service.create_subnet('fog-test-rg', 'fog-test-subnet', 'fog-test-virtual-network', '10.1.0.0/24', 'nsg-id', 'table-id'), expected_response
       end
     end
   end
@@ -32,11 +32,11 @@ class TestCreateSubnet < Minitest::Test
   end
 
   def test_create_subnet_exception_failure
-    response = -> { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
+    response = -> { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @promise.stub :value!, response do
       @subnets.stub :create_or_update, @promise do
         assert_raises RuntimeError do
-          @service.create_subnet('fog-test-rg', 'fog-test-subnet', 'fog-test-virtual-network', '10.1.0.0/24')
+          @service.create_subnet('fog-test-rg', 'fog-test-subnet', 'fog-test-virtual-network', '10.1.0.0/24', 'nsg-id', 'table-id')
         end
       end
     end

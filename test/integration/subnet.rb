@@ -35,7 +35,8 @@ network.virtual_networks.create(
   name:             'testVnet',
   location:         'eastus',
   resource_group:   'TestRG-SN',
-  network_address_list:  '10.1.0.0/16,10.2.0.0/16'
+  dns_servers:       ['10.1.0.0', '10.2.0.0'],
+  address_prefixes:  ['10.1.0.0/16', '10.2.0.0/16']
 )
 
 ########################################################################################################################
@@ -45,7 +46,7 @@ network.virtual_networks.create(
 network.subnets.create(
   name: 'mysubnet',
   resource_group: 'TestRG-SN',
-  virtual_network_name: 'testVnet',
+  virtual_network_name: 'testvnet',
   address_prefix: '10.1.0.0/24'
 )
 

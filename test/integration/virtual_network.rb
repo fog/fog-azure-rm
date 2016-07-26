@@ -35,26 +35,29 @@ rs.resource_groups.create(
 ######################                   Check Virtual Network name Availability                  ######################
 ########################################################################################################################
 
-network.virtual_networks.check_name_availability('testVnet', 'TestRG-VN')
+network.virtual_networks.check_if_exists('testVnet', 'TestRG-VN')
 
 ########################################################################################################################
 ######################            Create Virtual Network with complete parameters list            ######################
 ########################################################################################################################
 
 network.virtual_networks.create(
-  name: 'testVnet',
-  location: 'eastus',
-  resource_group: 'TestRG-VN',
-  subnet_address_list: '10.1.0.0/24',
-  dns_list: '10.1.0.5,10.1.0.6',
-  network_address_list: '10.1.0.0/16,10.2.0.0/16'
+  name:             'testVnet',
+  location:         'eastus',
+  resource_group:   'TestRG-VN',
+  subnets:          [{
+    name: 'mysubnet',
+    address_prefix: '10.1.0.0/24'
+  }],
+  dns_servers:       ['10.1.0.0', '10.2.0.0'],
+  address_prefixes:  ['10.1.0.0/16', '10.2.0.0/16']
 )
 
 ########################################################################################################################
 ######################                      Get and Destroy Virtual Network                       ######################
 ########################################################################################################################
 
-vnet = network.virtual_networks.get('testVnet', 'TestRG-VN')
+vnet = network.virtual_networks(resource_group: 'TestRG-VN').get('testVnet')
 vnet.destroy
 
 ########################################################################################################################

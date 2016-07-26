@@ -117,27 +117,28 @@ end
 def subnet(service)
   Fog::Network::AzureRM::Subnet.new(
     name: 'fog-test-subnet',
-    id: '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/virtualNetworks/fog-test-virtual-network/subnets/fog-test-subnet',
     resource_group: 'fog-test-rg',
-    virtual_network_name: 'fog-test-virtual-network',
-    properties: nil,
-    addressPrefix: '10.1.0.0/24',
-    networkSecurityGroupId: '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/networkSecurityGroups/fog-test-network-security-group',
-    routeTableId: '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/routeTables/fog-test-route-table',
+    virtual_network_name: 'vnet1',
+    address_prefix: '10.0.0.0/24',
+    network_security_group_id: '/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups/myNSG1',
+    route_table_id: '/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeTables/myRT1',
     service: service
   )
 end
 
 def virtual_network(service)
   Fog::Network::AzureRM::VirtualNetwork.new(
-    name: 'fog-test-virtual-network',
-    id: '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/virtualNetworks/fog-test-virtual-network',
-    resource_group: 'fog-test-rg',
-    location: 'West US',
-    dns_list: '10.1.0.5,10.1.0.6',
-    subnet_address_list: '10.1.0.0/24',
-    network_address_list: '10.1.0.0/16,10.2.0.0/16',
-    properties: nil,
+    name:             'fog-test-virtual-network',
+    location:         'westus',
+    resource_group:   'fog-test-rg',
+    subnets:          [{
+      name: 'fog-test-subnet',
+      address_prefix: '10.1.0.0/24',
+      network_security_group_id: '/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups/myNSG1',
+      route_table_id: '/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeTables/myRT1'
+    }],
+    dns_servers:       ['10.1.0.0', '10.2.0.0'],
+    address_prefixes:  ['10.1.0.0/16', '10.2.0.0/16'],
     service: service
   )
 end

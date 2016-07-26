@@ -103,29 +103,27 @@ Get a single record of Record Set
 Get an object of record set and then update that object
 
 ```ruby
-      record_set.update(
-        ttl:            '<Time to live(Integer)>,
-        type:           '<Record Type(A/CNAME)>'  
+      record_set.update_ttl(
+        ttl:            '<Time to live(Integer)>, 
 )
 ```
 
 Note: 
-* You cannot modify Record set name, resource group, zone name, and id.
-* You can add or remove an A-type record in existing record sets, but cannot modify it.
-* If record set object has type 'A', then you cannot give 'CNAME' in update. Its a conflict.
+* You cannot modify name, resource_group, zone_name, type and id.
+* You can only modify ttl.
 
 ## Add/Remove Record set in Existing Record sets
 
 Add a record by giving the value of record set in the form of string.
 
 ```ruby
-      record_set.add_a_type_record('<Record>')
+      record_set.add_A_type_record('<Record>')
 ```
 
 Remove record from existing records by giving its value in the form of string.
 
 ```ruby
-      record_set.remove_a_type_record('<Record>')
+      record_set.remove_A_type_record('<Record>')
 ```
 
 ## Destroy a single Record Set

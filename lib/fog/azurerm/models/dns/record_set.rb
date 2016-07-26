@@ -62,32 +62,22 @@ module Fog
           service.get_records_from_record_set(resource_group, name, zone_name, record_type)
         end
 
-        def update(options)
-          if !options[:name].nil? || !options[:resource_group].nil? || !options[:zone_name].nil? || !options[:id].nil?
-            raise 'You cannot modify :name, :resource group, :zone_name, and :id'
-          end
-          if type.split('/').last == 'A'
-            if options[:type].nil? || options[:type] == 'A'
-              unless options[:records].nil?
-                raise 'A-type Records cannot be updated. You can add/remove A type record in existing records.'
-              end
-            end
-            if options[:type] == 'CNAME'
-              raise 'Conflict! A-type Record cannot be updated as CNAME type record.'
-            end
+        def update_ttl(options)
+          if !options[:name].nil? || !options[:resource_group].nil? || !options[:zone_name].nil? || !options[:id].nil? || !options[:type].nil? || !options[:records].nil?
+            raise 'You cannot modify :name, :resource group, :records, :zone_name, :type and :id'
           end
           merge_attributes(options)
           record_set = service.create_record_set(resource_group, name, zone_name, records, type.split('/').last, ttl)
           merge_attributes(Fog::DNS::AzureRM::RecordSet.parse(record_set))
         end
 
-        def add_a_type_record(record)
+        def add_A_type_record(record)
           records << record
           record_set = service.create_record_set(resource_group, name, zone_name, records, type.split('/').last, ttl)
           merge_attributes(Fog::DNS::AzureRM::RecordSet.parse(record_set))
         end
 
-        def remove_a_type_record(record)
+        def remove_A_type_record(record)
           records.delete(record)
           record_set = service.create_record_set(resource_group, name, zone_name, records, type.split('/').last, ttl)
           merge_attributes(Fog::DNS::AzureRM::RecordSet.parse(record_set))

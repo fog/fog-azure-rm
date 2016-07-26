@@ -57,30 +57,30 @@ class TestRecordSet < Minitest::Test
     end
   end
 
-  def test_update_response
+  def test_update_ttl_response
     @service.stub :create_record_set, @response do
-      assert_instance_of Fog::DNS::AzureRM::RecordSet, @record_set.update(ttl: 70)
+      assert_instance_of Fog::DNS::AzureRM::RecordSet, @record_set.update_ttl(ttl: 70)
       assert_raises RuntimeError do
-        @record_set.update(type: 'CNAME')
+        @record_set.update_ttl(type: 'CNAME')
       end
       assert_raises RuntimeError do
-        @record_set.update(ttl: 70, name: 'fog-test-record-set')
+        @record_set.update_ttl(ttl: 70, name: 'fog-test-record-set')
       end
       assert_raises RuntimeError do
-        @record_set.update(records: ['4.3.2.1', '5.3.2.1'])
+        @record_set.update_ttl(records: ['4.3.2.1', '5.3.2.1'])
       end
     end
   end
 
-  def test_add_a_type_record_response
+  def test_add_A_type_record_response
     @service.stub :create_record_set, @response do
-      assert_instance_of Fog::DNS::AzureRM::RecordSet, @record_set.add_a_type_record('5.3.2.1')
+      assert_instance_of Fog::DNS::AzureRM::RecordSet, @record_set.add_A_type_record('5.3.2.1')
     end
   end
 
-  def test_remove_a_type_record_response
+  def test_remove_A_type_record_response
     @service.stub :create_record_set, @response do
-      assert_instance_of Fog::DNS::AzureRM::RecordSet, @record_set.remove_a_type_record('5.3.2.1')
+      assert_instance_of Fog::DNS::AzureRM::RecordSet, @record_set.remove_A_type_record('5.3.2.1')
     end
   end
 end

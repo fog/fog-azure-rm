@@ -8,7 +8,7 @@ require 'yaml'
 
 azure_credentials = YAML.load_file('credentials/azure.yml')
 
-r_s = Fog::Resources::AzureRM.new(
+resource = Fog::Resources::AzureRM.new(
   tenant_id: azure_credentials['tenant_id'],
   client_id: azure_credentials['client_id'],
   client_secret: azure_credentials['client_secret'],
@@ -27,7 +27,7 @@ dns = Fog::DNS.new(
 ######################                                 Prerequisites                              ######################
 ########################################################################################################################
 
-r_s.resource_groups.create(
+resource.resource_groups.create(
   name: 'TestRG-RS',
   location: 'eastus'
 )
@@ -67,40 +67,40 @@ dns.record_sets.create(
 ######################                Get And Destroy CNAME Type Record Set in a Zone             ######################
 ########################################################################################################################
 
-rs = dns.record_sets.get('TestRG-RS', 'TestRS1', 'test-zone.com', 'CNAME')
-rs.destroy
+record_set = dns.record_sets.get('TestRG-RS', 'TestRS1', 'test-zone.com', 'CNAME')
+record_set.destroy
 
 ########################################################################################################################
 ######################                  Get And Destroy A Type Record Set in a Zone               ######################
 ########################################################################################################################
 
-rs = dns.record_sets.get('TestRG-RS', 'TestRS2', 'test-zone.com', 'A')
+record_set = dns.record_sets.get('TestRG-RS', 'TestRS2', 'test-zone.com', 'A')
 
 ########################################################################################################################
 ######################                               Update a Record Set                          ######################
 ########################################################################################################################
 
-rs.update(:ttl => 80)
+record_set.update_ttl(:ttl => 80)
 
 ########################################################################################################################
 ######################                               Add an A-type Record                         ######################
 ########################################################################################################################
 
-rs.add_a_type_record('1.2.3.8')
+record_set.add_A_type_record('1.2.3.8')
 
 ########################################################################################################################
 ######################                            Remove an A-type Record                         ######################
 ########################################################################################################################
 
-rs.remove_a_type_record('1.2.3.8')
+record_set.remove_A_type_record('1.2.3.8')
 
 ########################################################################################################################
 ######################                                   CleanUp                                  ######################
 ########################################################################################################################
 
-rs.destroy
+record_set.destroy
 zone = dns.zones.get('TestRG-RS', 'test-zone.com')
 zone.destroy
 
-rg = r_s.resource_groups.get('TestRG-RS')
+rg = resource.resource_groups.get('TestRG-RS')
 rg.destroy

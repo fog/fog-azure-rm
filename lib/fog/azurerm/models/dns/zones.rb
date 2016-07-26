@@ -19,8 +19,7 @@ module Fog
 
         def get(resource_group, name)
           zone = service.get_zone(resource_group, name)
-          zone_obj = Fog::DNS::AzureRM::Zone.new
-          zone_obj.instance_variable_set(:@service, service)
+          zone_obj = Fog::DNS::AzureRM::Zone.new(service: service)
           zone_obj.merge_attributes(Fog::DNS::AzureRM::Zone.parse(zone))
         end
 

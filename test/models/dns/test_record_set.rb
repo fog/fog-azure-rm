@@ -73,13 +73,13 @@ class TestRecordSet < Minitest::Test
 
   def test_add_a_type_record_response
     @service.stub :create_or_update_record_set, @response do
-      assert_instance_of Fog::DNS::AzureRM::RecordSet, @record_set.add_A_type_record('5.3.2.1')
+      assert_instance_of Fog::DNS::AzureRM::RecordSet, @record_set.add_a_type_record('5.3.2.1')
     end
   end
 
   def test_remove_a_type_record_response
     @service.stub :create_or_update_record_set, @response do
-      assert_instance_of Fog::DNS::AzureRM::RecordSet, @record_set.remove_A_type_record('5.3.2.1')
+      assert_instance_of Fog::DNS::AzureRM::RecordSet, @record_set.remove_a_type_record('5.3.2.1')
     end
   end
 end

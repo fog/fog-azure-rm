@@ -113,13 +113,13 @@ Get an object of record set and then update TTL
 Add a record by giving the value of record set in the form of string.
 
 ```ruby
-      record_set.add_A_type_record('<Record>')
+      record_set.add_a_type_record('<Record>')
 ```
 
 Remove record from existing records by giving its value in the form of string.
 
 ```ruby
-      record_set.remove_A_type_record('<Record>')
+      record_set.remove_a_type_record('<Record>')
 ```
 
 ## Destroy a single Record Set

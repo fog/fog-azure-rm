@@ -67,13 +67,13 @@ module Fog
           merge_attributes(Fog::DNS::AzureRM::RecordSet.parse(record_set))
         end
 
-        def add_A_type_record(record)
+        def add_a_type_record(record)
           records << record
           record_set = service.create_or_update_record_set(resource_group, name, zone_name, records, type.split('/').last, ttl)
           merge_attributes(Fog::DNS::AzureRM::RecordSet.parse(record_set))
         end
 
-        def remove_A_type_record(record)
+        def remove_a_type_record(record)
           records.delete(record)
           record_set = service.create_or_update_record_set(resource_group, name, zone_name, records, type.split('/').last, ttl)
           merge_attributes(Fog::DNS::AzureRM::RecordSet.parse(record_set))

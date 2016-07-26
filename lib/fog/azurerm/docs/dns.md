@@ -98,19 +98,15 @@ Get a single record of Record Set
       puts "#{record_set.name}"
 ```
 
-## Update Record Set
+## Update TTL
 
-Get an object of record set and then update that object
+Get an object of record set and then update TTL 
 
 ```ruby
       record_set.update_ttl(
         ttl:            '<Time to live(Integer)>, 
 )
 ```
-
-Note: 
-* You cannot modify name, resource_group, zone_name, type and id.
-* You can only modify ttl.
 
 ## Add/Remove Record set in Existing Record sets
 

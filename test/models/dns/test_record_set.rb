@@ -37,6 +37,11 @@ class TestRecordSet < Minitest::Test
     @service.stub :create_record_set, @response do
       assert_instance_of Fog::DNS::AzureRM::RecordSet, @record_set.save
     end
+    record_set_cname = record_set_cname(@service)
+    response = ApiStub::Models::DNS::RecordSet.response_for_cname
+    @service.stub :create_record_set, response do
+      assert_instance_of Fog::DNS::AzureRM::RecordSet, record_set_cname.save
+    end
   end
 
   def test_destroy_method_true_response
@@ -59,15 +64,9 @@ class TestRecordSet < Minitest::Test
 
   def test_update_ttl_response
     @service.stub :create_record_set, @response do
-      assert_instance_of Fog::DNS::AzureRM::RecordSet, @record_set.update_ttl(ttl: 70)
-      assert_raises RuntimeError do
-        @record_set.update_ttl(type: 'CNAME')
-      end
-      assert_raises RuntimeError do
-        @record_set.update_ttl(ttl: 70, name: 'fog-test-record-set')
-      end
-      assert_raises RuntimeError do
-        @record_set.update_ttl(records: ['4.3.2.1', '5.3.2.1'])
+      assert_instance_of Fog::DNS::AzureRM::RecordSet, @record_set.update_ttl(70)
+      assert_raises ArgumentError do
+        @record_set.update_ttl(70,'fog-test-record-set')
       end
     end
   end

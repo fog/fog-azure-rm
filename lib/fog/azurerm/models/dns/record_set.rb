@@ -62,11 +62,8 @@ module Fog
           service.get_records_from_record_set(resource_group, name, zone_name, record_type)
         end
 
-        def update_ttl(options)
-          if !options[:name].nil? || !options[:resource_group].nil? || !options[:zone_name].nil? || !options[:id].nil? || !options[:type].nil? || !options[:records].nil?
-            raise 'You cannot modify :name, :resource group, :records, :zone_name, :type and :id'
-          end
-          merge_attributes(options)
+        def update_ttl(ttl)
+          self.ttl =
           record_set = service.create_record_set(resource_group, name, zone_name, records, type.split('/').last, ttl)
           merge_attributes(Fog::DNS::AzureRM::RecordSet.parse(record_set))
         end

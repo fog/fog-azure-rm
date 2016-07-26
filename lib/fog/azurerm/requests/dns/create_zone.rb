@@ -4,7 +4,7 @@ module Fog
       # Real class for DNS Request
       class Real
         def create_zone(resource_group, name)
-          Fog::Logger.debug "Creating Zone #{name} ..."
+          Fog::Logger.debug "Creating/Updating Zone #{name} ..."
           resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription_id}/resourceGroups/#{resource_group}/providers/Microsoft.Network/dnsZones/#{name}?api-version=2015-05-04-preview"
 
           body = {

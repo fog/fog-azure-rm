@@ -246,6 +246,18 @@ def record_set(service)
   )
 end
 
+def record_set_cname(service)
+  Fog::DNS::AzureRM::RecordSet.new(
+      name: 'fog-test-record_set',
+      resource_group: 'fog-test-rg',
+      zone_name: 'fog-test-zone.com',
+      records: %w(1.2.3.4 1.2.3.3),
+      type: 'CNAME',
+      ttl: 60,
+      service: service
+  )
+end
+
 def network_security_group(service)
   Fog::Network::AzureRM::NetworkSecurityGroup.new(
     name: 'fog-test-nsg',

@@ -83,11 +83,11 @@ module ApiStub
 
         def self.record_set_response_for_cname_type
           '{
-            "id": "/subscriptions/6bb4a28a-db84-4e8a-b1dc-fabf7bd9f0b2/resourceGroups/EdgeMonitoring2/providers/Microsoft.Network/dnszones/edgemonitoring2.com./A/www",
+            "id": "/subscriptions/6bb4a28a-db84-4e8a-b1dc-fabf7bd9f0b2/resourceGroups/EdgeMonitoring2/providers/Microsoft.Network/dnszones/edgemonitoring2.com./CNAME/www",
             "location": "global",
             "name": "www",
             "tags": {},
-            "type": "Microsoft.Network/dnszones/A",
+            "type": "Microsoft.Network/dnszones/CNAME",
             "etag": "5b83020b-b59c-44be-8f19-a052ebe80fe7",
             "properties": {
               "metadata": "nil",

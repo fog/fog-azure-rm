@@ -25,16 +25,19 @@ Next, create a connection to the Network Service:
 
 Create a new virtual network
 
+Optional parameters for Virtual Network: subnets, dns_servers & address_prefixes
+Optional parameters for Subnet: network_security_group_id, route_table_id & address_prefix
+
 ```ruby
-    vnet = network.virtual_networks.create(
+    vnet = azure_network_service.virtual_networks.create(
       name:             '<Virtual Network Name>',
       location:         'westus',
       resource_group:   '<Resource Group Name>',
       subnets:          [{
         name: '<Subnet Name>',
         address_prefix: '10.1.0.0/24',
-        network_security_group_id: '/subscriptions/######/resourceGroups/fog-rg/providers/Microsoft.Network/networkSecurityGroups/fognsg',
-        route_table_id: '/subscriptions/######/resourceGroups/fog-rg/providers/Microsoft.Network/routeTables/fogtable'
+        network_security_group_id: '/subscriptions/<Subscription Id>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/networkSecurityGroups/<Network Security Group Name>',
+        route_table_id: '/subscriptions/<Subscription Id>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/routeTables/<Route Table Name>'
       }],
       dns_servers:       ['10.1.0.0','10.2.0.0'],
       address_prefixes:  ['10.1.0.0/16','10.2.0.0/16']
@@ -54,10 +57,10 @@ Checks if the Virtual Network already exists or not.
 List all virtual networks in a subscription
 
 ```ruby
-    vnets  = azure_network_service.virtual_networks
+    vnets  = azure_network_service.virtual_networks(resource_group: '<Resource Group Name>')
     vnets.each do |vnet|
-        puts "#{vnet.name}"
-        puts "#{vnet.location}"
+      puts "#{vnet.name}"
+      puts "#{vnet.location}"
     end
 ```
 
@@ -67,9 +70,9 @@ Get a single record of virtual network
 
 ```ruby
       vnet = azure_network_service
-                    .virtual_networks
-                    .get('<Virtual Network name>', '<Resource Group name>')
-        puts "#{vnet.name}"
+               .virtual_networks(resource_group: '<Resource Group Name>')
+               .get('<Virtual Network name>')
+      puts "#{vnet.name}"
 ```
 
 ## Destroy a single virtual network
@@ -84,14 +87,16 @@ Get virtual network object from the get method and then destroy that virtual net
 
 Create a new Subnet
 
+Optional parameters: network_security_group_id, route_table_id & address_prefix
+
 ```ruby
-    subnet = network.subnets.create(
+    subnet = azure_network_service.subnets.create(
       name: '<Subnet Name>',
       resource_group: '<Resource Group Name>',
       virtual_network_name: '<Virtual Network Name>',
       address_prefix: '10.0.0.0/24',
-      network_security_group_id: '/subscriptions/######/resourceGroups/fog-rg/providers/Microsoft.Network/networkSecurityGroups/fog-nsg',
-      route_table_id: '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/confizRG/providers/Microsoft.Network/routeTables/fog-able'
+      network_security_group_id: '/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/networkSecurityGroups/<Network Security Group Name>',
+      route_table_id: '/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/routeTables/<Route Table Name>'
     )
 ```
 

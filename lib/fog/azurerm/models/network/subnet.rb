@@ -16,12 +16,12 @@ module Fog
           hash = {}
           hash['id'] = subnet['id']
           hash['name'] = subnet['name']
-          hash['resource_group'] = subnet['id'].split('/')[4]
-          hash['virtual_network_name'] = subnet['id'].split('/')[8]
+          hash['resource_group'] = get_resource_group_from_id(subnet['id'])
+          hash['virtual_network_name'] = get_virtual_network_from_id(subnet['id'])
           hash['address_prefix'] = subnet['properties']['addressPrefix']
           hash['network_security_group_id'] = subnet['properties']['networkSecurityGroup']['id'] unless subnet['properties']['networkSecurityGroup'].nil?
           hash['route_table_id'] = subnet['properties']['routeTable']['id'] unless subnet['properties']['routeTable'].nil?
-          hash['ip_configurations_ids'] = subnet['properties']['ipConfigurations']
+          hash['ip_configurations_ids'] = subnet['properties']['ipConfigurations'].map { |item| item['id'] } unless subnet['properties']['ipConfigurations'].nil?
           hash
         end
 

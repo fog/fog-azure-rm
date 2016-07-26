@@ -26,7 +26,7 @@ module Fog
 
           if address_prefixes.nil? || !address_prefixes.any?
             address_space = Azure::ARM::Network::Models::AddressSpace.new
-            address_space.address_prefixes = ['10.2.0.0/16']
+            address_space.address_prefixes = DEFAULT_ADDRESS_PREFIXES
           else
             address_space = Azure::ARM::Network::Models::AddressSpace.new
             address_space.address_prefixes = address_prefixes

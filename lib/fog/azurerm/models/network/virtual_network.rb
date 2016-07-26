@@ -16,7 +16,7 @@ module Fog
           hash = {}
           hash['id'] = vnet['id']
           hash['name'] = vnet['name']
-          hash['resource_group'] = vnet['id'].split('/')[4]
+          hash['resource_group'] = get_resource_group_from_id(vnet['id'])
           hash['location'] = vnet['location']
           hash['dns_servers'] = vnet['properties']['dhcpOptions']['dnsServers'] unless vnet['properties']['dhcpOptions'].nil?
           hash['address_prefixes'] = vnet['properties']['addressSpace']['addressPrefixes'] unless vnet['properties']['addressSpace']['addressPrefixes'].nil?
@@ -24,7 +24,7 @@ module Fog
           subnets = []
           vnet['properties']['subnets'].each do |subnet|
             subnet_object = Fog::Network::AzureRM::Subnet.new
-            subnets << subnet_object.merge_attributes(Fog::Network::AzureRM::Subnet.parse(subnet))
+            subnets.push(subnet_object.merge_attributes(Fog::Network::AzureRM::Subnet.parse(subnet)))
           end
           hash['subnets'] = subnets
           hash
@@ -50,26 +50,13 @@ module Fog
           if subnets.is_a?(Array)
             subnets.each do |subnet|
               if subnet.is_a?(Hash)
-                validate_subnet_params(subnet)
+                validate_params([:name] ,subnet)
               else
                 raise(ArgumentError, ':subnets must be an Array of Hashes')
               end
             end
           else
             raise(ArgumentError, ':subnets must be an Array')
-          end
-        end
-
-        def validate_subnet_params(nsr)
-          required_params = [
-            :name,
-            :address_prefix
-          ]
-          missing = required_params.select { |p| p unless nsr.key?(p) }
-          if missing.length == 1
-            raise(ArgumentError, "Subnet #{missing.first} is required for this operation")
-          elsif missing.any?
-            raise(ArgumentError, "Subnet #{missing[0...-1].join(', ')} and #{missing[-1]} are required for this operation")
           end
         end
       end

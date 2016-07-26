@@ -6,19 +6,20 @@ module Fog
         def create_subnet(resource_group, name, virtual_network_name, address_prefix, network_security_group_id, route_table_id)
           Fog::Logger.debug "Creating Subnet: #{name}."
 
+          subnet = Azure::ARM::Network::Models::Subnet.new
+          subnet_properties = Azure::ARM::Network::Models::SubnetPropertiesFormat.new
           network_security_group = Azure::ARM::Network::Models::NetworkSecurityGroup.new
-          network_security_group.id = network_security_group_id
-
           route_table = Azure::ARM::Network::Models::RouteTable.new
+
+          subnet.name = name
+          subnet_properties.address_prefix = address_prefix
+
+          network_security_group.id = network_security_group_id
           route_table.id = route_table_id
 
-          subnet_properties = Azure::ARM::Network::Models::SubnetPropertiesFormat.new
-          subnet_properties.address_prefix = address_prefix unless address_prefix.nil?
           subnet_properties.network_security_group = network_security_group unless network_security_group_id.nil?
           subnet_properties.route_table = route_table unless route_table_id.nil?
 
-          subnet = Azure::ARM::Network::Models::Subnet.new
-          subnet.name = name
           subnet.properties = subnet_properties
           begin
             promise = @network_client.subnets.create_or_update(resource_group, virtual_network_name, name, subnet)
@@ -34,15 +35,15 @@ module Fog
 
       # Mock class for Network Request
       class Mock
-        def create_subnet(resource_group, name, virtual_network_name, address_prefix)
+        def create_subnet(*)
           {
-            'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/virtualNetworks/#{virtual_network_name}/subnets/#{name}",
+            'id' => "/subscriptions/########-####-####-####-############/resourceGroups/fog-rg/providers/Microsoft.Network/virtualNetworks/fog-vnet/subnets/fog-subnet",
             'properties' =>
               {
-                'addressPrefix' => address_prefix,
+                'addressPrefix' => '10.1.0.0/24',
                 'provisioningState' => 'Succeeded'
               },
-            'name' => name
+            'name' => 'fog-subnet'
           }
         end
       end

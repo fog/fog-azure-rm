@@ -83,6 +83,7 @@ def storage_account(service)
     name: 'storage-account',
     location: 'West US',
     resource_group: 'fog-test-rg',
+    account_type: 'Standard',
     service: service
   )
 end

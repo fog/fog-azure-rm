@@ -36,6 +36,18 @@ class TestStorageAccount < Minitest::Test
     @service.stub :create_storage_account, @response do
       assert_instance_of Fog::Storage::AzureRM::StorageAccount, @storage_account.save
     end
+    storage_account = Fog::Storage::AzureRM::StorageAccount.new(
+      name: 'storage-account',
+      location: 'West US',
+      resource_group: 'fog-test-rg',
+      account_type: 'Other',
+      service: @service
+    )
+    @service.stub :create_storage_account, @response do
+      assert_raises RuntimeError do
+        storage_account.save
+      end
+    end
   end
 
   def test_get_access_keys_method_response

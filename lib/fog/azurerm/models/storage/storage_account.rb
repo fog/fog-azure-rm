@@ -13,17 +13,25 @@ module Fog
           requires :name
           requires :location
           requires :resource_group
+          requires :account_type
+
           hash = {}
           # Create a model for new storage account.
           properties = Azure::ARM::Storage::Models::StorageAccountPropertiesCreateParameters.new
-          properties.account_type = 'Standard_LRS' # This might change in the near future!
-
+          validate_account_type
+          properties.account_type = "#{account_type}_LRS"
           params = Azure::ARM::Storage::Models::StorageAccountCreateParameters.new
           params.properties = properties
           params.location = location
           sa = service.create_storage_account(resource_group, name, params)
           hash['account_type'] = sa['properties']['accountType']
           merge_attributes(hash)
+        end
+
+        def validate_account_type
+          if account_type != 'Standard' && account_type != 'Premium'
+            raise 'Account Type can only be Standard or Premium'
+          end
         end
 
         def get_access_keys(options = {})

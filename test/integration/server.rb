@@ -48,7 +48,8 @@ rs.resource_groups.create(
 storage.storage_accounts.create(
   name: 'fogstorageac',
   location: 'eastus',
-  resource_group: 'TestRG-VM'
+  resource_group: 'TestRG-VM',
+  account_type: 'Standard'
 )
 
 network.virtual_networks.create(

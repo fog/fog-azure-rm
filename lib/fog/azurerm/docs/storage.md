@@ -66,9 +66,13 @@ Create a new storage account
 azure_storage_service.storage_accounts.create(
   :name => '<Storage Account name>',
   :location => 'West US',
-  :resource_group => '<Resource Group name>'
+  :resource_group => '<Resource Group name>',
+  :account_type => '<Standard/Premium>'
 )
 ```
+
+Premium Storage account store data on solid state drives (SSDs). For more details on standard and premium storage accounts, see [Introduction to Microsoft Azure Storage](https://azure.microsoft.com/en-us/documentation/articles/storage-introduction/) and [Premium Storage: High-Performance Storage for Azure Virtual Machine Workloads](https://azure.microsoft.com/en-us/documentation/articles/storage-premium-storage/).
+
 ## List storage accounts
 
 ##### List storage accounts in a subscription

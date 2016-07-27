@@ -38,21 +38,34 @@ rs.resource_groups.create(
 storage.storage_accounts.check_name_availability('test-storage')
 
 ########################################################################################################################
-######################                             Create Storage Account                         ######################
+######################                             Create A Standard Storage Account              ######################
 ########################################################################################################################
 
-storage = storage.storage_accounts.create(
-  name: 'test-storage',
+storage.storage_accounts.create(
+  name: 'fogstandardsa',
   location: 'eastus',
-  resource_group: 'TestRG-SA'
+  resource_group: 'TestRG-SA',
+)
+
+########################################################################################################################
+######################                         Create A Premium(SSD) Storage Account              ######################
+########################################################################################################################
+
+storage.storage_accounts.create(
+    name: 'fogpremiumsa',
+    location: 'eastus',
+    resource_group: 'TestRG-SA',
+    account_type: 'Premium'
 )
 
 ########################################################################################################################
 ######################                         Get and Delete Storage Account                     ######################
 ########################################################################################################################
 
-storage = storage.storage_accounts(resource_group: 'TestRG-SA').get('test-storage')
-storage.destroy
+storage_standard = storage.storage_accounts(resource_group: 'TestRG-SA').get('fogstandardsa')
+storage_standard.destroy
+storage_premium = storage.storage_accounts(resource_group: 'TestRG-SA').get('fogpremiumsa')
+storage_premium.destroy
 
 ########################################################################################################################
 ######################                                   CleanUp                                  ######################

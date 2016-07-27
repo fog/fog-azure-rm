@@ -1,3 +1,5 @@
+STANDARD = 'Standard'.freeze
+PREMIUM = 'Premium'.freeze
 module Fog
   module Storage
     class AzureRM
@@ -18,7 +20,7 @@ module Fog
           hash = {}
           # Create a model for new storage account.
           properties = Azure::ARM::Storage::Models::StorageAccountPropertiesCreateParameters.new
-          validate_account_type
+          validate_account_type!
           properties.account_type = "#{account_type}_LRS"
           params = Azure::ARM::Storage::Models::StorageAccountCreateParameters.new
           params.properties = properties
@@ -28,9 +30,10 @@ module Fog
           merge_attributes(hash)
         end
 
-        def validate_account_type
-          if account_type != 'Standard' && account_type != 'Premium'
-            raise 'Account Type can only be Standard or Premium'
+        def validate_account_type!
+          if account_type != STANDARD && account_type != PREMIUM
+            msg = 'Account Type can only be Standard or Premium'
+            raise msg
           end
         end
 

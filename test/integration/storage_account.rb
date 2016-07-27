@@ -45,6 +45,7 @@ storage.storage_accounts.create(
   name: 'fogstandardsa',
   location: 'eastus',
   resource_group: 'TestRG-SA',
+  account_type: 'Standard'
 )
 
 ########################################################################################################################
@@ -62,10 +63,10 @@ storage.storage_accounts.create(
 ######################                         Get and Delete Storage Account                     ######################
 ########################################################################################################################
 
-storage_standard = storage.storage_accounts(resource_group: 'TestRG-SA').get('fogstandardsa')
-storage_standard.destroy
-storage_premium = storage.storage_accounts(resource_group: 'TestRG-SA').get('fogpremiumsa')
-storage_premium.destroy
+standard_storage_account = storage.storage_accounts(resource_group: 'TestRG-SA').get('fogstandardsa')
+standard_storage_account.destroy
+premium_storage_account = storage.storage_accounts(resource_group: 'TestRG-SA').get('fogpremiumsa')
+premium_storage_account.destroy
 
 ########################################################################################################################
 ######################                                   CleanUp                                  ######################

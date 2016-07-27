@@ -1,5 +1,6 @@
 require File.expand_path '../../test_helper', __dir__
 
+# Test class for PublicIp Model
 class TestPublicIp < Minitest::Test
   def setup
     @service = Fog::Network::AzureRM.new(credentials)

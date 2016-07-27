@@ -16,8 +16,8 @@ module Fog
           hash = {}
           hash['id'] = subnet['id']
           hash['name'] = subnet['name']
-          hash['resource_group'] = subnet['id'].split('/')[4]
-          hash['virtual_network_name'] = subnet['id'].split('/')[8]
+          hash['resource_group'] = get_resource_group_from_id(subnet['id'])
+          hash['virtual_network_name'] = get_virtual_network_from_id(subnet['id'])
           hash['address_prefix'] = subnet['properties']['addressPrefix']
           hash['network_security_group_id'] = subnet['properties']['networkSecurityGroup']['id'] unless subnet['properties']['networkSecurityGroup'].nil?
           hash['route_table_id'] = subnet['properties']['routeTable']['id'] unless subnet['properties']['routeTable'].nil?
@@ -29,7 +29,7 @@ module Fog
           requires :name
           requires :resource_group
           requires :virtual_network_name
-          subnet = service.create_subnet(resource_group, name, virtual_network_name, address_prefix)
+          subnet = service.create_subnet(resource_group, name, virtual_network_name, address_prefix, network_security_group_id, route_table_id)
           merge_attributes(Fog::Network::AzureRM::Subnet.parse(subnet))
         end
 

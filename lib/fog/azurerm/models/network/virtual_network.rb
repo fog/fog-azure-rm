@@ -8,23 +8,25 @@ module Fog
         attribute :id
         attribute :location
         attribute :resource_group
-        attribute :dns_list
-        attribute :subnet_address_list
-        attribute :network_address_list
+        attribute :dns_servers
+        attribute :subnets
+        attribute :address_prefixes
 
         def self.parse(vnet)
           hash = {}
           hash['id'] = vnet['id']
           hash['name'] = vnet['name']
-          hash['resource_group'] = vnet['id'].split('/')[4]
+          hash['resource_group'] = get_resource_group_from_id(vnet['id'])
           hash['location'] = vnet['location']
-          hash['dns_list'] = vnet['properties']['dhcpOptions']['dnsServers'].join(',') unless vnet['properties']['dhcpOptions'].nil?
-          hash['network_address_list'] = vnet['properties']['addressSpace']['addressPrefixes'].join(',') unless vnet['properties']['addressSpace']['addressPrefixes'].nil?
-          subnet_address_list = []
+          hash['dns_servers'] = vnet['properties']['dhcpOptions']['dnsServers'] unless vnet['properties']['dhcpOptions'].nil?
+          hash['address_prefixes'] = vnet['properties']['addressSpace']['addressPrefixes'] unless vnet['properties']['addressSpace']['addressPrefixes'].nil?
+
+          subnets = []
           vnet['properties']['subnets'].each do |subnet|
-            subnet_address_list << subnet['properties']['addressPrefix']
+            subnet_object = Fog::Network::AzureRM::Subnet.new
+            subnets.push(subnet_object.merge_attributes(Fog::Network::AzureRM::Subnet.parse(subnet)))
           end
-          hash['subnet_address_list'] = subnet_address_list.join(',')
+          hash['subnets'] = subnets
           hash
         end
 
@@ -32,12 +34,30 @@ module Fog
           requires :name
           requires :location
           requires :resource_group
-          vnet = service.create_virtual_network(resource_group, name, location, dns_list, subnet_address_list, network_address_list)
+          validate_subnets(subnets) unless subnets.nil?
+
+          vnet = service.create_virtual_network(resource_group, name, location, dns_servers, subnets, address_prefixes)
           merge_attributes(Fog::Network::AzureRM::VirtualNetwork.parse(vnet))
         end
 
         def destroy
           service.delete_virtual_network(resource_group, name)
+        end
+
+        private
+
+        def validate_subnets(subnets)
+          if subnets.is_a?(Array)
+            subnets.each do |subnet|
+              if subnet.is_a?(Hash)
+                validate_params([:name], subnet)
+              else
+                raise(ArgumentError, ':subnets must be an Array of Hashes')
+              end
+            end
+          else
+            raise(ArgumentError, ':subnets must be an Array')
+          end
         end
       end
     end

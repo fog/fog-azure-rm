@@ -20,8 +20,10 @@ module Fog
           load(subnets)
         end
 
-        def get(identity)
-          all.find { |f| f.name == identity }
+        def get(resource_group, virtual_network_name, subnet_name)
+          subnet = service.get_subnet(resource_group, virtual_network_name, subnet_name)
+          subnet_object = Fog::Network::AzureRM::Subnet.new(service: service)
+          subnet_object.merge_attributes(Fog::Network::AzureRM::Subnet.parse(subnet))
         end
       end
     end

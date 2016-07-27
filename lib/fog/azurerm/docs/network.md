@@ -122,6 +122,42 @@ Get a single record of Subnet
      puts "#{subnet.name}"
 ```
 
+## Attach Network Security Group with Subnet
+
+Attach Network Security Group with Subnet
+
+```ruby
+     subnet = azure_network_service.attach_network_security_group('/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/networkSecurityGroups/<Network Security Group Name>')
+     puts "#{subnet.network_security_group_id}"
+```
+
+## Detach Network Security Group from Subnet
+
+Detach Network Security Group from Subnet
+
+```ruby
+     subnet = azure_network_service.detach_network_security_group
+     puts "#{subnet.network_security_group_id}"
+```
+
+## Attach Route Table with Subnet
+
+Attach Route Table with Subnet
+
+```ruby
+     subnet = azure_network_service.attach_route_table('/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/routeTables/<Route Table Name>')
+     puts "#{subnet.route_table_id}"
+```
+
+## Detach Route Table from Subnet
+
+Detach Route Table from Subnet
+
+```ruby
+     subnet = azure_network_service.detach_route_table
+     puts "#{subnet.route_table_id}"
+```
+
 ## Destroy a single Subnet
 
 Get a subnet object from the get method and then destroy that subnet.

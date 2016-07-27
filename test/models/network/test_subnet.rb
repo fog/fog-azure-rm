@@ -8,15 +8,17 @@ class TestSubnet < Minitest::Test
   end
 
   def test_model_methods
-    response = ApiStub::Models::Network::Subnet.create_subnet_response
     methods = [
       :save,
+      :attach_network_security_group,
+      :detach_network_security_group,
+      :attach_route_table,
+      :detach_route_table,
       :destroy
     ]
-    @service.stub :create_subnet, response do
-      methods.each do |method|
-        assert @subnet.respond_to? method
-      end
+
+    methods.each do |method|
+      assert @subnet.respond_to? method
     end
   end
 
@@ -43,6 +45,34 @@ class TestSubnet < Minitest::Test
     response = ApiStub::Models::Network::Subnet.create_subnet_response
     @service.stub :create_subnet, response do
       assert_instance_of Fog::Network::AzureRM::Subnet, @subnet.save
+    end
+  end
+
+  def test_attach_network_security_group_method_response
+    response = ApiStub::Models::Network::Subnet.create_subnet_response
+    @service.stub :attach_network_security_group_with_subnet, response do
+      assert_instance_of Fog::Network::AzureRM::Subnet, @subnet.attach_network_security_group('resource-id')
+    end
+  end
+
+  def test_detach_network_security_group_method_response
+    response = ApiStub::Models::Network::Subnet.create_subnet_response
+    @service.stub :detach_network_security_group_from_subnet, response do
+      assert_instance_of Fog::Network::AzureRM::Subnet, @subnet.detach_network_security_group
+    end
+  end
+
+  def test_attach_route_table_method_response
+    response = ApiStub::Models::Network::Subnet.create_subnet_response
+    @service.stub :attach_route_table_with_subnet, response do
+      assert_instance_of Fog::Network::AzureRM::Subnet, @subnet.attach_route_table('resource-id')
+    end
+  end
+
+  def test_detach_route_table_method_response
+    response = ApiStub::Models::Network::Subnet.create_subnet_response
+    @service.stub :detach_route_table_from_subnet, response do
+      assert_instance_of Fog::Network::AzureRM::Subnet, @subnet.detach_route_table
     end
   end
 

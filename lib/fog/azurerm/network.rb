@@ -19,7 +19,12 @@ module Fog
       request :list_public_ips
       request :check_for_public_ip
       request :create_subnet
+      request :attach_network_security_group_with_subnet
+      request :detach_network_security_group_from_subnet
+      request :attach_route_table_with_subnet
+      request :detach_route_table_from_subnet
       request :list_subnets
+      request :get_subnet
       request :delete_subnet
       request :create_network_interface
       request :delete_network_interface

@@ -26,12 +26,12 @@ network = Fog::Network::AzureRM.new(
 ######################                                 Prerequisites                              ######################
 ########################################################################################################################
 
-rs.resource_groups.create(
+resource_group = rs.resource_groups.create(
   name: 'TestRG-SN',
   location: 'eastus'
 )
 
-network.virtual_networks.create(
+virtual_network = network.virtual_networks.create(
   name:             'testVnet',
   location:         'eastus',
   resource_group:   'TestRG-SN',
@@ -39,30 +39,53 @@ network.virtual_networks.create(
   address_prefixes:  ['10.1.0.0/16', '10.2.0.0/16']
 )
 
+network_security_group = network.network_security_groups.create(
+  name: 'testGroup',
+  resource_group: resource_group.name,
+  location: 'eastus'
+)
+
 ########################################################################################################################
 ######################                                Create Subnet                               ######################
 ########################################################################################################################
 
-network.subnets.create(
+subnet = network.subnets.create(
   name: 'mysubnet',
-  resource_group: 'TestRG-SN',
-  virtual_network_name: 'testvnet',
+  resource_group: resource_group.name,
+  virtual_network_name: virtual_network.name,
   address_prefix: '10.1.0.0/24'
 )
+
+########################################################################################################################
+######################              Attach/Detach Network Security Group                          ######################
+########################################################################################################################
+
+subnet.attach_network_security_group(network_security_group.id)
+subnet.detach_network_security_group
+
+########################################################################################################################
+##################### Attach/Detach Route Table(Pending because Route Table is not implemented yet) ###################
+########################################################################################################################
+
+########################################################################################################################
+######################                             List Subnets                                   ######################
+########################################################################################################################
+
+network.subnets(resource_group: resource_group.name, virtual_network_name: virtual_network.name)
 
 ########################################################################################################################
 ######################                             Get and Delete Subnet                          ######################
 ########################################################################################################################
 
-subnet = network.subnets(resource_group: 'TestRG-SN', virtual_network_name: 'testVnet').get('mysubnet')
+subnet = network.subnets.get(resource_group.name, virtual_network.name, subnet.name)
 subnet.destroy
 
 ########################################################################################################################
 ######################                                   CleanUp                                  ######################
 ########################################################################################################################
 
-vnet = network.virtual_networks(resource_group: 'TestRG-SN').get('testVnet')
-vnet.destroy
+network_security_group.destroy
 
-rg = rs.resource_groups.get('TestRG-SN')
-rg.destroy
+virtual_network.destroy
+
+resource_group.destroy

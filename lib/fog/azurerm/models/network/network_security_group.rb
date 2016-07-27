@@ -1,7 +1,7 @@
 module Fog
   module Network
     class AzureRM
-      # Subnet model for Network Security Group
+      # Network Security Group model for Network Service
       class NetworkSecurityGroup < Fog::Model
         identity :name
         attribute :id
@@ -40,12 +40,35 @@ module Fog
           requires :name, :location, :resource_group
 
           validate_security_rules(security_rules) unless security_rules.nil?
-          nsg = service.create_network_security_group(resource_group, name, location, security_rules)
+          nsg = service.create_or_update_network_security_group(resource_group, name, location, security_rules)
           merge_attributes(Fog::Network::AzureRM::NetworkSecurityGroup.parse(nsg))
         end
 
         def destroy
           service.delete_network_security_group(resource_group, name)
+        end
+
+        def update_security_rules(security_rule_hash = {})
+          raise('Provided hash can not be empty.') if security_rule_hash.empty? || security_rule_hash.nil?
+
+          if !security_rule_hash[:security_rules].nil? && security_rule_hash.length == 1
+            validate_security_rules(security_rule_hash[:security_rules])
+            merge_attributes(security_rule_hash)
+            nsg = service.create_or_update_network_security_group(resource_group, name, location, security_rules)
+            return merge_attributes(Fog::Network::AzureRM::NetworkSecurityGroup.parse(nsg))
+          end
+          raise 'Invalid hash key.'
+        end
+
+        def add_security_rules(security_rules)
+          validate_security_rules(security_rules)
+          nsg = service.add_security_rules(resource_group, name, security_rules)
+          merge_attributes(Fog::Network::AzureRM::NetworkSecurityGroup.parse(nsg))
+        end
+
+        def remove_security_rule(security_rule_name)
+          nsg = service.remove_security_rule(resource_group, name, security_rule_name)
+          merge_attributes(Fog::Network::AzureRM::NetworkSecurityGroup.parse(nsg))
         end
 
         private
@@ -56,11 +79,11 @@ module Fog
               if sr.is_a?(Hash)
                 validate_security_rule_params(sr)
               else
-                raise(ArgumentError, ':security_rules must be an Array of Hashes')
+                raise(ArgumentError, 'Parameter security_rules must be an Array of Hashes')
               end
             end
           else
-            raise(ArgumentError, ':security_rules must be an Array')
+            raise(ArgumentError, 'Parameter security_rules must be an Array')
           end
         end
 

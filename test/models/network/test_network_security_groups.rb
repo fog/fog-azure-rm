@@ -33,9 +33,8 @@ class TestNetworkSecurityGroups < Minitest::Test
   end
 
   def test_get_method_response
-    @service.stub :list_network_security_groups, @response do
-      assert_instance_of Fog::Network::AzureRM::NetworkSecurityGroup, @network_security_groups.get('fog-test-nsg')
-      assert @network_security_groups.get('wrong-name').nil?
+    @service.stub :get_network_security_group, @response[0] do
+      assert_instance_of Fog::Network::AzureRM::NetworkSecurityGroup, @network_security_groups.get('fog-test-rg', 'fog-test-nsg')
     end
   end
 end

@@ -20,7 +20,7 @@ class TestDeleteNetworkSecurityGroup < Minitest::Test
   end
 
   def test_delete_network_security_group_failure
-    response = -> { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
+    response = -> { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @promise.stub :value!, response do
       @network_security_groups.stub :delete, @promise do
         assert_raises RuntimeError do

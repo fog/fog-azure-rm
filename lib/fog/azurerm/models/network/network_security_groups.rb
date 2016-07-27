@@ -18,8 +18,10 @@ module Fog
           load(network_security_groups)
         end
 
-        def get(identity)
-          all.find { |f| f.name == identity }
+        def get(resource_group, name)
+          nsg = service.get_network_security_group(resource_group, name)
+          network_security_group = Fog::Network::AzureRM::NetworkSecurityGroup.new(service: service)
+          network_security_group.merge_attributes(Fog::Network::AzureRM::NetworkSecurityGroup.parse(nsg))
         end
       end
     end

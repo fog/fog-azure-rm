@@ -20,7 +20,7 @@ class TestDeletePublicIp < Minitest::Test
   end
 
   def test_delete_public_ip_failure
-    response = -> { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
+    response = -> { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @promise.stub :value!, response do
       @public_ips.stub :delete, @promise do
         assert_raises(RuntimeError) { @service.delete_public_ip('fog-test-rg', 'fog-test-public-ip') }

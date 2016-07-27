@@ -19,7 +19,7 @@ class TestListTrafficManagerProfiles < Minitest::Test
   def test_list_traffic_manager_profiles_failure
     exception = RestClient::Exception.new
     exception.instance_variable_set(:@response, '{"code": "ResourceNotFound", "message": "mocked exception message"}')
-    response = -> { fail exception }
+    response = -> { raise exception }
     @token_provider.stub :get_authentication_header, response do
       assert_raises RuntimeError do
         @service.list_traffic_manager_profiles('fog-test-rg')

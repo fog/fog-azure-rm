@@ -21,7 +21,7 @@ class TestListVirtualNetworks < Minitest::Test
   end
 
   def test_list_virtual_networks_failure
-    response = -> { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
+    response = -> { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @promise.stub :value!, response do
       @virtual_networks.stub :list, @promise do
         assert_raises(RuntimeError) { @service.list_virtual_networks('fog-test-rg') }

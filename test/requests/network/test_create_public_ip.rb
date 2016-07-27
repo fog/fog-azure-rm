@@ -32,7 +32,7 @@ class TestCreatePublicIp < Minitest::Test
   end
 
   def test_create_public_ip_exception_failure
-    response = -> { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
+    response = -> { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @promise.stub :value!, response do
       @public_ips.stub :create_or_update, @promise do
         assert_raises RuntimeError do

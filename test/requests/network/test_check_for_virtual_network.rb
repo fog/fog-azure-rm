@@ -19,7 +19,7 @@ class TestCheckForVirtualNetwork < Minitest::Test
   end
 
   def test_check_for_virtual_network_failure
-    response = -> { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceNotFound' }) }
+    response = -> { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceNotFound' }) }
     @promise.stub :value!, response do
       @virtual_networks.stub :get, @promise do
         assert !@service.check_for_virtual_network('fog-test-rg', 'fog-test-virtual-network')
@@ -28,7 +28,7 @@ class TestCheckForVirtualNetwork < Minitest::Test
   end
 
   def test_check_for_virtual_network_exception
-    response = -> { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceGroupNotFound' }) }
+    response = -> { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceGroupNotFound' }) }
     @promise.stub :value!, response do
       @virtual_networks.stub :get, @promise do
         assert_raises(RuntimeError) { @service.check_for_virtual_network('fog-test-rg', 'fog-test-virtual-network') }

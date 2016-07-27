@@ -27,9 +27,12 @@ module Fog
       request :create_load_balancer
       request :delete_load_balancer
       request :list_load_balancers
-      request :create_network_security_group
+      request :create_or_update_network_security_group
       request :delete_network_security_group
       request :list_network_security_groups
+      request :get_network_security_group
+      request :add_security_rules
+      request :remove_security_rule
       request :create_application_gateway
       request :delete_application_gateway
       request :list_application_gateways

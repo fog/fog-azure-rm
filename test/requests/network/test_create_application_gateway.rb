@@ -39,7 +39,7 @@ class TestCreateApplicationGateway < Minitest::Test
   end
 
   def test_create_application_gateway_exception_failure
-    response = -> { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
+    response = -> { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @promise.stub :value!, response do
       gateway_ip_configurations = ApiStub::Requests::Network::ApplicationGateway.gateway_ip_configurations
       ssl_certificates = ApiStub::Requests::Network::ApplicationGateway.ssl_certificates

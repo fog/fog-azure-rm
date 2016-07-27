@@ -267,9 +267,61 @@ Get a single record of Network Security Group
 
 ```ruby
     nsg = azure_network_service
-          .network_security_groups(resource_group: '<Resource Group name>')
-          .get('<Network Security Group name>')
+                  .network_security_groups
+                  .get('<Resource Group Name>','<Network Security Group name>')
     puts "#{nsg.name}"
+```
+
+## Update Security Rules
+
+You can update security rules by passing the modified attributes in the form of hash.  
+
+```ruby
+      nsg.update_security_rules(
+        security_rules:
+            [
+                {
+                    name: '<Security Rule name>',
+                    protocol: 'tcp',
+                    source_port_range: '*',
+                    destination_port_range: '*',
+                    source_address_prefix: '0.0.0.0/0',
+                    destination_address_prefix: '0.0.0.0/0',
+                    access: 'Allow',
+                    priority: '100',
+                    direction: 'Inbound'
+                }
+            ]
+      )
+```
+`Note: You can't modify Name of a security rule.`
+
+## Add and Remove Security Rules in a Network Security Group
+
+Add array of security rules in the form of hash.
+
+```ruby
+      nsg.add_security_rules(
+            [
+                {
+                    name: '<Security Rule name>',
+                    protocol: 'tcp',
+                    source_port_range: '3389',
+                    destination_port_range: '3389',
+                    source_address_prefix: '0.0.0.0/0',
+                    destination_address_prefix: '0.0.0.0/0',
+                    access: 'Allow',
+                    priority: '102',
+                    direction: 'Inbound'
+                }
+            ]
+      )
+```
+
+Delete security rule by providing its name.
+
+```ruby
+      nsg.remove_security_rule('<Security Rule name>')
 ```
 
 ## Destroy a Network Security Group

@@ -27,17 +27,17 @@ class TestCreateNetworkSecurityGroup < Minitest::Test
     }
     @promise.stub :value!, mocked_response do
       @network_security_groups.stub :begin_create_or_update, @promise do
-        assert_equal @service.create_network_security_group('fog-test-rg', 'fog-test-nsg', 'West US', [security_rule]), expected_response
+        assert_equal @service.create_or_update_network_security_group('fog-test-rg', 'fog-test-nsg', 'West US', [security_rule]), expected_response
       end
     end
   end
 
   def test_create_network_security_group_failure
-    response = -> { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
+    response = -> { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @promise.stub :value!, response do
       @network_security_groups.stub :begin_create_or_update, @promise do
         assert_raises RuntimeError do
-          @service.create_network_security_group('fog-test-rg', 'fog-test-nsg', 'West US', [])
+          @service.create_or_update_network_security_group('fog-test-rg', 'fog-test-nsg', 'West US', [])
         end
       end
     end

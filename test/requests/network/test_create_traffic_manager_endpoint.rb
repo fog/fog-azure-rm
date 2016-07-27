@@ -21,7 +21,7 @@ class TestCreateTrafficManagerEndPoint < Minitest::Test
   def test_create_traffic_manager_endpoint_failure
     exception = RestClient::Exception.new
     exception.instance_variable_set(:@response, '{"code": "ResourceNotFound", "message": "mocked exception message"}')
-    response = -> { fail exception }
+    response = -> { raise exception }
     @token_provider.stub :get_authentication_header, response do
       assert_raises RuntimeError do
         @service.create_traffic_manager_endpoint('fog-test-rg', 'fog-test-end-point', 'fog-test-profile',

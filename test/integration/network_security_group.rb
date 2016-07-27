@@ -53,15 +53,52 @@ network.network_security_groups.create(
 )
 
 ########################################################################################################################
-######################                    Get and Destroy Network Security Group                  ######################
+######################                    Get and Update Network Security Group                  ######################
 ########################################################################################################################
 
-nsg = network.network_security_groups(resource_group: 'TestRG-NSG').get('testGroup')
-nsg.destroy
+nsg = network.network_security_groups.get('TestRG-NSG', 'testGroup')
+nsg.update_security_rules(
+  security_rules:
+    [
+      {
+        name: 'testRule',
+        protocol: 'tcp',
+        source_port_range: '*',
+        destination_port_range: '22',
+        source_address_prefix: '0.0.0.0/0',
+        destination_address_prefix: '0.0.0.0/0',
+        access: 'Allow',
+        priority: '100',
+        direction: 'Inbound'
+      }
+    ]
+)
+
+########################################################################################################################
+######################                    Add and Remove Network Security Rules                  ######################
+########################################################################################################################
+
+nsg.add_security_rules(
+  [
+    {
+      name: 'testRule2',
+      protocol: 'tcp',
+      source_port_range: '22',
+      destination_port_range: '22',
+      source_address_prefix: '0.0.0.0/0',
+      destination_address_prefix: '0.0.0.0/0',
+      access: 'Allow',
+      priority: '102',
+      direction: 'Inbound'
+    }
+  ]
+)
+nsg.remove_security_rule('testRule')
 
 ########################################################################################################################
 ######################                                   CleanUp                                  ######################
 ########################################################################################################################
 
+nsg.destroy
 rg = rs.resource_groups.get('TestRG-NSG')
 rg.destroy

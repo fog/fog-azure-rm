@@ -70,6 +70,24 @@ module ApiStub
           }'
           JSON.parse(nsg)
         end
+
+        def self.security_rules_array
+          sr =
+            [
+              {
+                name: 'testRule2',
+                protocol: 'tcp',
+                source_port_range: '22',
+                destination_port_range: '22',
+                source_address_prefix: '0.0.0.0/0',
+                destination_address_prefix: '0.0.0.0/0',
+                access: 'Allow',
+                priority: '102',
+                direction: 'Inbound'
+              }
+            ]
+          sr
+        end
       end
     end
   end

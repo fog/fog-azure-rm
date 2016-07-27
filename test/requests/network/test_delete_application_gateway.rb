@@ -20,7 +20,7 @@ class TestDeleteApplicationGateway < Minitest::Test
   end
 
   def test_delete_application_gateway_failure
-    response = -> { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
+    response = -> { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @promise.stub :value!, response do
       @gateways.stub :delete, @promise do
         assert_raises(RuntimeError) { @service.delete_application_gateway('fogRM-rg', 'gateway') }

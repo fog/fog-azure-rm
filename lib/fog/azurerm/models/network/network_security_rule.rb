@@ -1,7 +1,7 @@
 module Fog
   module Network
     class AzureRM
-      # Subnet model for Network Service
+      # Security Rule model for Network Service
       class NetworkSecurityRule < Fog::Model
         identity :name
         attribute :id

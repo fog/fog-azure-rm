@@ -21,7 +21,7 @@ class TestListPublicIps < Minitest::Test
   end
 
   def test_list_public_ips_failure
-    response = -> { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
+    response = -> { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @promise.stub :value!, response do
       @public_ips.stub :list, @promise do
         assert_raises(RuntimeError) { @service.list_public_ips('fog-test-rg') }

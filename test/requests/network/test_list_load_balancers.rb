@@ -21,7 +21,7 @@ class TestListLoadBalancers < Minitest::Test
   end
 
   def test_list_load_balancers_failure
-    response = -> { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
+    response = -> { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @promise.stub :value!, response do
       @load_balancers.stub :list, @promise do
         assert_raises(RuntimeError) { @service.list_load_balancers('fog-test-rg') }

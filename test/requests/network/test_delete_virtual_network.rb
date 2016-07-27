@@ -20,7 +20,7 @@ class TestDeleteVirtualNetwork < Minitest::Test
   end
 
   def test_delete_virtual_network_failure
-    response = -> { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
+    response = -> { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @promise.stub :value!, response do
       @virtual_networks.stub :delete, @promise do
         assert_raises(RuntimeError) { @service.delete_virtual_network('fog-test-rg', 'fog-test-virtual-network') }

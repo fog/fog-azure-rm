@@ -20,7 +20,7 @@ class TestDeleteSubnet < Minitest::Test
   end
 
   def test_delete_subnet_failure
-    response = -> { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
+    response = -> { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @promise.stub :value!, response do
       @subnets.stub :delete, @promise do
         assert_raises(RuntimeError) { @service.delete_subnet('fog-test-rg', 'fog-test-subnet', 'fog-test-virtual-network') }

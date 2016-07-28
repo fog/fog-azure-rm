@@ -137,6 +137,39 @@ def storage_container(service)
   )
 end
 
+def storage_blob(service)
+  Fog::Storage::AzureRM::Blob.new(
+    name: 'storage-test-blob',
+    container_name: 'storage-test-container',
+    last_modified: 'Tue, 04 Aug 2015 06:01:08 GMT',
+    etag: '0x8D29C92176C8352',
+    metadata: {
+      'key1' => 'value1',
+      'key2' => 'value2'
+    },
+    lease_status: 'unlocked',
+    lease_state: 'available',
+    lease_duration: nil,
+    content_length: 4_194_304,
+    content_type: 'application/octet-stream',
+    content_encoding: nil,
+    content_language: nil,
+    content_disposition: nil,
+    content_md5: 'tXAohIyxuu/t94Lp/ujeRw==',
+    cache_control: nil,
+    sequence_number: 0,
+    blob_type: 'PageBlob',
+    copy_id: '095adc3b-e277-4c3d-97e0-0abca881f60c',
+    copy_status: 'success',
+    copy_source: 'https://testaccount.blob.core.windows.net/testblob/4m?snapshot=2016-02-04T08%3A35%3A50.3157696Z',
+    copy_progress: '4194304/4194304',
+    copy_completion_time: 'Thu, 04 Feb 2016 08:35:52 GMT',
+    copy_status_description: nil,
+    accept_ranges: 0,
+    service: service
+  )
+end
+
 def public_ip(service)
   Fog::Network::AzureRM::PublicIp.new(
     name: 'fog-test-public-ip',

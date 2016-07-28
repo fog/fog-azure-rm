@@ -1,7 +1,7 @@
 require File.expand_path '../../test_helper', __dir__
 
 # Storage Container Class
-class TestGetContaienrProperties < Minitest::Test
+class TestGetContainerProperties < Minitest::Test
   # This class posesses the test cases for the requests of getting storage container properties.
   def setup
     @service = Fog::Storage::AzureRM.new(storage_account_credentials)

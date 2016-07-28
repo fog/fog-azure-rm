@@ -15,6 +15,7 @@ module Fog
       recognizes :debug
 
       request_path 'fog/azurerm/requests/storage'
+      # Azure Storage Account requests
       request :create_storage_account
       request :list_storage_accounts
       request :delete_storage_account
@@ -22,16 +23,22 @@ module Fog
       request :list_storage_account_for_rg
       request :check_storage_account_name_availability
       request :get_storage_access_keys
+      # Azure Storage Disk requests
       request :delete_disk
-      request :get_blob_metadata
-      request :get_container_metadata
-      request :set_blob_metadata
-      request :set_container_metadata
+      # Azure Storage Container requests
       request :create_container
       request :delete_container
       request :list_containers
+      request :get_container_metadata
+      request :set_container_metadata
       request :get_container_properties
       request :get_container_access_control_list
+      # Azure Storage Blob requests
+      request :list_blobs
+      request :set_blob_metadata
+      request :get_blob_metadata
+      request :set_blob_properties
+      request :get_blob_properties
 
       model_path 'fog/azurerm/models/storage'
       model :storage_account

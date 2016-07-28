@@ -8,7 +8,7 @@ module Fog
       class Containers < Fog::Collection
         model Fog::Storage::AzureRM::Container
 
-        def all(options = { :metadata => true })
+        def all(options = { metadata: true })
           containers = []
           service.list_containers(options).each do |container|
             hash = Container.parse container

@@ -158,16 +158,6 @@ azure_storage_service.containers.each do |container|
 end
 ```
 
-## Get storage container properties
-
-Get the storage container properties. The properties will not fetch the access control list. Call `get_container_access_control_list` to fetch it.
-
-```ruby
-container = azure_storage_service.containers.get('<container name>')
-properties = container.get_properties
-puts "#{properties.inspect}"
-```
-
 ## Get the access control list of the storage container
 
 Get the permissions for the specified container. The permissions indicate whether container data may be accessed publicly.
@@ -186,6 +176,41 @@ Mark the specified container for deletion. The container and any blobs contained
 container = azure_storage_service.containers.get('<container name>')
 result = container.destroy
 puts "#{result}"
+```
+
+### Properties
+
+## Get storage container properties
+
+Get the storage container properties. The properties will not fetch the access control list. Call `get_container_access_control_list` to fetch it.
+
+```ruby
+container = azure_storage_service.containers.get('<container name>')
+properties = container.get_properties
+puts "#{properties.inspect}"
+```
+
+## Get storage blob properties
+
+Get the storage blob properties.
+
+```ruby
+blob = azure_storage_service.blobs(container_name: '<container name>').get('<blob name>')
+properties = blob.get_properties
+puts "#{properties.inspect}"
+```
+
+## Set storage blob properties
+
+Set the storage blob properties. The properties are passed in name/value pairs.
+
+```ruby
+blob = azure_storage_service.blobs(container_name: '<container name>').get('<blob name>')
+properties = {
+  "content-language" => "English",
+  "content-disposition" => "attachment"
+}
+blob.set_properties(properties)
 ```
 
 ### Metadata

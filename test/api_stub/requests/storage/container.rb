@@ -26,7 +26,7 @@ module ApiStub
             'properties' =>
               {
                 'last_modified' => 'Mon, 04 Jul 2016 02:50:20 GMT',
-                'etag' => '0x8D3A3B5F017F52D',
+                'etag' => '0x8D3A3B5F017F52D'
               }
           }
         end

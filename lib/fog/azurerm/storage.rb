@@ -39,6 +39,8 @@ module Fog
       request :get_blob_metadata
       request :set_blob_properties
       request :get_blob_properties
+      request :upload_block_blob_from_file
+      request :download_blob_to_file
 
       model_path 'fog/azurerm/models/storage'
       model :storage_account

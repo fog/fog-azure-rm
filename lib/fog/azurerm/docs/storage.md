@@ -55,7 +55,7 @@ azure_storage_service = Fog::Storage.new(
 Check Storage Account Name Availability.This operation checks that account name is valid and is not already in use.
 
 ```ruby
-    azure_storage_service.storage_accounts.check_name_availability('<Storage Account name>')
+azure_storage_service.storage_accounts.check_name_availability('<Storage Account name>')
 ```
 
 ## Create Storage Account
@@ -178,9 +178,22 @@ result = container.destroy
 puts "#{result}"
 ```
 
-### Properties
+## Upload a local file as a blob
+```ruby
+new_blob = azure_storage_service.upload_block_blob_from_file('<container name>', '<blob name>', '<file path>')
+puts "#{new_blob.inspect}"
+```
 
-## Get storage container properties
+## Download a blob to a local file
+```ruby
+blob = azure_storage_service.download_blob_to_file('<container name>', '<blob name>', '<file path>')
+puts "#{blob.inspect}"
+puts "File Size: #{File.size <file_path>}"
+```
+
+## Properties
+
+### Get storage container properties
 
 Get the storage container properties. The properties will not fetch the access control list. Call `get_container_access_control_list` to fetch it.
 
@@ -190,7 +203,7 @@ properties = container.get_properties
 puts "#{properties.inspect}"
 ```
 
-## Get storage blob properties
+### Get storage blob properties
 
 Get the storage blob properties.
 
@@ -200,7 +213,7 @@ properties = blob.get_properties
 puts "#{properties.inspect}"
 ```
 
-## Set storage blob properties
+### Set storage blob properties
 
 Set the storage blob properties. The properties are passed in name/value pairs.
 
@@ -213,42 +226,42 @@ properties = {
 blob.set_properties(properties)
 ```
 
-### Metadata
+## Metadata
 
 Metadata allows us to provide descriptive information about specific containers or blobs. This is simply providing name/value pairs of data we want to set on the container or blob.
 
-## Get Blob Metadata
+### Get Blob Metadata
 
 ```ruby
-      azure_storage_service.blobs.get_blob_metadata('<Container name>', '<Blob name>')
+azure_storage_service.blobs.get_blob_metadata('<Container name>', '<Blob name>')
 ```
 
-## Set Blob Metadata
+### Set Blob Metadata
 
 ```ruby
-      metadata = {
-        "Category" => "Images",
-        "Resolution" => "High"
-      }
-      azure_storage_service.blobs.set_blob_metadata('<Container name>', '<Blob name>', metadata)
+metadata = {
+  "Category" => "Images",
+  "Resolution" => "High"
+}
+azure_storage_service.blobs.set_blob_metadata('<Container name>', '<Blob name>', metadata)
 ```
 
-## Get Container Metadata
+### Get Container Metadata
 
 ```ruby
-      azure_storage_service.containers.get_container_metadata('<Container name>')
+azure_storage_service.containers.get_container_metadata('<Container name>')
 ```
 
-## Set Container Metadata
+### Set Container Metadata
 
 ```ruby
-      metadata = {
-        "CreatedBy" => "User",
-        "SourceMachine" => "Mymachine",
-        "category" => "guidance",
-        "docType" => "textDocuments"
-       }
-      azure_storage_service.containers.set_container_metadata('<Container name>', metadata)
+metadata = {
+  "CreatedBy" => "User",
+  "SourceMachine" => "Mymachine",
+  "category" => "guidance",
+  "docType" => "textDocuments"
+  }
+azure_storage_service.containers.set_container_metadata('<Container name>', metadata)
 ```
 
 ## Support and Feedback

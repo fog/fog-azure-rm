@@ -21,7 +21,7 @@ module ApiStub
 
         def self.get_blob_properties
           {
-            'name' => name,
+            'name' => 'testblob1',
             'snapshot' => nil,
             'metadata' => {},
             'properties' =>
@@ -45,6 +45,48 @@ module ApiStub
                 'copy_source' => 'https://testaccount.blob.core.windows.net/testblob/4m?snapshot=2016-02-04T08%3A35%3A50.3157696Z',
                 'copy_progress' => '4194304/4194304',
                 'copy_completion_time' => 'Thu, 04 Feb 2016 08:35:52 GMT',
+                'copy_status_description' => nil,
+                'accept_ranges' => 0
+              }
+          }
+        end
+
+        def self.upload_block_blob_from_file
+          {
+            'name' => 'testblob1',
+            'properties' =>
+              {
+                'last_modified' => 'Thu, 28 Jul 2016 06:53:05 GMT',
+                'etag' => '0x8D3B6B3D353FFCA',
+                'content_md5' => 'tXAohIyxuu/t94Lp/ujeRw=='
+              }
+          }
+        end
+
+        def self.download_blob_to_file
+          {
+            'name' => 'testblob1',
+            'metadata' => {},
+            'properties' =>
+              {
+                'last_modified' => 'Thu, 28 Jul 2016 06:53:05 GMT',
+                'etag' => '0x8D3B6B3D353FFCA',
+                'lease_status' => 'unlocked',
+                'lease_state' => 'available',
+                'lease_duration' => nil,
+                'content_length' => 4_194_304,
+                'content_type' => 'application/atom+xml; charset=utf-8',
+                'content_encoding' => 'ASCII-8BIT',
+                'content_language' => nil,
+                'content_disposition' => nil,
+                'content_md5' => 'tXAohIyxuu/t94Lp/ujeRw==',
+                'cache_control' => nil,
+                'blob_type' => 'BlockBlob',
+                'copy_id' => nil,
+                'copy_status' => nil,
+                'copy_source' => nil,
+                'copy_progress' => nil,
+                'copy_completion_time' => nil,
                 'copy_status_description' => nil,
                 'accept_ranges' => 0
               }

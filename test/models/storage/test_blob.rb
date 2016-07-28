@@ -5,11 +5,15 @@ class TestBlob < Minitest::Test
   def setup
     @service = Fog::Storage::AzureRM.new(storage_account_credentials)
     @blob = storage_blob(@service)
+    @create_result = ApiStub::Models::Storage::Blob.upload_block_blob_from_file
+    @download_result = ApiStub::Models::Storage::Blob.download_blob_to_file
     @get_properties_result = ApiStub::Models::Storage::Blob.get_blob_properties
   end
 
   def test_model_methods
     methods = [
+      :save,
+      :get_to_file,
       :get_properties,
       :set_properties
     ]
@@ -48,6 +52,21 @@ class TestBlob < Minitest::Test
     ]
     attributes.each do |attribute|
       assert_respond_to @blob, attribute
+    end
+  end
+
+  def test_save_method_response
+    @service.stub :upload_block_blob_from_file, @create_result do
+      assert_instance_of Fog::Storage::AzureRM::Blob, @blob.save
+    end
+    @service.stub :upload_block_blob_from_file, @create_result do
+      assert_instance_of Fog::Storage::AzureRM::Blob, @blob.create(file_path: 'test.txt')
+    end
+  end
+
+  def test_get_to_file
+    @service.stub :download_blob_to_file, @download_result do
+      assert_instance_of Fog::Storage::AzureRM::Blob, @blob.get_to_file('test.txt')
     end
   end
 

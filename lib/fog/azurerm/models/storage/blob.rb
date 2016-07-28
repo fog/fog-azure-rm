@@ -30,6 +30,24 @@ module Fog
         attribute :sequence_number
         attribute :blob_type
 
+        def save(options = {})
+          requires :name
+          requires :container_name
+          if options.key?(:file_path)
+            merge_attributes(Blob.parse(service.upload_block_blob_from_file(container_name, name, options[:file_path], options)))
+          else
+            merge_attributes(Blob.parse(service.upload_block_blob_from_file(container_name, name, nil, options)))
+          end
+        end
+
+        alias create save
+
+        def get_to_file(file_path, options = {})
+          requires :name
+          requires :container_name
+          merge_attributes(Blob.parse(service.download_blob_to_file(container_name, name, file_path, options)))
+        end
+
         def get_properties(options = {})
           requires :name
           requires :container_name

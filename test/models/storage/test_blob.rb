@@ -15,7 +15,8 @@ class TestBlob < Minitest::Test
       :save,
       :get_to_file,
       :get_properties,
-      :set_properties
+      :set_properties,
+      :destroy
     ]
     methods.each do |method|
       assert @blob.respond_to? method, true
@@ -79,6 +80,12 @@ class TestBlob < Minitest::Test
   def test_set_blob_properties
     @service.stub :set_blob_properties, true do
       assert @blob.set_properties, true
+    end
+  end
+
+  def test_delete_method_true_response
+    @service.stub :delete_blob, true do
+      assert @blob.destroy
     end
   end
 end

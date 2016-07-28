@@ -191,6 +191,35 @@ puts "#{blob.inspect}"
 puts "File Size: #{File.size <file_path>}"
 ```
 
+## Delete the storage blob
+
+Mark the specified blob for deletion. The blob is later deleted during garbage collection.
+
+```ruby
+blob = azure_storage_service.blobs(container_name: '<container name>').get('<blob name>')
+result = blob.destroy
+puts "#{result}"
+```
+
+Note that in order to delete a blob, you must delete all of its snapshots.
+
+```ruby
+blob = azure_storage_service.blobs(container_name: '<container name>').get('<blob name>')
+result = blob.destroy(delete_snapshots: 'only')
+puts "#{result}"
+
+result = blob.destroy
+puts "#{result}"
+```
+
+You can delete both at the same time by specifying the option.
+
+```ruby
+blob = azure_storage_service.blobs(container_name: '<container name>').get('<blob name>')
+result = blob.destroy(delete_snapshots: 'inlcude')
+puts "#{result}"
+```
+
 ## Properties
 
 ### Get storage container properties

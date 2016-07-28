@@ -42,6 +42,12 @@ module Fog
 
         alias create save
 
+        def destroy(options = {})
+          requires :name
+          requires :container_name
+          service.delete_blob container_name, name, options
+        end
+
         def get_to_file(file_path, options = {})
           requires :name
           requires :container_name

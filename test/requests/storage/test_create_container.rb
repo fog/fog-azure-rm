@@ -1,7 +1,7 @@
 require File.expand_path '../../test_helper', __dir__
 
 # Storage Container Class
-class TestCreateContaienr < Minitest::Test
+class TestCreateContainer < Minitest::Test
   # This class posesses the test cases for the requests of creating storage containers.
   def setup
     @service = Fog::Storage::AzureRM.new(storage_account_credentials)

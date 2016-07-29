@@ -150,6 +150,7 @@ def network_interface(service)
     resource_group: 'fog-test-rg',
     subnet_id: '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/virtualNetworks/fog-test-virtual-network/subnets/fog-test-subnet',
     public_ip_address_id: '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/publicIPAddresses/fog-test-public-ip',
+    network_security_group_id: '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/networkSecurityGroups/fog-test-nsg',
     ip_configuration_name: 'fog-test-ip-configuration',
     private_ip_allocation_method: 'fog-test-private-ip-allocation-method',
     properties: nil,

@@ -33,10 +33,9 @@ class TestNetworkInterfaces < Minitest::Test
   end
 
   def test_get_method_response
-    response = [ApiStub::Models::Network::NetworkInterface.create_network_interface_response]
-    @service.stub :list_network_interfaces, response do
-      assert_instance_of Fog::Network::AzureRM::NetworkInterface, @network_interfaces.get('fog-test-network-interface')
-      assert @network_interfaces.get('wrong-name').nil?, true
+    response = ApiStub::Models::Network::NetworkInterface.create_network_interface_response
+    @service.stub :get_network_interface, response do
+      assert_instance_of Fog::Network::AzureRM::NetworkInterface, @network_interfaces.get('fog-test-rg', 'fog-test-network-interface')
     end
   end
 end

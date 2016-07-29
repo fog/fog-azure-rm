@@ -199,10 +199,41 @@ Get a single record of Network Interface
 
 ```ruby
      nic = azure_network_service
-           .network_interfaces(resource_group: '<Resource Group name>')
-           .get('<Network Interface name>')
+           .network_interfaces
+           .get('<Resource Group name>', '<Network Interface name>')
      puts "#{nic.name}"
 ```
+
+## Update Network Interface
+
+You can update network interface by passing only updated attributes, in the form of hash.
+For exmple,
+```ruby
+     nic.update(private_ip_allocation_method: 'Static', private_ip_address: '10.0.0.0')
+```
+## Attach/Detach resources to/from Network Interface
+
+Attach Subnet, Public-IP or Network-Security-Group as following
+```ruby
+    subnet_id = "<NEW-SUBNET-ID>"
+    nic.attach_subnet(subnet_id)
+    
+    public_ip = "<NEW-PUBLIC_IP-ID>"
+    nic.attach_public_ip(public_ip)
+    
+    nsg_ip = "<NEW-NSG-ID>"
+    nic.attach_network_security_group(nsg_ip)
+
+```
+Detach Public-IP or Network-Security-Group as following
+
+```ruby 
+    nic.detach_public_ip
+
+    nic.detach_network_security_group
+
+```
+`Note: You can't detach subnet from Network Interface.`
 
 ## Destroy a single Network Interface
 

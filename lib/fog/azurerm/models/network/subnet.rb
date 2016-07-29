@@ -20,9 +20,9 @@ module Fog
           hash['virtual_network_name'] = get_virtual_network_from_id(subnet['id'])
           hash['address_prefix'] = subnet['properties']['addressPrefix']
           hash['network_security_group_id'] = nil
-          hash['network_security_group_id'] = subnet['properties']['networkSecurityGroup']['id'] if subnet['properties']['networkSecurityGroup'].nil?
+          hash['network_security_group_id'] = subnet['properties']['networkSecurityGroup']['id'] unless subnet['properties']['networkSecurityGroup'].nil?
           hash['route_table_id'] = nil
-          hash['route_table_id'] = subnet['properties']['routeTable']['id'] if subnet['properties']['routeTable'].nil?
+          hash['route_table_id'] = subnet['properties']['routeTable']['id'] unless subnet['properties']['routeTable'].nil?
           hash['ip_configurations_ids'] = subnet['properties']['ipConfigurations'].map { |item| item['id'] } unless subnet['properties']['ipConfigurations'].nil?
           hash
         end

@@ -34,10 +34,9 @@ class TestSubnets < Minitest::Test
   end
 
   def test_get_method_response
-    response = [ApiStub::Models::Network::Subnet.create_subnet_response]
-    @service.stub :list_subnets, response do
-      assert_instance_of Fog::Network::AzureRM::Subnet, @subnets.get('fog-test-subnet')
-      assert @subnets.get('wrong-name').nil?
+    response = ApiStub::Models::Network::Subnet.create_subnet_response
+    @service.stub :get_subnet, response do
+      assert_instance_of Fog::Network::AzureRM::Subnet, @subnets.get('fog-test-rg', 'fog-test-vnet', 'fog-test-subnet')
     end
   end
 end

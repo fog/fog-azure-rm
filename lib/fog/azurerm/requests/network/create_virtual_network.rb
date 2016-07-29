@@ -4,7 +4,7 @@ module Fog
       # Real class for Network Request
       class Real
         def create_virtual_network(resource_group, name, location, dns_servers, subnets, address_prefixes)
-          Fog::Logger.debug "Creating Virtual Network: #{name}..."
+          Fog::Logger.debug "Creating Virtual Network: #{name}"
           virtual_network = define_vnet_object(location, address_prefixes, dns_servers, subnets)
           begin
             promise = @network_client.virtual_networks.create_or_update(resource_group, name, virtual_network)
@@ -73,28 +73,29 @@ module Fog
 
       # Mock class for Network Request
       class Mock
-        def create_virtual_network(resource_group, name, location, _dns_list, subnet_address_list, network_address_list)
+        def create_virtual_network(*)
           {
-            'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/virtualNetworks/#{name}",
-            'name' => name,
+            'id' => '/subscriptions/########-####-####-####-############/resourceGroups/fog-rg/providers/Microsoft.Network/virtualNetworks/fog-vnet',
+            'name' => 'fog-vnet',
             'type' => 'Microsoft.Network/virtualNetworks',
-            'location' => location,
+            'location' => 'westus',
             'properties' =>
               {
                 'addressSpace' =>
                   {
                     'addressPrefixes' =>
                       [
-                        network_address_list
+                        '10.1.0.0/16',
+                        '10.2.0.0/16'
                       ]
                   },
                 'subnets' =>
                   [
                     {
-                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}providers/Microsoft.Network/virtualNetworks/#{name}/subnets/subnet_0_#{name}",
+                      'id' => '/subscriptions/########-####-####-####-############/resourceGroups/fog-rg/providers/Microsoft.Network/virtualNetworks/fog-vnet/subnets/fog-subnet',
                       'properties' =>
                         {
-                          'addressPrefix' => subnet_address_list,
+                          'addressPrefix' => [],
                           'provisioningState' => 'Succeeded'
                         },
                       'name' => "subnet_0_#{name}"

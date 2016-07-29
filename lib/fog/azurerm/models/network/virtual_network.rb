@@ -34,10 +34,26 @@ module Fog
           requires :name
           requires :location
           requires :resource_group
-          validate_subnets(subnets) unless subnets.nil?
+          validate_subnets!(subnets) unless subnets.nil?
 
           vnet = service.create_virtual_network(resource_group, name, location, dns_servers, subnets, address_prefixes)
           merge_attributes(Fog::Network::AzureRM::VirtualNetwork.parse(vnet))
+        end
+
+        def add_dns_servers(new_dns_servers)
+          virtual_network = service.add_dns_servers_in_virtual_network(resource_group, name, new_dns_servers)
+          merge_attributes(Fog::Network::AzureRM::VirtualNetwork.parse(virtual_network))
+        end
+
+        def add_address_prefixes(new_address_prefixes)
+          virtual_network = service.add_address_prefixes_in_virtual_network(resource_group, name, new_address_prefixes)
+          merge_attributes(Fog::Network::AzureRM::VirtualNetwork.parse(virtual_network))
+        end
+
+        def add_subnets(new_subnets)
+          validate_subnets!(new_subnets)
+          virtual_network = service.add_subnets_in_virtual_network(resource_group, name, new_subnets)
+          merge_attributes(Fog::Network::AzureRM::VirtualNetwork.parse(virtual_network))
         end
 
         def destroy
@@ -46,17 +62,21 @@ module Fog
 
         private
 
-        def validate_subnets(subnets)
+        def validate_subnets!(subnets)
           if subnets.is_a?(Array)
-            subnets.each do |subnet|
-              if subnet.is_a?(Hash)
-                validate_params([:name], subnet)
-              else
-                raise(ArgumentError, ':subnets must be an Array of Hashes')
+            if subnets.empty?
+              raise ':subnets must not be an empty Array'
+            else
+              subnets.each do |subnet|
+                if subnet.is_a?(Hash)
+                  validate_params([:name, :address_prefix], subnet)
+                else
+                  raise ':subnets must be an Array of Hashes'
+                end
               end
             end
           else
-            raise(ArgumentError, ':subnets must be an Array')
+            raise ':subnets must be an Array'
           end
         end
       end

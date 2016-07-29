@@ -72,27 +72,27 @@ module Fog
           merge_attributes(Fog::Network::AzureRM::NetworkInterface.parse(network_interface))
         end
 
-        def update(hash = {})
-          validate!(hash)
-          merge_attributes(hash)
+        def update(updated_attributes = {})
+          validate!(updated_attributes)
+          merge_attributes(updated_attributes)
           network_interface = service.create_or_update_network_interface(resource_group, name, location, subnet_id, public_ip_address_id, ip_configuration_name, private_ip_allocation_method, private_ip_address)
           merge_attributes(Fog::Network::AzureRM::NetworkInterface.parse(network_interface))
         end
 
         def attach_subnet(subnet_id)
-          raise 'Resource ID can not be nil.' if subnet_id.nil?
+          raise 'Subnet ID can not be nil.' if subnet_id.nil?
           network_interface = service.attach_resource_to_nic(resource_group, name, 'Subnet', subnet_id)
           merge_attributes(Fog::Network::AzureRM::NetworkInterface.parse(network_interface))
         end
 
         def attach_public_ip(public_ip_id)
-          raise 'Resource ID can not be nil.' if public_ip_id.nil?
+          raise 'Public-IP ID can not be nil.' if public_ip_id.nil?
           network_interface = service.attach_resource_to_nic(resource_group, name, 'Public-IP-Address', public_ip_id)
           merge_attributes(Fog::Network::AzureRM::NetworkInterface.parse(network_interface))
         end
 
         def attach_network_security_group(network_security_group_id)
-          raise 'Resource ID can not be nil.' if network_security_group_id.nil?
+          raise 'Network-Security-Group ID can not be nil.' if network_security_group_id.nil?
           network_interface = service.attach_resource_to_nic(resource_group, name, 'Network-Security-Group', network_security_group_id)
           merge_attributes(Fog::Network::AzureRM::NetworkInterface.parse(network_interface))
         end
@@ -114,9 +114,9 @@ module Fog
         end
 
         def validate!(hash)
-          restricted_array = [:name, :id, :resource_group, :location, :ip_configuration_name, :ip_configuration_id]
+          restricted_attributes = [:name, :id, :resource_group, :location, :ip_configuration_name, :ip_configuration_id]
           hash_keys = hash.keys
-          invalid_attributes = restricted_array & hash_keys
+          invalid_attributes = restricted_attributes & hash_keys
           raise "Attributes #{invalid_attributes.join(', ')} can not be updated." unless invalid_attributes.empty?
         end
       end

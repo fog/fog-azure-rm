@@ -46,11 +46,11 @@ class TestDetachResourceFromNIC < Minitest::Test
 
   def test_detach_resources_to_nic_failure
     response = -> { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
-    get_promise = Concurrent::Promise.execute do
+    promise = Concurrent::Promise.execute do
     end
 
-    get_promise.stub :value!, response do
-      @network_interfaces.stub :get, get_promise do
+    promise.stub :value!, response do
+      @network_interfaces.stub :get, promise do
         assert_raises RuntimeError do
           @service.detach_resource_from_nic('fog-test-rg', 'fog-test-network-interface', 'Network-Security-Group')
         end

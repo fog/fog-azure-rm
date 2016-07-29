@@ -6,23 +6,7 @@ module Fog
         def attach_resource_to_nic(resource_group_name, network_interface_name, resource_type, resource_id)
           Fog::Logger.debug "Updating #{resource_type} in Network Interface #{network_interface_name}."
           begin
-            promise = @network_client.network_interfaces.get(resource_group_name, network_interface_name)
-            result = promise.value!
-            nic = result.body
-            case resource_type
-            when 'Subnet'
-              subnet = Azure::ARM::Network::Models::Subnet.new
-              subnet.id = resource_id
-              nic.properties.ip_configurations[0].properties.subnet = subnet
-            when 'Public-IP-Address'
-              public_ip_address = Azure::ARM::Network::Models::PublicIPAddress.new
-              public_ip_address.id = resource_id
-              nic.properties.ip_configurations[0].properties.public_ipaddress = public_ip_address
-            when 'Network-Security-Group'
-              network_security_group = Azure::ARM::Network::Models::NetworkSecurityGroup.new
-              network_security_group.id = resource_id
-              nic.properties.network_security_group = network_security_group
-            end
+            nic = get_network_interface_with_attached_resource(network_interface_name, resource_group_name, resource_id, resource_type)
 
             promise = @network_client.network_interfaces.create_or_update(resource_group_name, network_interface_name, nic)
             result = promise.value!
@@ -32,6 +16,27 @@ module Fog
             msg = "Exception updating #{resource_type} in Network Interface #{network_interface_name} . #{e.body['error']['message']}"
             raise msg
           end
+        end
+
+        def get_network_interface_with_attached_resource(network_interface_name, resource_group_name, resource_id, resource_type)
+          promise = @network_client.network_interfaces.get(resource_group_name, network_interface_name)
+          result = promise.value!
+          nic = result.body
+          case resource_type
+          when SUBNET
+            subnet = Azure::ARM::Network::Models::Subnet.new
+            subnet.id = resource_id
+            nic.properties.ip_configurations[0].properties.subnet = subnet
+          when PUBLIC_IP
+            public_ip_address = Azure::ARM::Network::Models::PublicIPAddress.new
+            public_ip_address.id = resource_id
+            nic.properties.ip_configurations[0].properties.public_ipaddress = public_ip_address
+          when NETWORK_SECURITY_GROUP
+            network_security_group = Azure::ARM::Network::Models::NetworkSecurityGroup.new
+            network_security_group.id = resource_id
+            nic.properties.network_security_group = network_security_group
+          end
+          nic
         end
       end
 

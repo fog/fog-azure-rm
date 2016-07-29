@@ -207,7 +207,7 @@ Get a single record of Network Interface
 ## Update Network Interface
 
 You can update network interface by passing only updated attributes, in the form of hash.
-For exmple,
+For example,
 ```ruby
      nic.update(private_ip_allocation_method: 'Static', private_ip_address: '10.0.0.0')
 ```

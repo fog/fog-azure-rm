@@ -18,8 +18,8 @@ module Fog
           load(network_interfaces)
         end
 
-        def get(resource_group, name)
-          nic = service.get_network_interface(resource_group, name)
+        def get(resource_group_name, name)
+          nic = service.get_network_interface(resource_group_name, name)
           network_interface = Fog::Network::AzureRM::NetworkInterface.new(service: service)
           network_interface.merge_attributes(Fog::Network::AzureRM::NetworkInterface.parse(nic))
         end

@@ -6,15 +6,7 @@ module Fog
         def detach_resource_from_nic(resource_group_name, network_interface_name, resource_type)
           Fog::Logger.debug "Removing #{resource_type} from Network Interface #{network_interface_name}."
           begin
-            promise = @network_client.network_interfaces.get(resource_group_name, network_interface_name)
-            result = promise.value!
-            nic = result.body
-            case resource_type
-            when 'Public-IP-Address'
-              nic.properties.ip_configurations[0].properties.public_ipaddress = nil unless nic.properties.ip_configurations.empty?
-            when 'Network-Security-Group'
-              nic.properties.network_security_group = nil
-            end
+            nic = get_network_interface_with_detached_resource(network_interface_name, resource_group_name, resource_type)
 
             promise = @network_client.network_interfaces.create_or_update(resource_group_name, network_interface_name, nic)
             result = promise.value!
@@ -24,6 +16,19 @@ module Fog
             msg = "Exception removing #{resource_type} from Network Interface #{network_interface_name} . #{e.body['error']['message']}"
             raise msg
           end
+        end
+
+        def get_network_interface_with_detached_resource(network_interface_name, resource_group_name, resource_type)
+          promise = @network_client.network_interfaces.get(resource_group_name, network_interface_name)
+          result = promise.value!
+          nic = result.body
+          case resource_type
+          when PUBLIC_IP
+            nic.properties.ip_configurations[0].properties.public_ipaddress = nil unless nic.properties.ip_configurations.empty?
+          when NETWORK_SECURITY_GROUP
+            nic.properties.network_security_group = nil
+          end
+          nic
         end
       end
 

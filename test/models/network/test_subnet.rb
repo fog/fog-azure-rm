@@ -50,7 +50,7 @@ class TestSubnet < Minitest::Test
 
   def test_attach_network_security_group_method_response
     response = ApiStub::Models::Network::Subnet.create_subnet_response
-    @service.stub :attach_network_security_group_with_subnet, response do
+    @service.stub :attach_network_security_group_to_subnet, response do
       assert_instance_of Fog::Network::AzureRM::Subnet, @subnet.attach_network_security_group('resource-id')
     end
   end
@@ -64,7 +64,7 @@ class TestSubnet < Minitest::Test
 
   def test_attach_route_table_method_response
     response = ApiStub::Models::Network::Subnet.create_subnet_response
-    @service.stub :attach_route_table_with_subnet, response do
+    @service.stub :attach_route_table_to_subnet, response do
       assert_instance_of Fog::Network::AzureRM::Subnet, @subnet.attach_route_table('resource-id')
     end
   end

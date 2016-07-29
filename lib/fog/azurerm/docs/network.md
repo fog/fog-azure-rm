@@ -122,9 +122,9 @@ Get a single record of Subnet
      puts "#{subnet.name}"
 ```
 
-## Attach Network Security Group with Subnet
+## Attach Network Security Group to Subnet
 
-Attach Network Security Group with Subnet
+Attach Network Security Group to Subnet
 
 ```ruby
      subnet = azure_network_service.attach_network_security_group('/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/networkSecurityGroups/<Network Security Group Name>')
@@ -140,9 +140,9 @@ Detach Network Security Group from Subnet
      puts "#{subnet.network_security_group_id}"
 ```
 
-## Attach Route Table with Subnet
+## Attach Route Table to Subnet
 
-Attach Route Table with Subnet
+Attach Route Table to Subnet
 
 ```ruby
      subnet = azure_network_service.attach_route_table('/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/routeTables/<Route Table Name>')

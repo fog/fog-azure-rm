@@ -6,7 +6,7 @@ module Fog
         def create_subnet(resource_group, subnet_name, virtual_network_name, address_prefix, network_security_group_id, route_table_id)
           Fog::Logger.debug "Creating Subnet: #{subnet_name}."
 
-          subnet = define_subnet_object(address_prefix, network_security_group_id, route_table_id)
+          subnet = get_subnet_object(address_prefix, network_security_group_id, route_table_id)
           begin
             promise = @network_client.subnets.create_or_update(resource_group, virtual_network_name, subnet_name, subnet)
             result = promise.value!
@@ -20,7 +20,7 @@ module Fog
 
         private
 
-        def define_subnet_object(address_prefix, network_security_group_id, route_table_id)
+        def get_subnet_object(address_prefix, network_security_group_id, route_table_id)
           subnet = Azure::ARM::Network::Models::Subnet.new
           subnet_properties = Azure::ARM::Network::Models::SubnetPropertiesFormat.new
           network_security_group = Azure::ARM::Network::Models::NetworkSecurityGroup.new

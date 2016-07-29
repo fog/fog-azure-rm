@@ -19,16 +19,9 @@ module Fog
           hash['resource_group'] = get_resource_group_from_id(subnet['id'])
           hash['virtual_network_name'] = get_virtual_network_from_id(subnet['id'])
           hash['address_prefix'] = subnet['properties']['addressPrefix']
-          hash['network_security_group_id'] = if subnet['properties']['networkSecurityGroup'].nil?
-                                                nil
-                                              else
-                                                subnet['properties']['networkSecurityGroup']['id']
-                                              end
-          hash['route_table_id'] = if subnet['properties']['routeTable'].nil?
-                                     nil
-                                   else
-                                     subnet['properties']['routeTable']['id']
-                                   end
+          hash['network_security_group_id'] = nil
+          hash['network_security_group_id'] = subnet['properties']['networkSecurityGroup']['id'] if subnet['properties']['networkSecurityGroup'].nil?
+          hash['route_table_id'] = subnet['properties']['routeTable']['id'] if subnet['properties']['routeTable'].nil?
           hash['ip_configurations_ids'] = subnet['properties']['ipConfigurations'].map { |item| item['id'] } unless subnet['properties']['ipConfigurations'].nil?
           hash
         end
@@ -41,8 +34,8 @@ module Fog
           merge_attributes(Fog::Network::AzureRM::Subnet.parse(subnet))
         end
 
-        def attach_network_security_group(id)
-          subnet = service.attach_network_security_group_with_subnet(resource_group, name, virtual_network_name, address_prefix, route_table_id, id)
+        def attach_network_security_group(network_security_group_id)
+          subnet = service.attach_network_security_group_to_subnet(resource_group, name, virtual_network_name, address_prefix, route_table_id, network_security_group_id)
           merge_attributes(Fog::Network::AzureRM::Subnet.parse(subnet))
         end
 
@@ -51,8 +44,8 @@ module Fog
           merge_attributes(Fog::Network::AzureRM::Subnet.parse(subnet))
         end
 
-        def attach_route_table(id)
-          subnet = service.attach_route_table_with_subnet(resource_group, name, virtual_network_name, address_prefix, network_security_group_id, id)
+        def attach_route_table(route_table_id)
+          subnet = service.attach_route_table_to_subnet(resource_group, name, virtual_network_name, address_prefix, network_security_group_id, route_table_id)
           merge_attributes(Fog::Network::AzureRM::Subnet.parse(subnet))
         end
 

@@ -21,6 +21,7 @@ module Fog
           hash['address_prefix'] = subnet['properties']['addressPrefix']
           hash['network_security_group_id'] = nil
           hash['network_security_group_id'] = subnet['properties']['networkSecurityGroup']['id'] if subnet['properties']['networkSecurityGroup'].nil?
+          hash['route_table_id'] = nil
           hash['route_table_id'] = subnet['properties']['routeTable']['id'] if subnet['properties']['routeTable'].nil?
           hash['ip_configurations_ids'] = subnet['properties']['ipConfigurations'].map { |item| item['id'] } unless subnet['properties']['ipConfigurations'].nil?
           hash

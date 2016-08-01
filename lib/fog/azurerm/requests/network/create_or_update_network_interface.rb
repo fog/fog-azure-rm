@@ -53,7 +53,7 @@ module Fog
 
       # Mock class for Network Request
       class Mock
-        def create_or_update_network_interface(resource_group_name, name, location, subnet_id, public_ip_address_id, ip_configs_name, private_ip_allocation_method)
+        def create_or_update_network_interface(resource_group_name, name, location, subnet_id, public_ip_address_id, ip_configs_name, private_ip_allocation_method, private_ip_address)
           {
             'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group_name}/providers/Microsoft.Network/networkInterfaces/#{name}",
             'name' => name,
@@ -67,7 +67,7 @@ module Fog
                       'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group_name}/providers/Microsoft.Network/networkInterfaces/#{name}/ipConfigurations/#{ip_configs_name}",
                       'properties' =>
                         {
-                          'privateIPAddress' => '10.0.0.5',
+                          'privateIPAddress' => private_ip_address,
                           'privateIPAllocationMethod' => private_ip_allocation_method,
                           'subnet' =>
                             {

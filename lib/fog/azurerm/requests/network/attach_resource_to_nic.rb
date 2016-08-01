@@ -3,23 +3,23 @@ module Fog
     class AzureRM
       # Real class for Network Request
       class Real
-        def attach_resource_to_nic(resource_group_name, network_interface_name, resource_type, resource_id)
-          Fog::Logger.debug "Updating #{resource_type} in Network Interface #{network_interface_name}."
+        def attach_resource_to_nic(resource_group_name, nic_name, resource_type, resource_id)
+          Fog::Logger.debug "Updating #{resource_type} in Network Interface #{nic_name}."
           begin
-            nic = get_network_interface_with_attached_resource(network_interface_name, resource_group_name, resource_id, resource_type)
+            nic = get_network_interface_with_attached_resource(nic_name, resource_group_name, resource_id, resource_type)
 
-            promise = @network_client.network_interfaces.create_or_update(resource_group_name, network_interface_name, nic)
+            promise = @network_client.network_interfaces.create_or_update(resource_group_name, nic_name, nic)
             result = promise.value!
-            Fog::Logger.debug "#{resource_type} updated in Network Interface #{network_interface_name} successfully!"
+            Fog::Logger.debug "#{resource_type} updated in Network Interface #{nic_name} successfully!"
             Azure::ARM::Network::Models::NetworkInterface.serialize_object(result.body)
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Exception updating #{resource_type} in Network Interface #{network_interface_name} . #{e.body['error']['message']}"
+            msg = "Exception updating #{resource_type} in Network Interface #{nic_name} . #{e.body['error']['message']}"
             raise msg
           end
         end
 
-        def get_network_interface_with_attached_resource(network_interface_name, resource_group_name, resource_id, resource_type)
-          promise = @network_client.network_interfaces.get(resource_group_name, network_interface_name)
+        def get_network_interface_with_attached_resource(nic_name, resource_group_name, resource_id, resource_type)
+          promise = @network_client.network_interfaces.get(resource_group_name, nic_name)
           result = promise.value!
           nic = result.body
           case resource_type
@@ -42,10 +42,10 @@ module Fog
 
       # Mock class for Network Request
       class Mock
-        def attach_resource_to_nic(resource_group_name, network_interface_name, _resource_type, _resource_id)
+        def attach_resource_to_nic(resource_group_name, nic_name, _resource_type, _resource_id)
           {
-            'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group_name}/providers/Microsoft.Network/networkInterfaces/#{network_interface_name}",
-            'name' => network_interface_name,
+            'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group_name}/providers/Microsoft.Network/networkInterfaces/#{nic_name}",
+            'name' => nic_name,
             'type' => 'Microsoft.Network/networkInterfaces',
             'location' => location,
             'properties' =>
@@ -53,7 +53,7 @@ module Fog
                 'ipConfigurations' =>
                   [
                     {
-                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group_name}/providers/Microsoft.Network/networkInterfaces/#{network_interface_name}/ipConfigurations/#{ip_configs_name}",
+                      'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group_name}/providers/Microsoft.Network/networkInterfaces/#{nic_name}/ipConfigurations/#{ip_configs_name}",
                       'properties' =>
                         {
                           'privateIPAddress' => '10.0.0.5',

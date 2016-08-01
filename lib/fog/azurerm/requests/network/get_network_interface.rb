@@ -3,14 +3,14 @@ module Fog
     class AzureRM
       # Real class for Network Interface Request
       class Real
-        def get_network_interface(resource_group_name, name)
-          Fog::Logger.debug "Getting Network Interface#{name} from Resource Group #{resource_group_name}."
+        def get_network_interface(resource_group_name, nic_name)
+          Fog::Logger.debug "Getting Network Interface#{nic_name} from Resource Group #{resource_group_name}."
           begin
-            promise = @network_client.network_interfaces.get(resource_group_name, name)
+            promise = @network_client.network_interfaces.get(resource_group_name, nic_name)
             result = promise.value!
             Azure::ARM::Network::Models::NetworkInterface.serialize_object(result.body)
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Exception getting Network Interface #{name} from Resource Group '#{resource_group_name}'. #{e.body['error']['message']}."
+            msg = "Exception getting Network Interface #{nic_name} from Resource Group '#{resource_group_name}'. #{e.body['error']['message']}."
             raise msg
           end
         end
@@ -18,10 +18,10 @@ module Fog
 
       # Mock class for Network Interface Request
       class Mock
-        def get_network_interface(resource_group_name, name)
+        def get_network_interface(resource_group_name, nic_name)
           {
-            'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group_name}/providers/Microsoft.Network/networkInterfaces/#{name}",
-            'name' => name,
+            'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group_name}/providers/Microsoft.Network/networkInterfaces/#{nic_name}",
+            'name' => nic_name,
             'type' => 'Microsoft.Network/networkInterfaces',
             'location' => 'westus',
             'properties' =>

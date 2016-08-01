@@ -166,7 +166,7 @@ Get a subnet object from the get method and then destroy that subnet.
     subnet.destroy
 ```
 
-## Create Network Interface
+## Create Network Interface Card
 
 Create a new network interface. Skip public_ip_address_id parameter to create network interface without PublicIP. The parameter, private_ip_allocation_method can be Dynamic or Static.
 
@@ -182,7 +182,7 @@ Create a new network interface. Skip public_ip_address_id parameter to create ne
  )
 ```
 
-## List Network Interfaces
+## List Network Interface Cards
 
 List network interfaces in a resource group
 
@@ -193,7 +193,7 @@ List network interfaces in a resource group
     end
 ```
 
-## Retrieve a single Network Interface
+## Retrieve a single Network Interface Card
 
 Get a single record of Network Interface
 
@@ -204,25 +204,25 @@ Get a single record of Network Interface
      puts "#{nic.name}"
 ```
 
-## Update Network Interface
+## Update Network Interface Card
 
 You can update network interface by passing only updated attributes, in the form of hash.
 For example,
 ```ruby
      nic.update(private_ip_allocation_method: 'Static', private_ip_address: '10.0.0.0')
 ```
-## Attach/Detach resources to/from Network Interface
+## Attach/Detach resources to Network Interface Card
 
 Attach Subnet, Public-IP or Network-Security-Group as following
 ```ruby
     subnet_id = "<NEW-SUBNET-ID>"
     nic.attach_subnet(subnet_id)
     
-    public_ip = "<NEW-PUBLIC_IP-ID>"
-    nic.attach_public_ip(public_ip)
+    public_ip_id = "<NEW-PUBLIC_IP-ID>"
+    nic.attach_public_ip(public_ip_id)
     
-    nsg_ip = "<NEW-NSG-ID>"
-    nic.attach_network_security_group(nsg_ip)
+    nsg_id = "<NEW-NSG-ID>"
+    nic.attach_network_security_group(nsg_id)
 
 ```
 Detach Public-IP or Network-Security-Group as following
@@ -235,7 +235,7 @@ Detach Public-IP or Network-Security-Group as following
 ```
 `Note: You can't detach subnet from Network Interface.`
 
-## Destroy a single Network Interface
+## Destroy a single Network Interface Card
 
 Get a network interface object from the get method and then destroy that network interface.
 

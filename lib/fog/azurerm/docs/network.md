@@ -166,7 +166,7 @@ Get a subnet object from the get method and then destroy that subnet.
     subnet.destroy
 ```
 
-## Create Network Interface
+## Create Network Interface Card
 
 Create a new network interface. Skip public_ip_address_id parameter to create network interface without PublicIP. The parameter, private_ip_allocation_method can be Dynamic or Static.
 
@@ -182,7 +182,7 @@ Create a new network interface. Skip public_ip_address_id parameter to create ne
  )
 ```
 
-## List Network Interfaces
+## List Network Interface Cards
 
 List network interfaces in a resource group
 
@@ -193,18 +193,49 @@ List network interfaces in a resource group
     end
 ```
 
-## Retrieve a single Network Interface
+## Retrieve a single Network Interface Card
 
 Get a single record of Network Interface
 
 ```ruby
      nic = azure_network_service
-           .network_interfaces(resource_group: '<Resource Group name>')
-           .get('<Network Interface name>')
+           .network_interfaces
+           .get('<Resource Group name>', '<Network Interface name>')
      puts "#{nic.name}"
 ```
 
-## Destroy a single Network Interface
+## Update Network Interface Card
+
+You can update network interface by passing only updated attributes, in the form of hash.
+For example,
+```ruby
+     nic.update(private_ip_allocation_method: 'Static', private_ip_address: '10.0.0.0')
+```
+## Attach/Detach resources to Network Interface Card
+
+Attach Subnet, Public-IP or Network-Security-Group as following
+```ruby
+    subnet_id = "<NEW-SUBNET-ID>"
+    nic.attach_subnet(subnet_id)
+    
+    public_ip_id = "<NEW-PUBLIC_IP-ID>"
+    nic.attach_public_ip(public_ip_id)
+    
+    nsg_id = "<NEW-NSG-ID>"
+    nic.attach_network_security_group(nsg_id)
+
+```
+Detach Public-IP or Network-Security-Group as following
+
+```ruby 
+    nic.detach_public_ip
+
+    nic.detach_network_security_group
+
+```
+`Note: You can't detach subnet from Network Interface.`
+
+## Destroy a single Network Interface Card
 
 Get a network interface object from the get method and then destroy that network interface.
 

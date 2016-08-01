@@ -3,7 +3,7 @@ module ApiStub
     module Network
       class NetworkInterface
         def self.create_network_interface_response
-          subnet = '{
+          nic = '{
              "name":"fog-test-network-interface",
              "id":"/subscriptions/{guid}/resourceGroups/fog-test-rg/providers/Microsoft.Network/networkInterfaces/fog-test-network-interface",
              "location":"West US",
@@ -63,7 +63,7 @@ module ApiStub
                 }
              }
           }'
-          JSON.parse(subnet)
+          JSON.parse(nic)
         end
       end
     end

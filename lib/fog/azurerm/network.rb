@@ -26,9 +26,12 @@ module Fog
       request :list_subnets
       request :get_subnet
       request :delete_subnet
-      request :create_network_interface
+      request :create_or_update_network_interface
       request :delete_network_interface
       request :list_network_interfaces
+      request :get_network_interface
+      request :attach_resource_to_nic
+      request :detach_resource_from_nic
       request :create_load_balancer
       request :delete_load_balancer
       request :list_load_balancers

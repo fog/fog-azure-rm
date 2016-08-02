@@ -3,16 +3,16 @@ module Fog
     class AzureRM
       # Real class for Network Request
       class Real
-        def create_virtual_network(resource_group, name, location, dns_servers, subnets, address_prefixes)
-          Fog::Logger.debug "Creating Virtual Network: #{name}"
+        def create_or_update_virtual_network(resource_group, name, location, dns_servers, subnets, address_prefixes)
+          Fog::Logger.debug "Creating/Updating Virtual Network: #{name}"
           virtual_network = define_vnet_object(location, address_prefixes, dns_servers, subnets)
           begin
             promise = @network_client.virtual_networks.create_or_update(resource_group, name, virtual_network)
             result = promise.value!
-            Fog::Logger.debug "Virtual Network #{name} created successfully."
+            Fog::Logger.debug "Virtual Network #{name} created/updated successfully."
             Azure::ARM::Network::Models::VirtualNetwork.serialize_object(result.body)
           rescue  MsRestAzure::AzureOperationError => e
-            msg = "Exception creating Virtual Network #{name} in Resource Group: #{resource_group}. #{e.body['error']['message']}"
+            msg = "Exception creating/updating Virtual Network #{name} in Resource Group: #{resource_group}. #{e.body['error']['message']}"
             raise msg
           end
         end
@@ -73,7 +73,7 @@ module Fog
 
       # Mock class for Network Request
       class Mock
-        def create_virtual_network(*)
+        def create_or_update__virtual_network(*)
           {
             'id' => '/subscriptions/########-####-####-####-############/resourceGroups/fog-rg/providers/Microsoft.Network/virtualNetworks/fog-vnet',
             'name' => 'fog-vnet',

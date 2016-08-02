@@ -36,23 +36,47 @@ module Fog
           requires :resource_group
           validate_subnets!(subnets) unless subnets.nil?
 
-          vnet = service.create_virtual_network(resource_group, name, location, dns_servers, subnets, address_prefixes)
+          vnet = service.create_or_update_virtual_network(resource_group, name, location, dns_servers, subnets, address_prefixes)
           merge_attributes(Fog::Network::AzureRM::VirtualNetwork.parse(vnet))
         end
 
-        def add_dns_servers(new_dns_servers)
-          virtual_network = service.add_dns_servers_in_virtual_network(resource_group, name, new_dns_servers)
+        def add_dns_servers(dns_servers_hash)
+          virtual_network = service.add_dns_servers_in_virtual_network(resource_group, name, dns_servers_hash)
           merge_attributes(Fog::Network::AzureRM::VirtualNetwork.parse(virtual_network))
         end
 
-        def add_address_prefixes(new_address_prefixes)
-          virtual_network = service.add_address_prefixes_in_virtual_network(resource_group, name, new_address_prefixes)
+        def remove_dns_servers(dns_servers_hash)
+          virtual_network = service.remove_dns_servers_from_virtual_network(resource_group, name, dns_servers_hash)
           merge_attributes(Fog::Network::AzureRM::VirtualNetwork.parse(virtual_network))
         end
 
-        def add_subnets(new_subnets)
-          validate_subnets!(new_subnets)
-          virtual_network = service.add_subnets_in_virtual_network(resource_group, name, new_subnets)
+        def add_address_prefixes(address_prefixes_hash)
+          virtual_network = service.add_address_prefixes_in_virtual_network(resource_group, name, address_prefixes_hash)
+          merge_attributes(Fog::Network::AzureRM::VirtualNetwork.parse(virtual_network))
+        end
+
+        def remove_address_prefixes(address_prefixes_hash)
+          virtual_network = service.remove_address_prefixes_from_virtual_network(resource_group, name, address_prefixes_hash)
+          merge_attributes(Fog::Network::AzureRM::VirtualNetwork.parse(virtual_network))
+        end
+
+        def add_subnets(subnets_hash)
+          validate_subnets!(subnets_hash)
+          virtual_network = service.add_subnets_in_virtual_network(resource_group, name, subnets_hash)
+          merge_attributes(Fog::Network::AzureRM::VirtualNetwork.parse(virtual_network))
+        end
+
+        def remove_subnets(subnet_names_array)
+          virtual_network = service.remove_subnets_from_virtual_network(resource_group, name, subnet_names_array)
+          merge_attributes(Fog::Network::AzureRM::VirtualNetwork.parse(virtual_network))
+        end
+
+        def update(hash)
+          raise('Provided hash can not be empty.') if hash.empty? || hash.nil?
+          validate_update_attributes!(hash)
+          validate_subnets!(hash[:subnets]) if hash.key?(:subnets)
+          merge_attributes(hash)
+          virtual_network = service.create_or_update_virtual_network(resource_group, name, location, dns_servers, subnets, address_prefixes)
           merge_attributes(Fog::Network::AzureRM::VirtualNetwork.parse(virtual_network))
         end
 
@@ -62,21 +86,19 @@ module Fog
 
         private
 
+        def validate_update_attributes!(hash)
+          forbidden_attributes = [:id, :name, :location, :resource_group]
+          invalid_attributes = forbidden_attributes & hash.keys
+          raise "#{invalid_attributes.join(', ')} cannot be changed." if invalid_attributes.any?
+        end
+
         def validate_subnets!(subnets)
-          if subnets.is_a?(Array)
-            if subnets.empty?
-              raise ':subnets must not be an empty Array'
-            else
-              subnets.each do |subnet|
-                if subnet.is_a?(Hash)
-                  validate_params([:name, :address_prefix], subnet)
-                else
-                  raise ':subnets must be an Array of Hashes'
-                end
-              end
-            end
-          else
-            raise ':subnets must be an Array'
+          raise ':subnets must be an Array' unless subnets.is_a?(Array)
+          raise ':subnets must not be an empty Array' if subnets.empty?
+
+          subnets.each do |subnet|
+            raise ':subnets must be an Array of Hashes' unless subnet.is_a?(Hash)
+            validate_params([:name, :address_prefix], subnet)
           end
         end
       end

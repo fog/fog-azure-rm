@@ -8,20 +8,23 @@ class TestVirtualNetwork < Minitest::Test
   end
 
   def test_model_methods
-    response = ApiStub::Models::Network::VirtualNetwork.create_virtual_network_response
     methods = [
       :save,
+      :add_dns_servers,
+      :remove_dns_servers,
+      :add_address_prefixes,
+      :remove_address_prefixes,
+      :add_subnets,
+      :remove_subnets,
+      :update,
       :destroy
     ]
-    @service.stub :create_virtual_network, response do
-      methods.each do |method|
-        assert @virtual_network.respond_to? method
-      end
+    methods.each do |method|
+      assert @virtual_network.respond_to? method
     end
   end
 
   def test_model_attributes
-    response = ApiStub::Models::Network::VirtualNetwork.create_virtual_network_response
     attributes = [
       :name,
       :id,
@@ -31,17 +34,72 @@ class TestVirtualNetwork < Minitest::Test
       :address_prefixes,
       :resource_group
     ]
-    @service.stub :create_virtual_network, response do
-      attributes.each do |attribute|
-        assert @virtual_network.respond_to? attribute
-      end
+    attributes.each do |attribute|
+      assert @virtual_network.respond_to? attribute
     end
   end
 
   def test_save_method_response
     response = ApiStub::Models::Network::VirtualNetwork.create_virtual_network_response
-    @service.stub :create_virtual_network, response do
+    @service.stub :create_or_update_virtual_network, response do
       assert_instance_of Fog::Network::AzureRM::VirtualNetwork, @virtual_network.save
+    end
+  end
+
+  def test_add_dns_servers_method_response
+    response = ApiStub::Models::Network::VirtualNetwork.create_virtual_network_response
+    @service.stub :add_dns_servers_in_virtual_network, response do
+      assert_instance_of Fog::Network::AzureRM::VirtualNetwork, @virtual_network.add_dns_servers(['10.3.0.0', '10.4.0.0'])
+    end
+  end
+
+  def test_remove_dns_servers_method_response
+    response = ApiStub::Models::Network::VirtualNetwork.create_virtual_network_response
+    @service.stub :remove_dns_servers_from_virtual_network, response do
+      assert_instance_of Fog::Network::AzureRM::VirtualNetwork, @virtual_network.remove_dns_servers(['10.3.0.0', '10.4.0.0'])
+    end
+  end
+
+  def test_add_address_prefixes_method_response
+    response = ApiStub::Models::Network::VirtualNetwork.create_virtual_network_response
+    @service.stub :add_address_prefixes_in_virtual_network, response do
+      assert_instance_of Fog::Network::AzureRM::VirtualNetwork, @virtual_network.add_address_prefixes(['10.0.0.0/16'])
+    end
+  end
+
+  def test_remove_address_prefixes_method_response
+    response = ApiStub::Models::Network::VirtualNetwork.create_virtual_network_response
+    @service.stub :remove_address_prefixes_from_virtual_network, response do
+      assert_instance_of Fog::Network::AzureRM::VirtualNetwork, @virtual_network.remove_address_prefixes(['10.0.0.0/16'])
+    end
+  end
+
+  def test_add_subnets_method_response
+    subnets = [{
+      name: 'test-subnet',
+      address_prefix: '10.0.0.0/16'
+    }]
+    response = ApiStub::Models::Network::VirtualNetwork.create_virtual_network_response
+    @service.stub :add_subnets_in_virtual_network, response do
+      assert_instance_of Fog::Network::AzureRM::VirtualNetwork, @virtual_network.add_subnets(subnets)
+    end
+  end
+
+  def test_remove_subnets_method_response
+    response = ApiStub::Models::Network::VirtualNetwork.create_virtual_network_response
+    @service.stub :remove_subnets_from_virtual_network, response do
+      assert_instance_of Fog::Network::AzureRM::VirtualNetwork, @virtual_network.remove_subnets(['test-subnet'])
+    end
+  end
+
+  def test_update_method_response
+    subnets = [{
+      name: 'test-subnet',
+      address_prefix: '10.0.0.0/16'
+    }]
+    response = ApiStub::Models::Network::VirtualNetwork.create_virtual_network_response
+    @service.stub :create_or_update_virtual_network, response do
+      assert_instance_of Fog::Network::AzureRM::VirtualNetwork, @virtual_network.update(subnets: subnets, address_prefixes: ['10.0.0.0/16'])
     end
   end
 

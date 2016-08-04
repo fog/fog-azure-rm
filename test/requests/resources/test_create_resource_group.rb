@@ -4,15 +4,16 @@ require File.expand_path '../../test_helper', __dir__
 class TestCreateResourceGroup < Minitest::Test
   def setup
     @service = Fog::Resources::AzureRM.new(credentials)
-    client = @service.instance_variable_get(:@rmc)
-    @resource_groups = client.resource_groups
+    @client = @service.instance_variable_get(:@rmc)
+    @resource_groups = @client.resource_groups
     @promise = Concurrent::Promise.execute do
     end
   end
 
   def test_create_resource_group_success
-    mocked_response = ApiStub::Requests::Resources::ResourceGroup.create_resource_group_response
-    expected_response = Azure::ARM::Resources::Models::ResourceGroup.serialize_object(mocked_response.body)
+    mocked_response = ApiStub::Requests::Resources::ResourceGroup.create_resource_group_response(@client)
+    result_mapper = Azure::ARM::Resources::Models::ResourceGroup.mapper
+    expected_response = @client.serialize(result_mapper, mocked_response.body, 'parameters')
     @promise.stub :value!, mocked_response do
       @resource_groups.stub :create_or_update, @promise do
         assert_equal @service.create_resource_group('fog-test-rg', 'west us'), expected_response

@@ -4,12 +4,12 @@ require File.expand_path '../../test_helper', __dir__
 class TestDeleteResourceTag < Minitest::Test
   def setup
     @service = Fog::Resources::AzureRM.new(credentials)
-    client = @service.instance_variable_get(:@rmc)
-    @resources = client.resources
+    @client = @service.instance_variable_get(:@rmc)
+    @resources = @client.resources
   end
 
   def test_delete_resource_tag_success
-    response = ApiStub::Requests::Resources::AzureResource.azure_resource_response
+    response = ApiStub::Requests::Resources::AzureResource.azure_resource_response(@client)
     promise_get = Concurrent::Promise.execute do
     end
     promise_update = Concurrent::Promise.execute do

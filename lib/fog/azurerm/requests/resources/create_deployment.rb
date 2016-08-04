@@ -25,7 +25,8 @@ module Fog
             promise = @rmc.deployments.create_or_update(resource_group, deployment_name, deployment)
             result = promise.value!
             Fog::Logger.debug "Deployment: #{deployment_name} in Resource Group: #{resource_group} created successfully."
-            Azure::ARM::Resources::Models::DeploymentExtended.serialize_object(result.body)
+            result_mapper = Azure::ARM::Resources::Models::DeploymentExtended.mapper
+            @rmc.serialize(result_mapper, result.body, 'parameters')
           rescue  MsRestAzure::AzureOperationError => e
             msg = "Exception creating Deployment: #{deployment_name} in Resource Group: #{resource_group}. #{e.body['error']['message']}"
             raise msg

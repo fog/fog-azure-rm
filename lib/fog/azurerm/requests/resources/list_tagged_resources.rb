@@ -11,7 +11,8 @@ module Fog
               promise = @rmc.resources.list(query_filter)
               result = promise.value!
               result.body.next_link = ''
-              Azure::ARM::Resources::Models::ResourceListResult.serialize_object(result.body)['value']
+              result_mapper = Azure::ARM::Resources::Models::ResourceListResult.mapper
+              @rmc.serialize(result_mapper, result.body, 'parameters')['value']
             end
           rescue MsRestAzure::AzureOperationError => e
             msg = "Exception listing Resources . #{e.body['error']['message']}"

@@ -4,12 +4,12 @@ require File.expand_path '../../test_helper', __dir__
 class TestTagResource < Minitest::Test
   def setup
     @service = Fog::Resources::AzureRM.new(credentials)
-    client = @service.instance_variable_get(:@rmc)
-    @resources = client.resources
+    @client = @service.instance_variable_get(:@rmc)
+    @resources = @client.resources
   end
 
   def test_tag_resource_success
-    mocked_response = ApiStub::Requests::Resources::AzureResource.azure_resource_response
+    mocked_response = ApiStub::Requests::Resources::AzureResource.azure_resource_response(@client)
     promise_get = Concurrent::Promise.execute do
     end
     promise_create = Concurrent::Promise.execute do

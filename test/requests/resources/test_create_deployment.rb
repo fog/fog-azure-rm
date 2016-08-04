@@ -4,8 +4,8 @@ require File.expand_path '../../test_helper', __dir__
 class TestCreateDeployment < Minitest::Test
   def setup
     @service = Fog::Resources::AzureRM.new(credentials)
-    client = @service.instance_variable_get(:@rmc)
-    @deployments = client.deployments
+    @client = @service.instance_variable_get(:@rmc)
+    @deployments = @client.deployments
     @resource_group = 'fog-test-rg'
     @deployment_name = 'fog-test-deployment'
     @template_link = 'https://test.com/template.json'
@@ -17,8 +17,9 @@ class TestCreateDeployment < Minitest::Test
     end
     create_deployment_promise = Concurrent::Promise.execute do
     end
-    mocked_response = ApiStub::Requests::Resources::Deployment.create_deployment_response
-    expected_response = Azure::ARM::Resources::Models::DeploymentExtended.serialize_object(mocked_response.body)
+    mocked_response = ApiStub::Requests::Resources::Deployment.create_deployment_response(@client)
+    result_mapper = Azure::ARM::Resources::Models::DeploymentExtended.mapper
+    expected_response = @client.serialize(result_mapper, mocked_response.body, 'parameters')
     validate_deployment_promise.stub :value!, true do
       @deployments.stub :validate, validate_deployment_promise do
         create_deployment_promise.stub :value!, mocked_response do

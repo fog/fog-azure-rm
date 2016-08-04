@@ -3,7 +3,7 @@ module ApiStub
     module Resources
       # Mock class for Resource Group Requests
       class ResourceGroup
-        def self.create_resource_group_response
+        def self.create_resource_group_response(client)
           body = '{
             "id": "/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg",
             "name": "fog-test-rg",
@@ -16,11 +16,12 @@ module ApiStub
             }
           }'
           result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
-          result.body = Azure::ARM::Resources::Models::ResourceGroup.deserialize_object(JSON.load(body))
+          result_mapper = Azure::ARM::Resources::Models::ResourceGroup.mapper
+          result.body = client.deserialize(result_mapper, JSON.load(body), 'result.body')
           result
         end
 
-        def self.list_resource_group_response
+        def self.list_resource_group_response(client)
           body = '{
             "value": [ {
               "id": "/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg",
@@ -36,7 +37,8 @@ module ApiStub
             "nextLink": "https://management.azure.com/subscriptions/########-####-####-####-############/resourcegroups?api-version=2015-01-01&$skiptoken=######"
           }'
           result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
-          result.body = Azure::ARM::Resources::Models::ResourceGroupListResult.deserialize_object(JSON.load(body))
+          result_mapper = Azure::ARM::Resources::Models::ResourceGroupListResult.mapper
+          result.body = client.deserialize(result_mapper, JSON.load(body), 'result.body')
           result
         end
 

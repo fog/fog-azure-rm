@@ -71,11 +71,10 @@ module Fog
           merge_attributes(Fog::Network::AzureRM::VirtualNetwork.parse(virtual_network))
         end
 
-        def update(hash)
-          raise('Provided hash can not be empty.') if hash.empty? || hash.nil?
-          validate_update_attributes!(hash)
-          validate_subnets!(hash[:subnets]) if hash.key?(:subnets)
-          merge_attributes(hash)
+        def update(vnet_hash)
+          raise('Provided hash can not be empty.') if vnet_hash.empty? || vnet_hash.nil?
+          validate_update_attributes!(vnet_hash)
+          merge_attributes(vnet_hash)
           virtual_network = service.create_or_update_virtual_network(resource_group, name, location, dns_servers, subnets, address_prefixes)
           merge_attributes(Fog::Network::AzureRM::VirtualNetwork.parse(virtual_network))
         end
@@ -86,10 +85,11 @@ module Fog
 
         private
 
-        def validate_update_attributes!(hash)
+        def validate_update_attributes!(vnet_hash)
           forbidden_attributes = [:id, :name, :location, :resource_group]
-          invalid_attributes = forbidden_attributes & hash.keys
+          invalid_attributes = forbidden_attributes & vnet_hash.keys
           raise "#{invalid_attributes.join(', ')} cannot be changed." if invalid_attributes.any?
+          validate_subnets!(vnet_hash[:subnets]) if vnet_hash.key?(:subnets)
         end
 
         def validate_subnets!(subnets)

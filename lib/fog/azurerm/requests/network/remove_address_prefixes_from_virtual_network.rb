@@ -5,31 +5,16 @@ module Fog
       class Real
         def remove_address_prefixes_from_virtual_network(resource_group_name, virtual_network_name, address_prefixes_hash)
           Fog::Logger.debug "Removing Address Prefixes: #{address_prefixes_hash.join(', ')} from Virtual Network: #{virtual_network_name}"
-
           virtual_network = get_virtual_network_object_for_remove_address_prefixes!(resource_group_name, virtual_network_name, address_prefixes_hash)
-          begin
-            promise = @network_client.virtual_networks.create_or_update(resource_group_name, virtual_network_name, virtual_network)
-            result = promise.value!
-            Fog::Logger.debug "Address Prefixes: #{address_prefixes_hash.join(', ')} removed successfully."
-            Azure::ARM::Network::Models::VirtualNetwork.serialize_object(result.body)
-          rescue  MsRestAzure::AzureOperationError => e
-            msg = "Exception removing Address Prefixes: #{address_prefixes_hash.join(', ')} from Virtual Network: #{virtual_network_name}. #{e.body['error']['message']}"
-            raise msg
-          end
+          result = create_or_update_vnet(resource_group_name, virtual_network_name, virtual_network)
+          Fog::Logger.debug "Address Prefixes: #{address_prefixes_hash.join(', ')} removed successfully."
+          Azure::ARM::Network::Models::VirtualNetwork.serialize_object(result)
         end
 
         private
 
         def get_virtual_network_object_for_remove_address_prefixes!(resource_group_name, virtual_network_name, address_prefixes_hash)
-          begin
-            promise = @network_client.virtual_networks.get(resource_group_name, virtual_network_name)
-            result = promise.value!
-          rescue MsRestAzure::AzureOperationError => e
-            msg = "Exception removing Address Prefixes: #{address_prefixes_hash.join(', ')} from Virtual Network: #{virtual_network_name}. #{e.body['error']['message']}"
-            raise msg
-          end
-
-          virtual_network = result.body
+          virtual_network = get_vnet(resource_group_name, virtual_network_name)
           attached_address_prefixes = virtual_network.properties.address_space.address_prefixes
           raise "Cannot remove Address Prefixes: Provided Address Prefix(es) is/are not found in Virtual Network: #{virtual_network_name}" if (attached_address_prefixes & address_prefixes_hash).empty?
           virtual_network.properties.address_space.address_prefixes = attached_address_prefixes - address_prefixes_hash

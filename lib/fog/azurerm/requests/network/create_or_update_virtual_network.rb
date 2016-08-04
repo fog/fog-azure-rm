@@ -3,21 +3,26 @@ module Fog
     class AzureRM
       # Real class for Network Request
       class Real
-        def create_or_update_virtual_network(resource_group, name, location, dns_servers, subnets, address_prefixes)
-          Fog::Logger.debug "Creating/Updating Virtual Network: #{name}"
+        def create_or_update_virtual_network(resource_group_name, virtual_network_name, location, dns_servers, subnets, address_prefixes)
           virtual_network = define_vnet_object(location, address_prefixes, dns_servers, subnets)
-          begin
-            promise = @network_client.virtual_networks.create_or_update(resource_group, name, virtual_network)
-            result = promise.value!
-            Fog::Logger.debug "Virtual Network #{name} created/updated successfully."
-            Azure::ARM::Network::Models::VirtualNetwork.serialize_object(result.body)
-          rescue  MsRestAzure::AzureOperationError => e
-            msg = "Exception creating/updating Virtual Network #{name} in Resource Group: #{resource_group}. #{e.body['error']['message']}"
-            raise msg
-          end
+          result = create_or_update_vnet(resource_group_name, virtual_network_name, virtual_network)
+          Azure::ARM::Network::Models::VirtualNetwork.serialize_object(result)
         end
 
         private
+
+        def create_or_update_vnet(resource_group_name, virtual_network_name, virtual_network)
+          Fog::Logger.debug "Creating/Updating Virtual Network: #{virtual_network_name}"
+          begin
+            promise = @network_client.virtual_networks.create_or_update(resource_group_name, virtual_network_name, virtual_network)
+            result = promise.value!
+            Fog::Logger.debug "Virtual Network #{virtual_network_name} created/updated successfully."
+            result.body
+          rescue  MsRestAzure::AzureOperationError => e
+            msg = "Exception creating/updating Virtual Network #{virtual_network_name} in Resource Group: #{resource_group_name}. #{e.body['error']['message']}"
+            raise msg
+          end
+        end
 
         def define_vnet_object(location, address_prefixes, dns_servers, subnets)
           virtual_network = Azure::ARM::Network::Models::VirtualNetwork.new

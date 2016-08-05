@@ -69,10 +69,53 @@ List all virtual networks in a subscription
 Get a single record of virtual network
 
 ```ruby
-      vnet = azure_network_service
-               .virtual_networks(resource_group: '<Resource Group Name>')
-               .get('<Virtual Network name>')
-      puts "#{vnet.name}"
+     vnet = azure_network_service.virtual_networks.get('<Resource Group Name>', '<Virtual Network name>')
+     puts "#{vnet.name}"
+```
+
+## Add/Remove DNS Servers to/from Virtual Network
+
+Add/Remove DNS Servers to/from Virtual Network
+
+```ruby
+     vnet.add_dns_servers(['10.3.0.0','10.4.0.0'])
+     vnet.remove_dns_servers(['10.3.0.0','10.4.0.0'])
+```
+
+## Add/Remove Address Prefixes to/from Virtual Network
+
+Add/Remove Address Prefixes to/from Virtual Network
+
+```ruby
+     vnet.add_address_prefixes(['10.2.0.0/16', '10.3.0.0/16'])
+     vnet.remove_address_prefixes(['10.2.0.0/16'])
+```
+
+## Add/Remove Subnets to/from Virtual Network
+
+Add/Remove Subnets to/from Virtual Network
+
+```ruby
+     vnet.add_subnets([{
+       name: 'test-subnet',
+       address_prefix: '10.3.0.0/24'
+     }])
+
+     vnet.remove_subnets(['test-subnet'])
+```
+
+## Update Virtual Network
+
+Update Virtual Network
+
+```ruby
+     vnet.update({
+       subnets:[{
+         name: 'fog-subnet',
+         address_prefix: '10.3.0.0/16'
+       }],
+       dns_servers: ['10.3.0.0','10.4.0.0']
+     })
 ```
 
 ## Destroy a single virtual network

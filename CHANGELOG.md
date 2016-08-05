@@ -1,3 +1,31 @@
+## 0.0.4
+
+**Added:**
+- Storage Service - Added Support Azure container operations
+- Storage Service - Added blob container metadata support
+- Storage Service - Added support for Get Storage Access keys for Storage Account
+- Network Service - Added support for updation methods for Virtual Network
+- Network Service - Added support for updation methods for Network Security Group
+- Network Service - Added support for updation methods for Subnet
+- Network Service - Added Support for Internal Load Balancer
+- Resources Service - Added Azure Resource Manager Template feature
+- Resources Service - Added tag azure resources support
+- Tests - Added Integration test scripts for all services
+- Documentation - Added Readme for integration tests
+- Documentation - Added fog structure information
+- Code Climate - Added Ratings
+
+**Changed:**
+- Compute Service - Moved Data Disk model to Storage service
+- Network Service - Improved Subnet and Virtual Network module
+- Storage Service - Code standardization
+- Documentation - Changed delete_data_disk request name to delete_disk
+- Code Climate - Disabled similar and identical code check
+
+**Fixed:**
+- Resolved bugs in server.rb integration file
+
+
 ## 0.0.3
 
 **Added:**

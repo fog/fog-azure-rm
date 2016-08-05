@@ -10,7 +10,14 @@ module Fog
       requires :subscription_id
 
       request_path 'fog/azurerm/requests/network'
-      request :create_virtual_network
+      request :create_or_update_virtual_network
+      request :get_virtual_network
+      request :add_dns_servers_in_virtual_network
+      request :remove_dns_servers_from_virtual_network
+      request :add_address_prefixes_in_virtual_network
+      request :remove_subnets_from_virtual_network
+      request :remove_address_prefixes_from_virtual_network
+      request :add_subnets_in_virtual_network
       request :delete_virtual_network
       request :list_virtual_networks
       request :check_for_virtual_network

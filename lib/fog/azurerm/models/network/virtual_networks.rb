@@ -19,8 +19,10 @@ module Fog
           load(virtual_networks)
         end
 
-        def get(identity)
-          all.find { |f| f.name == identity }
+        def get(resource_group_name, virtual_network_name)
+          virtual_network = service.get_virtual_network(resource_group_name, virtual_network_name)
+          virtual_network_object = Fog::Network::AzureRM::VirtualNetwork.new(service: service)
+          virtual_network_object.merge_attributes(Fog::Network::AzureRM::VirtualNetwork.parse(virtual_network))
         end
 
         def check_if_exists(resource_group, name)

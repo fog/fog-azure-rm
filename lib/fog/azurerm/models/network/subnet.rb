@@ -28,9 +28,7 @@ module Fog
         end
 
         def save
-          requires :name
-          requires :resource_group
-          requires :virtual_network_name
+          requires :name, :resource_group, :virtual_network_name, :address_prefix
           subnet = service.create_subnet(resource_group, name, virtual_network_name, address_prefix, network_security_group_id, route_table_id)
           merge_attributes(Fog::Network::AzureRM::Subnet.parse(subnet))
         end

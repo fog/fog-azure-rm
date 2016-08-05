@@ -9,8 +9,16 @@ Gem::Specification.new do |spec|
   spec.summary       = "Module for the 'fog' gem to support Azure Resource Manager cloud services."
   spec.description   = "This library can be used as a module for 'fog' or as standalone provider
                         to use the Azure Resource Manager cloud services in applications.."
-  spec.files         = Dir['{lib}/**/*.rb', 'bin/*', 'LICENSE', '*.md']
-  spec.require_paths = ['lib']
+  spec.files = `git ls-files`.split("\n")
+  spec.test_files = `git ls-files -- {spec,tests}/*`.split("\n")
+  spec.require_paths = %w[lib]
+  spec.license  = 'MIT'
+  spec.homepage = 'https://github.com/fog/fog-azure-rm'
+  spec.rdoc_options = %w[--charset=UTF-8]
+  spec.extra_rdoc_files = %w[README.md]
+  spec.platform = Gem::Platform::CURRENT
+  spec.required_ruby_version = '>= 2.0.0'
+  spec.post_install_message = 'Thanks for installing!'
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'minitest', '~> 5.8.4'
   spec.add_development_dependency 'simplecov', '~> 0.11.2'

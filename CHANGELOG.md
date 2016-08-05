@@ -1,29 +1,32 @@
 ## 0.0.4
 
 **Added:**
-- Storage Service - Added Support Azure container operations
+- Storage Service - Added Support for Azure container operations
 - Storage Service - Added blob container metadata support
-- Storage Service - Added support for Get Storage Access keys for Storage Account
-- Network Service - Added support for updation methods for Virtual Network
+- Storage Service - Added container integration test
+- Storage Service - Added support to get storage access key
 - Network Service - Added support for updation methods for Network Security Group
+- Network Service - Added support for updation methods for Virtual Network(vnet)
 - Network Service - Added support for updation methods for Subnet
-- Network Service - Added Support for Internal Load Balancer
-- Resources Service - Added Azure Resource Manager Template feature
-- Resources Service - Added tag azure resources support
-- Tests - Added Integration test scripts for all services
-- Documentation - Added Readme for integration tests
-- Documentation - Added fog structure information
-- Code Climate - Added Ratings
+- Network Service - Added support for updation methods for Network Interface Card(NIC)
+- Compute Service - Added support for azure resource manager templates
+- Resource Service - Added support to tag azure resources
+- Integration test scripts for all services
+- Documentation - Added fog structure information in contribution guide
 
 **Changed:**
-- Compute Service - Moved Data Disk model to Storage service
-- Network Service - Improved Subnet and Virtual Network module
-- Storage Service - Code standardization
+- Compute Service - Moved data disk model to storage service and updated unit tests
+- Compute Service - Loaded Data Disk model to make it accessible in Server model
+- Network Service - Support for internal load balancer and documentation update
+- Network Service - Improved subnet and virtual network module
+- Network Service - Updated unit test and integration test
 - Documentation - Changed delete_data_disk request name to delete_disk
-- Code Climate - Disabled similar and identical code check
 
 **Fixed:**
 - Resolved bugs in server.rb integration file
+
+**Removed:**
+- Compute Service - Moved data disk implementation to storage service
 
 
 ## 0.0.3

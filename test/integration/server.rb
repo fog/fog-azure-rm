@@ -49,7 +49,8 @@ storage.storage_accounts.create(
   name: 'fogstorageac',
   location: 'eastus',
   resource_group: 'TestRG-VM',
-  account_type: 'Standard'
+  account_type: 'Standard',
+  replication: 'LRS'
 )
 
 network.virtual_networks.create(

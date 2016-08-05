@@ -3,7 +3,6 @@
 **Added:**
 - Storage Service - Added Support for Azure container operations
 - Storage Service - Added blob container metadata support
-- Storage Service - Added container integration test
 - Storage Service - Added support to get storage access key
 - Network Service - Added support for updation methods for Network Security Group
 - Network Service - Added support for updation methods for Virtual Network(vnet)

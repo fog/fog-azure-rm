@@ -3,25 +3,21 @@ module Fog
     class AzureRM
       # Real class for Network Request
       class Real
-        def add_subnets_in_virtual_network(resource_group_name, virtual_network_name, new_subnets)
+        def add_subnets_in_virtual_network(resource_group_name, virtual_network_name, subnets)
           Fog::Logger.debug "Adding Subnets: in Virtual Network: #{virtual_network_name}"
-          virtual_network = get_virtual_network_object_for_subnets!(resource_group_name, virtual_network_name, new_subnets)
-          result = create_or_update_vnet(resource_group_name, virtual_network_name, virtual_network)
+          virtual_network = get_virtual_network_object_for_subnets!(resource_group_name, virtual_network_name, subnets)
+          virtual_network = create_or_update_vnet(resource_group_name, virtual_network_name, virtual_network)
           Fog::Logger.debug 'Subnets added successfully.'
-          Azure::ARM::Network::Models::VirtualNetwork.serialize_object(result)
+          Azure::ARM::Network::Models::VirtualNetwork.serialize_object(virtual_network)
         end
 
         private
 
-        def get_virtual_network_object_for_subnets!(resource_group_name, virtual_network_name, new_subnets)
+        def get_virtual_network_object_for_subnets!(resource_group_name, virtual_network_name, subnets)
           virtual_network = get_vnet(resource_group_name, virtual_network_name)
-          new_subnet_objects = define_subnet_objects(new_subnets)
+          subnet_objects = define_subnet_objects(subnets)
           old_subnet_objects = virtual_network.properties.subnets
-
-          subnet_exist = new_subnet_objects.map(&:name) & old_subnet_objects.map(&:name)
-          raise "Cannot add Subnets: Provided Subnet(s) is/are already added in Virtual Network: #{virtual_network_name}" if subnet_exist.any?
-
-          virtual_network.properties.subnets = new_subnet_objects + old_subnet_objects
+          virtual_network.properties.subnets = subnet_objects + old_subnet_objects
           virtual_network
         end
       end

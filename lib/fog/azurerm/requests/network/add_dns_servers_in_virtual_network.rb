@@ -3,26 +3,25 @@ module Fog
     class AzureRM
       # Real class for Network Request
       class Real
-        def add_dns_servers_in_virtual_network(resource_group_name, virtual_network_name, new_dns_servers)
-          Fog::Logger.debug "Adding DNS Servers: #{new_dns_servers.join(', ')} in Virtual Network: #{virtual_network_name}"
-          virtual_network = get_virtual_network_object_for_add_dns!(resource_group_name, virtual_network_name, new_dns_servers)
-          result = create_or_update_vnet(resource_group_name, virtual_network_name, virtual_network)
-          Fog::Logger.debug "DNS Servers: #{new_dns_servers.join(', ')} added successfully."
-          Azure::ARM::Network::Models::VirtualNetwork.serialize_object(result)
+        def add_dns_servers_in_virtual_network(resource_group_name, virtual_network_name, dns_servers)
+          Fog::Logger.debug "Adding DNS Servers: #{dns_servers.join(', ')} in Virtual Network: #{virtual_network_name}"
+          virtual_network = get_virtual_network_object_for_add_dns!(resource_group_name, virtual_network_name, dns_servers)
+          virtual_network = create_or_update_vnet(resource_group_name, virtual_network_name, virtual_network)
+          Fog::Logger.debug "DNS Servers: #{dns_servers.join(', ')} added successfully."
+          Azure::ARM::Network::Models::VirtualNetwork.serialize_object(virtual_network)
         end
 
         private
 
-        def get_virtual_network_object_for_add_dns!(resource_group_name, virtual_network_name, new_dns_servers)
+        def get_virtual_network_object_for_add_dns!(resource_group_name, virtual_network_name, dns_servers)
           virtual_network = get_vnet(resource_group_name, virtual_network_name)
           if virtual_network.properties.dhcp_options.nil?
             dhcp_options = Azure::ARM::Network::Models::DhcpOptions.new
-            dhcp_options.dns_servers = new_dns_servers
+            dhcp_options.dns_servers = dns_servers
             virtual_network.properties.dhcp_options = dhcp_options
           else
             attached_servers = virtual_network.properties.dhcp_options.dns_servers
-            raise "Cannot add DNS Server(s): Provided DNS Server(s) is/are already added in Virtual Network: #{virtual_network_name}" if attached_servers & new_dns_servers == new_dns_servers
-            virtual_network.properties.dhcp_options.dns_servers = attached_servers | new_dns_servers
+            virtual_network.properties.dhcp_options.dns_servers = attached_servers | dns_servers
           end
           virtual_network
         end

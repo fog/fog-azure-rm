@@ -4,8 +4,8 @@ module Fog
       # Real class for Network Request
       class Real
         def get_virtual_network(resource_group_name, virtual_network_name)
-          result = get_vnet(resource_group_name, virtual_network_name)
-          Azure::ARM::Network::Models::VirtualNetwork.serialize_object(result)
+          vnet = get_vnet(resource_group_name, virtual_network_name)
+          Azure::ARM::Network::Models::VirtualNetwork.serialize_object(vnet)
         end
 
         private
@@ -13,10 +13,9 @@ module Fog
         def get_vnet(resource_group_name, virtual_network_name)
           Fog::Logger.debug "Getting Virtual Network: #{virtual_network_name}."
           begin
-            promise = @network_client.virtual_networks.get(resource_group_name, virtual_network_name)
-            result = promise.value!
+            response = @network_client.virtual_networks.get(resource_group_name, virtual_network_name).value!
             Fog::Logger.debug "Virtual Network #{virtual_network_name} retrieved successfully."
-            result.body
+            response.body
           rescue  MsRestAzure::AzureOperationError => e
             msg = "Exception getting Virtual Network #{virtual_network_name} in Resource Group: #{resource_group_name}. #{e.body['error']['message']}"
             raise msg

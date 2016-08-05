@@ -40,34 +40,34 @@ module Fog
           merge_attributes(Fog::Network::AzureRM::VirtualNetwork.parse(vnet))
         end
 
-        def add_dns_servers(dns_servers_hash)
-          virtual_network = service.add_dns_servers_in_virtual_network(resource_group, name, dns_servers_hash)
+        def add_dns_servers(dns_servers_list)
+          virtual_network = service.add_dns_servers_in_virtual_network(resource_group, name, dns_servers_list)
           merge_attributes(Fog::Network::AzureRM::VirtualNetwork.parse(virtual_network))
         end
 
-        def remove_dns_servers(dns_servers_hash)
-          virtual_network = service.remove_dns_servers_from_virtual_network(resource_group, name, dns_servers_hash)
+        def remove_dns_servers(dns_servers_list)
+          virtual_network = service.remove_dns_servers_from_virtual_network(resource_group, name, dns_servers_list)
           merge_attributes(Fog::Network::AzureRM::VirtualNetwork.parse(virtual_network))
         end
 
-        def add_address_prefixes(address_prefixes_hash)
-          virtual_network = service.add_address_prefixes_in_virtual_network(resource_group, name, address_prefixes_hash)
+        def add_address_prefixes(address_prefixes_list)
+          virtual_network = service.add_address_prefixes_in_virtual_network(resource_group, name, address_prefixes_list)
           merge_attributes(Fog::Network::AzureRM::VirtualNetwork.parse(virtual_network))
         end
 
-        def remove_address_prefixes(address_prefixes_hash)
-          virtual_network = service.remove_address_prefixes_from_virtual_network(resource_group, name, address_prefixes_hash)
+        def remove_address_prefixes(address_prefixes_list)
+          virtual_network = service.remove_address_prefixes_from_virtual_network(resource_group, name, address_prefixes_list)
           merge_attributes(Fog::Network::AzureRM::VirtualNetwork.parse(virtual_network))
         end
 
-        def add_subnets(subnets_hash)
-          validate_subnets!(subnets_hash)
-          virtual_network = service.add_subnets_in_virtual_network(resource_group, name, subnets_hash)
+        def add_subnets(subnets_list)
+          validate_subnets!(subnets_list)
+          virtual_network = service.add_subnets_in_virtual_network(resource_group, name, subnets_list)
           merge_attributes(Fog::Network::AzureRM::VirtualNetwork.parse(virtual_network))
         end
 
-        def remove_subnets(subnet_names_array)
-          virtual_network = service.remove_subnets_from_virtual_network(resource_group, name, subnet_names_array)
+        def remove_subnets(subnet_names_list)
+          virtual_network = service.remove_subnets_from_virtual_network(resource_group, name, subnet_names_list)
           merge_attributes(Fog::Network::AzureRM::VirtualNetwork.parse(virtual_network))
         end
 

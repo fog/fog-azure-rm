@@ -5,7 +5,7 @@ module ApiStub
       class Zone
         def self.rest_client_put_method_for_zone_resonse
           '{
-             "id":"\/subscriptions\/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb\/resourceGroups\/fog_test_rg\/providers\/Microsoft.Network\/dnszones\/adnaan.com",
+             "id":"\/subscriptions\/########-####-####-####-############\/resourceGroups\/fog_test_rg\/providers\/Microsoft.Network\/dnszones\/adnaan.com",
               "name":"adnaan.com",
               "type":"Microsoft.Network\/dnszones",
               "etag":"00000011-0000-0000-19f2-3a6c32b0d101",
@@ -25,7 +25,7 @@ module ApiStub
         def self.list_zones_response
           '{
             "value": [{
-                       "id":"\/subscriptions\/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb\/resourceGroups\/fog_test_rg\/providers\/Microsoft.Network\/dnszones\/adnaan.com",
+                       "id":"\/subscriptions\/########-####-####-####-############\/resourceGroups\/fog_test_rg\/providers\/Microsoft.Network\/dnszones\/adnaan.com",
                         "name":"adnaan.com",
                         "type":"Microsoft.Network\/dnszones",
                         "etag":"00000011-0000-0000-19f2-3a6c32b0d101",

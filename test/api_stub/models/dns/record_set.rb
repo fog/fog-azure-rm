@@ -56,7 +56,7 @@ module ApiStub
 
         def self.response_for_cname
           {
-            'id' => '/subscriptions/6bb4a28a-db84-4e8a-b1dc-fabf7bd9f0b2/resourceGroups/EdgeMonitoring2/providers/Microsoft.Network/dnszones/edgemonitoring2.com./CNAME/www',
+            'id' => '/subscriptions/########-####-####-####-############/resourceGroups/EdgeMonitoring2/providers/Microsoft.Network/dnszones/edgemonitoring2.com./CNAME/www',
             'location' => 'global',
             'name' => 'www',
             'tags' => {},

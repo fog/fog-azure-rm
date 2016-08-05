@@ -1,5 +1,3 @@
-STANDARD = 'Standard'.freeze
-PREMIUM = 'Premium'.freeze
 module Fog
   module Storage
     class AzureRM
@@ -10,23 +8,20 @@ module Fog
         attribute :location
         attribute :resource_group
         attribute :account_type
+        attribute :replication
 
         def save
           requires :name
           requires :location
           requires :resource_group
           requires :account_type
+          requires :replication
 
           hash = {}
           # Create a model for new storage account.
-          properties = Azure::ARM::Storage::Models::StorageAccountPropertiesCreateParameters.new
-          validate_account_type!
-          properties.account_type = "#{account_type}_LRS"
-          params = Azure::ARM::Storage::Models::StorageAccountCreateParameters.new
-          params.properties = properties
-          params.location = location
-          sa = service.create_storage_account(resource_group, name, params)
-          hash['account_type'] = sa['properties']['accountType']
+          validate_account_type! unless account_type.nil? && replication.nil?
+          storage_account = service.create_storage_account(resource_group, name, account_type, location, replication)
+          hash['account_type'] = storage_account['properties']['accountType']
           merge_attributes(hash)
         end
 
@@ -34,6 +29,18 @@ module Fog
           if account_type != STANDARD && account_type != PREMIUM
             msg = 'Account Type can only be Standard or Premium'
             raise msg
+          end
+          case account_type
+          when STANDARD
+            if replication != 'LRS' && replication != 'ZRS' && replication != 'GRS' && replication != 'RAGRS'
+              msg = 'Standard Replications can only be LRS, ZRS, GRS or RAGRS.'
+              raise msg
+            end
+          when PREMIUM
+            if replication != 'LRS'
+              msg = 'Premium Replication can only be LRS.'
+              raise msg
+            end
           end
         end
 

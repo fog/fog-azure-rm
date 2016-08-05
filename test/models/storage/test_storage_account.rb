@@ -23,7 +23,8 @@ class TestStorageAccount < Minitest::Test
       :name,
       :location,
       :resource_group,
-      :account_type
+      :account_type,
+      :replication
     ]
     @service.stub :create_storage_account, @response do
       attributes.each do |attribute|
@@ -36,13 +37,19 @@ class TestStorageAccount < Minitest::Test
     @service.stub :create_storage_account, @response do
       assert_instance_of Fog::Storage::AzureRM::StorageAccount, @storage_account.save
     end
-    storage_account = Fog::Storage::AzureRM::StorageAccount.new(
-      name: 'storage-account',
-      location: 'West US',
-      resource_group: 'fog-test-rg',
-      account_type: 'Other',
-      service: @service
-    )
+    storage_account = ApiStub::Models::Storage::StorageAccount.standard_lrs(@service)
+    @service.stub :create_storage_account, @response do
+      assert_raises RuntimeError do
+        storage_account.save
+      end
+    end
+    storage_account = ApiStub::Models::Storage::StorageAccount.standard_check_for_invalid_replications(@service)
+    @service.stub :create_storage_account, @response do
+      assert_raises RuntimeError do
+        storage_account.save
+      end
+    end
+    storage_account = ApiStub::Models::Storage::StorageAccount.premium_check_for_invalid_replications(@service)
     @service.stub :create_storage_account, @response do
       assert_raises RuntimeError do
         storage_account.save

@@ -3,8 +3,9 @@ module Fog
     class AzureRM
       # This class provides the actual implemention for service calls.
       class Real
-        def create_storage_account(resource_group, name, params)
+        def create_storage_account(resource_group, name, account_type, location, replication)
           Fog::Logger.debug "Creating Storage Account: #{name}."
+          params = define_params(account_type, location, replication)
           begin
             promise = @storage_mgmt_client.storage_accounts.create(resource_group, name, params)
             response = promise.value!
@@ -19,15 +20,24 @@ module Fog
             raise msg
           end
         end
+
+        def define_params(account_type, location, replication)
+          properties = ::Azure::ARM::Storage::Models::StorageAccountPropertiesCreateParameters.new
+          properties.account_type = "#{account_type}_#{replication}"
+          params = ::Azure::ARM::Storage::Models::StorageAccountCreateParameters.new
+          params.properties = properties
+          params.location = location
+          params
+        end
       end
       # This class provides the mock implementation for unit tests.
       class Mock
-        def create_storage_account(_resource_group, _name, params)
+        def create_storage_account(_resource_group, _name, account_type, location, replication)
           {
-            'location' => params.location,
+            'location' => location,
             'properties' =>
             {
-              'accountType' => params.properties.account_type,
+              'accountType' => "#{account_type}_#{replication}",
               'lastGeoFailoverTime' => DateTime.parse(Time.now.to_s).strftime('%FT%TZ'),
               'creationTime' => DateTime.parse(Time.now.to_s).strftime('%FT%TZ')
             }

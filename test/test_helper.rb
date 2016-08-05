@@ -84,6 +84,7 @@ def storage_account(service)
     location: 'West US',
     resource_group: 'fog-test-rg',
     account_type: 'Standard',
+    replication: 'LRS',
     service: service
   )
 end

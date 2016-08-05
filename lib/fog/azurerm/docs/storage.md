@@ -60,17 +60,23 @@ Check Storage Account Name Availability.This operation checks that account name 
 
 ## Create Storage Account
 
-Create a new storage account
+Create a new storage account. Replication attribute for Standard and Premium account types are as follows 
+
+Standard: LRS (Standard Locally-redundant storage)
+          ZRS (Standard Zone-redundant storage)
+          GRS (Standard Geo-redundant storage)
+          RAGRS (Standard Read access geo-redundant storage)
+Premium:  LRS (Premium Locally-redundant storage)
 
 ```ruby
 azure_storage_service.storage_accounts.create(
   :name => '<Storage Account name>',
   :location => 'West US',
   :resource_group => '<Resource Group name>',
-  :account_type => '<Standard/Premium>'
+  :account_type => '<Standard/Premium>'                # Allowed values can only be Standard or Premium
+  :replication => 'LRS'                               
 )
 ```
-
 Premium Storage account store data on solid state drives (SSDs). For more details on standard and premium storage accounts, see [Introduction to Microsoft Azure Storage](https://azure.microsoft.com/en-us/documentation/articles/storage-introduction/) and [Premium Storage: High-Performance Storage for Azure Virtual Machine Workloads](https://azure.microsoft.com/en-us/documentation/articles/storage-premium-storage/).
 
 ## List storage accounts

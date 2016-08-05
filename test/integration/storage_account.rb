@@ -38,32 +38,48 @@ rs.resource_groups.create(
 storage.storage_accounts.check_name_availability('test-storage')
 
 ########################################################################################################################
-######################                             Create A Standard Storage Account              ######################
+###############  Create A Standard Storage Account of Replication: LRS (Locally-redundant storage)       ###############
 ########################################################################################################################
 
 storage.storage_accounts.create(
-  name: 'fogstandardsa',
+  name: 'fogstandardsalrs',
   location: 'eastus',
   resource_group: 'TestRG-SA',
-  account_type: 'Standard'
+  account_type: 'Standard',
+  replication: 'LRS'
 )
 
 ########################################################################################################################
-######################                         Create A Premium(SSD) Storage Account              ######################
+###############      Create A Standard Storage Account of Replication: GRS (Geo-redundant storage)     #################
 ########################################################################################################################
 
 storage.storage_accounts.create(
-    name: 'fogpremiumsa',
-    location: 'eastus',
-    resource_group: 'TestRG-SA',
-    account_type: 'Premium'
+  name: 'fogstandardsagrs',
+  location: 'eastus',
+  resource_group: 'TestRG-SA',
+  account_type: 'Standard',
+  replication: 'GRS'
+)
+
+########################################################################################################################
+###########   Create A Premium(SSD) Storage Account of its only Replication: LRS (Locally-redundant storage)  ##########
+########################################################################################################################
+
+storage.storage_accounts.create(
+  name: 'fogpremiumsa',
+  location: 'eastus',
+  resource_group: 'TestRG-SA',
+  account_type: 'Premium',
+  replication: 'LRS'
 )
 
 ########################################################################################################################
 ######################                         Get and Delete Storage Account                     ######################
 ########################################################################################################################
 
-standard_storage_account = storage.storage_accounts(resource_group: 'TestRG-SA').get('fogstandardsa')
+standard_storage_account = storage.storage_accounts(resource_group: 'TestRG-SA').get('fogstandardsalrs')
+standard_storage_account.destroy
+standard_storage_account = storage.storage_accounts(resource_group: 'TestRG-SA').get('fogstandardsagrs')
 standard_storage_account.destroy
 premium_storage_account = storage.storage_accounts(resource_group: 'TestRG-SA').get('fogpremiumsa')
 premium_storage_account.destroy

@@ -48,7 +48,7 @@ Get a single record of Zone
 ```ruby
       zone = azure_dns_service
                           .zones
-                          .get('<Zone name>', '<Resource Group name>')
+                          .get('<Resource Group name>', '<Zone name>')
       puts "#{zone.name}"
 ```
 

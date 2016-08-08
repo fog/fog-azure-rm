@@ -55,7 +55,7 @@ module Fog
         end
 
         def destroy
-          service.delete_record_set(resource_group, name, zone_name, type.split('/').last)
+          service.delete_record_set(resource_group, name, zone_name, get_record_type(type))
         end
 
         def get_records(resource_group, name, zone_name, record_type)
@@ -63,19 +63,19 @@ module Fog
         end
 
         def update_ttl(ttl)
-          record_set = service.create_or_update_record_set(resource_group, name, zone_name, records, type.split('/').last, ttl)
+          record_set = service.create_or_update_record_set(resource_group, name, zone_name, records, get_record_type(type), ttl)
           merge_attributes(Fog::DNS::AzureRM::RecordSet.parse(record_set))
         end
 
         def add_a_type_record(record)
           records << record
-          record_set = service.create_or_update_record_set(resource_group, name, zone_name, records, type.split('/').last, ttl)
+          record_set = service.create_or_update_record_set(resource_group, name, zone_name, records, get_record_type(type), ttl)
           merge_attributes(Fog::DNS::AzureRM::RecordSet.parse(record_set))
         end
 
         def remove_a_type_record(record)
           records.delete(record)
-          record_set = service.create_or_update_record_set(resource_group, name, zone_name, records, type.split('/').last, ttl)
+          record_set = service.create_or_update_record_set(resource_group, name, zone_name, records, get_record_type(type), ttl)
           merge_attributes(Fog::DNS::AzureRM::RecordSet.parse(record_set))
         end
       end

@@ -20,8 +20,7 @@ module Fog
             msg = "AzureDns::RecordSet - Exception is: #{e.message}"
             raise msg
           end
-          dns_hash = JSON.parse(dns_response)
-          dns_hash
+          JSON.parse(dns_response)
         end
       end
 

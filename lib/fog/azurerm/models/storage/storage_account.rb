@@ -19,28 +19,22 @@ module Fog
 
           hash = {}
           # Create a model for new storage account.
-          validate_account_type! unless account_type.nil? && replication.nil?
+          validate_account_type!
           storage_account = service.create_storage_account(resource_group, name, account_type, location, replication)
           hash['account_type'] = storage_account['properties']['accountType']
           merge_attributes(hash)
         end
 
         def validate_account_type!
-          if account_type != STANDARD && account_type != PREMIUM
-            msg = 'Account Type can only be Standard or Premium'
-            raise msg
-          end
           case account_type
           when STANDARD
             if replication != 'LRS' && replication != 'ZRS' && replication != 'GRS' && replication != 'RAGRS'
-              msg = 'Standard Replications can only be LRS, ZRS, GRS or RAGRS.'
-              raise msg
+              raise 'Standard Replications can only be LRS, ZRS, GRS or RAGRS.'
             end
           when PREMIUM
-            if replication != 'LRS'
-              msg = 'Premium Replication can only be LRS.'
-              raise msg
-            end
+            raise 'Premium Replication can only be LRS.' if replication != 'LRS'
+          else
+            raise 'Account Type can only be Standard or Premium'
           end
         end
 

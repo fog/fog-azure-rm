@@ -89,6 +89,39 @@ def storage_account(service)
   )
 end
 
+def standard_lrs(service)
+  Fog::Storage::AzureRM::StorageAccount.new(
+      name: 'storage-account',
+      location: 'West US',
+      resource_group: 'fog-test-rg',
+      account_type: 'Other',
+      replication: 'LRS',
+      service: service
+  )
+end
+
+def standard_check_for_invalid_replications(service)
+  Fog::Storage::AzureRM::StorageAccount.new(
+      name: 'storage-account',
+      location: 'West US',
+      resource_group: 'fog-test-rg',
+      account_type: 'Standard',
+      replication: 'HGDKS',
+      service: service
+  )
+end
+
+def premium_check_for_invalid_replications(service)
+  Fog::Storage::AzureRM::StorageAccount.new(
+      name: 'storage-account',
+      location: 'West US',
+      resource_group: 'fog-test-rg',
+      account_type: 'Premium',
+      replication: 'HGDKS',
+      service: service
+  )
+end
+
 def storage_container(service)
   Fog::Storage::AzureRM::Container.new(
     name: 'storage-test-container',

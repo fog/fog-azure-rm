@@ -4,6 +4,9 @@ class TestStorageAccount < Minitest::Test
   def setup
     @service = Fog::Storage::AzureRM.new(credentials)
     @storage_account = storage_account(@service)
+    @standard_lrs_storage_account = standard_lrs(@service)
+    @standard_invalid_replication = standard_check_for_invalid_replications(@service)
+    @premium_invalid_replication  = premium_check_for_invalid_replications(@service)
     @response = ApiStub::Models::Storage::StorageAccount.create_storage_account
   end
 
@@ -37,22 +40,19 @@ class TestStorageAccount < Minitest::Test
     @service.stub :create_storage_account, @response do
       assert_instance_of Fog::Storage::AzureRM::StorageAccount, @storage_account.save
     end
-    storage_account = ApiStub::Models::Storage::StorageAccount.standard_lrs(@service)
     @service.stub :create_storage_account, @response do
       assert_raises RuntimeError do
-        storage_account.save
+        @standard_lrs_storage_account.save
       end
     end
-    storage_account = ApiStub::Models::Storage::StorageAccount.standard_check_for_invalid_replications(@service)
     @service.stub :create_storage_account, @response do
       assert_raises RuntimeError do
-        storage_account.save
+        @standard_invalid_replication.save
       end
     end
-    storage_account = ApiStub::Models::Storage::StorageAccount.premium_check_for_invalid_replications(@service)
     @service.stub :create_storage_account, @response do
       assert_raises RuntimeError do
-        storage_account.save
+        @premium_invalid_replication.save
       end
     end
   end

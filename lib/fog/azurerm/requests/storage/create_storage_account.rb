@@ -5,10 +5,9 @@ module Fog
       class Real
         def create_storage_account(resource_group, name, account_type, location, replication)
           Fog::Logger.debug "Creating Storage Account: #{name}."
-          params = define_params(account_type, location, replication)
+          storage_account_params = get_storage_account_params(account_type, location, replication)
           begin
-            promise = @storage_mgmt_client.storage_accounts.create(resource_group, name, params)
-            response = promise.value!
+            response = @storage_mgmt_client.storage_accounts.create(resource_group, name, storage_account_params).value!
             Fog::Logger.debug 'Storage Account created successfully.'
             body = response.body
             body.properties.last_geo_failover_time = DateTime.parse(Time.now.to_s)
@@ -21,7 +20,7 @@ module Fog
           end
         end
 
-        def define_params(account_type, location, replication)
+        def get_storage_account_params(account_type, location, replication)
           properties = ::Azure::ARM::Storage::Models::StorageAccountPropertiesCreateParameters.new
           properties.account_type = "#{account_type}_#{replication}"
           params = ::Azure::ARM::Storage::Models::StorageAccountCreateParameters.new
@@ -32,12 +31,12 @@ module Fog
       end
       # This class provides the mock implementation for unit tests.
       class Mock
-        def create_storage_account(_resource_group, _name, account_type, location, replication)
+        def create_storage_account(*)
           {
-            'location' => location,
+            'location' => 'West US',
             'properties' =>
             {
-              'accountType' => "#{account_type}_#{replication}",
+              'accountType' => "Standard_LRS",
               'lastGeoFailoverTime' => DateTime.parse(Time.now.to_s).strftime('%FT%TZ'),
               'creationTime' => DateTime.parse(Time.now.to_s).strftime('%FT%TZ')
             }

@@ -11,14 +11,16 @@ module Fog
       requires :subscription_id
 
       request_path 'fog/azurerm/requests/dns'
-      request :create_zone
+      request :create_or_update_zone
       request :delete_zone
       request :check_for_zone
       request :list_zones
-      request :create_record_set
+      request :get_zone
+      request :create_or_update_record_set
       request :delete_record_set
       request :list_record_sets
       request :get_records_from_record_set
+      request :get_record_set
 
       model_path 'fog/azurerm/models/dns'
       model :zone

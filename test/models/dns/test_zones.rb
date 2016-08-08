@@ -30,7 +30,8 @@ class TestZones < Minitest::Test
   end
 
   def test_get_method_response
-    @service.stub :list_zones, @response do
+    response = ApiStub::Models::DNS::Zone.create_zone_obj
+    @service.stub :get_zone, response do
       assert_instance_of Fog::DNS::AzureRM::Zone, @zones.get('fog-test-rg', 'fog-test-zone.com')
     end
   end

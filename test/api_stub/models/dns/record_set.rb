@@ -53,6 +53,26 @@ module ApiStub
               }
           }
         end
+
+        def self.response_for_cname
+          {
+            'id' => '/subscriptions/########-####-####-####-############/resourceGroups/EdgeMonitoring2/providers/Microsoft.Network/dnszones/edgemonitoring2.com./CNAME/www',
+            'location' => 'global',
+            'name' => 'www',
+            'tags' => {},
+            'type' => 'Microsoft.Network/dnszones/CNAME',
+            'etag' => '5b83020b-b59c-44be-8f19-a052ebe80fe7',
+            'properties' => {
+              'metadata' => 'nil',
+              'fqdn' => 'fog-test-record_set.fog-test-zone.com.',
+              'TTL' => '60',
+              'CNAMERecord' =>
+                {
+                  'cname' => 'test.fog.com'
+                }
+            }
+          }
+        end
       end
     end
   end

@@ -30,7 +30,7 @@ class TestZone < Minitest::Test
   end
 
   def test_save_method_response
-    @service.stub :create_zone, @response do
+    @service.stub :create_or_update_zone, @response do
       assert_instance_of Fog::DNS::AzureRM::Zone, @zone.save
     end
   end

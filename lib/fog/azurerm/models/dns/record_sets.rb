@@ -23,8 +23,10 @@ module Fog
           load(record_sets)
         end
 
-        def get(identity, type)
-          all.find { |f| f.name == identity && f.type == "Microsoft.Network/dnszones/#{type}" }
+        def get(resource_group, name, zone_name, record_type)
+          record_set = service.get_record_set(resource_group, name, zone_name, record_type)
+          record_set_obj = Fog::DNS::AzureRM::RecordSet.new(service: service)
+          record_set_obj.merge_attributes(Fog::DNS::AzureRM::RecordSet.parse(record_set))
         end
       end
     end

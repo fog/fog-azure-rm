@@ -5,7 +5,7 @@ module ApiStub
       class RecordSet
         def self.rest_client_put_method_for_record_set_a_type_response
           '{
-              "id":"\/subscriptions\/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb\/resourceGroups\/Fog_test_rg\/providers\/Microsoft.Network\/dnszones\/fog-test-zone.com\/CNAME\/fog-test-record_set",
+              "id":"\/subscriptions\/########-####-####-####-############\/resourceGroups\/Fog_test_rg\/providers\/Microsoft.Network\/dnszones\/fog-test-zone.com\/CNAME\/fog-test-record_set",
               "name":"fog-test-record_set",
               "type":"Microsoft.Network\/dnszones\/A",
               "etag":"2cce3e93-fc64-43e4-835c-27581c28502b",
@@ -23,7 +23,7 @@ module ApiStub
 
         def self.rest_client_put_method_for_record_set_cname_type_response
           '{
-              "id":"\/subscriptions\/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb\/resourceGroups\/Fog_test_rg\/providers\/Microsoft.Network\/dnszones\/fog-test-zone.com\/CNAME\/fog-test-record_set",
+              "id":"\/subscriptions\/########-####-####-####-############\/resourceGroups\/Fog_test_rg\/providers\/Microsoft.Network\/dnszones\/fog-test-zone.com\/CNAME\/fog-test-record_set",
               "name":"fog-test-record_set",
               "type":"Microsoft.Network\/dnszones\/CNAME",
               "etag":"2cce3e93-fc64-43e4-835c-27581c28502b",
@@ -42,7 +42,7 @@ module ApiStub
         def self.list_record_sets_response
           '{
               "value": [{
-              "id":"\/subscriptions\/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb\/resourceGroups\/Fog_test_rg\/providers\/Microsoft.Network\/dnszones\/fog-test-zone.com\/CNAME\/fog-test-record_set",
+              "id":"\/subscriptions\/########-####-####-####-############\/resourceGroups\/Fog_test_rg\/providers\/Microsoft.Network\/dnszones\/fog-test-zone.com\/CNAME\/fog-test-record_set",
               "name":"fog-test-record_set",
               "type":"Microsoft.Network\/dnszones\/A",
               "etag":"2cce3e93-fc64-43e4-835c-27581c28502b",
@@ -61,7 +61,7 @@ module ApiStub
 
         def self.record_set_response_for_a_type_response
           '{
-            "id": "/subscriptions/6bb4a28a-db84-4e8a-b1dc-fabf7bd9f0b2/resourceGroups/EdgeMonitoring2/providers/Microsoft.Network/dnszones/edgemonitoring2.com./A/www",
+            "id": "/subscriptions/########-####-####-####-############/resourceGroups/EdgeMonitoring2/providers/Microsoft.Network/dnszones/edgemonitoring2.com./A/www",
             "location": "global",
             "name": "www",
             "tags": {},
@@ -83,11 +83,11 @@ module ApiStub
 
         def self.record_set_response_for_cname_type
           '{
-            "id": "/subscriptions/6bb4a28a-db84-4e8a-b1dc-fabf7bd9f0b2/resourceGroups/EdgeMonitoring2/providers/Microsoft.Network/dnszones/edgemonitoring2.com./A/www",
+            "id": "/subscriptions/########-####-####-####-############/resourceGroups/EdgeMonitoring2/providers/Microsoft.Network/dnszones/edgemonitoring2.com./CNAME/www",
             "location": "global",
             "name": "www",
             "tags": {},
-            "type": "Microsoft.Network/dnszones/A",
+            "type": "Microsoft.Network/dnszones/CNAME",
             "etag": "5b83020b-b59c-44be-8f19-a052ebe80fe7",
             "properties": {
               "metadata": "nil",

@@ -3,8 +3,8 @@ module Fog
     class AzureRM
       # Real class for DNS Request
       class Real
-        def create_zone(resource_group, name)
-          Fog::Logger.debug "Creating Zone #{name} ..."
+        def create_or_update_zone(resource_group, name)
+          Fog::Logger.debug "Creating/Updating Zone #{name} ..."
           resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription_id}/resourceGroups/#{resource_group}/providers/Microsoft.Network/dnsZones/#{name}?api-version=2015-05-04-preview"
 
           body = {
@@ -35,7 +35,7 @@ module Fog
 
       # Mock class for DNS Request
       class Mock
-        def create_zone(resource_group, name)
+        def create_or_update_zone(resource_group, name)
           {
             'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/dnszones/#{name}",
             'name' => name,

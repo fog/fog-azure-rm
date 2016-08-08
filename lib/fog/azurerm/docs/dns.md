@@ -48,7 +48,7 @@ Get a single record of Zone
 ```ruby
       zone = azure_dns_service
                           .zones
-                          .get('<Zone name>', '<Resource Group name>')
+                          .get('<Resource Group name>', '<Zone name>')
       puts "#{zone.name}"
 ```
 
@@ -74,6 +74,7 @@ Create a new Record Set
         ttl:            <Time to live(Integer)>
  )
 ```
+
 ## List Record Sets
 
 ```ruby
@@ -92,12 +93,33 @@ Get a single record of Record Set
 
 ```ruby
       record_set = azure_dns_service
-                      .record_sets(
-                           resource_group: '<Resource Group Name>',
-                           zone_name:      '<Zone Name>'
-                      )
-                      .get('<Record Set name>', '<Record Type>')
+                      .record_sets
+                      .get('<Resource Group Name>', '<Record Set name>', '<Zone Name>', '<Record Type>')
       puts "#{record_set.name}"
+```
+
+## Update TTL
+
+Get an object of record set and then update TTL 
+
+```ruby
+      record_set.update_ttl(
+        ttl:            '<Time to live(Integer)>, 
+)
+```
+
+## Add/Remove Record set in Existing Record sets
+
+Add a record by giving the value of record set in the form of string.
+
+```ruby
+      record_set.add_a_type_record('<Record>')
+```
+
+Remove record from existing records by giving its value in the form of string.
+
+```ruby
+      record_set.remove_a_type_record('<Record>')
 ```
 
 ## Destroy a single Record Set

@@ -8,6 +8,10 @@ def get_virtual_network_from_id(subnet_id)
   subnet_id.split('/')[8]
 end
 
+def get_record_type(type)
+  type.split('/').last
+end
+
 # Make sure if input_params(Hash) contains all keys present in required_params(Array)
 def validate_params(required_params, input_params)
   missing_params = required_params.select { |param| param unless input_params.key?(param) }

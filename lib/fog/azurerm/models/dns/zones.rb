@@ -17,8 +17,10 @@ module Fog
           load(zones)
         end
 
-        def get(resource_group, identity)
-          all.find { |f| f.name == identity && f.resource_group == resource_group }
+        def get(resource_group, name)
+          zone = service.get_zone(resource_group, name)
+          zone_obj = Fog::DNS::AzureRM::Zone.new(service: service)
+          zone_obj.merge_attributes(Fog::DNS::AzureRM::Zone.parse(zone))
         end
 
         def check_for_zone(resource_group, name)

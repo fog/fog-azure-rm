@@ -44,8 +44,9 @@ class TestRecordSets < Minitest::Test
   end
 
   def test_get_method_response
-    @service.stub :list_record_sets, @response do
-      assert_instance_of Fog::DNS::AzureRM::RecordSet, @record_sets.get('fog-test-record_set', 'A')
+    response = ApiStub::Models::DNS::RecordSet.create_record_set_obj
+    @service.stub :get_record_set, response do
+      assert_instance_of Fog::DNS::AzureRM::RecordSet, @record_sets.get('fog-test-rg', 'fog-test-record-set', 'fog-test-zone', 'A')
     end
   end
 end

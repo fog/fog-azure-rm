@@ -31,7 +31,7 @@ module Fog
         def save
           requires :name
           requires :resource_group
-          zone = service.create_zone(resource_group, name)
+          zone = service.create_or_update_zone(resource_group, name)
           merge_attributes(Fog::DNS::AzureRM::Zone.parse(zone))
         end
 

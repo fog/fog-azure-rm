@@ -14,7 +14,7 @@ require 'fog/azurerm'
 Next, create a connection to the Network Service:
 
 ```ruby
-    azure_application_gateway_service = Fog::Network::AzureRM.new(
+    azure_application_gateway_service = Fog::ApplicationGateway::AzureRM.new(
         tenant_id: '<Tenantid>',                  # Tenant id of Azure Active Directory Application
         client_id:    '<Clientid>',               # Client id of Azure Active Directory Application
         client_secret: '<ClientSecret>',          # Client Secret of Azure Active Directory Application
@@ -27,7 +27,7 @@ Next, create a connection to the Network Service:
 Create a new Application Gateway.
 
 ```ruby
-    gateway = azure_network_service.gateways.create(
+    gateway = azure_application_gateway_service.gateways.create(
         name: '<Gateway Name>',
         location: 'eastus',
         resource_group: '<Resource Group name>',
@@ -110,7 +110,7 @@ Create a new Application Gateway.
 List all application gateways in a resource group
 
 ```ruby
-    gateways = azure_network_service.gateways(resource_group: '<Resource Group Name>')
+    gateways = azure_application_gateway_service.gateways(resource_group: '<Resource Group Name>')
     gateways.each do |gateway|
         puts "#{gateway.name}"
     end
@@ -121,7 +121,7 @@ List all application gateways in a resource group
 Get a single record of Application Gateway
 
 ```ruby
-    gateway = azure_network_service
+    gateway = azure_application_gateway_service
                             .gateways(resource_group: '<Resource Group name>')
                             .get('<Application Gateway Name>')
     puts "#{gateway.name}"

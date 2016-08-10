@@ -17,6 +17,8 @@ require File.expand_path 'api_stub/models/application_gateway/gateway', __dir__
 require File.expand_path 'api_stub/models/network/traffic_manager_end_point', __dir__
 require File.expand_path 'api_stub/models/network/traffic_manager_profile', __dir__
 require File.expand_path 'api_stub/models/network/virtual_network_gateway', __dir__
+require File.expand_path 'api_stub/models/network/express_route_circuit', __dir__
+require File.expand_path 'api_stub/models/network/express_route_circuit_peering', __dir__
 require File.expand_path 'api_stub/models/dns/zone', __dir__
 require File.expand_path 'api_stub/models/dns/record_set', __dir__
 
@@ -38,6 +40,8 @@ require File.expand_path 'api_stub/requests/application_gateway/gateway', __dir_
 require File.expand_path 'api_stub/requests/network/traffic_manager_endpoint', __dir__
 require File.expand_path 'api_stub/requests/network/traffic_manager_profile', __dir__
 require File.expand_path 'api_stub/requests/network/virtual_network_gateway', __dir__
+require File.expand_path 'api_stub/requests/network/express_route_circuit', __dir__
+require File.expand_path 'api_stub/requests/network/express_route_circuit_peering', __dir__
 require File.expand_path 'api_stub/requests/dns/zone', __dir__
 require File.expand_path 'api_stub/requests/dns/record_set', __dir__
 

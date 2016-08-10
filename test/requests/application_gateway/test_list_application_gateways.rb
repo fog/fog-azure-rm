@@ -3,7 +3,7 @@ require File.expand_path '../../test_helper', __dir__
 # Test class for List Application Gateway Request
 class TestListApplicationGateways < Minitest::Test
   def setup
-    @service = Fog::Network::AzureRM.new(credentials)
+    @service = Fog::ApplicationGateway::AzureRM.new(credentials)
     client = @service.instance_variable_get(:@network_client)
     @gateways = client.application_gateways
     @promise = Concurrent::Promise.execute do
@@ -11,7 +11,7 @@ class TestListApplicationGateways < Minitest::Test
   end
 
   def test_list_application_gateways_success
-    mocked_response = ApiStub::Requests::Network::ApplicationGateway.list_application_gateway_response
+    mocked_response = ApiStub::Requests::ApplicationGateway::Gateway.list_application_gateway_response
     expected_response = Azure::ARM::Network::Models::ApplicationGatewayListResult.serialize_object(mocked_response.body)
     @promise.stub :value!, mocked_response do
       @gateways.stub :list, @promise do

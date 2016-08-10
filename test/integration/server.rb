@@ -64,7 +64,7 @@ network.subnets.create(
   name: 'mysubnet',
   resource_group: 'TestRG-VM',
   virtual_network_name: 'testVnet',
-  address_prefix: '10.1.0.0/24'
+  address_prefix: '10.2.0.0/24'
 )
 
 network.network_interfaces.create(
@@ -128,10 +128,10 @@ server.destroy
 ######################                                   CleanUp                                  ######################
 ########################################################################################################################
 
-nic = network.network_interfaces(resource_group: 'TestRG-VM').get('NetInt')
+nic = network.network_interfaces.get('TestRG-VM','NetInt')
 nic.destroy
 
-vnet = network.virtual_networks(resource_group: 'TestRG-VM').get('testVnet')
+vnet = network.virtual_networks.get('TestRG-VM', 'testVnet')
 vnet.destroy
 
 storage = storage.storage_accounts(resource_group: 'TestRG-VM').get('fogstorageac')

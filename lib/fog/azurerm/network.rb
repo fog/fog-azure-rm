@@ -48,9 +48,6 @@ module Fog
       request :get_network_security_group
       request :add_security_rules
       request :remove_security_rule
-      request :create_application_gateway
-      request :delete_application_gateway
-      request :list_application_gateways
       request :create_traffic_manager_profile
       request :get_traffic_manager_profile
       request :delete_traffic_manager_profile
@@ -77,19 +74,7 @@ module Fog
       model :network_security_group
       collection :network_security_groups
       model :network_security_rule
-      model :application_gateway
-      collection :application_gateways
-      model :application_gateway_backend_address_pool
-      model :application_gateway_backend_http_setting
-      model :application_gateway_frontend_ip_configuration
-      model :application_gateway_frontend_port
-      model :application_gateway_ip_configuration
-      model :application_gateway_http_listener
       model :path_rule
-      model :application_gateway_probe
-      model :application_gateway_request_routing_rule
-      model :application_gateway_ssl_certificate
-      model :application_gateway_url_path_map
       model :traffic_manager_profile
       collection :traffic_manager_profiles
       model :traffic_manager_end_point

@@ -10,6 +10,7 @@ require 'fog/azurerm/resources'
 require 'fog/azurerm/storage'
 require 'fog/azurerm/network'
 require 'fog/azurerm/compute'
+require 'fog/azurerm/application_gateway'
 
 module Fog
   # Main AzureRM fog Provider Module

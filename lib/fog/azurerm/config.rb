@@ -6,3 +6,4 @@ NETWORK_SECURITY_GROUP = 'Network-Security-Group'.freeze
 STANDARD_STORAGE = 'Standard'.freeze
 PREMIUM_STORAGE = 'Premium'.freeze
 ALLOWED_STANDARD_REPLICATION = %w(LRS ZRS GRS RAGRS).freeze
+WINDOWS = 'windows'.freeze

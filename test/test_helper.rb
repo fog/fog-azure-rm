@@ -295,8 +295,8 @@ def network_security_rule(service)
   )
 end
 
-def application_gateway(service)
-  Fog::Network::AzureRM::ApplicationGateway.new(
+def gateway(service)
+  Fog::ApplicationGateway::AzureRM::Gateway.new(
     name: 'gateway',
     location: 'eastus',
     resource_group: 'fogRM-rg',

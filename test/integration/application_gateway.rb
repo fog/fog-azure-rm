@@ -15,11 +15,18 @@ rs = Fog::Resources::AzureRM.new(
   subscription_id: azure_credentials['subscription_id']
 )
 
-network = Fog::Network::AzureRM.new(
+application_gateway = Fog::ApplicationGateway::AzureRM.new(
   tenant_id: azure_credentials['tenant_id'],
   client_id: azure_credentials['client_id'],
   client_secret: azure_credentials['client_secret'],
   subscription_id: azure_credentials['subscription_id']
+)
+
+network = Fog::Network::AzureRM.new(
+    tenant_id: azure_credentials['tenant_id'],
+    client_id: azure_credentials['client_id'],
+    client_secret: azure_credentials['client_secret'],
+    subscription_id: azure_credentials['subscription_id']
 )
 
 ########################################################################################################################
@@ -42,7 +49,7 @@ network.subnets.create(
   name: 'mysubnet',
   resource_group: 'TestRG-AG',
   virtual_network_name: 'testVnet',
-  address_prefix: '10.1.0.0/24'
+  address_prefix: '10.2.0.0/24'
 )
 
 network.public_ips.create(
@@ -56,7 +63,7 @@ network.public_ips.create(
 ######################                          Create Application Gateway                        ######################
 ########################################################################################################################
 
-network.application_gateways.create(
+application_gateway.gateways.create(
   name: 'gateway',
   location: 'eastus',
   resource_group: 'TestRG-AG',
@@ -112,7 +119,7 @@ network.application_gateways.create(
 ######################                      Get and Destroy Application Gateway                   ######################
 ########################################################################################################################
 
-ag = network.application_gateways(resource_group: 'TestRG-AG').get('gateway')
+ag = application_gateway.gateways(resource_group: 'TestRG-AG').get('gateway')
 ag.destroy
 
 ########################################################################################################################
@@ -122,7 +129,7 @@ ag.destroy
 pubip = network.public_ips(resource_group: 'TestRG-AG').get('mypubip')
 pubip.destroy
 
-vnet = network.virtual_networks(resource_group: 'TestRG-AG').get('testVnet')
+vnet = network.virtual_networks.get('TestRG-AG', 'testVnet')
 vnet.destroy
 
 rg = rs.resource_groups.get('TestRG-AG')

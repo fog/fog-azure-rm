@@ -1,8 +1,8 @@
 module Fog
-  module Network
+  module ApplicationGateway
     class AzureRM
       # Probe model class for Network Service
-      class ApplicationGatewayProbe < Fog::Model
+      class Probe < Fog::Model
         identity :name
         attribute :protocol
         attribute :host

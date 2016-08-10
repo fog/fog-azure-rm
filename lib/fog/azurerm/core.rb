@@ -9,5 +9,6 @@ module Fog
     service(:storage, 'Storage')
     service(:network, 'Network')
     service(:compute, 'Compute')
+    service(:application_gateway, 'ApplicationGateway')
   end
 end

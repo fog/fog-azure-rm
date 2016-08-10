@@ -1,7 +1,7 @@
 module ApiStub
   module Models
-    module Network
-      class ApplicationGateway
+    module ApplicationGateway
+      class Gateway
         def self.create_application_gateway_response
           gateway = '{
               "id": "/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/ag-demoagplat",

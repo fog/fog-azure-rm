@@ -4,15 +4,15 @@ module Fog
       # Real class for Network Request
       class Real
         def create_or_update_express_route_circuit_peering(circuit_peering_params)
-          logger_msg = "Exception creating/updating Express Route Circuit Peering #{circuit_peering_params[:peering_name]} in Resource Group: #{circuit_peering_params[:resource_group_name]}."
-          Fog::Logger.debug logger_msg
+          msg = "Exception creating/updating Express Route Circuit Peering #{circuit_peering_params[:peering_name]} in Resource Group: #{circuit_peering_params[:resource_group_name]}."
+          Fog::Logger.debug msg
           circuit_peering = get_circuit_peering_object(circuit_peering_params)
           begin
             peering = @network_client.express_route_circuit_peerings.create_or_update(circuit_peering_params[:resource_group_name], circuit_peering_params[:circuit_name], circuit_peering_params[:peering_name], circuit_peering).value!
             Fog::Logger.debug "Express Route Circuit Peering #{circuit_peering_params[:peering_name]} created/updated successfully."
             Azure::ARM::Network::Models::ExpressRouteCircuitPeering.serialize_object(peering.body)
           rescue MsRestAzure::AzureOperationError => e
-            raise generate_exception_message(logger_msg, e)
+            raise_azure_exception(e, msg)
           end
         end
 

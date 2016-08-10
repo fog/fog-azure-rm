@@ -817,6 +817,7 @@ Get a single record of Express Route Circuit
 ```ruby
     circuit = network.express_route_circuits.get("<Resource Group Name>", "<Circuit Name>")
 	puts "#{circuit.name}"
+
 ```
 
 ## Destroy a single Express Route Circuit

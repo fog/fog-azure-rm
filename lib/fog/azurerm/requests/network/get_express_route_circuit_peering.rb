@@ -4,13 +4,13 @@ module Fog
       # Real class for Express Route Circuit Peering Request
       class Real
         def get_express_route_circuit_peering(resource_group_name, peering_name, circuit_name)
-          logget_msg = "Getting Express Route Circuit Peering #{peering_name} from Resource Group #{resource_group_name}."
-          Fog::Logger.debug logget_msg
+          msg = "Getting Express Route Circuit Peering #{peering_name} from Resource Group #{resource_group_name}."
+          Fog::Logger.debug msg
           begin
             circuit_peering = @network_client.express_route_circuit_peerings.get(resource_group_name, circuit_name, peering_name).value!
             Azure::ARM::Network::Models::ExpressRouteCircuitPeering.serialize_object(circuit_peering.body)
           rescue MsRestAzure::AzureOperationError => e
-            raise generate_exception_message(logget_msg, e)
+            raise_azure_exception(e, msg)
           end
         end
       end

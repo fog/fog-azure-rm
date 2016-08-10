@@ -4,14 +4,14 @@ module Fog
       # Real class for Network Request
       class Real
         def delete_express_route_circuit(resource_group_name, circuit_name)
-          logger_msg = "Deleting Express Route Circuit #{circuit_name} from Resource Group #{resource_group_name}."
-          Fog::Logger.debug logger_msg
+          Fog::Logger.debug "Deleting Express Route Circuit #{circuit_name} from Resource Group #{resource_group_name}."
           begin
             @network_client.express_route_circuits.delete(resource_group_name, circuit_name).value!
             Fog::Logger.debug "Express Route Circuit #{circuit_name} Deleted Successfully."
             true
           rescue  MsRestAzure::AzureOperationError => e
-            raise generate_exception_message(logger_msg, e)
+            msg = "Exception deleting Express Route Circuit #{circuit_name} in Resource Group: #{resource_group_name}. #{e.body['error']['message']}"
+            raise_azure_exception(e, msg)
           end
         end
       end

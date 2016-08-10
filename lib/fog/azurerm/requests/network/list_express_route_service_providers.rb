@@ -4,13 +4,13 @@ module Fog
       # Real class for Network Request
       class Real
         def list_express_route_service_providers
-          logger_msg = 'Getting list of Express Route Service Providers.'
-          Fog::Logger.debug logger_msg
+          msg = 'Getting list of Express Route Service Providers.'
+          Fog::Logger.debug msg
           begin
             service_providers = @network_client.express_route_service_providers.list.value!
             Azure::ARM::Network::Models::ExpressRouteServiceProviderListResult.serialize_object(service_providers.body)['value']
           rescue  MsRestAzure::AzureOperationError => e
-            raise generate_exception_message(logger_msg, e)
+            raise_azure_exception(e, msg)
           end
         end
       end

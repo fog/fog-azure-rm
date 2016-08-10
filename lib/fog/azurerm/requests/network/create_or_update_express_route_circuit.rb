@@ -4,15 +4,15 @@ module Fog
       # Real class for Network Request
       class Real
         def create_or_update_express_route_circuit(circuit_parameters)
-          logger_msg = "Exception creating/updating Express Route Circuit #{circuit_parameters[:circuit_name]} in Resource Group: #{circuit_parameters[:resource_group_name]}."
-          Fog::Logger.debug logger_msg
+          msg = "Exception creating/updating Express Route Circuit #{circuit_parameters[:circuit_name]} in Resource Group: #{circuit_parameters[:resource_group_name]}."
+          Fog::Logger.debug msg
           circuit = get_express_route_circuit_object(circuit_parameters)
           begin
             circuit = @network_client.express_route_circuits.create_or_update(circuit_parameters[:resource_group_name], circuit_parameters[:circuit_name], circuit).value!
             Fog::Logger.debug "Express Route Circuit #{circuit_parameters[:circuit_name]} created/updated successfully."
             Azure::ARM::Network::Models::ExpressRouteCircuit.serialize_object(circuit.body)
           rescue MsRestAzure::AzureOperationError => e
-            raise generate_exception_message(logger_msg,e)
+            raise_azure_exception(e, msg)
           end
         end
 
@@ -56,7 +56,6 @@ module Fog
             circuit_peering_prop.primary_peer_address_prefix = peering[:primary_peer_address_prefix]
             circuit_peering_prop.secondary_peer_address_prefix = peering[:secondary_peer_address_prefix]
             circuit_peering_prop.vlan_id = peering[:vlan_id]
-
             if peering[:peering_type].casecmp(MICROSOFT_PEERING) == 0
               peering_config = Azure::ARM::Network::Models::ExpressRouteCircuitPeeringConfig.new
               peering_config.advertised_public_prefixes = peering[:advertised_public_prefixes]

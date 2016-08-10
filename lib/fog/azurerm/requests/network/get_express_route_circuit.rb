@@ -4,13 +4,13 @@ module Fog
       # Real class for Express Route Circuit Request
       class Real
         def get_express_route_circuit(resource_group_name, circuit_name)
-          logger_msg = "Getting Express Route Circuit#{circuit_name} from Resource Group #{resource_group_name}."
-          Fog::Logger.debug logger_msg
+          msg = "Getting Express Route Circuit#{circuit_name} from Resource Group #{resource_group_name}."
+          Fog::Logger.debug msg
           begin
             circuit = @network_client.express_route_circuits.get(resource_group_name, circuit_name).value!
             Azure::ARM::Network::Models::ExpressRouteCircuit.serialize_object(circuit.body)
           rescue MsRestAzure::AzureOperationError => e
-            raise generate_exception_message(logger_msg, e)
+            raise_azure_exception(e, msg)
           end
         end
       end

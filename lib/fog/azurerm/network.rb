@@ -57,6 +57,15 @@ module Fog
       request :list_traffic_manager_profiles
       request :create_traffic_manager_endpoint
       request :delete_traffic_manager_endpoint
+      request :create_or_update_express_route_circuit
+      request :delete_express_route_circuit
+      request :get_express_route_circuit
+      request :list_express_route_circuits
+      request :create_or_update_express_route_circuit_peering
+      request :delete_express_route_circuit_peering
+      request :get_express_route_circuit_peering
+      request :list_express_route_circuit_peerings
+      request :list_express_route_service_providers
 
       model_path 'fog/azurerm/models/network'
       model :virtual_network
@@ -94,6 +103,12 @@ module Fog
       collection :traffic_manager_profiles
       model :traffic_manager_end_point
       collection :traffic_manager_end_points
+      model :express_route_circuit
+      collection :express_route_circuits
+      model :express_route_circuit_peering
+      collection :express_route_circuit_peerings
+      model :express_route_service_provider
+      collection :express_route_service_providers
 
       # Mock class for Network Service
       class Mock

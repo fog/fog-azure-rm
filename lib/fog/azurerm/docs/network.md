@@ -790,5 +790,117 @@ Get a application gateway object from the get method and then destroy that appli
     gateway.destroy
 ```
 
+
+## Create an Express Route Circuit
+
+Create a new Express Route Circuit.
+
+```ruby
+    circuit = network.express_route_circuits.create(
+    	"name": "<Circuit Name>",
+    	"location": "eastus",
+    	"resource_group": "<Resource Group Name>",
+    	"sku_name": "Standard_MeteredData",
+    	"sku_tier": "Standard",
+    	"sku_family": "MeteredData",
+    	"service_provider_name": "Telenor",
+    	"peering_location": "London",
+    	"bandwidth_in_mbps": 100,
+    	"peerings": [
+        	{
+            	"name": "AzurePublicPeering",
+            	"peering_type": "AzurePublicPeering",
+            	"peer_asn": 100,
+            	"primary_peer_address_prefix": "192.168.1.0/30",
+            	"secondary_peer_address_prefix": "192.168.2.0/30",
+            	"vlan_id": 200
+        	}
+    	]
+	)
+```
+
+## List Express Route Circuits
+
+List all express route circuits in a resource group
+
+```ruby
+    circuits  = network.express_route_circuits(resource_group: '<Resource Group Name>')
+	circuits.each do |circuit|
+    	puts "#{circuit.name}"
+	end
+```
+
+## Retrieve a single Express Route Circuit
+
+Get a single record of Express Route Circuit
+
+```ruby
+    circuit = network.express_route_circuits.get("<Resource Group Name>", "<Circuit Name>")
+	puts "#{circuit.location}"
+```
+
+## Destroy a single Express Route Circuit
+
+Get an express route circuit object from the get method and then destroy that express route circuit.
+
+```ruby
+    circuit.destroy
+```
+
+## Create an Express Route Circuit Peering
+
+Create a new Express Route Circuit Peering.
+
+```ruby
+    peering = network.express_route_circuit_peerings.create(
+    	"name": "AzurePrivatePeering",
+    	"circuit_name": "<Circuit Name>",
+    	"resource_group": "<Resourse Group Name>",
+    	"peering_type": "AzurePrivatePeering",
+    	"peer_asn": 100,
+    	"primary_peer_address_prefix": "192.168.3.0/30",
+    	"secondary_peer_address_prefix": "192.168.4.0/30",
+    	"vlan_id": 200
+	)
+```
+
+## List Express Route Circuit Peerings
+
+List all express route circuit peerings in a resource group
+
+```ruby
+    peerings  = network.express_route_circuit_peerings(resource_group: '<Resource Group Name>', circuit_name: '<Circuit Name>')
+	peerings.each do |peering|
+    	puts "#{peering.name}"
+	end
+```
+
+## Retrieve a single Express Route Circuit Peering
+
+Get a single record of Express Route Circuit Peering
+
+```ruby
+    peering = network.express_route_circuit_peerings.get("<Resource Group Name>", "<Peering Name>", "Circuit Name")
+	puts "#{peering.peering_type}"
+```
+
+## Destroy a single Express Route Circuit Peering
+
+Get an express route circuit peering object from the get method and then destroy that express route circuit peering.
+
+```ruby
+    peering.destroy
+```
+
+## List Express Route Service Providers
+
+List all express route service providers
+
+```ruby
+    service_providers = network.express_route_service_providers
+	puts service_providers
+```
+
+
 ## Support and Feedback
 Your feedback is highly appreciated! If you have specific issues with the fog ARM, you should file an issue via Github.

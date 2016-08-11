@@ -3,22 +3,28 @@ module Fog
     class AzureRM
       # This class provides the actual implemention for service calls.
       class Real
-        def create_storage_account(resource_group, name, account_type, location, replication)
-          Fog::Logger.debug "Creating Storage Account: #{name}."
-          storage_account_params = get_storage_account_params(account_type, location, replication)
+        def create_storage_account(storage_account_hash)
+          Fog::Logger.debug "Creating Storage Account: #{storage_account_hash[:name]}."
+          storage_account_params = get_storage_account_params(storage_account_hash[:account_type],
+                                                              storage_account_hash[:location],
+                                                              storage_account_hash[:replication])
           begin
-            response = @storage_mgmt_client.storage_accounts.create(resource_group, name, storage_account_params).value!
+            response = @storage_mgmt_client.storage_accounts.create(storage_account_hash[:resource_group],
+                                                                    storage_account_hash[:name],
+                                                                    storage_account_params).value!
             Fog::Logger.debug 'Storage Account created successfully.'
-            body = response.body
-            body.properties.last_geo_failover_time = DateTime.parse(Time.now.to_s)
-            body.properties.creation_time = DateTime.parse(Time.now.to_s)
-            result = Azure::ARM::Storage::Models::StorageAccount.serialize_object(response.body)
+            storage_account_body = response.body
+            storage_account_body.properties.last_geo_failover_time = DateTime.parse(Time.now.to_s)
+            storage_account_body.properties.creation_time = DateTime.parse(Time.now.to_s)
+            result = Azure::ARM::Storage::Models::StorageAccount.serialize_object(storage_account_body)
             result
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Exception creating Storage Account #{name} in Resource Group #{resource_group}. #{e.body['error']['message']}"
+            msg = "Exception creating Storage Account #{storage_account_hash[:name]} in Resource Group #{storage_account_hash[:resource_group]}. #{e.body['error']['message']}"
             raise msg
           end
         end
+
+        private
 
         def get_storage_account_params(account_type, location, replication)
           properties = ::Azure::ARM::Storage::Models::StorageAccountPropertiesCreateParameters.new
@@ -36,7 +42,7 @@ module Fog
             'location' => 'West US',
             'properties' =>
             {
-              'accountType' => "Standard_LRS",
+              'accountType' => 'Standard_LRS',
               'lastGeoFailoverTime' => DateTime.parse(Time.now.to_s).strftime('%FT%TZ'),
               'creationTime' => DateTime.parse(Time.now.to_s).strftime('%FT%TZ')
             }

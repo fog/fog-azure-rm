@@ -44,9 +44,7 @@ storage.storage_accounts.check_name_availability('test-storage')
 storage.storage_accounts.create(
   name: 'fogstandardsalrs',
   location: 'eastus',
-  resource_group: 'TestRG-SA',
-  account_type: 'Standard',
-  replication: 'LRS'
+  resource_group: 'TestRG-SA'
 )
 
 ########################################################################################################################

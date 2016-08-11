@@ -73,8 +73,8 @@ azure_storage_service.storage_accounts.create(
   :name => '<Storage Account name>',
   :location => 'West US',
   :resource_group => '<Resource Group name>',
-  :account_type => '<Standard/Premium>'                # Allowed values can only be Standard or Premium
-  :replication => 'LRS'                               
+  :account_type => '<Standard/Premium>'                # Optional. Default value 'Standard'. Allowed values can only be Standard or Premium
+  :replication => 'LRS'                                # Optional. Default value 'LRS' 
 )
 ```
 Premium Storage account store data on solid state drives (SSDs). For more details on standard and premium storage accounts, see [Introduction to Microsoft Azure Storage](https://azure.microsoft.com/en-us/documentation/articles/storage-introduction/) and [Premium Storage: High-Performance Storage for Azure Virtual Machine Workloads](https://azure.microsoft.com/en-us/documentation/articles/storage-premium-storage/).

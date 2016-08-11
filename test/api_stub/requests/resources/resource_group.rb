@@ -15,10 +15,8 @@ module ApiStub
               "provisioning_state": "Succeeded"
             }
           }'
-          result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
           result_mapper = Azure::ARM::Resources::Models::ResourceGroup.mapper
-          result.body = client.deserialize(result_mapper, JSON.load(body), 'result.body')
-          result
+          client.deserialize(result_mapper, JSON.load(body), 'result.body')
         end
 
         def self.list_resource_group_response(client)
@@ -36,10 +34,8 @@ module ApiStub
             } ],
             "nextLink": "https://management.azure.com/subscriptions/########-####-####-####-############/resourcegroups?api-version=2015-01-01&$skiptoken=######"
           }'
-          result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
           result_mapper = Azure::ARM::Resources::Models::ResourceGroupListResult.mapper
-          result.body = client.deserialize(result_mapper, JSON.load(body), 'result.body')
-          result
+          client.deserialize(result_mapper, JSON.load(body), 'result.body')
         end
 
         def self.list_resource_groups_for_zones

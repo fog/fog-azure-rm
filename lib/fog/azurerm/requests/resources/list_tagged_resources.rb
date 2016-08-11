@@ -8,11 +8,10 @@ module Fog
             unless tag_name.nil?
               query_filter = "tagname eq '#{tag_name}' "
               query_filter += tag_value.nil? ? '' : "and tagvalue eq '#{tag_value}'"
-              promise = @rmc.resources.list(query_filter)
-              result = promise.value!
-              result.body.next_link = ''
+              resources = @rmc.resources.list_as_lazy(query_filter)
+              resources.next_link = ''
               result_mapper = Azure::ARM::Resources::Models::ResourceListResult.mapper
-              @rmc.serialize(result_mapper, result.body, 'parameters')['value']
+              @rmc.serialize(result_mapper, resources, 'parameters')['value']
             end
           rescue MsRestAzure::AzureOperationError => e
             msg = "Exception listing Resources . #{e.body['error']['message']}"

@@ -16,10 +16,8 @@ module ApiStub
                 "name": "free"
             }
           }'
-          result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
           result_mapper = Azure::ARM::Resources::Models::GenericResource.mapper
-          result.body = client.deserialize(result_mapper, JSON.load(body), 'result.body')
-          result
+          client.deserialize(result_mapper, JSON.load(body), 'result.body')
         end
 
         def self.list_tagged_resources_response(client)
@@ -38,10 +36,8 @@ module ApiStub
           } ],
             "nextLink": "https://management.azure.com/subscriptions/########-####-####-####-############/resourcegroups?api-version=2015-01-01&$skiptoken=######"
           }'
-          result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
           result_mapper = Azure::ARM::Resources::Models::ResourceListResult.mapper
-          result.body = client.deserialize(result_mapper, JSON.load(body), 'result.body')
-          result
+          client.deserialize(result_mapper, JSON.load(body), 'result.body')
         end
       end
     end

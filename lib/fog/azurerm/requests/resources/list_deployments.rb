@@ -6,10 +6,9 @@ module Fog
         def list_deployments(resource_group)
           begin
             Fog::Logger.debug "Listing Deployments in Resource Group: #{resource_group}"
-            promise = @rmc.deployments.list(resource_group)
-            result = promise.value!
+            deployments = @rmc.deployments.list_as_lazy(resource_group)
             result_mapper = Azure::ARM::Resources::Models::DeploymentListResult.mapper
-            @rmc.serialize(result_mapper, result.body, 'parameters')
+            @rmc.serialize(result_mapper, deployments, 'parameters')['value']
           rescue  MsRestAzure::AzureOperationError => e
             msg = "Exception listing Deployments in Resource Group: #{resource_group}. #{e.body['error']['message']}"
             raise msg

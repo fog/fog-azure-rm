@@ -18,13 +18,10 @@ module Fog
             api_version = '2016-06-01'
 
             Fog::Logger.debug "Creating Tag #{tag_name} for Resource #{resource_name}"
-            promise = @rmc.resources.get(resource_group_name, resource_provider_namespace, parent_resource_id, resource_type, resource_name, api_version)
-            result = promise.value!
-            resource = result.body
+            resource = @rmc.resources.get(resource_group_name, resource_provider_namespace, parent_resource_id, resource_type, resource_name, api_version)
             resource.tags = {} if resource.tags.nil?
             resource.tags[tag_name] = tag_value
-            promise = @rmc.resources.create_or_update(resource_group_name, resource_provider_namespace, parent_resource_id, resource_type, resource_name, api_version, resource)
-            promise.value!
+            @rmc.resources.create_or_update(resource_group_name, resource_provider_namespace, parent_resource_id, resource_type, resource_name, api_version, resource)
             Fog::Logger.debug "Tag #{tag_name} created successfully for Resource #{resource_name}"
             true
           rescue MsRestAzure::AzureOperationError => e

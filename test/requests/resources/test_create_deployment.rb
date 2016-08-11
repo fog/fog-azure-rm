@@ -13,37 +13,21 @@ class TestCreateDeployment < Minitest::Test
   end
 
   def test_create_deployment_success
-    validate_deployment_promise = Concurrent::Promise.execute do
-    end
-    create_deployment_promise = Concurrent::Promise.execute do
-    end
     mocked_response = ApiStub::Requests::Resources::Deployment.create_deployment_response(@client)
     result_mapper = Azure::ARM::Resources::Models::DeploymentExtended.mapper
-    expected_response = @client.serialize(result_mapper, mocked_response.body, 'parameters')
-    validate_deployment_promise.stub :value!, true do
-      @deployments.stub :validate, validate_deployment_promise do
-        create_deployment_promise.stub :value!, mocked_response do
-          @deployments.stub :create_or_update, create_deployment_promise do
-            assert_equal @service.create_deployment(@resource_group, @deployment_name, @template_link, @parameters_link), expected_response
-          end
-        end
+    expected_response = @client.serialize(result_mapper, mocked_response, 'parameters')
+    @deployments.stub :validate, true do
+      @deployments.stub :create_or_update, mocked_response do
+        assert_equal @service.create_deployment(@resource_group, @deployment_name, @template_link, @parameters_link), expected_response
       end
     end
   end
 
   def test_create_deployment_failure
-    validate_deployment_promise = Concurrent::Promise.execute do
-    end
-    create_deployment_promise = Concurrent::Promise.execute do
-    end
-    response = -> { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
-    validate_deployment_promise.stub :value!, true do
-      @deployments.stub :validate, validate_deployment_promise do
-        create_deployment_promise.stub :value!, response do
-          @deployments.stub :create_or_update, create_deployment_promise do
-            assert_raises(RuntimeError) { @service.create_deployment(@resource_group, @deployment_name, @template_link, @parameters_link) }
-          end
-        end
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
+    @deployments.stub :validate, true do
+      @deployments.stub :create_or_update, response do
+        assert_raises(RuntimeError) { @service.create_deployment(@resource_group, @deployment_name, @template_link, @parameters_link) }
       end
     end
   end

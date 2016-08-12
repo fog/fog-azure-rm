@@ -27,11 +27,11 @@ module ApiStub
 
         def self.storage_account_arguments
           {
-              resource_group: 'gateway-RG',
-              name: 'fog_test_storage_account',
-              account_type: 'Standard',
-              location: 'West US',
-              replication: 'LRS'
+            resource_group: 'gateway-RG',
+            name: 'fog_test_storage_account',
+            account_type: 'Standard',
+            location: 'West US',
+            replication: 'LRS'
           }
         end
 

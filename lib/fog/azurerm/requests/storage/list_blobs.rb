@@ -7,7 +7,7 @@ module Fog
           Fog::Logger.debug "Listing blobs in container: #{container_name}"
           begin
             blobs = @blob_client.list_blobs(container_name, options)
-            Fog::Logger.debug 'Listing blobs in container: #{container_name} successfully.'
+            Fog::Logger.debug "Listing blobs in container: #{container_name} successfully."
             blobs
           rescue Azure::Core::Http::HTTPError => ex
             raise "Exception in listing blobs: #{ex.inspect}"
@@ -18,6 +18,7 @@ module Fog
       # This class provides the mock implementation for unit tests.
       class Mock
         def list_blobs(*)
+          Fog::Logger.debug 'Listing blobs in container successfully.'
           [
             {
               'name' => 'testblob1',

@@ -9,8 +9,8 @@ module Fog
         def upload_block_blob_from_file(container_name, blob_name, file_path, options = {})
           Fog::Logger.debug "Uploading file #{file_path} as blob #{blob_name} to the container #{container_name}."
           if file_path.nil?
-            Fog::Logger.debug "Blob #{blob_name} created successfully."
             blob = @blob_client.create_block_blob container_name, blob_name, nil, options
+            Fog::Logger.debug "Blob #{blob_name} created successfully."
             return blob
           end
 
@@ -42,7 +42,8 @@ module Fog
       end
       # This class provides the mock implementation for unit tests.
       class Mock
-        def upload_block_blob_from_file(_container_name, blob_name, _options = {})
+        def upload_block_blob_from_file(_container_name, blob_name, _file_path, _options = {})
+          Fog::Logger.debug 'Blob created successfully.'
           {
             'name' => blob_name,
             'properties' =>

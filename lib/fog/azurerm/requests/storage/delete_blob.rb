@@ -18,6 +18,7 @@ module Fog
       # This class provides the mock implementation for unit tests.
       class Mock
         def delete_blob(*)
+          Fog::Logger.debug 'Blob deleted successfully.'
           true
         end
       end

@@ -16,10 +16,10 @@ module Fog
       end
       # This class provides the mock implementation for unit tests.
       class Mock
-        def get_blob_properties(_container_name, name, options = {})
+        def get_blob_properties(_container_name, name, _options = {})
           {
             'name' => name,
-            'snapshot' => options.snapshot,
+            'snapshot' => nil,
             'metadata' => {},
             'properties' =>
               {

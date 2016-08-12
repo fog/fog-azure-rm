@@ -19,19 +19,11 @@ module Fog
           load blobs
         end
 
-        def get(identity)
-          blob = all(prefix: identity, metadata: true).find { |item| item.name == identity }
-          return if blob.nil?
+        def get(container_name, blob_name)
+          blob = Blob.new(service: service)
           blob.container_name = container_name
+          blob.name = blob_name
           blob
-        end
-
-        def get_blob_metadata(container_name, name)
-          service.get_blob_metadata(container_name, name)
-        end
-
-        def set_blob_metadata(container_name, name, metadata)
-          service.set_blob_metadata(container_name, name, metadata)
         end
       end
     end

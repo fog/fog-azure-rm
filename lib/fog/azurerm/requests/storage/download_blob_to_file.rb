@@ -9,6 +9,7 @@ module Fog
           begin
             blob, content = @blob_client.get_blob(container_name, blob_name, options)
             IO.binwrite(File.expand_path(file_path), content)
+            Fog::Logger.debug "File #{file_path} downloaded successfully."
             blob
           rescue IOError => ex
             raise "Exception in writing #{file_path}: #{ex.inspect}"
@@ -19,7 +20,8 @@ module Fog
       end
       # This class provides the mock implementation for unit tests.
       class Mock
-        def download_blob_to_file(_container_name, blob_name, _options = {})
+        def download_blob_to_file(_container_name, blob_name, _file_path, _options = {})
+          Fog::Logger.debug 'File downloaded successfully.'
           {
             'name' => blob_name,
             'metadata' => {},

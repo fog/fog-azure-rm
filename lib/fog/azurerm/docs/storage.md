@@ -180,13 +180,13 @@ puts "#{result}"
 
 ## Upload a local file as a blob
 ```ruby
-new_blob = azure_storage_service.upload_block_blob_from_file('<container name>', '<blob name>', '<file path>')
+new_blob = azure_storage_service.blobs.get('<Container name>', '<Blob name>').create(file_path: '<file path>')
 puts "#{new_blob.inspect}"
 ```
 
 ## Download a blob to a local file
 ```ruby
-blob = azure_storage_service.download_blob_to_file('<container name>', '<blob name>', '<file path>')
+blob = azure_storage_service.blobs.get('<Container name>', '<Blob name>').save_to_file('<file path>')
 puts "#{blob.inspect}"
 puts "File Size: #{File.size <file_path>}"
 ```
@@ -196,7 +196,7 @@ puts "File Size: #{File.size <file_path>}"
 Mark the specified blob for deletion. The blob is later deleted during garbage collection.
 
 ```ruby
-blob = azure_storage_service.blobs(container_name: '<container name>').get('<blob name>')
+blob = azure_storage_service.blobs.get('<container name>', '<blob name>')
 result = blob.destroy
 puts "#{result}"
 ```
@@ -204,7 +204,7 @@ puts "#{result}"
 Note that in order to delete a blob, you must delete all of its snapshots.
 
 ```ruby
-blob = azure_storage_service.blobs(container_name: '<container name>').get('<blob name>')
+blob = azure_storage_service.blobs.get('<container name>', '<blob name>')
 result = blob.destroy(delete_snapshots: 'only')
 puts "#{result}"
 
@@ -215,7 +215,7 @@ puts "#{result}"
 You can delete both at the same time by specifying the option.
 
 ```ruby
-blob = azure_storage_service.blobs(container_name: '<container name>').get('<blob name>')
+blob = azure_storage_service.blobs.get('<container name>', '<blob name>')
 result = blob.destroy(delete_snapshots: 'inlcude')
 puts "#{result}"
 ```
@@ -237,7 +237,7 @@ puts "#{properties.inspect}"
 Get the storage blob properties.
 
 ```ruby
-blob = azure_storage_service.blobs(container_name: '<container name>').get('<blob name>')
+blob = azure_storage_service.blobs.get('<container name>', '<blob name>')
 properties = blob.get_properties
 puts "#{properties.inspect}"
 ```
@@ -247,10 +247,10 @@ puts "#{properties.inspect}"
 Set the storage blob properties. The properties are passed in name/value pairs.
 
 ```ruby
-blob = azure_storage_service.blobs(container_name: '<container name>').get('<blob name>')
+blob = azure_storage_service.blobs.get('<container name>', '<blob name>')
 properties = {
-  "content-language" => "English",
-  "content-disposition" => "attachment"
+  "content_language" => "English",
+  "content_disposition" => "attachment"
 }
 blob.set_properties(properties)
 ```
@@ -262,7 +262,7 @@ Metadata allows us to provide descriptive information about specific containers 
 ### Get Blob Metadata
 
 ```ruby
-azure_storage_service.blobs.get_blob_metadata('<Container name>', '<Blob name>')
+azure_storage_service.blobs.get('<Container name>', '<Blob name>').get_metadata
 ```
 
 ### Set Blob Metadata
@@ -272,7 +272,7 @@ metadata = {
   "Category" => "Images",
   "Resolution" => "High"
 }
-azure_storage_service.blobs.set_blob_metadata('<Container name>', '<Blob name>', metadata)
+azure_storage_service.blobs.get('<Container name>', '<Blob name>').set_metadata(metadata)
 ```
 
 ### Get Container Metadata

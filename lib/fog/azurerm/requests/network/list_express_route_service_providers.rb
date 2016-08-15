@@ -4,14 +4,13 @@ module Fog
       # Real class for Network Request
       class Real
         def list_express_route_service_providers
-          Fog::Logger.debug 'Getting list of Express Route Service Providers.'
+          logger_msg = 'Getting list of Express Route Service Providers.'
+          Fog::Logger.debug logger_msg
           begin
-            promise = @network_client.express_route_service_providers.list
-            result = promise.value!
-            Azure::ARM::Network::Models::ExpressRouteServiceProviderListResult.serialize_object(result.body)['value']
+            service_providers = @network_client.express_route_service_providers.list.value!
+            Azure::ARM::Network::Models::ExpressRouteServiceProviderListResult.serialize_object(service_providers.body)['value']
           rescue  MsRestAzure::AzureOperationError => e
-            msg = "Exception listing Express Route Service Providers. #{e.body['error']['message']}."
-            raise msg
+            raise generate_exception_message(logger_msg, e)
           end
         end
       end

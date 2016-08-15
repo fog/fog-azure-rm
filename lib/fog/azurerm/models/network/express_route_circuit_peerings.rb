@@ -13,11 +13,11 @@ module Fog
         def all
           requires :resource_group
           requires :circuit_name
-          express_route_circuit_peerings = []
+          circuit_peerings = []
           service.list_express_route_circuit_peerings(resource_group, circuit_name).each do |circuit_peering|
-            express_route_circuit_peerings << Fog::Network::AzureRM::ExpressRouteCircuitPeering.parse(circuit_peering)
+            circuit_peerings << Fog::Network::AzureRM::ExpressRouteCircuitPeering.parse(circuit_peering)
           end
-          load(express_route_circuit_peerings)
+          load(circuit_peerings)
         end
 
         def get(resource_group_name, peering_name, circuit_name)

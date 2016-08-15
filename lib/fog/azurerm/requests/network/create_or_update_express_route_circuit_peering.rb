@@ -12,7 +12,7 @@ module Fog
             Fog::Logger.debug "Express Route Circuit Peering #{circuit_peering_params[:peering_name]} created/updated successfully."
             Azure::ARM::Network::Models::ExpressRouteCircuitPeering.serialize_object(peering.body)
           rescue MsRestAzure::AzureOperationError => e
-            raise generate_exception_message(logger_msg,e)
+            raise generate_exception_message(logger_msg, e)
           end
         end
 

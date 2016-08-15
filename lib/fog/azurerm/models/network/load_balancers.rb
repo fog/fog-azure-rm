@@ -18,8 +18,10 @@ module Fog
           load(load_balancers)
         end
 
-        def get(identity)
-          all.find { |f| f.name == identity }
+        def get(resource_group_name, load_balancer_name)
+          lb = service.get_load_balancer(resource_group_name, load_balancer_name)
+          load_balancer = Fog::Network::AzureRM::LoadBalancer.new(service: service)
+          load_balancer.merge_attributes(Fog::Network::AzureRM::LoadBalancer.parse(lb))
         end
       end
     end

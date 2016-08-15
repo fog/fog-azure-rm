@@ -25,6 +25,7 @@ module Fog
       request :delete_public_ip
       request :get_public_ip
       request :list_public_ips
+      request :get_public_ip
       request :check_for_public_ip
       request :create_subnet
       request :attach_network_security_group_to_subnet
@@ -43,6 +44,7 @@ module Fog
       request :create_load_balancer
       request :delete_load_balancer
       request :list_load_balancers
+      request :get_load_balancer
       request :create_or_update_network_security_group
       request :delete_network_security_group
       request :list_network_security_groups

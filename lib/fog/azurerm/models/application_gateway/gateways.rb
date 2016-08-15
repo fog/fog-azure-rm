@@ -18,8 +18,10 @@ module Fog
           load(application_gateways)
         end
 
-        def get(identity)
-          all.find { |f| f.name == identity }
+        def get(resource_group_name, application_gateway_name)
+          gateway = service.get_application_gateway(resource_group_name, application_gateway_name)
+          application_gateway = Fog::Network::AzureRM::ApplicationGateway.new(service: service)
+          application_gateway.merge_attributes(Fog::Network::AzureRM::ApplicationGateway.parse(gateway))
         end
       end
     end

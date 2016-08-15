@@ -19,13 +19,9 @@ module Fog
           load(virtual_machines)
         end
 
-        def get(identity)
-          all.find { |s| s.name == identity }
-        end
-
-        def get_from_remote(resource_group, name)
-          result_obj = service.get_virtual_machine(resource_group, name)
-          model_obj = Fog::Compute::AzureRM::Server.new
+        def get(resource_group, virtual_machine_name)
+          result_obj = service.get_virtual_machine(resource_group, virtual_machine_name)
+          model_obj = Fog::Compute::AzureRM::Server.new(service: service)
           model_obj.merge_attributes(Fog::Compute::AzureRM::Server.parse(result_obj))
         end
       end

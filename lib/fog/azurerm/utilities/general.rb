@@ -12,6 +12,10 @@ def get_record_type(type)
   type.split('/').last
 end
 
+def generate_exception_message(message, exception)
+  "Exception #{message}\n#{exception}\n#{exception.backtrace}"
+end
+
 # Make sure if input_params(Hash) contains all keys present in required_params(Array)
 def validate_params(required_params, input_params)
   missing_params = required_params.select { |param| param unless input_params.key?(param) }

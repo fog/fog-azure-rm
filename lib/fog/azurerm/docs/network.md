@@ -790,6 +790,14 @@ Get a application gateway object from the get method and then destroy that appli
     gateway.destroy
 ```
 
+## Express Route
+
+Microsoft Azure ExpressRoute lets you extend your on-premises networks into the Microsoft cloud over a dedicated private connection facilitated by a connectivity provider.
+For more details about express route [click here](https://azure.microsoft.com/en-us/documentation/articles/expressroute-introduction/).
+
+# Express Route Circuit
+
+The Circuit represents the entity created by customer to register with an express route service provider with intent to connect to Microsoft.
 
 ## Create an Express Route Circuit
 
@@ -836,7 +844,7 @@ Get a single record of Express Route Circuit
 
 ```ruby
     circuit = network.express_route_circuits.get("<Resource Group Name>", "<Circuit Name>")
-	puts "#{circuit.location}"
+	puts "#{circuit.name}"
 ```
 
 ## Destroy a single Express Route Circuit
@@ -846,6 +854,10 @@ Get an express route circuit object from the get method and then destroy that ex
 ```ruby
     circuit.destroy
 ```
+
+# Express Route Peering
+
+BGP Peering is part of Express Route circuit and defines the type of connectivity needed with Microsoft.
 
 ## Create an Express Route Circuit Peering
 
@@ -875,7 +887,7 @@ List all express route circuit peerings in a resource group
 	end
 ```
 
-## Retrieve a single Express Route Circuit Peering
+## Retrieve single Express Route Circuit Peering
 
 Get a single record of Express Route Circuit Peering
 
@@ -884,13 +896,17 @@ Get a single record of Express Route Circuit Peering
 	puts "#{peering.peering_type}"
 ```
 
-## Destroy a single Express Route Circuit Peering
+## Destroy single Express Route Circuit Peering
 
 Get an express route circuit peering object from the get method and then destroy that express route circuit peering.
 
 ```ruby
     peering.destroy
 ```
+
+# Express Route Service Provider
+
+Express Route Service Providers are telcos and exchange providers who are approved in the system to provide Express Route connectivity.
 
 ## List Express Route Service Providers
 

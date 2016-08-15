@@ -8,7 +8,7 @@ require 'yaml'
 
 azure_credentials = YAML.load_file('credentials/azure.yml')
 
-rs = Fog::Resources::AzureRM.new(
+resources = Fog::Resources::AzureRM.new(
   tenant_id: azure_credentials['tenant_id'],
   client_id: azure_credentials['client_id'],
   client_secret: azure_credentials['client_secret'],
@@ -26,7 +26,7 @@ network = Fog::Network::AzureRM.new(
 ######################                                 Prerequisites                              ######################
 ########################################################################################################################
 
-rs.resource_groups.create(
+resources.resource_groups.create(
   name: 'TestRG-ER',
   location: 'eastus'
 )

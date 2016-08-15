@@ -3,52 +3,50 @@ module Fog
     class AzureRM
       # Real class for Network Request
       class Real
-        def create_or_update_express_route_circuit(resource_group_name, name, location, tag_key1, tag_key2, sku_name, sku_tier, sku_family, service_provider_name, peering_location, bandwidth_in_mbps, peerings)
-          Fog::Logger.debug "Creating/Updating Express Route Circuit: #{name}..."
-          circuit = get_express_route_circuit_object(name, location, sku_name, sku_tier, sku_family, service_provider_name, peering_location, bandwidth_in_mbps, peerings)
+        def create_or_update_express_route_circuit(circuit_parameters)
+          msg = "Exception creating/updating Express Route Circuit #{circuit_parameters[:circuit_name]} in Resource Group: #{circuit_parameters[:resource_group_name]}."
+          Fog::Logger.debug msg
+          circuit = get_express_route_circuit_object(circuit_parameters)
           begin
-            promise = @network_client.express_route_circuits.create_or_update(resource_group_name, name, circuit)
-            result = promise.value!
-            Fog::Logger.debug "Express Route Circuit #{name} created/updated successfully."
-            Azure::ARM::Network::Models::ExpressRouteCircuit.serialize_object(result.body)
+            circuit = @network_client.express_route_circuits.create_or_update(circuit_parameters[:resource_group_name], circuit_parameters[:circuit_name], circuit).value!
+            Fog::Logger.debug "Express Route Circuit #{circuit_parameters[:circuit_name]} created/updated successfully."
+            Azure::ARM::Network::Models::ExpressRouteCircuit.serialize_object(circuit.body)
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Exception creating/updating Express Route Circuit #{name} in Resource Group: #{resource_group_name}. #{e.body['error']['message']}"
             raise_azure_exception(e, msg)
           end
         end
 
         private
 
-        def get_express_route_circuit_object(name, location, sku_name, sku_tier, sku_family, service_provider_name, peering_location, bandwidth_in_mbps, peerings)
+        def get_express_route_circuit_object(circuit_parameters)
           sku = Azure::ARM::Network::Models::ExpressRouteCircuitSku.new
-          sku.name = sku_name
-          sku.family = sku_family
-          sku.tier = sku_tier
+          sku.name = circuit_parameters[:sku_name]
+          sku.family = circuit_parameters[:sku_family]
+          sku.tier = circuit_parameters[:sku_tier]
 
           service_provider_prop = Azure::ARM::Network::Models::ExpressRouteCircuitServiceProviderProperties.new
-          service_provider_prop.service_provider_name = service_provider_name
-          service_provider_prop.peering_location = peering_location
-          service_provider_prop.bandwidth_in_mbps = bandwidth_in_mbps
+          service_provider_prop.service_provider_name = circuit_parameters[:service_provider_name]
+          service_provider_prop.peering_location = circuit_parameters[:peering_location]
+          service_provider_prop.bandwidth_in_mbps = circuit_parameters[:bandwidth_in_mbps]
 
           circuit_props = Azure::ARM::Network::Models::ExpressRouteCircuitPropertiesFormat.new
           circuit_props.service_provider_properties = service_provider_prop
-          if peerings
-            circuit_peering_arr = define_circuit_peerings(peerings)
-            circuit_props.peerings = []
-            circuit_props.peerings = circuit_peering_arr
+          if circuit_parameters[:peerings]
+            circuit_peerings = get_circuit_peerings(circuit_parameters[:peerings])
+            circuit_props.peerings = circuit_peerings
           end
 
           express_route_circuit = Azure::ARM::Network::Models::ExpressRouteCircuit.new
-          express_route_circuit.name = name
-          express_route_circuit.location = location
+          express_route_circuit.name = circuit_parameters[:circuit_name]
+          express_route_circuit.location = circuit_parameters[:location]
           express_route_circuit.sku = sku
           express_route_circuit.properties = circuit_props
 
           express_route_circuit
         end
 
-        def define_circuit_peerings(peerings)
-          circuit_peering_arr = []
+        def get_circuit_peerings(peerings)
+          circuit_peerings = []
           peerings.each do |peering|
             circuit_peering = Azure::ARM::Network::Models::ExpressRouteCircuitPeering.new
             circuit_peering_prop = Azure::ARM::Network::Models::ExpressRouteCircuitPeeringPropertiesFormat.new
@@ -58,11 +56,20 @@ module Fog
             circuit_peering_prop.secondary_peer_address_prefix = peering[:secondary_peer_address_prefix]
             circuit_peering_prop.vlan_id = peering[:vlan_id]
 
+            if peering[:peering_type].casecmp(MICROSOFT_PEERING) == 0
+              peering_config = Azure::ARM::Network::Models::ExpressRouteCircuitPeeringConfig.new
+              peering_config.advertised_public_prefixes = peering[:advertised_public_prefixes]
+              peering_config.advertised_public_prefixes_state = peering[:advertised_public_prefix_state]
+              peering_config.customer_asn = peering[:customer_asn]
+              peering_config.routing_registry_name = peering[:routing_registry_name]
+              circuit_peering_prop.microsoft_peering_config = peering_config
+            end
+
             circuit_peering.name = peering[:name]
             circuit_peering.properties = circuit_peering_prop
-            circuit_peering_arr.push(circuit_peering)
+            circuit_peerings.push(circuit_peering)
           end
-          circuit_peering_arr
+          circuit_peerings
         end
       end
 

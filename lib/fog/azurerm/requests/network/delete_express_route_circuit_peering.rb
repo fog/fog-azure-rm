@@ -4,14 +4,13 @@ module Fog
       # Real class for Network Request
       class Real
         def delete_express_route_circuit_peering(resource_group_name, peering_name, circuit_name)
-          Fog::Logger.debug "Deleting Express Route Circuit Peering #{peering_name} from Resource Group #{resource_group_name}."
+          msg = "Deleting Express Route Circuit Peering #{peering_name} from Resource Group #{resource_group_name}."
+          Fog::Logger.debug msg
           begin
-            promise = @network_client.express_route_circuit_peerings.delete(resource_group_name, circuit_name, peering_name)
-            promise.value!
+            @network_client.express_route_circuit_peerings.delete(resource_group_name, circuit_name, peering_name).value!
             Fog::Logger.debug "Express Route Circuit Peering #{peering_name} Deleted Successfully."
             true
           rescue  MsRestAzure::AzureOperationError => e
-            msg = "Exception deleting Express Route Circuit Peering #{peering_name} in Resource Group: #{resource_group_name}. #{e.body['error']['message']}"
             raise_azure_exception(e, msg)
           end
         end

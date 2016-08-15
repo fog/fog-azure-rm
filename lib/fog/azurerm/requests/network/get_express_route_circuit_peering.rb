@@ -4,13 +4,12 @@ module Fog
       # Real class for Express Route Circuit Peering Request
       class Real
         def get_express_route_circuit_peering(resource_group_name, peering_name, circuit_name)
-          Fog::Logger.debug "Getting Express Route Circuit Peering #{peering_name} from Resource Group #{resource_group_name}."
+          msg = "Getting Express Route Circuit Peering #{peering_name} from Resource Group #{resource_group_name}."
+          Fog::Logger.debug msg
           begin
-            promise = @network_client.express_route_circuit_peerings.get(resource_group_name, circuit_name, peering_name)
-            result = promise.value!
-            Azure::ARM::Network::Models::ExpressRouteCircuitPeering.serialize_object(result.body)
+            circuit_peering = @network_client.express_route_circuit_peerings.get(resource_group_name, circuit_name, peering_name).value!
+            Azure::ARM::Network::Models::ExpressRouteCircuitPeering.serialize_object(circuit_peering.body)
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Exception getting Express Route Circuit Peering #{peering_name} from Resource Group '#{resource_group_name}'. #{e.body['error']['message']}."
             raise_azure_exception(e, msg)
           end
         end
@@ -21,7 +20,7 @@ module Fog
         def get_express_route_circuit_peering(*)
           {
             'name' => 'peering_name',
-            'id' => '/subscriptions/{subscriptionId}/resourceGroups/{resource_group_name}providers/Microsoft.Network/expressRouteCircuits/{circuit_name}/peerings/{peering name}',
+            'id' => '/subscriptions/########-####-####-####-############/resourceGroups/resource_group_name/providers/Microsoft.Network/expressRouteCircuits/circuit_name/peerings/peering_name',
             'etag' => '',
             'properties' => {
               'provisioningState' => 'Succeeded',

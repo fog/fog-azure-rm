@@ -11,11 +11,12 @@ class TestCreateExpressRouteCircuitPeering < Minitest::Test
   end
 
   def test_create_express_route_circuit_peering_success
+    circuit_peering_parameters = {}
     mocked_response = ApiStub::Requests::Network::ExpressRouteCircuitPeering.create_express_route_circuit_peering_response
     expected_response = Azure::ARM::Network::Models::ExpressRouteCircuitPeering.serialize_object(mocked_response.body)
     @promise.stub :value!, mocked_response do
       @circuit_peerings.stub :create_or_update, @promise do
-        assert_equal @service.create_or_update_express_route_circuit_peering('Fog-rg', 'AzurePrivatePeering', 'testCircuit', 'AzurePrivatePeering', 100, '192.168.1.0/30', '"192.168.2.0/30"', 200, ['11.2.3.4/30'], 'NotConfigured', '200', 'routing_registry_name'), expected_response
+        assert_equal @service.create_or_update_express_route_circuit_peering(circuit_peering_parameters), expected_response
       end
     end
   end
@@ -32,11 +33,12 @@ class TestCreateExpressRouteCircuitPeering < Minitest::Test
   end
 
   def test_create_express_route_circuit_exception_failure
+    circuit_peering_parameters = {}
     response = -> { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @promise.stub :value!, response do
       @circuit_peerings.stub :create_or_update, @promise do
         assert_raises RuntimeError do
-          @service.create_or_update_express_route_circuit_peering('Fog-rg', 'AzurePrivatePeering', 'testCircuit', 'AzurePrivatePeering', 100, '192.168.1.0/30', '"192.168.2.0/30"', 200, ['11.2.3.4/30'], 'NotConfigured', '200', 'routing_registry_name')
+          @service.create_or_update_express_route_circuit_peering(circuit_peering_parameters)
         end
       end
     end

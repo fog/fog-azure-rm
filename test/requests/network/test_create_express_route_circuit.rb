@@ -15,8 +15,9 @@ class TestCreateExpressRouteCircuit < Minitest::Test
     expected_response = Azure::ARM::Network::Models::ExpressRouteCircuit.serialize_object(mocked_response.body)
     @promise.stub :value!, mocked_response do
       peerings = ApiStub::Requests::Network::ExpressRouteCircuit.peerings
+      express_route_circuit_parameters = { peerings: peerings }
       @circuit.stub :create_or_update, @promise do
-        assert_equal @service.create_or_update_express_route_circuit('Fog-rg', 'testCircuit', 'eastus', 'value1', 'value2', 'Standard_MeteredData', 'Standard', 'MeteredData', 'Telenor', 'London', 100, peerings), expected_response
+        assert_equal @service.create_or_update_express_route_circuit(express_route_circuit_parameters), expected_response
       end
     end
   end
@@ -36,9 +37,10 @@ class TestCreateExpressRouteCircuit < Minitest::Test
     response = -> { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @promise.stub :value!, response do
       peerings = ApiStub::Requests::Network::ExpressRouteCircuit.peerings
+      express_route_circuit_parameters = { peerings: peerings }
       @circuit.stub :create_or_update, @promise do
         assert_raises RuntimeError do
-          @service.create_or_update_express_route_circuit('Fog-rg', 'testCircuit', 'eastus', 'value1', 'value2', 'Standard_MeteredData', 'Standard', 'MeteredData', 'Telenor', 'London', 100, peerings)
+          @service.create_or_update_express_route_circuit(express_route_circuit_parameters)
         end
       end
     end

@@ -4,13 +4,12 @@ module Fog
       # Real class for Network Request
       class Real
         def list_express_route_circuits(resource_group_name)
-          Fog::Logger.debug "Getting list of Express Route Circuits from Resource Group #{resource_group_name}."
+          msg = "Getting list of Express Route Circuits from Resource Group #{resource_group_name}."
+          Fog::Logger.debug msg
           begin
-            promise = @network_client.express_route_circuits.list(resource_group_name)
-            result = promise.value!
-            Azure::ARM::Network::Models::ExpressRouteCircuitListResult.serialize_object(result.body)['value']
+            circuits = @network_client.express_route_circuits.list(resource_group_name).value!
+            Azure::ARM::Network::Models::ExpressRouteCircuitListResult.serialize_object(circuits.body)['value']
           rescue  MsRestAzure::AzureOperationError => e
-            msg = "Exception listing Express Route Circuits from Resource Group '#{resource_group_name}'. #{e.body['error']['message']}."
             raise_azure_exception(e, msg)
           end
         end
@@ -22,7 +21,7 @@ module Fog
           [
             {
               'name' => 'testCircuit',
-              'id' => '/subscriptions/{subscriptionId}/resourceGroup/{resource_group_name}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}',
+              'id' => '/subscriptions/########-####-####-####-############/resourceGroup/resource_group_name/providers/Microsoft.Network/expressRouteCircuits/circuitName',
               'etag' => 'W/\"00000000-0000-0000-0000-000000000000\"',
               'location' => 'eastus',
               'tags' => {

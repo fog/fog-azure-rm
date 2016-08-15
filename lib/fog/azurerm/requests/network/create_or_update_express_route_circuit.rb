@@ -65,6 +65,15 @@ module Fog
               circuit_peering_prop.microsoft_peering_config = peering_config
             end
 
+            if peering[:peering_type].casecmp(MICROSOFT_PEERING) == 0
+              peering_config = Azure::ARM::Network::Models::ExpressRouteCircuitPeeringConfig.new
+              peering_config.advertised_public_prefixes = peering[:advertised_public_prefixes]
+              peering_config.advertised_public_prefixes_state = peering[:advertised_public_prefix_state]
+              peering_config.customer_asn = peering[:customer_asn]
+              peering_config.routing_registry_name = peering[:routing_registry_name]
+              circuit_peering_prop.microsoft_peering_config = peering_config
+            end
+
             circuit_peering.name = peering[:name]
             circuit_peering.properties = circuit_peering_prop
             circuit_peerings.push(circuit_peering)

@@ -11,7 +11,7 @@ class TestCreateExpressRouteCircuitPeering < Minitest::Test
   end
 
   def test_create_express_route_circuit_peering_success
-    circuit_peering_parameters = {}
+    circuit_peering_parameters = { peering_type: 'AzurePrivatePeering' }
     mocked_response = ApiStub::Requests::Network::ExpressRouteCircuitPeering.create_express_route_circuit_peering_response
     expected_response = Azure::ARM::Network::Models::ExpressRouteCircuitPeering.serialize_object(mocked_response.body)
     @promise.stub :value!, mocked_response do
@@ -33,7 +33,7 @@ class TestCreateExpressRouteCircuitPeering < Minitest::Test
   end
 
   def test_create_express_route_circuit_exception_failure
-    circuit_peering_parameters = {}
+    circuit_peering_parameters = { peering_type: 'AzurePrivatePeering' }
     response = -> { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @promise.stub :value!, response do
       @circuit_peerings.stub :create_or_update, @promise do

@@ -1,13 +1,14 @@
 module ApiStub
   module Models
     module Storage
+      # Mock class for Storage Account
       class StorageAccount
         def self.create_storage_account
           {
             'location' => 'west us',
             'properties' =>
               {
-                'accountType' => 'Standard_LRS'
+                'accountType' => 'Standard'
               }
           }
         end

@@ -25,6 +25,16 @@ module ApiStub
           storage_acc_obj
         end
 
+        def self.storage_account_arguments
+          {
+            resource_group: 'gateway-RG',
+            name: 'fog_test_storage_account',
+            account_type: 'Standard',
+            location: 'West US',
+            replication: 'LRS'
+          }
+        end
+
         def self.list_storage_accounts_for_rg
           {
             'value' =>

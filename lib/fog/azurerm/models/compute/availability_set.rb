@@ -19,7 +19,6 @@ module Fog
           hash['type'] = as['type']
           hash['location'] = as['location']
           as['id'].nil? ? hash['resource_group'] = nil : hash['resource_group'] = as['id'].split('/')[4]
-          hash['resource_group'] = as['id'].split('/')[4]
           hash['platform_update_domain_count'] = as['properties']['platformUpdateDomainCount']
           hash['platform_fault_domain_count'] = as['properties']['platformFaultDomainCount']
           hash

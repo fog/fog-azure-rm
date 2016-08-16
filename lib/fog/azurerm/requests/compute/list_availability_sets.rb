@@ -5,9 +5,10 @@ module Fog
       class Real
         def list_availability_sets(resource_group)
           begin
-            promise = @compute_mgmt_client.availability_sets.list(resource_group)
-            response = promise.value!
-            Azure::ARM::Compute::Models::AvailabilitySetListResult.serialize_object(response.body)['value']
+            Fog::Logger.debug "Listing Availability Sets in Resource Group: #{resource_group}"
+            avail_sets = @compute_mgmt_client.availability_sets.list(resource_group)
+            result_mapper = Azure::ARM::Compute::Models::AvailabilitySetListResult.mapper
+            @compute_mgmt_client.serialize(result_mapper, avail_sets, 'parameters')['value']
           rescue MsRestAzure::AzureOperationError => e
             msg = "Exception listing availability sets in Resource Group #{resource_group}. #{e.body['error']['message']}"
             raise msg

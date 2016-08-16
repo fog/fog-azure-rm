@@ -1,7 +1,7 @@
 module Fog
   module ApplicationGateway
     class AzureRM
-      # Gateway model class for Network Service
+      # Gateway model class for Application Gateway Service
       class Gateway < Fog::Model
         identity :name
         attribute :id
@@ -91,7 +91,7 @@ module Fog
             hash['url_path_maps'] = []
             gateway_properties['urlPathMaps'].each do |map|
               url_path_map = Fog::ApplicationGateway::AzureRM::UrlPathMap.new
-              hash['url_path_maps'] << url_path_map.merge_attributes(Fog::Network::AzureRM::ApplicationGatewayUrlPathMap.parse(map))
+              hash['url_path_maps'] << url_path_map.merge_attributes(Fog::ApplicationGateway::AzureRM::UrlPathMap.parse(map))
             end unless gateway_properties['urlPathMaps'].nil?
 
             hash['request_routing_rules'] = []

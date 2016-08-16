@@ -1,7 +1,7 @@
 module Fog
   module ApplicationGateway
     class AzureRM
-      # GatewayIPConfiguration model class for Network Service
+      # GatewayIPConfiguration model class for Application Gateway Service
       class IPConfiguration < Fog::Model
         identity :name
         attribute :subnet_id

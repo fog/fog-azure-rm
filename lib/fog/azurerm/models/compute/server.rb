@@ -76,7 +76,7 @@ module Fog
         end
 
         def get_virtual_machine_params(ssh_key_path)
-          virtual_machine_params = {
+          {
             resource_group: resource_group,
             name: name,
             location: location,
@@ -97,7 +97,6 @@ module Fog
             provision_vm_agent: provision_vm_agent,
             enable_automatic_updates: enable_automatic_updates
           }
-          virtual_machine_params
         end
 
         def destroy

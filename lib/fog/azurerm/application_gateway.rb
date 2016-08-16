@@ -28,7 +28,7 @@ module Fog
       model :ssl_certificate
       model :url_path_map
 
-      # Mock class for Network Service
+      # Mock class for Application Gateway Service
       class Mock
         def initialize(_options = {})
           begin
@@ -40,9 +40,9 @@ module Fog
         end
       end
 
-      # Real class for Network Service
+      # Real class for Application Gateway Service
       class Real
-        def initialize(options)
+        def initialize(options = {})
           begin
             require 'azure_mgmt_network'
           rescue LoadError => e

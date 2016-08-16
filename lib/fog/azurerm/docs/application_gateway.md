@@ -11,7 +11,7 @@ require 'fog/azurerm'
 ```
 ## Create Connection
 
-Next, create a connection to the Network Service:
+Next, create a connection to the Application Gateway Service:
 
 ```ruby
     azure_application_gateway_service = Fog::ApplicationGateway::AzureRM.new(

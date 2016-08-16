@@ -6,7 +6,6 @@ module Fog
         def list_resource_groups
           begin
             resource_groups = @rmc.resource_groups.list_as_lazy
-            resource_groups.next_link = ''
             result_mapper = Azure::ARM::Resources::Models::ResourceGroupListResult.mapper
             @rmc.serialize(result_mapper, resource_groups, 'parameters')['value']
           rescue  MsRestAzure::AzureOperationError => e

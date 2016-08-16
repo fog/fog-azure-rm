@@ -25,7 +25,7 @@ class TestListDeployment < Minitest::Test
     response = -> { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @promise.stub :value!, response do
       @deployments.stub :list, @promise do
-        assert_raises(RuntimeError) { @service.list_deployments(@resource_group) }
+        assert_raises(Fog::AzureRm::OperationError) { @service.list_deployments(@resource_group) }
       end
     end
   end

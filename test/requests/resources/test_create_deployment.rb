@@ -40,7 +40,7 @@ class TestCreateDeployment < Minitest::Test
       @deployments.stub :validate, validate_deployment_promise do
         create_deployment_promise.stub :value!, response do
           @deployments.stub :create_or_update, create_deployment_promise do
-            assert_raises(RuntimeError) { @service.create_deployment(@resource_group, @deployment_name, @template_link, @parameters_link) }
+            assert_raises(Fog::AzureRm::OperationError) { @service.create_deployment(@resource_group, @deployment_name, @template_link, @parameters_link) }
           end
         end
       end

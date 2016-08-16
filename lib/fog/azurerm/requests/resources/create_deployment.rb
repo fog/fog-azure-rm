@@ -4,32 +4,37 @@ module Fog
       # This class provides the actual implemention for service calls.
       class Real
         def create_deployment(resource_group, deployment_name, template_link, parameters_link)
+          Fog::Logger.debug "Creating Deployment: #{deployment_name} in Resource Group: #{resource_group}"
+          deployment = create_deployment_object(template_link, parameters_link)
           begin
-            Fog::Logger.debug "Creating Deployment: #{deployment_name} in Resource Group: #{resource_group}"
-            deployment = Azure::ARM::Resources::Models::Deployment.new
-            deployment_properties = Azure::ARM::Resources::Models::DeploymentProperties.new
-
-            template_link_obj = Azure::ARM::Resources::Models::TemplateLink.new
-            template_link_obj.uri = template_link
-
-            parameters_link_obj = Azure::ARM::Resources::Models::ParametersLink.new
-            parameters_link_obj.uri = parameters_link
-
-            deployment_properties.template_link = template_link_obj
-            deployment_properties.parameters_link = parameters_link_obj
-            deployment_properties.mode = 'Incremental'
-
-            deployment.properties = deployment_properties
-
             @rmc.deployments.validate(resource_group, deployment_name, deployment)
             promise = @rmc.deployments.create_or_update(resource_group, deployment_name, deployment)
             result = promise.value!
             Fog::Logger.debug "Deployment: #{deployment_name} in Resource Group: #{resource_group} created successfully."
             Azure::ARM::Resources::Models::DeploymentExtended.serialize_object(result.body)
           rescue  MsRestAzure::AzureOperationError => e
-            msg = "Exception creating Deployment: #{deployment_name} in Resource Group: #{resource_group}. #{e.body['error']['message']}"
-            raise msg
+            raise Fog::AzureRm::OperationError.new(e)
           end
+        end
+
+        private
+
+        def create_deployment_object(template_link, parameters_link)
+          deployment = Azure::ARM::Resources::Models::Deployment.new
+          deployment_properties = Azure::ARM::Resources::Models::DeploymentProperties.new
+
+          template_link_obj = Azure::ARM::Resources::Models::TemplateLink.new
+          template_link_obj.uri = template_link
+
+          parameters_link_obj = Azure::ARM::Resources::Models::ParametersLink.new
+          parameters_link_obj.uri = parameters_link
+
+          deployment_properties.template_link = template_link_obj
+          deployment_properties.parameters_link = parameters_link_obj
+          deployment_properties.mode = 'Incremental'
+
+          deployment.properties = deployment_properties
+          deployment
         end
       end
 

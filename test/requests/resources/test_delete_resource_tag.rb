@@ -37,7 +37,7 @@ class TestDeleteResourceTag < Minitest::Test
         promise_update.stub :value!, response do
           @resources.stub :create_or_update, promise_update do
             resource_id = '/subscriptions/########-####-####-####-############/resourceGroups/{RESOURCE-GROUP}/providers/Microsoft.Network/{PROVIDER-NAME}/{RESOURCE-NAME}'
-            assert_raises(RuntimeError) { @service.delete_resource_tag(resource_id, 'tag_name', 'tag_value') }
+            assert_raises(Fog::AzureRm::OperationError) { @service.delete_resource_tag(resource_id, 'tag_name', 'tag_value') }
           end
         end
       end

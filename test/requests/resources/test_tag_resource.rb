@@ -37,7 +37,7 @@ class TestTagResource < Minitest::Test
         promise_create.stub :value!, response do
           @resources.stub :create_or_update, promise_create do
             resource_id = '/subscriptions/########-####-####-####-############/resourceGroups/{RESOURCE-GROUP}/providers/Microsoft.Network/{PROVIDER-NAME}/{RESOURCE-NAME}'
-            assert_raises(RuntimeError) { @service.tag_resource(resource_id, 'tag_name', 'tag_value') }
+            assert_raises(Fog::AzureRm::OperationError) { @service.tag_resource(resource_id, 'tag_name', 'tag_value') }
           end
         end
       end

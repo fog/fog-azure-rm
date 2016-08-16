@@ -24,7 +24,7 @@ class TestListTags < Minitest::Test
     response = -> { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @promise.stub :value!, response do
       @resources.stub :list, @promise do
-        assert_raises(RuntimeError) { @service.list_tagged_resources('test_key') }
+        assert_raises(Fog::AzureRm::OperationError) { @service.list_tagged_resources('test_key') }
       end
     end
   end

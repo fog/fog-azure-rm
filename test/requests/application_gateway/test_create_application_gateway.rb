@@ -52,7 +52,7 @@ class TestCreateApplicationGateway < Minitest::Test
       url_path_paths = ApiStub::Requests::ApplicationGateway::Gateway.url_path_maps
       request_routing_rules = ApiStub::Requests::ApplicationGateway::Gateway.request_routing_rules
       @gateways.stub :create_or_update, @promise do
-        assert_raises RuntimeError do
+        assert_raises Fog::AzureRM::OperationError do
           @service.create_application_gateway('gateway', 'East US', 'fogRM-rg', 'Standard_Medium', 'Standard', 2, gateway_ip_configurations, ssl_certificates, frontend_ip_configurations, frontend_ports, probes, backend_address_pools, backend_http_settings_list, http_listeners, url_path_paths, request_routing_rules)
         end
       end

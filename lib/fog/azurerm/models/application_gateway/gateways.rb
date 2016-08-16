@@ -4,7 +4,7 @@ require 'fog/azurerm/models/application_gateway/gateway'
 module Fog
   module ApplicationGateway
     class AzureRM
-      # Application Gateway collection class for Network Service
+      # Application Gateway collection class for Application Gateway Service
       class Gateways < Fog::Collection
         model Fog::ApplicationGateway::AzureRM::Gateway
         attribute :resource_group

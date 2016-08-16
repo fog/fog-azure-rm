@@ -1,7 +1,7 @@
 module Fog
   module ApplicationGateway
     class AzureRM
-      # URL Path Map model class for Network Service
+      # URL Path Map model class for Application Gateway Service
       class UrlPathMap < Fog::Model
         identity :name
         attribute :default_backend_address_pool_id

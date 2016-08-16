@@ -8,15 +8,15 @@ class TestCreateVirtualMachine < Minitest::Test
     @virtual_machines = client.virtual_machines
     @promise = Concurrent::Promise.execute do
     end
+    @linux_virtual_machine_hash = ApiStub::Requests::Compute::VirtualMachine.linux_virtual_machine_hash
+    @windows_virtual_machine_hash = ApiStub::Requests::Compute::VirtualMachine.windows_virtual_machine_hash
   end
 
   def test_create_linux_virtual_machine_success
     response = ApiStub::Requests::Compute::VirtualMachine.create_virtual_machine_response
     @promise.stub :value!, response do
       @virtual_machines.stub :create_or_update, @promise do
-        assert_equal @service.create_virtual_machine('fog-test-rg', 'fog-test-server', 'westus', 'Basic_A0',
-                                                     'fogstrg', 'fog', 'fog', false, '/home', 'key', 'nic-id',
-                                                     'as-id', 'Canonical', 'UbuntuServer', '14.04.2-LTS', 'latest', 'Linux', nil, nil),
+        assert_equal @service.create_virtual_machine(@linux_virtual_machine_hash),
                      Azure::ARM::Compute::Models::VirtualMachine.serialize_object(response.body)
       end
     end
@@ -26,10 +26,7 @@ class TestCreateVirtualMachine < Minitest::Test
     response = ApiStub::Requests::Compute::VirtualMachine.create_virtual_machine_response
     @promise.stub :value!, response do
       @virtual_machines.stub :create_or_update, @promise do
-        assert_equal @service.create_virtual_machine('fog-test-rg', 'fog-test-server', 'westus', 'Basic_A0',
-                                                     'fogstrg', 'fog', 'fog', nil, '/home', 'key', 'nic-id',
-                                                     'as-id', 'MicrosoftWindowsServerEssentials', 'WindowsServerEssentials',
-                                                     'WindowsServerEssentials', 'latest', 'Windows', true, true),
+        assert_equal @service.create_virtual_machine(@windows_virtual_machine_hash),
                      Azure::ARM::Compute::Models::VirtualMachine.serialize_object(response.body)
       end
     end
@@ -39,10 +36,8 @@ class TestCreateVirtualMachine < Minitest::Test
     response = -> { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @promise.stub :value!, response do
       @virtual_machines.stub :create_or_update, @promise do
-        assert_raises RuntimeError do
-          @service.create_virtual_machine('fog-test-rg', 'fog-test-server', 'westus', 'Basic_A0', 'fogstrg', 'fog',
-                                          'fog', false, '/home', 'key', 'nic-id', 'as-id', 'Canonical',
-                                          'UbuntuServer', '14.04.2-LTS', 'latest', 'Linux', nil, nil)
+        assert_raises Fog::AzureRM::OperationError do
+          @service.create_virtual_machine(@linux_virtual_machine_hash)
         end
       end
     end

@@ -9,6 +9,7 @@ module Fog
               query_filter = "tagname eq '#{tag_name}' "
               query_filter += tag_value.nil? ? '' : "and tagvalue eq '#{tag_value}'"
               resources = @rmc.resources.list_as_lazy(query_filter)
+              resources.next_link = ''
               result_mapper = Azure::ARM::Resources::Models::ResourceListResult.mapper
               @rmc.serialize(result_mapper, resources, 'parameters')['value']
             end

@@ -24,9 +24,9 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'codeclimate-test-reporter'
   spec.add_dependency 'fog-core', '~> 1.42.0'
   spec.add_dependency 'rest-client', '~> 2.0.0'
-  spec.add_dependency 'azure_mgmt_compute', '~> 0.4.0'
-  spec.add_dependency 'azure_mgmt_resources', '~> 0.4.0'
-  spec.add_dependency 'azure_mgmt_storage', '~> 0.4.0'
-  spec.add_dependency 'azure_mgmt_network', '~> 0.4.0'
+  spec.add_dependency 'azure_mgmt_compute', '~> 0.5.0'
+  spec.add_dependency 'azure_mgmt_resources', '~> 0.5.0'
+  spec.add_dependency 'azure_mgmt_storage', '~> 0.5.0'
+  spec.add_dependency 'azure_mgmt_network', '~> 0.5.0'
   spec.add_dependency 'azure-storage', '~> 0.10.2.preview'
 end

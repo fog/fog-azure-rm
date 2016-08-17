@@ -6,7 +6,7 @@ module Fog
         def delete_deployment(resource_group, deployment_name)
           begin
             Fog::Logger.debug "Deleting Deployment: #{deployment_name} in Resource Group: #{resource_group}"
-            @rmc.deployments.delete(resource_group, deployment_name).value!
+            @rmc.deployments.delete(resource_group, deployment_name)
             Fog::Logger.debug "Deployment: #{deployment_name} in Resource Group: #{resource_group} deleted successfully."
             true
           rescue  MsRestAzure::AzureOperationError => e

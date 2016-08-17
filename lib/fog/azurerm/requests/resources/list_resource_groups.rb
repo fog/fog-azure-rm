@@ -5,10 +5,10 @@ module Fog
       class Real
         def list_resource_groups
           begin
-            promise = @rmc.resource_groups.list
-            result = promise.value!
-            result.body.next_link = ''
-            Azure::ARM::Resources::Models::ResourceGroupListResult.serialize_object(result.body)['value']
+            resource_groups = @rmc.resource_groups.list_as_lazy
+            resource_groups.next_link = ''
+            result_mapper = Azure::ARM::Resources::Models::ResourceGroupListResult.mapper
+            @rmc.serialize(result_mapper, resource_groups, 'parameters')['value']
           rescue  MsRestAzure::AzureOperationError => e
             msg = "Exception listing Resource Groups. #{e.body['error']['message']}"
             raise msg

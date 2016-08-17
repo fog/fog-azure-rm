@@ -74,7 +74,7 @@ You can tag a Resource as following:
 ## List Tagged Resources in a Subscription
 
 ```ruby
-    azure_resources_service.resources(tag_name: '<Tag-Key>', tag_value: '<Tag-Value>').each do |resource|
+    azure_resources_service.azure_resources(tag_name: '<Tag-Key>', tag_value: '<Tag-Value>').each do |resource|
         puts "#{resource.name}"
         puts "#{resource.location}"
         puts "#{resource.type}"        
@@ -82,7 +82,7 @@ You can tag a Resource as following:
 ```
 OR
 ```ruby
-    azure_resources_service.resources(tag_name: '<Tag-Key>').each do |resource|
+    azure_resources_service.azure_resources(tag_name: '<Tag-Key>').each do |resource|
         puts "#{resource.name}"
         puts "#{resource.location}"
         puts "#{resource.type}"        
@@ -94,7 +94,7 @@ Get a single record of Tagged Resources
 
 ```ruby
     resource = azure_resources_service
-                          .resources(tag_name: '<Tag-Key>')
+                          .azure_resources(tag_name: '<Tag-Key>')
                           .get('<Resource-ID>')
     puts "#{resource.name}"
 ```

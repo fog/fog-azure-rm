@@ -126,7 +126,7 @@ server.destroy
 ######################                                   CleanUp                                  ######################
 ########################################################################################################################
 
-nic = network.network_interfaces.get('TestRG-VM','NetInt')
+nic = network.network_interfaces.get('TestRG-VM', 'NetInt')
 nic.destroy
 
 vnet = network.virtual_networks.get('TestRG-VM', 'testVnet')

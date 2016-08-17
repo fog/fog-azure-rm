@@ -9,10 +9,10 @@ module Fog
             query_filter = "tagname eq '#{tag_name}' "
             query_filter += tag_value.nil? ? '' : "and tagvalue eq '#{tag_value}'"
             begin
-            resources = @rmc.resources.list_as_lazy(query_filter)
-            resources.next_link = ''
-            result_mapper = Azure::ARM::Resources::Models::ResourceListResult.mapper
-            @rmc.serialize(result_mapper, resources, 'parameters')['value']
+              resources = @rmc.resources.list_as_lazy(query_filter)
+              resources.next_link = ''
+              result_mapper = Azure::ARM::Resources::Models::ResourceListResult.mapper
+              @rmc.serialize(result_mapper, resources, 'parameters')['value']
             rescue MsRestAzure::AzureOperationError => e
               raise Fog::AzureRm::OperationError.new(e)
             end

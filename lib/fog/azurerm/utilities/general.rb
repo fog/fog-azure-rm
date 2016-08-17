@@ -20,3 +20,11 @@ def validate_params(required_params, input_params)
     raise(ArgumentError, "Missing Parameters: #{missing_params.join(', ')} required for this operation")
   end
 end
+
+def get_resource_from_resource_id(resource_id, position)
+  data = resource_id.split('/') unless resource_id.nil?
+
+  raise 'Invalid Resource ID' if data.count < 9 && data.count != 5
+
+  data[position]
+end

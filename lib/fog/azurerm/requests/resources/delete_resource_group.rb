@@ -4,15 +4,13 @@ module Fog
       # This class provides the actual implemention for service calls.
       class Real
         def delete_resource_group(name)
+          Fog::Logger.debug "Deleting Resource Group: #{name}."
           begin
-            Fog::Logger.debug "Deleting Resource Group: #{name}."
-            promise = @rmc.resource_groups.delete(name)
-            promise.value!
+            @rmc.resource_groups.delete(name)
             Fog::Logger.debug "Resource Group #{name} deleted successfully."
             true
           rescue  MsRestAzure::AzureOperationError => e
-            msg = "Exception deleting Resource Group #{name}. #{e.body['error']['message']}"
-            raise msg
+            raise Fog::AzureRm::OperationError.new(e)
           end
         end
       end

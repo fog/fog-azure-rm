@@ -12,12 +12,12 @@ module Fog
           Fog::Logger.debug "Deleting Tag #{tag_name} from Resource #{resource_name}"
 
           begin
-            resource = @rmc.resources.get(resource_group_name, resource_provider_namespace, '', resource_type, resource_name, api_version)
+            resource = @rmc.resources.get(resource_group_name, resource_provider_namespace, '', resource_type, resource_name, API_VERSION)
 
             if resource.tags.key?(tag_name)
               resource.tags.delete_if { |key, value| key == tag_name && value == tag_value }
             end
-            @rmc.resources.create_or_update(resource_group_name, resource_provider_namespace, '', resource_type, resource_name, api_version, resource)
+            @rmc.resources.create_or_update(resource_group_name, resource_provider_namespace, '', resource_type, resource_name, API_VERSION, resource)
 
             Fog::Logger.debug "Tag #{tag_name} deleted successfully from Resource #{resource_name}"
             true

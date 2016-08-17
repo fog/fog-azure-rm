@@ -12,10 +12,10 @@ module Fog
 
           begin
             Fog::Logger.debug "Creating Tag #{tag_name} for Resource #{resource_name}"
-            resource = @rmc.resources.get(resource_group_name, resource_provider_namespace, parent_resource_id, resource_type, resource_name, api_version)
+            resource = @rmc.resources.get(resource_group_name, resource_provider_namespace, parent_resource_id, resource_type, resource_name, API_VERSION)
             resource.tags = {} if resource.tags.nil?
             resource.tags[tag_name] = tag_value
-            @rmc.resources.create_or_update(resource_group_name, resource_provider_namespace, parent_resource_id, resource_type, resource_name, api_version, resource)
+            @rmc.resources.create_or_update(resource_group_name, resource_provider_namespace, parent_resource_id, resource_type, resource_name, API_VERSION, resource)
             Fog::Logger.debug "Tag #{tag_name} created successfully for Resource #{resource_name}"
             true
           rescue MsRestAzure::AzureOperationError => e

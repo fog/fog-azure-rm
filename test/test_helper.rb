@@ -499,8 +499,9 @@ def express_route_circuit(service)
     name: 'testCircuit',
     location: 'eastus',
     resource_group: 'HaiderRG',
-    tag_key1: 'value1',
-    tag_key2: 'value2',
+    tags: {
+        key1: 'value1'
+    },
     sku_name: 'Standard_MeteredData',
     sku_tier: 'Standard',
     sku_family: 'MeteredData',

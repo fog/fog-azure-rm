@@ -40,6 +40,7 @@ module Fog
           express_route_circuit.name = circuit_parameters[:circuit_name]
           express_route_circuit.location = circuit_parameters[:location]
           express_route_circuit.sku = sku
+          express_route_circuit.tags = circuit_parameters[:tags] if express_route_circuit.tags.nil?
           express_route_circuit.properties = circuit_props
 
           express_route_circuit

@@ -776,6 +776,10 @@ Create a new Express Route Circuit.
     	"name": "<Circuit Name>",
     	"location": "eastus",
     	"resource_group": "<Resource Group Name>",
+    	"tags": {
+    		"key1": 'value1',
+    		"key2": 'value2'
+  		},
     	"sku_name": "Standard_MeteredData",
     	"sku_tier": "Standard",
     	"sku_family": "MeteredData",

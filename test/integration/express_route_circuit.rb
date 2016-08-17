@@ -38,6 +38,10 @@ resources.resource_groups.create(
 network.express_route_circuits.create(
   name: 'testCircuit',
   location: 'eastus',
+  tags: {
+    key1: 'value1',
+    key2: 'value2'
+  },
   resource_group: 'TestRG-ER',
   sku_name: 'Standard_MeteredData',
   sku_tier: 'Standard',

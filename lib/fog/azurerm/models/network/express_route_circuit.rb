@@ -7,8 +7,7 @@ module Fog
         attribute :id
         attribute :location
         attribute :resource_group
-        attribute :tag_key1
-        attribute :tag_key2
+        attribute :tags
         attribute :sku_name
         attribute :sku_tier
         attribute :sku_family
@@ -32,11 +31,7 @@ module Fog
           hash['service_provider_notes'] = circuit['serviceProviderNotes']
           hash['resource_group'] = get_resource_group_from_id(circuit['id'])
           hash['resource_group'] = circuit['id'].split('/')[4]
-          tags = circuit['tags']
-          unless tags.nil?
-            hash['tag_key1'] = tags['key1']
-            hash['tag_key2'] = tags['key2']
-          end
+          hash['tags'] = circuit['tags']
           sku = circuit['sku']
           unless sku.nil?
             hash['sku_name'] = sku['name']
@@ -61,7 +56,7 @@ module Fog
         end
 
         def save
-          requires :location, :resource_group, :service_provider_name, :peering_location, :bandwidth_in_mbps
+          requires :location, :tags, :resource_group, :service_provider_name, :peering_location, :bandwidth_in_mbps
           express_route_parameters = express_route_circuit_params
           circuit = service.create_or_update_express_route_circuit(express_route_parameters)
           merge_attributes(Fog::Network::AzureRM::ExpressRouteCircuit.parse(circuit))
@@ -78,8 +73,7 @@ module Fog
             resource_group_name: resource_group,
             circuit_name: name,
             location: location,
-            tag_key1: tag_key1,
-            tag_key2: tag_key2,
+            tags: tags,
             sku_name: sku_name,
             sku_tier: sku_tier,
             sku_family: sku_family,

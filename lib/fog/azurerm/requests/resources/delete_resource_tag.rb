@@ -10,16 +10,15 @@ module Fog
           resource_name = get_resource_from_resource_id(resource_id, RESOURCE_NAME)
 
           Fog::Logger.debug "Deleting Tag #{tag_name} from Resource #{resource_name}"
+
           begin
-            promise = @rmc.resources.get(resource_group_name, resource_provider_namespace, '', resource_type, resource_name, API_VERSION)
-            result = promise.value!
-            resource = result.body
+            resource = @rmc.resources.get(resource_group_name, resource_provider_namespace, '', resource_type, resource_name, api_version)
 
             if resource.tags.key?(tag_name)
               resource.tags.delete_if { |key, value| key == tag_name && value == tag_value }
             end
-            promise = @rmc.resources.create_or_update(resource_group_name, resource_provider_namespace, '', resource_type, resource_name, API_VERSION, resource)
-            promise.value!
+            @rmc.resources.create_or_update(resource_group_name, resource_provider_namespace, '', resource_type, resource_name, api_version, resource)
+
             Fog::Logger.debug "Tag #{tag_name} deleted successfully from Resource #{resource_name}"
             true
           rescue  MsRestAzure::AzureOperationError => e

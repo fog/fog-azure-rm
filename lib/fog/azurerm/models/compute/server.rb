@@ -75,6 +75,8 @@ module Fog
           merge_attributes(Fog::Compute::AzureRM::Server.parse(vm))
         end
 
+        private
+
         def get_virtual_machine_params(ssh_key_path)
           {
             resource_group: resource_group,

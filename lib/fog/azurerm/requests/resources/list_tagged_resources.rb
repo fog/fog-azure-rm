@@ -22,7 +22,7 @@ module Fog
       # This class provides the mock implementation for unit tests.
       class Mock
         def list_tagged_resources(tag_name, tag_value)
-          {
+          resources = {
             'value' => [
               {
                 'id' => '/subscriptions/########-####-####-####-############/fog-rg',

@@ -39,22 +39,22 @@ module ApiStub
                     }
                   },
                   'providers' => [{
-                                    'namespace' => 'namespace1',
-                                    'resourceTypes' => [{
-                                                          'resourceType' => 'resourceType1',
-                                                          'locations' => ['westus']
-                                                        }]
-                                  }],
+                    'namespace' => 'namespace1',
+                    'resourceTypes' => [{
+                      'resourceType' => 'resourceType1',
+                      'locations' => ['westus']
+                    }]
+                  }],
                   'dependencies' => [{
-                                       'dependsOn' => [{
-                                                         'id' => 'resourceid1',
-                                                         'resourceType' => 'namespace1/resourcetype1',
-                                                         'resourceName' => 'resourcename1'
-                                                       }],
-                                       'id' => 'resourceid2',
-                                       'resourceType' => 'namespace1/resourcetype2',
-                                       'resourceName' => 'resourcename2'
-                                     }]
+                    'dependsOn' => [{
+                      'id' => 'resourceid1',
+                      'resourceType' => 'namespace1/resourcetype1',
+                      'resourceName' => 'resourcename1'
+                    }],
+                    'id' => 'resourceid2',
+                    'resourceType' => 'namespace1/resourcetype2',
+                    'resourceName' => 'resourcename2'
+                  }]
                 }
               }
             ]

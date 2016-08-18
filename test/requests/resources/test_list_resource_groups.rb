@@ -10,10 +10,8 @@ class TestListResourceGroups < Minitest::Test
 
   def test_list_resource_group_success
     mocked_response = ApiStub::Requests::Resources::ResourceGroup.list_resource_group_response(@client)
-    result_mapper = Azure::ARM::Resources::Models::ResourceGroupListResult.mapper
-    expected_response = @client.serialize(result_mapper, mocked_response, 'parameters')['value']
     @resource_groups.stub :list_as_lazy, mocked_response do
-      assert_equal @service.list_resource_groups, expected_response
+      assert_equal @service.list_resource_groups, mocked_response.value
     end
   end
 

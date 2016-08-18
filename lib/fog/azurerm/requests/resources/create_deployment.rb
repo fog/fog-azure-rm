@@ -24,8 +24,7 @@ module Fog
             @rmc.deployments.validate(resource_group, deployment_name, deployment)
             deployment = @rmc.deployments.create_or_update(resource_group, deployment_name, deployment)
             Fog::Logger.debug "Deployment: #{deployment_name} in Resource Group: #{resource_group} created successfully."
-            result_mapper = Azure::ARM::Resources::Models::DeploymentExtended.mapper
-            @rmc.serialize(result_mapper, deployment, 'parameters')
+            deployment
           rescue  MsRestAzure::AzureOperationError => e
             msg = "Exception creating Deployment: #{deployment_name} in Resource Group: #{resource_group}. #{e.body['error']['message']}"
             raise msg
@@ -36,7 +35,7 @@ module Fog
       # This class provides the mock implementation
       class Mock
         def create_deployment(resource_group, deployment_name, template_link, parameters_link)
-          {
+          deployment = {
             id: "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/microsoft.resources/deployments/#{deployment_name}",
             name: deployment_name,
             properties: {
@@ -83,6 +82,8 @@ module Fog
               }]
             }
           }
+          result_mapper = Azure::ARM::Resources::Models::DeploymentExtended.mapper
+          @rmc.deserialize(result_mapper, deployment, 'result.body')
         end
       end
     end

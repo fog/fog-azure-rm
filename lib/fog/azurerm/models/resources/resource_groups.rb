@@ -10,7 +10,11 @@ module Fog
         model Fog::Resources::AzureRM::ResourceGroup
 
         def all
-          load(service.list_resource_groups)
+          resource_groups = []
+          service.list_resource_groups.each do |resource_group|
+            resource_groups.push(Fog::Resources::AzureRM::ResourceGroup.parse(resource_group))
+          end
+          load(resource_groups)
         end
 
         def get(identity)

@@ -4,8 +4,9 @@ require File.expand_path '../../test_helper', __dir__
 class TestDeployment < Minitest::Test
   def setup
     @service = Fog::Resources::AzureRM.new(credentials)
+    client = @service.instance_variable_get(:@rmc)
     @deployment = deployment(@service)
-    @response = ApiStub::Models::Resources::Deployment.create_deployment_response
+    @response = ApiStub::Models::Resources::Deployment.create_deployment_response(client)
   end
 
   def test_model_methods

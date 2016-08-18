@@ -25,7 +25,7 @@ resource_group = resources.resource_groups.create(
 )
 
 # Will remove this hardcoded string when other services will be updated too
-resource_id = '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/TestRG-ZN/providers/Microsoft.Network/virtualNetworks/testvnet'
+resource_id = "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-ZN/providers/Microsoft.Network/virtualNetworks/testvnet"
 
 ########################################################################################################################
 ######################                                Tag Resource                          ############################

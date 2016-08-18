@@ -14,11 +14,9 @@ class TestCreateDeployment < Minitest::Test
 
   def test_create_deployment_success
     mocked_response = ApiStub::Requests::Resources::Deployment.create_deployment_response(@client)
-    result_mapper = Azure::ARM::Resources::Models::DeploymentExtended.mapper
-    expected_response = @client.serialize(result_mapper, mocked_response, 'parameters')
     @deployments.stub :validate, true do
       @deployments.stub :create_or_update, mocked_response do
-        assert_equal @service.create_deployment(@resource_group, @deployment_name, @template_link, @parameters_link), expected_response
+        assert_equal @service.create_deployment(@resource_group, @deployment_name, @template_link, @parameters_link), mocked_response
       end
     end
   end

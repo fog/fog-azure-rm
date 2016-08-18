@@ -7,8 +7,8 @@ module Fog
           begin
             Fog::Logger.debug "Listing Deployments in Resource Group: #{resource_group}"
             deployments = @rmc.deployments.list_as_lazy(resource_group)
-            result_mapper = Azure::ARM::Resources::Models::DeploymentListResult.mapper
-            @rmc.serialize(result_mapper, deployments, 'parameters')['value']
+            Fog::Logger.debug "Deployments listed successfully in Resource Group: #{resource_group}"
+            deployments.value
           rescue  MsRestAzure::AzureOperationError => e
             msg = "Exception listing Deployments in Resource Group: #{resource_group}. #{e.body['error']['message']}"
             raise msg
@@ -19,7 +19,7 @@ module Fog
       # This class provides the mock implementation
       class Mock
         def list_deployments(resource_group)
-          {
+          deployments = {
             value: [{
               id: "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/microsoft.resources/deployments/testdeployment",
               name: 'testdeployment',
@@ -68,6 +68,8 @@ module Fog
               }
             }]
           }
+          result_mapper = Azure::ARM::Resources::Models::DeploymentListResult.mapper
+          @rmc.deserialize(result_mapper, deployments, 'result.body').value
         end
       end
     end

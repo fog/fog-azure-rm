@@ -10,15 +10,15 @@ module Fog
 
         def self.parse(dependency)
           hash = {}
-          hash['id'] = dependency['id']
-          hash['resource_name'] = dependency['resourceName']
-          hash['resource_type'] = dependency['resourceType']
+          hash['id'] = dependency.id
+          hash['resource_name'] = dependency.resource_name
+          hash['resource_type'] = dependency.resource_type
 
           hash['depends_on'] = []
-          dependency['dependsOn'].each do |sub_dependency|
+          dependency.depends_on.each do |sub_dependency|
             dependency_obj = Fog::Resources::AzureRM::Dependency.new
             hash['depends_on'] << dependency_obj.merge_attributes(Fog::Resources::AzureRM::Dependency.parse(sub_dependency))
-          end unless dependency['dependsOn'].nil?
+          end if dependency.respond_to?('depends_on')
           hash
         end
       end

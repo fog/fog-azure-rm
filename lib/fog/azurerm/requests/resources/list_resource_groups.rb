@@ -11,8 +11,7 @@ module Fog
             Fog::Logger.debug 'Resource Groups listed successfully'
             resource_groups.value
           rescue  MsRestAzure::AzureOperationError => e
-            msg = "Exception listing Resource Groups. #{e.body['error']['message']}"
-            raise msg
+            raise Fog::AzureRm::OperationError.new(e)
           end
         end
       end

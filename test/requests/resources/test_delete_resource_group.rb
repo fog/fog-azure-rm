@@ -18,7 +18,7 @@ class TestDeleteResourceGroup < Minitest::Test
   def test_delete_resource_group_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @resource_groups.stub :delete, response do
-      assert_raises(RuntimeError) { @service.delete_resource_group('fog-test-rg') }
+      assert_raises(Fog::AzureRm::OperationError) { @service.delete_resource_group('fog-test-rg') }
     end
   end
 end

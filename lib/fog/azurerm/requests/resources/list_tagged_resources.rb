@@ -4,19 +4,17 @@ module Fog
       # This class provides the actual implemention for service calls.
       class Real
         def list_tagged_resources(tag_name, tag_value = nil)
-          Fog::Logger.debug 'Listing Tagged Resources'
-          begin
-            unless tag_name.nil?
-              query_filter = "tagname eq '#{tag_name}' "
-              query_filter += tag_value.nil? ? '' : "and tagvalue eq '#{tag_value}'"
+          Fog::Logger.debug "Listing Resources with tagname: #{tag_name}"
+          unless tag_name.nil?
+            query_filter = "tagname eq '#{tag_name}' "
+            query_filter += tag_value.nil? ? '' : "and tagvalue eq '#{tag_value}'"
+            begin
               resources = @rmc.resources.list_as_lazy(query_filter)
               resources.next_link = ''
-              Fog::Logger.debug 'Tagged Resources listed successfully'
               resources.value
+            rescue MsRestAzure::AzureOperationError => e
+              raise Fog::AzureRm::OperationError.new(e)
             end
-          rescue MsRestAzure::AzureOperationError => e
-            msg = "Exception listing Resources . #{e.body['error']['message']}"
-            raise msg
           end
         end
       end

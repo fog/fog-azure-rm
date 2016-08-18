@@ -7,7 +7,7 @@ module Fog
           Fog::Logger.debug 'Listing Resource Groups'
           begin
             resource_groups = @rmc.resource_groups.list_as_lazy
-            resource_groups.next_link = ''
+            resource_groups.next_link = '' if resource_groups.next_link.nil?
             Fog::Logger.debug 'Resource Groups listed successfully'
             resource_groups.value
           rescue  MsRestAzure::AzureOperationError => e

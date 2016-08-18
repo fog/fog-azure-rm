@@ -4,6 +4,11 @@ module Fog
       # This class provides the actual implemention for service calls.
       class Real
         def tag_resource(resource_id, tag_name, tag_value)
+          split_resource = resource_id.split('/') unless resource_id.nil?
+          if split_resource.count != 9
+            raise 'Invalid Resource Id'
+          end
+
           resource_group_name = get_resource_from_resource_id(resource_id, RESOURCE_GROUP_NAME)
           resource_provider_namespace = get_resource_from_resource_id(resource_id, RESOURCE_PROVIDER_NAMESPACE)
           resource_type = get_resource_from_resource_id(resource_id, RESOURCE_TYPE)

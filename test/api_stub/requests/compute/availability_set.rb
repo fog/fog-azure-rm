@@ -31,7 +31,7 @@ module ApiStub
                     "virtualMachines":[]
               } ]
           }'
-          result_mapper = Azure::ARM::Compute::Models::AvailabilitySet.mapper
+          result_mapper = Azure::ARM::Compute::Models::AvailabilitySetListResult.mapper
           client.deserialize(result_mapper, JSON.load(body), 'result.body')
         end
       end

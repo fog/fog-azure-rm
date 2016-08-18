@@ -12,10 +12,8 @@ class TestListAvailabilitySet < Minitest::Test
 
   def test_list_availability_set_success
     mocked_response = ApiStub::Requests::Compute::AvailabilitySet.list_availability_set_response(@client)
-    result_mapper = Azure::ARM::Compute::Models::AvailabilitySetListResult.mapper
-    expected_response = @client.serialize(result_mapper, mocked_response, 'parameters')['value']
     @availability_sets.stub :list, mocked_response do
-      assert_equal @service.list_availability_sets('fog-test-rg'), expected_response
+      assert_equal @service.list_availability_sets('fog-test-rg'), mocked_response.value
     end
   end
 

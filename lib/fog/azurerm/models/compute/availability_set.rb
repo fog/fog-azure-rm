@@ -14,13 +14,23 @@ module Fog
 
         def self.parse(as)
           hash = {}
-          hash['id'] = as.id
-          hash['name'] = as.name
-          hash['type'] = as.type
-          hash['location'] = as.location
-          hash['resource_group'] = as.id.split('/')[4]
-          hash['platform_update_domain_count'] = as.platform_update_domain_count
-          hash['platform_fault_domain_count'] = as.platform_fault_domain_count
+          if as.is_a? Hash
+            hash['id'] = as['id']
+            hash['name'] = as['name']
+            hash['type'] = as['type']
+            hash['location'] = as['location']
+            hash['resource_group'] = as['id'].split('/')[4]
+            hash['platform_update_domain_count'] = as['platform_update_domain_count']
+            hash['platform_fault_domain_count'] = as['platform_fault_domain_count']
+          else
+            hash['id'] = as.id
+            hash['name'] = as.name
+            hash['type'] = as.type
+            hash['location'] = as.location
+            hash['resource_group'] = as.id.split('/')[4]
+            hash['platform_update_domain_count'] = as.platform_update_domain_count
+            hash['platform_fault_domain_count'] = as.platform_fault_domain_count
+          end
           hash
         end
 

@@ -5,20 +5,16 @@ module Fog
       class Real
         def create_public_ip(resource_group, name, location, public_ip_allocation_method)
           Fog::Logger.debug "Creating PublicIP #{name} in Resource Group #{resource_group}."
-          properties = Azure::ARM::Network::Models::PublicIPAddressPropertiesFormat.new
-          properties.public_ipallocation_method = public_ip_allocation_method
           public_ip = Azure::ARM::Network::Models::PublicIPAddress.new
           public_ip.name = name
           public_ip.location = location
-          public_ip.properties = properties
+          public_ip.public_ipallocation_method = public_ip_allocation_method
           begin
-            promise = @network_client.public_ipaddresses.create_or_update(resource_group, name, public_ip)
-            result = promise.value!
+            public_ip = @network_client.public_ipaddresses.create_or_update(resource_group, name, public_ip)
             Fog::Logger.debug "PublicIP #{name} Created Successfully!"
-            Azure::ARM::Network::Models::PublicIPAddress.serialize_object(result.body)
+            public_ip
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Exception creating Public IP #{name} in Resource Group: #{resource_group}. #{e.body['error']['message']}"
-            raise msg
+            raise Fog::AzureRm::OperationError.new(e)
           end
         end
       end

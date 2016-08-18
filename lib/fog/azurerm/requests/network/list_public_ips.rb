@@ -6,12 +6,11 @@ module Fog
         def list_public_ips(resource_group)
           Fog::Logger.debug "Getting list of PublicIPs from Resource Group #{resource_group}."
           begin
-            promise = @network_client.public_ipaddresses.list(resource_group)
-            result = promise.value!
-            Azure::ARM::Network::Models::PublicIPAddressListResult.serialize_object(result.body)['value']
+            public_ips = @network_client.public_ipaddresses.list_as_lazy(resource_group)
+            public_ips.next_link = '' if public_ips.next_link == nil
+            public_ips.value
           rescue  MsRestAzure::AzureOperationError => e
-            msg = "Exception listing Public IPs from Resource Group '#{resource_group}'. #{e.body['error']['message']}."
-            raise msg
+            raise Fog::AzureRm::OperationError.new(e)
           end
         end
       end

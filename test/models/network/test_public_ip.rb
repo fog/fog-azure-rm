@@ -4,16 +4,17 @@ require File.expand_path '../../test_helper', __dir__
 class TestPublicIp < Minitest::Test
   def setup
     @service = Fog::Network::AzureRM.new(credentials)
+    client = @service.instance_variable_get(:@network_client)
     @public_ip = public_ip(@service)
+    @response = ApiStub::Models::Network::PublicIp.create_public_ip_response(client)
   end
 
   def test_model_methods
-    response = ApiStub::Models::Network::PublicIp.create_public_ip_response
     methods = [
       :save,
       :destroy
     ]
-    @service.stub :create_public_ip, response do
+    @service.stub :create_public_ip, @response do
       methods.each do |method|
         assert @public_ip.respond_to? method
       end
@@ -21,7 +22,6 @@ class TestPublicIp < Minitest::Test
   end
 
   def test_model_attributes
-    response = ApiStub::Models::Network::PublicIp.create_public_ip_response
     attributes = [
       :name,
       :id,
@@ -35,7 +35,7 @@ class TestPublicIp < Minitest::Test
       :fqdn,
       :reverse_fqdn
     ]
-    @service.stub :create_public_ip, response do
+    @service.stub :create_public_ip, @response do
       attributes.each do |attribute|
         assert @public_ip.respond_to? attribute
       end
@@ -43,8 +43,7 @@ class TestPublicIp < Minitest::Test
   end
 
   def test_save_method_response
-    response = ApiStub::Models::Network::PublicIp.create_public_ip_response
-    @service.stub :create_public_ip, response do
+    @service.stub :create_public_ip, @response do
       assert_instance_of Fog::Network::AzureRM::PublicIp, @public_ip.save
     end
   end

@@ -16,21 +16,20 @@ module Fog
         attribute :reverse_fqdn
 
         def self.parse(pip)
-          pip_properties = pip['properties']
           hash = {}
-          hash['id'] = pip['id']
-          hash['name'] = pip['name']
-          hash['location'] = pip['location']
-          hash['resource_group'] = pip['id'].split('/')[4]
-          hash['public_ip_allocation_method'] = pip_properties['publicIPAllocationMethod']
-          hash['ip_address'] = pip_properties['ipAddress']
-          hash['idle_timeout_in_minutes'] = pip_properties['idleTimeoutInMinutes']
-          hash['ip_configuration_id'] = pip_properties['ipConfiguration']['id'] unless pip_properties['ipConfiguration'].nil?
+          hash['id'] = pip.id
+          hash['name'] = pip.name
+          hash['location'] = pip.location
+          hash['resource_group'] = pip.id.split('/')[4]
+          hash['public_ip_allocation_method'] = pip.public_ipallocation_method
+          hash['ip_address'] = pip.ip_address
+          hash['idle_timeout_in_minutes'] = pip.idle_timeout_in_minutes
+          hash['ip_configuration_id'] = pip.ip_configuration.id unless pip.ip_configuration.nil?
 
-          unless pip_properties['dnsSettings'].nil?
-            hash['domain_name_label'] = pip_properties['dnsSettings']['domainNameLabel']
-            hash['fqdn'] = pip_properties['dnsSettings']['fqdn']
-            hash['reverse_fqdn'] = pip_properties['dnsSettings']['reverseFqdn']
+          unless pip.dns_settings.nil?
+            hash['domain_name_label'] = pip.dns_settings.domain_name_label
+            hash['fqdn'] = pip.dns_settings.fqdn
+            hash['reverse_fqdn'] = pip.dns_settings.reverse_fqdn
           end
 
           hash

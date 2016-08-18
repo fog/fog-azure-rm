@@ -23,7 +23,9 @@ module Fog
         end
 
         def get(resource_group, identity)
-          all.find { |as| as.resource_group == resource_group && as.name == identity }
+          all.each do |availability_set| availability_set.resource_group == resource_group && availability_set.name == identity
+              return availability_set
+          end
         end
       end
     end

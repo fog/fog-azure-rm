@@ -9,8 +9,7 @@ module Fog
             avail_set_params = get_avail_set_properties(location)
             avail_set = @compute_mgmt_client.availability_sets.create_or_update(resource_group, name, avail_set_params)
             Fog::Logger.debug "Availability Set #{name} created successfully."
-            result_mapper = Azure::ARM::Compute::Models::AvailabilitySet.mapper
-            @compute_mgmt_client.serialize(result_mapper, avail_set, 'parameters')
+            avail_set
           rescue MsRestAzure::AzureOperationError => e
             msg = "Exception creating Availability Set #{name} in Resource Group: #{resource_group}. #{e.body['error']['message']}"
             raise msg

@@ -7,8 +7,7 @@ module Fog
           begin
             Fog::Logger.debug "Listing Availability Sets in Resource Group: #{resource_group}"
             avail_sets = @compute_mgmt_client.availability_sets.list(resource_group)
-            result_mapper = Azure::ARM::Compute::Models::AvailabilitySetListResult.mapper
-            @compute_mgmt_client.serialize(result_mapper, avail_sets, 'parameters')['value']
+            avail_sets.value
           rescue MsRestAzure::AzureOperationError => e
             msg = "Exception listing availability sets in Resource Group #{resource_group}. #{e.body['error']['message']}"
             raise msg

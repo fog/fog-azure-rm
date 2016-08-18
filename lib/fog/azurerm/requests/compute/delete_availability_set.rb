@@ -6,8 +6,7 @@ module Fog
         def delete_availability_set(resource_group, name)
           begin
             Fog::Logger.debug "Deleting Availability Set: #{name}."
-            promise = @compute_mgmt_client.availability_sets.delete(resource_group, name)
-            promise.value!
+            @compute_mgmt_client.availability_sets.delete(resource_group, name)
             Fog::Logger.debug "Availability Set #{name} deleted successfully."
             true
           rescue MsRestAzure::AzureOperationError => e

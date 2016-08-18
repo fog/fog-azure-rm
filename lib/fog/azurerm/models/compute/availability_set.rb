@@ -14,13 +14,13 @@ module Fog
 
         def self.parse(as)
           hash = {}
-          hash['id'] = as['id']
-          hash['name'] = as['name']
-          hash['type'] = as['type']
-          hash['location'] = as['location']
-          as['id'].nil? ? hash['resource_group'] = nil : hash['resource_group'] = as['id'].split('/')[4]
-          hash['platform_update_domain_count'] = as['properties']['platformUpdateDomainCount']
-          hash['platform_fault_domain_count'] = as['properties']['platformFaultDomainCount']
+          hash['id'] = as.id
+          hash['name'] = as.name
+          hash['type'] = as.type
+          hash['location'] = as.location
+          hash['resource_group'] = as.id.split('/')[4]
+          hash['platform_update_domain_count'] = as.platform_update_domain_count
+          hash['platform_fault_domain_count'] = as.platform_fault_domain_count
           hash
         end
 

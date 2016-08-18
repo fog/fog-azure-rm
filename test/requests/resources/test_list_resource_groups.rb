@@ -20,7 +20,7 @@ class TestListResourceGroups < Minitest::Test
   def test_list_resource_group_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @resource_groups.stub :list_as_lazy, response do
-      assert_raises(RuntimeError) { @service.list_resource_groups }
+      assert_raises(Fog::AzureRm::OperationError) { @service.list_resource_groups }
     end
   end
 end

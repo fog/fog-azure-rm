@@ -8,15 +8,15 @@ module Fog
           virtual_network = get_virtual_network_object_for_remove_dns_servers!(resource_group_name, virtual_network_name, dns_servers)
           virtual_network = create_or_update_vnet(resource_group_name, virtual_network_name, virtual_network)
           Fog::Logger.debug "DNS Servers: #{dns_servers.join(', ')} removed successfully."
-          Azure::ARM::Network::Models::VirtualNetwork.serialize_object(virtual_network)
+          virtual_network
         end
 
         private
 
         def get_virtual_network_object_for_remove_dns_servers!(resource_group_name, virtual_network_name, dns_servers)
           virtual_network = get_vnet(resource_group_name, virtual_network_name)
-          attached_dns_servers = virtual_network.properties.dhcp_options.dns_servers
-          virtual_network.properties.dhcp_options.dns_servers = attached_dns_servers - dns_servers
+          attached_dns_servers = virtual_network.dhcp_options.dns_servers
+          virtual_network.dhcp_options.dns_servers = attached_dns_servers - dns_servers
           virtual_network
         end
       end

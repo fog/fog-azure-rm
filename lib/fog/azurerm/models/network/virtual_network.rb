@@ -14,15 +14,15 @@ module Fog
 
         def self.parse(vnet)
           hash = {}
-          hash['id'] = vnet['id']
-          hash['name'] = vnet['name']
-          hash['resource_group'] = get_resource_group_from_id(vnet['id'])
-          hash['location'] = vnet['location']
-          hash['dns_servers'] = vnet['properties']['dhcpOptions']['dnsServers'] unless vnet['properties']['dhcpOptions'].nil?
-          hash['address_prefixes'] = vnet['properties']['addressSpace']['addressPrefixes'] unless vnet['properties']['addressSpace']['addressPrefixes'].nil?
+          hash['id'] = vnet.id
+          hash['name'] = vnet.name
+          hash['resource_group'] = get_resource_from_resource_id(vnet.id, RESOURCE_GROUP_NAME)
+          hash['location'] = vnet.location
+          hash['dns_servers'] = vnet.dhcp_options.dns_servers unless vnet.dhcp_options.nil?
+          hash['address_prefixes'] = vnet.address_space.address_prefixes unless vnet.address_space.address_prefixes.nil?
 
           subnets = []
-          vnet['properties']['subnets'].each do |subnet|
+          vnet.subnets.each do |subnet|
             subnet_object = Fog::Network::AzureRM::Subnet.new
             subnets.push(subnet_object.merge_attributes(Fog::Network::AzureRM::Subnet.parse(subnet)))
           end
@@ -36,8 +36,8 @@ module Fog
           requires :resource_group
           validate_subnets!(subnets) unless subnets.nil?
 
-          vnet = service.create_or_update_virtual_network(resource_group, name, location, dns_servers, subnets, address_prefixes)
-          merge_attributes(Fog::Network::AzureRM::VirtualNetwork.parse(vnet))
+          virtual_network = service.create_or_update_virtual_network(resource_group, name, location, dns_servers, subnets, address_prefixes)
+          merge_attributes(Fog::Network::AzureRM::VirtualNetwork.parse(virtual_network))
         end
 
         def add_dns_servers(dns_servers_list)

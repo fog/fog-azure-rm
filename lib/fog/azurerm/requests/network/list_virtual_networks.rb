@@ -5,12 +5,11 @@ module Fog
       class Real
         def list_virtual_networks(resource_group)
           begin
-            response = @network_client.virtual_networks.list(resource_group)
-            result = response.value!
-            Azure::ARM::Network::Models::VirtualNetworkListResult.serialize_object(result.body)['value']
+            virtual_networks = @network_client.virtual_networks.list_as_lazy(resource_group)
+            virtual_networks.next_link = '' if virtual_networks.next_link.nil?
+            virtual_networks.value
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Exception listing Virtual Networks. #{e.body['error']['message']}."
-            raise msg
+            raise Fog::AzureRm::OperationError.new(e)
           end
         end
       end

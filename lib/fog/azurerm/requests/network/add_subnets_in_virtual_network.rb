@@ -8,7 +8,7 @@ module Fog
           virtual_network = get_virtual_network_object_for_subnets!(resource_group_name, virtual_network_name, subnets)
           virtual_network = create_or_update_vnet(resource_group_name, virtual_network_name, virtual_network)
           Fog::Logger.debug 'Subnets added successfully.'
-          Azure::ARM::Network::Models::VirtualNetwork.serialize_object(virtual_network)
+          virtual_network
         end
 
         private
@@ -16,8 +16,8 @@ module Fog
         def get_virtual_network_object_for_subnets!(resource_group_name, virtual_network_name, subnets)
           virtual_network = get_vnet(resource_group_name, virtual_network_name)
           subnet_objects = define_subnet_objects(subnets)
-          old_subnet_objects = virtual_network.properties.subnets
-          virtual_network.properties.subnets = subnet_objects + old_subnet_objects
+          old_subnet_objects = virtual_network.subnets
+          virtual_network.subnets = subnet_objects + old_subnet_objects
           virtual_network
         end
       end

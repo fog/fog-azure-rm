@@ -2,7 +2,7 @@ module ApiStub
   module Models
     module Network
       class VirtualNetwork
-        def self.create_virtual_network_response
+        def self.create_virtual_network_response(client)
           vnet = '{
              "name":"fog-test-virtual-network",
              "id":"/subscriptions/{guid}/resourceGroups/fog-test-rg/providers/Microsoft.Network/virtualNetworks/fog-test-virtual-network",
@@ -53,7 +53,8 @@ module ApiStub
                 ]
              }
           }'
-          JSON.parse(vnet)
+          result_mapper = Azure::ARM::Network::Models::VirtualNetwork.mapper
+          client.deserialize(result_mapper, JSON.load(vnet), 'result.body')
         end
       end
     end

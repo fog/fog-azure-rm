@@ -2,7 +2,7 @@ module ApiStub
   module Requests
     module Network
       class VirtualNetwork
-        def self.create_virtual_network_response
+        def self.create_virtual_network_response(client)
           body = '{
              "name":" fog-test-virtual-network",
              "id":"/subscriptions/{guid}/resourceGroups/fog-test-rg/providers/Microsoft.Network/virtualNetworks/fog-test-virtual-network",
@@ -53,12 +53,11 @@ module ApiStub
                 ]
              }
           }'
-          result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
-          result.body = Azure::ARM::Network::Models::VirtualNetwork.deserialize_object(JSON.load(body))
-          result
+          result_mapper = Azure::ARM::Network::Models::VirtualNetwork.mapper
+          client.deserialize(result_mapper, JSON.load(body), 'result.body')
         end
 
-        def self.list_virtual_networks_response
+        def self.list_virtual_networks_response(client)
           body = '
             {
               "value": [ {
@@ -113,9 +112,8 @@ module ApiStub
               }
             } ]
           }'
-          result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
-          result.body = Azure::ARM::Network::Models::VirtualNetworkListResult.deserialize_object(JSON.load(body))
-          result
+          result_mapper = Azure::ARM::Network::Models::VirtualNetworkListResult.mapper
+          client.deserialize(result_mapper, JSON.load(body), 'result.body')
         end
 
         def self.delete_virtual_network_response

@@ -8,15 +8,15 @@ module Fog
           virtual_network = get_virtual_network_object_for_remove_subnets!(resource_group_name, virtual_network_name, subnet_names)
           result = create_or_update_vnet(resource_group_name, virtual_network_name, virtual_network)
           Fog::Logger.debug "Subnets:#{subnet_names.join(', ')} removed successfully."
-          Azure::ARM::Network::Models::VirtualNetwork.serialize_object(result)
+          result
         end
 
         private
 
         def get_virtual_network_object_for_remove_subnets!(resource_group_name, virtual_network_name, subnet_names)
           virtual_network = get_vnet(resource_group_name, virtual_network_name)
-          old_subnet_objects = virtual_network.properties.subnets
-          virtual_network.properties.subnets = old_subnet_objects.reject { |subnet| subnet_names.include?(subnet.name) }
+          old_subnet_objects = virtual_network.subnets
+          virtual_network.subnets = old_subnet_objects.reject { |subnet| subnet_names.include?(subnet.name) }
           virtual_network
         end
       end

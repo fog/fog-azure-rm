@@ -15,21 +15,21 @@ module Fog
         attribute :fqdn
         attribute :reverse_fqdn
 
-        def self.parse(pip)
+        def self.parse(public_ip)
           hash = {}
-          hash['id'] = pip.id
-          hash['name'] = pip.name
-          hash['location'] = pip.location
-          hash['resource_group'] = pip.id.split('/')[4]
-          hash['public_ip_allocation_method'] = pip.public_ipallocation_method
-          hash['ip_address'] = pip.ip_address
-          hash['idle_timeout_in_minutes'] = pip.idle_timeout_in_minutes
-          hash['ip_configuration_id'] = pip.ip_configuration.id unless pip.ip_configuration.nil?
+          hash['id'] = public_ip.id
+          hash['name'] = public_ip.name
+          hash['location'] = public_ip.location
+          hash['resource_group'] = public_ip.id.split('/')[4]
+          hash['public_ip_allocation_method'] = public_ip.public_ipallocation_method
+          hash['ip_address'] = public_ip.ip_address
+          hash['idle_timeout_in_minutes'] = public_ip.idle_timeout_in_minutes
+          hash['ip_configuration_id'] = public_ip.ip_configuration.id unless public_ip.ip_configuration.nil?
 
-          unless pip.dns_settings.nil?
-            hash['domain_name_label'] = pip.dns_settings.domain_name_label
-            hash['fqdn'] = pip.dns_settings.fqdn
-            hash['reverse_fqdn'] = pip.dns_settings.reverse_fqdn
+          unless public_ip.dns_settings.nil?
+            hash['domain_name_label'] = public_ip.dns_settings.domain_name_label
+            hash['fqdn'] = public_ip.dns_settings.fqdn
+            hash['reverse_fqdn'] = public_ip.dns_settings.reverse_fqdn
           end
 
           hash
@@ -40,8 +40,8 @@ module Fog
           requires :public_ip_allocation_method
           requires :location
           requires :resource_group
-          pip = service.create_public_ip(resource_group, name, location, public_ip_allocation_method)
-          merge_attributes(Fog::Network::AzureRM::PublicIp.parse(pip))
+          public_ip = service.create_public_ip(resource_group, name, location, public_ip_allocation_method)
+          merge_attributes(Fog::Network::AzureRM::PublicIp.parse(public_ip))
         end
 
         def destroy

@@ -24,7 +24,7 @@ class TestCheckForVirtualNetwork < Minitest::Test
   def test_check_for_virtual_network_exception
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceGroupNotFound' }) }
     @virtual_networks.stub :get, response do
-      assert_raises(RuntimeError) { @service.check_for_virtual_network('fog-test-rg', 'fog-test-virtual-network') }
+      assert_raises(Fog::AzureRm::OperationError) { @service.check_for_virtual_network('fog-test-rg', 'fog-test-virtual-network') }
     end
   end
 end

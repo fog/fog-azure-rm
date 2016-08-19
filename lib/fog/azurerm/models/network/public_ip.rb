@@ -20,7 +20,7 @@ module Fog
           hash['id'] = public_ip.id
           hash['name'] = public_ip.name
           hash['location'] = public_ip.location
-          hash['resource_group'] = public_ip.id.split('/')[4]
+          hash['resource_group'] = get_resource_from_resource_id(public_ip.id, RESOURCE_GROUP_NAME)
           hash['public_ip_allocation_method'] = public_ip.public_ipallocation_method
           hash['ip_address'] = public_ip.ip_address
           hash['idle_timeout_in_minutes'] = public_ip.idle_timeout_in_minutes

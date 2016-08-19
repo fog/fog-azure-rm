@@ -6,13 +6,11 @@ module Fog
         def delete_subnet(resource_group, name, virtual_network_name)
           Fog::Logger.debug "Deleting Subnet: #{name}..."
           begin
-            promise = @network_client.subnets.delete(resource_group, virtual_network_name, name)
-            promise.value!
+            @network_client.subnets.delete(resource_group, virtual_network_name, name)
             Fog::Logger.debug "Subnet #{name} deleted successfully."
             true
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Exception deleting Subnet #{name} in Resource Group: #{resource_group}. #{e.body['error']['message']}"
-            raise msg
+            raise Fog::AzureRm::OperationError.new(e)
           end
         end
       end

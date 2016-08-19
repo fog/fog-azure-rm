@@ -5,12 +5,11 @@ module Fog
       class Real
         def list_subnets(resource_group, virtual_network_name)
           begin
-            promise = @network_client.subnets.list(resource_group, virtual_network_name)
-            result = promise.value!
-            Azure::ARM::Network::Models::SubnetListResult.serialize_object(result.body)['value']
+            subnets = @network_client.subnets.list_as_lazy(resource_group, virtual_network_name)
+            subnets.next_link = '' if subnets.next_link.nil?
+            subnets.value
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Exception listing Subnets from Resource Group '#{resource_group}' in Virtal Network #{virtual_network_name}. #{e.body['error']['message']}."
-            raise msg
+            raise Fog::AzureRm::OperationError.new(e)
           end
         end
       end

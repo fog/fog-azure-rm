@@ -10,17 +10,15 @@ class TestListResourceGroups < Minitest::Test
 
   def test_list_resource_group_success
     mocked_response = ApiStub::Requests::Resources::ResourceGroup.list_resource_group_response(@client)
-    result_mapper = Azure::ARM::Resources::Models::ResourceGroupListResult.mapper
-    expected_response = @client.serialize(result_mapper, mocked_response, 'parameters')['value']
     @resource_groups.stub :list_as_lazy, mocked_response do
-      assert_equal @service.list_resource_groups, expected_response
+      assert_equal @service.list_resource_groups, mocked_response.value
     end
   end
 
   def test_list_resource_group_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @resource_groups.stub :list_as_lazy, response do
-      assert_raises(RuntimeError) { @service.list_resource_groups }
+      assert_raises(Fog::AzureRm::OperationError) { @service.list_resource_groups }
     end
   end
 end

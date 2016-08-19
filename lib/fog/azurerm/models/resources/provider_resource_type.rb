@@ -10,10 +10,10 @@ module Fog
 
         def self.parse(provider_resource_type)
           hash = {}
-          hash['resource_type'] = provider_resource_type['resourceType']
-          hash['locations'] = provider_resource_type['locations']
-          hash['api_versions'] = provider_resource_type['apiVersions'] unless provider_resource_type['apiVersions'].nil?
-          hash['properties'] = provider_resource_type['properties'] unless provider_resource_type['properties'].nil?
+          hash['resource_type'] = provider_resource_type.resource_type
+          hash['locations'] = provider_resource_type.locations
+          hash['api_versions'] = provider_resource_type.api_versions if provider_resource_type.respond_to?('api_versions')
+          hash['properties'] = provider_resource_type.properties if provider_resource_type.respond_to?('properties')
           hash
         end
       end

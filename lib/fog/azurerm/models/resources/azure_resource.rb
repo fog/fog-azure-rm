@@ -12,11 +12,11 @@ module Fog
 
         def self.parse(resource)
           hash = {}
-          hash['id'] = resource['id']
-          hash['name'] = resource['name']
-          hash['type'] = resource['type']
-          hash['location'] = resource['location']
-          hash['tags'] = resource['tags']
+          hash['id'] = resource.id
+          hash['name'] = resource.name
+          hash['type'] = resource.type
+          hash['location'] = resource.location
+          hash['tags'] = resource.tags
           hash
         end
       end

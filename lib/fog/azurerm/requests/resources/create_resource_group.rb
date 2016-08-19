@@ -4,17 +4,15 @@ module Fog
       # This class provides the actual implemention for service calls.
       class Real
         def create_resource_group(name, location)
+          Fog::Logger.debug "Creating Resource Group: #{name}."
+          resource_group = Azure::ARM::Resources::Models::ResourceGroup.new
+          resource_group.location = location
           begin
-            Fog::Logger.debug "Creating Resource Group: #{name}."
-            resource_group = Azure::ARM::Resources::Models::ResourceGroup.new
-            resource_group.location = location
             resource_group = @rmc.resource_groups.create_or_update(name, resource_group)
             Fog::Logger.debug "Resource Group #{name} created successfully."
-            result_mapper = Azure::ARM::Resources::Models::ResourceGroup.mapper
-            @rmc.serialize(result_mapper, resource_group, 'parameters')
+            resource_group
           rescue  MsRestAzure::AzureOperationError => e
-            msg = "Exception creating Resource Group #{name}. #{e.body['error']['message']}"
-            raise msg
+            raise Fog::AzureRm::OperationError.new(e)
           end
         end
       end
@@ -22,7 +20,7 @@ module Fog
       # This class provides the mock implementation for unit tests.
       class Mock
         def create_resource_group(name, location)
-          {
+          resource_group = {
             'location' => location,
             'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{name}",
             'name' => name,
@@ -31,6 +29,8 @@ module Fog
               'provisioningState' => 'Succeeded'
             }
           }
+          result_mapper = Azure::ARM::Resources::Models::ResourceGroup.mapper
+          @rmc.deserialize(result_mapper, resource_group, 'result.body')
         end
       end
     end

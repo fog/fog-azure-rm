@@ -19,7 +19,7 @@ class TestDeleteDeployment < Minitest::Test
   def test_list_deployment_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @deployments.stub :delete, response do
-      assert_raises(RuntimeError) { @service.delete_deployment(@resource_group, @deployment_name) }
+      assert_raises(Fog::AzureRm::OperationError) { @service.delete_deployment(@resource_group, @deployment_name) }
     end
   end
 end

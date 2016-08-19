@@ -5,7 +5,7 @@ module ApiStub
         def self.create_public_ip_response(client)
           body = '{
              "name": "fog-test-public-ip",
-             "id": "/subscriptions/{guid}/resourceGroups/fog-test-rg/Microsoft.Network/publicIpAddresses/fog-test-public-ip",
+             "id": "/subscriptions/{guid}/resourceGroups/fog-test-rg/providers/Microsoft.Network/publicIpAddresses/fog-test-public-ip",
              "location": "West US",
              "tags": {
                 "key": "value"

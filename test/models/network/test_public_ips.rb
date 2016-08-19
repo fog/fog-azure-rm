@@ -5,8 +5,8 @@ class TestPublicIps < Minitest::Test
   def setup
     @service = Fog::Network::AzureRM.new(credentials)
     @public_ips = Fog::Network::AzureRM::PublicIps.new(resource_group: 'fog-test-rg', service: @service)
-    client = @service.instance_variable_get(:@network_client)
-    @response = [ApiStub::Models::Network::PublicIp.create_public_ip_response(client)]
+    @client = @service.instance_variable_get(:@network_client)
+    @response = [ApiStub::Models::Network::PublicIp.create_public_ip_response(@client)]
   end
 
   def test_collection_methods
@@ -35,9 +35,9 @@ class TestPublicIps < Minitest::Test
   end
 
   def test_get_method_response
-    @service.stub :list_public_ips, @response do
-      assert_instance_of Fog::Network::AzureRM::PublicIp, @public_ips.get('fog-test-public-ip')
-      assert @public_ips.get('wrong-name').nil?, true
+    response = ApiStub::Models::Network::PublicIp.create_public_ip_response(@client)
+    @service.stub :get_public_ip, response do
+      assert_instance_of Fog::Network::AzureRM::PublicIp, @public_ips.get('fog-test-rg', 'fog-test-public-ip')
     end
   end
 

@@ -52,7 +52,7 @@ network.public_ips.create(
 ######################                           Get and Delete Public IP                         ######################
 ########################################################################################################################
 
-pubip = network.public_ips(resource_group: 'TestRG-PB').get('mypubip')
+pubip = network.public_ips.get('TestRG-PB', 'mypubip')
 pubip.destroy
 
 ########################################################################################################################

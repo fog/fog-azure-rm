@@ -16,7 +16,6 @@ class TestAddDnsServersInVirtualNetwork < Minitest::Test
         assert_equal @service.add_dns_servers_in_virtual_network('fog-test-rg', 'fog-test-virtual-network', ['10.1.0.7', '10.1.0.8']), mocked_response
       end
     end
-
   end
 
   def test_add_dns_servers_in_virtual_network_failure

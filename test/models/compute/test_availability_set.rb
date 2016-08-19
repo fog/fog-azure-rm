@@ -5,7 +5,8 @@ class TestAvailabilitySet < Minitest::Test
   def setup
     @service = Fog::Compute::AzureRM.new(credentials)
     @availability_set = availability_set(@service)
-    @response = ApiStub::Models::Compute::AvailabilitySet.create_availability_set_response
+    client = @service.instance_variable_get(:@compute_mgmt_client)
+    @response = ApiStub::Models::Compute::AvailabilitySet.create_availability_set_response(client)
   end
 
   def test_model_methods

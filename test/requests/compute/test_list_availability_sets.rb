@@ -6,8 +6,6 @@ class TestListAvailabilitySet < Minitest::Test
     @service = Fog::Compute::AzureRM.new(credentials)
     @client = @service.instance_variable_get(:@compute_mgmt_client)
     @availability_sets = @client.availability_sets
-    @promise = Concurrent::Promise.execute do
-    end
   end
 
   def test_list_availability_set_success
@@ -20,7 +18,7 @@ class TestListAvailabilitySet < Minitest::Test
   def test_list_availability_set_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @availability_sets.stub :list, response do
-      assert_raises(RuntimeError) { @service.list_availability_sets('fog-test-rg') }
+      assert_raises(Fog::AzureRm::OperationError) { @service.list_availability_sets('fog-test-rg') }
     end
   end
 end

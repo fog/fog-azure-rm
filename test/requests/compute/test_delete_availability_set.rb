@@ -6,22 +6,19 @@ class TestDeleteAvailabilitySet < Minitest::Test
     @service = Fog::Compute::AzureRM.new(credentials)
     client = @service.instance_variable_get(:@compute_mgmt_client)
     @availability_sets = client.availability_sets
-    @promise = Concurrent::Promise.execute do
-    end
   end
 
   def test_delete_availability_set_success
-    @promise.stub :value!, true do
-      @availability_sets.stub :delete, @promise do
-        assert @service.delete_availability_set('fog-test-rg', 'fog-test-as')
-      end
+    @availability_sets.stub :delete, true do
+      assert @service.delete_availability_set('fog-test-rg', 'fog-test-as')
     end
+
   end
 
   def test_delete_availability_set_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @availability_sets.stub :delete, response do
-      assert_raises(RuntimeError) { @service.delete_availability_set('fog-test-rg', 'fog-test-as') }
+      assert_raises(Fog::AzureRm::OperationError) { @service.delete_availability_set('fog-test-rg', 'fog-test-as') }
     end
   end
 end

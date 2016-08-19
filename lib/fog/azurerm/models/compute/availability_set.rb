@@ -12,15 +12,15 @@ module Fog
         attribute :platform_update_domain_count
         attribute :platform_fault_domain_count
 
-        def self.parse(as)
+        def self.parse(avail_set)
           hash = {}
-          hash['id'] = as.id
-          hash['name'] = as.name
-          hash['type'] = as.type
-          hash['location'] = as.location
-          hash['resource_group'] = as.id.split('/')[4]
-          hash['platform_update_domain_count'] = as.platform_update_domain_count
-          hash['platform_fault_domain_count'] = as.platform_fault_domain_count
+          hash['id'] = avail_set.id
+          hash['name'] = avail_set.name
+          hash['type'] = avail_set.type
+          hash['location'] = avail_set.location
+          hash['resource_group'] = get_resource_group_from_id(avail_set.id)
+          hash['platform_update_domain_count'] = avail_set.platform_update_domain_count
+          hash['platform_fault_domain_count'] = avail_set.platform_fault_domain_count
           hash
         end
 

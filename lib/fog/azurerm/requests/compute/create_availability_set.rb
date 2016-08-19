@@ -1,19 +1,18 @@
 module Fog
   module Compute
     class AzureRM
-      # This class provides the actual implemention for service calls.
+      # This class provides the actual implementation for service calls.
       class Real
         def create_availability_set(resource_group, name, location)
+          Fog::Logger.debug "Creating Availability Set '#{name}' in #{location} region."
           begin
-            Fog::Logger.debug "Creating Availability Set '#{name}' in #{location} region."
             avail_set_params = get_avail_set_properties(location)
             avail_set = @compute_mgmt_client.availability_sets.create_or_update(resource_group, name, avail_set_params)
-            Fog::Logger.debug "Availability Set #{name} created successfully."
-            avail_set
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Exception creating Availability Set #{name} in Resource Group: #{resource_group}. #{e.body['error']['message']}"
-            raise msg
+            raise Fog::AzureRm::OperationError.new(e)
           end
+          Fog::Logger.debug "Availability Set #{name} created successfully."
+          avail_set
         end
 
         # create the properties object for creating availability sets

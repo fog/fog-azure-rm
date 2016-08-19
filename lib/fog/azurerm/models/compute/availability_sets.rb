@@ -23,10 +23,9 @@ module Fog
         end
 
         def get(resource_group, identity)
-          all.each do |availability_set|
-            availability_set.resource_group == resource_group && availability_set.name == identity
-            return availability_set
-          end
+          result_obj = service.get_availability_set(resource_group, identity)
+          model_obj = Fog::Compute::AzureRM::AvailabilitySet.new(service: service)
+          model_obj.merge_attributes(Fog::Compute::AzureRM::AvailabilitySet.parse(result_obj))
         end
       end
     end

@@ -4,14 +4,14 @@ module Fog
       # This class provides the actual implementation for service calls.
       class Real
         def list_availability_sets(resource_group)
+          Fog::Logger.debug "Listing Availability Sets in Resource Group: #{resource_group}"
           begin
-            Fog::Logger.debug "Listing Availability Sets in Resource Group: #{resource_group}"
             avail_sets = @compute_mgmt_client.availability_sets.list(resource_group)
-            avail_sets.value
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Exception listing availability sets in Resource Group #{resource_group}. #{e.body['error']['message']}"
-            raise msg
+            raise Fog::AzureRm::OperationError.new(e)
           end
+          Fog::Logger.debug "Listing Availability Sets in Resource Group: #{resource_group} successful."
+          avail_sets.value
         end
       end
       # This class provides the mock implementation for unit tests.

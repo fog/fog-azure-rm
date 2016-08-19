@@ -1,7 +1,7 @@
 module Fog
   module Compute
     class AzureRM
-      # This class provides the actual implemention for service calls.
+      # This class provides the actual implementation for service calls.
       class Real
         def get_virtual_machine(resource_group, name)
           begin

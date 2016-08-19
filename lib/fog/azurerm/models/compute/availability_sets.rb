@@ -23,8 +23,9 @@ module Fog
         end
 
         def get(resource_group, identity)
-          all.each do |availability_set| availability_set.resource_group == resource_group && availability_set.name == identity
-              return availability_set
+          all.each do |availability_set|
+            availability_set.resource_group == resource_group && availability_set.name == identity
+            return availability_set
           end
         end
       end

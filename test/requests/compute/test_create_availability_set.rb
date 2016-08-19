@@ -12,12 +12,10 @@ class TestCreateAvailabilitySet < Minitest::Test
 
   def test_create_availability_set_success
     mocked_response = ApiStub::Requests::Compute::AvailabilitySet.create_availability_set_response(@client)
-    #result_mapper = Azure::ARM::Compute::Models::AvailabilitySet.mapper
-    #expected_response = @client.serialize(result_mapper, mocked_response, 'parameters')
     @availability_sets.stub :validate_params, true do
       @availability_sets.stub :create_or_update, mocked_response do
         assert_equal @service.create_availability_set('fog-test-rg', 'myavset1', 'west us'), mocked_response
-     end
+      end
     end
   end
 

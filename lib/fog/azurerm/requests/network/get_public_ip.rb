@@ -19,13 +19,13 @@ module Fog
       class Mock
         def get_public_ip(resource_group_name, public_ip_name)
           {
-            'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/publicIPAddresses/#{name}",
-            'name' => name,
+            'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group_name}/providers/Microsoft.Network/publicIPAddresses/#{public_ip_name}",
+            'name' => public_ip_name,
             'type' => 'Microsoft.Network/publicIPAddresses',
-            'location' => location,
+            'location' => 'westus',
             'properties' =>
               {
-                'publicIPAllocationMethod' => public_ip_allocation_method,
+                'publicIPAllocationMethod' => 'Dynamic',
                 'ipAddress' => '13.91.253.67',
                 'idleTimeoutInMinutes' => 4,
                 'resourceGuid' => '767b1955-94de-433c-8e4a-ea0ad25e8d0c',

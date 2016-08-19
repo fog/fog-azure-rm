@@ -6,12 +6,10 @@ class TestCheckForPublicIp < Minitest::Test
     @service = Fog::Network::AzureRM.new(credentials)
     client = @service.instance_variable_get(:@network_client)
     @public_ips = client.public_ipaddresses
-    @promise = Concurrent::Promise.execute do
-    end
   end
 
   def test_check_for_public_ip_success
-    @public_ips.stub :get, @promise do
+    @public_ips.stub :get, true do
       assert @service.check_for_public_ip('fog-test-rg', 'fog-test-public-ip')
     end
   end

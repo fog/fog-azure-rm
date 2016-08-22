@@ -12,7 +12,6 @@ class TestDeleteAvailabilitySet < Minitest::Test
     @availability_sets.stub :delete, true do
       assert @service.delete_availability_set('fog-test-rg', 'fog-test-as')
     end
-
   end
 
   def test_delete_availability_set_failure

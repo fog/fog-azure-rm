@@ -1,7 +1,10 @@
+FAULT_DOMAIN_COUNT = 2
+UPDATE_DOMAIN_COUNT = 2
+
 module Fog
   module Compute
     class AzureRM
-      # This class provides the actual implementation for service calls.
+      # This class provides the actual implementation for service call.
       class Real
         def get_availability_set(resource_group, name)
           begin
@@ -13,14 +16,14 @@ module Fog
       end
       # This class provides the mock implementation for unit tests.
       class Mock
-        def get_availability_set(resource_group, name)
+        def get_availability_set(*)
           {
-              'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Compute/virtualMachines/#{name}",
-              'name' => name,
+              'id' => "/subscriptions/########-####-####-####-############/resourceGroups/'resource_group'/providers/Microsoft.Compute/virtualMachines/'name'",
+              'name' => 'name',
               'type' => 'Microsoft.Compute/virtualMachines',
               'location' => 'westus',
-              '@platform_update_domain_count' => 2,
-              '@platform_fault_domain_count' => 2,
+              '@platform_update_domain_count' => UPDATE_DOMAIN_COUNT,
+              '@platform_fault_domain_count' => FAULT_DOMAIN_COUNT,
               '@virtual_machines' => []
           }
         end

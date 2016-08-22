@@ -1,3 +1,6 @@
+FAULT_DOMAIN_COUNT = 2
+UPDATE_DOMAIN_COUNT = 2
+
 module Fog
   module Compute
     class AzureRM
@@ -5,21 +8,21 @@ module Fog
       class Real
         def create_availability_set(resource_group, name, location)
           Fog::Logger.debug "Creating Availability Set '#{name}' in #{location} region."
+          avail_set_params = get_availability_set_properties(location)
           begin
-            avail_set_params = get_avail_set_properties(location)
-            avail_set = @compute_mgmt_client.availability_sets.create_or_update(resource_group, name, avail_set_params)
+            availability_set = @compute_mgmt_client.availability_sets.create_or_update(resource_group, name, avail_set_params)
           rescue MsRestAzure::AzureOperationError => e
             raise Fog::AzureRm::OperationError.new(e)
           end
           Fog::Logger.debug "Availability Set #{name} created successfully."
-          avail_set
+          availability_set
         end
 
         # create the properties object for creating availability sets
-        def get_avail_set_properties(location)
+        def get_availability_set_properties(location)
           avail_set = Azure::ARM::Compute::Models::AvailabilitySet.new
-          avail_set.platform_fault_domain_count = 2
-          avail_set.platform_update_domain_count = 2
+          avail_set.platform_fault_domain_count = FAULT_DOMAIN_COUNT
+          avail_set.platform_update_domain_count = UPDATE_DOMAIN_COUNT
           avail_set.virtual_machines = []
           avail_set.statuses = []
           avail_set.location = location
@@ -36,8 +39,8 @@ module Fog
             'type' => 'Microsoft.Compute/availabilitySets',
             'properties' =>
             {
-              'platformUpdateDomainCount' => 2,
-              'platformFaultDomainCount' => 2
+              'platformUpdateDomainCount' => FAULT_DOMAIN_COUNT,
+              'platformFaultDomainCount' => FAULT_DOMAIN_COUNT
             }
           }
         end

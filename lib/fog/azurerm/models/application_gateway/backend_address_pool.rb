@@ -1,8 +1,8 @@
 module Fog
-  module Network
+  module ApplicationGateway
     class AzureRM
-      # Backend Address Pool model class for Network Service
-      class ApplicationGatewayBackendAddressPool < Fog::Model
+      # Backend Address Pool model class for Application Gateway Service
+      class BackendAddressPool < Fog::Model
         identity :name
         attribute :ip_addresses
 

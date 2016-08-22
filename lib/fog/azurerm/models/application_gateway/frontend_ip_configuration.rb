@@ -1,8 +1,8 @@
 module Fog
-  module Network
+  module ApplicationGateway
     class AzureRM
-      # Frontend IP Configuration model class for Network Service
-      class ApplicationGatewayFrontendIPConfiguration < Fog::Model
+      # Frontend IP Configuration model class for Application Gateway Service
+      class FrontendIPConfiguration < Fog::Model
         identity :name
         attribute :public_ip_address_id
         attribute :private_ip_allocation_method

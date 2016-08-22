@@ -69,16 +69,36 @@ module Fog
           requires :name, :location, :resource_group, :vm_size, :storage_account_name,
                    :username, :password, :network_interface_card_id, :publisher, :offer, :sku, :version
           requires :disable_password_authentication if platform.casecmp('linux') == 0
-
           ssh_key_path = "/home/#{username}/.ssh/authorized_keys" unless ssh_key_data.nil?
-          vm = service.create_virtual_machine(
-            resource_group, name, location, vm_size, storage_account_name,
-            username, password, disable_password_authentication,
-            ssh_key_path, ssh_key_data, network_interface_card_id,
-            availability_set_id, publisher, offer, sku, version,
-            platform, provision_vm_agent, enable_automatic_updates
-          )
+          virtual_machine_params = get_virtual_machine_params(ssh_key_path)
+          vm = service.create_virtual_machine(virtual_machine_params)
           merge_attributes(Fog::Compute::AzureRM::Server.parse(vm))
+        end
+
+        private
+
+        def get_virtual_machine_params(ssh_key_path)
+          {
+            resource_group: resource_group,
+            name: name,
+            location: location,
+            vm_size: vm_size,
+            storage_account_name: storage_account_name,
+            username: username,
+            password: password,
+            disable_password_authentication: disable_password_authentication,
+            ssh_key_path: ssh_key_path,
+            ssh_key_data: ssh_key_data,
+            network_interface_card_id: network_interface_card_id,
+            availability_set_id: availability_set_id,
+            publisher: publisher,
+            offer: offer,
+            sku: sku,
+            version: version,
+            platform: platform,
+            provision_vm_agent: provision_vm_agent,
+            enable_automatic_updates: enable_automatic_updates
+          }
         end
 
         def destroy

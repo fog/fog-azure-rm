@@ -1,8 +1,8 @@
 module Fog
-  module Network
+  module ApplicationGateway
     class AzureRM
-      # Frontenf Port model class for Network Service
-      class ApplicationGatewayFrontendPort < Fog::Model
+      # Frontenf Port model class for Application Gateway Service
+      class FrontendPort < Fog::Model
         identity :name
         attribute :port
 

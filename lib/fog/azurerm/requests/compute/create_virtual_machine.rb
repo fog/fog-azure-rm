@@ -3,39 +3,48 @@ module Fog
     class AzureRM
       # This class provides the actual implementation for service calls.
       class Real
-        def create_virtual_machine(resource_group, name, location, vm_size, storage_account_name,
-                                   username, password, disable_password_authentication,
-                                   ssh_key_path, ssh_key_data, network_interface_card_id,
-                                   availability_set_id, publisher, offer, sku, version,
-                                   platform, provision_vm_agent, enable_automatic_updates)
-          Fog::Logger.debug "Creating Virtual Machine #{name} in Resource Group #{resource_group}."
+        def create_virtual_machine(vm_hash)
+          Fog::Logger.debug "Creating Virtual Machine #{vm_hash[:name]} in Resource Group #{vm_hash[:resource_group]}."
           params = Azure::ARM::Compute::Models::VirtualMachine.new
           vm_properties = Azure::ARM::Compute::Models::VirtualMachineProperties.new
 
-          unless availability_set_id.nil?
+          unless vm_hash[:availability_set_id].nil?
             sub_resource = MsRestAzure::SubResource.new
-            sub_resource.id = availability_set_id
+            sub_resource.id = vm_hash[:availability_set_id]
             vm_properties.availability_set = sub_resource
           end
 
-          vm_properties.hardware_profile = define_hardware_profile(vm_size)
-          vm_properties.storage_profile = define_storage_profile(name, storage_account_name, publisher, offer, sku, version)
-          vm_properties.os_profile = if platform.casecmp('windows') == 0
-                                       define_windows_os_profile(name, username, password, provision_vm_agent, enable_automatic_updates)
+          vm_properties.hardware_profile = define_hardware_profile(vm_hash[:vm_size])
+          vm_properties.storage_profile = define_storage_profile(vm_hash[:name],
+                                                                 vm_hash[:storage_account_name],
+                                                                 vm_hash[:publisher],
+                                                                 vm_hash[:offer],
+                                                                 vm_hash[:sku],
+                                                                 vm_hash[:version])
+          vm_properties.os_profile = if vm_hash[:platform].casecmp(WINDOWS) == 0
+                                       define_windows_os_profile(vm_hash[:name],
+                                                                 vm_hash[:username],
+                                                                 vm_hash[:password],
+                                                                 vm_hash[:provision_vm_agent],
+                                                                 vm_hash[:enable_automatic_updates])
                                      else
-                                       define_linux_os_profile(name, username, password, disable_password_authentication, ssh_key_path, ssh_key_data)
+                                       define_linux_os_profile(vm_hash[:name],
+                                                               vm_hash[:username],
+                                                               vm_hash[:password],
+                                                               vm_hash[:disable_password_authentication],
+                                                               vm_hash[:ssh_key_path],
+                                                               vm_hash[:ssh_key_data])
                                      end
-          vm_properties.network_profile = define_network_profile(network_interface_card_id)
+          vm_properties.network_profile = define_network_profile(vm_hash[:network_interface_card_id])
           params.properties = vm_properties
-          params.location = location
+          params.location = vm_hash[:location]
           begin
-            promise = @compute_mgmt_client.virtual_machines.create_or_update(resource_group, name, params)
+            promise = @compute_mgmt_client.virtual_machines.create_or_update(vm_hash[:resource_group], vm_hash[:name], params)
             result = promise.value!
-            Fog::Logger.debug "Virtual Machine #{name} Created Successfully."
+            Fog::Logger.debug "Virtual Machine #{vm_hash[:name]} Created Successfully."
             Azure::ARM::Compute::Models::VirtualMachine.serialize_object(result.body)
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Error Creating Virtual Machine '#{name}' in Resource Group '#{resource_group}'. #{e.body['error']['message']}"
-            raise msg
+            raise Fog::AzureRM::OperationError.new(e)
           end
         end
 

@@ -1,8 +1,8 @@
 module Fog
-  module Network
+  module ApplicationGateway
     class AzureRM
-      # Http Listener class for Network Service
-      class ApplicationGatewayHttpListener < Fog::Model
+      # Http Listener class for Application Gateway Service
+      class HttpListener < Fog::Model
         identity :name
         attribute :frontend_ip_config_id
         attribute :frontend_port_id

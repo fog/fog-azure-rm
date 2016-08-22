@@ -1,7 +1,7 @@
 module Fog
-  module Network
+  module ApplicationGateway
     class AzureRM
-      # Real class for Network Request
+      # Real class for Application Gateway Request
       class Real
         def delete_application_gateway(resource_group, name)
           Fog::Logger.debug "Deleting Application_Gateway #{name} from Resource Group #{resource_group}."
@@ -11,8 +11,7 @@ module Fog
             Fog::Logger.debug "Application Gateway #{name} Deleted Successfully."
             true
           rescue  MsRestAzure::AzureOperationError => e
-            msg = "Exception deleting Application_Gateway #{name} in Resource Group: #{resource_group}. #{e.body['error']['message']}"
-            raise msg
+            raise Fog::AzureRM::OperationError.new(e)
           end
         end
       end

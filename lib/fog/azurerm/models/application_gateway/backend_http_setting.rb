@@ -1,8 +1,8 @@
 module Fog
-  module Network
+  module ApplicationGateway
     class AzureRM
-      # Backend Http Settings model class for Network Service
-      class ApplicationGatewayBackendHttpSetting < Fog::Model
+      # Backend Http Settings model class for Application Gateway Service
+      class BackendHttpSetting < Fog::Model
         identity :name
         attribute :port
         attribute :protocol

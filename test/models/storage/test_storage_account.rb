@@ -3,11 +3,12 @@ require File.expand_path '../../test_helper', __dir__
 class TestStorageAccount < Minitest::Test
   def setup
     @service = Fog::Storage::AzureRM.new(credentials)
+    @client = @service.instance_variable_get(:@storage_mgmt_client)
     @storage_account = storage_account(@service)
     @standard_lrs_storage_account = standard_lrs(@service)
     @standard_invalid_replication = standard_check_for_invalid_replications(@service)
     @premium_invalid_replication  = premium_check_for_invalid_replications(@service)
-    @response = ApiStub::Models::Storage::StorageAccount.create_storage_account
+    @response = ApiStub::Models::Storage::StorageAccount.create_storage_account(@client)
   end
 
   def test_model_methods
@@ -26,7 +27,7 @@ class TestStorageAccount < Minitest::Test
       :name,
       :location,
       :resource_group,
-      :account_type,
+      :sku_name,
       :replication
     ]
     @service.stub :create_storage_account, @response do

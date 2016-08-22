@@ -2,16 +2,18 @@ module ApiStub
   module Requests
     module Storage
       class StorageAccount
-        def self.storage_account_request
-          body = ' {
-              "location": "west us",
-              "properties":{
-                  "accountType": "Standard_LRS"
-              }
-          }'
-          result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
-          result.body = Azure::ARM::Storage::Models::StorageAccount.deserialize_object(JSON.load(body))
-          result
+        def self.storage_account_request(client)
+          body = {
+              'id' => '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/fog_test_rg/providers/Microsoft.Storage/storageAccounts/fogtestsasecond',
+              'name' => 'fog-test-storage-account',
+              'location' => 'west us',
+              'sku' =>
+                  {
+                      'name' => 'Standard_LRS'
+                  }
+          }
+          mapper = Azure::ARM::Storage::Models::StorageAccount.mapper
+          client.deserialize(mapper, body, 'hash')
         end
 
         def self.create_storage_account
@@ -29,7 +31,7 @@ module ApiStub
           {
             resource_group: 'gateway-RG',
             name: 'fog_test_storage_account',
-            account_type: 'Standard',
+            sku_name: 'Standard',
             location: 'West US',
             replication: 'LRS'
           }
@@ -83,20 +85,24 @@ module ApiStub
           }
         end
 
-        def self.true_case_for_check_name_availability
-          {
+        def self.true_case_for_check_name_availability(client)
+          result = {
             'nameAvailable' => true,
             'reason' => 'AccountNameInvalid|AlreadyExists',
             'message' => 'error message'
           }
+          mapper = Azure::ARM::Storage::Models::CheckNameAvailabilityResult.mapper
+          client.deserialize(mapper, result, 'hash')
         end
 
-        def self.false_case_for_check_name_availability
-          {
+        def self.false_case_for_check_name_availability(client)
+          result = {
             'nameAvailable' => false,
             'reason' => 'AccountNameInvalid|AlreadyExists',
             'message' => 'error message'
           }
+          mapper = Azure::ARM::Storage::Models::CheckNameAvailabilityResult.mapper
+          client.deserialize(mapper, result, 'hash')
         end
 
         def self.azure_operation_response(body)

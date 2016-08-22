@@ -6,9 +6,9 @@ module Fog
         def get_storage_access_keys(resource_group, storage_account_name, options = {})
           Fog::Logger.debug "Getting storage access keys for storage account: #{storage_account_name}."
           begin
-            storage_account_keys = @storage_mgmt_client.storage_accounts.list_keys(resource_group, storage_account_name, options).value!
+            storage_account_keys = @storage_mgmt_client.storage_accounts.list_keys(resource_group, storage_account_name, options)
             Fog::Logger.debug "Storage access keys for storage account: #{storage_account_name} listed successfully."
-            Azure::ARM::Storage::Models::StorageAccountKeys.serialize_object(storage_account_keys.body)
+            storage_account_keys
           rescue MsRestAzure::AzureOperationError => e
             msg = "Error getting storage access keys. #{e.body['error']['message']}"
             raise msg

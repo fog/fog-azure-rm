@@ -5,19 +5,15 @@ module Fog
       class Real
         def create_storage_account(storage_account_hash)
           Fog::Logger.debug "Creating Storage Account: #{storage_account_hash[:name]}."
-          storage_account_params = get_storage_account_params(storage_account_hash[:account_type],
+          storage_account_params = get_storage_account_params(storage_account_hash[:sku_name],
                                                               storage_account_hash[:location],
                                                               storage_account_hash[:replication])
           begin
             response = @storage_mgmt_client.storage_accounts.create(storage_account_hash[:resource_group],
                                                                     storage_account_hash[:name],
-                                                                    storage_account_params).value!
+                                                                    storage_account_params)
             Fog::Logger.debug 'Storage Account created successfully.'
-            storage_account_body = response.body
-            storage_account_body.properties.last_geo_failover_time = DateTime.parse(Time.now.to_s)
-            storage_account_body.properties.creation_time = DateTime.parse(Time.now.to_s)
-            result = Azure::ARM::Storage::Models::StorageAccount.serialize_object(storage_account_body)
-            result
+            response
           rescue MsRestAzure::AzureOperationError => e
             msg = "Exception creating Storage Account #{storage_account_hash[:name]} in Resource Group #{storage_account_hash[:resource_group]}. #{e.body['error']['message']}"
             raise msg
@@ -26,11 +22,12 @@ module Fog
 
         private
 
-        def get_storage_account_params(account_type, location, replication)
-          properties = ::Azure::ARM::Storage::Models::StorageAccountPropertiesCreateParameters.new
-          properties.account_type = "#{account_type}_#{replication}"
-          params = ::Azure::ARM::Storage::Models::StorageAccountCreateParameters.new
-          params.properties = properties
+        def get_storage_account_params(sku_name, location, replication)
+          params = Azure::ARM::Storage::Models::StorageAccountCreateParameters.new
+          sku = Azure::ARM::Storage::Models::Sku.new
+          sku.name = "#{sku_name}_#{replication}"
+          params.sku = sku
+          params.kind = Azure::ARM::Storage::Models::Kind::Storage
           params.location = location
           params
         end

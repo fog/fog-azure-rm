@@ -471,3 +471,25 @@ def traffic_manager_profile(service)
     service: service
   )
 end
+
+def virtual_network_gateway(service)
+  Fog::Network::AzureRM::VirtualNetworkGateway.new(
+    name: 'testNetworkGateway',
+    location: 'eastus',
+    tags: {
+      key1: 'value1',
+      key2: 'value2'
+    },
+    resource_group: 'learn_fog',
+    sku_name: 'HighPerformance',
+    sku_tier: 'Standard',
+    sku_capacity: 100,
+    gateway_type: 'ExpressRoute',
+    enable_bgp: true,
+    gateway_size: 'Default',
+    vpn_client_address_pool: [ 'vpnClientAddressPoolPrefix' ],
+    default_sites: [ 'mysite1' ],
+    gateway_default_site: '/subscriptions/{subscription-id}/resourceGroups/fog-rg/providers/microsoft.network/localNetworkGateways/{local-network-gateway-name}',
+    service: service
+  )
+end

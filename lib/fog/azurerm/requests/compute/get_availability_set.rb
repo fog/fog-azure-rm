@@ -20,13 +20,13 @@ module Fog
       class Mock
         def get_availability_set(*)
           {
-              'id' => "/subscriptions/########-####-####-####-############/resourceGroups/'resource_group'/providers/Microsoft.Compute/virtualMachines/'name'",
-              'name' => 'name',
-              'type' => 'Microsoft.Compute/virtualMachines',
-              'location' => 'westus',
-              '@platform_update_domain_count' => UPDATE_DOMAIN_COUNT,
-              '@platform_fault_domain_count' => FAULT_DOMAIN_COUNT,
-              '@virtual_machines' => []
+            'id' => "/subscriptions/########-####-####-####-############/resourceGroups/'resource_group'/providers/Microsoft.Compute/virtualMachines/'name'",
+            'name' => 'name',
+            'type' => 'Microsoft.Compute/virtualMachines',
+            'location' => 'westus',
+            '@platform_update_domain_count' => UPDATE_DOMAIN_COUNT,
+            '@platform_fault_domain_count' => FAULT_DOMAIN_COUNT,
+            '@virtual_machines' => []
           }
         end
       end

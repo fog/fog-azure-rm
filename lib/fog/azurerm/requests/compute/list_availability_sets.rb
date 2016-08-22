@@ -5,7 +5,7 @@ module Fog
       class Real
         def list_availability_sets(resource_group)
           log_message = "Listing Availability Sets in Resource Group: #{resource_group}"
-              Fog::Logger.debug log_message
+          Fog::Logger.debug log_message
           begin
             avail_sets = @compute_mgmt_client.availability_sets.list(resource_group)
           rescue MsRestAzure::AzureOperationError => e

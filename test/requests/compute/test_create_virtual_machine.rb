@@ -36,7 +36,7 @@ class TestCreateVirtualMachine < Minitest::Test
     response = -> { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @promise.stub :value!, response do
       @virtual_machines.stub :create_or_update, @promise do
-        assert_raises Fog::AzureRM::OperationError do
+        assert_raises RuntimeError do
           @service.create_virtual_machine(@linux_virtual_machine_hash)
         end
       end

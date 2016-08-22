@@ -4,7 +4,8 @@ module Fog
       # This class provides the actual implementation for service calls.
       class Real
         def create_virtual_machine(vm_hash)
-          Fog::Logger.debug "Creating Virtual Machine #{vm_hash[:name]} in Resource Group #{vm_hash[:resource_group]}."
+          msg = "Creating Virtual Machine #{vm_hash[:name]} in Resource Group #{vm_hash[:resource_group]}."
+          Fog::Logger.debug msg
           params = Azure::ARM::Compute::Models::VirtualMachine.new
           vm_properties = Azure::ARM::Compute::Models::VirtualMachineProperties.new
 
@@ -44,7 +45,7 @@ module Fog
             Fog::Logger.debug "Virtual Machine #{vm_hash[:name]} Created Successfully."
             Azure::ARM::Compute::Models::VirtualMachine.serialize_object(result.body)
           rescue MsRestAzure::AzureOperationError => e
-            raise Fog::AzureRM::OperationError.new(e)
+            raise_azure_exception(e, msg)
           end
         end
 

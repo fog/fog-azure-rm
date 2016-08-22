@@ -4,7 +4,8 @@ module Fog
       # Real class for Application Gateway Request
       class Real
         def create_application_gateway(name, location, resource_group, sku_name, sku_tier, sku_capacity, gateway_ip_configurations, ssl_certificates, frontend_ip_configurations, frontend_ports, probes, backend_address_pools, backend_http_settings_list, http_listeners, url_path_maps, request_routing_rules)
-          Fog::Logger.debug "Creating Application Gateway: #{name} in Resource Group: #{resource_group}."
+          msg = "Creating Application Gateway: #{name} in Resource Group: #{resource_group}."
+          Fog::Logger.debug msg
           gateway = define_application_gateway(name, location, sku_name, sku_tier, sku_capacity, gateway_ip_configurations, ssl_certificates, frontend_ip_configurations, frontend_ports, probes, backend_address_pools, backend_http_settings_list, http_listeners, url_path_maps, request_routing_rules)
           begin
             promise = @network_client.application_gateways.create_or_update(resource_group, name, gateway)
@@ -12,7 +13,7 @@ module Fog
             Fog::Logger.debug "Application Gateway #{name} created successfully."
             Azure::ARM::Network::Models::ApplicationGateway.serialize_object(result.body)
           rescue MsRestAzure::AzureOperationError => e
-            raise Fog::AzureRM::OperationError.new(e)
+            raise_azure_exception(e, msg)
           end
         end
 

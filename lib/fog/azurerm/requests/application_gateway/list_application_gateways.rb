@@ -4,13 +4,14 @@ module Fog
       # Real class for Application Gateway Request
       class Real
         def list_application_gateways(resource_group)
-          Fog::Logger.debug "Getting list of Application-Gateway from Resource Group #{resource_group}."
+          msg = "Getting list of Application-Gateway from Resource Group #{resource_group}."
+          Fog::Logger.debug msg
           begin
             promise = @network_client.application_gateways.list(resource_group)
             result = promise.value!
             Azure::ARM::Network::Models::ApplicationGatewayListResult.serialize_object(result.body)['value']
           rescue MsRestAzure::AzureOperationError => e
-            raise Fog::AzureRM::OperationError.new(e)
+            raise_azure_exception(e, msg)
           end
         end
       end

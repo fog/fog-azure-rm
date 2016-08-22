@@ -24,7 +24,7 @@ class TestListApplicationGateways < Minitest::Test
     response = -> { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @promise.stub :value!, response do
       @gateways.stub :list, @promise do
-        assert_raises(Fog::AzureRM::OperationError) { @service.list_application_gateways('fogRM-rg') }
+        assert_raises(RuntimeError) { @service.list_application_gateways('fogRM-rg') }
       end
     end
   end

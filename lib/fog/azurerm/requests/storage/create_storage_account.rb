@@ -4,9 +4,9 @@ module Fog
       # This class provides the actual implemention for service calls.
       class Real
         def create_storage_account(storage_account_hash)
-          msg = "Creating Storage Account: #{storage_account_hash[:name]}in Resource Group #{storage_account_hash[:resource_group]}."
+          msg = "Creating Storage Account: #{storage_account_hash[:name]} in Resource Group #{storage_account_hash[:resource_group]}."
           Fog::Logger.debug msg
-          storage_account_params = get_storage_account_params(storage_account_hash[:account_type],
+          storage_account_params = get_storage_account_params(storage_account_hash[:sku_name],
                                                               storage_account_hash[:location],
                                                               storage_account_hash[:replication])
           begin

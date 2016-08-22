@@ -4,14 +4,14 @@ module Fog
       # This class provides the actual implemention for service calls.
       class Real
         def get_storage_access_keys(resource_group, storage_account_name, options = {})
-          Fog::Logger.debug "Getting storage access keys for storage account: #{storage_account_name}."
+          msg = "Getting storage access keys for storage account: #{storage_account_name}."
+          Fog::Logger.debug msg
           begin
             storage_account_keys = @storage_mgmt_client.storage_accounts.list_keys(resource_group, storage_account_name, options)
             Fog::Logger.debug "Storage access keys for storage account: #{storage_account_name} listed successfully."
-            storage_account_keys
+            storage_account_keys.keys
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Error getting storage access keys. #{e.body['error']['message']}"
-            raise msg
+            raise_azure_exception(e, msg)
           end
         end
       end

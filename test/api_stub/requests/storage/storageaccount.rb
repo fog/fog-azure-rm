@@ -1,16 +1,17 @@
 module ApiStub
   module Requests
     module Storage
+      # Mock class for Storage Requests
       class StorageAccount
         def self.storage_account_request(client)
           body = {
-              'id' => '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/fog_test_rg/providers/Microsoft.Storage/storageAccounts/fogtestsasecond',
-              'name' => 'fog-test-storage-account',
-              'location' => 'west us',
-              'sku' =>
-                  {
-                      'name' => 'Standard_LRS'
-                  }
+            'id' => '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/fog_test_rg/providers/Microsoft.Storage/storageAccounts/fogtestsasecond',
+            'name' => 'fog-test-storage-account',
+            'location' => 'west us',
+            'sku' =>
+              {
+                'name' => 'Standard_LRS'
+              }
           }
           mapper = Azure::ARM::Storage::Models::StorageAccount.mapper
           client.deserialize(mapper, body, 'hash')
@@ -37,8 +38,8 @@ module ApiStub
           }
         end
 
-        def self.list_storage_accounts_for_rg
-          {
+        def self.list_storage_accounts_for_rg(client)
+          body = {
             'value' =>
               [
                 {
@@ -59,10 +60,12 @@ module ApiStub
                 }
               ]
           }
+          mapper = Azure::ARM::Storage::Models::StorageAccountListResult.mapper
+          client.deserialize(mapper, body, 'hash')
         end
 
-        def self.list_storage_accounts
-          {
+        def self.list_storage_accounts(client)
+          body = {
             'value' =>
               [
                 {
@@ -83,6 +86,8 @@ module ApiStub
                 }
               ]
           }
+          mapper = Azure::ARM::Storage::Models::StorageAccountListResult.mapper
+          client.deserialize(mapper, body, 'hash')
         end
 
         def self.true_case_for_check_name_availability(client)
@@ -114,13 +119,13 @@ module ApiStub
         end
 
         def self.list_keys_response
-          body = '{
-            "key1": "key1 value",
-            "key2": "key2 value"
-          }'
-          result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
-          result.body = Azure::ARM::Storage::Models::StorageAccountKeys.deserialize_object(JSON.load(body))
-          result
+          key1 = Azure::ARM::Storage::Models::StorageAccountKey.new
+          key1.key_name = 'key1'
+          key1.value = 'sfhyuiafhhfids0943'
+          key1.permissions = 'Full'
+          storage_account_key_list = Azure::ARM::Storage::Models::StorageAccountListKeysResult.new
+          storage_account_key_list.keys = [key1]
+          storage_account_key_list
         end
       end
     end

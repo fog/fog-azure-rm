@@ -59,10 +59,11 @@ class TestStorageAccount < Minitest::Test
   end
 
   def test_get_access_keys_method_response
-    response = {
-      'key1' => 'key1 value',
-      'key2' => 'key2 value'
-    }
+    key1 = Azure::ARM::Storage::Models::StorageAccountKey.new
+    key1.key_name = 'key1'
+    key1.value = 'sfhyuiafhhfids0943'
+    key1.permissions = 'Full'
+    response = [key1]
     @service.stub :get_storage_access_keys, response do
       assert_equal @storage_account.get_access_keys, response
     end

@@ -4,19 +4,13 @@ module Fog
       # This class provides the actual implemention for service calls.
       class Real
         def list_storage_accounts
+          msg = "Listing Storage Accounts."
+          Fog::Logger.debug msg
           begin
-            promise = @storage_mgmt_client.storage_accounts.list
-            response = promise.value!
-            body = response.body.value
-            body.each do |obj|
-              obj.properties.last_geo_failover_time = DateTime.parse(Time.now.to_s)
-            end
-            result = Azure::ARM::Storage::Models::StorageAccountListResult.serialize_object(response.body)['value']
-            puts "Result: #{result}"
-            result
+            result = @storage_mgmt_client.storage_accounts.list
+            result.value
           rescue  MsRestAzure::AzureOperationError => e
-            msg = "Exception listing Storage Accounts. #{e.body['error']['message']}"
-            raise msg
+            generic_exception(e, msg)
           end
         end
       end

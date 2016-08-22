@@ -12,6 +12,12 @@ def get_record_type(type)
   type.split('/').last
 end
 
+def raise_azure_exception(exception, msg)
+ message = "Exception #{msg} #{exception.body['error']['message'] unless exception.body['error']['message'].nil?} Type: #{exception.class} \n "
+ Fog::Logger.debug exception.backtrace
+ raise message
+end
+
 # Make sure if input_params(Hash) contains all keys present in required_params(Array)
 def validate_params(required_params, input_params)
   missing_params = required_params.select { |param| param unless input_params.key?(param) }

@@ -12,25 +12,23 @@ class TestCreateStorageAccount < Minitest::Test
   end
 
   def test_create_storage_account_success
-      @storage_accounts.stub :create, @storage_acc_obj do
-        assert_equal @azure_credentials.create_storage_account(@storage_account_arguments), @storage_acc_obj
-        # result = @azure_credentials.create_storage_account(@storage_account_arguments)
-        # puts result.inspect
-      end
+    @storage_accounts.stub :create, @storage_acc_obj do
+      assert_equal @azure_credentials.create_storage_account(@storage_account_arguments), @storage_acc_obj
+    end
   end
 
   def test_create_storage_account_failure
-      @storage_accounts.stub :create,  @storage_acc_obj do
-        assert_raises ArgumentError do
-          @azure_credentials.create_storage_account
-        end
+    @storage_accounts.stub :create, @storage_acc_obj do
+      assert_raises ArgumentError do
+        @azure_credentials.create_storage_account
+      end
     end
   end
 
   def test_create_storage_account_exception
     raise_exception = proc { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
-      @storage_accounts.stub :create, raise_exception do
-        assert_raises(RuntimeError) { @azure_credentials.create_storage_account(@storage_account_arguments) }
-      end
+    @storage_accounts.stub :create, raise_exception do
+      assert_raises(RuntimeError) { @azure_credentials.create_storage_account(@storage_account_arguments) }
+    end
   end
 end

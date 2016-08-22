@@ -4,14 +4,14 @@ module Fog
       # This class provides the actual implemention for service calls.
       class Real
         def delete_storage_account(resource_group, name)
-          Fog::Logger.debug "Deleting Storage Account: #{name}."
+          msg = "Deleting Storage Account: #{name} in Resource Group #{resource_group}."
+          Fog::Logger.debug msg
           begin
             @storage_mgmt_client.storage_accounts.delete(resource_group, name)
             Fog::Logger.debug "Storage Account #{name} deleted successfully."
             true
           rescue  MsRestAzure::AzureOperationError => e
-            msg = "Exception deleting Storage Account #{name} in Resource Group #{resource_group}. #{e.body['error']['message']}"
-            raise msg
+            raise_azure_exception(e, msg)
           end
         end
       end

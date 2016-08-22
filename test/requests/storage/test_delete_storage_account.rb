@@ -10,9 +10,9 @@ class TestDeleteStorageAccount < Minitest::Test
   end
 
   def test_delete_storage_account_success
-      @storage_accounts.stub :delete, nil do
-        assert @azure_credentials.delete_storage_account('gateway-RG', 'fog_test_storage_account')
-      end
+    @storage_accounts.stub :delete, nil do
+      assert @azure_credentials.delete_storage_account('gateway-RG', 'fog_test_storage_account')
+    end
   end
 
   def test_delete_storage_account_failure
@@ -21,8 +21,8 @@ class TestDeleteStorageAccount < Minitest::Test
 
   def test_delete_storage_account_exception
     raise_exception = proc { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
-      @storage_accounts.stub :delete, raise_exception do
-        assert_raises(RuntimeError) { @azure_credentials.delete_storage_account('gateway-RG', 'fog_test_storage_account') }
+    @storage_accounts.stub :delete, raise_exception do
+      assert_raises(RuntimeError) { @azure_credentials.delete_storage_account('gateway-RG', 'fog_test_storage_account') }
     end
   end
 end

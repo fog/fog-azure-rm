@@ -116,7 +116,9 @@ Get access keys of a storage account
 
 ```ruby
 keys_hash = storage_acc.get_access_keys
-puts "#{keys_hash['key1']} #{keys_hash['key2']}"
+keys_hash.each do |keys|
+  puts "#{keys.key_name}:  #{keys.value}"
+end
 ```
 
 ## Destroy a single Storage Account

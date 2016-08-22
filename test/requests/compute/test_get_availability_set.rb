@@ -18,7 +18,7 @@ class TestGetAvailabilitySet < Minitest::Test
   def test_list_availability_set_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @availability_sets.stub :get, response do
-      assert_raises(Fog::AzureRm::OperationError) { @service.get_availability_set('myrg1', 'myavset1') }
+      assert_raises(RuntimeError) { @service.get_availability_set('myrg1', 'myavset1') }
     end
   end
 end

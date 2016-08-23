@@ -4,12 +4,12 @@ module Fog
       # Real class for TrafficManager Request
       class Real
         def list_traffic_manager_profiles(resource_group)
-          log_listing = "Listing Traffic Manager Profiles in Resource Group: #{resource_group}."
-          Fog::Logger.debug log_listing
+          msg = "Listing Traffic Manager Profiles in Resource Group: #{resource_group}."
+          Fog::Logger.debug msg
           begin
             profiles = @traffic_mgmt_client.profiles.list_all_in_resource_group(resource_group)
           rescue MsRestAzure::AzureOperationError => e
-            raise_azure_exception(e, log_listing)
+            raise_azure_exception(e, msg)
           end
           Fog::Logger.debug "Traffic Manager Profiles listed successfully in Resource Group: #{resource_group}"
           profiles.value

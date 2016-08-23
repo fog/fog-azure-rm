@@ -4,13 +4,13 @@ module Fog
       # Real class for TrafficManager Request
       class Real
         def create_traffic_manager_endpoint(resource_group, name, traffic_manager_profile_name, type, target_resource_id, target, weight, priority, endpoint_location, min_child_endpoints)
-          log_creating = "Creating Traffic Manager Endpoint: #{name}."
-          Fog::Logger.debug log_creating
+          msg = "Creating Traffic Manager Endpoint: #{name}."
+          Fog::Logger.debug msg
           endpoint_parameters = get_endpoint_parameters(target_resource_id, target, weight, priority, endpoint_location, min_child_endpoints)
           begin
             traffic_manager_endpoint = @traffic_mgmt_client.endpoints.create_or_update(resource_group, traffic_manager_profile_name, type, name, endpoint_parameters)
           rescue MsRestAzure::AzureOperationError => e
-            raise_azure_exception(e, log_creating)
+            raise_azure_exception(e, msg)
           end
           traffic_manager_endpoint
         end

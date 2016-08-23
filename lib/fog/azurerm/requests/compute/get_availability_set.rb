@@ -1,18 +1,15 @@
-FAULT_DOMAIN_COUNT = 3
-UPDATE_DOMAIN_COUNT = 5
-
 module Fog
   module Compute
     class AzureRM
       # This class provides the actual implementation for service call.
       class Real
         def get_availability_set(resource_group, name)
-          log_message = "Listing Availability Set: #{name} in Resource Group: #{resource_group}"
-          Fog::Logger.debug log_message
+          msg = "Listing Availability Set: #{name} in Resource Group: #{resource_group}"
+          Fog::Logger.debug msg
           begin
             @compute_mgmt_client.availability_sets.get(resource_group, name)
           rescue MsRestAzure::AzureOperationError => e
-            raise_azure_exception(e, log_message)
+            raise_azure_exception(e, msg)
           end
         end
       end

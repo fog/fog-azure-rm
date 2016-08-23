@@ -3,7 +3,7 @@ module ApiStub
     module Network
       # Mock class for Network Security Group Requests
       class NetworkSecurityGroup
-        def self.create_network_security_group_response(client)
+        def self.create_network_security_group_response(network_client)
           nsg = '{
              "name":"fog-test-nsg",
              "id":"/subscriptions/#####/resourceGroups/fog-test-rg/providers/Microsoft.Network/networkSecurityGroups/fog-test-nsg",
@@ -65,10 +65,10 @@ module ApiStub
              }
           }'
           result_mapper = Azure::ARM::Network::Models::NetworkSecurityGroup.mapper
-          client.deserialize(result_mapper, JSON.load(nsg), 'result.body')
+          network_client.deserialize(result_mapper, JSON.load(nsg), 'result.body')
         end
 
-        def self.add_security_rules_response(client)
+        def self.add_security_rules_response(network_client)
           nsg = '{
              "name":"fog-test-nsg",
              "id":"/subscriptions/#####/resourceGroups/fog-test-rg/providers/Microsoft.Network/networkSecurityGroups/fog-test-nsg",
@@ -144,10 +144,10 @@ module ApiStub
              }
           }'
           result_mapper = Azure::ARM::Network::Models::NetworkSecurityGroup.mapper
-          client.deserialize(result_mapper, JSON.load(nsg), 'result.body')
+          network_client.deserialize(result_mapper, JSON.load(nsg), 'result.body')
         end
 
-        def self.list_network_security_group_response(client)
+        def self.list_network_security_group_response(network_client)
           nsg_list = '{
             "value":[
               {
@@ -217,7 +217,7 @@ module ApiStub
             ]
           }'
           result_mapper = Azure::ARM::Network::Models::NetworkInterfaceListResult.mapper
-          client.deserialize(result_mapper, JSON.load(nsg_list), 'result.body')
+          network_client.deserialize(result_mapper, JSON.load(nsg_list), 'result.body')
         end
       end
     end

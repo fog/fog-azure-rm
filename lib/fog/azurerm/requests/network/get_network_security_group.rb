@@ -4,15 +4,17 @@ module Fog
       # Real class for Network Security Group Request
       class Real
         def get_network_security_group(resource_group_name, security_group_name)
-          Fog::Logger.debug "Getting Network Security Group #{security_group_name} from Resource Group #{resource_group_name}."
+          msg = "Getting Network Security Group #{security_group_name} from Resource Group #{resource_group_name}."
+          Fog::Logger.debug msg
+
           begin
             security_group = @network_client.network_security_groups.get(resource_group_name, security_group_name)
-            Fog::Logger.debug "Network Security Group #{security_group_name} retrieved successfully."
-            security_group
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Exception getting Network Security Group #{security_group_name} from Resource Group '#{resource_group_name}'. #{e.body['error']['message']}."
-            raise msg
+            raise_azure_exception(e, msg)
           end
+
+          Fog::Logger.debug "Network Security Group #{security_group_name} retrieved successfully."
+          security_group
         end
       end
 
@@ -154,8 +156,8 @@ module Fog
                 'provisioningState' => 'Succeeded'
               }
           }
-          result_mapper = Azure::ARM::Network::Models::NetworkSecurityGroup.mapper
-          @network_client.deserialize(result_mapper, network_security_group, 'result.body')
+          nsg_mapper = Azure::ARM::Network::Models::NetworkSecurityGroup.mapper
+          @network_client.deserialize(nsg_mapper, network_security_group, 'result.body')
         end
       end
     end

@@ -4,15 +4,17 @@ module Fog
       # Real class for Network Request
       class Real
         def delete_network_security_group(resource_group, name)
-          Fog::Logger.debug "Deleting Network Security Group: #{name}..."
+          msg = "Deleting Network Security Group: #{name}"
+          Fog::Logger.debug msg
+
           begin
             @network_client.network_security_groups.delete(resource_group, name)
-            Fog::Logger.debug "Network Security Group #{name} deleted successfully."
-            true
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Exception deleting Network Security Group #{name} in Resource Group: #{resource_group}. #{e.body['error']['message']}"
-            raise msg
+            raise_azure_exception(e, msg)
           end
+
+          Fog::Logger.debug "Network Security Group #{name} deleted successfully."
+          true
         end
       end
 

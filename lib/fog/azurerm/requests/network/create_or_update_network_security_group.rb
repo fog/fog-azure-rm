@@ -4,16 +4,19 @@ module Fog
       # Real class for Network Request
       class Real
         def create_or_update_network_security_group(resource_group_name, security_group_name, location, security_rules)
-          Fog::Logger.debug "Creating/Updating Network Security Group #{security_group_name} in Resource Group #{resource_group_name}."
+          msg = "Creating/Updating Network Security Group #{security_group_name} in Resource Group #{resource_group_name}."
+          Fog::Logger.debug msg
+
           security_group = get_security_group_object(security_rules, location)
+
           begin
             security_group = @network_client.network_security_groups.begin_create_or_update(resource_group_name, security_group_name, security_group)
-            Fog::Logger.debug "Network Security Group #{security_group_name} Created/Updated Successfully!"
-            security_group
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Exception creating/updating Network Security Group #{security_group_name} in Resource Group: #{resource_group_name}. #{e.body['error']['message']}"
-            raise msg
+            raise_azure_exception(e, msg)
           end
+
+          Fog::Logger.debug "Network Security Group #{security_group_name} Created/Updated Successfully!"
+          security_group
         end
 
         private
@@ -165,8 +168,8 @@ module Fog
                 'provisioningState' => 'Updating'
               }
           }
-          result_mapper = Azure::ARM::Network::Models::NetworkSecurityGroup.mapper
-          @network_client.deserialize(result_mapper, network_security_group, 'result.body')
+          nsg_mapper = Azure::ARM::Network::Models::NetworkSecurityGroup.mapper
+          @network_client.deserialize(nsg_mapper, network_security_group, 'result.body')
         end
       end
     end

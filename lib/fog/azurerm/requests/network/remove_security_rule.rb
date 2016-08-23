@@ -4,18 +4,21 @@ module Fog
       # Real class for Network Request
       class Real
         def remove_security_rule(resource_group_name, security_group_name, security_rule_name)
-          Fog::Logger.debug "Deleting security rule #{security_rule_name} from Network Security Group #{security_group_name}."
+          msg = "Deleting security rule #{security_rule_name} from Network Security Group #{security_group_name}."
+          Fog::Logger.debug msg
+
           nsg = @network_client.network_security_groups.get(resource_group_name, security_group_name)
           updated_security_rule_list = remove_security_rule_from_list(nsg.security_rules, security_rule_name)
           nsg.security_rules = updated_security_rule_list
+
           begin
             nsg = @network_client.network_security_groups.begin_create_or_update(resource_group_name, security_group_name, nsg)
-            Fog::Logger.debug "Security Rule #{security_rule_name} deleted from Network Security Group #{security_group_name} successfully!"
-            nsg
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Exception in deleting Security Rule #{security_rule_name} from Network Security Group #{security_group_name} . #{e.body['error']['message']}"
-            raise msg
+            raise_azure_exception(e, msg)
           end
+
+          Fog::Logger.debug "Security Rule #{security_rule_name} deleted from Network Security Group #{security_group_name} successfully!"
+          nsg
         end
 
         def remove_security_rule_from_list(security_rule_list, rule_name)
@@ -145,8 +148,8 @@ module Fog
                 'provisioningState' => 'Updating'
               }
           }
-          result_mapper = Azure::ARM::Network::Models::NetworkSecurityGroup.mapper
-          @network_client.deserialize(result_mapper, network_security_group, 'result.body')
+          nsg_mapper = Azure::ARM::Network::Models::NetworkSecurityGroup.mapper
+          @network_client.deserialize(nsg_mapper, network_security_group, 'result.body')
         end
       end
     end

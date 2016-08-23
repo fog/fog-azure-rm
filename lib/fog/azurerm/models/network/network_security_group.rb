@@ -18,8 +18,8 @@ module Fog
           hash['name'] = nsg.name
           hash['resource_group'] = get_resource_from_resource_id(nsg.id, RESOURCE_GROUP_NAME)
           hash['location'] = nsg.location
-          hash['network_interfaces_ids'] = nsg.network_interfaces.map { |item| item.id } unless nsg.network_interfaces.nil?
-          hash['subnets_ids'] = nsg.subnets.map { |item| item.id } unless nsg.subnets.nil?
+          hash['network_interfaces_ids'] = nsg.network_interfaces.map(&:id) unless nsg.network_interfaces.nil?
+          hash['subnets_ids'] = nsg.subnets.map(&:id) unless nsg.subnets.nil?
           hash['security_rules'] = []
           hash['default_security_rules'] = []
 

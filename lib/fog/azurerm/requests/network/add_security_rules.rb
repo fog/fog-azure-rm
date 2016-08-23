@@ -4,21 +4,24 @@ module Fog
       # Real class for Network Request
       class Real
         def add_security_rules(resource_group_name, security_group_name, security_rules)
-          Fog::Logger.debug "Updating security rules in Network Security Group #{security_group_name}."
+          msg = "Updating security rules in Network Security Group #{security_group_name}."
+          Fog::Logger.debug msg
+
           nsg = @network_client.network_security_groups.get(resource_group_name, security_group_name)
           security_rules_objects = get_security_rule_objects(security_rules)
+
           security_rules_objects.each do |security_rule|
             nsg.security_rules.push(security_rule)
           end
 
           begin
             nsg = @network_client.network_security_groups.begin_create_or_update(resource_group_name, security_group_name, nsg)
-            Fog::Logger.debug "Security Rules updated in Network Security Group #{security_group_name} successfully!"
-            nsg
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Exception updating Security Rules in Network Security Group #{security_group_name} . #{e.body['error']['message']}"
-            raise msg
+            raise_azure_exception(e, msg)
           end
+
+          Fog::Logger.debug "Security Rules updated in Network Security Group #{security_group_name} successfully!"
+          nsg
         end
       end
 
@@ -142,8 +145,8 @@ module Fog
                 'provisioningState' => 'Updating'
               }
           }
-          result_mapper = Azure::ARM::Network::Models::NetworkSecurityGroup.mapper
-          @network_client.deserialize(result_mapper, network_security_group, 'result.body')
+          nsg_mapper = Azure::ARM::Network::Models::NetworkSecurityGroup.mapper
+          @network_client.deserialize(nsg_mapper, network_security_group, 'result.body')
         end
       end
     end

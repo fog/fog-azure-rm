@@ -4,14 +4,17 @@ module Fog
       # Real class for Network Request
       class Real
         def list_network_security_groups(resource_group)
-          Fog::Logger.debug "Getting list of Network Security Groups from Resource Group #{resource_group}."
+          msg = "Getting list of Network Security Groups from Resource Group #{resource_group}."
+          Fog::Logger.debug msg
+
           begin
             nsg_list_result = @network_client.network_security_groups.list(resource_group)
-            nsg_list_result.value
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Exception listing Network Security Groups from Resource Group '#{resource_group}'. #{e.body['error']['message']}."
-            raise msg
+            raise_azure_exception(e, msg)
           end
+
+          Fog::Logger.debug "Network Security Groups list retrieved successfully from Resource Group #{resource_group}."
+          nsg_list_result.value
         end
       end
 
@@ -157,8 +160,8 @@ module Fog
               }
             ]
           }
-          result_mapper = Azure::ARM::Network::Models::NetworkSecurityGroup.mapper
-          @network_client.deserialize(result_mapper, nsg_list_result, 'result.body').value
+          nsg_mapper = Azure::ARM::Network::Models::NetworkSecurityGroup.mapper
+          @network_client.deserialize(nsg_mapper, nsg_list_result, 'result.body').value
         end
       end
     end

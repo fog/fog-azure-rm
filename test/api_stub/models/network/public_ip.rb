@@ -27,8 +27,8 @@ module ApiStub
                 }
              }
           }'
-          result_mapper = Azure::ARM::Network::Models::PublicIPAddress.mapper
-          client.deserialize(result_mapper, JSON.load(public_ip), 'result.body')
+          public_ip_mapper = Azure::ARM::Network::Models::PublicIPAddress.mapper
+          client.deserialize(public_ip_mapper, JSON.load(public_ip), 'result.body')
         end
       end
     end

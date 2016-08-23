@@ -6,9 +6,9 @@ module Fog
         def get_public_ip(resource_group_name, public_ip_name)
           Fog::Logger.debug "Getting Public IP #{public_ip_name} from Resource Group #{resource_group_name}"
           begin
-            result = @network_client.public_ipaddresses.get(resource_group_name, public_ip_name)
+            public_ip = @network_client.public_ipaddresses.get(resource_group_name, public_ip_name)
             Fog::Logger.debug "Public IP #{public_ip_name} retrieved successfully"
-            result
+            public_ip
           rescue MsRestAzure::AzureOperationError => e
             raise Fog::AzureRm::OperationError.new(e)
           end

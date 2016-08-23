@@ -4,9 +4,9 @@ require File.expand_path '../../test_helper', __dir__
 class TestPublicIp < Minitest::Test
   def setup
     @service = Fog::Network::AzureRM.new(credentials)
-    client = @service.instance_variable_get(:@network_client)
+    network_client = @service.instance_variable_get(:@network_client)
     @public_ip = public_ip(@service)
-    @response = ApiStub::Models::Network::PublicIp.create_public_ip_response(client)
+    @response = ApiStub::Models::Network::PublicIp.create_public_ip_response(network_client)
   end
 
   def test_model_methods

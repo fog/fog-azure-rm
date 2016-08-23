@@ -4,19 +4,19 @@ require File.expand_path '../../test_helper', __dir__
 class TestCreatePublicIp < Minitest::Test
   def setup
     @service = Fog::Network::AzureRM.new(credentials)
-    @client = @service.instance_variable_get(:@network_client)
-    @public_ips = @client.public_ipaddresses
+    @network_client = @service.instance_variable_get(:@network_client)
+    @public_ips = @network_client.public_ipaddresses
   end
 
   def test_create_public_ip_success
-    mocked_response = ApiStub::Requests::Network::PublicIp.create_public_ip_response(@client)
+    mocked_response = ApiStub::Requests::Network::PublicIp.create_public_ip_response(@network_client)
     @public_ips.stub :create_or_update, mocked_response do
       assert_equal @service.create_public_ip('fog-test-rg', 'fog-test-public-ip', 'West US', 'Dynamic'), mocked_response
     end
   end
 
   def test_create_public_ip_argument_error_failure
-    mocked_response = ApiStub::Requests::Network::PublicIp.create_public_ip_response(@client)
+    mocked_response = ApiStub::Requests::Network::PublicIp.create_public_ip_response(@network_client)
     @public_ips.stub :create_or_update, mocked_response do
       assert_raises ArgumentError do
         @service.create_public_ip('fog-test-rg', 'fog-test-public-ip', 'West US')

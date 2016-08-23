@@ -1,7 +1,7 @@
 module Fog
   module Storage
     class AzureRM
-      # This class provides the actual implemention for service calls.
+      # This class provides the actual implementation for service calls.
       class Real
         def delete_disk(resource_group, storage_account_name, blob_name)
           msg = "Deleting Disk: #{blob_name}."
@@ -12,15 +12,15 @@ module Fog
           blob_service = Azure::Storage::Blob::BlobService.new(client: client)
           begin
             result = blob_service.delete_blob('vhds', "#{blob_name}.vhd")
-            if result.nil?
-              Fog::Logger.debug "Successfully deleted Disk: #{blob_name}."
-              true
-            else
-              Fog::Logger.debug 'Error deleting Disk.'
-              false
-            end
           rescue Azure::Core::Http::HTTPError => e
             raise_azure_exception(e, msg)
+          end
+          if result.nil?
+            Fog::Logger.debug "Successfully deleted Disk: #{blob_name}."
+            true
+          else
+            Fog::Logger.debug 'Error deleting Disk.'
+            false
           end
         end
       end

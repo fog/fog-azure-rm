@@ -4,8 +4,9 @@ require File.expand_path '../../test_helper', __dir__
 class TestNetworkSecurityGroups < Minitest::Test
   def setup
     @service = Fog::Network::AzureRM.new(credentials)
+    client = @service.instance_variable_get(:@network_client)
     @network_security_groups = Fog::Network::AzureRM::NetworkSecurityGroups.new(resource_group: 'fog-test-rg', service: @service)
-    @response = [ApiStub::Models::Network::NetworkSecurityGroup.create_network_security_group_response]
+    @response = [ApiStub::Models::Network::NetworkSecurityGroup.create_network_security_group_response(client)]
   end
 
   def test_collection_methods

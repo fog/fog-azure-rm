@@ -6,8 +6,7 @@ module Fog
         def delete_network_security_group(resource_group, name)
           Fog::Logger.debug "Deleting Network Security Group: #{name}..."
           begin
-            promise = @network_client.network_security_groups.delete(resource_group, name)
-            promise.value!
+            @network_client.network_security_groups.delete(resource_group, name)
             Fog::Logger.debug "Network Security Group #{name} deleted successfully."
             true
           rescue MsRestAzure::AzureOperationError => e

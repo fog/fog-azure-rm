@@ -6,9 +6,9 @@ module Fog
         def get_network_security_group(resource_group_name, security_group_name)
           Fog::Logger.debug "Getting Network Security Group #{security_group_name} from Resource Group #{resource_group_name}."
           begin
-            promise = @network_client.network_security_groups.get(resource_group_name, security_group_name)
-            result = promise.value!
-            Azure::ARM::Network::Models::NetworkSecurityGroup.serialize_object(result.body)
+            security_group = @network_client.network_security_groups.get(resource_group_name, security_group_name)
+            Fog::Logger.debug "Network Security Group #{security_group_name} retrieved successfully."
+            security_group
           rescue MsRestAzure::AzureOperationError => e
             msg = "Exception getting Network Security Group #{security_group_name} from Resource Group '#{resource_group_name}'. #{e.body['error']['message']}."
             raise msg
@@ -19,7 +19,7 @@ module Fog
       # Mock class for Network Security Group Request
       class Mock
         def get_network_security_group(resource_group_name, security_group_name)
-          {
+          network_security_group = {
             'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group_name}/providers/Microsoft.Network/networkSecurityGroups/#{security_group_name}",
             'name' => security_group_name,
             'type' => 'Microsoft.Network/networkSecurityGroups',
@@ -154,6 +154,8 @@ module Fog
                 'provisioningState' => 'Succeeded'
               }
           }
+          result_mapper = Azure::ARM::Network::Models::NetworkSecurityGroup.mapper
+          @network_client.deserialize(result_mapper, network_security_group, 'result.body')
         end
       end
     end

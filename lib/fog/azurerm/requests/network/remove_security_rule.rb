@@ -5,16 +5,13 @@ module Fog
       class Real
         def remove_security_rule(resource_group_name, security_group_name, security_rule_name)
           Fog::Logger.debug "Deleting security rule #{security_rule_name} from Network Security Group #{security_group_name}."
-          promise = @network_client.network_security_groups.get(resource_group_name, security_group_name)
-          result = promise.value!
-          nsg = result.body
-          updated_security_rule_list = remove_security_rule_from_list(nsg.properties.security_rules, security_rule_name)
-          nsg.properties.security_rules = updated_security_rule_list
+          nsg = @network_client.network_security_groups.get(resource_group_name, security_group_name)
+          updated_security_rule_list = remove_security_rule_from_list(nsg.security_rules, security_rule_name)
+          nsg.security_rules = updated_security_rule_list
           begin
-            promise = @network_client.network_security_groups.begin_create_or_update(resource_group_name, security_group_name, nsg)
-            result = promise.value!
+            nsg = @network_client.network_security_groups.begin_create_or_update(resource_group_name, security_group_name, nsg)
             Fog::Logger.debug "Security Rule #{security_rule_name} deleted from Network Security Group #{security_group_name} successfully!"
-            Azure::ARM::Network::Models::NetworkSecurityGroup.serialize_object(result.body)
+            nsg
           rescue MsRestAzure::AzureOperationError => e
             msg = "Exception in deleting Security Rule #{security_rule_name} from Network Security Group #{security_group_name} . #{e.body['error']['message']}"
             raise msg
@@ -31,7 +28,7 @@ module Fog
       # Mock class for Network Request
       class Mock
         def remove_security_rule(resource_group_name, security_group_name, _security_rule_name)
-          {
+          network_security_group = {
             'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group_name}/providers/Microsoft.Network/networkSecurityGroups/#{name}",
             'name' => security_group_name,
             'type' => 'Microsoft.Network/networkSecurityGroups',
@@ -148,6 +145,8 @@ module Fog
                 'provisioningState' => 'Updating'
               }
           }
+          result_mapper = Azure::ARM::Network::Models::NetworkSecurityGroup.mapper
+          @network_client.deserialize(result_mapper, network_security_group, 'result.body')
         end
       end
     end

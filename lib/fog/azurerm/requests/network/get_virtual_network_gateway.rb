@@ -10,7 +10,7 @@ module Fog
             network_gateway = @network_client.virtual_network_gateways.get(resource_group_name, network_gateway_name).value!
             Azure::ARM::Network::Models::VirtualNetworkGateway.serialize_object(network_gateway.body)
           rescue MsRestAzure::AzureOperationError => e
-            raise generate_exception_message(msg, e)
+            raise_azure_exception(e, msg)
           end
         end
       end

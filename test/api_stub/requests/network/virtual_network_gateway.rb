@@ -15,9 +15,9 @@ module ApiStub
               "defaultSites": [ "mysite1" ]
             }
           }'
-          result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
-          result.body = Azure::ARM::Network::Models::VirtualNetworkGateway.deserialize_object(JSON.load(body))
-          result
+          network_gateway = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
+          network_gateway.body = Azure::ARM::Network::Models::VirtualNetworkGateway.deserialize_object(JSON.load(body))
+          network_gateway
         end
 
         def self.list_virtual_network_gateway_response
@@ -37,9 +37,9 @@ module ApiStub
               }
             ]
           }'
-          result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
-          result.body = Azure::ARM::Network::Models::VirtualNetworkGatewayListResult.deserialize_object(JSON.load(body))
-          result
+          network_gateway = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
+          network_gateway.body = Azure::ARM::Network::Models::VirtualNetworkGatewayListResult.deserialize_object(JSON.load(body))
+          network_gateway
         end
 
         def self.delete_virtual_network_gateway_response

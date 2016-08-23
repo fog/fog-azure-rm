@@ -11,7 +11,7 @@ module Fog
             Fog::Logger.debug "Virtual Network Gateway #{virtual_network_gateway_name} Deleted Successfully."
             true
           rescue  MsRestAzure::AzureOperationError => e
-            raise generate_exception_message(msg, e)
+            raise_azure_exception(e, msg)
           end
         end
       end

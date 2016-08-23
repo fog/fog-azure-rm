@@ -148,8 +148,8 @@ module Fog
               'gatewayType' => 'DynamicRouting',
               'gatewaySize' => 'Default',
               'bgpEnabled' => true,
-              'vpnClientAddressPool' => [ '{vpnClientAddressPoolPrefix}' ],
-              'defaultSites' => [ 'mysite1' ]
+              'vpnClientAddressPool' => ['{vpnClientAddressPoolPrefix}'],
+              'defaultSites' => ['mysite1']
             }
           }
         end

@@ -19,21 +19,21 @@ module Fog
       class Mock
         def get_virtual_network_gateway(*)
           {
-              'name' => 'myvirtualgateway1',
-              'id' => '/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/microsoft.network/virtualNetworkGateways/myvirtualgateway1',
-              'location' => 'West US',
-              'tags' => { 'key1' => 'value1' },
-              'properties' => {
-                  'gatewayType' => 'DynamicRouting',
-                  'gatewaySize' => 'Default',
-                  'subnet' => {
-                      'id' => '/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/microsoft.network/virtualNetworks/<virtualNetworkName>/subnets/subnet1'
-                  },
-                  'vipAddress' => '{vipAddress}',
-                  'bgpEnabled' => true,
-                  'vpnClientAddressPool' => [ '{vpnClientAddressPoolPrefix}' ],
-                  'defaultSites' => [ 'mysite1' ]
-              }
+            'name' => 'myvirtualgateway1',
+            'id' => '/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/microsoft.network/virtualNetworkGateways/myvirtualgateway1',
+            'location' => 'West US',
+            'tags' => { 'key1' => 'value1' },
+            'properties' => {
+              'gatewayType' => 'DynamicRouting',
+              'gatewaySize' => 'Default',
+              'subnet' => {
+                'id' => '/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/microsoft.network/virtualNetworks/<virtualNetworkName>/subnets/subnet1'
+              },
+              'vipAddress' => '{vipAddress}',
+              'bgpEnabled' => true,
+              'vpnClientAddressPool' => ['{vpnClientAddressPoolPrefix}'],
+              'defaultSites' => ['mysite1']
+            }
           }
         end
       end

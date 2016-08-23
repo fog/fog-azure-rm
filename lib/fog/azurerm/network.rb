@@ -79,10 +79,6 @@ module Fog
       collection :network_security_groups
       model :network_security_rule
       model :path_rule
-      model :application_gateway_probe
-      model :application_gateway_request_routing_rule
-      model :application_gateway_ssl_certificate
-      model :application_gateway_url_path_map
       model :vpn_client_configuration
       model :vpn_client_revoked_certificates
       model :vpn_client_root_certificates

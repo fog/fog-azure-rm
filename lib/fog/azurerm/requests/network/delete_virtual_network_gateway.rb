@@ -10,7 +10,7 @@ module Fog
             @network_client.virtual_network_gateways.delete(resource_group_name, virtual_network_gateway_name).value!
             Fog::Logger.debug "Virtual Network Gateway #{virtual_network_gateway_name} Deleted Successfully."
             true
-          rescue  MsRestAzure::AzureOperationError => e
+          rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
         end

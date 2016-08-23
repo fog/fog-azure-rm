@@ -1,18 +1,18 @@
 module Fog
   module Storage
     class AzureRM
-      # This class provides the actual implemention for service calls.
+      # This class provides the actual implementation for service calls.
       class Real
         def create_container(name, options = {})
           msg = "Creating container: #{name}."
           Fog::Logger.debug msg
           begin
             container = @blob_client.create_container(name, options)
-            Fog::Logger.debug "Container #{name} created successfully."
-            container
           rescue Azure::Core::Http::HTTPError => ex
             raise_azure_exception(ex, msg)
           end
+          Fog::Logger.debug "Container #{name} created successfully."
+          container
         end
       end
 

@@ -4,22 +4,23 @@ module Fog
       # This class provides the actual implemention for service calls.
       class Real
         def get_blob_metadata(container_name, name)
-          Fog::Logger.debug "Get Blob #{name} metadata in container #{container_name}."
+          msg = "Getting Blob #{name} metadata in container #{container_name}."
+          Fog::Logger.debug msg
           begin
               blob = @blob_client.get_blob_metadata(container_name, name)
               Fog::Logger.debug "Getting metadata of blob #{name} successfully."
               blob.metadata
             rescue Azure::Core::Http::HTTPError => ex
-              raise "Exception in getting metadata of Blob #{name}: #{ex.inspect}"
+              raise_azure_exception(ex, msg)
             end
         end
       end
       # This class provides the mock implementation for unit tests.
       class Mock
-        def get_blob_metadata(container_name, name)
+        def get_blob_metadata(*)
           {
-            'container-name' => container_name,
-            'blob-name' => name,
+            'container-name' => 'testcontainer1',
+            'blob-name' => 'testblob',
             'category' => 'Images',
             'resolution' => 'High'
           }

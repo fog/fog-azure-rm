@@ -4,13 +4,14 @@ module Fog
       # This class provides the actual implemention for service calls.
       class Real
         def list_containers(options = {})
-          Fog::Logger.debug "Listing containers."
+          msg = "Listing containers."
+          Fog::Logger.debug msg
           begin
             containers = @blob_client.list_containers(options)
             Fog::Logger.debug 'Listing containers successfully.'
             containers
           rescue Azure::Core::Http::HTTPError => ex
-            raise "Exception in listing containers: #{ex.inspect}"
+            raise_azure_exception(ex, msg)
           end
         end
       end

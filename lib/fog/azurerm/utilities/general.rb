@@ -13,7 +13,7 @@ def get_record_type(type)
 end
 
 def raise_azure_exception(exception, msg)
-  message = "Exception #{msg} #{exception.body['error']['message'] unless exception.body['error']['message'].nil?} Type: #{exception.class} \n "
+  message = "Exception in #{msg} #{exception.body['error']['message'] unless exception.body['error']['message'].nil?} Type: #{exception.class} \n "
   Fog::Logger.debug exception.backtrace
   raise message
 end

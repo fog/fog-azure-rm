@@ -4,13 +4,14 @@ module Fog
       # This class provides the actual implemention for service calls.
       class Real
         def delete_container(name, options = {})
-          Fog::Logger.debug "Deleting container: #{name}."
+          msg = "Deleting container: #{name}."
+          Fog::Logger.debug msg
           begin
             @blob_client.delete_container(name, options)
             Fog::Logger.debug "Container #{name} deleted successfully."
             true
           rescue Azure::Core::Http::HTTPError => ex
-            raise "Exception in deleting the container #{name}: #{ex.inspect}"
+            raise_azure_exception(ex, msg)
           end
         end
       end

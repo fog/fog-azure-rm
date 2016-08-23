@@ -10,7 +10,7 @@ module Fog
             query_filter += tag_value.nil? ? '' : "and tagvalue eq '#{tag_value}'"
             begin
               resources = @rmc.resources.list_as_lazy(query_filter)
-              resources.next_link = ''
+              resources.next_link = '' if resources.next_link.nil?
               resources.value
             rescue MsRestAzure::AzureOperationError => e
               raise Fog::AzureRm::OperationError.new(e)

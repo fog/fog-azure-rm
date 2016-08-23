@@ -69,7 +69,7 @@ vnet = network.virtual_networks.get(resource_group.name, 'testvnet')
 ######################                Add/Remove DNS Servers to/from Virtual Network           #########################
 ########################################################################################################################
 
-vnet.add_dns_servers(%w(10.3.0.0, 10.4.0.0))
+vnet.add_dns_servers(%w(10.3.0.0 10.4.0.0))
 
 vnet.remove_dns_servers(%w(10.3.0.0 10.4.0.0))
 

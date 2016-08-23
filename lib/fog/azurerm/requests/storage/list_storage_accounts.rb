@@ -1,17 +1,17 @@
 module Fog
   module Storage
     class AzureRM
-      # This class provides the actual implemention for service calls.
+      # This class provides the actual implementation for service calls.
       class Real
         def list_storage_accounts
           msg = "Listing Storage Accounts."
           Fog::Logger.debug msg
           begin
             result = @storage_mgmt_client.storage_accounts.list
-            result.value
           rescue  MsRestAzure::AzureOperationError => e
-            generic_exception(e, msg)
+            raise_azure_exception(e, msg)
           end
+          result.value
         end
       end
       # This class provides the mock implementation for unit tests.

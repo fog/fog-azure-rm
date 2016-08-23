@@ -1,14 +1,14 @@
 require File.expand_path '../../test_helper', __dir__
 
-# Create Storage Account Class
+# Test Class for Create Storage Account Request
 class TestCreateStorageAccount < Minitest::Test
   # This class posesses the test cases for the requests of storage account service.
   def setup
     @azure_credentials = Fog::Storage::AzureRM.new(credentials)
-    @client = @azure_credentials.instance_variable_get(:@storage_mgmt_client)
+    @storage_mgmt_client = @azure_credentials.instance_variable_get(:@storage_mgmt_client)
     @storage_accounts = @client.storage_accounts
     @storage_account_arguments = ApiStub::Requests::Storage::StorageAccount.storage_account_arguments
-    @storage_acc_obj = ApiStub::Requests::Storage::StorageAccount.storage_account_request(@client)
+    @storage_acc_obj = ApiStub::Requests::Storage::StorageAccount.storage_account_request(@storage_mgmt_client)
   end
 
   def test_create_storage_account_success

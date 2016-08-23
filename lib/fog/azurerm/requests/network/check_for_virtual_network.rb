@@ -8,7 +8,7 @@ module Fog
             @network_client.virtual_networks.get(resource_group, name)
             return true
           rescue MsRestAzure::AzureOperationError => e
-            raise Fog::AzureRm::OperationError.new(e) if e.body['error']['code'] == 'ResourceGroupNotFound'
+            raise_azure_exception(e, "Finding Virtual Network #{name}") if e.body['error']['code'] == 'ResourceGroupNotFound'
             return false if e.body['error']['code'] == 'ResourceNotFound'
           end
         end

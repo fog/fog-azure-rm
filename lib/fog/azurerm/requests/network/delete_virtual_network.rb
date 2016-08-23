@@ -10,7 +10,7 @@ module Fog
             Fog::Logger.debug "Virtual Network #{name} deleted successfully."
             true
           rescue MsRestAzure::AzureOperationError => e
-            raise Fog::AzureRm::OperationError.new(e)
+            raise_azure_exception(e, "Deleting Virtual Network: #{name}")
           end
         end
       end

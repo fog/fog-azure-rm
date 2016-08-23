@@ -9,7 +9,7 @@ module Fog
             virtual_networks.next_link = '' if virtual_networks.next_link.nil?
             virtual_networks.value
           rescue MsRestAzure::AzureOperationError => e
-            raise Fog::AzureRm::OperationError.new(e)
+            raise_azure_exception(e, "Listing Virtual Networks in Resource Group #{resource_group}")
           end
         end
       end

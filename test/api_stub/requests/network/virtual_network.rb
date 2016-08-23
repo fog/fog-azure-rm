@@ -2,7 +2,7 @@ module ApiStub
   module Requests
     module Network
       class VirtualNetwork
-        def self.create_virtual_network_response(client)
+        def self.create_virtual_network_response(network_client)
           body = '{
              "name":" fog-test-virtual-network",
              "id":"/subscriptions/{guid}/resourceGroups/fog-test-rg/providers/Microsoft.Network/virtualNetworks/fog-test-virtual-network",
@@ -53,11 +53,11 @@ module ApiStub
                 ]
              }
           }'
-          result_mapper = Azure::ARM::Network::Models::VirtualNetwork.mapper
-          client.deserialize(result_mapper, JSON.load(body), 'result.body')
+          vnet_mapper = Azure::ARM::Network::Models::VirtualNetwork.mapper
+          network_client.deserialize(vnet_mapper, JSON.load(body), 'result.body')
         end
 
-        def self.list_virtual_networks_response(client)
+        def self.list_virtual_networks_response(network_client)
           body = '
             {
               "value": [ {
@@ -112,8 +112,8 @@ module ApiStub
               }
             } ]
           }'
-          result_mapper = Azure::ARM::Network::Models::VirtualNetworkListResult.mapper
-          client.deserialize(result_mapper, JSON.load(body), 'result.body')
+          vnet_mapper = Azure::ARM::Network::Models::VirtualNetworkListResult.mapper
+          network_client.deserialize(vnet_mapper, JSON.load(body), 'result.body')
         end
 
         def self.delete_virtual_network_response

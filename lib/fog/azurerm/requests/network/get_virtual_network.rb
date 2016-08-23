@@ -16,7 +16,7 @@ module Fog
             Fog::Logger.debug "Virtual Network #{virtual_network_name} retrieved successfully."
             result
           rescue  MsRestAzure::AzureOperationError => e
-            raise Fog::AzureRm::OperationError.new(e)
+            raise_azure_exception(e, "Getting Virtual Network: #{virtual_network_name}")
           end
         end
       end

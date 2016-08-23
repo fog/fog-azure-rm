@@ -4,8 +4,8 @@ require File.expand_path '../../test_helper', __dir__
 class TestCreateOrUpdatevirtualNetwork < Minitest::Test
   def setup
     @service = Fog::Network::AzureRM.new(credentials)
-    @client = @service.instance_variable_get(:@network_client)
-    @virtual_networks = @client.virtual_networks
+    @network_client = @service.instance_variable_get(:@network_client)
+    @virtual_networks = @network_client.virtual_networks
 
     @subnets = [{
       name: 'fog-subnet',
@@ -18,7 +18,7 @@ class TestCreateOrUpdatevirtualNetwork < Minitest::Test
   end
 
   def test_create_or_update_virtual_network_success
-    mocked_response = ApiStub::Requests::Network::VirtualNetwork.create_virtual_network_response(@client)
+    mocked_response = ApiStub::Requests::Network::VirtualNetwork.create_virtual_network_response(@network_client)
 
     @virtual_networks.stub :create_or_update, mocked_response do
       assert_equal @service.create_or_update_virtual_network('fog-test-rg', 'fog-test-virtual-network', 'westus', ['10.1.0.5', '10.1.0.6'], @subnets, ['10.1.0.0/16', '10.2.0.0/16']), mocked_response
@@ -26,7 +26,7 @@ class TestCreateOrUpdatevirtualNetwork < Minitest::Test
   end
 
   def test_create_or_update_virtual_network_success_with_address_prefixes_nil
-    mocked_response = ApiStub::Requests::Network::VirtualNetwork.create_virtual_network_response(@client)
+    mocked_response = ApiStub::Requests::Network::VirtualNetwork.create_virtual_network_response(@network_client)
 
     @virtual_networks.stub :create_or_update, mocked_response do
       assert_equal @service.create_or_update_virtual_network('fog-test-rg', 'fog-test-virtual-network', 'westus', ['10.1.0.5', '10.1.0.6'], @subnets, nil), mocked_response
@@ -34,7 +34,7 @@ class TestCreateOrUpdatevirtualNetwork < Minitest::Test
   end
 
   def test_create_or_update_virtual_network_argument_error_failure
-    mocked_response = ApiStub::Requests::Network::VirtualNetwork.create_virtual_network_response(@client)
+    mocked_response = ApiStub::Requests::Network::VirtualNetwork.create_virtual_network_response(@network_client)
 
     @virtual_networks.stub :create_or_update, mocked_response do
       assert_raises ArgumentError do
@@ -47,7 +47,7 @@ class TestCreateOrUpdatevirtualNetwork < Minitest::Test
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
 
     @virtual_networks.stub :create_or_update, response do
-      assert_raises Fog::AzureRm::OperationError do
+      assert_raises RuntimeError do
         @service.create_or_update_virtual_network('fog-test-rg', 'fog-test-virtual-network', 'westus', ['10.1.0.5', '10.1.0.6'], @subnets, ['10.1.0.0/16', '10.2.0.0/16'])
       end
     end

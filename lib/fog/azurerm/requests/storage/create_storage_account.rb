@@ -4,7 +4,8 @@ module Fog
       # This class provides the actual implemention for service calls.
       class Real
         def create_storage_account(storage_account_hash)
-          Fog::Logger.debug "Creating Storage Account: #{storage_account_hash[:name]}."
+          msg = "Creating Storage Account: #{storage_account_hash[:name]}in Resource Group #{storage_account_hash[:resource_group]}."
+          Fog::Logger.debug msg
           storage_account_params = get_storage_account_params(storage_account_hash[:account_type],
                                                               storage_account_hash[:location],
                                                               storage_account_hash[:replication])
@@ -19,8 +20,7 @@ module Fog
             result = Azure::ARM::Storage::Models::StorageAccount.serialize_object(storage_account_body)
             result
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Exception creating Storage Account #{storage_account_hash[:name]} in Resource Group #{storage_account_hash[:resource_group]}. #{e.body['error']['message']}"
-            raise msg
+            raise_azure_exception(e, msg)
           end
         end
 

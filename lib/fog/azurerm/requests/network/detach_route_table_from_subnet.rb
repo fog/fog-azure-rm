@@ -11,7 +11,7 @@ module Fog
             Fog::Logger.debug 'Route Table detached successfully.'
             result
           rescue  MsRestAzure::AzureOperationError => e
-            raise Fog::AzureRm::OperationError.new(e)
+            raise_azure_exception(e, "Detaching Route Table from Subnet: #{subnet_name}")
           end
         end
 

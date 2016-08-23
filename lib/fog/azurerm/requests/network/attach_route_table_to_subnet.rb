@@ -11,7 +11,7 @@ module Fog
             Fog::Logger.debug 'Route Table attached successfully.'
             result
           rescue  MsRestAzure::AzureOperationError => e
-            raise Fog::AzureRm::OperationError.new(e)
+            raise_azure_exception(e, "Attaching Route Table with Subnet: #{subnet_name}")
           end
         end
 

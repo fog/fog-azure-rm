@@ -4,8 +4,8 @@ require File.expand_path '../../test_helper', __dir__
 class TestDeleteSubnet < Minitest::Test
   def setup
     @service = Fog::Network::AzureRM.new(credentials)
-    @client = @service.instance_variable_get(:@network_client)
-    @subnets = @client.subnets
+    @network_client = @service.instance_variable_get(:@network_client)
+    @subnets = @network_client.subnets
   end
 
   def test_delete_subnet_success
@@ -18,7 +18,7 @@ class TestDeleteSubnet < Minitest::Test
   def test_delete_subnet_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @subnets.stub :delete, response do
-      assert_raises(Fog::AzureRm::OperationError) { @service.delete_subnet('fog-test-rg', 'fog-test-subnet', 'fog-test-virtual-network') }
+      assert_raises(RuntimeError) { @service.delete_subnet('fog-test-rg', 'fog-test-subnet', 'fog-test-virtual-network') }
     end
   end
 end

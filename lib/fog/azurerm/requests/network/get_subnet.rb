@@ -10,7 +10,7 @@ module Fog
             Fog::Logger.debug "Subnet #{subnet_name} retrieved successfully."
             result
           rescue  MsRestAzure::AzureOperationError => e
-            raise Fog::AzureRm::OperationError.new(e)
+            raise_azure_exception(e, "Getting Subnet: #{subnet_name}")
           end
         end
       end

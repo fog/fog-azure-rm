@@ -10,7 +10,7 @@ module Fog
             Fog::Logger.debug "Subnet #{name} deleted successfully."
             true
           rescue MsRestAzure::AzureOperationError => e
-            raise Fog::AzureRm::OperationError.new(e)
+            raise_azure_exception(e, "Deleting Subnet: #{name}")
           end
         end
       end

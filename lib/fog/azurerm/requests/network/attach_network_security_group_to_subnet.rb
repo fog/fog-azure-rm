@@ -11,7 +11,7 @@ module Fog
             Fog::Logger.debug 'Network Security Group attached successfully.'
             result
           rescue  MsRestAzure::AzureOperationError => e
-            raise Fog::AzureRm::OperationError.new(e)
+            raise_azure_exception(e, "Attaching Network Security Group with Subnet: #{subnet_name}")
           end
         end
 

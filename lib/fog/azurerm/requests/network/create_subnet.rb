@@ -11,7 +11,7 @@ module Fog
             Fog::Logger.debug "Subnet #{subnet_name} created successfully."
             subnet
           rescue  MsRestAzure::AzureOperationError => e
-            raise Fog::AzureRm::OperationError.new(e)
+            raise_azure_exception(e, "Creating Subnet: #{subnet_name}")
           end
         end
 

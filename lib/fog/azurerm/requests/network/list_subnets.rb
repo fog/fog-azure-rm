@@ -9,7 +9,7 @@ module Fog
             subnets.next_link = '' if subnets.next_link.nil?
             subnets.value
           rescue MsRestAzure::AzureOperationError => e
-            raise Fog::AzureRm::OperationError.new(e)
+            raise_azure_exception(e, "Listing Subnets int Resource Group #{resource_group}")
           end
         end
       end

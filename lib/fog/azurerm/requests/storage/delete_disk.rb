@@ -4,8 +4,10 @@ module Fog
       # This class provides the actual implemention for service calls.
       class Real
         def delete_disk(resource_group, storage_account_name, blob_name)
-          Fog::Logger.debug "Deleting Disk: #{blob_name}."
-          access_key = get_storage_access_keys(resource_group, storage_account_name)['key2']
+          msg = "Deleting Disk: #{blob_name}."
+          Fog::Logger.debug msg
+          keys = get_storage_access_keys(resource_group, storage_account_name)
+          access_key = keys[1].value
           client = Azure::Storage::Client.new(storage_account_name: storage_account_name, storage_access_key: access_key)
           blob_service = Azure::Storage::Blob::BlobService.new(client: client)
           begin
@@ -18,8 +20,7 @@ module Fog
               false
             end
           rescue Azure::Core::Http::HTTPError => e
-            msg = "Error deleting Disk. #{e.description}"
-            raise msg
+            raise_azure_exception(e, msg)
           end
         end
       end

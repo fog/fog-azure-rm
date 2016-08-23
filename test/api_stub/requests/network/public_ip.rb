@@ -2,7 +2,7 @@ module ApiStub
   module Requests
     module Network
       class PublicIp
-        def self.create_public_ip_response(client)
+        def self.create_public_ip_response(network_client)
           body = '{
              "name": "fog-test-public-ip",
              "id": "/subscriptions/{guid}/resourceGroups/fog-test-rg/providers/Microsoft.Network/publicIpAddresses/fog-test-public-ip",
@@ -28,10 +28,10 @@ module ApiStub
              }
           }'
           public_ip_mapper = Azure::ARM::Network::Models::PublicIPAddress.mapper
-          client.deserialize(public_ip_mapper, JSON.load(body), 'result.body')
+          network_client.deserialize(public_ip_mapper, JSON.load(body), 'result.body')
         end
 
-        def self.list_public_ips_response(client)
+        def self.list_public_ips_response(network_client)
           body = '{
             "value": [ {
               "name": "myPublicIP1",
@@ -59,7 +59,7 @@ module ApiStub
             } ]
           }'
           public_ip_mapper = Azure::ARM::Network::Models::PublicIPAddressListResult.mapper
-          client.deserialize(public_ip_mapper, JSON.load(body), 'result.body')
+          network_client.deserialize(public_ip_mapper, JSON.load(body), 'result.body')
         end
 
         def self.delete_public_ip_response

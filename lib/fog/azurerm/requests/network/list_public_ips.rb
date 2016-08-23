@@ -18,22 +18,26 @@ module Fog
       # Mock class for Network Request
       class Mock
         def list_public_ips(resource_group)
-          [
-            {
-              'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/publicIPAddresses/test-PubIP",
-              'name' => 'test-PubIP',
-              'type' => 'Microsoft.Network/publicIPAddresses',
-              'location' => 'westus',
-              'properties' =>
-                {
-                  'publicIPAllocationMethod' => 'Static',
-                  'ipAddress' => '13.93.203.153',
-                  'idleTimeoutInMinutes' => 4,
-                  'resourceGuid' => 'c78f0c95-d8b9-409b-897c-74260b686392',
-                  'provisioningState' => 'Succeeded'
-                }
-            }
-          ]
+          public_ip = {
+              'value' => [
+              {
+                'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/publicIPAddresses/test-PubIP",
+                'name' => 'test-PubIP',
+                'type' => 'Microsoft.Network/publicIPAddresses',
+                'location' => 'westus',
+                'properties' =>
+                  {
+                    'publicIPAllocationMethod' => 'Static',
+                    'ipAddress' => '13.93.203.153',
+                    'idleTimeoutInMinutes' => 4,
+                    'resourceGuid' => 'c78f0c95-d8b9-409b-897c-74260b686392',
+                    'provisioningState' => 'Succeeded'
+                  }
+              }
+            ]
+          }
+          public_ip_mapper = Azure::ARM::Network::Models::PublicIPAddressListResult.mapper
+          @network_client.deserialize(public_ip_mapper, public_ip, 'result.body').value
         end
       end
     end

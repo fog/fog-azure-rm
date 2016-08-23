@@ -22,7 +22,7 @@ module Fog
       # Mock class for Network Request
       class Mock
         def create_public_ip(resource_group, name, location, public_ip_allocation_method)
-          {
+          public_ip = {
             'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/publicIPAddresses/#{name}",
             'name' => name,
             'type' => 'Microsoft.Network/publicIPAddresses',
@@ -36,6 +36,8 @@ module Fog
                 'provisioningState' => 'Succeeded'
               }
           }
+          public_ip_mapper = Azure::ARM::Network::Models::PublicIPAddress.mapper
+          @network_client.deserialize(public_ip_mapper, public_ip, 'result.body')
         end
       end
     end

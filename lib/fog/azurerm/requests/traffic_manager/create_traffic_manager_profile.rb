@@ -4,13 +4,13 @@ module Fog
       # This class provides the actual implementation for service call.
       class Real
         def create_traffic_manager_profile(resource_group, name, traffic_routing_method, relative_name, ttl, protocol, port, path)
-          log_creating = "Creating Traffic Manager Profile: #{name}."
-          Fog::Logger.debug log_creating
+          msg = "Creating Traffic Manager Profile: #{name}."
+          Fog::Logger.debug msg
           profile_parameters = get_profile_properties(traffic_routing_method, relative_name, ttl, protocol, port, path)
           begin
             traffic_manager_profile = @traffic_mgmt_client.profiles.create_or_update(resource_group, name, profile_parameters)
           rescue MsRestAzure::AzureOperationError => e
-            raise_azure_exception(e, log_creating)
+            raise_azure_exception(e, msg)
           end
           Fog::Logger.debug "Traffic Manager Profile: #{name} created successfully."
           traffic_manager_profile

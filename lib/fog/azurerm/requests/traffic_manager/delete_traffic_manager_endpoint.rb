@@ -4,12 +4,12 @@ module Fog
       # Real class for TrafficManager Request
       class Real
         def delete_traffic_manager_endpoint(resource_group, name, traffic_manager_profile_name, type)
-          log_delete_endpoint = "Deleting Traffic Manager Endpoint: #{name}."
-          Fog::Logger.debug log_delete_endpoint
+          msg = "Deleting Traffic Manager Endpoint: #{name}."
+          Fog::Logger.debug msg
           begin
             @traffic_mgmt_client.endpoints.delete(resource_group, traffic_manager_profile_name, type, name)
           rescue MsRestAzure::AzureOperationError => e
-            raise_azure_exception(e, log_delete_endpoint)
+            raise_azure_exception(e, msg)
           end
           Fog::Logger.debug "Traffic Manager Endpoint: #{name} deleted successfully."
           true

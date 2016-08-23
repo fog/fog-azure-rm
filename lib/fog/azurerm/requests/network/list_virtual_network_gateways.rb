@@ -9,7 +9,7 @@ module Fog
           begin
             network_gateway = @network_client.virtual_network_gateways.list(resource_group).value!
             Azure::ARM::Network::Models::VirtualNetworkGatewayListResult.serialize_object(network_gateway.body)['value']
-          rescue  MsRestAzure::AzureOperationError => e
+          rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
         end
@@ -19,18 +19,18 @@ module Fog
       class Mock
         def list_virtual_network_gateways(*)
           [
-              {
-                  'name' => 'myvirtualgateway1',
-                  'location' => 'West US',
-                  'tags' => { 'key1' => 'value1' },
-                  'properties' => {
-                      'gatewayType' => 'DynamicRouting',
-                      'gatewaySize' => 'Default',
-                      'bgpEnabled' => true,
-                      'vpnClientAddressPool' => [ '{vpnClientAddressPoolPrefix}' ],
-                      'defaultSites' => [ 'mysite1' ]
-                  }
+            {
+              'name' => 'myvirtualgateway1',
+              'location' => 'West US',
+              'tags' => { 'key1' => 'value1' },
+              'properties' => {
+                'gatewayType' => 'DynamicRouting',
+                'gatewaySize' => 'Default',
+                'bgpEnabled' => true,
+                'vpnClientAddressPool' => ['{vpnClientAddressPoolPrefix}'],
+                'defaultSites' => ['mysite1']
               }
+            }
           ]
         end
       end

@@ -10,8 +10,8 @@ class TestVirtualNetworkGateway < Minitest::Test
   def test_model_methods
     response = ApiStub::Models::Network::VirtualNetworkGateway.create_virtual_network_gateway_response
     methods = [
-        :save,
-        :destroy
+      :save,
+      :destroy
     ]
     @service.stub :create_or_update_virtual_network_gateway, response do
       methods.each do |method|

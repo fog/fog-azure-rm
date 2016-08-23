@@ -848,7 +848,7 @@ Create a new Virtual Network Gateway.
 List all virtual network gateways in a resource group
 
 ```ruby
-    network_gateways  = network.virtual_network_gateways(resource_group: '<Resource Group Name>')
+    network_gateways = network.virtual_network_gateways(resource_group: '<Resource Group Name>')
 	network_gateways.each do |gateway|
     	puts "#{gateway.name}"
 	end

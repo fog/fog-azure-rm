@@ -26,7 +26,7 @@ class TestCreateVirtualNetworkGateway < Minitest::Test
     @promise.stub :value!, response do
       @network_gateways.stub :create_or_update, @promise do
         assert_raises ArgumentError do
-          @service.create_or_update_virtual_network_gateway()
+          @service.create_or_update_virtual_network_gateway
         end
       end
     end

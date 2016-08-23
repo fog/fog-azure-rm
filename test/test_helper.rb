@@ -487,8 +487,8 @@ def virtual_network_gateway(service)
     gateway_type: 'ExpressRoute',
     enable_bgp: true,
     gateway_size: 'Default',
-    vpn_client_address_pool: [ 'vpnClientAddressPoolPrefix' ],
-    default_sites: [ 'mysite1' ],
+    vpn_client_address_pool: ['vpnClientAddressPoolPrefix'],
+    default_sites: ['mysite1'],
     gateway_default_site: '/subscriptions/{subscription-id}/resourceGroups/fog-rg/providers/microsoft.network/localNetworkGateways/{local-network-gateway-name}',
     service: service
   )

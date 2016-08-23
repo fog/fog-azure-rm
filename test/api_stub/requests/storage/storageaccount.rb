@@ -3,8 +3,8 @@ module ApiStub
     module Storage
       # Mock class for Storage Requests
       class StorageAccount
-        def self.storage_account_request(client)
-          body = {
+        def self.storage_account_request(storage_mgmt_client)
+          storage_account_hash = {
             'id' => '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/fog_test_rg/providers/Microsoft.Storage/storageAccounts/fogtestsasecond',
             'name' => 'fog-test-storage-account',
             'location' => 'west us',
@@ -13,8 +13,8 @@ module ApiStub
                 'name' => 'Standard_LRS'
               }
           }
-          mapper = Azure::ARM::Storage::Models::StorageAccount.mapper
-          client.deserialize(mapper, body, 'hash')
+          storage_account_mapper = Azure::ARM::Storage::Models::StorageAccount.mapper
+          storage_mgmt_client.deserialize(storage_account_mapper, storage_account_hash, 'hash')
         end
 
         def self.create_storage_account
@@ -38,8 +38,8 @@ module ApiStub
           }
         end
 
-        def self.list_storage_accounts_for_rg(client)
-          body = {
+        def self.list_storage_accounts_for_rg(storage_mgmt_client)
+          list_storage_accounts_hash = {
             'value' =>
               [
                 {
@@ -60,12 +60,12 @@ module ApiStub
                 }
               ]
           }
-          mapper = Azure::ARM::Storage::Models::StorageAccountListResult.mapper
-          client.deserialize(mapper, body, 'hash')
+          storage_account_list_mapper = Azure::ARM::Storage::Models::StorageAccountListResult.mapper
+          storage_mgmt_client.deserialize(storage_account_list_mapper, list_storage_accounts_hash, 'hash')
         end
 
-        def self.list_storage_accounts(client)
-          body = {
+        def self.list_storage_accounts(storage_mgmt_client)
+          list_storage_accounts_hash = {
             'value' =>
               [
                 {
@@ -86,36 +86,28 @@ module ApiStub
                 }
               ]
           }
-          mapper = Azure::ARM::Storage::Models::StorageAccountListResult.mapper
-          client.deserialize(mapper, body, 'hash')
+          storage_account_list_mapper = Azure::ARM::Storage::Models::StorageAccountListResult.mapper
+          storage_mgmt_client.deserialize(storage_account_list_mapper,list_storage_accounts_hash, 'hash')
         end
 
-        def self.true_case_for_check_name_availability(client)
-          result = {
+        def self.true_case_for_check_name_availability(storage_mgmt_client)
+          check_name_availability_hash = {
             'nameAvailable' => true,
             'reason' => 'AccountNameInvalid|AlreadyExists',
             'message' => 'error message'
           }
-          mapper = Azure::ARM::Storage::Models::CheckNameAvailabilityResult.mapper
-          client.deserialize(mapper, result, 'hash')
+          storage_account_check_name_avaiablability_mapper = Azure::ARM::Storage::Models::CheckNameAvailabilityResult.mapper
+          storage_mgmt_client.deserialize(storage_account_check_name_avaiablability_mapper, check_name_availability_hash, 'hash')
         end
 
-        def self.false_case_for_check_name_availability(client)
-          result = {
+        def self.false_case_for_check_name_availability(storage_mgmt_client)
+          check_name_availability_hash = {
             'nameAvailable' => false,
             'reason' => 'AccountNameInvalid|AlreadyExists',
             'message' => 'error message'
           }
-          mapper = Azure::ARM::Storage::Models::CheckNameAvailabilityResult.mapper
-          client.deserialize(mapper, result, 'hash')
-        end
-
-        def self.azure_operation_response(body)
-          MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new, Azure::ARM::Storage::Models::CheckNameAvailabilityResult.deserialize_object(body))
-        end
-
-        def self.response_storage_account_list(body)
-          MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new, Azure::ARM::Storage::Models::StorageAccountListResult.deserialize_object(body))
+          storage_account_check_name_avaiablability_mapper = Azure::ARM::Storage::Models::CheckNameAvailabilityResult.mapper
+          storage_mgmt_client.deserialize(storage_account_check_name_avaiablability_mapper, check_name_availability_hash, 'hash')
         end
 
         def self.list_keys_response

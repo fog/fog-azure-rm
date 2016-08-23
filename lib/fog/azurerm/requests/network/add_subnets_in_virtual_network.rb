@@ -25,7 +25,7 @@ module Fog
       # Mock class for Network Request
       class Mock
         def add_subnets_in_virtual_network(*)
-          {
+          virtual_network = {
             'id' => '/subscriptions/########-####-####-####-############/resourceGroups/fog-rg/providers/Microsoft.Network/virtualNetworks/fog-vnet',
             'name' => 'fog-vnet',
             'type' => 'Microsoft.Network/virtualNetworks',
@@ -62,6 +62,8 @@ module Fog
                 'provisioningState' => 'Succeeded'
               }
           }
+          vnet_mapper = Azure::ARM::Network::Models::VirtualNetwork.mapper
+          @network_client.deserialize(vnet_mapper, virtual_network, 'result.body')
         end
       end
     end

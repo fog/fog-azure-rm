@@ -34,9 +34,3 @@ def get_resource_from_resource_id(resource_id, position)
 
   data[position]
 end
-
-def raise_azure_exception(exception, msg)
-  message = "Exception #{msg} #{exception.body['error']['message'] unless exception.body['error']['message'].nil?} Type: #{exception.class} \n "
-  Fog::Logger.debug exception.backtrace
-  raise message
-end

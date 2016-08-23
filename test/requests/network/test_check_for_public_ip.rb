@@ -24,7 +24,7 @@ class TestCheckForPublicIp < Minitest::Test
   def test_check_for_public_ip_exception
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceGroupNotFound' }) }
     @public_ips.stub :get, response do
-      assert_raises(Fog::AzureRm::OperationError) { @service.check_for_public_ip('fog-test-rg', 'fog-test-public-ip') }
+      assert_raises(RuntimeError) { @service.check_for_public_ip('fog-test-rg', 'fog-test-public-ip') }
     end
   end
 end

@@ -10,7 +10,7 @@ module Fog
             public_ips.next_link = '' if public_ips.next_link.nil?
             public_ips.value
           rescue  MsRestAzure::AzureOperationError => e
-            raise Fog::AzureRm::OperationError.new(e)
+            raise_azure_exception(e, "Getting list of PublicIPs from Resource Group #{resource_group}")
           end
         end
       end

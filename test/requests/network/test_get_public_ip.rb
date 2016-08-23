@@ -18,7 +18,7 @@ class TestGetPublicIp < Minitest::Test
   def test_get_public_ip_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @public_ips.stub :get, response do
-      assert_raises Fog::AzureRm::OperationError do
+      assert_raises RuntimeError do
         @service.get_public_ip('fog-test-rg', 'fog-test-public-ip')
       end
     end

@@ -10,7 +10,7 @@ module Fog
             Fog::Logger.debug "PublicIP #{name} Deleted Successfully."
             true
           rescue  MsRestAzure::AzureOperationError => e
-            raise Fog::AzureRm::OperationError.new(e)
+            raise_azure_exception(e, "Deleting PublicIP #{name} from Resource Group #{resource_group}")
           end
         end
       end

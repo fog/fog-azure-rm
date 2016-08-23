@@ -14,7 +14,7 @@ module Fog
             Fog::Logger.debug "PublicIP #{name} Created Successfully!"
             public_ip
           rescue MsRestAzure::AzureOperationError => e
-            raise Fog::AzureRm::OperationError.new(e)
+            raise_azure_exception(e, "Creating PublicIP #{name} in Resource Group #{resource_group}")
           end
         end
       end

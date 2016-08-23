@@ -10,7 +10,7 @@ module Fog
             Fog::Logger.debug "Public IP #{public_ip_name} retrieved successfully"
             public_ip
           rescue MsRestAzure::AzureOperationError => e
-            raise Fog::AzureRm::OperationError.new(e)
+            raise_azure_exception(e, "Getting Public IP #{public_ip_name} from Resource Group #{resource_group_name}")
           end
         end
       end

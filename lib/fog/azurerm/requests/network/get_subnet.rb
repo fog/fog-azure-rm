@@ -18,7 +18,7 @@ module Fog
       # Mock class for Network Request
       class Mock
         def get_subnet(*)
-          {
+          subnet = {
             'id' => '/subscriptions/########-####-####-####-############/resourceGroups/fog-rg/providers/Microsoft.Network/virtualNetworks/fog-vnet/subnets/fog-subnet',
             'properties' =>
               {
@@ -27,6 +27,8 @@ module Fog
               },
             'name' => 'fog-subnet'
           }
+          subnet_mapper = Azure::ARM::Network::Models::Subnet.mapper
+          @network_client.deserialize(subnet_mapper, subnet, 'result.body')
         end
       end
     end

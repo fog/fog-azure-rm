@@ -17,32 +17,36 @@ module Fog
       # Mock class for Network Request
       class Mock
         def list_subnets(resource_group, virtual_network_name)
-          [
-            {
-              'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/virtualNetworks/#{virtual_network_name}/subnets/subnet_0_testVnet",
-              'properties' =>
-                {
-                  'addressPrefix' => '10.1.0.0/24',
-                  'provisioningState' => 'Succeeded'
-                },
-              'name' => 'subnet_0_testVnet'
-            },
-            {
-              'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/virtualNetworks/#{virtual_network_name}/subnets/fog-test-subnet",
-              'properties' =>
-                {
-                  'addressPrefix' => '10.2.0.0/16',
-                  'ipConfigurations' =>
-                    [
-                      {
-                        'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkInterfaces/test-NIC/ipConfigurations/ipconfig1"
-                      }
-                    ],
-                  'provisioningState' => 'Succeeded'
-                },
-              'name' => 'fog-test-subnet'
-            }
-          ]
+          subnet = {
+            'value' => [
+              {
+                'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/virtualNetworks/#{virtual_network_name}/subnets/subnet_0_testVnet",
+                'properties' =>
+                  {
+                    'addressPrefix' => '10.1.0.0/24',
+                    'provisioningState' => 'Succeeded'
+                  },
+                'name' => 'subnet_0_testVnet'
+              },
+              {
+                'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/virtualNetworks/#{virtual_network_name}/subnets/fog-test-subnet",
+                'properties' =>
+                  {
+                    'addressPrefix' => '10.2.0.0/16',
+                    'ipConfigurations' =>
+                      [
+                        {
+                          'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkInterfaces/test-NIC/ipConfigurations/ipconfig1"
+                        }
+                      ],
+                    'provisioningState' => 'Succeeded'
+                  },
+                'name' => 'fog-test-subnet'
+              }
+            ]
+          }
+          subnet_mapper = Azure::ARM::Network::Models::SubnetListResult.mapper
+          @network_client.deserialize(subnet_mapper, subnet, 'result.body').value
         end
       end
     end

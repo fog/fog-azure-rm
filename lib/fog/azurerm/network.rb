@@ -23,6 +23,7 @@ module Fog
       request :check_for_virtual_network
       request :create_public_ip
       request :delete_public_ip
+      request :get_public_ip
       request :list_public_ips
       request :check_for_public_ip
       request :create_subnet

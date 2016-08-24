@@ -2,10 +2,10 @@ module ApiStub
   module Models
     module Network
       class PublicIp
-        def self.create_public_ip_response
-          subnet = '{
+        def self.create_public_ip_response(network_client)
+          public_ip = '{
              "name": "fog-test-public-ip",
-             "id": "/subscriptions/{guid}/resourceGroups/fog-test-rg/Microsoft.Network/publicIpAddresses/fog-test-public-ip",
+             "id": "/subscriptions/{guid}/resourceGroups/fog-test-rg/providers/Microsoft.Network/publicIpAddresses/fog-test-public-ip",
              "location": "West US",
              "tags": {
                 "key": "value"
@@ -27,7 +27,8 @@ module ApiStub
                 }
              }
           }'
-          JSON.parse(subnet)
+          public_ip_mapper = Azure::ARM::Network::Models::PublicIPAddress.mapper
+          network_client.deserialize(public_ip_mapper, JSON.load(public_ip), 'result.body')
         end
       end
     end

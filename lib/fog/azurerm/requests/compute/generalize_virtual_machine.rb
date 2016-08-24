@@ -1,7 +1,7 @@
 module Fog
   module Compute
     class AzureRM
-      # This class provides the actual implemention for service calls.
+      # This class provides the actual implementation for service calls.
       class Real
         def generalize_virtual_machine(resource_group, name)
           Fog::Logger.debug "Generalizing Virtual Machine #{name} in Resource Group #{resource_group}."

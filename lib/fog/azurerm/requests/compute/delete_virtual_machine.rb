@@ -1,7 +1,7 @@
 module Fog
   module Compute
     class AzureRM
-      # This class provides the actual implemention for service calls.
+      # This class provides the actual implementation for service calls.
       class Real
         def delete_virtual_machine(resource_group, name)
           Fog::Logger.debug "Deleting Virtual Machine #{name} from Resource Group #{resource_group}."

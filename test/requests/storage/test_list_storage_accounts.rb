@@ -6,7 +6,7 @@ class TestListStorageAccounts < Minitest::Test
   def setup
     @azure_credentials = Fog::Storage::AzureRM.new(credentials)
     @storage_mgmt_client = @azure_credentials.instance_variable_get(:@storage_mgmt_client)
-    @storage_accounts = @client.storage_accounts
+    @storage_accounts = @storage_mgmt_client.storage_accounts
   end
 
   def test_list_storage_accounts_success

@@ -6,7 +6,7 @@ class TestCreateStorageAccount < Minitest::Test
   def setup
     @azure_credentials = Fog::Storage::AzureRM.new(credentials)
     @storage_mgmt_client = @azure_credentials.instance_variable_get(:@storage_mgmt_client)
-    @storage_accounts = @client.storage_accounts
+    @storage_accounts = @storage_mgmt_client.storage_accounts
     @storage_account_arguments = ApiStub::Requests::Storage::StorageAccount.storage_account_arguments
     @storage_acc_obj = ApiStub::Requests::Storage::StorageAccount.storage_account_request(@storage_mgmt_client)
   end

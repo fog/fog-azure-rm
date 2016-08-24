@@ -4,29 +4,28 @@ module Fog
       # Real class for Network Request
       class Real
         def get_virtual_network(resource_group_name, virtual_network_name)
-          vnet = get_vnet(resource_group_name, virtual_network_name)
-          Azure::ARM::Network::Models::VirtualNetwork.serialize_object(vnet)
+          get_vnet(resource_group_name, virtual_network_name)
         end
 
         private
 
         def get_vnet(resource_group_name, virtual_network_name)
-          Fog::Logger.debug "Getting Virtual Network: #{virtual_network_name}."
+          msg = "Getting Virtual Network: #{virtual_network_name}."
+          Fog::Logger.debug msg
           begin
-            response = @network_client.virtual_networks.get(resource_group_name, virtual_network_name).value!
-            Fog::Logger.debug "Virtual Network #{virtual_network_name} retrieved successfully."
-            response.body
-          rescue  MsRestAzure::AzureOperationError => e
-            msg = "Exception getting Virtual Network #{virtual_network_name} in Resource Group: #{resource_group_name}. #{e.body['error']['message']}"
-            raise msg
+            virtual_network = @network_client.virtual_networks.get(resource_group_name, virtual_network_name)
+          rescue MsRestAzure::AzureOperationError => e
+            raise_azure_exception(e, msg)
           end
+          Fog::Logger.debug "Virtual Network #{virtual_network_name} retrieved successfully."
+          virtual_network
         end
       end
 
       # Mock class for Network Request
       class Mock
         def get_virtual_network(*)
-          {
+          virtual_network = {
             'id' => '/subscriptions/########-####-####-####-############/resourceGroups/fog-rg/providers/Microsoft.Network/virtualNetworks/fog-vnet',
             'name' => 'fog-vnet',
             'type' => 'Microsoft.Network/virtualNetworks',
@@ -36,10 +35,7 @@ module Fog
                 'addressSpace' =>
                   {
                     'addressPrefixes' =>
-                      [
-                        '10.1.0.0/16',
-                        '10.2.0.0/16'
-                      ]
+                      %w(10.1.0.0/16 10.2.0.0/16)
                   },
                 'subnets' =>
                   [
@@ -57,6 +53,8 @@ module Fog
                 'provisioningState' => 'Succeeded'
               }
           }
+          vnet_mapper = Azure::ARM::Network::Models::VirtualNetwork.mapper
+          @network_client.deserialize(vnet_mapper, virtual_network, 'result.body')
         end
       end
     end

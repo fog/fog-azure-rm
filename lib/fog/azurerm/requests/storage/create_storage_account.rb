@@ -11,8 +11,8 @@ module Fog
                                                               storage_account_hash[:replication])
           begin
             storage_account = @storage_mgmt_client.storage_accounts.create(storage_account_hash[:resource_group],
-                                                                    storage_account_hash[:name],
-                                                                    storage_account_params)
+                                                                           storage_account_hash[:name],
+                                                                           storage_account_params)
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
@@ -36,13 +36,13 @@ module Fog
       class Mock
         def create_storage_account(*)
           storage_account_hash = {
-              'id' => '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/fog_test_rg/providers/Microsoft.Storage/storageAccounts/fogtestsasecond',
-              'name' => 'fog-test-storage-account',
-              'location' => 'west us',
-              'sku' =>
-                  {
-                      'name' => 'Standard_LRS'
-                  }
+            'id' => '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/fog_test_rg/providers/Microsoft.Storage/storageAccounts/fogtestsasecond',
+            'name' => 'fog-test-storage-account',
+            'location' => 'west us',
+            'sku' =>
+              {
+                'name' => 'Standard_LRS'
+              }
           }
           storage_account_mapper = Azure::ARM::Storage::Models::StorageAccount.mapper
           storage_mgmt_client.deserialize(storage_account_mapper, storage_account_hash, 'hash')

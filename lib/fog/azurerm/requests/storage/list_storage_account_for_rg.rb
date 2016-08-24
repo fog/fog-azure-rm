@@ -8,7 +8,7 @@ module Fog
           Fog::Logger.debug msg
           begin
             result = @storage_mgmt_client.storage_accounts.list_by_resource_group(resource_group)
-          rescue  MsRestAzure::AzureOperationError => e
+          rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
           result.value

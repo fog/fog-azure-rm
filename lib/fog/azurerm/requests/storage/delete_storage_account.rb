@@ -8,7 +8,7 @@ module Fog
           Fog::Logger.debug msg
           begin
             @storage_mgmt_client.storage_accounts.delete(resource_group, name)
-          rescue  MsRestAzure::AzureOperationError => e
+          rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
           Fog::Logger.debug "Storage Account #{name} deleted successfully."

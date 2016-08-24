@@ -12,12 +12,12 @@ module Fog
 
         def self.parse(storage_account)
           hash = {}
-            hash['id'] = storage_account.id
-            hash['name'] = storage_account.name
-            hash['location'] = storage_account.location
-            hash['resource_group'] = get_resource_group_from_id(storage_account.id)
-            hash['sku_name'] = storage_account.sku.name.split('_').first
-            hash['replication'] = storage_account.sku.name.split('_').last
+          hash['id'] = storage_account.id
+          hash['name'] = storage_account.name
+          hash['location'] = storage_account.location
+          hash['resource_group'] = get_resource_group_from_id(storage_account.id)
+          hash['sku_name'] = storage_account.sku.name.split('_').first
+          hash['replication'] = storage_account.sku.name.split('_').last
           hash
         end
 

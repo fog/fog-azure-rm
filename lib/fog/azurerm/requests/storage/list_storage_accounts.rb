@@ -4,11 +4,11 @@ module Fog
       # This class provides the actual implementation for service calls.
       class Real
         def list_storage_accounts
-          msg = "Listing Storage Accounts."
+          msg = 'Listing Storage Accounts.'
           Fog::Logger.debug msg
           begin
             result = @storage_mgmt_client.storage_accounts.list
-          rescue  MsRestAzure::AzureOperationError => e
+          rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
           result.value

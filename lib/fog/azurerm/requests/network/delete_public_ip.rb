@@ -7,11 +7,11 @@ module Fog
           Fog::Logger.debug "Deleting PublicIP #{name} from Resource Group #{resource_group}."
           begin
             @network_client.public_ipaddresses.delete(resource_group, name)
-            Fog::Logger.debug "PublicIP #{name} Deleted Successfully."
-            true
           rescue  MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, "Deleting PublicIP #{name} from Resource Group #{resource_group}")
           end
+          Fog::Logger.debug "PublicIP #{name} Deleted Successfully."
+          true
         end
       end
 

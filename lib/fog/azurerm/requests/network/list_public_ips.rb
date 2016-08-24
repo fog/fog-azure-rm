@@ -7,11 +7,11 @@ module Fog
           Fog::Logger.debug "Getting list of PublicIPs from Resource Group #{resource_group}."
           begin
             public_ips = @network_client.public_ipaddresses.list_as_lazy(resource_group)
-            public_ips.next_link = '' if public_ips.next_link.nil?
-            public_ips.value
           rescue  MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, "Getting list of PublicIPs from Resource Group #{resource_group}")
           end
+          Fog::Logger.debug 'Public IP listed successfully'
+          public_ips.value
         end
       end
 

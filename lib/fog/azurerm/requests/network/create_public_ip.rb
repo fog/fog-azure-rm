@@ -11,11 +11,11 @@ module Fog
           public_ip.public_ipallocation_method = public_ip_allocation_method
           begin
             public_ip = @network_client.public_ipaddresses.create_or_update(resource_group, name, public_ip)
-            Fog::Logger.debug "PublicIP #{name} Created Successfully!"
-            public_ip
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, "Creating PublicIP #{name} in Resource Group #{resource_group}")
           end
+          Fog::Logger.debug "PublicIP #{name} Created Successfully!"
+          public_ip
         end
       end
 

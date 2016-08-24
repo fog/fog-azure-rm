@@ -160,7 +160,7 @@ module Fog
               }
             ]
           }
-          nsg_mapper = Azure::ARM::Network::Models::NetworkSecurityGroup.mapper
+          nsg_mapper = Azure::ARM::Network::Models::NetworkInterfaceListResult.mapper
           @network_client.deserialize(nsg_mapper, nsg_list_result, 'result.body').value
         end
       end

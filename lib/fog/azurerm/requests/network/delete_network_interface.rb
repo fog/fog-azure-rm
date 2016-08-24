@@ -9,7 +9,7 @@ module Fog
             @network_client.network_interfaces.delete(resource_group, name)
             Fog::Logger.debug "NetworkInterface #{name} Deleted Successfully."
             true
-          rescue  MsRestAzure::AzureOperationError => e
+          rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, "Deleting NetworkInterface #{name} from Resource Group #{resource_group}")
           end
         end

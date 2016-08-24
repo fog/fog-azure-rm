@@ -23,7 +23,7 @@ module Fog
           hash = {}
           hash['name'] = deployment.name
           hash['id'] = deployment.id
-          hash['resource_group'] = deployment.id.split('/')[4]
+          hash['resource_group'] = get_resource_from_resource_id(deployment.id, RESOURCE_GROUP_NAME)
           hash['correlation_id'] = deployment.properties.correlation_id
           hash['timestamp'] = deployment.properties.timestamp
           hash['outputs'] = deployment.properties.outputs

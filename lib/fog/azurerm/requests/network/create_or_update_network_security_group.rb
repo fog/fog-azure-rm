@@ -4,43 +4,44 @@ module Fog
       # Real class for Network Request
       class Real
         def create_or_update_network_security_group(resource_group_name, security_group_name, location, security_rules)
-          Fog::Logger.debug "Creating/Updating Network Security Group #{security_group_name} in Resource Group #{resource_group_name}."
-          properties = Azure::ARM::Network::Models::NetworkSecurityGroupPropertiesFormat.new
-          properties.security_rules = create_security_rule_objects(security_rules)
+          msg = "Creating/Updating Network Security Group #{security_group_name} in Resource Group #{resource_group_name}."
+          Fog::Logger.debug msg
 
-          params = Azure::ARM::Network::Models::NetworkSecurityGroup.new
-          params.location = location
-          params.properties = properties
+          security_group = get_security_group_object(security_rules, location)
+
           begin
-            promise = @network_client.network_security_groups.begin_create_or_update(resource_group_name, security_group_name, params)
-            result = promise.value!
-            Fog::Logger.debug "Network Security Group #{security_group_name} Created/Updated Successfully!"
-            Azure::ARM::Network::Models::NetworkSecurityGroup.serialize_object(result.body)
+            security_group = @network_client.network_security_groups.begin_create_or_update(resource_group_name, security_group_name, security_group)
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Exception creating/updating Network Security Group #{security_group_name} in Resource Group: #{resource_group_name}. #{e.body['error']['message']}"
-            raise msg
+            raise_azure_exception(e, msg)
           end
+
+          Fog::Logger.debug "Network Security Group #{security_group_name} Created/Updated Successfully!"
+          security_group
         end
 
         private
 
-        def create_security_rule_objects(security_rules)
+        def get_security_group_object(security_rules, location)
+          security_group = Azure::ARM::Network::Models::NetworkSecurityGroup.new
+          security_group.security_rules = get_security_rule_objects(security_rules)
+          security_group.location = location
+          security_group
+        end
+
+        def get_security_rule_objects(security_rules)
           rules = []
           security_rules.each do |sr|
-            properties = Azure::ARM::Network::Models::SecurityRulePropertiesFormat.new
-            properties.description = sr[:description] unless sr[:description].nil?
-            properties.protocol = sr[:protocol]
-            properties.source_port_range = sr[:source_port_range]
-            properties.destination_port_range = sr[:destination_port_range]
-            properties.source_address_prefix = sr[:source_address_prefix]
-            properties.destination_address_prefix = sr[:destination_address_prefix]
-            properties.access = sr[:access]
-            properties.priority = sr[:priority]
-            properties.direction = sr[:direction]
-
             security_rule = Azure::ARM::Network::Models::SecurityRule.new
+            security_rule.description = sr[:description] unless sr[:description].nil?
+            security_rule.protocol = sr[:protocol]
+            security_rule.source_port_range = sr[:source_port_range]
+            security_rule.destination_port_range = sr[:destination_port_range]
+            security_rule.source_address_prefix = sr[:source_address_prefix]
+            security_rule.destination_address_prefix = sr[:destination_address_prefix]
+            security_rule.access = sr[:access]
+            security_rule.priority = sr[:priority]
+            security_rule.direction = sr[:direction]
             security_rule.name = sr[:name]
-            security_rule.properties = properties
             rules << security_rule
           end unless security_rules.nil?
           rules
@@ -50,7 +51,7 @@ module Fog
       # Mock class for Network Request
       class Mock
         def create_or_update_network_security_group(resource_group_name, security_group_name, location, security_rules)
-          {
+          network_security_group = {
             'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group_name}/providers/Microsoft.Network/networkSecurityGroups/#{security_group_name}",
             'name' => security_group_name,
             'type' => 'Microsoft.Network/networkSecurityGroups',
@@ -167,6 +168,8 @@ module Fog
                 'provisioningState' => 'Updating'
               }
           }
+          nsg_mapper = Azure::ARM::Network::Models::NetworkSecurityGroup.mapper
+          @network_client.deserialize(nsg_mapper, network_security_group, 'result.body')
         end
       end
     end

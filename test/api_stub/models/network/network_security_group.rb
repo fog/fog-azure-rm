@@ -3,7 +3,7 @@ module ApiStub
     module Network
       # Mock class for Network Security Group Model
       class NetworkSecurityGroup
-        def self.create_network_security_group_response
+        def self.create_network_security_group_response(network_client)
           nsg = '{
              "name":"fog-test-nsg",
              "id":"/subscriptions/#####/resourceGroups/fog-test-rg/providers/Microsoft.Network/networkSecurityGroups/fog-test-nsg",
@@ -29,7 +29,7 @@ module ApiStub
                          "sourceAddressPrefix":"*",
                          "destinationAddressPrefix":"*",
                          "access":"Allow",
-                         "priority":"priority-of-the-rule",
+                         "priority":6500,
                          "direction":"Inbound"
                       }
                    }
@@ -68,7 +68,8 @@ module ApiStub
                 ]
              }
           }'
-          JSON.parse(nsg)
+          result_mapper = Azure::ARM::Network::Models::NetworkSecurityGroup.mapper
+          network_client.deserialize(result_mapper, JSON.load(nsg), 'result.body')
         end
 
         def self.security_rules_array

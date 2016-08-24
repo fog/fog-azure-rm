@@ -12,7 +12,7 @@ module Fog
             raise_azure_exception(e, msg) if e.body['error']['code'] == 'ResourceGroupNotFound'
             return false if e.body['error']['code'] == 'ResourceNotFound'
           end
-          return true
+          true
         end
       end
 

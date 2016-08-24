@@ -87,7 +87,7 @@ module ApiStub
               ]
           }
           storage_account_list_mapper = Azure::ARM::Storage::Models::StorageAccountListResult.mapper
-          storage_mgmt_client.deserialize(storage_account_list_mapper,list_storage_accounts_hash, 'hash')
+          storage_mgmt_client.deserialize(storage_account_list_mapper, list_storage_accounts_hash, 'hash')
         end
 
         def self.true_case_for_check_name_availability(storage_mgmt_client)

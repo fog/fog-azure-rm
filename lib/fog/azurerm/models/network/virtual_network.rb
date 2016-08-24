@@ -16,7 +16,7 @@ module Fog
           hash = {}
           hash['id'] = vnet.id
           hash['name'] = vnet.name
-          hash['resource_group'] = get_resource_from_resource_id(vnet.id, RESOURCE_GROUP_NAME)
+          hash['resource_group'] = get_resource_group_from_id(vnet.id)
           hash['location'] = vnet.location
           hash['dns_servers'] = vnet.dhcp_options.dns_servers unless vnet.dhcp_options.nil?
           hash['address_prefixes'] = vnet.address_space.address_prefixes unless vnet.address_space.address_prefixes.nil?

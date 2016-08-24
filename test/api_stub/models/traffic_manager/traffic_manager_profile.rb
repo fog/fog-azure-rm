@@ -1,9 +1,9 @@
 module ApiStub
   module Models
-    module Network
+    module TrafficManager
       # Mock class for Traffic Manager Profile Model
       class TrafficManagerProfile
-        def self.traffic_manager_profile_response
+        def self.traffic_manager_profile_response(traffic_manager_client)
           profile = '{
             "location": "global",
             "tags": {},
@@ -66,7 +66,8 @@ module ApiStub
               }]
             }
           }'
-          JSON.parse(profile)
+          profile_mapper = Azure::ARM::TrafficManager::Models::Profile.mapper
+          traffic_manager_client.deserialize(profile_mapper, JSON.load(profile), 'result.body')
         end
       end
     end

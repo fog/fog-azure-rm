@@ -3,8 +3,10 @@ require File.expand_path '../../test_helper', __dir__
 # Test class for Traffic Manager Profile Model
 class TestTrafficManagerProfile < Minitest::Test
   def setup
-    @service = Fog::Network::AzureRM.new(credentials)
+    @service = Fog::TrafficManager::AzureRM.new(credentials)
     @traffic_manager_profile = traffic_manager_profile(@service)
+    traffic_manager_client = @service.instance_variable_get(:@traffic_mgmt_client)
+    @response = ApiStub::Models::TrafficManager::TrafficManagerProfile.traffic_manager_profile_response(traffic_manager_client)
   end
 
   def test_model_methods
@@ -40,9 +42,8 @@ class TestTrafficManagerProfile < Minitest::Test
   end
 
   def test_save_method_response
-    response = ApiStub::Models::Network::TrafficManagerProfile.traffic_manager_profile_response
-    @service.stub :create_traffic_manager_profile, response do
-      assert_instance_of Fog::Network::AzureRM::TrafficManagerProfile, @traffic_manager_profile.save
+    @service.stub :create_traffic_manager_profile, @response do
+      assert_instance_of Fog::TrafficManager::AzureRM::TrafficManagerProfile, @traffic_manager_profile.save
     end
   end
 

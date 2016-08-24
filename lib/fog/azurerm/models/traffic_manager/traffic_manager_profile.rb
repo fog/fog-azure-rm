@@ -35,8 +35,8 @@ module Fog
           hash['path'] = profile.monitor_config.path
           hash['endpoints'] = []
           profile.endpoints.each do |endpoint|
-            end_point = Fog::Network::AzureRM::TrafficManagerEndPoint.new
-            hash['endpoints'] << end_point.merge_attributes(Fog::Network::AzureRM::TrafficManagerEndPoint.parse(endpoint))
+            end_point = Fog::TrafficManager::AzureRM::TrafficManagerEndPoint.new
+            hash['endpoints'] << end_point.merge_attributes(Fog::TrafficManager::AzureRM::TrafficManagerEndPoint.parse(endpoint))
           end
           hash
         end

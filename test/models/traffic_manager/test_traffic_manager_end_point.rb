@@ -3,8 +3,9 @@ require File.expand_path '../../test_helper', __dir__
 # Test class for Traffic Manager End Point Model
 class TestTrafficManagerEndPoint < Minitest::Test
   def setup
-    @service = Fog::Network::AzureRM.new(credentials)
+    @service = Fog::TrafficManager::AzureRM.new(credentials)
     @traffic_manager_end_point = traffic_manager_end_point(@service)
+    @traffic_manager_client = @service.instance_variable_get(:@traffic_mgmt_client)
   end
 
   def test_model_methods
@@ -39,9 +40,9 @@ class TestTrafficManagerEndPoint < Minitest::Test
   end
 
   def test_save_method_response
-    response = ApiStub::Models::Network::TrafficManagerEndPoint.create_traffic_manager_end_point_response
+    response = ApiStub::Models::TrafficManager::TrafficManagerEndPoint.create_traffic_manager_end_point_response(@traffic_manager_client)
     @service.stub :create_traffic_manager_endpoint, response do
-      assert_instance_of Fog::Network::AzureRM::TrafficManagerEndPoint, @traffic_manager_end_point.save
+      assert_instance_of Fog::TrafficManager::AzureRM::TrafficManagerEndPoint, @traffic_manager_end_point.save
     end
   end
 

@@ -12,7 +12,7 @@ module Fog
             raise_azure_exception(e, msg)
           end
           Fog::Logger.debug "Traffic Manager Profile fetched successfully in Resource Group: #{resource_group}"
-          profile.value
+          profile
         end
       end
 

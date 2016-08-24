@@ -19,13 +19,12 @@ module Fog
       request :get_traffic_manager_endpoint
       request :list_traffic_manager_endpoints
 
-
       model_path 'fog/azurerm/models/traffic_manager'
       model :traffic_manager_profile
       collection :traffic_manager_profiles
 
-      model :traffic_manager_endpoint
-      collection :traffic_manager_endpoints
+      model :traffic_manager_end_point
+      collection :traffic_manager_end_points
 
       # This class provides the mock implementation for unit tests.
       class Mock
@@ -38,7 +37,7 @@ module Fog
           end
         end
       end
-      # This class provides the actual implemention for service calls.
+      # This class provides the actual implementation for service calls.
       class Real
         def initialize(options)
           begin

@@ -24,17 +24,17 @@ module Fog
           hash['name'] = profile.name
           hash['resource_group'] = get_resource_group_from_id(profile.id)
           hash['location'] = profile.location
-          hash['profile_status'] = profile.properties.profileStatus
-          hash['traffic_routing_method'] = profile.properties.trafficRoutingMethod
-          hash['relative_name'] = profile.properties.dnsConfig.relativeName
-          hash['fqdn'] = profile.properties.dnsConfig.fqdn
-          hash['ttl'] = profile.properties.dnsConfig.ttl
-          hash['profile_monitor_status'] = profile.properties.monitorConfig.profileMonitorStatus
-          hash['protocol'] = profile.properties.monitorConfig.protocol
-          hash['port'] = profile.properties.monitorConfig.port
-          hash['path'] = profile.properties.monitorConfig.path
+          hash['profile_status'] = profile.profile_status
+          hash['traffic_routing_method'] = profile.traffic_routing_method
+          hash['relative_name'] = profile.dns_config.relative_name
+          hash['fqdn'] = profile.dns_config.fqdn
+          hash['ttl'] = profile.dns_config.ttl
+          hash['profile_monitor_status'] = profile.monitor_config.profile_monitor_status
+          hash['protocol'] = profile.monitor_config.protocol
+          hash['port'] = profile.monitor_config.port
+          hash['path'] = profile.monitor_config.path
           hash['endpoints'] = []
-          profile.properties.endpoints.each do |endpoint|
+          profile.endpoints.each do |endpoint|
             end_point = Fog::Network::AzureRM::TrafficManagerEndPoint.new
             hash['endpoints'] << end_point.merge_attributes(Fog::Network::AzureRM::TrafficManagerEndPoint.parse(endpoint))
           end

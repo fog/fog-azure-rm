@@ -20,12 +20,11 @@ module Fog
 
         def get_profile_properties(traffic_routing_method, relative_name, ttl, protocol, port, path)
           traffic_manager_profile_properties = Azure::ARM::TrafficManager::Models::Profile.new
-          traffic_manager_profile_properties.profile_status = 'Enabled'
           traffic_manager_profile_properties.traffic_routing_method = traffic_routing_method
+          traffic_manager_profile_properties.location = 'global'
 
           traffic_manager_profile_properties.dns_config = get_traffic_manager_dns_config(relative_name, ttl)
           traffic_manager_profile_properties.monitor_config = get_traffic_manager_monitor_config(protocol, port, path)
-          traffic_manager_profile_properties.endpoints = Azure::ARM::TrafficManager::Models::Endpoint.new
           traffic_manager_profile_properties
         end
 
@@ -33,7 +32,6 @@ module Fog
           traffic_manager_dns_config = Azure::ARM::TrafficManager::Models::DnsConfig.new
           traffic_manager_dns_config.relative_name = relative_name
           traffic_manager_dns_config.ttl = ttl
-          # traffic_manager_dns_config.fqdn = relative_name +
           traffic_manager_dns_config
         end
 
@@ -42,7 +40,6 @@ module Fog
           traffic_manager_monitor_config.path = path
           traffic_manager_monitor_config.protocol = protocol
           traffic_manager_monitor_config.port = port
-          # traffic_manager_monitor_config.profile_monitor_status
           traffic_manager_monitor_config
         end
       end

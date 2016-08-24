@@ -758,5 +758,137 @@ Get a virtual network gateway object from the get method and then destroy that v
 	network_gateway.destroy
 ```
 
+## Express Route
+
+Microsoft Azure ExpressRoute lets you extend your on-premises networks into the Microsoft cloud over a dedicated private connection facilitated by a connectivity provider.
+For more details about express route [click here](https://azure.microsoft.com/en-us/documentation/articles/expressroute-introduction/).
+
+# Express Route Circuit
+
+The Circuit represents the entity created by customer to register with an express route service provider with intent to connect to Microsoft.
+
+## Create an Express Route Circuit
+
+Create a new Express Route Circuit.
+
+```ruby
+    circuit = network.express_route_circuits.create(
+    	"name": "<Circuit Name>",
+    	"location": "eastus",
+    	"resource_group": "<Resource Group Name>",
+    	"tags": {
+    		"key1": 'value1',
+    		"key2": 'value2'
+  		},
+    	"sku_name": "Standard_MeteredData",
+    	"sku_tier": "Standard",
+    	"sku_family": "MeteredData",
+    	"service_provider_name": "Telenor",
+    	"peering_location": "London",
+    	"bandwidth_in_mbps": 100,
+    	"peerings": [
+        	{
+            	"name": "AzurePublicPeering",
+            	"peering_type": "AzurePublicPeering",
+            	"peer_asn": 100,
+            	"primary_peer_address_prefix": "192.168.1.0/30",
+            	"secondary_peer_address_prefix": "192.168.2.0/30",
+            	"vlan_id": 200
+        	}
+    	]
+	)
+```
+
+## List Express Route Circuits
+
+List all express route circuits in a resource group
+
+```ruby
+    circuits  = network.express_route_circuits(resource_group: '<Resource Group Name>')
+	circuits.each do |circuit|
+    	puts "#{circuit.name}"
+	end
+```
+
+## Retrieve a single Express Route Circuit
+
+Get a single record of Express Route Circuit
+
+```ruby
+    circuit = network.express_route_circuits.get("<Resource Group Name>", "<Circuit Name>")
+	puts "#{circuit.name}"
+```
+
+## Destroy a single Express Route Circuit
+
+Get an express route circuit object from the get method and then destroy that express route circuit.
+
+```ruby
+    circuit.destroy
+```
+
+# Express Route Peering
+
+BGP Peering is part of Express Route circuit and defines the type of connectivity needed with Microsoft.
+
+## Create an Express Route Circuit Peering
+
+Create a new Express Route Circuit Peering.
+
+```ruby
+    peering = network.express_route_circuit_peerings.create(
+    	"name": "AzurePrivatePeering",
+    	"circuit_name": "<Circuit Name>",
+    	"resource_group": "<Resourse Group Name>",
+    	"peering_type": "AzurePrivatePeering",
+    	"peer_asn": 100,
+    	"primary_peer_address_prefix": "192.168.3.0/30",
+    	"secondary_peer_address_prefix": "192.168.4.0/30",
+    	"vlan_id": 200
+	)
+```
+
+## List Express Route Circuit Peerings
+
+List all express route circuit peerings in a resource group
+
+```ruby
+    peerings  = network.express_route_circuit_peerings(resource_group: '<Resource Group Name>', circuit_name: '<Circuit Name>')
+	peerings.each do |peering|
+    	puts "#{peering.name}"
+	end
+```
+
+## Retrieve single Express Route Circuit Peering
+
+Get a single record of Express Route Circuit Peering
+
+```ruby
+    peering = network.express_route_circuit_peerings.get("<Resource Group Name>", "<Peering Name>", "Circuit Name")
+	puts "#{peering.peering_type}"
+```
+
+## Destroy single Express Route Circuit Peering
+
+Get an express route circuit peering object from the get method and then destroy that express route circuit peering.
+
+```ruby
+    peering.destroy
+```
+
+# Express Route Service Provider
+
+Express Route Service Providers are telcos and exchange providers who are approved in the system to provide Express Route connectivity.
+
+## List Express Route Service Providers
+
+List all express route service providers
+
+```ruby
+    service_providers = network.express_route_service_providers
+	puts service_providers
+```
+
+
 ## Support and Feedback
 Your feedback is highly appreciated! If you have specific issues with the fog ARM, you should file an issue via Github.

@@ -26,7 +26,7 @@ module Fog
           end
           public_ip_address = frontend_ip_configuration.public_ipaddress
           unless public_ip_address.nil?
-            hash['public_ip_address_id'] = public_ip_address['id']
+            hash['public_ip_address_id'] = public_ip_address.id
           end
           hash
         end

@@ -296,7 +296,7 @@ module ApiStub
               }
             ]
           }'
-          load_balancer_mapper = Azure::ARM::Network::Models::LoadBalancer.mapper
+          load_balancer_mapper = Azure::ARM::Network::Models::LoadBalancerListResult.mapper
           network_client.deserialize(load_balancer_mapper, JSON.load(response), 'result.body')
         end
 

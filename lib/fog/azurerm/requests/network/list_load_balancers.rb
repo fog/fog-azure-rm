@@ -4,15 +4,15 @@ module Fog
       # Real class for Network Request
       class Real
         def list_load_balancers(resource_group)
-          Fog::Logger.debug "Getting list of Load-Balancers from Resource Group #{resource_group}."
+          msg = "Getting list of Load-Balancers from Resource Group #{resource_group}"
+          Fog::Logger.debug msg
           begin
-            promise = @network_client.load_balancers.list(resource_group)
-            result = promise.value!
-            Azure::ARM::Network::Models::LoadBalancerListResult.serialize_object(result.body)['value']
+            load_balancers = @network_client.load_balancers.list_as_lazy(resource_group)
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Exception listing Load-Balancers from Resource Group '#{resource_group}'. #{e.body['error']['message']}."
-            raise msg
+            raise_azure_exception(e, msg)
           end
+          Fog::Logger.debug "Successfully retrieved load balancers from Resource Group #{resource_group}"
+          load_balancers.value
         end
       end
 

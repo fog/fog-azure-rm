@@ -5,15 +5,16 @@ class TestLoadBalancer < Minitest::Test
   def setup
     @service = Fog::Network::AzureRM.new(credentials)
     @load_balancer = load_balancer(@service)
+    network_client = @service.instance_variable_get(:@network_client)
+    @response = ApiStub::Models::Network::LoadBalancer.create_load_balancer_response(network_client)
   end
 
   def test_model_methods
-    response = ApiStub::Models::Network::LoadBalancer.create_load_balancer_response
     methods = [
       :save,
       :destroy
     ]
-    @service.stub :create_load_balancer, response do
+    @service.stub :create_load_balancer, @response do
       methods.each do |method|
         assert @load_balancer.respond_to? method
       end
@@ -21,7 +22,6 @@ class TestLoadBalancer < Minitest::Test
   end
 
   def test_model_attributes
-    response = ApiStub::Models::Network::LoadBalancer.create_load_balancer_response
     attributes = [
       :name,
       :id,
@@ -34,7 +34,7 @@ class TestLoadBalancer < Minitest::Test
       :inbound_nat_rules,
       :inbound_nat_pools
     ]
-    @service.stub :create_load_balancer, response do
+    @service.stub :create_load_balancer, @response do
       attributes.each do |attribute|
         assert @load_balancer.respond_to? attribute
       end
@@ -42,8 +42,7 @@ class TestLoadBalancer < Minitest::Test
   end
 
   def test_save_method_response
-    response = ApiStub::Models::Network::LoadBalancer.create_load_balancer_response
-    @service.stub :create_load_balancer, response do
+    @service.stub :create_load_balancer, @response do
       assert_instance_of Fog::Network::AzureRM::LoadBalancer, @load_balancer.save
     end
   end

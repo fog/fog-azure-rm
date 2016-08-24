@@ -37,7 +37,8 @@ storage_account = storage.storage_accounts.create(
   resource_group: 'TestRG-VM'
 )
 
-access_key = storage_account.get_access_keys['key1']
+keys = storage_account.get_access_keys
+access_key = keys.first.value
 
 storage_data = Fog::Storage.new(
   provider: 'AzureRM',

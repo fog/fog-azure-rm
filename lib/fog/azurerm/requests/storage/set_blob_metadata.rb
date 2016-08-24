@@ -1,23 +1,24 @@
 module Fog
   module Storage
     class AzureRM
-      # This class provides the actual implemention for service calls.
+      # This class provides the actual implementation for service calls.
       class Real
         def set_blob_metadata(container_name, name, metadata)
-          Fog::Logger.debug "Set Blob #{name} metadata in a container #{container_name}."
+          msg = "Setting Blob #{name} metadata in a container #{container_name}."
+          Fog::Logger.debug msg
           begin
             @blob_client.set_blob_metadata(container_name, name, metadata)
-            Fog::Logger.debug "Setting metadata of blob #{name} successfully."
-            true
           rescue Azure::Core::Http::HTTPError => ex
-            raise "Exception in setting metadata of Blob #{name}: #{ex.inspect}"
+            raise_azure_exception(ex, msg)
           end
+          Fog::Logger.debug "Setting metadata of blob #{name} successfully."
+          true
         end
       end
       # This class provides the mock implementation for unit tests.
       class Mock
-        def set_blob_metadata(container_name, name, metadata)
-          Fog::Logger.debug "Set Blob #{name} metadata #{metadata} in a container #{container_name} successfully."
+        def set_blob_metadata(*)
+          Fog::Logger.debug "Set Blob metadata in a container successfully."
           true
         end
       end

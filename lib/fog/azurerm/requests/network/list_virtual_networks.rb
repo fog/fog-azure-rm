@@ -6,11 +6,10 @@ module Fog
         def list_virtual_networks(resource_group)
           begin
             virtual_networks = @network_client.virtual_networks.list_as_lazy(resource_group)
-            virtual_networks.next_link = '' if virtual_networks.next_link.nil?
-            virtual_networks.value
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, "Listing Virtual Networks in Resource Group #{resource_group}")
           end
+          virtual_networks.value
         end
       end
 
@@ -29,10 +28,7 @@ module Fog
                     'addressSpace' =>
                       {
                         'addressPrefixes' =>
-                          [
-                            '10.1.0.0/16',
-                            '10.2.0.0/16'
-                          ]
+                          %w(10.1.0.0/16 10.2.0.0/16)
                       },
                     'subnets' =>
                       [

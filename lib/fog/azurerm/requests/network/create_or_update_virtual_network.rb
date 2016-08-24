@@ -13,12 +13,12 @@ module Fog
         def create_or_update_vnet(resource_group_name, virtual_network_name, virtual_network)
           Fog::Logger.debug "Creating/Updating Virtual Network: #{virtual_network_name}"
           begin
-            result = @network_client.virtual_networks.create_or_update(resource_group_name, virtual_network_name, virtual_network)
-            Fog::Logger.debug "Virtual Network #{virtual_network_name} created/updated successfully."
-            result
+            virtual_network = @network_client.virtual_networks.create_or_update(resource_group_name, virtual_network_name, virtual_network)
           rescue  MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, "Creating/Updating Virtual Network: #{virtual_network_name}")
           end
+          Fog::Logger.debug "Virtual Network #{virtual_network_name} created/updated successfully."
+          virtual_network
         end
 
         def define_vnet_object(location, address_prefixes, dns_servers, subnets)
@@ -82,10 +82,7 @@ module Fog
                 'addressSpace' =>
                   {
                     'addressPrefixes' =>
-                      [
-                        '10.1.0.0/16',
-                        '10.2.0.0/16'
-                      ]
+                      %w(10.1.0.0/16 10.2.0.0/16)
                   },
                 'subnets' =>
                   [

@@ -12,12 +12,12 @@ module Fog
         def get_vnet(resource_group_name, virtual_network_name)
           Fog::Logger.debug "Getting Virtual Network: #{virtual_network_name}."
           begin
-            result = @network_client.virtual_networks.get(resource_group_name, virtual_network_name)
-            Fog::Logger.debug "Virtual Network #{virtual_network_name} retrieved successfully."
-            result
+            virtual_network = @network_client.virtual_networks.get(resource_group_name, virtual_network_name)
           rescue  MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, "Getting Virtual Network: #{virtual_network_name}")
           end
+          Fog::Logger.debug "Virtual Network #{virtual_network_name} retrieved successfully."
+          virtual_network
         end
       end
 
@@ -34,10 +34,7 @@ module Fog
                 'addressSpace' =>
                   {
                     'addressPrefixes' =>
-                      [
-                        '10.1.0.0/16',
-                        '10.2.0.0/16'
-                      ]
+                      %w(10.1.0.0/16 10.2.0.0/16)
                   },
                 'subnets' =>
                   [

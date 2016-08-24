@@ -4,13 +4,14 @@ module Fog
       # Real class for Network Request
       class Real
         def list_subnets(resource_group, virtual_network_name)
+          msg = "Listing Subnets int Resource Group #{resource_group}"
+          Fog::Logger.debug msg
           begin
             subnets = @network_client.subnets.list_as_lazy(resource_group, virtual_network_name)
-            subnets.next_link = '' if subnets.next_link.nil?
-            subnets.value
           rescue MsRestAzure::AzureOperationError => e
-            raise_azure_exception(e, "Listing Subnets int Resource Group #{resource_group}")
+            raise_azure_exception(e, msg)
           end
+          subnets.value
         end
       end
 

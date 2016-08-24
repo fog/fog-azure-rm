@@ -4,14 +4,15 @@ module Fog
       # Real class for Network Request
       class Real
         def get_subnet(resource_group, virtual_network_name, subnet_name)
-          Fog::Logger.debug "Getting Subnet: #{subnet_name}."
+          msg = "Getting Subnet: #{subnet_name}."
+          Fog::Logger.debug msg
           begin
-            result = @network_client.subnets.get(resource_group, virtual_network_name, subnet_name)
-            Fog::Logger.debug "Subnet #{subnet_name} retrieved successfully."
-            result
-          rescue  MsRestAzure::AzureOperationError => e
-            raise_azure_exception(e, "Getting Subnet: #{subnet_name}")
+            subnet = @network_client.subnets.get(resource_group, virtual_network_name, subnet_name)
+          rescue MsRestAzure::AzureOperationError => e
+            raise_azure_exception(e, msg)
           end
+          Fog::Logger.debug "Subnet #{subnet_name} retrieved successfully."
+          subnet
         end
       end
 

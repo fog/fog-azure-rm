@@ -4,14 +4,15 @@ module Fog
       # Real class for Network Request
       class Real
         def delete_subnet(resource_group, name, virtual_network_name)
-          Fog::Logger.debug "Deleting Subnet: #{name}..."
+          msg = "Deleting Subnet: #{name}"
+          Fog::Logger.debug msg
           begin
             @network_client.subnets.delete(resource_group, virtual_network_name, name)
-            Fog::Logger.debug "Subnet #{name} deleted successfully."
-            true
           rescue MsRestAzure::AzureOperationError => e
-            raise_azure_exception(e, "Deleting Subnet: #{name}")
+            raise_azure_exception(e, msg)
           end
+          Fog::Logger.debug "Subnet #{name} deleted successfully."
+          true
         end
       end
 

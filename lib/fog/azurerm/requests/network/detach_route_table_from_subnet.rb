@@ -4,15 +4,16 @@ module Fog
       # Real class for Network Request
       class Real
         def detach_route_table_from_subnet(resource_group, subnet_name, virtual_network_name, address_prefix, network_security_group_id)
-          Fog::Logger.debug "Detaching Route Table from Subnet: #{subnet_name}."
+          msg = "Detaching Route Table from Subnet: #{subnet_name}"
+          Fog::Logger.debug msg
           subnet = define_subnet_object_for_detach_route_table(address_prefix, network_security_group_id)
           begin
-            result = @network_client.subnets.create_or_update(resource_group, virtual_network_name, subnet_name, subnet)
-            Fog::Logger.debug 'Route Table detached successfully.'
-            result
-          rescue  MsRestAzure::AzureOperationError => e
-            raise_azure_exception(e, "Detaching Route Table from Subnet: #{subnet_name}")
+            subnet = @network_client.subnets.create_or_update(resource_group, virtual_network_name, subnet_name, subnet)
+          rescue MsRestAzure::AzureOperationError => e
+            raise_azure_exception(e, msg)
           end
+          Fog::Logger.debug 'Route Table detached successfully.'
+          subnet
         end
 
         private

@@ -23,7 +23,7 @@ module Fog
           hash['network_security_group_id'] = subnet.network_security_group.id unless subnet.network_security_group.nil?
           hash['route_table_id'] = nil
           hash['route_table_id'] = subnet.route_table.id unless subnet.route_table.nil?
-          hash['ip_configurations_ids'] = subnet.ip_configurations.map { |item| item.id } unless subnet.ip_configurations.nil?
+          hash['ip_configurations_ids'] = subnet.ip_configurations.map(&:id) unless subnet.ip_configurations.nil?
           hash
         end
 

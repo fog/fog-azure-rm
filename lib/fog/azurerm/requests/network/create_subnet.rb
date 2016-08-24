@@ -4,15 +4,16 @@ module Fog
       # Real class for Network Request
       class Real
         def create_subnet(resource_group, subnet_name, virtual_network_name, address_prefix, network_security_group_id, route_table_id)
-          Fog::Logger.debug "Creating Subnet: #{subnet_name}."
+          msg = "Creating Subnet: #{subnet_name}"
+          Fog::Logger.debug msg
           subnet = get_subnet_object(address_prefix, network_security_group_id, route_table_id)
           begin
             subnet = @network_client.subnets.create_or_update(resource_group, virtual_network_name, subnet_name, subnet)
-            Fog::Logger.debug "Subnet #{subnet_name} created successfully."
-            subnet
-          rescue  MsRestAzure::AzureOperationError => e
-            raise_azure_exception(e, "Creating Subnet: #{subnet_name}")
+          rescue MsRestAzure::AzureOperationError => e
+            raise_azure_exception(e, msg)
           end
+          Fog::Logger.debug "Subnet #{subnet_name} created successfully."
+          subnet
         end
 
         private

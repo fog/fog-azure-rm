@@ -30,7 +30,6 @@ module Fog
           hash['service_key'] = circuit['serviceKey']
           hash['service_provider_notes'] = circuit['serviceProviderNotes']
           hash['resource_group'] = get_resource_group_from_id(circuit['id'])
-          hash['resource_group'] = circuit['id'].split('/')[4]
           hash['tags'] = circuit['tags']
           sku = circuit['sku']
           unless sku.nil?

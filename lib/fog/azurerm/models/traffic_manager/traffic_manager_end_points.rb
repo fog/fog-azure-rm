@@ -13,17 +13,17 @@ module Fog
 
           traffic_manager_endpoints = []
           profile = service.get_traffic_manager_profile(resource_group, traffic_manager_profile_name)
-          end_points = profile['properties']['endpoints']
+          end_points = profile.endpoints
           end_points.each do |endpoint|
             traffic_manager_endpoints << Fog::TrafficManager::AzureRM::TrafficManagerEndPoint.parse(endpoint)
           end
           load(traffic_manager_endpoints)
         end
 
-        def get(identity)
-          endpoint = service.get_traffic_manager_profile(resource_group, identity)
-          endpoint_obj = Fog::TrafficManager::AzureRM::TrafficManagerProfile.new(service: service)
-          endpoint_obj.merge_attributes(Fog::TrafficManager::AzureRM::TrafficManagerProfile.parse(endpoint))
+        def get(end_point_name, type)
+          endpoint = service.get_traffic_manager_end_point(resource_group, traffic_manager_profile_name, end_point_name, type)
+          endpoint_obj = Fog::TrafficManager::AzureRM::TrafficManagerEndPoint.new(service: service)
+          endpoint_obj.merge_attributes(Fog::TrafficManager::AzureRM::TrafficManagerEndPoint.parse(endpoint))
         end
       end
     end

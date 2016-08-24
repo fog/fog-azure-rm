@@ -8,3 +8,4 @@ PREMIUM_STORAGE = 'Premium'.freeze
 ALLOWED_STANDARD_REPLICATION = %w(LRS ZRS GRS RAGRS).freeze
 WINDOWS = 'windows'.freeze
 VPN = 'Vpn'.freeze
+MICROSOFT_PEERING = 'MicrosoftPeering'.freeze

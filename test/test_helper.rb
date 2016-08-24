@@ -493,3 +493,45 @@ def virtual_network_gateway(service)
     service: service
   )
 end
+
+def express_route_circuit(service)
+  Fog::Network::AzureRM::ExpressRouteCircuit.new(
+    name: 'testCircuit',
+    location: 'eastus',
+    resource_group: 'HaiderRG',
+    tags: {
+        key1: 'value1'
+    },
+    sku_name: 'Standard_MeteredData',
+    sku_tier: 'Standard',
+    sku_family: 'MeteredData',
+    service_provider_name: 'Telenor',
+    peering_location: 'London',
+    bandwidth_in_mbps: 100,
+    peerings: [
+      {
+        name: 'AzurePublicPeering',
+        peering_type: 'AzurePublicPeering',
+        peer_asn: 100,
+        primary_peer_address_prefix: '192.168.1.0/30',
+        secondary_peer_address_prefix: '192.168.2.0/30',
+        vlan_id: 200
+      }
+    ],
+    service: service
+  )
+end
+
+def express_route_circuit_peering(service)
+  Fog::Network::AzureRM::ExpressRouteCircuitPeering.new(
+      name: 'AzurePublicPeering',
+      circuit_name: 'testCircuit',
+      resource_group: 'HaiderRG',
+      peering_type: 'AzurePublicPeering',
+      peer_asn: 100,
+      primary_peer_address_prefix: '192.168.1.0/30',
+      secondary_peer_address_prefix: '192.168.2.0/30',
+      vlan_id: 200,
+      service: service
+  )
+end

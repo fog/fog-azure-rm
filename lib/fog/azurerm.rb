@@ -11,6 +11,7 @@ require 'fog/azurerm/resources'
 require 'fog/azurerm/storage'
 require 'fog/azurerm/network'
 require 'fog/azurerm/compute'
+require 'fog/azurerm/traffic_manager'
 
 module Fog
   # Main AzureRM fog Provider Module

@@ -5,7 +5,17 @@ module Fog
       class Real
         def create_traffic_manager_profile(resource_group, name, traffic_routing_method, relative_name, ttl, protocol,
                                            port, path)
-          Fog::Logger.debug "Creating Traffic Manager Profile: #{name}..."
+          Fog::Logger.debug "Creating Traffic Manager Profile: #{name}."
+          traffic_manager_profile_parameters = get_traffic_manager_profile_properties(traffic_routing_method, relative_name, ttl, protocol,
+                                                                                      port, path)
+          begin
+            resource_group = @network_client.traffic_manager_profiles.create_or_update(resource_group, name, traffic_manager_profile_parameters, custom_headers = nil)
+            Fog::Logger.debug "Traffic Manager Profile: #{name} created successfully."
+            resource_group
+          rescue  MsRestAzure::AzureOperationError => e
+            raise Fog::AzureRm::OperationError.new(e)
+          end
+#========================================
           resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription_id}/resourceGroups/#{resource_group}/providers/Microsoft.Network/trafficManagerProfiles/#{name}?api-version=2015-04-28-preview"
           payload = serialize_profile_request(traffic_routing_method, relative_name, ttl, protocol, port, path)
           begin
@@ -28,6 +38,44 @@ module Fog
         end
 
         private
+
+        def get_traffic_manager_profile_properties(traffic_routing_method, relative_name, ttl, protocol, port, path)
+
+          traffic_manager_profile_properties = Azure::ARM::TrafficManager::Models::Profile.new
+          traffic_manager_profile_properties.profile_status = 'Enabled'
+          traffic_manager_profile_properties.traffic_routing_method = traffic_routing_method
+
+          traffic_manager_dns_config = Azure::ARM::TrafficManager::Models::DnsConfig.new
+          traffic_manager_dns_config.relative_name = relative_name
+          traffic_manager_dns_config.ttl = ttl
+          traffic_manager_dns_config.fqdn = relative_name + #todo
+          traffic_manager_profile_properties.dns_config = traffic_manager_dns_config
+
+          traffic_manager_monitor_config = Azure::ARM::TrafficManager::Models::MonitorConfig.new
+          traffic_manager_monitor_config.path = path
+          traffic_manager_monitor_config.protocol = protocol
+          traffic_manager_monitor_config.port = port
+          traffic_manager_monitor_config.profile_monitor_status = #todo
+          traffic_manager_profile_properties.monitor_config = traffic_manager_monitor_config
+
+          traffic_manager_endpoint = Azure::ARM::TrafficManager::Models::Endpoint.new
+          traffic_manager_endpoint.id = # todo
+          traffic_manager_endpoint.name = # todo
+          traffic_manager_endpoint.type = # todo
+          traffic_manager_endpoint.target_resource_id = # todo
+          traffic_manager_endpoint.target = #todo
+          traffic_manager_endpoint.endpoint_status = #todo
+          traffic_manager_endpoint.weight = #todo
+          traffic_manager_endpoint.priority = #todo
+          traffic_manager_endpoint.endpoint_location = #todo
+          traffic_manager_endpoint.endpoint_monitor_status = #todo
+          traffic_manager_endpoint.min_child_endpoints = #todo
+          traffic_manager_profile_properties.endpoints = traffic_manager_endpoint
+
+
+
+          traffic_manager_profile_properties
+        end
 
         def serialize_profile_request(traffic_routing_method, relative_name, ttl, protocol, port, path)
           dns_config = {}

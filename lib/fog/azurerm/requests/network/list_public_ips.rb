@@ -7,7 +7,7 @@ module Fog
           Fog::Logger.debug "Getting list of PublicIPs from Resource Group #{resource_group}."
           begin
             public_ips = @network_client.public_ipaddresses.list_as_lazy(resource_group)
-          rescue  MsRestAzure::AzureOperationError => e
+          rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, "Getting list of PublicIPs from Resource Group #{resource_group}")
           end
           Fog::Logger.debug 'Public IP listed successfully'
@@ -19,7 +19,8 @@ module Fog
       class Mock
         def list_public_ips(resource_group)
           public_ip = {
-              'value' => [
+            'value' =>
+            [
               {
                 'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/publicIPAddresses/test-PubIP",
                 'name' => 'test-PubIP',

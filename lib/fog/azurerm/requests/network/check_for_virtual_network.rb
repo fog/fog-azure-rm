@@ -4,15 +4,15 @@ module Fog
       # Mock class for Network Request
       class Real
         def check_for_virtual_network(resource_group, name)
+          msg = "Finding Virtual Network #{name}"
+          Fog::Logger.debug msg
           begin
-            promise = @network_client.virtual_networks.get(resource_group, name)
-            promise.value!
-            return true
+            @network_client.virtual_networks.get(resource_group, name)
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Exception checking name availability: #{e.body['error']['message']}"
-            raise msg if e.body['error']['code'] == 'ResourceGroupNotFound'
+            raise_azure_exception(e, msg) if e.body['error']['code'] == 'ResourceGroupNotFound'
             return false if e.body['error']['code'] == 'ResourceNotFound'
           end
+          true
         end
       end
 

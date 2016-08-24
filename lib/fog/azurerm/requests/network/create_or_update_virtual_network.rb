@@ -5,28 +5,26 @@ module Fog
       class Real
         def create_or_update_virtual_network(resource_group_name, virtual_network_name, location, dns_servers, subnets, address_prefixes)
           virtual_network = define_vnet_object(location, address_prefixes, dns_servers, subnets)
-          vnet = create_or_update_vnet(resource_group_name, virtual_network_name, virtual_network)
-          Azure::ARM::Network::Models::VirtualNetwork.serialize_object(vnet)
+          create_or_update_vnet(resource_group_name, virtual_network_name, virtual_network)
         end
 
         private
 
         def create_or_update_vnet(resource_group_name, virtual_network_name, virtual_network)
-          Fog::Logger.debug "Creating/Updating Virtual Network: #{virtual_network_name}"
+          msg = "Creating/Updating Virtual Network: #{virtual_network_name}"
+          Fog::Logger.debug msg
           begin
-            response = @network_client.virtual_networks.create_or_update(resource_group_name, virtual_network_name, virtual_network).value!
-            Fog::Logger.debug "Virtual Network #{virtual_network_name} created/updated successfully."
-            response.body
-          rescue  MsRestAzure::AzureOperationError => e
-            msg = "Exception creating/updating Virtual Network #{virtual_network_name} in Resource Group: #{resource_group_name}. #{e.body['error']['message']}"
-            raise msg
+            virtual_network = @network_client.virtual_networks.create_or_update(resource_group_name, virtual_network_name, virtual_network)
+          rescue MsRestAzure::AzureOperationError => e
+            raise_azure_exception(e, msg)
           end
+          Fog::Logger.debug "Virtual Network #{virtual_network_name} created/updated successfully."
+          virtual_network
         end
 
         def define_vnet_object(location, address_prefixes, dns_servers, subnets)
           virtual_network = Azure::ARM::Network::Models::VirtualNetwork.new
           virtual_network.location = location
-          virtual_network_properties = Azure::ARM::Network::Models::VirtualNetworkPropertiesFormat.new
 
           if address_prefixes.nil? || !address_prefixes.any?
             address_space = Azure::ARM::Network::Models::AddressSpace.new
@@ -35,20 +33,19 @@ module Fog
             address_space = Azure::ARM::Network::Models::AddressSpace.new
             address_space.address_prefixes = address_prefixes
           end
-          virtual_network_properties.address_space = address_space
+          virtual_network.address_space = address_space
 
           if !dns_servers.nil? && dns_servers.any?
             dhcp_options = Azure::ARM::Network::Models::DhcpOptions.new
             dhcp_options.dns_servers = dns_servers
-            virtual_network_properties.dhcp_options = dhcp_options
+            virtual_network.dhcp_options = dhcp_options
           end
 
           if !subnets.nil? && subnets.any?
             subnet_objects = define_subnet_objects(subnets)
-            virtual_network_properties.subnets = subnet_objects
+            virtual_network.subnets = subnet_objects
           end
 
-          virtual_network.properties = virtual_network_properties
           virtual_network
         end
 
@@ -61,14 +58,12 @@ module Fog
             route_table = Azure::ARM::Network::Models::RouteTable.new
             route_table.id = subnet[:route_table_id]
 
-            subnet_properties = Azure::ARM::Network::Models::SubnetPropertiesFormat.new
-            subnet_properties.address_prefix = subnet[:address_prefix]
-            subnet_properties.network_security_group = network_security_group unless subnet[:network_security_group_id].nil?
-            subnet_properties.route_table = route_table unless subnet[:route_table_id].nil?
-
             subnet_object = Azure::ARM::Network::Models::Subnet.new
             subnet_object.name = subnet[:name]
-            subnet_object.properties = subnet_properties
+            subnet_object.address_prefix = subnet[:address_prefix]
+            subnet_object.network_security_group = network_security_group unless subnet[:network_security_group_id].nil?
+            subnet_object.route_table = route_table unless subnet[:route_table_id].nil?
+
             subnet_objects << subnet_object
           end
           subnet_objects
@@ -78,7 +73,7 @@ module Fog
       # Mock class for Network Request
       class Mock
         def create_or_update__virtual_network(*)
-          {
+          virtual_network = {
             'id' => '/subscriptions/########-####-####-####-############/resourceGroups/fog-rg/providers/Microsoft.Network/virtualNetworks/fog-vnet',
             'name' => 'fog-vnet',
             'type' => 'Microsoft.Network/virtualNetworks',
@@ -88,10 +83,7 @@ module Fog
                 'addressSpace' =>
                   {
                     'addressPrefixes' =>
-                      [
-                        '10.1.0.0/16',
-                        '10.2.0.0/16'
-                      ]
+                      %w(10.1.0.0/16 10.2.0.0/16)
                   },
                 'subnets' =>
                   [
@@ -109,6 +101,8 @@ module Fog
                 'provisioningState' => 'Succeeded'
               }
           }
+          vnet_mapper = Azure::ARM::Network::Models::VirtualNetwork.mapper
+          @network_client.deserialize(vnet_mapper, virtual_network, 'result.body')
         end
       end
     end

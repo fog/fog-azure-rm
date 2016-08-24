@@ -4,9 +4,9 @@ require File.expand_path '../../test_helper', __dir__
 class TestStorageAccounts < Minitest::Test
   def setup
     @service = Fog::Storage::AzureRM.new(credentials)
-    @client = @service.instance_variable_get(:@storage_mgmt_client)
+    @storage_mgmt_client = @service.instance_variable_get(:@storage_mgmt_client)
     @storage_accounts = Fog::Storage::AzureRM::StorageAccounts.new(resource_group: 'fog-test-rg', service: @service)
-    @list_storage_account_response = [ApiStub::Models::Storage::StorageAccount.create_storage_account(@client)]
+    @list_storage_account_response = [ApiStub::Models::Storage::StorageAccount.create_storage_account(@storage_mgmt_client)]
   end
 
   def test_collection_methods

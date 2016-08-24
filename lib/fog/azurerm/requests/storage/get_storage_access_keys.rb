@@ -1,18 +1,18 @@
 module Fog
   module Storage
     class AzureRM
-      # This class provides the actual implemention for service calls.
+      # This class provides the actual implementation for service calls.
       class Real
         def get_storage_access_keys(resource_group, storage_account_name, options = {})
-          Fog::Logger.debug "Getting storage access keys for storage account: #{storage_account_name}."
+          msg = "Getting storage access keys for storage account: #{storage_account_name}."
+          Fog::Logger.debug msg
           begin
-            storage_account_keys = @storage_mgmt_client.storage_accounts.list_keys(resource_group, storage_account_name, options).value!
-            Fog::Logger.debug "Storage access keys for storage account: #{storage_account_name} listed successfully."
-            Azure::ARM::Storage::Models::StorageAccountKeys.serialize_object(storage_account_keys.body)
+            storage_account_keys = @storage_mgmt_client.storage_accounts.list_keys(resource_group, storage_account_name, options)
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Error getting storage access keys. #{e.body['error']['message']}"
-            raise msg
+            raise_azure_exception(e, msg)
           end
+          Fog::Logger.debug "Storage access keys for storage account: #{storage_account_name} listed successfully."
+          storage_account_keys.keys
         end
       end
       # This class provides the mock implementation.

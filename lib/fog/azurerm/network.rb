@@ -49,15 +49,25 @@ module Fog
       request :get_network_security_group
       request :add_security_rules
       request :remove_security_rule
-      request :create_application_gateway
-      request :delete_application_gateway
-      request :list_application_gateways
       request :create_traffic_manager_profile
       request :get_traffic_manager_profile
       request :delete_traffic_manager_profile
       request :list_traffic_manager_profiles
       request :create_traffic_manager_endpoint
       request :delete_traffic_manager_endpoint
+      request :delete_virtual_network_gateway
+      request :create_or_update_virtual_network_gateway
+      request :list_virtual_network_gateways
+      request :get_virtual_network_gateway
+      request :create_or_update_express_route_circuit
+      request :delete_express_route_circuit
+      request :get_express_route_circuit
+      request :list_express_route_circuits
+      request :create_or_update_express_route_circuit_peering
+      request :delete_express_route_circuit_peering
+      request :get_express_route_circuit_peering
+      request :list_express_route_circuit_peerings
+      request :list_express_route_service_providers
 
       model_path 'fog/azurerm/models/network'
       model :virtual_network
@@ -78,23 +88,22 @@ module Fog
       model :network_security_group
       collection :network_security_groups
       model :network_security_rule
-      model :application_gateway
-      collection :application_gateways
-      model :application_gateway_backend_address_pool
-      model :application_gateway_backend_http_setting
-      model :application_gateway_frontend_ip_configuration
-      model :application_gateway_frontend_port
-      model :application_gateway_ip_configuration
-      model :application_gateway_http_listener
       model :path_rule
-      model :application_gateway_probe
-      model :application_gateway_request_routing_rule
-      model :application_gateway_ssl_certificate
-      model :application_gateway_url_path_map
+      model :vpn_client_configuration
+      model :vpn_client_revoked_certificates
+      model :vpn_client_root_certificates
       model :traffic_manager_profile
       collection :traffic_manager_profiles
       model :traffic_manager_end_point
       collection :traffic_manager_end_points
+      model :virtual_network_gateway
+      collection :virtual_network_gateways
+      model :express_route_circuit
+      collection :express_route_circuits
+      model :express_route_circuit_peering
+      collection :express_route_circuit_peerings
+      model :express_route_service_provider
+      collection :express_route_service_providers
 
       # Mock class for Network Service
       class Mock

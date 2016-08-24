@@ -13,3 +13,6 @@ RESOURCE_TYPE = 7.freeze
 RESOURCE_NAME = 8.freeze
 FAULT_DOMAIN_COUNT = 3.freeze
 UPDATE_DOMAIN_COUNT = 5.freeze
+WINDOWS = 'windows'.freeze
+VPN = 'Vpn'.freeze
+MICROSOFT_PEERING = 'MicrosoftPeering'.freeze

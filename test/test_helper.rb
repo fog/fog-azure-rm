@@ -92,7 +92,7 @@ def standard_lrs(service)
     name: 'storage-account',
     location: 'West US',
     resource_group: 'fog-test-rg',
-    account_type: 'Other',
+    sku_name: 'Other',
     replication: 'LRS',
     service: service
   )
@@ -103,7 +103,7 @@ def standard_check_for_invalid_replications(service)
     name: 'storage-account',
     location: 'West US',
     resource_group: 'fog-test-rg',
-    account_type: 'Standard',
+    sku_name: 'Standard',
     replication: 'HGDKS',
     service: service
   )
@@ -114,7 +114,7 @@ def premium_check_for_invalid_replications(service)
     name: 'storage-account',
     location: 'West US',
     resource_group: 'fog-test-rg',
-    account_type: 'Premium',
+    sku_name: 'Premium',
     replication: 'HGDKS',
     service: service
   )

@@ -55,7 +55,7 @@ storage.storage_accounts.create(
   name: 'fogstandardsagrs',
   location: 'eastus',
   resource_group: 'TestRG-SA',
-  account_type: 'Standard',
+  sku_name: 'Standard',
   replication: 'GRS'
 )
 
@@ -67,7 +67,7 @@ storage.storage_accounts.create(
   name: 'fogpremiumsa',
   location: 'eastus',
   resource_group: 'TestRG-SA',
-  account_type: 'Premium',
+  sku_name: 'Premium',
   replication: 'LRS'
 )
 

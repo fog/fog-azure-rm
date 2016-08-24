@@ -4,10 +4,12 @@ module Fog
       # This class provides the actual implemention for service calls.
       class Real
         def list_virtual_networks(resource_group)
+          msg = "Listing Virtual Networks in Resource Group #{resource_group}"
+          Fog::Logger.debug msg
           begin
             virtual_networks = @network_client.virtual_networks.list_as_lazy(resource_group)
           rescue MsRestAzure::AzureOperationError => e
-            raise_azure_exception(e, "Listing Virtual Networks in Resource Group #{resource_group}")
+            raise_azure_exception(e, msg)
           end
           virtual_networks.value
         end

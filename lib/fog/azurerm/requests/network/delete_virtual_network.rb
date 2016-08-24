@@ -4,11 +4,12 @@ module Fog
       # Real class for Network Request
       class Real
         def delete_virtual_network(resource_group, name)
-          Fog::Logger.debug "Deleting Virtual Network: #{name}..."
+          msg = "Deleting Virtual Network: #{name}"
+          Fog::Logger.debug msg
           begin
             @network_client.virtual_networks.delete(resource_group, name)
           rescue MsRestAzure::AzureOperationError => e
-            raise_azure_exception(e, "Deleting Virtual Network: #{name}")
+            raise_azure_exception(e, msg)
           end
           Fog::Logger.debug "Virtual Network #{name} deleted successfully."
           true

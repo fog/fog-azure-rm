@@ -10,11 +10,12 @@ module Fog
         private
 
         def get_vnet(resource_group_name, virtual_network_name)
-          Fog::Logger.debug "Getting Virtual Network: #{virtual_network_name}."
+          msg = "Getting Virtual Network: #{virtual_network_name}."
+          Fog::Logger.debug msg
           begin
             virtual_network = @network_client.virtual_networks.get(resource_group_name, virtual_network_name)
           rescue MsRestAzure::AzureOperationError => e
-            raise_azure_exception(e, "Getting Virtual Network: #{virtual_network_name}")
+            raise_azure_exception(e, msg)
           end
           Fog::Logger.debug "Virtual Network #{virtual_network_name} retrieved successfully."
           virtual_network

@@ -14,7 +14,7 @@ module Fog
           Fog::Logger.debug "Creating/Updating Virtual Network: #{virtual_network_name}"
           begin
             virtual_network = @network_client.virtual_networks.create_or_update(resource_group_name, virtual_network_name, virtual_network)
-          rescue  MsRestAzure::AzureOperationError => e
+          rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, "Creating/Updating Virtual Network: #{virtual_network_name}")
           end
           Fog::Logger.debug "Virtual Network #{virtual_network_name} created/updated successfully."

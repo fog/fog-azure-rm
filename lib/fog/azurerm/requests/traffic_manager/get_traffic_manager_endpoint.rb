@@ -18,20 +18,20 @@ module Fog
 
       # Mock class for Network Request
       class Mock
-        def get_traffic_manager_profile(resource_group, traffic_manager_profile_name)
+        def get_traffic_manager_end_point(resource_group, traffic_manager_profile_name)
           {
-              id: "/subscriptions/####/resourceGroups/#{resource_group}/Microsoft.Network/trafficManagerProfiles/#{traffic_manager_profile_name}/azureEndpoints/endpoint-name1",
-              name: 'endpoint-name1',
-              type: 'Microsoft.Network/trafficManagerProfiles/azureEndpoints',
-              properties: {
-                  endpointStatus: 'Enabled',
-                  endpointMonitorStatus: 'Online',
-                  targetResourceId: "/subscriptions/####/resourceGroups/#{resource_group}/Microsoft.Network",
-                  target: 'myapp.azurewebsites.net',
-                  weight: 10,
-                  priority: 3,
-                  endpointLocation: 'centralus'
-              }
+            id: "/subscriptions/####/resourceGroups/#{resource_group}/Microsoft.Network/trafficManagerProfiles/#{traffic_manager_profile_name}/azureEndpoints/endpoint-name1",
+            name: 'endpoint-name1',
+            type: 'Microsoft.Network/trafficManagerProfiles/azureEndpoints',
+            properties: {
+              endpointStatus: 'Enabled',
+              endpointMonitorStatus: 'Online',
+              targetResourceId: "/subscriptions/####/resourceGroups/#{resource_group}/Microsoft.Network",
+              target: 'myapp.azurewebsites.net',
+              weight: 10,
+              priority: 3,
+              endpointLocation: 'centralus'
+            }
           }
         end
       end

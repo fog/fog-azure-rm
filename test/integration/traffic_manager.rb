@@ -15,7 +15,7 @@ rs = Fog::Resources::AzureRM.new(
   subscription_id: azure_credentials['subscription_id']
 )
 
-network = Fog::Network::AzureRM.new(
+traffic_manager = Fog::TrafficManager::AzureRM.new(
   tenant_id: azure_credentials['tenant_id'],
   client_id: azure_credentials['client_id'],
   client_secret: azure_credentials['client_secret'],
@@ -35,7 +35,7 @@ rs.resource_groups.create(
 ######################                         Create Traffic Manager Profile                     ######################
 ########################################################################################################################
 
-network.traffic_manager_profiles.create(
+traffic_manager.traffic_manager_profiles.create(
   name: 'test-tmp',
   resource_group: 'TestRG-TM',
   traffic_routing_method: 'Performance',
@@ -50,11 +50,11 @@ network.traffic_manager_profiles.create(
 ######################                        Create Traffic Manager Endpoint                    ######################
 ########################################################################################################################
 
-network.traffic_manager_end_points.create(
+traffic_manager.traffic_manager_end_points.create(
   name: 'myendpoint',
   traffic_manager_profile_name: 'test-tmp',
   resource_group: 'TestRG-TM',
-  type: 'external',
+  type: 'externalEndpoints',
   target: 'test-app.com',
   endpoint_location: 'eastus'
 )
@@ -63,14 +63,14 @@ network.traffic_manager_end_points.create(
 ######################                   Get and Destroy Traffic Manager Endpoint                ######################
 ########################################################################################################################
 
-ep = network.traffic_manager_end_points(resource_group: 'TestRG-TM', traffic_manager_profile_name: 'test-tmp').get('myendpoint')
+ep = traffic_manager.traffic_manager_end_points(resource_group: 'TestRG-TM', traffic_manager_profile_name: 'test-tmp').get('myendpoint', 'externalEndpoints')
 ep.destroy
 
 ########################################################################################################################
 ######################                    Get and Destroy Traffic Manager Profile                 ######################
 ########################################################################################################################
 
-tmp = network.traffic_manager_profiles(resource_group: 'TestRG-TM').get('test-tmp')
+tmp = traffic_manager.traffic_manager_profiles(resource_group: 'TestRG-TM').get('test-tmp')
 tmp.destroy
 
 ########################################################################################################################

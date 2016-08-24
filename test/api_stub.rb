@@ -14,8 +14,8 @@ require File.expand_path 'api_stub/models/network/network_interface', __dir__
 require File.expand_path 'api_stub/models/network/load_balancer', __dir__
 require File.expand_path 'api_stub/models/network/network_security_group', __dir__
 require File.expand_path 'api_stub/models/network/application_gateway', __dir__
-require File.expand_path 'api_stub/models/network/traffic_manager_end_point', __dir__
-require File.expand_path 'api_stub/models/network/traffic_manager_profile', __dir__
+require File.expand_path 'api_stub/models/traffic_manager/traffic_manager_end_point', __dir__
+require File.expand_path 'api_stub/models/traffic_manager/traffic_manager_profile', __dir__
 require File.expand_path 'api_stub/models/dns/zone', __dir__
 require File.expand_path 'api_stub/models/dns/record_set', __dir__
 
@@ -34,8 +34,8 @@ require File.expand_path 'api_stub/requests/network/network_interface', __dir__
 require File.expand_path 'api_stub/requests/network/load_balancer', __dir__
 require File.expand_path 'api_stub/requests/network/network_security_group', __dir__
 require File.expand_path 'api_stub/requests/network/application_gateway', __dir__
-require File.expand_path 'api_stub/requests/network/traffic_manager_endpoint', __dir__
-require File.expand_path 'api_stub/requests/network/traffic_manager_profile', __dir__
+require File.expand_path 'api_stub/requests/traffic_manager/traffic_manager_endpoint', __dir__
+require File.expand_path 'api_stub/requests/traffic_manager/traffic_manager_profile', __dir__
 require File.expand_path 'api_stub/requests/dns/zone', __dir__
 require File.expand_path 'api_stub/requests/dns/record_set', __dir__
 

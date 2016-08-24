@@ -17,7 +17,6 @@ module Fog
       request :create_traffic_manager_endpoint
       request :delete_traffic_manager_endpoint
       request :get_traffic_manager_endpoint
-      request :list_traffic_manager_endpoints
 
       model_path 'fog/azurerm/models/traffic_manager'
       model :traffic_manager_profile

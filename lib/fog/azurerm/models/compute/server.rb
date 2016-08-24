@@ -75,32 +75,6 @@ module Fog
           merge_attributes(Fog::Compute::AzureRM::Server.parse(vm))
         end
 
-        private
-
-        def get_virtual_machine_params(ssh_key_path)
-          {
-            resource_group: resource_group,
-            name: name,
-            location: location,
-            vm_size: vm_size,
-            storage_account_name: storage_account_name,
-            username: username,
-            password: password,
-            disable_password_authentication: disable_password_authentication,
-            ssh_key_path: ssh_key_path,
-            ssh_key_data: ssh_key_data,
-            network_interface_card_id: network_interface_card_id,
-            availability_set_id: availability_set_id,
-            publisher: publisher,
-            offer: offer,
-            sku: sku,
-            version: version,
-            platform: platform,
-            provision_vm_agent: provision_vm_agent,
-            enable_automatic_updates: enable_automatic_updates
-          }
-        end
-
         def destroy
           service.delete_virtual_machine(resource_group, name)
         end
@@ -145,6 +119,32 @@ module Fog
         def detach_data_disk(disk_name)
           vm = service.detach_data_disk_from_vm(resource_group, name, disk_name)
           merge_attributes(Fog::Compute::AzureRM::Server.parse(vm))
+        end
+
+        private
+
+        def get_virtual_machine_params(ssh_key_path)
+          {
+            resource_group: resource_group,
+            name: name,
+            location: location,
+            vm_size: vm_size,
+            storage_account_name: storage_account_name,
+            username: username,
+            password: password,
+            disable_password_authentication: disable_password_authentication,
+            ssh_key_path: ssh_key_path,
+            ssh_key_data: ssh_key_data,
+            network_interface_card_id: network_interface_card_id,
+            availability_set_id: availability_set_id,
+            publisher: publisher,
+            offer: offer,
+            sku: sku,
+            version: version,
+            platform: platform,
+            provision_vm_agent: provision_vm_agent,
+            enable_automatic_updates: enable_automatic_updates
+          }
         end
       end
     end

@@ -54,6 +54,10 @@ module Fog
       request :list_traffic_manager_profiles
       request :create_traffic_manager_endpoint
       request :delete_traffic_manager_endpoint
+      request :delete_virtual_network_gateway
+      request :create_or_update_virtual_network_gateway
+      request :list_virtual_network_gateways
+      request :get_virtual_network_gateway
 
       model_path 'fog/azurerm/models/network'
       model :virtual_network
@@ -75,10 +79,15 @@ module Fog
       collection :network_security_groups
       model :network_security_rule
       model :path_rule
+      model :vpn_client_configuration
+      model :vpn_client_revoked_certificates
+      model :vpn_client_root_certificates
       model :traffic_manager_profile
       collection :traffic_manager_profiles
       model :traffic_manager_end_point
       collection :traffic_manager_end_points
+      model :virtual_network_gateway
+      collection :virtual_network_gateways
 
       # Mock class for Network Service
       class Mock

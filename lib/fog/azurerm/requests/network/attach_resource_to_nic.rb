@@ -4,17 +4,19 @@ module Fog
       # Real class for Network Request
       class Real
         def attach_resource_to_nic(resource_group_name, nic_name, resource_type, resource_id)
-          Fog::Logger.debug "Updating #{resource_type} in Network Interface #{nic_name}."
+          msg = "Updating #{resource_type} in Network Interface #{nic_name}"
+          Fog::Logger.debug msg
           begin
             nic = get_network_interface_with_attached_resource(nic_name, resource_group_name, resource_id, resource_type)
-
             network_interface = @network_client.network_interfaces.create_or_update(resource_group_name, nic_name, nic)
-            Fog::Logger.debug "#{resource_type} updated in Network Interface #{nic_name} successfully!"
-            network_interface
           rescue MsRestAzure::AzureOperationError => e
-            raise_azure_exception(e, "Updating #{resource_type} in Network Interface #{nic_name}")
+            raise_azure_exception(e, msg)
           end
+          Fog::Logger.debug "#{resource_type} updated in Network Interface #{nic_name} successfully!"
+          network_interface
         end
+
+        private
 
         def get_network_interface_with_attached_resource(nic_name, resource_group_name, resource_id, resource_type)
           network_interface = @network_client.network_interfaces.get(resource_group_name, nic_name)

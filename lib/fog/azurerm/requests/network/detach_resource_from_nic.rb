@@ -4,17 +4,20 @@ module Fog
       # Real class for Network Request
       class Real
         def detach_resource_from_nic(resource_group_name, nic_name, resource_type)
-          Fog::Logger.debug "Removing #{resource_type} from Network Interface #{nic_name}."
+          msg = "Removing #{resource_type} from Network Interface #{nic_name}"
+          Fog::Logger.debug msg
           begin
             nic = get_network_interface_with_detached_resource(nic_name, resource_group_name, resource_type)
 
-            network_interface = @network_client.network_interfaces.create_or_update(resource_group_name, nic_name, nic)
-            Fog::Logger.debug "#{resource_type} deleted from Network Interface #{nic_name} successfully!"
-            network_interface
+            nic_obj = @network_client.network_interfaces.create_or_update(resource_group_name, nic_name, nic)
           rescue MsRestAzure::AzureOperationError => e
-            raise_azure_exception(e, "Removing #{resource_type} from Network Interface #{nic_name}")
+            raise_azure_exception(e, msg)
           end
+          Fog::Logger.debug "#{resource_type} deleted from Network Interface #{nic_name} successfully!"
+          nic_obj
         end
+
+        private
 
         def get_network_interface_with_detached_resource(nic_name, resource_group_name, resource_type)
           network_interface = @network_client.network_interfaces.get(resource_group_name, nic_name)

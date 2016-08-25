@@ -4,14 +4,14 @@ module Fog
       # Real class for Network Request
       class Real
         def list_network_interfaces(resource_group)
-          Fog::Logger.debug "Getting list of NetworkInterfaces from Resource Group #{resource_group}."
+          msg = "Getting list of NetworkInterfaces from Resource Group #{resource_group}."
+          Fog::Logger.debug msg
           begin
             network_interfaces = @network_client.network_interfaces.list_as_lazy(resource_group)
-            network_interfaces.next_link = '' if network_interfaces.next_link.nil?
-            network_interfaces.value
           rescue MsRestAzure::AzureOperationError => e
-            raise_azure_exception(e, "Getting list of NetworkInterfaces from Resource Group #{resource_group}")
+            raise_azure_exception(e, msg)
           end
+          network_interfaces.value
         end
       end
 

@@ -5,15 +5,16 @@ module Fog
       # Real class for Network Request
       class Real
         def create_or_update_network_interface(resource_group_name, name, location, subnet_id, public_ip_address_id, ip_config_name, private_ip_allocation_method, private_ip_address)
-          Fog::Logger.debug "Creating/Updating Network Interface Card: #{name}..."
+          msg = "Creating/Updating Network Interface Card: #{name}"
+          Fog::Logger.debug
           network_interface = get_network_interface_object(name, location, subnet_id, public_ip_address_id, ip_config_name, private_ip_allocation_method, private_ip_address)
           begin
-            network_interface = @network_client.network_interfaces.create_or_update(resource_group_name, name, network_interface)
-            Fog::Logger.debug "Network Interface #{name} created/updated successfully."
-            network_interface
+            network_interface_obj = @network_client.network_interfaces.create_or_update(resource_group_name, name, network_interface)
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, "Creating/Updating Network Interface Card: #{name}")
           end
+          Fog::Logger.debug "Network Interface #{name} created/updated successfully."
+          network_interface_obj
         end
 
         private

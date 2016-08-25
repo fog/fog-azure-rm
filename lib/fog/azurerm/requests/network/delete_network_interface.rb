@@ -4,14 +4,15 @@ module Fog
       # Real class for Network Request
       class Real
         def delete_network_interface(resource_group, name)
-          Fog::Logger.debug "Deleting NetworkInterface #{name} from Resource Group #{resource_group}."
+          msg = "Deleting NetworkInterface #{name} from Resource Group #{resource_group}"
+          Fog::Logger.debug
           begin
             @network_client.network_interfaces.delete(resource_group, name)
-            Fog::Logger.debug "NetworkInterface #{name} Deleted Successfully."
-            true
           rescue MsRestAzure::AzureOperationError => e
-            raise_azure_exception(e, "Deleting NetworkInterface #{name} from Resource Group #{resource_group}")
+            raise_azure_exception(e, msg)
           end
+          Fog::Logger.debug "NetworkInterface #{name} Deleted Successfully."
+          true
         end
       end
 

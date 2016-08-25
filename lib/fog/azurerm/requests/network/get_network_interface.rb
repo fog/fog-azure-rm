@@ -4,11 +4,12 @@ module Fog
       # Real class for Network Interface Request
       class Real
         def get_network_interface(resource_group_name, nic_name)
-          Fog::Logger.debug "Getting Network Interface#{nic_name} from Resource Group #{resource_group_name}."
+          msg = "Getting Network Interface#{nic_name} from Resource Group #{resource_group_name}"
+          Fog::Logger.debug msg
           begin
             @network_client.network_interfaces.get(resource_group_name, nic_name)
           rescue MsRestAzure::AzureOperationError => e
-            raise_azure_exception(e, "Getting Network Interface#{nic_name} from Resource Group #{resource_group_name}")
+            raise_azure_exception(e, msg)
           end
         end
       end

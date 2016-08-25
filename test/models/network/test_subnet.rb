@@ -35,10 +35,8 @@ class TestSubnet < Minitest::Test
       :route_table_id,
       :ip_configurations_ids
     ]
-    @service.stub :create_subnet, @response do
-      attributes.each do |attribute|
-        assert @subnet.respond_to? attribute
-      end
+    attributes.each do |attribute|
+      assert @subnet.respond_to? attribute
     end
   end
 

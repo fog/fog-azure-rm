@@ -2,7 +2,7 @@ module ApiStub
   module Requests
     module Network
       class Subnet
-        def self.create_subnet_response
+        def self.create_subnet_response(network_client)
           body = '{
              "name":"fog-test-subnet",
              "id":"/subscriptions/{guid}/resourceGroups/fog-test-rg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/fog-test-subnet",
@@ -27,12 +27,11 @@ module ApiStub
                 ]
              }
           }'
-          result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
-          result.body = Azure::ARM::Network::Models::Subnet.deserialize_object(JSON.load(body))
-          result
+          subnet_mapper = Azure::ARM::Network::Models::Subnet.mapper
+          network_client.deserialize(subnet_mapper, JSON.load(body), 'result.body')
         end
 
-        def self.list_subnets_response
+        def self.list_subnets_response(network_client)
           body = '{
             "value": [{
               "name":"mysubnet1",
@@ -59,9 +58,8 @@ module ApiStub
               }
             } ]
           }'
-          result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
-          result.body = Azure::ARM::Network::Models::SubnetListResult.deserialize_object(JSON.load(body))
-          result
+          subnet_mapper = Azure::ARM::Network::Models::SubnetListResult.mapper
+          network_client.deserialize(subnet_mapper, JSON.load(body), 'result.body')
         end
 
         def self.delete_subnet_response

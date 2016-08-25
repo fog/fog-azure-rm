@@ -49,12 +49,6 @@ module Fog
       request :get_network_security_group
       request :add_security_rules
       request :remove_security_rule
-      request :create_traffic_manager_profile
-      request :get_traffic_manager_profile
-      request :delete_traffic_manager_profile
-      request :list_traffic_manager_profiles
-      request :create_traffic_manager_endpoint
-      request :delete_traffic_manager_endpoint
       request :delete_virtual_network_gateway
       request :create_or_update_virtual_network_gateway
       request :list_virtual_network_gateways
@@ -92,10 +86,6 @@ module Fog
       model :vpn_client_configuration
       model :vpn_client_revoked_certificates
       model :vpn_client_root_certificates
-      model :traffic_manager_profile
-      collection :traffic_manager_profiles
-      model :traffic_manager_end_point
-      collection :traffic_manager_end_points
       model :virtual_network_gateway
       collection :virtual_network_gateways
       model :express_route_circuit

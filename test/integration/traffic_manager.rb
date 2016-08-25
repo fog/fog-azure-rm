@@ -8,7 +8,7 @@ require 'yaml'
 
 azure_credentials = YAML.load_file('credentials/azure.yml')
 
-rs = Fog::Resources::AzureRM.new(
+resources = Fog::Resources::AzureRM.new(
   tenant_id: azure_credentials['tenant_id'],
   client_id: azure_credentials['client_id'],
   client_secret: azure_credentials['client_secret'],
@@ -26,7 +26,7 @@ traffic_manager = Fog::TrafficManager::AzureRM.new(
 ######################                                 Prerequisites                              ######################
 ########################################################################################################################
 
-rs.resource_groups.create(
+resources.resource_groups.create(
   name: 'TestRG-TM',
   location: 'eastus'
 )
@@ -63,19 +63,19 @@ traffic_manager.traffic_manager_end_points.create(
 ######################                   Get and Destroy Traffic Manager Endpoint                ######################
 ########################################################################################################################
 
-ep = traffic_manager.traffic_manager_end_points(resource_group: 'TestRG-TM', traffic_manager_profile_name: 'test-tmp').get('myendpoint', 'externalEndpoints')
-ep.destroy
+end_point = traffic_manager.traffic_manager_end_points(resource_group: 'TestRG-TM', traffic_manager_profile_name: 'test-tmp').get('myendpoint', 'externalEndpoints')
+end_point.destroy
 
 ########################################################################################################################
 ######################                    Get and Destroy Traffic Manager Profile                 ######################
 ########################################################################################################################
 
-tmp = traffic_manager.traffic_manager_profiles(resource_group: 'TestRG-TM').get('test-tmp')
-tmp.destroy
+traffic_manager_profile = traffic_manager.traffic_manager_profiles(resource_group: 'TestRG-TM').get('test-tmp')
+traffic_manager_profile.destroy
 
 ########################################################################################################################
 ######################                                   CleanUp                                  ######################
 ########################################################################################################################
 
-rg = rs.resource_groups.get('TestRG-TM')
-rg.destroy
+resource_group = resources.resource_groups.get('TestRG-TM')
+resource_group.destroy

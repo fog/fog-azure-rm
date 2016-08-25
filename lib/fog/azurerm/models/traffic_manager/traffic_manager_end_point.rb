@@ -1,7 +1,7 @@
 module Fog
   module TrafficManager
     class AzureRM
-      # Traffic Manager End Point model for TrafficManager Service
+      # Traffic Manager End Point model for Traffic Manager Service
       class TrafficManagerEndPoint < Fog::Model
         identity :name
         attribute :traffic_manager_profile_name
@@ -22,7 +22,7 @@ module Fog
           hash['id'] = endpoint.id
           hash['name'] = endpoint.name
           hash['resource_group'] = get_resource_group_from_id(endpoint.id)
-          hash['type'] = endpoint.type.split('/')[2]
+          hash['type'] = get_end_point_type(endpoint.type)
           hash['target_resource_id'] = endpoint.target_resource_id
           hash['target'] = endpoint.target
           hash['endpoint_status'] = endpoint.endpoint_status
@@ -31,30 +31,44 @@ module Fog
           hash['priority'] = endpoint.priority
           hash['endpoint_location'] = endpoint.endpoint_location
           hash['min_child_endpoints'] = endpoint.min_child_endpoints
-          hash['traffic_manager_profile_name'] = endpoint.id.split('/')[8]
+          hash['traffic_manager_profile_name'] = get_traffic_manager_profile_name_from_endpoint_id(endpoint.id)
           hash
         end
 
         def save
           requires :name, :traffic_manager_profile_name, :resource_group, :type
-          requires :target_resource_id if type.eql?('azureEndpoints')
-          requires :target, :endpoint_location if type.eql?('externalEndpoints')
-          requires :target_resource_id, :endpoint_location, :min_child_endpoints if type.eql?('nestedEndpoints')
+          requires :target_resource_id if type.eql?(AZURE_ENDPOINTS)
+          requires :target, :endpoint_location if type.eql?(EXTERNAL_ENDPOINTS)
+          requires :target_resource_id, :endpoint_location, :min_child_endpoints if type.eql?(NESTED_ENDPOINTS)
 
           if %w(azureEndpoints externalEndpoints nestedEndpoints).select { |type| type if type.eql?(type) }.any?
-            traffic_manager_endpoint = service.create_traffic_manager_endpoint(resource_group, name,
-                                                                               traffic_manager_profile_name, type,
-                                                                               target_resource_id, target, weight,
-                                                                               priority, endpoint_location,
-                                                                               min_child_endpoints)
+            endpoint_params = traffic_manager_endpoint_hash
+            traffic_manager_endpoint = service.create_traffic_manager_endpoint(endpoint_params)
             merge_attributes(Fog::TrafficManager::AzureRM::TrafficManagerEndPoint.parse(traffic_manager_endpoint))
           else
-            raise(ArgumentError, ':type should be "azureEndpoints", "externalEndpoints" or "nestedEndpoints"')
+            raise(ArgumentError, ":type should be '#{AZURE_ENDPOINTS}', '#{EXTERNAL_ENDPOINTS}' or '#{NESTED_ENDPOINTS}'")
           end
         end
 
         def destroy
           service.delete_traffic_manager_endpoint(resource_group, name, traffic_manager_profile_name, type)
+        end
+
+        private
+
+        def traffic_manager_endpoint_hash
+          {
+            resource_group: resource_group,
+            name: name,
+            traffic_manager_profile_name: traffic_manager_profile_name,
+            type: type,
+            target_resource_id: target_resource_id,
+            target: target,
+            weight: weight,
+            priority: priority,
+            endpoint_location: endpoint_location,
+            min_child_endpoints: min_child_endpoints
+          }
         end
       end
     end

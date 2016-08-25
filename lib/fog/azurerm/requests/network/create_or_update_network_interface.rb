@@ -6,7 +6,7 @@ module Fog
       class Real
         def create_or_update_network_interface(resource_group_name, name, location, subnet_id, public_ip_address_id, ip_config_name, private_ip_allocation_method, private_ip_address)
           msg = "Creating/Updating Network Interface Card: #{name}"
-          Fog::Logger.debug
+          Fog::Logger.debug msg
           network_interface = get_network_interface_object(name, location, subnet_id, public_ip_address_id, ip_config_name, private_ip_allocation_method, private_ip_address)
           begin
             network_interface_obj = @network_client.network_interfaces.create_or_update(resource_group_name, name, network_interface)

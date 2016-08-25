@@ -1,3 +1,17 @@
+## 0.0.5
+
+**Added:**
+
+**Changed:**
+- Traffic Manager Service - Moved Traffic Manager Profile, Endpoint, respective Unit tests and integration test from Network Service to Traffic Manager Service. 
+- Traffic Manager Service - Updated Traffic Manager Service API requests to use SDK.
+
+**Fixed:**
+
+**Removed:**
+
+
+
 ## 0.0.4
 
 **Added:**

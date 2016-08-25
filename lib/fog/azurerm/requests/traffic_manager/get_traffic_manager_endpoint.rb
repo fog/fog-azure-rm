@@ -18,21 +18,20 @@ module Fog
 
       # Mock class for Network Request
       class Mock
-        def get_traffic_manager_end_point(resource_group, traffic_manager_profile_name)
-          {
-            id: "/subscriptions/####/resourceGroups/#{resource_group}/Microsoft.Network/trafficManagerProfiles/#{traffic_manager_profile_name}/azureEndpoints/endpoint-name1",
-            name: 'endpoint-name1',
-            type: 'Microsoft.Network/trafficManagerProfiles/azureEndpoints',
-            properties: {
-              endpointStatus: 'Enabled',
-              endpointMonitorStatus: 'Online',
-              targetResourceId: "/subscriptions/####/resourceGroups/#{resource_group}/Microsoft.Network",
-              target: 'myapp.azurewebsites.net',
-              weight: 10,
-              priority: 3,
-              endpointLocation: 'centralus'
+        def get_traffic_manager_end_point(*)
+          endpoint = {
+            'name' => '{endpoint-name}',
+            'type' => 'Microsoft.Network/trafficManagerProfiles/externalEndpoints',
+            'properties' => {
+              'target' => 'myendpoint.contoso.com',
+              'endpointStatus' => 'Enabled',
+              'weight' => 10,
+              'priority' => 5,
+              'endpointLocation' => 'northeurope'
             }
           }
+          endpoint_mapper = Azure::ARM::TrafficManager::Models::Endpoint.mapper
+          @traffic_mgmt_client.deserialize(endpoint_mapper, endpoint, 'result.body')
         end
       end
     end

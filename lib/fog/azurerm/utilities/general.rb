@@ -8,6 +8,16 @@ def get_virtual_network_from_id(subnet_id)
   subnet_id.split('/')[8]
 end
 
+# Extract Endpoint type from (String)
+def get_end_point_type(endpoint_type)
+  endpoint_type.split('/')[2]
+end
+
+# Extract Traffic Manager Profile Name from Endpoint id(String)
+def get_traffic_manager_profile_name_from_endpoint_id(endpoint_id)
+  endpoint_id.split('/')[8]
+end
+
 def get_record_type(type)
   type.split('/').last
 end

@@ -52,12 +52,6 @@ module Fog
       request :create_application_gateway
       request :delete_application_gateway
       request :list_application_gateways
-      request :create_traffic_manager_profile
-      request :get_traffic_manager_profile
-      request :delete_traffic_manager_profile
-      request :list_traffic_manager_profiles
-      request :create_traffic_manager_endpoint
-      request :delete_traffic_manager_endpoint
 
       model_path 'fog/azurerm/models/network'
       model :virtual_network
@@ -91,10 +85,6 @@ module Fog
       model :application_gateway_request_routing_rule
       model :application_gateway_ssl_certificate
       model :application_gateway_url_path_map
-      model :traffic_manager_profile
-      collection :traffic_manager_profiles
-      model :traffic_manager_end_point
-      collection :traffic_manager_end_points
 
       # Mock class for Network Service
       class Mock

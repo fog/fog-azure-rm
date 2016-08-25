@@ -20,6 +20,21 @@ module ApiStub
           endpoint_mapper = Azure::ARM::TrafficManager::Models::Endpoint.mapper
           traffic_manager_client.deserialize(endpoint_mapper, JSON.load(body), 'result.body')
         end
+
+        def self.endpoint_hash
+          {
+            resource_group: 'resource-group',
+            name: 'name',
+            traffic_manager_profile_name: 'traffic_manager_profile_name',
+            type: 'type',
+            target_resource_id: 'target_resource_id',
+            target: 'target',
+            weight: 'weight',
+            priority: 'priority',
+            endpoint_location: 'endpoint_location',
+            min_child_endpoints: 'min_child_endpoints'
+          }
+        end
       end
     end
   end

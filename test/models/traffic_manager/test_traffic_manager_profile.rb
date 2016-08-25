@@ -6,7 +6,7 @@ class TestTrafficManagerProfile < Minitest::Test
     @service = Fog::TrafficManager::AzureRM.new(credentials)
     @traffic_manager_profile = traffic_manager_profile(@service)
     traffic_manager_client = @service.instance_variable_get(:@traffic_mgmt_client)
-    @response = ApiStub::Models::TrafficManager::TrafficManagerProfile.traffic_manager_profile_response(traffic_manager_client)
+    @traffic_manager_profile_response = ApiStub::Models::TrafficManager::TrafficManagerProfile.traffic_manager_profile_response(traffic_manager_client)
   end
 
   def test_model_methods
@@ -42,7 +42,7 @@ class TestTrafficManagerProfile < Minitest::Test
   end
 
   def test_save_method_response
-    @service.stub :create_traffic_manager_profile, @response do
+    @service.stub :create_traffic_manager_profile, @traffic_manager_profile_response do
       assert_instance_of Fog::TrafficManager::AzureRM::TrafficManagerProfile, @traffic_manager_profile.save
     end
   end

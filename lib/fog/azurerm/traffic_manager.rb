@@ -25,17 +25,6 @@ module Fog
       model :traffic_manager_end_point
       collection :traffic_manager_end_points
 
-      # This class provides the mock implementation for unit tests.
-      class Mock
-        def initialize(_options = {})
-          begin
-            require 'azure_mgmt_traffic_manager'
-          rescue LoadError => e
-            retry if require('rubygems')
-            raise e.message
-          end
-        end
-      end
       # This class provides the actual implementation for service calls.
       class Real
         def initialize(options)
@@ -49,6 +38,17 @@ module Fog
           credentials = Fog::Credentials::AzureRM.get_credentials(options[:tenant_id], options[:client_id], options[:client_secret])
           @traffic_mgmt_client = ::Azure::ARM::TrafficManager::TrafficManagerManagementClient.new(credentials)
           @traffic_mgmt_client.subscription_id = options[:subscription_id]
+        end
+      end
+      # This class provides the mock implementation for unit tests.
+      class Mock
+        def initialize(_options = {})
+          begin
+            require 'azure_mgmt_traffic_manager'
+          rescue LoadError => e
+            retry if require('rubygems')
+            raise e.message
+          end
         end
       end
     end

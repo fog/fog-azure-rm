@@ -19,7 +19,7 @@ module ApiStub
             }
           }'
           endpoint_mapper = Azure::ARM::TrafficManager::Models::Endpoint.mapper
-          traffic_manager_client.deserialize(endpoint_mapper, endpoint, 'result.body')
+          traffic_manager_client.deserialize(endpoint_mapper, JSON.load(endpoint), 'result.body')
         end
       end
     end

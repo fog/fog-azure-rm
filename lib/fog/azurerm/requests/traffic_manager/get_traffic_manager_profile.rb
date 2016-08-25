@@ -18,72 +18,61 @@ module Fog
 
       # Mock class for Network Request
       class Mock
-        def get_traffic_manager_profile(resource_group, traffic_manager_profile_name)
-          {
-            location: 'global',
-            tags: {},
-            id: "/subscriptions/####/resourceGroups/#{resource_group}/Microsoft.Network/trafficManagerProfiles/#{traffic_manager_profile_name}",
-            name: traffic_manager_profile_name,
-            type: 'Microsoft.Network/trafficManagerProfiles',
-            properties: {
-              profileStatus: 'Enabled',
-              trafficRoutingMethod: 'Performance',
-              dnsConfig: {
-                relativeName: 'myapp',
-                fqdn: 'myapp.trafficmanager.net',
-                ttl: 30
+        def get_traffic_manager_profile(*)
+          profile = {
+            'location' => 'global',
+            'tags' => {},
+            'properties' => {
+              'profileStatus' => 'Enabled',
+              'trafficRoutingMethod' => 'Performance',
+              'dnsConfig' => {
+                'relativeName' => 'myapp',
+                'ttl' => 30
               },
-              monitorConfig: {
-                profileMonitorStatus: 'Online',
-                protocol: 'http',
-                port: 80,
-                path: '/monitorpage.aspx'
+              'monitorConfig' => {
+                'protocol' => 'http',
+                'port' => 80,
+                'path' => '/monitorpage.aspx'
               },
-              endpoints: [
+              'endpoints' => [
                 {
-                  id: "/subscriptions/####/resourceGroups/#{resource_group}/Microsoft.Network/trafficManagerProfiles/#{traffic_manager_profile_name}/azureEndpoints/endpoint-name1",
-                  name: 'endpoint-name1',
-                  type: 'Microsoft.Network/trafficManagerProfiles/azureEndpoints',
-                  properties: {
-                    endpointStatus: 'Enabled',
-                    endpointMonitorStatus: 'Online',
-                    targetResourceId: "/subscriptions/####/resourceGroups/#{resource_group}/Microsoft.Network",
-                    target: 'myapp.azurewebsites.net',
-                    weight: 10,
-                    priority: 3,
-                    endpointLocation: 'centralus'
+                  'name' => '{endpoint-name}',
+                  'type' => 'Microsoft.Network/trafficManagerProfiles/azureEndpoints',
+                  'properties' => {
+                    'targetResourceId' => '{resource ID of target resource in Azure}',
+                    'endpointStatus' => 'Enabled',
+                    'weight' => 10,
+                    'priority' => 3
                   }
                 },
                 {
-                  id: "/subscriptions/####/resourceGroups/resource_group/Microsoft.Network/trafficManagerProfiles/#{traffic_manager_profile_name}/externalEndpoints/endpoint-name2",
-                  name: 'endpoint-name2',
-                  type: 'Microsoft.Network/trafficManagerProfiles/externalEndpoints',
-                  properties: {
-                    endpointStatus: 'Enabled',
-                    endpointMonitorStatus: 'Online',
-                    target: 'myendpoint.contoso.com',
-                    weight: 10,
-                    priority: 5,
-                    endpointLocation: 'northeurope'
+                  'name' => '{endpoint-name}',
+                  'type' => 'Microsoft.Network/trafficManagerProfiles/externalEndpoints',
+                  'properties' => {
+                    'target' => 'myendpoint.contoso.com',
+                    'endpointStatus' => 'Enabled',
+                    'weight' => 10,
+                    'priority' => 5,
+                    'endpointLocation' => 'northeurope'
                   }
                 },
                 {
-                  id: "/subscriptions/####/resourceGroups/#{resource_group}/Microsoft.Network/trafficManagerProfiles/#{traffic_manager_profile_name}/nestedEndpoints/endpoint-name3",
-                  name: 'endpoint-name3',
-                  type: 'Microsoft.Network/trafficManagerProfiles/nestedEndpoints',
-                  properties: {
-                    endpointStatus: 'Enabled',
-                    endpointMonitorStatus: 'Online',
-                    targetResourceId: "/subscriptions/####/resourceGroups/#{resource_group}/Microsoft.Network",
-                    weight: 10,
-                    priority: 1,
-                    endpointLocation: 'westeurope',
-                    minChildEndpoints: 1
+                  'name' => '{endpoint-name}',
+                  'type' => 'Microsoft.Network/trafficManagerProfiles/nestedEndpoints',
+                  'properties' => {
+                    'targetResourceId' => '{resource ID of child Traffic Manager profile}',
+                    'endpointStatus' => 'Enabled',
+                    'weight' => 10,
+                    'priority' => 1,
+                    'endpointLocation' => 'westeurope',
+                    'minChildEndpoints' => 1
                   }
                 }
               ]
             }
           }
+          profile_mapper = Azure::ARM::TrafficManager::Models::Profile.mapper
+          @traffic_mgmt_client.deserialize(profile_mapper, profile, 'result.body')
         end
       end
     end

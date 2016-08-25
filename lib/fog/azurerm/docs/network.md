@@ -677,118 +677,218 @@ Get a Traffic Manager Endpoint object from the get method and then destroy that 
      endpoint.destroy
 ```
 
-## Create Application Gateway
+## Create Virtual Network Gateway
 
-Create a new Application Gateway.
+Create a new Virtual Network Gateway.
 
 ```ruby
-    gateway = azure_network_service.application_gateways.create(
-        name: '<Gateway Name>',
-        location: 'eastus',
-        resource_group: '<Resource Group name>',
-        sku_name: 'Standard_Medium',
-        sku_tier: 'Standard',
-        sku_capacity: '2',
-        gateway_ip_configurations:
-            [
-                {
-                    name: 'gatewayIpConfigName',
-                    subnet_id: '/subscriptions/<Subscription_id>/resourcegroups/<Resource Group name>/providers/Microsoft.Network/virtualNetworks/<Virtual Network Name>/subnets/<Subnet Name>'
-                }
-            ],
-        frontend_ip_configurations:
-            [
-                {
-                    name: 'frontendIpConfig',
-                    private_ip_allocation_method: 'Dynamic',
-                    public_ip_address_id: '/subscriptions/<Subscription_id>/resourcegroups/<Resource Group name>/providers/Microsoft.Network/publicIPAddresses/<Public IP Address Name>',
-                    private_ip_address: '10.0.1.5'
-                }
-            ],
-        frontend_ports:
-            [
-                {
-                    name: 'frontendPort',
-                    port: 443
-                }
-            ],
-        backend_address_pools:
-            [
-                {
-                    name: 'backendAddressPool',
-                    ip_addresses: [
-                        {
-                            ipAddress: '10.0.1.6'
-                        }
-                    ]
-                }
-            ],
-        backend_http_settings_list:
-            [
-                {
-                    name: 'gateway_settings',
-                    port: 80,
-                    protocol: 'Http',
-                    cookie_based_affinity: 'Enabled',
-                    request_timeout: '30'
-                }
-            ],
-        http_listeners:
-            [
-                {
-                    name: 'gateway_listener',
-                    frontend_ip_config_id: '/subscriptions/<Subscription_id>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/applicationGateways/<Gateway Name>/frontendIPConfigurations/frontendIpConfig',
-                    frontend_port_id: '/subscriptions/<Subscription_id>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/applicationGateways/<Gateway Name>/frontendPorts/frontendPort',
-                    protocol: 'Http',
-                    host_name: '',
-                    require_server_name_indication: 'false'
-                }
-            ],
-        request_routing_rules:
-            [
-                {
-                    name: 'gateway_request_route_rule',
-                    type: 'Basic',
-                    http_listener_id: '/subscriptions/<Subscription_id>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/applicationGateways/<Gateway Name>/httpListeners/gateway_listener',
-                    backend_address_pool_id: '/subscriptions/<Subscription_id>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/applicationGateways/<Gateway Name>/backendAddressPools/backendAddressPool',
-                    backend_http_settings_id: '/subscriptions/<Subscription_id>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/applicationGateways/<Gateway Name>/backendHttpSettingsCollection/gateway_settings',
-                    url_path_map: ''
-                }
-            ]
-
-
+    network_gateway = network.virtual_network_gateways.create(
+      name: '<Virtual Network Gateway Name>',
+      location: 'eastus',
+      tags: {
+        key1: 'value1',
+        key2: 'value2'
+      },
+      ip_configurations: [
+        {
+          name: 'default',
+          private_ipallocation_method: 'Dynamic',
+          public_ipaddress_id: '/subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/Microsoft.Network/publicIPAddresses/{public_ip_name}',
+          subnet_id: '/subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/Microsoft.Network/virtualNetworks/{virtual_network_name}/subnets/{subnet_name}',
+          private_ipaddress: nil
+        }
+      ],
+      resource_group: 'learn_fog',
+      sku_name: 'Standard',
+      sku_tier: 'Standard',
+      sku_capacity: 2,
+      gateway_type: 'ExpressRoute',
+      enable_bgp: true,
+      gateway_size: nil,
+      asn: 100,
+      bgp_peering_address: nil,
+      peer_weight: 3,
+      vpn_type: 'RouteBased',
+      vpn_client_address_pool: [],
+      gateway_default_site: '/subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/Microsoft.Network/localNetworkGateways/{local_network_gateway_name}',
+      default_sites: [],
+      vpn_client_configuration: {
+        address_pool: ['192.168.0.4', '192.168.0.5'],
+        root_certificates: [
+          {
+            name: 'root',
+            public_cert_data: 'certificate data'
+          }
+        ],
+        revoked_certificates: [
+          {
+            name: 'revoked',
+            thumbprint: 'thumb print detail'
+          }
+        ]
+      }
     )
 ```
 
-## List Application Gateways
+## List Virtual Network Gateways
 
-List all application gateways in a resource group
-
-```ruby
-    gateways = azure_network_service.application_gateways(resource_group: '<Resource Group Name>')
-    gateways.each do |gateway|
-        puts "#{gateway.name}"
-    end
-```
-
-## Retrieve a single Application Gateway
-
-Get a single record of Application Gateway
+List all virtual network gateways in a resource group
 
 ```ruby
-    gateway = azure_network_service
-                            .application_gateways(resource_group: '<Resource Group name>')
-                            .get('<Application Gateway Name>')
-    puts "#{gateway.name}"
+    network_gateways = network.virtual_network_gateways(resource_group: '<Resource Group Name>')
+	network_gateways.each do |gateway|
+    	puts "#{gateway.name}"
+	end
 ```
 
-## Destroy a single Application Gateway
+## Retrieve single Virtual Network Gateway
 
-Get a application gateway object from the get method and then destroy that application gateway.
+Get single record of Virtual Network Gateway
 
 ```ruby
-    gateway.destroy
+    network_gateway = network.virtual_network_gateways.get('<Resource Group Name>', '<Virtual Network Gateway Name>')
+	puts "#{network_gateway.name}"
 ```
+
+## Destroy single Virtual Network Gateway
+
+Get a virtual network gateway object from the get method and then destroy that virtual network gateway.
+
+```ruby
+	network_gateway.destroy
+```
+
+## Express Route
+
+Microsoft Azure ExpressRoute lets you extend your on-premises networks into the Microsoft cloud over a dedicated private connection facilitated by a connectivity provider.
+For more details about express route [click here](https://azure.microsoft.com/en-us/documentation/articles/expressroute-introduction/).
+
+# Express Route Circuit
+
+The Circuit represents the entity created by customer to register with an express route service provider with intent to connect to Microsoft.
+
+## Create an Express Route Circuit
+
+Create a new Express Route Circuit.
+
+```ruby
+    circuit = network.express_route_circuits.create(
+    	"name": "<Circuit Name>",
+    	"location": "eastus",
+    	"resource_group": "<Resource Group Name>",
+    	"tags": {
+    		"key1": 'value1',
+    		"key2": 'value2'
+  		},
+    	"sku_name": "Standard_MeteredData",
+    	"sku_tier": "Standard",
+    	"sku_family": "MeteredData",
+    	"service_provider_name": "Telenor",
+    	"peering_location": "London",
+    	"bandwidth_in_mbps": 100,
+    	"peerings": [
+        	{
+            	"name": "AzurePublicPeering",
+            	"peering_type": "AzurePublicPeering",
+            	"peer_asn": 100,
+            	"primary_peer_address_prefix": "192.168.1.0/30",
+            	"secondary_peer_address_prefix": "192.168.2.0/30",
+            	"vlan_id": 200
+        	}
+    	]
+	)
+```
+
+## List Express Route Circuits
+
+List all express route circuits in a resource group
+
+```ruby
+    circuits  = network.express_route_circuits(resource_group: '<Resource Group Name>')
+	circuits.each do |circuit|
+    	puts "#{circuit.name}"
+	end
+```
+
+## Retrieve a single Express Route Circuit
+
+Get a single record of Express Route Circuit
+
+```ruby
+    circuit = network.express_route_circuits.get("<Resource Group Name>", "<Circuit Name>")
+	puts "#{circuit.name}"
+```
+
+## Destroy a single Express Route Circuit
+
+Get an express route circuit object from the get method and then destroy that express route circuit.
+
+```ruby
+    circuit.destroy
+```
+
+# Express Route Peering
+
+BGP Peering is part of Express Route circuit and defines the type of connectivity needed with Microsoft.
+
+## Create an Express Route Circuit Peering
+
+Create a new Express Route Circuit Peering.
+
+```ruby
+    peering = network.express_route_circuit_peerings.create(
+    	"name": "AzurePrivatePeering",
+    	"circuit_name": "<Circuit Name>",
+    	"resource_group": "<Resourse Group Name>",
+    	"peering_type": "AzurePrivatePeering",
+    	"peer_asn": 100,
+    	"primary_peer_address_prefix": "192.168.3.0/30",
+    	"secondary_peer_address_prefix": "192.168.4.0/30",
+    	"vlan_id": 200
+	)
+```
+
+## List Express Route Circuit Peerings
+
+List all express route circuit peerings in a resource group
+
+```ruby
+    peerings  = network.express_route_circuit_peerings(resource_group: '<Resource Group Name>', circuit_name: '<Circuit Name>')
+	peerings.each do |peering|
+    	puts "#{peering.name}"
+	end
+```
+
+## Retrieve single Express Route Circuit Peering
+
+Get a single record of Express Route Circuit Peering
+
+```ruby
+    peering = network.express_route_circuit_peerings.get("<Resource Group Name>", "<Peering Name>", "Circuit Name")
+	puts "#{peering.peering_type}"
+```
+
+## Destroy single Express Route Circuit Peering
+
+Get an express route circuit peering object from the get method and then destroy that express route circuit peering.
+
+```ruby
+    peering.destroy
+```
+
+# Express Route Service Provider
+
+Express Route Service Providers are telcos and exchange providers who are approved in the system to provide Express Route connectivity.
+
+## List Express Route Service Providers
+
+List all express route service providers
+
+```ruby
+    service_providers = network.express_route_service_providers
+	puts service_providers
+```
+
 
 ## Support and Feedback
 Your feedback is highly appreciated! If you have specific issues with the fog ARM, you should file an issue via Github.

@@ -92,7 +92,7 @@ def standard_lrs(service)
     name: 'storage-account',
     location: 'West US',
     resource_group: 'fog-test-rg',
-    account_type: 'Other',
+    sku_name: 'Other',
     replication: 'LRS',
     service: service
   )
@@ -103,7 +103,7 @@ def standard_check_for_invalid_replications(service)
     name: 'storage-account',
     location: 'West US',
     resource_group: 'fog-test-rg',
-    account_type: 'Standard',
+    sku_name: 'Standard',
     replication: 'HGDKS',
     service: service
   )
@@ -114,7 +114,7 @@ def premium_check_for_invalid_replications(service)
     name: 'storage-account',
     location: 'West US',
     resource_group: 'fog-test-rg',
-    account_type: 'Premium',
+    sku_name: 'Premium',
     replication: 'HGDKS',
     service: service
   )
@@ -328,8 +328,8 @@ def network_security_rule(service)
   )
 end
 
-def application_gateway(service)
-  Fog::Network::AzureRM::ApplicationGateway.new(
+def gateway(service)
+  Fog::ApplicationGateway::AzureRM::Gateway.new(
     name: 'gateway',
     location: 'eastus',
     resource_group: 'fogRM-rg',
@@ -469,5 +469,69 @@ def traffic_manager_profile(service)
     port: '80',
     path: '/monitorpage.aspx',
     service: service
+  )
+end
+
+def virtual_network_gateway(service)
+  Fog::Network::AzureRM::VirtualNetworkGateway.new(
+    name: 'testNetworkGateway',
+    location: 'eastus',
+    tags: {
+      key1: 'value1',
+      key2: 'value2'
+    },
+    resource_group: 'learn_fog',
+    sku_name: 'HighPerformance',
+    sku_tier: 'Standard',
+    sku_capacity: 100,
+    gateway_type: 'ExpressRoute',
+    enable_bgp: true,
+    gateway_size: 'Default',
+    vpn_client_address_pool: ['vpnClientAddressPoolPrefix'],
+    default_sites: ['mysite1'],
+    gateway_default_site: '/subscriptions/{subscription-id}/resourceGroups/fog-rg/providers/microsoft.network/localNetworkGateways/{local-network-gateway-name}',
+    service: service
+  )
+end
+
+def express_route_circuit(service)
+  Fog::Network::AzureRM::ExpressRouteCircuit.new(
+    name: 'testCircuit',
+    location: 'eastus',
+    resource_group: 'HaiderRG',
+    tags: {
+        key1: 'value1'
+    },
+    sku_name: 'Standard_MeteredData',
+    sku_tier: 'Standard',
+    sku_family: 'MeteredData',
+    service_provider_name: 'Telenor',
+    peering_location: 'London',
+    bandwidth_in_mbps: 100,
+    peerings: [
+      {
+        name: 'AzurePublicPeering',
+        peering_type: 'AzurePublicPeering',
+        peer_asn: 100,
+        primary_peer_address_prefix: '192.168.1.0/30',
+        secondary_peer_address_prefix: '192.168.2.0/30',
+        vlan_id: 200
+      }
+    ],
+    service: service
+  )
+end
+
+def express_route_circuit_peering(service)
+  Fog::Network::AzureRM::ExpressRouteCircuitPeering.new(
+      name: 'AzurePublicPeering',
+      circuit_name: 'testCircuit',
+      resource_group: 'HaiderRG',
+      peering_type: 'AzurePublicPeering',
+      peer_asn: 100,
+      primary_peer_address_prefix: '192.168.1.0/30',
+      secondary_peer_address_prefix: '192.168.2.0/30',
+      vlan_id: 200,
+      service: service
   )
 end

@@ -4,8 +4,9 @@ require File.expand_path '../../test_helper', __dir__
 class TestStorageAccounts < Minitest::Test
   def setup
     @service = Fog::Storage::AzureRM.new(credentials)
+    @storage_mgmt_client = @service.instance_variable_get(:@storage_mgmt_client)
     @storage_accounts = Fog::Storage::AzureRM::StorageAccounts.new(resource_group: 'fog-test-rg', service: @service)
-    @response = [ApiStub::Models::Storage::StorageAccount.list_storage_account]
+    @list_storage_account_response = [ApiStub::Models::Storage::StorageAccount.create_storage_account(@storage_mgmt_client)]
   end
 
   def test_collection_methods
@@ -23,7 +24,7 @@ class TestStorageAccounts < Minitest::Test
   end
 
   def test_all_method_response_for_rg
-    @service.stub :list_storage_account_for_rg, @response do
+    @service.stub :list_storage_account_for_rg, @list_storage_account_response do
       assert_instance_of Fog::Storage::AzureRM::StorageAccounts, @storage_accounts.all
       assert @storage_accounts.all.size >= 1
       @storage_accounts.all.each do |s|
@@ -34,7 +35,7 @@ class TestStorageAccounts < Minitest::Test
 
   def test_all_method_response
     storage_accounts = Fog::Storage::AzureRM::StorageAccounts.new(service: @service)
-    @service.stub :list_storage_accounts, @response do
+    @service.stub :list_storage_accounts, @list_storage_account_response do
       assert_instance_of Fog::Storage::AzureRM::StorageAccounts, storage_accounts.all
       assert storage_accounts.all.size >= 1
       storage_accounts.all.each do |s|
@@ -44,8 +45,7 @@ class TestStorageAccounts < Minitest::Test
   end
 
   def test_get_method_response
-    response = [ApiStub::Models::Storage::StorageAccount.list_storage_account]
-    @service.stub :list_storage_account_for_rg, response do
+    @service.stub :list_storage_account_for_rg, @list_storage_account_response do
       assert_instance_of Fog::Storage::AzureRM::StorageAccount, @storage_accounts.get('fog-test-storage-account')
       assert @storage_accounts.get('wrong-name').nil?, true
     end

@@ -3,6 +3,54 @@ module ApiStub
     module Compute
       # Mock class for Virtual Machine Requests
       class VirtualMachine
+        def self.linux_virtual_machine_hash
+          {
+            resource_group: 'fog-test-rg',
+            name: 'fog-test-server',
+            location: 'westus',
+            vm_size: 'Basic_A0',
+            storage_account_name: 'fogstrg',
+            username: 'fog',
+            password: 'fog',
+            disable_password_authentication: false,
+            ssh_key_path: '/home',
+            ssh_key_data: 'key',
+            network_interface_card_id: 'nic-id',
+            availability_set_id: 'as-id',
+            publisher: 'Canonical',
+            offer: 'UbuntuServer',
+            sku: '14.04.2-LTS',
+            version: 'latest',
+            platform: 'Linux',
+            provision_vm_agent: nil,
+            enable_automatic_updates: nil
+          }
+        end
+
+        def self.windows_virtual_machine_hash
+          {
+            resource_group: 'fog-test-rg',
+            name: 'fog-test-server',
+            location: 'westus',
+            vm_size: 'Basic_A0',
+            storage_account_name: 'fogstrg',
+            username: 'fog',
+            password: 'fog',
+            disable_password_authentication: nil,
+            ssh_key_path: '/home',
+            ssh_key_data: 'key',
+            network_interface_card_id: 'nic-id',
+            availability_set_id: 'as-id',
+            publisher: 'MicrosoftWindowsServerEssentials',
+            offer: 'WindowsServerEssentials',
+            sku: 'WindowsServerEssentials',
+            version: 'latest',
+            platform: 'Windows',
+            provision_vm_agent: true,
+            enable_automatic_updates: true
+          }
+        end
+
         def self.create_virtual_machine_response
           body = '{
             "id":"/subscriptions/{subscription-id}/resourceGroups/fog-test-rg/providers/Microsoft.Compute/virtualMachines/fog-test-server",

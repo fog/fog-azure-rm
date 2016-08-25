@@ -1,23 +1,17 @@
 module Fog
   module Storage
     class AzureRM
-      # This class provides the actual implemention for service calls.
+      # This class provides the actual implementation for service calls.
       class Real
         def list_storage_accounts
+          msg = 'Listing Storage Accounts.'
+          Fog::Logger.debug msg
           begin
-            promise = @storage_mgmt_client.storage_accounts.list
-            response = promise.value!
-            body = response.body.value
-            body.each do |obj|
-              obj.properties.last_geo_failover_time = DateTime.parse(Time.now.to_s)
-            end
-            result = Azure::ARM::Storage::Models::StorageAccountListResult.serialize_object(response.body)['value']
-            puts "Result: #{result}"
-            result
-          rescue  MsRestAzure::AzureOperationError => e
-            msg = "Exception listing Storage Accounts. #{e.body['error']['message']}"
-            raise msg
+            result = @storage_mgmt_client.storage_accounts.list
+          rescue MsRestAzure::AzureOperationError => e
+            raise_azure_exception(e, msg)
           end
+          result.value
         end
       end
       # This class provides the mock implementation for unit tests.

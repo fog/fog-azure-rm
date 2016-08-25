@@ -1,7 +1,7 @@
 module Fog
   module Compute
     class AzureRM
-      # This class provides the actual implemention for service calls.
+      # This class provides the actual implementation for service calls.
       class Real
         def redeploy_virtual_machine(resource_group, name)
           Fog::Logger.debug "Redeploying Virtual Machine #{name} in Resource Group #{resource_group}."

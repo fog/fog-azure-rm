@@ -51,7 +51,7 @@ module ApiStub
           }
         end
 
-        def self.create_virtual_machine_response
+        def self.create_virtual_machine_response(compute_client)
           body = '{
             "id":"/subscriptions/{subscription-id}/resourceGroups/fog-test-rg/providers/Microsoft.Compute/virtualMachines/fog-test-server",
             "name":"fog-test-server",
@@ -124,12 +124,11 @@ module ApiStub
               }
             }
           }'
-          result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
-          result.body = Azure::ARM::Compute::Models::VirtualMachine.deserialize_object(JSON.load(body))
-          result
+          vm_mapper = Azure::ARM::Compute::Models::VirtualMachine.mapper
+          compute_client.deserialize(vm_mapper, JSON.load(body), 'result.body')
         end
 
-        def self.detach_data_disk_from_vm_response
+        def self.detach_data_disk_from_vm_response(compute_client)
           body = '{
             "id":"/subscriptions/{subscription-id}/resourceGroups/fog-test-rg/providers/Microsoft.Compute/virtualMachines/fog-test-server",
             "name":"fog-test-server",
@@ -194,13 +193,12 @@ module ApiStub
               }
             }
           }'
-          result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
-          result.body = Azure::ARM::Compute::Models::VirtualMachine.deserialize_object(JSON.load(body))
-          result
+          vm_mapper = Azure::ARM::Compute::Models::VirtualMachine.mapper
+          compute_client.deserialize(vm_mapper, JSON.load(body), 'result.body')
         end
 
-        def self.virtual_machine_response
-          {
+        def self.virtual_machine_response(compute_client)
+          body = {
             'location' => 'westus',
             'id' => '/subscriptions/{subscription-id}/resourceGroups/fog-test-rg/providers/Microsoft.Compute/virtualMachines/fog-test-server',
             'name' => 'fog-test-server',
@@ -301,9 +299,11 @@ module ApiStub
                   }
               }
           }
+          vm_mapper = Azure::ARM::Compute::Models::VirtualMachine.mapper
+          compute_client.deserialize(vm_mapper, body, 'result.body')
         end
 
-        def self.list_virtual_machines_response
+        def self.list_virtual_machines_response(compute_client)
           body = '{
             "value": [
               {
@@ -380,12 +380,11 @@ module ApiStub
               }
             ]
           }'
-          result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
-          result.body = Azure::ARM::Compute::Models::VirtualMachineListResult.deserialize_object(JSON.load(body))
-          result
+          vm_mapper = Azure::ARM::Compute::Models::VirtualMachineListResult.mapper
+          compute_client.deserialize(vm_mapper, JSON.load(body), 'result.body')
         end
 
-        def self.list_available_sizes_for_virtual_machine_response
+        def self.list_available_sizes_for_virtual_machine_response(compute_client)
           body = '{
             "value": [
               {
@@ -398,12 +397,11 @@ module ApiStub
               }
             ]
           }'
-          result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
-          result.body = Azure::ARM::Compute::Models::VirtualMachineSizeListResult.deserialize_object(JSON.load(body))
-          result
+          vm_mapper = Azure::ARM::Compute::Models::VirtualMachineSizeListResult.mapper
+          compute_client.deserialize(vm_mapper, JSON.load(body), 'result.body')
         end
 
-        def self.virtual_machine_instance_view_response
+        def self.virtual_machine_instance_view_response(compute_client)
           body = '{
             "id":"/subscriptions/{subscription-id}/resourceGroups/fog-test-rg/providers/Microsoft.Compute/virtualMachines/fog-test-server",
             "name":"fog-test-server",
@@ -456,16 +454,15 @@ module ApiStub
                   }
               }
             }'
-          result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
-          result.body = Azure::ARM::Compute::Models::VirtualMachine.deserialize_object(JSON.load(body))
-          result
+          vm_mapper = Azure::ARM::Compute::Models::VirtualMachine.mapper
+          compute_client.deserialize(vm_mapper, JSON.load(body), 'result.body')
         end
 
         def self.vm_status_response
           'running'
         end
 
-        def self.update_virtual_machine_response
+        def self.update_virtual_machine_response(compute_client)
           body = '
           {
                 "id":"/subscriptions/{subscription-id}/resourceGroups/fog-test-rg/providers/Microsoft.Compute/virtualMachines/fog-test-server",
@@ -548,12 +545,11 @@ module ApiStub
                   }
                 }
               }'
-          result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
-          result.body = Azure::ARM::Compute::Models::VirtualMachine.deserialize_object(JSON.load(body))
-          result
+          vm_mapper = Azure::ARM::Compute::Models::VirtualMachine.mapper
+          compute_client.deserialize(vm_mapper, JSON.load(body), 'result.body')
         end
 
-        def self.virtual_machine_15_data_disks_response
+        def self.virtual_machine_15_data_disks_response(compute_client)
           body = '
           {
                 "id":"/subscriptions/{subscription-id}/resourceGroups/fog-test-rg/providers/Microsoft.Compute/virtualMachines/fog-test-server",
@@ -692,9 +688,8 @@ module ApiStub
                   }
                 }
               }'
-          result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
-          result.body = Azure::ARM::Compute::Models::VirtualMachine.deserialize_object(JSON.load(body))
-          result
+          vm_mapper = Azure::ARM::Compute::Models::VirtualMachine.mapper
+          compute_client.deserialize(vm_mapper, JSON.load(body), 'result.body')
         end
       end
     end

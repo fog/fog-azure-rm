@@ -4,28 +4,21 @@ require File.expand_path '../../test_helper', __dir__
 class TestGetVirtualMachine < Minitest::Test
   def setup
     @service = Fog::Compute::AzureRM.new(credentials)
-    client = @service.instance_variable_get(:@compute_mgmt_client)
-    @virtual_machines = client.virtual_machines
-    @promise = Concurrent::Promise.execute do
-    end
+    @compute_client = @service.instance_variable_get(:@compute_mgmt_client)
+    @virtual_machines = @compute_client.virtual_machines
   end
 
   def test_get_virtual_machine_success
-    response = ApiStub::Requests::Compute::VirtualMachine.create_virtual_machine_response
-    compare_result = ApiStub::Requests::Compute::VirtualMachine.virtual_machine_response
-    @promise.stub :value!, response do
-      @virtual_machines.stub :get, @promise do
-        assert_equal compare_result, @service.get_virtual_machine('fog-test-rg', 'fog-test-server')
-      end
+    response = ApiStub::Requests::Compute::VirtualMachine.create_virtual_machine_response(@compute_client)
+    @virtual_machines.stub :get, response do
+      assert_equal @service.get_virtual_machine('fog-test-rg', 'fog-test-server'), response
     end
   end
 
   def test_get_virtual_machine_failure
-    response = -> { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
-    @promise.stub :value!, response do
-      @virtual_machines.stub :get, @promise do
-        assert_raises(RuntimeError) { @service.get_virtual_machine('fog-test-rg', 'fog-test-server') }
-      end
+    response = proc { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
+    @virtual_machines.stub :get, response do
+      assert_raises(RuntimeError) { @service.get_virtual_machine('fog-test-rg', 'fog-test-server') }
     end
   end
 end

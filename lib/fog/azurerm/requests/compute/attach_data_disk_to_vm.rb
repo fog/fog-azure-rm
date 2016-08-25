@@ -4,35 +4,35 @@ module Fog
       # This class provides the actual implementation for service calls.
       class Real
         def attach_data_disk_to_vm(resource_group, vm_name, disk_name, disk_size, storage_account_name)
-          Fog::Logger.debug "Attaching Data Disk #{disk_name} to Virtual Machine #{vm_name} in Resource Group #{resource_group}."
+          msg = "Attaching Data Disk #{disk_name} to Virtual Machine #{vm_name} in Resource Group #{resource_group}"
+          Fog::Logger.debug msg
           vm = get_virtual_machine_instance(resource_group, vm_name, @compute_mgmt_client)
-          lun = get_logical_unit_number(vm.properties.storage_profile.data_disks)
+          lun = get_logical_unit_number(vm.storage_profile.data_disks)
           access_key = get_storage_access_key(resource_group, storage_account_name, @storage_mgmt_client)
           data_disk = build_storage_profile(disk_name, disk_size, lun, storage_account_name, access_key)
-          vm.properties.storage_profile.data_disks.push(data_disk)
+          vm.storage_profile.data_disks.push(data_disk)
           vm.resources = nil
           begin
-            promise = @compute_mgmt_client.virtual_machines.create_or_update(resource_group, vm_name, vm)
-            result = promise.value!
-            Fog::Logger.debug "Data Disk #{disk_name} attached to Virtual Machine #{vm_name} successfully."
-            Azure::ARM::Compute::Models::VirtualMachine.serialize_object(result.body)
+            virtual_machine = @compute_mgmt_client.virtual_machines.create_or_update(resource_group, vm_name, vm)
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Error Attaching Data Disk #{disk_name} to Virtual Machine #{vm_name} in Resource Group #{resource_group}. #{e.body['error']['message']}"
-            raise msg
+            raise_azure_exception(e, msg)
           end
+          Fog::Logger.debug "Data Disk #{disk_name} attached to Virtual Machine #{vm_name} successfully."
+          virtual_machine
         end
 
         private
 
         def get_virtual_machine_instance(resource_group, vm_name, client)
+          msg = "Getting Virtual Machine #{vm_name} from Resource Group #{resource_group}"
+          Fog::Logger.debug msg
           begin
-            promise = client.virtual_machines.get(resource_group, vm_name)
-            result = promise.value!
-            result.body
+            virtual_machine = client.virtual_machines.get(resource_group, vm_name)
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Error Attaching Data Disk to Virtual Machine. #{e.body['error']['message']}"
-            raise msg
+            raise_azure_exception(e, msg)
           end
+          Fog::Logger.debug "Getting Virtual Machine #{vm_name} from Resource Group #{resource_group} successful"
+          virtual_machine
         end
 
         def get_logical_unit_number(data_disks)
@@ -49,13 +49,15 @@ module Fog
         end
 
         def get_storage_access_key(resource_group, storage_account_name, storage_client)
+          msg = "Getting Storage Access Keys from Resource Group #{resource_group}"
+          Fog::Logger.debug msg
           begin
-            storage_account_keys = storage_client.storage_accounts.list_keys(resource_group, storage_account_name).value!
-            storage_account_keys.body.key2
+            storage_account_keys = storage_client.storage_accounts.list_keys(resource_group, storage_account_name)
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Error Attaching Data Disk to Virtual Machine. #{e.body['error']['message']}"
-            raise msg
+            raise_azure_exception(e, msg)
           end
+          Fog::Logger.debug "Getting Storage Access Keys from Resource Group #{resource_group} successful"
+          storage_account_keys.keys[0].value
         end
 
         def build_storage_profile(disk_name, disk_size, lun, storage_account_name, access_key)
@@ -84,15 +86,14 @@ module Fog
             true unless blob_prop.nil?
           rescue Azure::Core::Http::HTTPError => e
             return false if e.status_code == 404
-            msg = "Error Attaching Data Disk to Virtual Machine. #{e.description}"
-            raise msg
+            raise_azure_exception(e, "Error Attaching Data Disk to Virtual Machine. #{e.description}")
           end
         end
       end
       # This class provides the mock implementation for unit tests.
       class Mock
         def attach_data_disk_to_vm(resource_group, vm_name, disk_name, disk_size, storage_account_name)
-          {
+          vm = {
             'location' => 'West US',
             'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Compute/virtualMachines/#{name}",
             'name' => vm_name,
@@ -153,6 +154,8 @@ module Fog
                 'provisioningState' => 'Succeeded'
               }
           }
+          vm_mapper = Azure::ARM::Compute::Models::VirtualMachine.mapper
+          @compute_mgmt_client.deserialize(vm_mapper, vm, 'result.body')
         end
       end
     end

@@ -6,23 +6,22 @@ module Fog
         def create_virtual_machine(vm_hash)
           msg = "Creating Virtual Machine #{vm_hash[:name]} in Resource Group #{vm_hash[:resource_group]}."
           Fog::Logger.debug msg
-          params = Azure::ARM::Compute::Models::VirtualMachine.new
-          vm_properties = Azure::ARM::Compute::Models::VirtualMachineProperties.new
+          virtual_machine = Azure::ARM::Compute::Models::VirtualMachine.new
 
           unless vm_hash[:availability_set_id].nil?
             sub_resource = MsRestAzure::SubResource.new
             sub_resource.id = vm_hash[:availability_set_id]
-            vm_properties.availability_set = sub_resource
+            virtual_machine.availability_set = sub_resource
           end
 
-          vm_properties.hardware_profile = define_hardware_profile(vm_hash[:vm_size])
-          vm_properties.storage_profile = define_storage_profile(vm_hash[:name],
+          virtual_machine.hardware_profile = define_hardware_profile(vm_hash[:vm_size])
+          virtual_machine.storage_profile = define_storage_profile(vm_hash[:name],
                                                                  vm_hash[:storage_account_name],
                                                                  vm_hash[:publisher],
                                                                  vm_hash[:offer],
                                                                  vm_hash[:sku],
                                                                  vm_hash[:version])
-          vm_properties.os_profile = if vm_hash[:platform].casecmp(WINDOWS) == 0
+          virtual_machine.os_profile = if vm_hash[:platform].casecmp(WINDOWS) == 0
                                        define_windows_os_profile(vm_hash[:name],
                                                                  vm_hash[:username],
                                                                  vm_hash[:password],
@@ -36,17 +35,15 @@ module Fog
                                                                vm_hash[:ssh_key_path],
                                                                vm_hash[:ssh_key_data])
                                      end
-          vm_properties.network_profile = define_network_profile(vm_hash[:network_interface_card_id])
-          params.properties = vm_properties
-          params.location = vm_hash[:location]
+          virtual_machine.network_profile = define_network_profile(vm_hash[:network_interface_card_id])
+          virtual_machine.location = vm_hash[:location]
           begin
-            promise = @compute_mgmt_client.virtual_machines.create_or_update(vm_hash[:resource_group], vm_hash[:name], params)
-            result = promise.value!
-            Fog::Logger.debug "Virtual Machine #{vm_hash[:name]} Created Successfully."
-            Azure::ARM::Compute::Models::VirtualMachine.serialize_object(result.body)
+            vm = @compute_mgmt_client.virtual_machines.create_or_update(vm_hash[:resource_group], vm_hash[:name], virtual_machine)
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
+          Fog::Logger.debug "Virtual Machine #{vm_hash[:name]} Created Successfully."
+          vm
         end
 
         private
@@ -125,7 +122,7 @@ module Fog
                                    _ssh_key_path, _ssh_key_data, network_interface_card_id,
                                    _availability_set_id, publisher, offer, sku, version,
                                    _platform, _provision_vm_agent, _enable_automatic_updates)
-          {
+          vm = {
             'location' => location,
             'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Compute/virtualMachines/#{name}",
             'name' => name,
@@ -180,6 +177,8 @@ module Fog
               'provisioningState' => 'Succeeded'
             }
           }
+          vm_mapper = Azure::ARM::Compute::Models::VirtualMachine.mapper
+          @compute_mgmt_client.deserialize(vm_mapper, vm, 'result.body')
         end
       end
     end

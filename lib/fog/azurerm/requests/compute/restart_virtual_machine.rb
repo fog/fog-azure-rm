@@ -4,16 +4,15 @@ module Fog
       # This class provides the actual implementation for service calls.
       class Real
         def restart_virtual_machine(resource_group, name)
-          Fog::Logger.debug "Restarting Virtual Machine #{name} in Resource Group #{resource_group}."
+          msg = "Restarting Virtual Machine #{name} in Resource Group #{resource_group}"
+          Fog::Logger.debug msg
           begin
-            promise = @compute_mgmt_client.virtual_machines.restart(resource_group, name)
-            promise.value!
-            Fog::Logger.debug "Virtual Machine #{name} Restarted Successfully."
-            true
+            @compute_mgmt_client.virtual_machines.restart(resource_group, name)
           rescue  MsRestAzure::AzureOperationError => e
-            msg = "Error Restarting Virtual Machine '#{name}' in Resource Group '#{resource_group}'. #{e.body['error']['message']}"
-            raise msg
+            raise_azure_exception(e, msg)
           end
+          Fog::Logger.debug "Virtual Machine #{name} Restarted Successfully."
+          true
         end
       end
       # This class provides the mock implementation for unit tests.

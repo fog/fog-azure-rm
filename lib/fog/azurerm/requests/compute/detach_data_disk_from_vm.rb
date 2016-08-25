@@ -4,29 +4,28 @@ module Fog
       # This class provides the actual implementation for service calls.
       class Real
         def detach_data_disk_from_vm(resource_group, vm_name, disk_name)
-          Fog::Logger.debug "Detaching Data Disk #{disk_name} from Virtual Machine #{vm_name} in Resource Group #{resource_group}."
+          msg = "Detaching Data Disk #{disk_name} from Virtual Machine #{vm_name} in Resource Group #{resource_group}."
+          Fog::Logger.debug msg
           vm = get_virtual_machine_instance(resource_group, vm_name, @compute_mgmt_client)
-          vm.properties.storage_profile.data_disks.each_with_index do |disk, index|
+          vm.storage_profile.data_disks.each_with_index do |disk, index|
             if disk.name == disk_name
-              vm.properties.storage_profile.data_disks.delete_at(index)
+              vm.storage_profile.data_disks.delete_at(index)
             end
           end
           vm.resources = nil
           begin
-            promise = @compute_mgmt_client.virtual_machines.create_or_update(resource_group, vm_name, vm)
-            result = promise.value!
-            Fog::Logger.debug "Data Disk #{disk_name} detached from Virtual Machine #{vm_name} successfully."
-            Azure::ARM::Compute::Models::VirtualMachine.serialize_object(result.body)
+            virtual_machine = @compute_mgmt_client.virtual_machines.create_or_update(resource_group, vm_name, vm)
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Error Detaching Data Disk #{disk_name} from Virtual Machine #{vm_name} in Resource Group #{resource_group}. #{e.body['error']['message']}"
-            raise msg
+            raise_azure_exception(e, msg)
           end
+          Fog::Logger.debug "Data Disk #{disk_name} detached from Virtual Machine #{vm_name} successfully."
+          virtual_machine
         end
       end
       # This class provides the mock implementation for unit tests.
       class Mock
         def detach_data_disk_from_vm(resource_group, vm_name, disk_name)
-          {
+          vm = {
             'location' => 'West US',
             'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Compute/virtualMachines/#{name}",
             'name' => vm_name,
@@ -87,6 +86,8 @@ module Fog
                 'provisioningState' => 'Succeeded'
               }
           }
+          vm_mapper = Azure::ARM::Compute::Models::VirtualMachine.mapper
+          @compute_mgmt_client.deserialize(vm_mapper, vm, 'result.body')
         end
       end
     end

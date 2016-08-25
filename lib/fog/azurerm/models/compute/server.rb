@@ -31,37 +31,37 @@ module Fog
 
         def self.parse(vm)
           hash = {}
-          hash['id'] = vm['id']
-          hash['name'] = vm['name']
-          hash['location'] = vm['location']
-          hash['resource_group'] = vm['id'].split('/')[4]
-          hash['vm_size'] = vm['properties']['hardwareProfile']['vmSize']
-          hash['os_disk_name'] = vm['properties']['storageProfile']['osDisk']['name']
-          hash['os_disk_vhd_uri'] = vm['properties']['storageProfile']['osDisk']['vhd']['uri']
-          hash['publisher'] = vm['properties']['storageProfile']['imageReference']['publisher']
-          hash['offer'] = vm['properties']['storageProfile']['imageReference']['offer']
-          hash['sku'] = vm['properties']['storageProfile']['imageReference']['sku']
-          hash['version'] = vm['properties']['storageProfile']['imageReference']['version']
-          hash['username'] = vm['properties']['osProfile']['adminUsername']
+          hash['id'] = vm.id
+          hash['name'] = vm.name
+          hash['location'] = vm.location
+          hash['resource_group'] = get_resource_group_from_id(vm.id)
+          hash['vm_size'] = vm.hardware_profile.vm_size
+          hash['os_disk_name'] = vm.storage_profile.os_disk.name
+          hash['os_disk_vhd_uri'] = vm.storage_profile.os_disk.vhd.uri
+          hash['publisher'] = vm.storage_profile.image_reference.publisher
+          hash['offer'] = vm.storage_profile.image_reference.offer
+          hash['sku'] = vm.storage_profile.image_reference.sku
+          hash['version'] = vm.storage_profile.image_reference.version
+          hash['username'] = vm.os_profile.admin_username
           hash['data_disks'] = []
 
-          vm['properties']['storageProfile']['dataDisks'].each do |disk|
+          vm.storage_profile.data_disks.each do |disk|
             data_disk = Fog::Storage::AzureRM::DataDisk.new
             hash['data_disks'] << data_disk.merge_attributes(Fog::Storage::AzureRM::DataDisk.parse(disk))
-          end unless vm['properties']['storageProfile']['dataDisks'].nil?
+          end unless vm.storage_profile.data_disks.nil?
 
           hash['disable_password_authentication'] =
-            if vm['properties']['osProfile']['linuxConfiguration'].nil?
+            if vm.os_profile.linux_configuration.nil?
               false
             else
-              vm['properties']['osProfile']['linuxConfiguration']['disablePasswordAuthentication']
+              vm.os_profile.linux_configuration.disable_password_authentication
             end
-          if vm['properties']['osProfile']['windowsConfiguration']
-            hash['provision_vm_agent'] = vm['properties']['osProfile']['windowsConfiguration']['provisionVMAgent']
-            hash['enable_automatic_updates'] = vm['properties']['osProfile']['windowsConfiguration']['enableAutomaticUpdates']
+          if vm.os_profile.windows_configuration
+            hash['provision_vm_agent'] = vm.os_profile.windows_configuration.provision_vmagent
+            hash['enable_automatic_updates'] = vm.os_profile.windows_configuration.enable_automatic_updates
           end
-          hash['network_interface_card_id'] = vm['properties']['networkProfile']['networkInterfaces'][0]['id']
-          hash['availability_set_id'] = vm['properties']['availabilitySet']['id'] unless vm['properties']['availabilitySet'].nil?
+          hash['network_interface_card_id'] = vm.network_profile.network_interfaces[0].id
+          hash['availability_set_id'] = vm.availability_set.id unless vm.availability_set.nil?
           hash
         end
 

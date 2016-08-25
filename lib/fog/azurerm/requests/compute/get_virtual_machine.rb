@@ -4,20 +4,21 @@ module Fog
       # This class provides the actual implementation for service calls.
       class Real
         def get_virtual_machine(resource_group, name)
+          msg = "Getting Virtual Machine #{name} from Resource Group '#{resource_group}'"
+          Fog::Logger.debug msg
           begin
-            promise = @compute_mgmt_client.virtual_machines.get(resource_group, name)
-            response = promise.value!
-            Azure::ARM::Compute::Models::VirtualMachine.serialize_object(response.body)
+            virtual_machine = @compute_mgmt_client.virtual_machines.get(resource_group, name)
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Exception getting Virtual Machine #{name} from Resource Group '#{resource_group}'. #{e.body['error']['message']}"
-            raise msg
+            raise_azure_exception(e, msg)
           end
+          Fog::Logger.debug "Getting Virtual Machine #{name} from Resource Group '#{resource_group}' successful"
+          virtual_machine
         end
       end
       # This class provides the mock implementation for unit tests.
       class Mock
         def get_virtual_machine(resource_group, name)
-          {
+          vm = {
             'location' => 'westus',
             'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Compute/virtualMachines/#{name}",
             'name' => name,
@@ -72,6 +73,8 @@ module Fog
               'provisioningState' => 'Succeeded'
             }
           }
+          vm_mapper = Azure::ARM::Compute::Models::VirtualMachine.mapper
+          @compute_mgmt_client.deserialize(vm_mapper, vm, 'result.body')
         end
       end
     end

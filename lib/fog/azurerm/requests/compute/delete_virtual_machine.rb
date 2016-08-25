@@ -4,16 +4,15 @@ module Fog
       # This class provides the actual implementation for service calls.
       class Real
         def delete_virtual_machine(resource_group, name)
-          Fog::Logger.debug "Deleting Virtual Machine #{name} from Resource Group #{resource_group}."
+          msg = "Deleting Virtual Machine #{name} from Resource Group #{resource_group}"
+          Fog::Logger.debug msg
           begin
-            promise = @compute_mgmt_client.virtual_machines.delete(resource_group, name)
-            promise.value!
-            Fog::Logger.debug "Virtual Machine #{name} Deleted Successfully."
-            true
+            @compute_mgmt_client.virtual_machines.delete(resource_group, name)
           rescue  MsRestAzure::AzureOperationError => e
-            msg = "Error Deleting Virtual Machine '#{name}' from Resource Group '#{resource_group}'. #{e.body['error']['message']}"
-            raise msg
+            raise_azure_exception(e, msg)
           end
+          Fog::Logger.debug "Virtual Machine #{name} Deleted Successfully."
+          true
         end
       end
       # This class provides the mock implementation for unit tests.

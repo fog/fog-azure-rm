@@ -90,12 +90,6 @@ module ApiStub
                       'certificateUrl' => 'certificateUrl'
                     }]
                   },
-                  'additionalUnattendContent' => {
-                    'pass' => 'oobesystem',
-                    'component' => 'Microsoft-Windows-Shell-Setup',
-                    'settingName' => 'FirstLogonCommands|AutoLogon',
-                    'content' => '<XML unattend content>'
-                  },
                   'enableAutomaticUpdates' => true
                 },
                 'secrets' => []

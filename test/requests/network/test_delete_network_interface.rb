@@ -4,27 +4,21 @@ require File.expand_path '../../test_helper', __dir__
 class TestDeleteNetworkInterface < Minitest::Test
   def setup
     @service = Fog::Network::AzureRM.new(credentials)
-    client = @service.instance_variable_get(:@network_client)
-    @network_interfaces = client.network_interfaces
-    @promise = Concurrent::Promise.execute do
-    end
+    network_client = @service.instance_variable_get(:@network_client)
+    @network_interfaces = network_client.network_interfaces
   end
 
   def test_delete_network_interface_success
     response = ApiStub::Requests::Network::NetworkInterface.delete_network_interface_response
-    @promise.stub :value!, response do
-      @network_interfaces.stub :delete, @promise do
-        assert @service.delete_network_interface('fog-test-rg', 'fog-test-network-interface'), response
-      end
+    @network_interfaces.stub :delete, @promise do
+      assert @service.delete_network_interface('fog-test-rg', 'fog-test-network-interface'), response
     end
   end
 
   def test_delete_network_interface_failure
-    response = -> { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
-    @promise.stub :value!, response do
-      @network_interfaces.stub :delete, @promise do
-        assert_raises(RuntimeError) { @service.delete_network_interface('fog-test-rg', 'fog-test-network-interface') }
-      end
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
+    @network_interfaces.stub :delete, response do
+      assert_raises(RuntimeError) { @service.delete_network_interface('fog-test-rg', 'fog-test-network-interface') }
     end
   end
 end

@@ -2,7 +2,7 @@ module ApiStub
   module Requests
     module Network
       class NetworkInterface
-        def self.create_network_interface_response
+        def self.create_network_interface_response(network_client)
           body = '{
             "name":"fog-test-network-interface",
             "id":"/subscriptions/{guid}/resourceGroups/fog-test-rg/providers/Microsoft.Network/networkInterfaces/fog-test-network-interface",
@@ -63,12 +63,11 @@ module ApiStub
               }
             }
           }'
-          result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
-          result.body = Azure::ARM::Network::Models::NetworkInterface.deserialize_object(JSON.load(body))
-          result
+          network_interface_mapper = Azure::ARM::Network::Models::NetworkInterface.mapper
+          network_client.deserialize(network_interface_mapper, JSON.load(body), 'result.body')
         end
 
-        def self.detach_pip_from_nic_response
+        def self.detach_pip_from_nic_response(network_client)
           body = '{
             "name":"fog-test-network-interface",
             "id":"/subscriptions/{guid}/resourceGroups/fog-test-rg/providers/Microsoft.Network/networkInterfaces/fog-test-network-interface",
@@ -126,12 +125,11 @@ module ApiStub
               }
             }
           }'
-          result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
-          result.body = Azure::ARM::Network::Models::NetworkInterface.deserialize_object(JSON.load(body))
-          result
+          network_interface_mapper = Azure::ARM::Network::Models::NetworkInterface.mapper
+          network_client.deserialize(network_interface_mapper, JSON.load(body), 'result.body')
         end
 
-        def self.detach_nsg_from_nic_response
+        def self.detach_nsg_from_nic_response(network_client)
           body = '{
             "name":"fog-test-network-interface",
             "id":"/subscriptions/{guid}/resourceGroups/fog-test-rg/providers/Microsoft.Network/networkInterfaces/fog-test-network-interface",
@@ -186,12 +184,11 @@ module ApiStub
               }
             }
           }'
-          result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
-          result.body = Azure::ARM::Network::Models::NetworkInterface.deserialize_object(JSON.load(body))
-          result
+          network_interface_mapper = Azure::ARM::Network::Models::NetworkInterface.mapper
+          network_client.deserialize(network_interface_mapper, JSON.load(body), 'result.body')
         end
 
-        def self.list_network_interfaces_response
+        def self.list_network_interfaces_response(network_client)
           body = '{
             "value": [ {
               "name":"mynic1",
@@ -254,9 +251,8 @@ module ApiStub
               }
             } ]
           }'
-          result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
-          result.body = Azure::ARM::Network::Models::NetworkInterfaceListResult.deserialize_object(JSON.load(body))
-          result
+          network_interface_list_mapper = Azure::ARM::Network::Models::NetworkInterfaceListResult.mapper
+          network_client.deserialize(network_interface_list_mapper, JSON.load(body), 'result.body')
         end
 
         def self.delete_network_interface_response

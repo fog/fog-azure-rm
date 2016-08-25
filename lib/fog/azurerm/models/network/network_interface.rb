@@ -33,7 +33,7 @@ module Fog
           hash['mac_address'] = nic.mac_address unless nic.mac_address.nil?
           hash['network_security_group_id'] = nil
           hash['network_security_group_id'] = nic.network_security_group.id unless nic.network_security_group.nil?
-          ip_configuration = nic.ip_configurations[0]
+          ip_configuration = nic.ip_configurations[0] unless nic.ip_configurations.nil?
           unless ip_configuration.nil?
             hash['ip_configuration_name'] = ip_configuration.name
             hash['ip_configuration_id'] = ip_configuration.id
@@ -45,11 +45,13 @@ module Fog
             hash['load_balancer_backend_address_pools_ids'] = ip_configuration.load_balancer_backend_address_pools.map(&:id) unless ip_configuration.load_balancer_backend_address_pools.nil?
             hash['load_balancer_inbound_nat_rules_ids'] = ip_configuration.load_balancer_inbound_nat_rules.map(&:id) unless ip_configuration.load_balancer_inbound_nat_rules.nil?
           end
-
-          hash['dns_servers'] = nic.dns_settings.dns_servers
-          hash['applied_dns_servers'] = nic.dns_settings.applied_dns_servers
-          hash['internal_dns_name_label'] = nic.dns_settings.internal_dns_name_label
-          hash['internal_fqd'] = nic.dns_settings.internal_fqdn
+          nic_dns_settings = nic.dns_settings
+          unless nic_dns_settings.nil?
+            hash['dns_servers'] = nic_dns_settings.dns_servers
+            hash['applied_dns_servers'] = nic_dns_settings.applied_dns_servers
+            hash['internal_dns_name_label'] = nic_dns_settings.internal_dns_name_label
+            hash['internal_fqd'] = nic_dns_settings.internal_fqdn
+          end
           hash
         end
 

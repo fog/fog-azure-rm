@@ -11,7 +11,7 @@ module Fog
           begin
             network_interface_obj = @network_client.network_interfaces.create_or_update(resource_group_name, name, network_interface)
           rescue MsRestAzure::AzureOperationError => e
-            raise_azure_exception(e, "Creating/Updating Network Interface Card: #{name}")
+            raise_azure_exception(e, msg)
           end
           Fog::Logger.debug "Network Interface #{name} created/updated successfully."
           network_interface_obj
@@ -32,7 +32,7 @@ module Fog
           ip_configs.name = ip_config_name
           ip_configs.private_ipallocation_method = private_ip_allocation_method
           ip_configs.private_ipaddress = private_ip_address
-          ip_configs.public_ipaddress = public_ipaddress
+          ip_configs.public_ipaddress = public_ipaddress unless public_ip_address_id.nil?
           ip_configs.subnet = subnet
 
           network_interface = Azure::ARM::Network::Models::NetworkInterface.new

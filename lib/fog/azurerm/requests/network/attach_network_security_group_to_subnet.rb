@@ -8,12 +8,12 @@ module Fog
           Fog::Logger.debug msg
           subnet = get_subnet_object_for_attach_network_security_group(address_prefix, network_security_group_id, route_table_id)
           begin
-            subnet = @network_client.subnets.create_or_update(resource_group, virtual_network_name, subnet_name, subnet)
+            subnet_obj = @network_client.subnets.create_or_update(resource_group, virtual_network_name, subnet_name, subnet)
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
-          Fog::Logger.debug 'Network Security Group attached successfully.'
-          subnet
+          Fog::Logger.debug 'Network Security Group attached to Subnet #{subnet_name} successfully.'
+          subnet_obj
         end
 
         private

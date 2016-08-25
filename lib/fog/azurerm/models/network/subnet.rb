@@ -16,8 +16,8 @@ module Fog
           hash = {}
           hash['id'] = subnet.id
           hash['name'] = subnet.name
-          hash['resource_group'] = get_resource_from_resource_id(subnet.id, RESOURCE_GROUP_NAME)
-          hash['virtual_network_name'] = get_resource_from_resource_id(subnet.id, RESOURCE_NAME)
+          hash['resource_group'] = get_resource_group_from_id(subnet.id)
+          hash['virtual_network_name'] = get_virtual_network_from_id(subnet.id)
           hash['address_prefix'] = subnet.address_prefix
           hash['network_security_group_id'] = nil
           hash['network_security_group_id'] = subnet.network_security_group.id unless subnet.network_security_group.nil?

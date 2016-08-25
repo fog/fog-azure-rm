@@ -4,16 +4,16 @@ module Fog
       # Real class for Network Request
       class Real
         def attach_route_table_to_subnet(resource_group, subnet_name, virtual_network_name, address_prefix, network_security_group_id, route_table_id)
-          msg = "Attaching Route Table with Subnet: #{subnet_name}"
+          msg = "Attaching Route Table to Subnet: #{subnet_name}"
           Fog::Logger.debug msg
           subnet = get_subnet_object_for_attach_route_table(address_prefix, network_security_group_id, route_table_id)
           begin
-            subnet = @network_client.subnets.create_or_update(resource_group, virtual_network_name, subnet_name, subnet)
+            subnet_obj = @network_client.subnets.create_or_update(resource_group, virtual_network_name, subnet_name, subnet)
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
-          Fog::Logger.debug 'Route Table attached successfully.'
-          subnet
+          Fog::Logger.debug 'Route Table attached to Subnet #{subnet_name} successfully.'
+          subnet_obj
         end
 
         private

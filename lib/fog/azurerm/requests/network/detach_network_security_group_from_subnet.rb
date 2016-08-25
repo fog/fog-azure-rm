@@ -6,7 +6,7 @@ module Fog
         def detach_network_security_group_from_subnet(resource_group, subnet_name, virtual_network_name, address_prefix, route_table_id)
           msg = "Detaching Network Security Group from Subnet: #{subnet_name}"
           Fog::Logger.debug msg
-          subnet = define_subnet_object_for_detach_network_security_group(address_prefix, route_table_id)
+          subnet = get_subnet_object_for_detach_network_security_group(address_prefix, route_table_id)
           begin
             subnet = @network_client.subnets.create_or_update(resource_group, virtual_network_name, subnet_name, subnet)
           rescue MsRestAzure::AzureOperationError => e
@@ -18,7 +18,7 @@ module Fog
 
         private
 
-        def define_subnet_object_for_detach_network_security_group(address_prefix, route_table_id)
+        def get_subnet_object_for_detach_network_security_group(address_prefix, route_table_id)
           subnet = Azure::ARM::Network::Models::Subnet.new
           route_table = Azure::ARM::Network::Models::RouteTable.new
 

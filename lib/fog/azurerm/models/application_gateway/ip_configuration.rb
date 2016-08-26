@@ -9,7 +9,7 @@ module Fog
         def self.parse(gateway_ip_configuration)
           hash = {}
           hash['name'] = gateway_ip_configuration.name
-          hash['subnet_id'] = gateway_ip_configuration.subnet.id
+          hash['subnet_id'] = gateway_ip_configuration.subnet.id unless gateway_ip_configuration.subnet.nil?
           hash
         end
       end

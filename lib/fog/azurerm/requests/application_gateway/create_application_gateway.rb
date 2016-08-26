@@ -25,61 +25,51 @@ module Fog
 
           if gateway_ip_configurations
             gateway_ip_configuration_arr = define_gateway_ip_configuration(gateway_ip_configurations)
-            application_gateway.gateway_ipconfigurations = []
             application_gateway.gateway_ipconfigurations = gateway_ip_configuration_arr
           end
 
           if ssl_certificates
             ssl_certificate_arr = define_ssl_certificate(ssl_certificates)
-            application_gateway.ssl_certificates = []
             application_gateway.ssl_certificates = ssl_certificate_arr
           end
 
           if frontend_ip_configurations
             frontend_ip_configuration_arr = define_frontend_ip_configurations(frontend_ip_configurations)
-            application_gateway.frontend_ipconfigurations = []
             application_gateway.frontend_ipconfigurations = frontend_ip_configuration_arr
           end
 
           if frontend_ports
             frontend_port_arr = define_frontend_ports(frontend_ports)
-            application_gateway.frontend_ports = []
             application_gateway.frontend_ports = frontend_port_arr
           end
 
           if probes
             probe_arr = define_probes(probes)
-            application_gateway.probes = []
             application_gateway.probes = probe_arr
           end
 
           if backend_address_pools
             backend_address_pool_arr = define_backend_address_pools(backend_address_pools)
-            application_gateway.backend_address_pools = []
             application_gateway.backend_address_pools = backend_address_pool_arr
           end
 
           if backend_http_settings_list
             backend_http_setting_arr = define_backend_http_settings(backend_http_settings_list)
-            application_gateway.backend_http_settings_collection = []
             application_gateway.backend_http_settings_collection = backend_http_setting_arr
           end
 
           if http_listeners
             http_listener_arr = define_http_listeners(http_listeners)
-            application_gateway.http_listeners = []
             application_gateway.http_listeners = http_listener_arr
           end
 
           if url_path_maps
             url_path_maps_arr = define_url_path_maps(url_path_maps)
-            application_gateway.url_path_maps = []
             application_gateway.url_path_maps = url_path_maps_arr
           end
 
           if request_routing_rules
             request_routing_rule_arr = define_request_routing_rules(request_routing_rules)
-            application_gateway.request_routing_rules = []
             application_gateway.request_routing_rules = request_routing_rule_arr
           end
 

@@ -18,10 +18,8 @@ module Fog
           hash['frontend_port_id'] = http_listener.frontend_port.id unless http_listener.frontend_port.nil?
           hash['protocol'] = http_listener.protocol
           hash['host_name'] = http_listener.host_name
-          unless http_listener.ssl_certificate.nil?
-            hash['ssl_certificate_id'] = http_listener.ssl_certificate.id
-            hash['require_server_name_indication'] = http_listener.require_server_name_indication
-          end
+          hash['ssl_certificate_id'] = http_listener.ssl_certificate.id unless http_listener.ssl_certificate.nil?
+          hash['require_server_name_indication'] = http_listener.require_server_name_indication
           hash
         end
       end

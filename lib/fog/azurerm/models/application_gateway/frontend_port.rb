@@ -9,7 +9,7 @@ module Fog
         def self.parse(frontend_port)
           hash = {}
           hash['name'] = frontend_port.name
-          hash['port'] = frontend_port.port unless frontend_port.port.nil?
+          hash['port'] = frontend_port.port
           hash
         end
       end

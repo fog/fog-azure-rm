@@ -13,14 +13,12 @@ module Fog
         def self.parse(backend_http_setting)
           hash = {}
           hash['name'] = backend_http_setting.name
-          unless backend_http_setting.nil?
-            hash['port'] = backend_http_setting.port
-            hash['protocol'] = backend_http_setting.protocol
-            hash['cookie_based_affinity'] = backend_http_setting.cookie_based_affinity
-            hash['request_timeout'] = backend_http_setting.request_timeout
-            hash['probe'] = backend_http_setting.probe
-            hash
-          end
+          hash['port'] = backend_http_setting.port
+          hash['protocol'] = backend_http_setting.protocol
+          hash['cookie_based_affinity'] = backend_http_setting.cookie_based_affinity
+          hash['request_timeout'] = backend_http_setting.request_timeout
+          hash['probe'] = backend_http_setting.probe
+          hash
         end
       end
     end

@@ -11,8 +11,8 @@ module Fog
         def self.parse(url_path_map)
           hash = {}
           hash['name'] = url_path_map.name
-          hash['default_backend_address_pool_id'] = url_path_map.default_backend_address_pool.id
-          hash['default_backend_http_settings_id'] = url_path_map.default_backend_http_settings.id
+          hash['default_backend_address_pool_id'] = url_path_map.default_backend_address_pool.id unless url_path_map.default_backend_address_pool.nil?
+          hash['default_backend_http_settings_id'] = url_path_map.default_backend_http_settings.id unless url_path_map.default_backend_http_settings.nil?
 
           path_rules = url_path_map.path_rules
           hash['path_rules'] = []

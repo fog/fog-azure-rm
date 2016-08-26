@@ -15,8 +15,8 @@ module Fog
           load(traffic_manager_profiles)
         end
 
-        def get(identity)
-          profile = service.get_traffic_manager_profile(resource_group, identity)
+        def get(resource_group, traffic_manager_profile_name)
+          profile = service.get_traffic_manager_profile(resource_group, traffic_manager_profile_name)
           profile_obj = Fog::TrafficManager::AzureRM::TrafficManagerProfile.new(service: service)
           profile_obj.merge_attributes(Fog::TrafficManager::AzureRM::TrafficManagerProfile.parse(profile))
         end

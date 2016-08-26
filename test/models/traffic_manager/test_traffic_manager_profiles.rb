@@ -36,7 +36,7 @@ class TestTrafficManagerProfiles < Minitest::Test
 
   def test_get_method_response
     @service.stub :get_traffic_manager_profile, @profile do
-      assert_instance_of Fog::TrafficManager::AzureRM::TrafficManagerProfile, @traffic_manager_profiles.get('fog-test-profile')
+      assert_instance_of Fog::TrafficManager::AzureRM::TrafficManagerProfile, @traffic_manager_profiles.get('resource-group-name', 'fog-test-profile-name')
     end
   end
 end

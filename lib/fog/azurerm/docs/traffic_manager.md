@@ -56,8 +56,8 @@ Get a single record of Traffic Manager Profile
 
 ```ruby
      profile = azure_traffic_manager_service
-               .traffic_manager_profiles(resource_group: '<Resource Group name>')
-                .get('<Profile name>')
+               .traffic_manager_profiles
+                .get('<Resource Group name>', '<Profile name>')
      puts "#{profile.name}"
 ```
 
@@ -101,8 +101,8 @@ Get a single Traffic Manager Endpoint.
 
 ```ruby
       endpoint = azure_traffic_manager_service
-                 .traffic_manager_end_points(resource_group: '<Resource Group name>', traffic_manager_profile_name: '<Profile Name>')
-                 .get('<Endpoint name>', '<Endpoint type>')
+                 .traffic_manager_end_points
+                 .get('<Resource Group name>', '<Profile Name>', '<Endpoint name>', '<Endpoint type>')
       puts "#{endpoint.name}"
 ```
 

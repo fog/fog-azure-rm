@@ -42,8 +42,7 @@ module Fog
           requires :target_resource_id, :endpoint_location, :min_child_endpoints if type.eql?(NESTED_ENDPOINTS)
 
           if %w(azureEndpoints externalEndpoints nestedEndpoints).select { |type| type if type.eql?(type) }.any?
-            endpoint_params = traffic_manager_endpoint_hash
-            traffic_manager_endpoint = service.create_traffic_manager_endpoint(endpoint_params)
+            traffic_manager_endpoint = service.create_traffic_manager_endpoint(traffic_manager_endpoint_hash)
             merge_attributes(Fog::TrafficManager::AzureRM::TrafficManagerEndPoint.parse(traffic_manager_endpoint))
           else
             raise(ArgumentError, ":type should be '#{AZURE_ENDPOINTS}', '#{EXTERNAL_ENDPOINTS}' or '#{NESTED_ENDPOINTS}'")

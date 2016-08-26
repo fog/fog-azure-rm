@@ -37,7 +37,7 @@ class TestTrafficManagerEndPoints < Minitest::Test
 
   def test_get_method_response
     @service.stub :get_traffic_manager_end_point, @response_endpoint do
-      assert_instance_of Fog::TrafficManager::AzureRM::TrafficManagerEndPoint, @traffic_manager_end_points.get('endpoint-name1', 'endpoint-type')
+      assert_instance_of Fog::TrafficManager::AzureRM::TrafficManagerEndPoint, @traffic_manager_end_points.get('resource-group-name', 'profile-name', 'endpoint-name1', 'endpoint-type')
     end
   end
 end

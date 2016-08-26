@@ -63,14 +63,14 @@ traffic_manager.traffic_manager_end_points.create(
 ######################                   Get and Destroy Traffic Manager Endpoint                ######################
 ########################################################################################################################
 
-end_point = traffic_manager.traffic_manager_end_points(resource_group: 'TestRG-TM', traffic_manager_profile_name: 'test-tmp').get('myendpoint', 'externalEndpoints')
+end_point = traffic_manager.traffic_manager_end_points.get('TestRG-TM', 'test-tmp', 'myendpoint', 'externalEndpoints')
 end_point.destroy
 
 ########################################################################################################################
 ######################                    Get and Destroy Traffic Manager Profile                 ######################
 ########################################################################################################################
 
-traffic_manager_profile = traffic_manager.traffic_manager_profiles(resource_group: 'TestRG-TM').get('test-tmp')
+traffic_manager_profile = traffic_manager.traffic_manager_profiles.get('TestRG-TM', 'test-tmp')
 traffic_manager_profile.destroy
 
 ########################################################################################################################

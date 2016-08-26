@@ -21,7 +21,7 @@ module Fog
         def get_profile_object(traffic_routing_method, relative_name, ttl, protocol, port, path)
           traffic_manager_profile = Azure::ARM::TrafficManager::Models::Profile.new
           traffic_manager_profile.traffic_routing_method = traffic_routing_method
-          traffic_manager_profile.location = 'global'
+          traffic_manager_profile.location = GLOBAL
 
           traffic_manager_profile.dns_config = get_traffic_manager_dns_config(relative_name, ttl)
           traffic_manager_profile.monitor_config = get_traffic_manager_monitor_config(protocol, port, path)

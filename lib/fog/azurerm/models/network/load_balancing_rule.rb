@@ -16,24 +16,19 @@ module Fog
         attribute :load_distribution
 
         def self.parse(load_balancing_rule)
-          load_balancing_rule_prop = load_balancing_rule['properties']
           hash = {}
-          hash['id'] = load_balancing_rule['id']
-          hash['name'] = load_balancing_rule['name']
-          unless load_balancing_rule_prop['frontendIPConfiguration'].nil?
-            hash['frontend_ip_configuration_id'] = load_balancing_rule_prop['frontendIPConfiguration']['id']
-          end
-          unless load_balancing_rule_prop['backendAddressPool'].nil?
-            hash['backend_address_pool_id'] = load_balancing_rule_prop['backendAddressPool']['id']
-          end
+          hash['id'] = load_balancing_rule.id
+          hash['name'] = load_balancing_rule.name
+          hash['frontend_ip_configuration_id'] = load_balancing_rule.frontend_ipconfiguration.id unless load_balancing_rule.frontend_ipconfiguration.nil?
+          hash['backend_address_pool_id'] = load_balancing_rule.backend_address_pool.id unless load_balancing_rule.backend_address_pool.nil?
 
-          hash['protocol'] = load_balancing_rule_prop['protocol']
-          hash['frontend_port'] = load_balancing_rule_prop['frontendPort']
-          hash['backend_port'] = load_balancing_rule_prop['backendPort']
-          hash['probe_id'] = load_balancing_rule_prop['probe']['id'] unless load_balancing_rule_prop['probe'].nil?
-          hash['enable_floating_ip'] = load_balancing_rule_prop['enableFloatingIP']
-          hash['idle_timeout_in_minutes'] = load_balancing_rule_prop['idleTimeoutInMinutes']
-          hash['load_distribution'] = load_balancing_rule_prop['loadDistribution']
+          hash['protocol'] = load_balancing_rule.protocol
+          hash['frontend_port'] = load_balancing_rule.frontend_port
+          hash['backend_port'] = load_balancing_rule.backend_port
+          hash['probe_id'] = load_balancing_rule.probe.id unless load_balancing_rule.probe.nil?
+          hash['enable_floating_ip'] = load_balancing_rule.enable_floating_ip
+          hash['idle_timeout_in_minutes'] = load_balancing_rule.idle_timeout_in_minutes
+          hash['load_distribution'] = load_balancing_rule.load_distribution
           hash
         end
       end

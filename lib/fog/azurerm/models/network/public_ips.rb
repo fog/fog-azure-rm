@@ -18,8 +18,10 @@ module Fog
           load(public_ips)
         end
 
-        def get(identity)
-          all.find { |f| f.name == identity }
+        def get(resource_group_name, public_ip_name)
+          public_ip = service.get_public_ip(resource_group_name, public_ip_name)
+          public_ip_object = Fog::Network::AzureRM::PublicIp.new(service: service)
+          public_ip_object.merge_attributes(Fog::Network::AzureRM::PublicIp.parse(public_ip))
         end
 
         def check_if_exists(resource_group, name)

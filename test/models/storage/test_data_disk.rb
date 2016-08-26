@@ -20,10 +20,4 @@ class TestDataDisk < Minitest::Test
       assert @data_disk.respond_to? attribute, true
     end
   end
-
-  def test_parse_method_response
-    mocked_response = ApiStub::Models::Storage::DataDisk.create_data_disk_response
-    expected_response = ApiStub::Models::Storage::DataDisk.expected_create_data_disk_response
-    assert_equal Fog::Storage::AzureRM::DataDisk.parse(mocked_response), expected_response
-  end
 end

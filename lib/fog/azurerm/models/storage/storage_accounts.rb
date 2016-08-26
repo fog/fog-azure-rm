@@ -18,12 +18,7 @@ module Fog
             hash_of_storage_accounts = service.list_storage_accounts
           end
           hash_of_storage_accounts.each do |account|
-            hash = {}
-            hash['name'] = account['name']
-            hash['location'] = account['location']
-            hash['resource_group'] = account['id'].split('/')[4]
-            hash['account_type'] = account['properties']['accountType']
-            accounts << hash
+            accounts << Fog::Storage::AzureRM::StorageAccount.parse(account)
           end
           load(accounts)
         end

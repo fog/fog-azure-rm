@@ -5,10 +5,11 @@ class TestNetworkInterface < Minitest::Test
   def setup
     @service = Fog::Network::AzureRM.new(credentials)
     @network_interface = network_interface(@service)
+    network_client = @service.instance_variable_get(:@network_client)
+    @response = ApiStub::Models::Network::NetworkInterface.create_network_interface_response(network_client)
   end
 
   def test_model_methods
-    response = ApiStub::Models::Network::NetworkInterface.create_network_interface_response
     methods = [
       :save,
       :destroy,
@@ -18,7 +19,7 @@ class TestNetworkInterface < Minitest::Test
       :detach_public_ip,
       :detach_network_security_group
     ]
-    @service.stub :create_or_update_network_interface, response do
+    @service.stub :create_or_update_network_interface, @response do
       methods.each do |method|
         assert @network_interface.respond_to? method
       end
@@ -26,7 +27,6 @@ class TestNetworkInterface < Minitest::Test
   end
 
   def test_model_attributes
-    response = ApiStub::Models::Network::NetworkInterface.create_network_interface_response
     attributes = [
       :name,
       :id,
@@ -48,7 +48,7 @@ class TestNetworkInterface < Minitest::Test
       :internal_dns_name_label,
       :internal_fqd
     ]
-    @service.stub :create_or_update_network_interface, response do
+    @service.stub :create_or_update_network_interface, @response do
       attributes.each do |attribute|
         assert @network_interface.respond_to? attribute
       end
@@ -56,8 +56,7 @@ class TestNetworkInterface < Minitest::Test
   end
 
   def test_save_method_response
-    response = ApiStub::Models::Network::NetworkInterface.create_network_interface_response
-    @service.stub :create_or_update_network_interface, response do
+    @service.stub :create_or_update_network_interface, @response do
       assert_instance_of Fog::Network::AzureRM::NetworkInterface, @network_interface.save
     end
   end
@@ -70,36 +69,31 @@ class TestNetworkInterface < Minitest::Test
   end
 
   def test_attach_subnet
-    response = ApiStub::Models::Network::NetworkInterface.create_network_interface_response
-    @service.stub :attach_resource_to_nic, response do
+    @service.stub :attach_resource_to_nic, @response do
       assert_instance_of Fog::Network::AzureRM::NetworkInterface, @network_interface.attach_subnet('<subnet-id>')
     end
   end
 
   def test_attach_public_ip
-    response = ApiStub::Models::Network::NetworkInterface.create_network_interface_response
-    @service.stub :attach_resource_to_nic, response do
+    @service.stub :attach_resource_to_nic, @response do
       assert_instance_of Fog::Network::AzureRM::NetworkInterface, @network_interface.attach_public_ip('<public-ip-id>')
     end
   end
 
   def test_attach_network_security_group
-    response = ApiStub::Models::Network::NetworkInterface.create_network_interface_response
-    @service.stub :attach_resource_to_nic, response do
+    @service.stub :attach_resource_to_nic, @response do
       assert_instance_of Fog::Network::AzureRM::NetworkInterface, @network_interface.attach_network_security_group('<nsg-id>')
     end
   end
 
   def test_detach_public_ip
-    response = ApiStub::Models::Network::NetworkInterface.create_network_interface_response
-    @service.stub :detach_resource_from_nic, response do
+    @service.stub :detach_resource_from_nic, @response do
       assert_instance_of Fog::Network::AzureRM::NetworkInterface, @network_interface.detach_public_ip
     end
   end
 
   def test_detach_network_security_group
-    response = ApiStub::Models::Network::NetworkInterface.create_network_interface_response
-    @service.stub :detach_resource_from_nic, response do
+    @service.stub :detach_resource_from_nic, @response do
       assert_instance_of Fog::Network::AzureRM::NetworkInterface, @network_interface.detach_network_security_group
     end
   end

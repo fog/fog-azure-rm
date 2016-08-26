@@ -10,10 +10,10 @@ module Fog
 
         def self.parse(root_cert)
           hash = {}
-          hash['name'] = root_cert['name']
-          hash['id'] = root_cert['id']
-          hash['public_cert_data'] = root_cert['properties']['publicCertData']
-          hash['provisioning_state'] = root_cert['properties']['provisioningState']
+          hash['name'] = root_cert.name
+          hash['id'] = root_cert.id
+          hash['public_cert_data'] = root_cert.public_cert_data
+          hash['provisioning_state'] = root_cert.provisioning_state
           hash
         end
       end

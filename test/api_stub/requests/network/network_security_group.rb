@@ -3,15 +3,11 @@ module ApiStub
     module Network
       # Mock class for Network Security Group Requests
       class NetworkSecurityGroup
-        def self.create_network_security_group_response
-          body = '{
+        def self.create_network_security_group_response(network_client)
+          nsg = '{
              "name":"fog-test-nsg",
              "id":"/subscriptions/#####/resourceGroups/fog-test-rg/providers/Microsoft.Network/networkSecurityGroups/fog-test-nsg",
              "location":"West US",
-             "tags":{
-                "key":"value"
-             },
-             "etag":"W/\"00000000-0000-0000-0000-000000000000\"",
              "properties":{
                 "resourceGuid":"AF6A2C41-9F74-46B3-9F65-F5286FFEE3DE",
                 "provisioningState":"Succeeded",
@@ -68,20 +64,15 @@ module ApiStub
                 ]
              }
           }'
-          result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
-          result.body = Azure::ARM::Network::Models::NetworkSecurityGroup.deserialize_object(JSON.load(body))
-          result
+          result_mapper = Azure::ARM::Network::Models::NetworkSecurityGroup.mapper
+          network_client.deserialize(result_mapper, JSON.load(nsg), 'result.body')
         end
 
-        def self.add_security_rules_response
-          body = '{
+        def self.add_security_rules_response(network_client)
+          nsg = '{
              "name":"fog-test-nsg",
              "id":"/subscriptions/#####/resourceGroups/fog-test-rg/providers/Microsoft.Network/networkSecurityGroups/fog-test-nsg",
              "location":"West US",
-             "tags":{
-                "key":"value"
-             },
-             "etag":"W/\"00000000-0000-0000-0000-000000000000\"",
              "properties":{
                 "resourceGuid":"AF6A2C41-9F74-46B3-9F65-F5286FFEE3DE",
                 "provisioningState":"Succeeded",
@@ -152,13 +143,12 @@ module ApiStub
                 ]
              }
           }'
-          result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
-          result.body = Azure::ARM::Network::Models::NetworkSecurityGroup.deserialize_object(JSON.load(body))
-          result
+          result_mapper = Azure::ARM::Network::Models::NetworkSecurityGroup.mapper
+          network_client.deserialize(result_mapper, JSON.load(nsg), 'result.body')
         end
 
-        def self.list_network_security_group_response
-          body = '{
+        def self.list_network_security_group_response(network_client)
+          nsg_list = '{
             "value":[
               {
                 "name":"fog-test-nsg",
@@ -226,13 +216,8 @@ module ApiStub
              }
             ]
           }'
-          result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
-          result.body = Azure::ARM::Network::Models::NetworkSecurityGroupListResult.deserialize_object(JSON.load(body))
-          result
-        end
-
-        def self.delete_network_security_group_response
-          MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
+          result_mapper = Azure::ARM::Network::Models::NetworkInterfaceListResult.mapper
+          network_client.deserialize(result_mapper, JSON.load(nsg_list), 'result.body')
         end
       end
     end

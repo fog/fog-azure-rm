@@ -1,17 +1,18 @@
 module Fog
   module Compute
     class AzureRM
-      # This class provides the actual implemention for service calls.
+      # This class provides the actual implementation for service calls.
       class Real
         def list_availability_sets(resource_group)
+          msg = "Listing Availability Sets in Resource Group: #{resource_group}"
+          Fog::Logger.debug msg
           begin
-            promise = @compute_mgmt_client.availability_sets.list(resource_group)
-            response = promise.value!
-            Azure::ARM::Compute::Models::AvailabilitySetListResult.serialize_object(response.body)['value']
+            avail_sets = @compute_mgmt_client.availability_sets.list(resource_group)
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Exception listing availability sets in Resource Group #{resource_group}. #{e.body['error']['message']}"
-            raise msg
+            raise_azure_exception(e, msg)
           end
+          Fog::Logger.debug "Listing Availability Sets in Resource Group: #{resource_group} successful."
+          avail_sets.value
         end
       end
       # This class provides the mock implementation for unit tests.

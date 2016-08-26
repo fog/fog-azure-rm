@@ -7,12 +7,12 @@ module Fog
           msg = "Deleting Express Route Circuit #{circuit_name} from Resource Group #{resource_group_name}."
           Fog::Logger.debug msg
           begin
-            @network_client.express_route_circuits.delete(resource_group_name, circuit_name).value!
-            Fog::Logger.debug "Express Route Circuit #{circuit_name} Deleted Successfully."
-            true
-          rescue  MsRestAzure::AzureOperationError => e
+            @network_client.express_route_circuits.delete(resource_group_name, circuit_name)
+          rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
+          Fog::Logger.debug "Express Route Circuit #{circuit_name} Deleted Successfully."
+          true
         end
       end
 

@@ -3,7 +3,7 @@ module ApiStub
     module Network
       # Mock class for Express Route Circuit Peering Requests
       class ExpressRouteCircuitPeering
-        def self.create_express_route_circuit_peering_response
+        def self.create_express_route_circuit_peering_response(network_client)
           body = '{
           "name": "MicrosoftPeering",
           "id": "/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/peerings/{peeringName}",
@@ -24,12 +24,11 @@ module ApiStub
               }
             }
           }'
-          result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
-          result.body = Azure::ARM::Network::Models::ExpressRouteCircuitPeering.deserialize_object(JSON.load(body))
-          result
+          express_route_circuit_mapper = Azure::ARM::Network::Models::ExpressRouteCircuitPeering.mapper
+          network_client.deserialize(express_route_circuit_mapper, JSON.load(body), 'result.body')
         end
 
-        def self.list_express_route_circuit_peering_response
+        def self.list_express_route_circuit_peering_response(network_client)
           body = '{
             "value": [
               {
@@ -54,13 +53,8 @@ module ApiStub
               }
             ]
           }'
-          result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
-          result.body = Azure::ARM::Network::Models::ExpressRouteCircuitPeeringListResult.deserialize_object(JSON.load(body))
-          result
-        end
-
-        def self.delete_express_route_circuit_peering_response
-          MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
+          express_route_circuit_mapper = Azure::ARM::Network::Models::ExpressRouteCircuitPeeringListResult.mapper
+          network_client.deserialize(express_route_circuit_mapper, JSON.load(body), 'result.body').value
         end
       end
     end

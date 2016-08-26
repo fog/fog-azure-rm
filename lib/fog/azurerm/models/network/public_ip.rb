@@ -15,22 +15,21 @@ module Fog
         attribute :fqdn
         attribute :reverse_fqdn
 
-        def self.parse(pip)
-          pip_properties = pip['properties']
+        def self.parse(public_ip)
           hash = {}
-          hash['id'] = pip['id']
-          hash['name'] = pip['name']
-          hash['location'] = pip['location']
-          hash['resource_group'] = pip['id'].split('/')[4]
-          hash['public_ip_allocation_method'] = pip_properties['publicIPAllocationMethod']
-          hash['ip_address'] = pip_properties['ipAddress']
-          hash['idle_timeout_in_minutes'] = pip_properties['idleTimeoutInMinutes']
-          hash['ip_configuration_id'] = pip_properties['ipConfiguration']['id'] unless pip_properties['ipConfiguration'].nil?
+          hash['id'] = public_ip.id
+          hash['name'] = public_ip.name
+          hash['location'] = public_ip.location
+          hash['resource_group'] = get_resource_group_from_id(public_ip.id)
+          hash['public_ip_allocation_method'] = public_ip.public_ipallocation_method
+          hash['ip_address'] = public_ip.ip_address
+          hash['idle_timeout_in_minutes'] = public_ip.idle_timeout_in_minutes
+          hash['ip_configuration_id'] = public_ip.ip_configuration.id unless public_ip.ip_configuration.nil?
 
-          unless pip_properties['dnsSettings'].nil?
-            hash['domain_name_label'] = pip_properties['dnsSettings']['domainNameLabel']
-            hash['fqdn'] = pip_properties['dnsSettings']['fqdn']
-            hash['reverse_fqdn'] = pip_properties['dnsSettings']['reverseFqdn']
+          unless public_ip.dns_settings.nil?
+            hash['domain_name_label'] = public_ip.dns_settings.domain_name_label
+            hash['fqdn'] = public_ip.dns_settings.fqdn
+            hash['reverse_fqdn'] = public_ip.dns_settings.reverse_fqdn
           end
 
           hash
@@ -41,8 +40,8 @@ module Fog
           requires :public_ip_allocation_method
           requires :location
           requires :resource_group
-          pip = service.create_public_ip(resource_group, name, location, public_ip_allocation_method)
-          merge_attributes(Fog::Network::AzureRM::PublicIp.parse(pip))
+          public_ip = service.create_public_ip(resource_group, name, location, public_ip_allocation_method)
+          merge_attributes(Fog::Network::AzureRM::PublicIp.parse(public_ip))
         end
 
         def destroy

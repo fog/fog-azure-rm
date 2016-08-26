@@ -1,24 +1,22 @@
 module Fog
   module Compute
     class AzureRM
-      # This class provides the actual implemention for service calls.
+      # This class provides the actual implementation for service calls.
       class Real
         def check_vm_status(resource_group, name)
-          Fog::Logger.debug "Checking Virtual Machine #{name} status."
+          msg = "Checking Virtual Machine #{name} status"
+          Fog::Logger.debug msg
           begin
-            # Pass 'instanceView' in get method, as argument, to get Virtual Machine status.
-            promise = @compute_mgmt_client.virtual_machines.get(resource_group, name, 'instanceView')
-            response = promise.value!
-            virtual_machine = response.body
-            get_status(virtual_machine)
+            virtual_machine = @compute_mgmt_client.virtual_machines.get(resource_group, name, 'instanceView')
           rescue  MsRestAzure::AzureOperationError => e
-            msg = "Error in checking Virtual Machine '#{name}' status in Resource Group '#{resource_group}'. #{e.body['error']['message']}"
-            raise msg
+            raise_azure_exception(e, msg)
           end
+          Fog::Logger.debug "Successfully returned status of Virtual Machine #{name} in Resource Group #{resource_group}"
+          get_status(virtual_machine)
         end
 
         def get_status(virtual_machine)
-          vm_statuses = virtual_machine.properties.instance_view.statuses
+          vm_statuses = virtual_machine.instance_view.statuses
           vm_status = nil
           vm_statuses.each do |status|
             if status.code.include? 'PowerState'

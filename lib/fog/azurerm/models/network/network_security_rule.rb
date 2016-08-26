@@ -19,19 +19,19 @@ module Fog
 
         def self.parse(nsr)
           hash = {}
-          hash['id'] = nsr['id']
-          hash['name'] = nsr['name']
-          hash['resource_group'] = nsr['id'].split('/')[4]
-          hash['network_security_group_name'] = nsr['id'].split('/')[8]
-          hash['description'] = nsr['properties']['description']
-          hash['protocol'] = nsr['properties']['protocol']
-          hash['source_port_range'] = nsr['properties']['sourcePortRange']
-          hash['destination_port_range'] = nsr['properties']['destinationPortRange']
-          hash['source_address_prefix'] = nsr['properties']['sourceAddressPrefix']
-          hash['destination_address_prefix'] = nsr['properties']['destinationAddressPrefix']
-          hash['access'] = nsr['properties']['access']
-          hash['priority'] = nsr['properties']['priority']
-          hash['direction'] = nsr['properties']['direction']
+          hash['id'] = nsr.id
+          hash['name'] = nsr.name
+          hash['resource_group'] = get_resource_from_resource_id(nsr.id, RESOURCE_GROUP_NAME)
+          hash['network_security_group_name'] = get_resource_from_resource_id(nsr.id, RESOURCE_NAME)
+          hash['description'] = nsr.description
+          hash['protocol'] = nsr.protocol
+          hash['source_port_range'] = nsr.source_port_range
+          hash['destination_port_range'] = nsr.destination_port_range
+          hash['source_address_prefix'] = nsr.source_address_prefix
+          hash['destination_address_prefix'] = nsr.destination_address_prefix
+          hash['access'] = nsr.access
+          hash['priority'] = nsr.priority
+          hash['direction'] = nsr.direction
           hash
         end
       end

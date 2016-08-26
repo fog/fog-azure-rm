@@ -35,8 +35,8 @@ virtual_network = network.virtual_networks.create(
   name:             'testVnet',
   location:         'eastus',
   resource_group:   'TestRG-SN',
-  dns_servers:       ['10.1.0.0', '10.2.0.0'],
-  address_prefixes:  ['10.1.0.0/16', '10.2.0.0/16']
+  dns_servers:       %w(10.1.0.0 10.2.0.0),
+  address_prefixes:  %w(10.1.0.0/16 10.2.0.0/16)
 )
 
 network_security_group = network.network_security_groups.create(

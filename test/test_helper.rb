@@ -92,7 +92,7 @@ def standard_lrs(service)
     name: 'storage-account',
     location: 'West US',
     resource_group: 'fog-test-rg',
-    account_type: 'Other',
+    sku_name: 'Other',
     replication: 'LRS',
     service: service
   )
@@ -103,7 +103,7 @@ def standard_check_for_invalid_replications(service)
     name: 'storage-account',
     location: 'West US',
     resource_group: 'fog-test-rg',
-    account_type: 'Standard',
+    sku_name: 'Standard',
     replication: 'HGDKS',
     service: service
   )
@@ -114,7 +114,7 @@ def premium_check_for_invalid_replications(service)
     name: 'storage-account',
     location: 'West US',
     resource_group: 'fog-test-rg',
-    account_type: 'Premium',
+    sku_name: 'Premium',
     replication: 'HGDKS',
     service: service
   )
@@ -447,7 +447,7 @@ def gateway(service)
 end
 
 def traffic_manager_end_point(service)
-  Fog::Network::AzureRM::TrafficManagerEndPoint.new(
+  Fog::TrafficManager::AzureRM::TrafficManagerEndPoint.new(
     name: 'fog-test-end-point',
     traffic_manager_profile_name: 'fog-test-profile',
     resource_group: 'fog-test-rg',
@@ -459,7 +459,7 @@ def traffic_manager_end_point(service)
 end
 
 def traffic_manager_profile(service)
-  Fog::Network::AzureRM::TrafficManagerProfile.new(
+  Fog::TrafficManager::AzureRM::TrafficManagerProfile.new(
     name: 'fog-test-profile',
     resource_group: 'fog-test-rg',
     traffic_routing_method: 'Performance',
@@ -500,7 +500,7 @@ def express_route_circuit(service)
     location: 'eastus',
     resource_group: 'HaiderRG',
     tags: {
-        key1: 'value1'
+      key1: 'value1'
     },
     sku_name: 'Standard_MeteredData',
     sku_tier: 'Standard',
@@ -524,14 +524,14 @@ end
 
 def express_route_circuit_peering(service)
   Fog::Network::AzureRM::ExpressRouteCircuitPeering.new(
-      name: 'AzurePublicPeering',
-      circuit_name: 'testCircuit',
-      resource_group: 'HaiderRG',
-      peering_type: 'AzurePublicPeering',
-      peer_asn: 100,
-      primary_peer_address_prefix: '192.168.1.0/30',
-      secondary_peer_address_prefix: '192.168.2.0/30',
-      vlan_id: 200,
-      service: service
+    name: 'AzurePublicPeering',
+    circuit_name: 'testCircuit',
+    resource_group: 'HaiderRG',
+    peering_type: 'AzurePublicPeering',
+    peer_asn: 100,
+    primary_peer_address_prefix: '192.168.1.0/30',
+    secondary_peer_address_prefix: '192.168.2.0/30',
+    vlan_id: 200,
+    service: service
   )
 end

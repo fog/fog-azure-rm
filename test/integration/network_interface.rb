@@ -125,10 +125,10 @@ nic.detach_network_security_group
 
 nic.destroy
 
-pubip = network.public_ips(resource_group: 'TestRG-NI').get('mypubip')
+pubip = network.public_ips.get('TestRG-NI', 'mypubip')
 pubip.destroy
 
-vnet = network.virtual_networks(resource_group: 'TestRG-NI').get('testVnet')
+vnet = network.virtual_networks.get('TestRG-NI', 'testVnet')
 vnet.destroy
 
 rg = rs.resource_groups.get('TestRG-NI')

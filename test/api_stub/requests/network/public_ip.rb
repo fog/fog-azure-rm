@@ -2,10 +2,10 @@ module ApiStub
   module Requests
     module Network
       class PublicIp
-        def self.create_public_ip_response
+        def self.create_public_ip_response(network_client)
           body = '{
              "name": "fog-test-public-ip",
-             "id": "/subscriptions/{guid}/resourceGroups/fog-test-rg/Microsoft.Network/publicIpAddresses/fog-test-public-ip",
+             "id": "/subscriptions/{guid}/resourceGroups/fog-test-rg/providers/Microsoft.Network/publicIpAddresses/fog-test-public-ip",
              "location": "West US",
              "tags": {
                 "key": "value"
@@ -27,12 +27,11 @@ module ApiStub
                 }
              }
           }'
-          result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
-          result.body = Azure::ARM::Network::Models::PublicIPAddress.deserialize_object(JSON.load(body))
-          result
+          public_ip_mapper = Azure::ARM::Network::Models::PublicIPAddress.mapper
+          network_client.deserialize(public_ip_mapper, JSON.load(body), 'result.body')
         end
 
-        def self.list_public_ips_response
+        def self.list_public_ips_response(network_client)
           body = '{
             "value": [ {
               "name": "myPublicIP1",
@@ -59,9 +58,8 @@ module ApiStub
               }
             } ]
           }'
-          result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
-          result.body = Azure::ARM::Network::Models::PublicIPAddressListResult.deserialize_object(JSON.load(body))
-          result
+          public_ip_mapper = Azure::ARM::Network::Models::PublicIPAddressListResult.mapper
+          network_client.deserialize(public_ip_mapper, JSON.load(body), 'result.body')
         end
 
         def self.delete_public_ip_response

@@ -4,32 +4,31 @@ module Fog
       # This class provides the actual implementation for service calls.
       class Real
         def detach_data_disk_from_vm(resource_group, vm_name, disk_name)
-          Fog::Logger.debug "Detaching Data Disk #{disk_name} from Virtual Machine #{vm_name} in Resource Group #{resource_group}."
+          msg = "Detaching Data Disk #{disk_name} from Virtual Machine #{vm_name} in Resource Group #{resource_group}."
+          Fog::Logger.debug msg
           vm = get_virtual_machine_instance(resource_group, vm_name, @compute_mgmt_client)
-          vm.properties.storage_profile.data_disks.each_with_index do |disk, index|
+          vm.storage_profile.data_disks.each_with_index do |disk, index|
             if disk.name == disk_name
-              vm.properties.storage_profile.data_disks.delete_at(index)
+              vm.storage_profile.data_disks.delete_at(index)
             end
           end
           vm.resources = nil
           begin
-            promise = @compute_mgmt_client.virtual_machines.create_or_update(resource_group, vm_name, vm)
-            result = promise.value!
-            Fog::Logger.debug "Data Disk #{disk_name} detached from Virtual Machine #{vm_name} successfully."
-            Azure::ARM::Compute::Models::VirtualMachine.serialize_object(result.body)
+            virtual_machine = @compute_mgmt_client.virtual_machines.create_or_update(resource_group, vm_name, vm)
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Error Detaching Data Disk #{disk_name} from Virtual Machine #{vm_name} in Resource Group #{resource_group}. #{e.body['error']['message']}"
-            raise msg
+            raise_azure_exception(e, msg)
           end
+          Fog::Logger.debug "Data Disk #{disk_name} detached from Virtual Machine #{vm_name} successfully."
+          virtual_machine
         end
       end
       # This class provides the mock implementation for unit tests.
       class Mock
-        def detach_data_disk_from_vm(resource_group, vm_name, disk_name)
-          {
+        def detach_data_disk_from_vm(*)
+          vm = {
             'location' => 'West US',
-            'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Compute/virtualMachines/#{name}",
-            'name' => vm_name,
+            'id' => '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Compute/virtualMachines/fog-test-server',
+            'name' => 'fog-test-server',
             'type' => 'Microsoft.Compute/virtualMachines',
             'properties' =>
               {
@@ -48,10 +47,10 @@ module Fog
                       },
                     'osDisk' =>
                       {
-                        'name' => "#{vm_name}_os_disk",
+                        'name' => 'fog-test-server_os_disk',
                         'vhd' =>
                           {
-                            'uri' => "http://#{storage_account_name}.blob.core.windows.net/vhds/#{vm_name}_os_disk.vhd"
+                            'uri' => 'http://mystorage1.blob.core.windows.net/vhds/fog-test-server_os_disk.vhd'
                           },
                         'createOption' => 'FromImage',
                         'osType' => 'Linux',
@@ -59,10 +58,10 @@ module Fog
                       },
                     'dataDisks' => [{
                       'lun' => 0,
-                      'name' => disk_name,
-                      'vhd_uri' => "https://confizrg7443.blob.core.windows.net/vhds/#{disk_name}.vhd",
+                      'name' => 'fog-test-server_data_disk',
+                      'vhd_uri' => 'https://confizrg7443.blob.core.windows.net/vhds/fog-test-server_data_disk.vhd',
                       'create_option' => 'empty',
-                      'disk_size_gb' => disk_size
+                      'disk_size_gb' => 1
                     }]
                   },
                 'osProfile' =>
@@ -80,13 +79,15 @@ module Fog
                     'networkInterfaces' =>
                       [
                         {
-                          'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkInterfaces/fog-test-vnet"
+                          'id' => '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/networkInterfaces/fog-test-vnet'
                         }
                       ]
                   },
                 'provisioningState' => 'Succeeded'
               }
           }
+          vm_mapper = Azure::ARM::Compute::Models::VirtualMachine.mapper
+          @compute_mgmt_client.deserialize(vm_mapper, vm, 'result.body')
         end
       end
     end

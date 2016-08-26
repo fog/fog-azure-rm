@@ -4,14 +4,13 @@ module Fog
       # This class provides the actual implemention for service calls.
       class Real
         def list_deployments(resource_group)
+          Fog::Logger.debug "Listing Deployments in Resource Group: #{resource_group}"
           begin
-            Fog::Logger.debug "Listing Deployments in Resource Group: #{resource_group}"
-            promise = @rmc.deployments.list(resource_group)
-            result = promise.value!
-            Azure::ARM::Resources::Models::DeploymentListResult.serialize_object(result.body)['value']
+            deployments = @rmc.deployments.list_as_lazy(resource_group)
+            Fog::Logger.debug "Deployments listed successfully in Resource Group: #{resource_group}"
+            deployments.value
           rescue  MsRestAzure::AzureOperationError => e
-            msg = "Exception listing Deployments in Resource Group: #{resource_group}. #{e.body['error']['message']}"
-            raise msg
+            raise Fog::AzureRm::OperationError.new(e)
           end
         end
       end
@@ -19,7 +18,7 @@ module Fog
       # This class provides the mock implementation
       class Mock
         def list_deployments(resource_group)
-          {
+          deployments = {
             value: [{
               id: "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/microsoft.resources/deployments/testdeployment",
               name: 'testdeployment',
@@ -68,6 +67,8 @@ module Fog
               }
             }]
           }
+          result_mapper = Azure::ARM::Resources::Models::DeploymentListResult.mapper
+          @rmc.deserialize(result_mapper, deployments, 'result.body').value
         end
       end
     end

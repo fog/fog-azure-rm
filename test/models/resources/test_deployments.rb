@@ -4,8 +4,9 @@ require File.expand_path '../../test_helper', __dir__
 class TestDeployments < Minitest::Test
   def setup
     @service = Fog::Resources::AzureRM.new(credentials)
+    client = @service.instance_variable_get(:@rmc)
     @deployments = Fog::Resources::AzureRM::Deployments.new(resource_group: 'fog-test-rg', service: @service)
-    @response = ApiStub::Models::Resources::Deployment.list_deployments_response
+    @response = ApiStub::Models::Resources::Deployment.list_deployments_response(client)
   end
 
   def test_collection_methods

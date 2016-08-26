@@ -14,21 +14,21 @@ module Fog
 
         def self.parse(nsg)
           hash = {}
-          hash['id'] = nsg['id']
-          hash['name'] = nsg['name']
-          hash['resource_group'] = nsg['id'].split('/')[4]
-          hash['location'] = nsg['location']
-          hash['network_interfaces_ids'] = nsg['properties']['networkInterfaces'].map { |item| item['id'] } unless nsg['properties']['networkInterfaces'].nil?
-          hash['subnets_ids'] = nsg['properties']['subnets'].map { |item| item['id'] } unless nsg['properties']['subnets'].nil?
+          hash['id'] = nsg.id
+          hash['name'] = nsg.name
+          hash['resource_group'] = get_resource_from_resource_id(nsg.id, RESOURCE_GROUP_NAME)
+          hash['location'] = nsg.location
+          hash['network_interfaces_ids'] = nsg.network_interfaces.map(&:id) unless nsg.network_interfaces.nil?
+          hash['subnets_ids'] = nsg.subnets.map(&:id) unless nsg.subnets.nil?
           hash['security_rules'] = []
           hash['default_security_rules'] = []
 
-          nsg['properties']['securityRules'].each do |sr|
+          nsg.security_rules.each do |sr|
             security_rule = Fog::Network::AzureRM::NetworkSecurityRule.new
             hash['security_rules'] << security_rule.merge_attributes(Fog::Network::AzureRM::NetworkSecurityRule.parse(sr))
-          end unless nsg['properties']['securityRules'].nil?
+          end unless nsg.security_rules.nil?
 
-          nsg['properties']['defaultSecurityRules'].each do |dsr|
+          nsg.default_security_rules.each do |dsr|
             security_rule = Fog::Network::AzureRM::NetworkSecurityRule.new
             hash['default_security_rules'] << security_rule.merge_attributes(Fog::Network::AzureRM::NetworkSecurityRule.parse(dsr))
           end

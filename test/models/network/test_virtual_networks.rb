@@ -5,6 +5,7 @@ class TestVirtualNetworks < Minitest::Test
   def setup
     @service = Fog::Network::AzureRM.new(credentials)
     @virtual_networks = Fog::Network::AzureRM::VirtualNetworks.new(resource_group: 'fog-test-rg', service: @service)
+    @network_client = @service.instance_variable_get(:@network_client)
   end
 
   def test_collection_methods
@@ -23,7 +24,7 @@ class TestVirtualNetworks < Minitest::Test
   end
 
   def test_all_method_response
-    response = [ApiStub::Models::Network::VirtualNetwork.create_virtual_network_response]
+    response = [ApiStub::Models::Network::VirtualNetwork.create_virtual_network_response(@network_client)]
     @service.stub :list_virtual_networks, response do
       assert_instance_of Fog::Network::AzureRM::VirtualNetworks, @virtual_networks.all
       assert @virtual_networks.all.size >= 1
@@ -34,7 +35,7 @@ class TestVirtualNetworks < Minitest::Test
   end
 
   def test_get_method_response
-    response = ApiStub::Models::Network::VirtualNetwork.create_virtual_network_response
+    response = ApiStub::Models::Network::VirtualNetwork.create_virtual_network_response(@network_client)
     @service.stub :get_virtual_network, response do
       assert_instance_of Fog::Network::AzureRM::VirtualNetwork, @virtual_networks.get('fog-rg', 'fog-test-virtual-network')
     end

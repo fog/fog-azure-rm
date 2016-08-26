@@ -4,29 +4,22 @@ require File.expand_path '../../test_helper', __dir__
 class TestListDeployment < Minitest::Test
   def setup
     @service = Fog::Resources::AzureRM.new(credentials)
-    client = @service.instance_variable_get(:@rmc)
-    @deployments = client.deployments
-    @promise = Concurrent::Promise.execute do
-    end
+    @client = @service.instance_variable_get(:@rmc)
+    @deployments = @client.deployments
     @resource_group = 'fog-test-rg'
   end
 
   def test_list_deployment_success
-    mocked_response = ApiStub::Requests::Resources::Deployment.list_deployment_response
-    expected_response = Azure::ARM::Resources::Models::DeploymentListResult.serialize_object(mocked_response.body)['value']
-    @promise.stub :value!, mocked_response do
-      @deployments.stub :list, @promise do
-        assert_equal @service.list_deployments(@resource_group), expected_response
-      end
+    mocked_response = ApiStub::Requests::Resources::Deployment.list_deployment_response(@client)
+    @deployments.stub :list_as_lazy, mocked_response do
+      assert_equal @service.list_deployments(@resource_group), mocked_response.value
     end
   end
 
   def test_list_deployment_failure
-    response = -> { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
-    @promise.stub :value!, response do
-      @deployments.stub :list, @promise do
-        assert_raises(RuntimeError) { @service.list_deployments(@resource_group) }
-      end
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
+    @deployments.stub :list_as_lazy, response do
+      assert_raises(Fog::AzureRm::OperationError) { @service.list_deployments(@resource_group) }
     end
   end
 end

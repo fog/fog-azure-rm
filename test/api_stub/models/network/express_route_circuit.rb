@@ -3,7 +3,7 @@ module ApiStub
     module Network
       # Mock class for Express Route Circuit Model
       class ExpressRouteCircuit
-        def self.create_express_route_circuit_response
+        def self.create_express_route_circuit_response(network_client)
           circuit = '{
             "name": "<circuit name>",
             "id": "/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/testCircuit",
@@ -38,7 +38,8 @@ module ApiStub
               ]
             }
           }'
-          JSON.parse(circuit)
+          express_route_circuit_mapper = Azure::ARM::Network::Models::ExpressRouteCircuit.mapper
+          network_client.deserialize(express_route_circuit_mapper, JSON.load(circuit), 'result.body')
         end
       end
     end

@@ -10,10 +10,10 @@ module Fog
 
         def self.parse(revoked_cert)
           hash = {}
-          hash['name'] = revoked_cert['name']
-          hash['id'] = revoked_cert['id']
-          hash['thumbprint'] = revoked_cert['properties']['thumbprint']
-          hash['provisioning_state'] = revoked_cert['properties']['provisioningState']
+          hash['name'] = revoked_cert.name
+          hash['id'] = revoked_cert.id
+          hash['thumbprint'] = revoked_cert.thumbprint
+          hash['provisioning_state'] = revoked_cert.provisioning_state
           hash
         end
       end

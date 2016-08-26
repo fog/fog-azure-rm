@@ -12,6 +12,7 @@ module Fog
       request :create_availability_set
       request :delete_availability_set
       request :list_availability_sets
+      request :get_availability_set
       request :create_virtual_machine
       request :delete_virtual_machine
       request :get_virtual_machine

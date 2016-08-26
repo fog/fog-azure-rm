@@ -24,34 +24,34 @@ module Fog
         attribute :internal_fqd
 
         def self.parse(nic)
-          nic_properties = nic['properties']
-          nic_ip_configuration = nic_properties['ipConfigurations'][0]
           hash = {}
-          hash['id'] = nic['id']
-          hash['name'] = nic['name']
-          hash['location'] = nic['location']
-          hash['resource_group'] = nic['id'].split('/')[4]
-          hash['virtual_machine_id'] = nic_properties['virtualMachine']['id'] unless nic_properties['virtualMachine'].nil?
-          hash['mac_address'] = nic_properties['macAddress'] unless nic_properties['macAddress'].nil?
+          hash['id'] = nic.id
+          hash['name'] = nic.name
+          hash['location'] = nic.location
+          hash['resource_group'] = get_resource_from_resource_id(nic.id, RESOURCE_GROUP_NAME)
+          hash['virtual_machine_id'] = nic.virtual_machine.id unless nic.virtual_machine.nil?
+          hash['mac_address'] = nic.mac_address unless nic.mac_address.nil?
           hash['network_security_group_id'] = nil
-          hash['network_security_group_id'] = nic_properties['networkSecurityGroup']['id'] unless nic_properties['networkSecurityGroup'].nil?
-          unless nic_ip_configuration.nil?
-            nic_ip_configuration_properties = nic_ip_configuration['properties']
-            hash['ip_configuration_name'] = nic_ip_configuration['name']
-            hash['ip_configuration_id'] = nic_ip_configuration['id']
-            hash['subnet_id'] = nic_ip_configuration_properties['subnet']['id'] unless nic_ip_configuration_properties['subnet'].nil?
-            hash['private_ip_allocation_method'] = nic_ip_configuration_properties['privateIPAllocationMethod']
-            hash['private_ip_address'] = nic_ip_configuration_properties['privateIPAddress']
+          hash['network_security_group_id'] = nic.network_security_group.id unless nic.network_security_group.nil?
+          ip_configuration = nic.ip_configurations[0] unless nic.ip_configurations.nil?
+          unless ip_configuration.nil?
+            hash['ip_configuration_name'] = ip_configuration.name
+            hash['ip_configuration_id'] = ip_configuration.id
+            hash['subnet_id'] = ip_configuration.subnet.id unless ip_configuration.subnet.nil?
+            hash['private_ip_allocation_method'] = ip_configuration.private_ipallocation_method
+            hash['private_ip_address'] = ip_configuration.private_ipaddress
             hash['public_ip_address_id'] = nil
-            hash['public_ip_address_id'] = nic_ip_configuration_properties['publicIPAddress']['id'] unless nic_ip_configuration_properties['publicIPAddress'].nil?
-            hash['load_balancer_backend_address_pools_ids'] = nic_ip_configuration_properties['loadBalancerBackendAddressPools'].map { |item| item['id'] } unless nic_ip_configuration_properties['loadBalancerBackendAddressPools'].nil?
-            hash['load_balancer_inbound_nat_rules_ids'] = nic_ip_configuration_properties['loadBalancerInboundNatRules'].map { |item| item['id'] } unless nic_ip_configuration_properties['loadBalancerInboundNatRules'].nil?
+            hash['public_ip_address_id'] = ip_configuration.public_ipaddress.id unless ip_configuration.public_ipaddress.nil?
+            hash['load_balancer_backend_address_pools_ids'] = ip_configuration.load_balancer_backend_address_pools.map(&:id) unless ip_configuration.load_balancer_backend_address_pools.nil?
+            hash['load_balancer_inbound_nat_rules_ids'] = ip_configuration.load_balancer_inbound_nat_rules.map(&:id) unless ip_configuration.load_balancer_inbound_nat_rules.nil?
           end
-
-          hash['dns_servers'] = nic_properties['dnsSettings']['dnsServers']
-          hash['applied_dns_servers'] = nic_properties['appliedDnsServers']
-          hash['internal_dns_name_label'] = nic_properties['internalDnsNameLabel']
-          hash['internal_fqd'] = nic_properties['internalFqd']
+          nic_dns_settings = nic.dns_settings
+          unless nic_dns_settings.nil?
+            hash['dns_servers'] = nic_dns_settings.dns_servers
+            hash['applied_dns_servers'] = nic_dns_settings.applied_dns_servers
+            hash['internal_dns_name_label'] = nic_dns_settings.internal_dns_name_label
+            hash['internal_fqd'] = nic_dns_settings.internal_fqdn
+          end
           hash
         end
 

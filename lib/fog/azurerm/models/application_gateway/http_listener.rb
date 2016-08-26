@@ -12,23 +12,14 @@ module Fog
         attribute :require_server_name_indication
 
         def self.parse(http_listener)
-          http_listener_properties = http_listener['properties']
           hash = {}
-          hash['name'] = http_listener['name']
-          unless http_listener_properties.nil?
-            unless http_listener_properties['frontendIPConfiguration'].nil?
-              hash['frontend_ip_config_id'] = http_listener_properties['frontendIPConfiguration']['id']
-            end
-            unless http_listener_properties['frontendPort'].nil?
-              hash['frontend_port_id'] = http_listener_properties['frontendPort']['id']
-            end
-            hash['protocol'] = http_listener_properties['protocol']
-            hash['host_name'] = http_listener_properties['hostName']
-            unless http_listener_properties['sslCertificate'].nil?
-              hash['ssl_certificate_id'] = http_listener_properties['sslCertificate']['id']
-              hash['require_server_name_indication'] = http_listener_properties['sslCertificate']['requireServerNameIndication']
-            end
-          end
+          hash['name'] = http_listener.name
+          hash['frontend_ip_config_id'] = http_listener.frontend_ipconfiguration.id unless http_listener.frontend_ipconfiguration.nil?
+          hash['frontend_port_id'] = http_listener.frontend_port.id unless http_listener.frontend_port.nil?
+          hash['protocol'] = http_listener.protocol
+          hash['host_name'] = http_listener.host_name
+          hash['ssl_certificate_id'] = http_listener.ssl_certificate.id unless http_listener.ssl_certificate.nil?
+          hash['require_server_name_indication'] = http_listener.require_server_name_indication
           hash
         end
       end

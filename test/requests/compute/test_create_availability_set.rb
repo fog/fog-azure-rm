@@ -4,25 +4,23 @@ require File.expand_path '../../test_helper', __dir__
 class TestCreateAvailabilitySet < Minitest::Test
   def setup
     @service = Fog::Compute::AzureRM.new(credentials)
-    client = @service.instance_variable_get(:@compute_mgmt_client)
-    @availability_sets = client.availability_sets
-    @promise = Concurrent::Promise.execute do
-    end
+    @client = @service.instance_variable_get(:@compute_mgmt_client)
+    @availability_sets = @client.availability_sets
   end
 
   def test_create_availability_set_success
-    response = ApiStub::Requests::Compute::AvailabilitySet.create_availability_set_response
-    @promise.stub :value!, response do
-      @availability_sets.stub :create_or_update, @promise do
-        assert_equal @service.create_availability_set('fog-test-rg', 'fog-test-as', 'west us'), Azure::ARM::Compute::Models::AvailabilitySet.serialize_object(response.body)
+    mocked_response = ApiStub::Requests::Compute::AvailabilitySet.create_availability_set_response(@client)
+    @availability_sets.stub :validate_params, true do
+      @availability_sets.stub :create_or_update, mocked_response do
+        assert_equal @service.create_availability_set('fog-test-rg', 'myavset1', 'west us'), mocked_response
       end
     end
   end
 
   def test_create_availability_set_failure
-    response = -> { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
-    @promise.stub :value!, response do
-      @availability_sets.stub :create_or_update, @promise do
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
+    @availability_sets.stub :validate_params, true do
+      @availability_sets.stub :create_or_update, response do
         assert_raises(RuntimeError) { @service.create_availability_set('fog-test-rg', 'fog-test-as', 'west us') }
       end
     end

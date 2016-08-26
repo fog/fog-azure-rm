@@ -45,7 +45,7 @@ compute.availability_sets.create(
 ######################                       Get and Delete Availability Set                      ######################
 ########################################################################################################################
 
-avail_set = compute.availability_sets(resource_group: 'TestRG-AS').get('test-availability-set')
+avail_set = compute.availability_sets.get('TestRG-AS', 'test-availability-set')
 avail_set.destroy
 
 ########################################################################################################################

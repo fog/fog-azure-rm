@@ -5,6 +5,7 @@ class TestExpressRouteCircuits < Minitest::Test
   def setup
     @service = Fog::Network::AzureRM.new(credentials)
     @circuits = Fog::Network::AzureRM::ExpressRouteCircuits.new(resource_group: 'fog-test-rg', service: @service)
+    @network_client = @service.instance_variable_get(:@network_client)
   end
 
   def test_collection_methods
@@ -22,7 +23,7 @@ class TestExpressRouteCircuits < Minitest::Test
   end
 
   def test_all_method_response
-    response = [ApiStub::Models::Network::ExpressRouteCircuit.create_express_route_circuit_response]
+    response = [ApiStub::Models::Network::ExpressRouteCircuit.create_express_route_circuit_response(@network_client)]
     @service.stub :list_express_route_circuits, response do
       assert_instance_of Fog::Network::AzureRM::ExpressRouteCircuits, @circuits.all
       assert @circuits.all.size >= 1
@@ -33,7 +34,7 @@ class TestExpressRouteCircuits < Minitest::Test
   end
 
   def test_get_method_response
-    response = ApiStub::Models::Network::ExpressRouteCircuit.create_express_route_circuit_response
+    response = ApiStub::Models::Network::ExpressRouteCircuit.create_express_route_circuit_response(@network_client)
     @service.stub :get_express_route_circuit, response do
       assert_instance_of Fog::Network::AzureRM::ExpressRouteCircuit, @circuits.get('HaiderRG', 'testCircuit')
     end

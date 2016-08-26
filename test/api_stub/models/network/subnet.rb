@@ -2,7 +2,7 @@ module ApiStub
   module Models
     module Network
       class Subnet
-        def self.create_subnet_response
+        def self.create_subnet_response(network_client)
           subnet = '{
              "name":"fog-test-subnet",
              "id":"/subscriptions/{guid}/resourceGroups/fog-test-rg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/fog-test-subnet",
@@ -27,7 +27,8 @@ module ApiStub
                 ]
              }
           }'
-          JSON.parse(subnet)
+          subnet_mapper = Azure::ARM::Network::Models::Subnet.mapper
+          network_client.deserialize(subnet_mapper, JSON.load(subnet), 'result.body')
         end
       end
     end

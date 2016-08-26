@@ -19,7 +19,7 @@ class TestCreateVirtualMachine < Minitest::Test
 
   def test_create_windows_virtual_machine_success
     @virtual_machines.stub :create_or_update, @response do
-       assert_equal @service.create_virtual_machine(@windows_virtual_machine_hash), @response
+      assert_equal @service.create_virtual_machine(@windows_virtual_machine_hash), @response
     end
   end
 

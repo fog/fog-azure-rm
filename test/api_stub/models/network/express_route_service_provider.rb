@@ -3,10 +3,11 @@ module ApiStub
     module Network
       # Mock class for Express Route Service Provider Model
       class ExpressRouteServiceProvider
-        def self.list_express_route_service_provider_response
-          peering = '[
+        def self.list_express_route_service_provider_response(network_client)
+          service_provider = '{
+              "value": [
               {
-                "name": "<providername>",
+                "name": "providername",
                 "peeringLocations": [
                   "location1",
                   "location2"
@@ -18,8 +19,9 @@ module ApiStub
                   }
                 ]
               }
-            ]'
-          JSON.parse(peering)
+            ]}'
+          express_route_servcie_provider_mapper = Azure::ARM::Network::Models::ExpressRouteServiceProviderListResult.mapper
+          network_client.deserialize(express_route_servcie_provider_mapper, JSON.load(service_provider), 'result.body').value
         end
       end
     end

@@ -7,11 +7,11 @@ module Fog
           msg = "Getting Express Route Circuit Peering #{peering_name} from Resource Group #{resource_group_name}."
           Fog::Logger.debug msg
           begin
-            circuit_peering = @network_client.express_route_circuit_peerings.get(resource_group_name, circuit_name, peering_name).value!
-            Azure::ARM::Network::Models::ExpressRouteCircuitPeering.serialize_object(circuit_peering.body)
+            circuit_peering = @network_client.express_route_circuit_peerings.get(resource_group_name, circuit_name, peering_name)
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
+          circuit_peering
         end
       end
 

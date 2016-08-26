@@ -7,11 +7,11 @@ module Fog
           msg = 'Getting list of Express Route Service Providers.'
           Fog::Logger.debug msg
           begin
-            service_providers = @network_client.express_route_service_providers.list.value!
-            Azure::ARM::Network::Models::ExpressRouteServiceProviderListResult.serialize_object(service_providers.body)['value']
-          rescue  MsRestAzure::AzureOperationError => e
+            service_providers = @network_client.express_route_service_providers.list
+          rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
+          service_providers
         end
       end
 

@@ -3,8 +3,8 @@ module ApiStub
     module Network
       # Mock class for Express Route Service Provider Requests
       class ExpressRouteServiceProvider
-        def self.list_express_route_service_providers_response
-          body = '{
+        def self.list_express_route_service_providers_response(network_client)
+          service_provider = '{
             "value": [
               {
                 "name": "<providername>",
@@ -21,9 +21,8 @@ module ApiStub
               }
             ]
           }'
-          result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
-          result.body = Azure::ARM::Network::Models::ExpressRouteServiceProviderListResult.deserialize_object(JSON.load(body))
-          result
+          express_route_servcie_provider_mapper = Azure::ARM::Network::Models::ExpressRouteServiceProviderListResult.mapper
+          network_client.deserialize(express_route_servcie_provider_mapper, JSON.load(service_provider), 'result.body').value
         end
       end
     end

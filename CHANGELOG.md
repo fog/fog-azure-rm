@@ -10,6 +10,7 @@
 - Network Service - Updated Network Interface to use updated gems
 - Network Service - Updated Load Balancer to use updated gems
 - Network Service - Updated Application Gateway to use updated gems
+- Network Service - Updated Express Route to use updated gems
 - Compute Service - Updated Server to use updated gems
 - DNS Service - Updated Record Set to use updated gems
 - DNS Service - Updated Zone to use updated gems

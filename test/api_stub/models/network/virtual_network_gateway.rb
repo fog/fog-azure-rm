@@ -2,7 +2,7 @@ module ApiStub
   module Models
     module Network
       class VirtualNetworkGateway
-        def self.create_virtual_network_gateway_response
+        def self.create_virtual_network_gateway_response(network_client)
           network_gateway = '{
             "name": "myvirtualgateway1",
             "id": "/subscriptions/{subscription-id}/resourceGroups/fog-rg/providers/microsoft.network/virtualNetworkGateways/{virtual-network-gateway-name}",
@@ -17,7 +17,8 @@ module ApiStub
               "gateway_default_site": "/subscriptions/{subscription-id}/resourceGroups/fog-rg/providers/microsoft.network/localNetworkGateways/{local-network-gateway-name}"
             }
           }'
-          JSON.parse(network_gateway)
+          gateway_mapper = Azure::ARM::Network::Models::VirtualNetworkGateway.mapper
+          network_client.deserialize(gateway_mapper, JSON.load(network_gateway), 'result.body')
         end
       end
     end

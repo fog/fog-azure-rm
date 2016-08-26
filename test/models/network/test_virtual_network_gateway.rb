@@ -5,23 +5,21 @@ class TestVirtualNetworkGateway < Minitest::Test
   def setup
     @service = Fog::Network::AzureRM.new(credentials)
     @network_gateway = virtual_network_gateway(@service)
+    network_client = @service.instance_variable_get(:@network_client)
+    @response = ApiStub::Models::Network::VirtualNetworkGateway.create_virtual_network_gateway_response(network_client)
   end
 
   def test_model_methods
-    response = ApiStub::Models::Network::VirtualNetworkGateway.create_virtual_network_gateway_response
     methods = [
       :save,
       :destroy
     ]
-    @service.stub :create_or_update_virtual_network_gateway, response do
-      methods.each do |method|
-        assert @network_gateway.respond_to? method
-      end
+    methods.each do |method|
+      assert @network_gateway.respond_to? method
     end
   end
 
   def test_model_attributes
-    response = ApiStub::Models::Network::VirtualNetworkGateway.create_virtual_network_gateway_response
     attributes = [
       :name,
       :id,
@@ -45,16 +43,13 @@ class TestVirtualNetworkGateway < Minitest::Test
       :bgp_peering_address,
       :peer_weight
     ]
-    @service.stub :create_or_update_virtual_network_gateway, response do
-      attributes.each do |attribute|
-        assert @network_gateway.respond_to? attribute
-      end
+    attributes.each do |attribute|
+      assert @network_gateway.respond_to? attribute
     end
   end
 
   def test_save_method_response
-    response = ApiStub::Models::Network::VirtualNetworkGateway.create_virtual_network_gateway_response
-    @service.stub :create_or_update_virtual_network_gateway, response do
+    @service.stub :create_or_update_virtual_network_gateway, @response do
       assert_instance_of Fog::Network::AzureRM::VirtualNetworkGateway, @network_gateway.save
     end
   end

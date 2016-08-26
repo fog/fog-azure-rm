@@ -7,18 +7,19 @@ module Fog
           msg = "Getting Virtual Network Gateway #{network_gateway_name} from Resource Group #{resource_group_name}."
           Fog::Logger.debug msg
           begin
-            network_gateway = @network_client.virtual_network_gateways.get(resource_group_name, network_gateway_name).value!
-            Azure::ARM::Network::Models::VirtualNetworkGateway.serialize_object(network_gateway.body)
+            network_gateway = @network_client.virtual_network_gateways.get(resource_group_name, network_gateway_name)
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
+          Fog::Logger.debug "Virtual Network Gateway #{network_gateway_name} retrieved successfully."
+          network_gateway
         end
       end
 
       # Mock class for Network Gateway Request
       class Mock
         def get_virtual_network_gateway(*)
-          {
+          gateway = {
             'name' => 'myvirtualgateway1',
             'id' => '/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/microsoft.network/virtualNetworkGateways/myvirtualgateway1',
             'location' => 'West US',
@@ -35,6 +36,8 @@ module Fog
               'defaultSites' => ['mysite1']
             }
           }
+          gateway_mapper = Azure::ARM::Network::Models::VirtualNetworkGateway.mapper
+          @network_client.deserialize(gateway_mapper, gateway, 'result.body')
         end
       end
     end

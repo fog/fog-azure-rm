@@ -19,12 +19,8 @@ module Fog
           hash = {}
           hash['id'] = load_balancing_rule.id
           hash['name'] = load_balancing_rule.name
-          unless load_balancing_rule.frontend_ipconfiguration.nil?
-            hash['frontend_ip_configuration_id'] = load_balancing_rule.frontend_ipconfiguration.id
-          end
-          unless load_balancing_rule.backend_address_pool.nil?
-            hash['backend_address_pool_id'] = load_balancing_rule.backend_address_pool.id
-          end
+          hash['frontend_ip_configuration_id'] = load_balancing_rule.frontend_ipconfiguration.id unless load_balancing_rule.frontend_ipconfiguration.nil?
+          hash['backend_address_pool_id'] = load_balancing_rule.backend_address_pool.id unless load_balancing_rule.backend_address_pool.nil?
 
           hash['protocol'] = load_balancing_rule.protocol
           hash['frontend_port'] = load_balancing_rule.frontend_port

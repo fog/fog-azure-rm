@@ -14,10 +14,8 @@ class TestLoadBalancer < Minitest::Test
       :save,
       :destroy
     ]
-    @service.stub :create_load_balancer, @response do
-      methods.each do |method|
-        assert @load_balancer.respond_to? method
-      end
+    methods.each do |method|
+      assert @load_balancer.respond_to? method
     end
   end
 
@@ -34,10 +32,8 @@ class TestLoadBalancer < Minitest::Test
       :inbound_nat_rules,
       :inbound_nat_pools
     ]
-    @service.stub :create_load_balancer, @response do
-      attributes.each do |attribute|
-        assert @load_balancer.respond_to? attribute
-      end
+    attributes.each do |attribute|
+      assert @load_balancer.respond_to? attribute
     end
   end
 

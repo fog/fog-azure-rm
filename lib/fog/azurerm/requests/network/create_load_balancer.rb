@@ -25,7 +25,6 @@ module Fog
 
           if frontend_ip_configurations
             frontend_ip_configuration_arr = define_lb_frontend_ip_configurations(frontend_ip_configurations)
-            load_balancer.frontend_ipconfigurations = []
             load_balancer.frontend_ipconfigurations = frontend_ip_configuration_arr
           end
 
@@ -39,25 +38,21 @@ module Fog
           end
 
           if load_balancing_rules
-            load_balancer.load_balancing_rules = []
             load_balancing_rule_arr = define_load_balancing_rule(load_balancing_rules)
             load_balancer.load_balancing_rules = load_balancing_rule_arr
           end
 
           if probes
-            load_balancer.probes = []
             probe_arr = define_probe(probes)
             load_balancer.probes = probe_arr
           end
 
           if inbound_nat_rules
-            load_balancer.inbound_nat_rules = []
             inbound_nat_rule_arr = define_inbound_nat_rule(inbound_nat_rules)
             load_balancer.inbound_nat_rules = inbound_nat_rule_arr
           end
 
           if inbound_nat_pools
-            load_balancer.inbound_nat_pools = []
             inbound_nat_pool_arr = define_inbound_nat_pool(inbound_nat_pools)
             load_balancer.inbound_nat_pools = inbound_nat_pool_arr
           end

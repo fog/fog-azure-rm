@@ -4,38 +4,37 @@ module Fog
       # Real class for Network Request
       class Real
         def detach_resource_from_nic(resource_group_name, nic_name, resource_type)
-          Fog::Logger.debug "Removing #{resource_type} from Network Interface #{nic_name}."
+          msg = "Removing #{resource_type} from Network Interface #{nic_name}"
+          Fog::Logger.debug msg
           begin
             nic = get_network_interface_with_detached_resource(nic_name, resource_group_name, resource_type)
 
-            promise = @network_client.network_interfaces.create_or_update(resource_group_name, nic_name, nic)
-            result = promise.value!
-            Fog::Logger.debug "#{resource_type} deleted from Network Interface #{nic_name} successfully!"
-            Azure::ARM::Network::Models::NetworkInterface.serialize_object(result.body)
+            nic_obj = @network_client.network_interfaces.create_or_update(resource_group_name, nic_name, nic)
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Exception removing #{resource_type} from Network Interface #{nic_name} . #{e.body['error']['message']}"
-            raise msg
+            raise_azure_exception(e, msg)
           end
+          Fog::Logger.debug "#{resource_type} deleted from Network Interface #{nic_name} successfully!"
+          nic_obj
         end
 
+        private
+
         def get_network_interface_with_detached_resource(nic_name, resource_group_name, resource_type)
-          promise = @network_client.network_interfaces.get(resource_group_name, nic_name)
-          result = promise.value!
-          nic = result.body
+          network_interface = @network_client.network_interfaces.get(resource_group_name, nic_name)
           case resource_type
           when PUBLIC_IP
-            nic.properties.ip_configurations[0].properties.public_ipaddress = nil unless nic.properties.ip_configurations.empty?
+            network_interface.ip_configurations[0].public_ipaddress = nil unless network_interface.ip_configurations.empty?
           when NETWORK_SECURITY_GROUP
-            nic.properties.network_security_group = nil
+            network_interface.network_security_group = nil
           end
-          nic
+          network_interface
         end
       end
 
       # Mock class for Network Request
       class Mock
         def detach_resource_from_nic(resource_group_name, nic_name, _resource_type)
-          {
+          nic = {
             'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group_name}/providers/Microsoft.Network/networkInterfaces/#{nic_name}",
             'name' => nic_name,
             'type' => 'Microsoft.Network/networkInterfaces',
@@ -73,6 +72,8 @@ module Fog
                 'provisioningState' => 'Succeeded'
               }
           }
+          network_interface_mapper = Azure::ARM::Network::Models::NetworkInterface.mapper
+          @network_client.deserialize(network_interface_mapper, nic, 'result.body')
         end
       end
     end

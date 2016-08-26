@@ -2,7 +2,7 @@ module ApiStub
   module Models
     module Network
       class NetworkInterface
-        def self.create_network_interface_response
+        def self.create_network_interface_response(network_client)
           nic = '{
              "name":"fog-test-network-interface",
              "id":"/subscriptions/{guid}/resourceGroups/fog-test-rg/providers/Microsoft.Network/networkInterfaces/fog-test-network-interface",
@@ -63,7 +63,8 @@ module ApiStub
                 }
              }
           }'
-          JSON.parse(nic)
+          network_interface_mapper = Azure::ARM::Network::Models::NetworkInterface.mapper
+          network_client.deserialize(network_interface_mapper, JSON.load(nic), 'result.body')
         end
       end
     end

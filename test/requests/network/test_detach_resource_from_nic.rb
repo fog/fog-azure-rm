@@ -4,56 +4,37 @@ require File.expand_path '../../test_helper', __dir__
 class TestDetachResourceFromNIC < Minitest::Test
   def setup
     @service = Fog::Network::AzureRM.new(credentials)
-    client = @service.instance_variable_get(:@network_client)
-    @network_interfaces = client.network_interfaces
+    @network_client = @service.instance_variable_get(:@network_client)
+    @network_interfaces = @network_client.network_interfaces
   end
 
   def test_detach_resources_from_nic_success
-    mocked_response = ApiStub::Requests::Network::NetworkInterface.create_network_interface_response
-    pip_expected_response_json = ApiStub::Requests::Network::NetworkInterface.detach_pip_from_nic_response
-    expected_response = Azure::ARM::Network::Models::NetworkInterface.serialize_object(pip_expected_response_json.body)
-
-    get_promise = Concurrent::Promise.execute do
-    end
-    create_promise = Concurrent::Promise.execute do
-    end
+    mocked_response = ApiStub::Requests::Network::NetworkInterface.create_network_interface_response(@network_client)
+    pip_expected_response = ApiStub::Requests::Network::NetworkInterface.detach_pip_from_nic_response(@network_client)
 
     # Detach Public-IP
-    get_promise.stub :value!, mocked_response do
-      @network_interfaces.stub :get, get_promise do
-        create_promise.stub :value!, mocked_response do
-          @network_interfaces.stub :create_or_update, create_promise do
-            assert_equal @service.detach_resource_from_nic('fog-test-rg', 'fog-test-network-interface', 'Public-IP-Address'), expected_response
-          end
-        end
+    @network_interfaces.stub :get, mocked_response do
+      @network_interfaces.stub :create_or_update, pip_expected_response do
+        assert_equal @service.detach_resource_from_nic('fog-test-rg', 'fog-test-network-interface', 'Public-IP-Address'), pip_expected_response
       end
     end
 
-    nsg_expected_response_json = ApiStub::Requests::Network::NetworkInterface.detach_nsg_from_nic_response
-    expected_response = Azure::ARM::Network::Models::NetworkInterface.serialize_object(nsg_expected_response_json.body)
+    nsg_expected_response = ApiStub::Requests::Network::NetworkInterface.detach_nsg_from_nic_response(@network_client)
 
     # Detach NSG
-    get_promise.stub :value!, mocked_response do
-      @network_interfaces.stub :get, get_promise do
-        create_promise.stub :value!, mocked_response do
-          @network_interfaces.stub :create_or_update, create_promise do
-            assert_equal @service.detach_resource_from_nic('fog-test-rg', 'fog-test-network-interface', 'Network-Security-Group'), expected_response
-          end
-        end
+    @network_interfaces.stub :get, mocked_response do
+      @network_interfaces.stub :create_or_update, nsg_expected_response do
+        assert_equal @service.detach_resource_from_nic('fog-test-rg', 'fog-test-network-interface', 'Network-Security-Group'), nsg_expected_response
       end
     end
   end
 
   def test_detach_resources_to_nic_failure
-    response = -> { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
-    promise = Concurrent::Promise.execute do
-    end
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
 
-    promise.stub :value!, response do
-      @network_interfaces.stub :get, promise do
-        assert_raises RuntimeError do
-          @service.detach_resource_from_nic('fog-test-rg', 'fog-test-network-interface', 'Network-Security-Group')
-        end
+    @network_interfaces.stub :get, response do
+      assert_raises RuntimeError do
+        @service.detach_resource_from_nic('fog-test-rg', 'fog-test-network-interface', 'Network-Security-Group')
       end
     end
   end

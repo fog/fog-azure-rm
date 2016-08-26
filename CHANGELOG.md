@@ -1,3 +1,20 @@
+## 0.0.5
+
+**Added:**
+- Network Service - Added Get request for Public IP
+
+**Changed:**
+- Network Service - Updated Public IP to use updated gems
+- Network Service - Updated Virtual Network to use updated gems
+- Network Service - Updated Subnet to use updated gems
+- Network Service - Updated Network Interface to use updated gems
+- Network Service - Updated Load Balancer to use updated gems
+- Network Service - Updated Application Gateway to use updated gems
+- Compute Service - Updated Server to use updated gems
+- DNS Service - Updated Record Set to use updated gems
+- DNS Service - Updated Zone to use updated gems
+
+
 ## 0.0.4
 
 **Added:**

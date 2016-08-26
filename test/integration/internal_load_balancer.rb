@@ -32,10 +32,11 @@ rs.resource_groups.create(
 )
 
 network.virtual_networks.create(
-  name:             'NRPVNet',
-  location:         'westus',
-  resource_group:   'NRP-RG-Fog',
-  network_address_list:  '10.1.0.0/16,10.2.0.0/16'
+  name: 'NRPVNet',
+  location: 'westus',
+  resource_group: 'NRP-RG-Fog',
+  dns_servers: %w(10.1.0.0 10.2.0.0),
+  address_prefixes: %w(10.1.0.0/16 10.2.0.0/16)
 )
 
 subnet = network.subnets.create(
@@ -119,7 +120,7 @@ lb.destroy
 ######################                                   CleanUp                                  ######################
 ########################################################################################################################
 
-vnet = network.virtual_networks(resource_group: 'NRP-RG-Fog').get('NRPVNet')
+vnet = network.virtual_networks.get('NRP-RG-Fog', 'NRPVNet')
 vnet.destroy
 
 rg = rs.resource_groups.get('NRP-RG-Fog')

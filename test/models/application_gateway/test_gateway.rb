@@ -5,23 +5,21 @@ class TestGateway < Minitest::Test
   def setup
     @service = Fog::ApplicationGateway::AzureRM.new(credentials)
     @gateway = gateway(@service)
+    @gateway_client = @service.instance_variable_get(:@network_client)
+    @response = ApiStub::Models::ApplicationGateway::Gateway.create_application_gateway_response(@gateway_client)
   end
 
   def test_model_methods
-    response = ApiStub::Models::ApplicationGateway::Gateway.create_application_gateway_response
     methods = [
       :save,
       :destroy
     ]
-    @service.stub :create_application_gateway, response do
-      methods.each do |method|
-        assert @gateway.respond_to? method
-      end
+    methods.each do |method|
+      assert @gateway.respond_to? method
     end
   end
 
   def test_model_attributes
-    response = ApiStub::Models::ApplicationGateway::Gateway.create_application_gateway_response
     attributes = [
       :name,
       :location,
@@ -40,16 +38,13 @@ class TestGateway < Minitest::Test
       :url_path_maps,
       :request_routing_rules
     ]
-    @service.stub :create_application_gateway, response do
-      attributes.each do |attribute|
-        assert @gateway.respond_to? attribute
-      end
+    attributes.each do |attribute|
+      assert @gateway.respond_to? attribute
     end
   end
 
   def test_save_method_response
-    response = ApiStub::Models::ApplicationGateway::Gateway.create_application_gateway_response
-    @service.stub :create_application_gateway, response do
+    @service.stub :create_application_gateway, @response do
       assert_instance_of Fog::ApplicationGateway::AzureRM::Gateway, @gateway.save
     end
   end

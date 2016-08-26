@@ -39,17 +39,18 @@ rs.resource_groups.create(
 )
 
 network.virtual_networks.create(
-  name:             'testVnet',
-  location:         'eastus',
-  resource_group:   'TestRG-AG',
-  network_address_list:  '10.1.0.0/16,10.2.0.0/16'
+  name: 'testVnet',
+  location: 'eastus',
+  resource_group: 'TestRG-AG',
+  dns_servers: %w(10.1.0.0 10.2.0.0),
+  address_prefixes: %w(10.1.0.0/16 10.2.0.0/16)
 )
 
 network.subnets.create(
   name: 'mysubnet',
   resource_group: 'TestRG-AG',
   virtual_network_name: 'testVnet',
-  address_prefix: '10.2.0.0/24'
+  address_prefix: '10.1.0.0/24'
 )
 
 network.public_ips.create(
@@ -126,7 +127,7 @@ ag.destroy
 ######################                                   CleanUp                                  ######################
 ########################################################################################################################
 
-pubip = network.public_ips(resource_group: 'TestRG-AG').get('mypubip')
+pubip = network.public_ips.get('TestRG-AG', 'mypubip')
 pubip.destroy
 
 vnet = network.virtual_networks.get('TestRG-AG', 'testVnet')

@@ -12,18 +12,14 @@ module Fog
         attribute :unhealthy_threshold
 
         def self.parse(probe)
-          probe_properties = probe['properties']
-
           hash = {}
-          hash['name'] = probe['name']
-          unless probe_properties.nil?
-            hash['protocol'] = probe_properties['protocol']
-            hash['host'] = probe_properties['host']
-            hash['path'] = probe_properties['path']
-            hash['interval'] = probe_properties['interval']
-            hash['timeout'] = probe_properties['timeout']
-            hash['unhealthy_threshold'] = probe_properties['unhealthyThreshold']
-          end
+          hash['name'] = probe.name
+          hash['protocol'] = probe.protocol
+          hash['host'] = probe.host
+          hash['path'] = probe.path
+          hash['interval'] = probe.interval
+          hash['timeout'] = probe.timeout
+          hash['unhealthy_threshold'] = probe.unhealthy_threshold
           hash
         end
       end

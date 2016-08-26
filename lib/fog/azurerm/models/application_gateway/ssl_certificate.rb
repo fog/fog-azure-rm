@@ -9,15 +9,11 @@ module Fog
         attribute :public_cert_data
 
         def self.parse(ssl_certificate)
-          ssl_certificate_properties = ssl_certificate['properties']
-
           hash = {}
-          hash['name'] = ssl_certificate['name']
-          unless ssl_certificate_properties.nil?
-            hash['data'] = ssl_certificate_properties['data']
-            hash['password'] = ssl_certificate_properties['password']
-            hash['public_cert_data'] = ssl_certificate_properties['publicCertData']
-          end
+          hash['name'] = ssl_certificate.name
+          hash['data'] = ssl_certificate.data
+          hash['password'] = ssl_certificate.password
+          hash['public_cert_data'] = ssl_certificate.public_cert_data
           hash
         end
       end

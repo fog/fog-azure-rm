@@ -2,7 +2,7 @@ module ApiStub
   module Models
     module ApplicationGateway
       class Gateway
-        def self.create_application_gateway_response
+        def self.create_application_gateway_response(gateway_client)
           gateway = '{
               "id": "/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/ag-demoagplat",
               "name": "gateway",
@@ -59,9 +59,9 @@ module ApiStub
                     "protocol": "<probeProtocol>",
                     "host": "<probeHost>",
                     "path": "<probePath>",
-                    "interval": "<probeIntervalInSec>",
-                    "timeout": "<probeTimeoutInSec>",
-                    "unhealthyThreshold": "<probeUnhealthyThreshold>"
+                    "interval": "30",
+                    "timeout": "20",
+                    "unhealthyThreshold": "20"
                   }
                 }],
                 "backendAddressPools": [{
@@ -127,7 +127,8 @@ module ApiStub
                 "provisioningState": "Succeeded"
               }
             }'
-          JSON.parse(gateway)
+          gateway_mapper = Azure::ARM::Network::Models::ApplicationGateway.mapper
+          gateway_client.deserialize(gateway_mapper, JSON.load(gateway), 'result.body')
         end
       end
     end

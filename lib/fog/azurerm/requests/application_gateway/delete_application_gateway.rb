@@ -7,13 +7,12 @@ module Fog
           msg = "Deleting Application_Gateway #{name} from Resource Group #{resource_group}."
           Fog::Logger.debug msg
           begin
-            promise = @network_client.application_gateways.delete(resource_group, name)
-            promise.value!
-            Fog::Logger.debug "Application Gateway #{name} Deleted Successfully."
-            true
-          rescue  MsRestAzure::AzureOperationError => e
+            @network_client.application_gateways.delete(resource_group, name)
+          rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
+          Fog::Logger.debug "Application Gateway #{name} Deleted Successfully."
+          true
         end
       end
 

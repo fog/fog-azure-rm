@@ -17,11 +17,11 @@ module Fog
       end
       # This class provides the mock implementation for unit tests.
       class Mock
-        def list_virtual_machines(resource_group)
+        def list_virtual_machines(*)
           vms = {
             'value' => [
               {
-                'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Compute/virtualMachines/fog-test-server",
+                'id' => '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Compute/virtualMachines/fog-test-server',
                 'name' => 'fog-test-server',
                 'location' => 'West US',
                 'properties' => {
@@ -52,7 +52,7 @@ module Fog
                   'networkProfile' => {
                     'networkInterfaces' => [
                       {
-                        'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkInterfaces/fogtestnetworkinterface"
+                        'id' => '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/networkInterfaces/fog-test-vnet'
                       }
                     ]
                   }
@@ -61,7 +61,7 @@ module Fog
             ]
           }
           vm_mapper = Azure::ARM::Compute::Models::VirtualMachineListResult.mapper
-          @compute_mgmt_client.deserialize(vm_mapper, vm, 'result.body').value
+          @compute_mgmt_client.deserialize(vm_mapper, vms, 'result.body').value
         end
       end
     end

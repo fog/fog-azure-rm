@@ -117,37 +117,33 @@ module Fog
       end
       # This class provides the mock implementation for unit tests.
       class Mock
-        def create_virtual_machine(resource_group, name, location, vm_size, storage_account_name,
-                                   username, _password, disable_password_authentication,
-                                   _ssh_key_path, _ssh_key_data, network_interface_card_id,
-                                   _availability_set_id, publisher, offer, sku, version,
-                                   _platform, _provision_vm_agent, _enable_automatic_updates)
+        def create_virtual_machine(*)
           vm = {
-            'location' => location,
-            'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Compute/virtualMachines/#{name}",
-            'name' => name,
+            'location' => 'westus',
+            'id' => '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Compute/virtualMachines/fog-test-server',
+            'name' => 'fog-test-server',
             'type' => 'Microsoft.Compute/virtualMachines',
             'properties' =>
             {
               'hardwareProfile' =>
                 {
-                  'vmSize' => vm_size
+                  'vmSize' => 'Standard_A0'
                 },
               'storageProfile' =>
                 {
                   'imageReference' =>
                     {
-                      'publisher' => publisher,
-                      'offer' => offer,
-                      'sku' => sku,
-                      'version' => version
+                      'publisher' => 'MicrosoftWindowsServerEssentials',
+                      'offer' => 'WindowsServerEssentials',
+                      'sku' => 'WindowsServerEssentials',
+                      'version' => 'latest'
                     },
                   'osDisk' =>
                     {
-                      'name' => "#{name}_os_disk",
+                      'name' => 'fog-test-server_os_disk',
                       'vhd' =>
                         {
-                          'uri' => "http://#{storage_account_name}.blob.core.windows.net/vhds/#{name}_os_disk.vhd"
+                          'uri' => 'http://mystorage1.blob.core.windows.net/vhds/fog-test-server_os_disk.vhd'
                         },
                       'createOption' => 'FromImage',
                       'osType' => 'Linux',
@@ -157,11 +153,11 @@ module Fog
                 },
               'osProfile' =>
                 {
-                  'computerName' => name,
-                  'adminUsername' => username,
+                  'computerName' => 'fog-test-server',
+                  'adminUsername' => 'fog',
                   'linuxConfiguration' =>
                     {
-                      'disablePasswordAuthentication' => disable_password_authentication
+                      'disablePasswordAuthentication' => true
                     },
                   'secrets' => []
                 },
@@ -170,7 +166,7 @@ module Fog
                   'networkInterfaces' =>
                     [
                       {
-                        'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkInterfaces/#{network_interface_card_id.split('/')[8]}"
+                        'id' => '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/networkInterfaces/fog-test-vnet'
                       }
                     ]
                 },

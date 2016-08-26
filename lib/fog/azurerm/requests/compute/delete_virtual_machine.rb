@@ -17,8 +17,8 @@ module Fog
       end
       # This class provides the mock implementation for unit tests.
       class Mock
-        def delete_virtual_machine(resource_group, name)
-          Fog::Logger.debug "Virtual Machine #{name} from Resource group #{resource_group} deleted successfully."
+        def delete_virtual_machine(*)
+          Fog::Logger.debug 'Virtual Machine fog-test-server from Resource group fog-test-rg deleted successfully.'
           true
         end
       end

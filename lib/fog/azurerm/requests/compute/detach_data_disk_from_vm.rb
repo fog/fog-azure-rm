@@ -24,11 +24,11 @@ module Fog
       end
       # This class provides the mock implementation for unit tests.
       class Mock
-        def detach_data_disk_from_vm(resource_group, vm_name, disk_name)
+        def detach_data_disk_from_vm(*)
           vm = {
             'location' => 'West US',
-            'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Compute/virtualMachines/#{name}",
-            'name' => vm_name,
+            'id' => '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Compute/virtualMachines/fog-test-server',
+            'name' => 'fog-test-server',
             'type' => 'Microsoft.Compute/virtualMachines',
             'properties' =>
               {
@@ -47,10 +47,10 @@ module Fog
                       },
                     'osDisk' =>
                       {
-                        'name' => "#{vm_name}_os_disk",
+                        'name' => 'fog-test-server_os_disk',
                         'vhd' =>
                           {
-                            'uri' => "http://#{storage_account_name}.blob.core.windows.net/vhds/#{vm_name}_os_disk.vhd"
+                            'uri' => 'http://mystorage1.blob.core.windows.net/vhds/fog-test-server_os_disk.vhd'
                           },
                         'createOption' => 'FromImage',
                         'osType' => 'Linux',
@@ -58,10 +58,10 @@ module Fog
                       },
                     'dataDisks' => [{
                       'lun' => 0,
-                      'name' => disk_name,
-                      'vhd_uri' => "https://confizrg7443.blob.core.windows.net/vhds/#{disk_name}.vhd",
+                      'name' => 'fog-test-server_data_disk',
+                      'vhd_uri' => 'https://confizrg7443.blob.core.windows.net/vhds/fog-test-server_data_disk.vhd',
                       'create_option' => 'empty',
-                      'disk_size_gb' => disk_size
+                      'disk_size_gb' => 1
                     }]
                   },
                 'osProfile' =>
@@ -79,7 +79,7 @@ module Fog
                     'networkInterfaces' =>
                       [
                         {
-                          'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkInterfaces/fog-test-vnet"
+                          'id' => '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/networkInterfaces/fog-test-vnet'
                         }
                       ]
                   },

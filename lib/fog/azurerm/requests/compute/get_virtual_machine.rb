@@ -17,11 +17,11 @@ module Fog
       end
       # This class provides the mock implementation for unit tests.
       class Mock
-        def get_virtual_machine(resource_group, name)
+        def get_virtual_machine(*)
           vm = {
             'location' => 'westus',
-            'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Compute/virtualMachines/#{name}",
-            'name' => name,
+            'id' => '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Compute/virtualMachines/fog-test-server',
+            'name' => 'fog-test-server',
             'type' => 'Microsoft.Compute/virtualMachines',
             'properties' =>
             {
@@ -40,10 +40,10 @@ module Fog
                     },
                   'osDisk' =>
                     {
-                      'name' => "#{name}_os_disk",
+                      'name' => "fog-test-server_os_disk",
                       'vhd' =>
                         {
-                          'uri' => 'http://fogtestsafirst.blob.core.windows.net/vhds/testVM_os_disk.vhd'
+                          'uri' => 'http://fogtestsafirst.blob.core.windows.net/vhds/fog-test-server_os_disk.vhd'
                         },
                       'createOption' => 'FromImage',
                       'osType' => 'Linux',
@@ -53,7 +53,7 @@ module Fog
                 },
               'osProfile' =>
                 {
-                  'computerName' => name,
+                  'computerName' => 'fog',
                   'adminUsername' => 'testfog',
                   'linuxConfiguration' =>
                     {
@@ -66,7 +66,7 @@ module Fog
                   'networkInterfaces' =>
                     [
                       {
-                        'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkInterfaces/testNIC"
+                        'id' => '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/networkInterfaces/fog-test-vnet'
                       }
                     ]
                 },

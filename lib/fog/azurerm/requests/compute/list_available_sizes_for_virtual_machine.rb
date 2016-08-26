@@ -17,7 +17,7 @@ module Fog
       end
       # This class provides the mock implementation for unit tests.
       class Mock
-        def list_available_sizes_for_virtual_machine(_resource_group, _name)
+        def list_available_sizes_for_virtual_machine(*)
           vm_sizes =
             {
               'value' => [

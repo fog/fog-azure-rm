@@ -50,12 +50,8 @@ module Fog
             hash['data_disks'] << data_disk.merge_attributes(Fog::Storage::AzureRM::DataDisk.parse(disk))
           end unless vm.storage_profile.data_disks.nil?
 
-          hash['disable_password_authentication'] =
-            if vm.os_profile.linux_configuration.nil?
-              false
-            else
-              vm.os_profile.linux_configuration.disable_password_authentication
-            end
+          hash['disable_password_authentication'] = false
+          hash['disable_password_authentication'] = vm.os_profile.linux_configuration.disable_password_authentication unless vm.os_profile.linux_configuration.nil?
           if vm.os_profile.windows_configuration
             hash['provision_vm_agent'] = vm.os_profile.windows_configuration.provision_vmagent
             hash['enable_automatic_updates'] = vm.os_profile.windows_configuration.enable_automatic_updates

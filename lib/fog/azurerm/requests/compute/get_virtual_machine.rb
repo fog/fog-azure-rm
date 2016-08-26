@@ -4,23 +4,24 @@ module Fog
       # This class provides the actual implementation for service calls.
       class Real
         def get_virtual_machine(resource_group, name)
+          msg = "Getting Virtual Machine #{name} from Resource Group '#{resource_group}'"
+          Fog::Logger.debug msg
           begin
-            promise = @compute_mgmt_client.virtual_machines.get(resource_group, name)
-            response = promise.value!
-            Azure::ARM::Compute::Models::VirtualMachine.serialize_object(response.body)
+            virtual_machine = @compute_mgmt_client.virtual_machines.get(resource_group, name)
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Exception getting Virtual Machine #{name} from Resource Group '#{resource_group}'. #{e.body['error']['message']}"
-            raise msg
+            raise_azure_exception(e, msg)
           end
+          Fog::Logger.debug "Getting Virtual Machine #{name} from Resource Group '#{resource_group}' successful"
+          virtual_machine
         end
       end
       # This class provides the mock implementation for unit tests.
       class Mock
-        def get_virtual_machine(resource_group, name)
-          {
+        def get_virtual_machine(*)
+          vm = {
             'location' => 'westus',
-            'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Compute/virtualMachines/#{name}",
-            'name' => name,
+            'id' => '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Compute/virtualMachines/fog-test-server',
+            'name' => 'fog-test-server',
             'type' => 'Microsoft.Compute/virtualMachines',
             'properties' =>
             {
@@ -39,10 +40,10 @@ module Fog
                     },
                   'osDisk' =>
                     {
-                      'name' => "#{name}_os_disk",
+                      'name' => "fog-test-server_os_disk",
                       'vhd' =>
                         {
-                          'uri' => 'http://fogtestsafirst.blob.core.windows.net/vhds/testVM_os_disk.vhd'
+                          'uri' => 'http://fogtestsafirst.blob.core.windows.net/vhds/fog-test-server_os_disk.vhd'
                         },
                       'createOption' => 'FromImage',
                       'osType' => 'Linux',
@@ -52,7 +53,7 @@ module Fog
                 },
               'osProfile' =>
                 {
-                  'computerName' => name,
+                  'computerName' => 'fog',
                   'adminUsername' => 'testfog',
                   'linuxConfiguration' =>
                     {
@@ -65,13 +66,15 @@ module Fog
                   'networkInterfaces' =>
                     [
                       {
-                        'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkInterfaces/testNIC"
+                        'id' => '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/networkInterfaces/fog-test-vnet'
                       }
                     ]
                 },
               'provisioningState' => 'Succeeded'
             }
           }
+          vm_mapper = Azure::ARM::Compute::Models::VirtualMachine.mapper
+          @compute_mgmt_client.deserialize(vm_mapper, vm, 'result.body')
         end
       end
     end

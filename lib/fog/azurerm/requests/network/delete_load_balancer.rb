@@ -4,22 +4,23 @@ module Fog
       # Real class for Network Request
       class Real
         def delete_load_balancer(resource_group, name)
-          Fog::Logger.debug "Deleting Load_Balancer #{name} from Resource Group #{resource_group}."
+          msg = "Deleting Load_Balancer #{name} from Resource Group #{resource_group}"
+          Fog::Logger.debug msg
           begin
-            promise = @network_client.load_balancers.delete(resource_group, name)
-            promise.value!
-            Fog::Logger.debug "Load_Balancer #{name} Deleted Successfully."
-            true
+            @network_client.load_balancers.delete(resource_group, name)
           rescue  MsRestAzure::AzureOperationError => e
-            msg = "Exception deleting Load_Balancer #{name} in Resource Group: #{resource_group}. #{e.body['error']['message']}"
-            raise msg
+            raise_azure_exception(e, msg)
           end
+          Fog::Logger.debug "Load_Balancer #{name} Deleted Successfully."
+          true
         end
       end
 
       # Mock class for Network Request
       class Mock
         def delete_load_balancer(_resource_group, _name)
+          Fog::Logger.debug "Load_Balancer #{name} Deleted Successfully."
+          true
         end
       end
     end

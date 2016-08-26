@@ -4,41 +4,30 @@ require File.expand_path '../../test_helper', __dir__
 class TestCreateVirtualMachine < Minitest::Test
   def setup
     @service = Fog::Compute::AzureRM.new(credentials)
-    client = @service.instance_variable_get(:@compute_mgmt_client)
-    @virtual_machines = client.virtual_machines
-    @promise = Concurrent::Promise.execute do
-    end
+    compute_client = @service.instance_variable_get(:@compute_mgmt_client)
+    @virtual_machines = compute_client.virtual_machines
     @linux_virtual_machine_hash = ApiStub::Requests::Compute::VirtualMachine.linux_virtual_machine_hash
     @windows_virtual_machine_hash = ApiStub::Requests::Compute::VirtualMachine.windows_virtual_machine_hash
+    @response = ApiStub::Requests::Compute::VirtualMachine.create_virtual_machine_response(compute_client)
   end
 
   def test_create_linux_virtual_machine_success
-    response = ApiStub::Requests::Compute::VirtualMachine.create_virtual_machine_response
-    @promise.stub :value!, response do
-      @virtual_machines.stub :create_or_update, @promise do
-        assert_equal @service.create_virtual_machine(@linux_virtual_machine_hash),
-                     Azure::ARM::Compute::Models::VirtualMachine.serialize_object(response.body)
-      end
+    @virtual_machines.stub :create_or_update, @response do
+      assert_equal @service.create_virtual_machine(@linux_virtual_machine_hash), @response
     end
   end
 
   def test_create_windows_virtual_machine_success
-    response = ApiStub::Requests::Compute::VirtualMachine.create_virtual_machine_response
-    @promise.stub :value!, response do
-      @virtual_machines.stub :create_or_update, @promise do
-        assert_equal @service.create_virtual_machine(@windows_virtual_machine_hash),
-                     Azure::ARM::Compute::Models::VirtualMachine.serialize_object(response.body)
-      end
+    @virtual_machines.stub :create_or_update, @response do
+      assert_equal @service.create_virtual_machine(@windows_virtual_machine_hash), @response
     end
   end
 
   def test_create_virtual_machine_failure
-    response = -> { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
-    @promise.stub :value!, response do
-      @virtual_machines.stub :create_or_update, @promise do
-        assert_raises RuntimeError do
-          @service.create_virtual_machine(@linux_virtual_machine_hash)
-        end
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
+    @virtual_machines.stub :create_or_update, response do
+      assert_raises RuntimeError do
+        @service.create_virtual_machine(@linux_virtual_machine_hash)
       end
     end
   end

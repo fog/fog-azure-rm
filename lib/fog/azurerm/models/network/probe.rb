@@ -12,15 +12,14 @@ module Fog
         attribute :number_of_probes
 
         def self.parse(probe)
-          probe_prop = probe['properties']
           hash = {}
-          hash['id'] = probe['id']
-          hash['name'] = probe['name']
-          hash['protocol'] = probe_prop['protocol']
-          hash['port'] = probe_prop['port']
-          hash['request_path'] = probe_prop['requestPath']
-          hash['interval_in_seconds'] = probe_prop['intervalInSeconds']
-          hash['number_of_probes'] = probe_prop['numberOfProbes']
+          hash['id'] = probe.id
+          hash['name'] = probe.name
+          hash['protocol'] = probe.protocol
+          hash['port'] = probe.port
+          hash['request_path'] = probe.request_path
+          hash['interval_in_seconds'] = probe.interval_in_seconds
+          hash['number_of_probes'] = probe.number_of_probes
           hash
         end
       end

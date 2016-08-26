@@ -11,7 +11,7 @@ module Fog
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
-          network_gateways
+          network_gateways.value
         end
       end
 

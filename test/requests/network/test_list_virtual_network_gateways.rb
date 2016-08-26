@@ -11,7 +11,7 @@ class TestListVirtualNetwrokGateways < Minitest::Test
   def test_list_virtual_network_gateways_success
     mocked_response = ApiStub::Requests::Network::VirtualNetworkGateway.list_virtual_network_gateway_response(@network_client)
     @network_gateways.stub :list_as_lazy, mocked_response do
-      assert_equal @service.list_virtual_network_gateways('fog-test-rg'), mocked_response
+      assert_equal @service.list_virtual_network_gateways('fog-test-rg'), mocked_response.value
     end
   end
 

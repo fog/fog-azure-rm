@@ -108,7 +108,6 @@ module Fog
           ip_configs = []
           ip_configurations.each do |ip_config|
             ip_configuration = Azure::ARM::Network::Models::VirtualNetworkGatewayIPConfiguration.new
-            ip_configuration.private_ipaddress = ip_config[:private_ipaddress]
             ip_configuration.private_ipallocation_method = ip_config[:private_ipallocation_method]
             unless ip_config[:subnet_id].nil?
               subnet = Azure::ARM::Network::Models::Subnet.new

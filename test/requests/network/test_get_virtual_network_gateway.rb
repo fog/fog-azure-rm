@@ -10,7 +10,7 @@ class TestGetVirtualNetworkGateway < Minitest::Test
 
   def test_get_virtual_network_gateway_success
     mocked_response = ApiStub::Requests::Network::VirtualNetworkGateway.create_virtual_network_gateway_response(@network_client)
-      @network_gateways.stub :get, mocked_response do
+    @network_gateways.stub :get, mocked_response do
       assert_equal @service.get_virtual_network_gateway('fog-test-rg', 'fog-test-network-gateway'), mocked_response
     end
   end

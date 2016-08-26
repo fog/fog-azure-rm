@@ -7,9 +7,8 @@ module Fog
           msg = "Getting list of Express Route Circuits from Resource Group #{resource_group_name}."
           Fog::Logger.debug msg
           begin
-            circuits = @network_client.express_route_circuits.list(resource_group_name).value!
-            Azure::ARM::Network::Models::ExpressRouteCircuitListResult.serialize_object(circuits.body)['value']
-          rescue  MsRestAzure::AzureOperationError => e
+            @network_client.express_route_circuits.list(resource_group_name)
+          rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
         end

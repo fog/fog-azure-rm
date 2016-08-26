@@ -5,10 +5,11 @@ class TestExpressRouteCircuit < Minitest::Test
   def setup
     @service = Fog::Network::AzureRM.new(credentials)
     @circuit = express_route_circuit(@service)
+    @network_client = @service.instance_variable_get(:@network_client)
   end
 
   def test_model_methods
-    response = ApiStub::Models::Network::ExpressRouteCircuit.create_express_route_circuit_response
+    response = ApiStub::Models::Network::ExpressRouteCircuit.create_express_route_circuit_response(@network_client)
     methods = [
       :save,
       :destroy
@@ -21,7 +22,7 @@ class TestExpressRouteCircuit < Minitest::Test
   end
 
   def test_model_attributes
-    response = ApiStub::Models::Network::ExpressRouteCircuit.create_express_route_circuit_response
+    response = ApiStub::Models::Network::ExpressRouteCircuit.create_express_route_circuit_response(@network_client)
     attributes = [
       :resource_group,
       :name,
@@ -43,7 +44,7 @@ class TestExpressRouteCircuit < Minitest::Test
   end
 
   def test_save_method_response
-    response = ApiStub::Models::Network::ExpressRouteCircuit.create_express_route_circuit_response
+    response = ApiStub::Models::Network::ExpressRouteCircuit.create_express_route_circuit_response(@network_client)
     @service.stub :create_or_update_express_route_circuit, response do
       assert_instance_of Fog::Network::AzureRM::ExpressRouteCircuit, @circuit.save
     end

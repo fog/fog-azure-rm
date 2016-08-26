@@ -5,13 +5,14 @@ class TestExpressRouteCircuitPeering < Minitest::Test
   def setup
     @service = Fog::Network::AzureRM.new(credentials)
     @circuit_peering = express_route_circuit_peering(@service)
+    @network_client = @service.instance_variable_get(:@network_client)
   end
 
   def test_model_methods
-    response = ApiStub::Models::Network::ExpressRouteCircuitPeering.create_express_route_circuit_peering_response
+    response = ApiStub::Models::Network::ExpressRouteCircuitPeering.create_express_route_circuit_peering_response(@network_client)
     methods = [
-        :save,
-        :destroy
+      :save,
+      :destroy
     ]
     @service.stub :create_or_update_express_route_circuit_peering, response do
       methods.each do |method|
@@ -21,20 +22,20 @@ class TestExpressRouteCircuitPeering < Minitest::Test
   end
 
   def test_model_attributes
-    response = ApiStub::Models::Network::ExpressRouteCircuitPeering.create_express_route_circuit_peering_response
+    response = ApiStub::Models::Network::ExpressRouteCircuitPeering.create_express_route_circuit_peering_response(@network_client)
     attributes = [
-        :resource_group,
-        :name,
-        :circuit_name,
-        :peering_type,
-        :peer_asn,
-        :primary_peer_address_prefix,
-        :secondary_peer_address_prefix,
-        :vlan_id,
-        :advertised_public_prefixes,
-        :advertised_public_prefix_state,
-        :customer_asn,
-        :routing_registry_name
+      :resource_group,
+      :name,
+      :circuit_name,
+      :peering_type,
+      :peer_asn,
+      :primary_peer_address_prefix,
+      :secondary_peer_address_prefix,
+      :vlan_id,
+      :advertised_public_prefixes,
+      :advertised_public_prefix_state,
+      :customer_asn,
+      :routing_registry_name
     ]
     @service.stub :create_or_update_express_route_circuit_peering, response do
       attributes.each do |attribute|
@@ -44,7 +45,7 @@ class TestExpressRouteCircuitPeering < Minitest::Test
   end
 
   def test_save_method_response
-    response = ApiStub::Models::Network::ExpressRouteCircuitPeering.create_express_route_circuit_peering_response
+    response = ApiStub::Models::Network::ExpressRouteCircuitPeering.create_express_route_circuit_peering_response(@network_client)
     @service.stub :create_or_update_express_route_circuit_peering, response do
       assert_instance_of Fog::Network::AzureRM::ExpressRouteCircuitPeering, @circuit_peering.save
     end

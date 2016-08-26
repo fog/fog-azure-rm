@@ -3,7 +3,7 @@ module ApiStub
     module Network
       # Mock class for Express Route Circuit Requests
       class ExpressRouteCircuit
-        def self.create_express_route_circuit_response
+        def self.create_express_route_circuit_response(network_client)
           body = '{
             "name": "<circuit name>",
             "id": "/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/testCircuit",
@@ -38,12 +38,11 @@ module ApiStub
               ]
             }
           }'
-          result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
-          result.body = Azure::ARM::Network::Models::ExpressRouteCircuit.deserialize_object(JSON.load(body))
-          result
+          express_route_circuit_mapper = Azure::ARM::Network::Models::ExpressRouteCircuit.mapper
+          network_client.deserialize(express_route_circuit_mapper, JSON.load(body), 'result.body')
         end
 
-        def self.list_express_route_circuit_response
+        def self.list_express_route_circuit_response(network_client)
           body = '{
             "value": [
               {
@@ -75,13 +74,8 @@ module ApiStub
               }
             ]
           }'
-          result = MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
-          result.body = Azure::ARM::Network::Models::ExpressRouteCircuitListResult.deserialize_object(JSON.load(body))
-          result
-        end
-
-        def self.delete_express_route_circuit_response
-          MsRestAzure::AzureOperationResponse.new(MsRest::HttpOperationRequest.new('', '', ''), Faraday::Response.new)
+          express_route_circuit_mapper = Azure::ARM::Network::Models::ExpressRouteCircuitListResult.mapper
+          network_client.deserialize(express_route_circuit_mapper, JSON.load(body), 'result.body').value
         end
 
         def self.peerings

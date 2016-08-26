@@ -36,7 +36,7 @@ resources.resource_groups.create(
 ########################################################################################################################
 
 network.express_route_circuits.create(
-  name: 'testCircuit',
+  name: 'testERCircuit',
   location: 'eastus',
   tags: {
     key1: 'value1',
@@ -74,7 +74,7 @@ end
 ######################                                   CleanUp                                  ######################
 ########################################################################################################################
 
-circuit = network.express_route_circuits.get('TestRG-ER', 'testCircuit')
+circuit = network.express_route_circuits.get('TestRG-ER', 'testERCircuit')
 puts circuit.name
 
 circuit.destroy

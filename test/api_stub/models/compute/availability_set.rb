@@ -1,6 +1,3 @@
-UPDATE_DOMAIN_COUNT = 5
-FAULT_DOMAIN_COUNT = 3
-
 module ApiStub
   module Models
     module Compute

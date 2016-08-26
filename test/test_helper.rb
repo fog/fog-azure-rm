@@ -447,7 +447,7 @@ def gateway(service)
 end
 
 def traffic_manager_end_point(service)
-  Fog::Network::AzureRM::TrafficManagerEndPoint.new(
+  Fog::TrafficManager::AzureRM::TrafficManagerEndPoint.new(
     name: 'fog-test-end-point',
     traffic_manager_profile_name: 'fog-test-profile',
     resource_group: 'fog-test-rg',
@@ -459,7 +459,7 @@ def traffic_manager_end_point(service)
 end
 
 def traffic_manager_profile(service)
-  Fog::Network::AzureRM::TrafficManagerProfile.new(
+  Fog::TrafficManager::AzureRM::TrafficManagerProfile.new(
     name: 'fog-test-profile',
     resource_group: 'fog-test-rg',
     traffic_routing_method: 'Performance',

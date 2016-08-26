@@ -13,6 +13,12 @@
 - Compute Service - Updated Server to use updated gems
 - DNS Service - Updated Record Set to use updated gems
 - DNS Service - Updated Zone to use updated gems
+- Traffic Manager Service - Moved Traffic Manager Profile, Endpoint, respective Unit tests and integration test from Network Service to Traffic Manager Service. 
+- Traffic Manager Service - Updated Traffic Manager Service API requests to use SDK.
+
+**Fixed:**
+
+**Removed:**
 
 
 ## 0.0.4

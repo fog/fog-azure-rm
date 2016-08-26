@@ -8,7 +8,7 @@ module Fog
           Fog::Logger.debug msg
           begin
             @network_client.application_gateways.delete(resource_group, name)
-          rescue  MsRestAzure::AzureOperationError => e
+          rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
           Fog::Logger.debug "Application Gateway #{name} Deleted Successfully."

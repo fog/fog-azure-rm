@@ -24,7 +24,6 @@ class TestGateways < Minitest::Test
   end
 
   def test_all_method_response
-
     @service.stub :list_application_gateways, @response do
       assert_instance_of Fog::ApplicationGateway::AzureRM::Gateways, @gateways.all
       assert @gateways.all.size >= 1

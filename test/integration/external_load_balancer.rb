@@ -32,10 +32,11 @@ rs.resource_groups.create(
 )
 
 network.virtual_networks.create(
-  name:             'testVnet',
-  location:         'westus',
-  resource_group:   'TestRG-LB',
-  network_address_list:  '10.1.0.0/16,10.2.0.0/16'
+  name: 'testVnet',
+  location: 'westus',
+  resource_group: 'TestRG-LB',
+  dns_servers: %w(10.1.0.0 10.2.0.0),
+  address_prefixes: %w(10.1.0.0/16 10.2.0.0/16)
 )
 
 network.subnets.create(
@@ -109,10 +110,10 @@ lb.destroy
 ######################                                   CleanUp                                  ######################
 ########################################################################################################################
 
-pubip = network.public_ips(resource_group: 'TestRG-LB').get('mypubip')
+pubip = network.public_ips.get('TestRG-LB', 'mypubip')
 pubip.destroy
 
-vnet = network.virtual_networks(resource_group: 'TestRG-LB').get('testVnet')
+vnet = network.virtual_networks.get('TestRG-LB', 'testVnet')
 vnet.destroy
 
 rg = rs.resource_groups.get('TestRG-LB')

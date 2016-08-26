@@ -7,7 +7,17 @@ matrix:
     - rvm: 2.2
 
 notifications:
-  email: false
+  email:
+    recipients:
+      - abbas.sheikh@confiz.com
+      - shaffan.chaudhry@confiz.com
+      - zeeshan.arshad@confiz.com
+      - samawia.moin@confiz.com
+      - waqar.haider@confiz.com
+      - bilal.naeem@confiz.com
+    on_success: always
+    on_failure: always
+  
   
 addons:
     code_climate:

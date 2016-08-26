@@ -5,6 +5,7 @@ class TestServer < Minitest::Test
   def setup
     @service = Fog::Compute::AzureRM.new(credentials)
     @server = server(@service)
+    @compute_client = @service.instance_variable_get(:@compute_mgmt_client)
   end
 
   def test_model_methods
@@ -58,14 +59,14 @@ class TestServer < Minitest::Test
   end
 
   def test_save_method_response_for_linux_vm
-    response = ApiStub::Models::Compute::Server.create_linux_virtual_machine_response
+    response = ApiStub::Models::Compute::Server.create_linux_virtual_machine_response(@compute_client)
     @service.stub :create_virtual_machine, response do
       assert_instance_of Fog::Compute::AzureRM::Server, @server.save
     end
   end
 
   def test_save_method_response_for_windows_vm
-    response = ApiStub::Models::Compute::Server.create_windows_virtual_machine_response
+    response = ApiStub::Models::Compute::Server.create_windows_virtual_machine_response(@compute_client)
     @service.stub :create_virtual_machine, response do
       assert_instance_of Fog::Compute::AzureRM::Server, @server.save
       refute @server.save.disable_password_authentication
@@ -121,21 +122,21 @@ class TestServer < Minitest::Test
   end
 
   def test_list_available_sizes_method_response
-    response = ApiStub::Models::Compute::Server.list_available_sizes_for_virtual_machine_response
+    response = ApiStub::Models::Compute::Server.list_available_sizes_for_virtual_machine_response(@compute_client)
     @service.stub :list_available_sizes_for_virtual_machine, response do
       assert_instance_of Array, @server.list_available_sizes
     end
   end
 
   def test_attach_data_disk_response
-    response = ApiStub::Models::Compute::Server.attach_data_disk_response
+    response = ApiStub::Models::Compute::Server.attach_data_disk_response(@compute_client)
     @service.stub :attach_data_disk_to_vm, response do
       assert_instance_of Fog::Compute::AzureRM::Server, @server.attach_data_disk('disk1', '10', 'mystorage1')
     end
   end
 
   def test_detach_data_disk_response
-    response = ApiStub::Models::Compute::Server.create_linux_virtual_machine_response
+    response = ApiStub::Models::Compute::Server.create_linux_virtual_machine_response(@compute_client)
     @service.stub :detach_data_disk_from_vm, response do
       assert_instance_of Fog::Compute::AzureRM::Server, @server.detach_data_disk('disk1')
     end

@@ -61,7 +61,6 @@ module Fog
           requires :advertised_public_prefixes if peering_type.casecmp(MICROSOFT_PEERING) == 0
           circuit_peering_parameters = express_route_circuit_peering_params
           circuit_peering = service.create_or_update_express_route_circuit_peering(circuit_peering_parameters)
-          puts "Circuit Peering: #{circuit_peering.inspect}"
           merge_attributes(Fog::Network::AzureRM::ExpressRouteCircuitPeering.parse(circuit_peering))
         end
 

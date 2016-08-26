@@ -4,27 +4,20 @@ require File.expand_path '../../test_helper', __dir__
 class TestDeleteApplicationGateway < Minitest::Test
   def setup
     @service = Fog::ApplicationGateway::AzureRM.new(credentials)
-    client = @service.instance_variable_get(:@network_client)
-    @gateways = client.application_gateways
-    @promise = Concurrent::Promise.execute do
-    end
+    gateway_client = @service.instance_variable_get(:@network_client)
+    @gateways = gateway_client.application_gateways
   end
 
   def test_delete_application_gateway_success
-    response = true
-    @promise.stub :value!, response do
-      @gateways.stub :delete, @promise do
-        assert @service.delete_application_gateway('fogRM-rg', 'gateway'), response
-      end
+    @gateways.stub :delete, true do
+      assert @service.delete_application_gateway('fogRM-rg', 'gateway'), true
     end
   end
 
   def test_delete_application_gateway_failure
-    response = -> { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
-    @promise.stub :value!, response do
-      @gateways.stub :delete, @promise do
-        assert_raises(RuntimeError) { @service.delete_application_gateway('fogRM-rg', 'gateway') }
-      end
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
+    @gateways.stub :delete, response do
+      assert_raises(RuntimeError) { @service.delete_application_gateway('fogRM-rg', 'gateway') }
     end
   end
 end

@@ -11,16 +11,14 @@ module Fog
         attribute :probe
 
         def self.parse(backend_http_setting)
-          backend_http_setting_properties = backend_http_setting['properties']
-
           hash = {}
-          hash['name'] = backend_http_setting['name']
-          unless backend_http_setting_properties.nil?
-            hash['port'] = backend_http_setting_properties['port']
-            hash['protocol'] = backend_http_setting_properties['protocol']
-            hash['cookie_based_affinity'] = backend_http_setting_properties['cookieBasedAffinity']
-            hash['request_timeout'] = backend_http_setting_properties['requestTimeout']
-            hash['probe'] = backend_http_setting_properties['probe']
+          hash['name'] = backend_http_setting.name
+          unless backend_http_setting.nil?
+            hash['port'] = backend_http_setting.port
+            hash['protocol'] = backend_http_setting.protocol
+            hash['cookie_based_affinity'] = backend_http_setting.cookie_based_affinity
+            hash['request_timeout'] = backend_http_setting.request_timeout
+            hash['probe'] = backend_http_setting.probe
             hash
           end
         end

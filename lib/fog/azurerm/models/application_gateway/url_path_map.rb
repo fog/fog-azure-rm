@@ -9,21 +9,17 @@ module Fog
         attribute :path_rules
 
         def self.parse(url_path_map)
-          url_path_map_properties = url_path_map['properties']
-
           hash = {}
-          hash['name'] = url_path_map['name']
-          unless url_path_map_properties.nil?
-            hash['default_backend_address_pool_id'] = url_path_map_properties['defaultBackendAddressPool']['id']
-            hash['default_backend_http_settings_id'] = url_path_map_properties['defaultBackendHttpSettings']['id']
+          hash['name'] = url_path_map.name
+          hash['default_backend_address_pool_id'] = url_path_map.default_backend_address_pool.id
+          hash['default_backend_http_settings_id'] = url_path_map.default_backend_http_settings.id
 
-            path_rules = url_path_map_properties['pathRules']
-            hash['path_rules'] = []
-            path_rules.each do |rule|
-              path_rule = Fog::Network::AzureRM::PathRule.new
-              hash['path_rules'] << path_rule.merge_attributes(Fog::Network::AzureRM::PathRule.parse(rule))
-            end unless path_rules.nil?
-          end
+          path_rules = url_path_map.path_rules
+          hash['path_rules'] = []
+          path_rules.each do |rule|
+            path_rule = Fog::Network::AzureRM::PathRule.new
+            hash['path_rules'] << path_rule.merge_attributes(Fog::Network::AzureRM::PathRule.parse(rule))
+          end unless path_rules.nil?
           hash
         end
       end

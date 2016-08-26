@@ -7,12 +7,10 @@ module Fog
         attribute :port
 
         def self.parse(frontend_port)
-          frontend_port_properties = frontend_port['properties']
-
           hash = {}
-          hash['name'] = frontend_port['name']
-          unless frontend_port_properties['port'].nil?
-            hash['port'] = frontend_port_properties['port']
+          hash['name'] = frontend_port.name
+          unless frontend_port.port.nil?
+            hash['port'] = frontend_port.port
           end
           hash
         end

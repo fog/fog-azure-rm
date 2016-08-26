@@ -500,7 +500,7 @@ def express_route_circuit(service)
     location: 'eastus',
     resource_group: 'HaiderRG',
     tags: {
-        key1: 'value1'
+      key1: 'value1'
     },
     sku_name: 'Standard_MeteredData',
     sku_tier: 'Standard',
@@ -524,14 +524,14 @@ end
 
 def express_route_circuit_peering(service)
   Fog::Network::AzureRM::ExpressRouteCircuitPeering.new(
-      name: 'AzurePublicPeering',
-      circuit_name: 'testCircuit',
-      resource_group: 'HaiderRG',
-      peering_type: 'AzurePublicPeering',
-      peer_asn: 100,
-      primary_peer_address_prefix: '192.168.1.0/30',
-      secondary_peer_address_prefix: '192.168.2.0/30',
-      vlan_id: 200,
-      service: service
+    name: 'AzurePublicPeering',
+    circuit_name: 'testCircuit',
+    resource_group: 'HaiderRG',
+    peering_type: 'AzurePublicPeering',
+    peer_asn: 100,
+    primary_peer_address_prefix: '192.168.1.0/30',
+    secondary_peer_address_prefix: '192.168.2.0/30',
+    vlan_id: 200,
+    service: service
   )
 end

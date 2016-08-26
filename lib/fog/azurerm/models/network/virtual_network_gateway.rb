@@ -27,57 +27,45 @@ module Fog
 
         def self.parse(network_gateway)
           hash = {}
-          hash['id'] = network_gateway['id']
-          hash['name'] = network_gateway['name']
-          hash['location'] = network_gateway['location']
-          hash['resource_group'] = get_resource_group_from_id(network_gateway['id'])
-          hash['tags'] = network_gateway['tags']
-          gateway_properties = network_gateway['properties']
-
-          unless gateway_properties['sku'].nil?
-            hash['sku_name'] = gateway_properties['sku']['name']
-            hash['sku_tier'] = gateway_properties['sku']['tier']
-            hash['sku_capacity'] = gateway_properties['sku']['capacity']
+          hash['id'] = network_gateway.id
+          hash['name'] = network_gateway.name
+          hash['location'] = network_gateway.location
+          hash['resource_group'] = get_resource_group_from_id(network_gateway.id)
+          hash['tags'] = network_gateway.tags
+          unless network_gateway.sku.nil?
+            hash['sku_name'] = network_gateway.sku.name
+            hash['sku_tier'] = network_gateway.sku.tier
+            hash['sku_capacity'] = network_gateway.sku.capacity
           end
-          hash['gateway_type'] = gateway_properties['gatewayType']
-          hash['gateway_size'] = gateway_properties['gatewaySize']
-          hash['gateway_default_site'] = gateway_properties['gatewayDefaultSite']
-          hash['vpn_type'] = gateway_properties['vpnType']
-          hash['enable_bgp'] = gateway_properties['enableBgp']
-          hash['provisioning_state'] = gateway_properties['provisioningState']
-          bgp_settings = gateway_properties['bgpSettings']
+          hash['gateway_type'] = network_gateway.gateway_type
+          hash['gateway_default_site'] = network_gateway.gateway_default_site
+          hash['vpn_type'] = network_gateway.vpn_type
+          hash['enable_bgp'] = network_gateway.enable_bgp
+          hash['provisioning_state'] = network_gateway.provisioning_state
+          bgp_settings = network_gateway.bgp_settings
+
           unless bgp_settings.nil?
-            hash['asn'] = bgp_settings['asn']
-            hash['bgp_peering_address'] = bgp_settings['bgpPeeringAddress']
-            hash['peer_weight'] = bgp_settings['peerWeight']
+            hash['asn'] = bgp_settings.asn
+            hash['bgp_peering_address'] = bgp_settings.bgp_peering_address
+            hash['peer_weight'] = bgp_settings.peer_weight
           end
-
-          hash['vpn_client_address_pool'] = []
-          gateway_properties['vpnClientAddressPool'].each do |address_pool|
-            hash['vpn_client_address_pool'] << address_pool
-          end unless gateway_properties['vpnClientAddressPool'].nil?
-
-          hash['default_sites'] = []
-          gateway_properties['defaultSites'].each do |site|
-            hash['default_sites'] << site
-          end unless gateway_properties['defaultSites'].nil?
 
           hash['ip_configurations'] = []
-          gateway_properties['ipConfigurations'].each do |ip_config|
+          network_gateway.ip_configurations.each do |ip_config|
             ip_configuration = Fog::Network::AzureRM::FrontendIPConfiguration.new
             hash['ip_configurations'] << ip_configuration.merge_attributes(Fog::Network::AzureRM::FrontendIPConfiguration.parse(ip_config))
-          end unless gateway_properties['ipConfigurations'].nil?
+          end unless network_gateway.ip_configurations.nil?
 
-          unless gateway_properties['vpnClientConfiguration'].nil?
+          unless network_gateway.vpn_client_configuration.nil?
             vpn_client_configuration = Fog::Network::AzureRM::VpnClientConfiguration.new
-            hash['vpn_client_configuration'] = vpn_client_configuration.merge_attributes(Fog::Network::AzureRM::VpnClientConfiguration.parse(gateway_properties['vpnClientConfiguration']))
+            hash['vpn_client_configuration'] = vpn_client_configuration.merge_attributes(Fog::Network::AzureRM::VpnClientConfiguration.parse(network_gateway.vpn_client_configuration))
           end
 
           hash
         end
 
         def save
-          requires :name, :location, :resource_group, :gateway_type, :gateway_size, :enable_bgp, :gateway_default_site
+          requires :name, :location, :resource_group, :gateway_type, :enable_bgp, :gateway_default_site
           validate_ip_configurations(ip_configurations) unless ip_configurations.nil?
           virtual_network_params = virtual_gateway_parameters
           network_gateway = service.create_or_update_virtual_network_gateway(virtual_network_params)

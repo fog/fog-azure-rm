@@ -4,7 +4,6 @@ require File.expand_path 'api_stub/models/resources/resource_group', __dir__
 require File.expand_path 'api_stub/models/resources/deployment', __dir__
 require File.expand_path 'api_stub/models/resources/resource', __dir__
 require File.expand_path 'api_stub/models/storage/storageaccount', __dir__
-require File.expand_path 'api_stub/models/storage/data_disk', __dir__
 require File.expand_path 'api_stub/models/storage/blob', __dir__
 require File.expand_path 'api_stub/models/storage/container', __dir__
 require File.expand_path 'api_stub/models/network/public_ip', __dir__

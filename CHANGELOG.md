@@ -2,25 +2,20 @@
 
 **Added:**
 - Network Service - Added Get request for Public IP
+- Network Service - Added Express Route Circuit
+- Network Service - Added VPN Gateway
 
 **Changed:**
-- Network Service - Updated Public IP to use updated gems
-- Network Service - Updated Virtual Network to use updated gems
-- Network Service - Updated Subnet to use updated gems
-- Network Service - Updated Network Interface to use updated gems
-- Network Service - Updated Load Balancer to use updated gems
-- Network Service - Updated Application Gateway to use updated gems
-- Network Service - Updated Express Route to use updated gems
-- Compute Service - Updated Server to use updated gems
-- DNS Service - Updated Record Set to use updated gems
-- DNS Service - Updated Zone to use updated gems
-- Traffic Manager Service - Moved Traffic Manager Profile, Endpoint, respective Unit tests and integration test from Network Service to Traffic Manager Service. 
-- Traffic Manager Service - Updated Traffic Manager Service API requests to use SDK.
-
-**Fixed:**
-
-**Removed:**
-
+- Updated fog-azure-rm runtime gem dependencies to latest:
+-- azure_mgmt_compute 0.5.0
+-- azure_mgmt_network 0.5.0
+-- azure_mgmt_resources 0.5.0
+-- azure_mgmt_storage 0.5.0
+-- azure_mgmt_traffic_manager 0.5.0
+-- rest-client 2.0.0
+-- fog-core 1.42.0
+- Traffic Manager Service - Moved Traffic Manager from Network Service to Traffic Manager Service.
+- Application Gateway Service - Moved Application Gateway from Network Service to Application Gateway Service.
 
 ## 0.0.4
 

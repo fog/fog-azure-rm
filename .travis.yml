@@ -9,12 +9,7 @@ matrix:
 notifications:
   email:
     recipients:
-      - abbas.sheikh@confiz.com
-      - shaffan.chaudhry@confiz.com
-      - zeeshan.arshad@confiz.com
-      - samawia.moin@confiz.com
-      - waqar.haider@confiz.com
-      - bilal.naeem@confiz.com
+      - oneops_azure@confiz.com
     on_success: always
     on_failure: always
   

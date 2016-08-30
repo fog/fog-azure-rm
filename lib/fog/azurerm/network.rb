@@ -26,6 +26,7 @@ module Fog
       request :get_public_ip
       request :list_public_ips
       request :check_for_public_ip
+      request :update_public_ip
       request :create_subnet
       request :attach_network_security_group_to_subnet
       request :detach_network_security_group_from_subnet

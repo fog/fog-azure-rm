@@ -47,6 +47,21 @@ module Fog
         def destroy
           service.delete_public_ip(resource_group, name)
         end
+
+        def update(hash)
+          validate_input(hash)
+          merge_attributes(hash)
+          pip = service.update_public_ip(resource_group, name, location, public_ip_allocation_method, idle_timeout_in_minutes, domain_name_label)
+          merge_attributes(Fog::Network::AzureRM::PublicIp.parse(pip))
+        end
+
+        private
+
+        def validate_input(input_hash)
+          invalid_attr = [:resource_group, :name, :location, :id]
+          result = invalid_attr & input_hash.keys
+          raise 'Cannot modify the given attribute' unless result.empty?
+        end
       end
     end
   end

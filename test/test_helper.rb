@@ -153,8 +153,8 @@ def premium_check_for_invalid_replications(service)
 end
 
 def storage_container(service)
-  Fog::Storage::AzureRM::Container.new(
-    name: 'storage-test-container',
+  Fog::Storage::AzureRM::Directory.new(
+    key: 'storage-test-container',
     last_modified: 'Tue, 04 Aug 2015 06:01:08 GMT',
     etag: '0x8D29C92176C8352',
     lease_status: 'unlocked',
@@ -170,9 +170,9 @@ def storage_container(service)
 end
 
 def storage_blob(service)
-  Fog::Storage::AzureRM::Blob.new(
-    name: 'storage-test-blob',
-    container_name: 'storage-test-container',
+  Fog::Storage::AzureRM::File.new(
+    key: 'storage-test-blob',
+    directory: 'storage-test-container',
     last_modified: 'Tue, 04 Aug 2015 06:01:08 GMT',
     etag: '0x8D29C92176C8352',
     metadata: {

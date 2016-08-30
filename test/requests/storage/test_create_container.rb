@@ -6,7 +6,7 @@ class TestCreateContainer < Minitest::Test
   def setup
     @service = Fog::Storage::AzureRM.new(storage_account_credentials)
     @blob_client = @service.instance_variable_get(:@blob_client)
-    @storage_container_object = ApiStub::Requests::Storage::Container.create_container
+    @storage_container_object = ApiStub::Requests::Storage::Directory.create_container
   end
 
   def test_create_container_with_service_success

@@ -8,7 +8,7 @@ module Fog
 
           begin
             blob, content = @blob_client.get_blob(container_name, blob_name, options)
-            IO.binwrite(File.expand_path(file_path), content)
+            IO.binwrite(::File.expand_path(file_path), content)
             Fog::Logger.debug "File #{file_path} downloaded successfully."
             blob
           rescue IOError => ex

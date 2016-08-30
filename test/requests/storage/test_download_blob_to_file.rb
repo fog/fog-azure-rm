@@ -6,7 +6,7 @@ class TestDownloadBlob < Minitest::Test
   def setup
     @service = Fog::Storage::AzureRM.new(storage_account_credentials)
     @blob_client = @service.instance_variable_get(:@blob_client)
-    @storage_blob_object = ApiStub::Requests::Storage::Blob.download_blob_to_file
+    @storage_blob_object = ApiStub::Requests::Storage::File.download_blob_to_file
   end
 
   def test_download_blob_with_service_success

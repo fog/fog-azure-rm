@@ -6,7 +6,7 @@ class TestSetBlobMetadata < Minitest::Test
   def setup
     @service = Fog::Storage::AzureRM.new(storage_account_credentials)
     @blob_client = @service.instance_variable_get(:@blob_client)
-    @metadata = ApiStub::Requests::Storage::Blob.metadata_response
+    @metadata = ApiStub::Requests::Storage::File.metadata_response
   end
 
   def test_set_blob_metadata_success

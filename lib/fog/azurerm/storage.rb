@@ -47,10 +47,10 @@ module Fog
       model :storage_account
       collection :storage_accounts
       model :data_disk
-      model :container
-      collection :containers
-      model :blob
-      collection :blobs
+      model :directory
+      collection :directories
+      model :file
+      collection :files
 
       # This class provides the mock implementation for unit tests.
       class Mock

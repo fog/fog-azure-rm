@@ -6,7 +6,7 @@ class TestGetContainerProperties < Minitest::Test
   def setup
     @service = Fog::Storage::AzureRM.new(storage_account_credentials)
     @blob_client = @service.instance_variable_get(:@blob_client)
-    @storage_container_object = ApiStub::Requests::Storage::Container.get_container_properties
+    @storage_container_object = ApiStub::Requests::Storage::Directory.get_container_properties
   end
 
   def test_get_container_properties_with_service_success

@@ -63,8 +63,8 @@ module ApiStub
 
     module Storage
       autoload :StorageAccount, File.expand_path('api_stub/requests/storage/storageaccount', __dir__)
-      autoload :Blob, File.expand_path('api_stub/requests/storage/blob', __dir__)
-      autoload :Container, File.expand_path('api_stub/requests/storage/container', __dir__)
+      autoload :File, File.expand_path('api_stub/requests/storage/file', __dir__)
+      autoload :Directory, File.expand_path('api_stub/requests/storage/directory', __dir__)
     end
 
     module Network

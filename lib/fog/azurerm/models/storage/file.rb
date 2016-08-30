@@ -3,12 +3,11 @@ module Fog
     class AzureRM
       # This class is giving implementation of create/save and
       # delete/destroy for Blob.
-      class Blob < Fog::Model
-        identity  :name
+      class File < Fog::Model
+        identity  :key, aliases: %w(Name name)
         attribute :accept_ranges
         attribute :cache_control
         attribute :committed_block_count
-        attribute :container_name
         attribute :content_length
         attribute :content_type
         attribute :content_md5
@@ -21,6 +20,7 @@ module Fog
         attribute :copy_id
         attribute :copy_progress
         attribute :copy_source
+        attribute :directory
         attribute :etag
         attribute :lease_duration
         attribute :lease_state
@@ -31,48 +31,48 @@ module Fog
         attribute :blob_type
 
         def save(options = {})
-          requires :name
-          requires :container_name
-          merge_attributes(Blob.parse(service.upload_block_blob_from_file(container_name, name, options[:file_path], options)))
+          requires :key
+          requires :directory
+          merge_attributes(File.parse(service.upload_block_blob_from_file(directory, key, options[:file_path], options)))
         end
 
         alias create save
 
         def destroy(options = {})
-          requires :name
-          requires :container_name
-          service.delete_blob container_name, name, options
+          requires :key
+          requires :directory
+          service.delete_blob directory, key, options
         end
 
         def save_to_file(file_path, options = {})
-          requires :name
-          requires :container_name
-          merge_attributes(Blob.parse(service.download_blob_to_file(container_name, name, file_path, options)))
+          requires :key
+          requires :directory
+          merge_attributes(File.parse(service.download_blob_to_file(directory, key, file_path, options)))
         end
 
         def get_properties(options = {})
-          requires :name
-          requires :container_name
-          merge_attributes(Blob.parse(service.get_blob_properties(container_name, name, options)))
+          requires :key
+          requires :directory
+          merge_attributes(File.parse(service.get_blob_properties(directory, key, options)))
         end
 
         def set_properties(properties = {})
-          requires :name
-          requires :container_name
-          service.set_blob_properties(container_name, name, properties)
+          requires :key
+          requires :directory
+          service.set_blob_properties(directory, key, properties)
           merge_attributes(properties)
         end
 
         def get_metadata(options = {})
-          requires :name
-          requires :container_name
-          merge_attributes(metadata: service.get_blob_metadata(container_name, name, options))
+          requires :key
+          requires :directory
+          merge_attributes(metadata: service.get_blob_metadata(directory, key, options))
         end
 
         def set_metadata(metadata, options = {})
-          requires :name
-          requires :container_name
-          service.set_blob_metadata(container_name, name, metadata, options)
+          requires :key
+          requires :directory
+          service.set_blob_metadata(directory, key, metadata, options)
           merge_attributes(metadata: metadata)
         end
 
@@ -86,7 +86,7 @@ module Fog
 
         def self.parse_hash(blob)
           hash = {}
-          hash['name'] = blob['name']
+          hash['key'] = blob['name']
           hash['metadata'] = blob['metadata']
           return hash unless blob.key?('properties')
 
@@ -116,7 +116,7 @@ module Fog
 
         def self.parse_object(blob)
           hash = {}
-          hash['name'] = blob.name
+          hash['key'] = blob.name
           hash['metadata'] = blob.metadata
           return hash unless blob.respond_to?('properties')
 

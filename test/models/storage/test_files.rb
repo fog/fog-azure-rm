@@ -1,17 +1,17 @@
 require File.expand_path '../../test_helper', __dir__
 
 # Test class for Blob Collection
-class TestBlobs < Minitest::Test
+class TestFiles < Minitest::Test
   def setup
     Fog.mock!
     @mock_service = Fog::Storage::AzureRM.new(storage_account_credentials)
-    @mock_blobs = Fog::Storage::AzureRM::Blobs.new(container_name: 'test-container', service: @mock_service)
+    @mock_files = Fog::Storage::AzureRM::Files.new(directory: 'test-container', service: @mock_service)
     Fog.unmock!
     @service = Fog::Storage::AzureRM.new(storage_account_credentials)
     @blob_client = @service.instance_variable_get(:@blob_client)
-    @blobs = Fog::Storage::AzureRM::Blobs.new(container_name: 'test-container', service: @service)
+    @files = Fog::Storage::AzureRM::Files.new(directory: 'test-container', service: @service)
     @mocked_response = mocked_storage_http_error
-    @list_results = ApiStub::Models::Storage::Blob.list_blobs
+    @list_results = ApiStub::Models::Storage::File.list_blobs
   end
 
   def test_collection_methods
@@ -20,16 +20,16 @@ class TestBlobs < Minitest::Test
       :get
     ]
     methods.each do |method|
-      assert @blobs.respond_to? method, true
+      assert @files.respond_to? method, true
     end
   end
 
   def test_all_method
     @service.stub :list_blobs, @list_results do
-      assert_instance_of Fog::Storage::AzureRM::Blobs, @blobs.all
-      assert @blobs.all.size >= 1
-      @blobs.all.each do |blob|
-        assert_instance_of Fog::Storage::AzureRM::Blob, blob
+      assert_instance_of Fog::Storage::AzureRM::Files, @files.all
+      assert @files.all.size >= 1
+      @files.all.each do |file|
+        assert_instance_of Fog::Storage::AzureRM::File, file
       end
     end
   end
@@ -38,30 +38,30 @@ class TestBlobs < Minitest::Test
     http_exception = -> (_container_name, _option) { raise Azure::Core::Http::HTTPError.new(@mocked_response) }
     @blob_client.stub :list_blobs, http_exception do
       assert_raises(RuntimeError) do
-        @blobs.all
+        @files.all
       end
     end
   end
 
   def test_all_method_mock
-    assert_instance_of Fog::Storage::AzureRM::Blobs, @mock_blobs.all
-    assert @mock_blobs.all.size >= 1
-    @mock_blobs.all.each do |blob|
-      assert_instance_of Fog::Storage::AzureRM::Blob, blob
+    assert_instance_of Fog::Storage::AzureRM::Files, @mock_files.all
+    assert @mock_files.all.size >= 1
+    @mock_files.all.each do |file|
+      assert_instance_of Fog::Storage::AzureRM::File, file
     end
   end
 
   def test_get_method
     @service.stub :list_blobs, @list_results do
-      assert_instance_of Fog::Storage::AzureRM::Blob, @blobs.get('test-container', 'testblob1')
-      assert !@blobs.get('test-container', 'wrong-name').nil?
+      assert_instance_of Fog::Storage::AzureRM::File, @files.get('test-container', 'testblob1')
+      assert !@files.get('test-container', 'wrong-name').nil?
     end
   end
 
   def test_get_method_mock
     @service.stub :list_blobs, @list_results do
-      assert_instance_of Fog::Storage::AzureRM::Blob, @mock_blobs.get('test-container', 'testblob1')
-      assert !@mock_blobs.get('test-container', 'wrong-name').nil?
+      assert_instance_of Fog::Storage::AzureRM::File, @mock_files.get('test-container', 'testblob1')
+      assert !@mock_files.get('test-container', 'wrong-name').nil?
     end
   end
 end

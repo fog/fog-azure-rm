@@ -6,11 +6,11 @@ class TestGetContainerMetadata < Minitest::Test
   def setup
     @service = Fog::Storage::AzureRM.new(storage_account_credentials)
     @blob_client = @service.instance_variable_get(:@blob_client)
-    @container_object = ApiStub::Requests::Storage::Container.test_get_container_metadata
+    @container_object = ApiStub::Requests::Storage::Directory.test_get_container_metadata
   end
 
   def test_get_container_metadata_success
-    metadata_response = ApiStub::Requests::Storage::Container.metadata_response
+    metadata_response = ApiStub::Requests::Storage::Directory.metadata_response
     @blob_client.stub :get_container_metadata, @container_object do
       assert_equal @service.get_container_metadata('Test-container'), metadata_response
     end

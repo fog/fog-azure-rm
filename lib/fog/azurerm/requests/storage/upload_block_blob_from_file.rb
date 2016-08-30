@@ -15,13 +15,13 @@ module Fog
           end
 
           begin
-            size = File.size file_path
+            size = ::File.size file_path
 
             if size <= SINGLE_BLOB_PUT_THRESHOLD
-              blob = @blob_client.create_block_blob container_name, blob_name, IO.binread(File.expand_path(file_path)), options
+              blob = @blob_client.create_block_blob container_name, blob_name, IO.binread(::File.expand_path(file_path)), options
             else
               blocks = []
-              File.open file_path, 'rb' do |file|
+              ::File.open file_path, 'rb' do |file|
                 while (read_bytes = file.read(BLOCK_SIZE))
                   block_id = Base64.strict_encode64 random_string(32)
                   @blob_client.put_blob_block container_name, blob_name, block_id, read_bytes, options

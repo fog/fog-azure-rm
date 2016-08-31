@@ -40,14 +40,14 @@ class TestPublicIp < Minitest::Test
 
   def test_save_method_response
     response = ApiStub::Models::Network::PublicIp.create_public_ip_response(@network_client)
-    @service.stub :create_public_ip, response do
+    @service.stub :create_or_update_public_ip, response do
       assert_instance_of Fog::Network::AzureRM::PublicIp, @public_ip.save
     end
   end
 
   def test_update_method_response
-    response = ApiStub::Models::Network::PublicIp.update_public_ip_response(@network_client)
-    @service.stub :update_public_ip, response do
+    response = ApiStub::Models::Network::PublicIp.create_public_ip_response(@network_client)
+    @service.stub :create_or_update_public_ip, response do
       assert_instance_of Fog::Network::AzureRM::PublicIp, @public_ip.update({})
     end
   end

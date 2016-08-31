@@ -11,7 +11,7 @@ class TestCreatePublicIp < Minitest::Test
   def test_create_public_ip_success
     mocked_response = ApiStub::Requests::Network::PublicIp.create_public_ip_response(@network_client)
     @public_ips.stub :create_or_update, mocked_response do
-      assert_equal @service.create_public_ip('fog-test-rg', 'fog-test-public-ip', 'West US', 'Dynamic'), mocked_response
+      assert_equal @service.create_or_update_public_ip('fog-test-rg', 'fog-test-public-ip', 'West US', 'Dynamic', '', ''), mocked_response
     end
   end
 
@@ -19,7 +19,7 @@ class TestCreatePublicIp < Minitest::Test
     mocked_response = ApiStub::Requests::Network::PublicIp.create_public_ip_response(@network_client)
     @public_ips.stub :create_or_update, mocked_response do
       assert_raises ArgumentError do
-        @service.create_public_ip('fog-test-rg', 'fog-test-public-ip', 'West US')
+        @service.create_or_update_public_ip('fog-test-rg', 'fog-test-public-ip', 'West US')
       end
     end
   end
@@ -28,7 +28,7 @@ class TestCreatePublicIp < Minitest::Test
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @public_ips.stub :create_or_update, response do
       assert_raises RuntimeError do
-        @service.create_public_ip('fog-test-rg', 'fog-test-public-ip', 'West US', 'Dynamic')
+        @service.create_or_update_public_ip('fog-test-rg', 'fog-test-public-ip', 'West US', 'Dynamic', '', '')
       end
     end
   end

@@ -40,7 +40,7 @@ module Fog
           requires :public_ip_allocation_method
           requires :location
           requires :resource_group
-          public_ip = service.create_public_ip(resource_group, name, location, public_ip_allocation_method)
+          public_ip = service.create_or_update_public_ip(resource_group, name, location, public_ip_allocation_method, idle_timeout_in_minutes, domain_name_label)
           merge_attributes(Fog::Network::AzureRM::PublicIp.parse(public_ip))
         end
 
@@ -51,7 +51,7 @@ module Fog
         def update(input_hash)
           validate_input(input_hash)
           merge_attributes(input_hash)
-          pip = service.update_public_ip(resource_group, name, location, public_ip_allocation_method, idle_timeout_in_minutes, domain_name_label)
+          pip = service.create_or_update_public_ip(resource_group, name, location, public_ip_allocation_method, idle_timeout_in_minutes, domain_name_label)
           merge_attributes(Fog::Network::AzureRM::PublicIp.parse(pip))
         end
 

@@ -48,9 +48,9 @@ module Fog
           service.delete_public_ip(resource_group, name)
         end
 
-        def update(hash)
-          validate_input(hash)
-          merge_attributes(hash)
+        def update(input_hash)
+          validate_input(input_hash)
+          merge_attributes(input_hash)
           pip = service.update_public_ip(resource_group, name, location, public_ip_allocation_method, idle_timeout_in_minutes, domain_name_label)
           merge_attributes(Fog::Network::AzureRM::PublicIp.parse(pip))
         end

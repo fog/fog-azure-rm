@@ -7,7 +7,7 @@ module Fog
           msg = "Updating PublicIP #{name} in Resource Group #{resource_group}"
           Fog::Logger.debug msg
 
-          public_ip = create_public_ip_object(name, location, public_ip_allocation_method, idle_timeout_in_minutes, domain_name_label)
+          public_ip = get_public_ip_object(name, location, public_ip_allocation_method, idle_timeout_in_minutes, domain_name_label)
           begin
             public_ip_obj = @network_client.public_ipaddresses.create_or_update(resource_group, name, public_ip)
           rescue MsRestAzure::AzureOperationError => e
@@ -19,7 +19,7 @@ module Fog
 
         private
 
-        def create_public_ip_object(name, location, public_ip_allocation_method, idle_timeout_in_minutes, domain_name_label)
+        def get_public_ip_object(name, location, public_ip_allocation_method, idle_timeout_in_minutes, domain_name_label)
           public_ip = Azure::ARM::Network::Models::PublicIPAddress.new
           public_ip.name = name
           public_ip.location = location
@@ -37,8 +37,8 @@ module Fog
       # Mock class for Network Request
       class Mock
         def update_public_ip(*)
-          {
-            'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/publicIPAddresses/#{name}",
+          public_ip = {
+            'id' => '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/publicIPAddresses/fog-test-ip',
             'name' => 'testPubIp432',
             'type' => 'Microsoft.Network/publicIPAddresses',
             'location' => 'westus',
@@ -51,6 +51,8 @@ module Fog
                 'provisioningState' => 'Succeeded'
               }
           }
+          public_ip_mapper = Azure::ARM::Network::Models::PublicIPAddress.mapper
+          @network_client.deserialize(public_ip_mapper, public_ip, 'result.body')
         end
       end
     end

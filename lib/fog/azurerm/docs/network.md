@@ -329,6 +329,18 @@ Get a single record of Public Ip
      puts "#{pubip.name}"
 ```
 
+## Update Public Ip
+
+Get a Public IP object from the get method and then update that public IP. You can update the Public IP by passing the modifiable attributes in the form of a hash.
+
+```ruby
+    pubip.update(
+      public_ip_allocation_method: '<IP Allocation Method>',
+      idle_timeout_in_minutes: '<Idle Timeout In Minutes>',
+      domain_name_label: '<Domain Name Label>'
+    )
+```
+
 ## Destroy a single Public Ip
 
 Get a Public IP object from the get method and then destroy that public IP.

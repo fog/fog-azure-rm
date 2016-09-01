@@ -3,18 +3,32 @@ module Fog
     class AzureRM
       # Real class for Network Request
       class Real
-        def create_public_ip(resource_group, name, location, public_ip_allocation_method)
-          Fog::Logger.debug "Creating PublicIP #{name} in Resource Group #{resource_group}."
+        def create_or_update_public_ip(resource_group, name, location, public_ip_allocation_method, idle_timeout_in_minutes, domain_name_label)
+          msg = "Creating/Updating PublicIP #{name} in Resource Group #{resource_group}."
+          Fog::Logger.debug msg
+          public_ip = get_public_ip_object(name, location, public_ip_allocation_method, idle_timeout_in_minutes, domain_name_label)
+          begin
+            public_ip_obj = @network_client.public_ipaddresses.create_or_update(resource_group, name, public_ip)
+          rescue MsRestAzure::AzureOperationError => e
+            raise_azure_exception(e, msg)
+          end
+          Fog::Logger.debug "PublicIP #{name} Created Successfully!"
+          public_ip_obj
+        end
+
+        private
+
+        def get_public_ip_object(name, location, public_ip_allocation_method, idle_timeout_in_minutes, domain_name_label)
           public_ip = Azure::ARM::Network::Models::PublicIPAddress.new
           public_ip.name = name
           public_ip.location = location
-          public_ip.public_ipallocation_method = public_ip_allocation_method
-          begin
-            public_ip = @network_client.public_ipaddresses.create_or_update(resource_group, name, public_ip)
-          rescue MsRestAzure::AzureOperationError => e
-            raise_azure_exception(e, "Creating PublicIP #{name} in Resource Group #{resource_group}")
+          public_ip.public_ipallocation_method = public_ip_allocation_method unless public_ip_allocation_method.nil?
+          public_ip.idle_timeout_in_minutes = idle_timeout_in_minutes unless idle_timeout_in_minutes.nil?
+          unless domain_name_label.nil?
+            public_ip.dns_settings = Azure::ARM::Network::Models::PublicIPAddressDnsSettings.new
+            public_ip.dns_settings.domain_name_label = domain_name_label
           end
-          Fog::Logger.debug "PublicIP #{name} Created Successfully!"
+
           public_ip
         end
       end

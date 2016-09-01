@@ -4,20 +4,18 @@ require File.expand_path '../../test_helper', __dir__
 class TestPublicIp < Minitest::Test
   def setup
     @service = Fog::Network::AzureRM.new(credentials)
-    network_client = @service.instance_variable_get(:@network_client)
+    @network_client = @service.instance_variable_get(:@network_client)
     @public_ip = public_ip(@service)
-    @response = ApiStub::Models::Network::PublicIp.create_public_ip_response(network_client)
   end
 
   def test_model_methods
     methods = [
       :save,
-      :destroy
+      :destroy,
+      :update
     ]
-    @service.stub :create_public_ip, @response do
-      methods.each do |method|
-        assert @public_ip.respond_to? method
-      end
+    methods.each do |method|
+      assert @public_ip.respond_to? method
     end
   end
 
@@ -35,16 +33,22 @@ class TestPublicIp < Minitest::Test
       :fqdn,
       :reverse_fqdn
     ]
-    @service.stub :create_public_ip, @response do
-      attributes.each do |attribute|
-        assert @public_ip.respond_to? attribute
-      end
+    attributes.each do |attribute|
+      assert @public_ip.respond_to? attribute
     end
   end
 
   def test_save_method_response
-    @service.stub :create_public_ip, @response do
+    response = ApiStub::Models::Network::PublicIp.create_public_ip_response(@network_client)
+    @service.stub :create_or_update_public_ip, response do
       assert_instance_of Fog::Network::AzureRM::PublicIp, @public_ip.save
+    end
+  end
+
+  def test_update_method_response
+    response = ApiStub::Models::Network::PublicIp.create_public_ip_response(@network_client)
+    @service.stub :create_or_update_public_ip, response do
+      assert_instance_of Fog::Network::AzureRM::PublicIp, @public_ip.update({})
     end
   end
 

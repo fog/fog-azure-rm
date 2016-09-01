@@ -21,7 +21,7 @@ module Fog
       request :delete_virtual_network
       request :list_virtual_networks
       request :check_for_virtual_network
-      request :create_public_ip
+      request :create_or_update_public_ip
       request :delete_public_ip
       request :get_public_ip
       request :list_public_ips

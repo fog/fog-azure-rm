@@ -120,7 +120,7 @@ application_gateway.gateways.create(
 ######################                      Get and Destroy Application Gateway                   ######################
 ########################################################################################################################
 
-ag = application_gateway.gateways(resource_group: 'TestRG-AG').get('gateway')
+ag = application_gateway.gateways.get('gateway', 'TestRG-AG')
 ag.destroy
 
 ########################################################################################################################

@@ -4,21 +4,18 @@ module Fog
       # Real class for Load-Balancer Request
       class Real
         def get_load_balancer(resource_group_name, load_balancer_name)
-          Fog::Logger.debug "Getting Load-Balancer: #{load_balancer_name} in Resource Group: #{resource_group_name}"
+          msg = "Getting Load-Balancer: #{load_balancer_name} in Resource Group: #{resource_group_name}"
+          Fog::Logger.debug msg
           begin
-            promise = @network_client.load_balancers.get(resource_group_name, load_balancer_name)
-            result = promise.value!
-            Azure::ARM::Network::Models::LoadBalancer.serialize_object(result.body)
+            load_balancer = @network_client.load_balancers.get(resource_group_name, load_balancer_name)
           rescue MsRestAzure::AzureOperationError => e
-            msg = "Exception getting Load-Balancer #{load_balancer_name} in Resource Group: #{resource_group_name}. #{e.body['error']['message']}"
-            raise msg
+            raise_azure_exception(e, msg)
           end
+          load_balancer
         end
-
         # Mock class for Load-Balancer Request
         class Mock
           def get_load_balancer(*)
-
           end
         end
       end

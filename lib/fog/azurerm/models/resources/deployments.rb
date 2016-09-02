@@ -18,8 +18,10 @@ module Fog
           load(deployments)
         end
 
-        def get(identity)
-          all.find { |deployment| deployment.name == identity }
+        def get(resource_group_name, deployment_name)
+          deployment = service.get_deployment(resource_group_name, deployment_name)
+          deployment_object = Fog::Resources::AzureRM::Deployment.new(service: service)
+          deployment_object.merge_attributes(Fog::Resources::AzureRM::Deployment.parse(deployment))
         end
       end
     end

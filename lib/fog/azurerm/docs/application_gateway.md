@@ -122,8 +122,8 @@ Get a single record of Application Gateway
 
 ```ruby
     gateway = azure_application_gateway_service
-                            .gateways(resource_group: '<Resource Group name>')
-                            .get('<Application Gateway Name>')
+                            .gateways
+                            .get('<Resource Group name>', '<Application Gateway Name>')
     puts "#{gateway.name}"
 ```
 

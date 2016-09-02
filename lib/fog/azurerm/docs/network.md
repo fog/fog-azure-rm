@@ -160,8 +160,8 @@ Get a single record of Subnet
 
 ```ruby
      subnet = azure_network_service
-       .subnets(resource_group: '<Resource Group name>', virtual_network_name: '<Virtual Network name>')
-       .get('<Subnet name>')
+       .subnets
+       .get('<Resource Group name>', '<Virtual Network name>', '<Subnet name>')
      puts "#{subnet.name}"
 ```
 
@@ -324,8 +324,8 @@ Get a single record of Public Ip
 
 ```ruby
      pubip = azure_network_service
-             .public_ips(resource_group: '<Resource Group name>')
-             .get('<Public IP name>')
+             .public_ips
+             .get('<Resource Group name>', '<Public IP name>')
      puts "#{pubip.name}"
 ```
 
@@ -572,8 +572,8 @@ Get a single record of Load Balancer
 
 ```ruby
     lb = azure_network_service
-         .load_balancers(resource_group: '<Resource Group name>')
-         .get('<Load Balancer name>')
+         .load_balancers
+         .get('<Resource Group name>', '<Load Balancer name>')
     puts "#{lb.name}"
 ```
 

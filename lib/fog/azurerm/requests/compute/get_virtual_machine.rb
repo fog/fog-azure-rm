@@ -40,7 +40,7 @@ module Fog
                     },
                   'osDisk' =>
                     {
-                      'name' => "fog-test-server_os_disk",
+                      'name' => 'fog-test-server_os_disk',
                       'vhd' =>
                         {
                           'uri' => 'http://fogtestsafirst.blob.core.windows.net/vhds/fog-test-server_os_disk.vhd'

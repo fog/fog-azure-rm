@@ -113,7 +113,7 @@ network.load_balancers.create(
 ######################                        Get and Destroy Internal Load Balancer                       ######################
 ########################################################################################################################
 
-lb = network.load_balancers(resource_group: 'NRP-RG-Fog').get('lb')
+lb = network.load_balancers.get('NRP-RG-Fog', 'lb')
 lb.destroy
 
 ########################################################################################################################

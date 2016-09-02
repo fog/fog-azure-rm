@@ -14,9 +14,11 @@ module Fog
       request :create_resource_group
       request :list_resource_groups
       request :delete_resource_group
+      request :get_resource_group
       request :create_deployment
       request :delete_deployment
       request :list_deployments
+      request :get_deployment
       request :delete_resource_tag
       request :list_tagged_resources
       request :tag_resource

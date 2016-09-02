@@ -105,8 +105,8 @@ Get a single record of Storage Account
 
 ```ruby
 storage_acc = azure_storage_service
-                .storage_accounts(resource_group: '<Resource Group name>')
-                .get('<Storage Account name>')
+                .storage_accounts
+                .get('<Resource Group name>', '<Storage Account name>')
 puts "#{storage_acc.name}"
 ```
 

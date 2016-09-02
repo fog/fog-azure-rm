@@ -23,8 +23,10 @@ module Fog
           load(accounts)
         end
 
-        def get(identity)
-          all.find { |f| f.name == identity }
+        def get(resource_group_name, storage_account_name)
+          storage_account = service.get_storage_account(resource_group_name, storage_account_name)
+          storage_account_object = Fog::Storage::AzureRM::StorageAccount.new(service: service)
+          storage_account_object.merge_attributes(Fog::Storage::AzureRM::StorageAccount.parse(storage_account))
         end
 
         def check_name_availability(name)

@@ -34,9 +34,9 @@ class TestGateways < Minitest::Test
   end
 
   def test_get_method_response
-    @service.stub :list_application_gateways, @response do
-      assert_instance_of Fog::ApplicationGateway::AzureRM::Gateway, @gateways.get('gateway')
-      assert @gateways.get('wrong-name').nil?, true
+    response = ApiStub::Models::ApplicationGateway::Gateway.create_application_gateway_response(@gateway_client)
+    @service.stub :get_application_gateway, response do
+      assert_instance_of Fog::ApplicationGateway::AzureRM::Gateway, @gateways.get('fog-test-rg', 'gateway')
     end
   end
 end

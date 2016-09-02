@@ -112,8 +112,8 @@ Check the status of a Server
 
 ```ruby 
       status = azure_compute_service
-                          .servers(resource_group: '<Resource Group name>')
-                          .get('<Server name>')
+                          .servers
+                          .get('<Resource Group name>', '<Server name>')
                           .vm_status
       puts status
 ```
@@ -155,7 +155,7 @@ Get a single record of Availability Set
 
 ```ruby
       availability_set = azure_compute_service
-                          .availability_sets(resource_group: '<Resource Group name>')
+                          .availability_sets
                           .get('<Resource Group name>','<Availability Set name>')
         puts "#{availability_set.name}"
 ```

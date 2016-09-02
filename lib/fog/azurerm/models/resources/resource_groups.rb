@@ -17,8 +17,10 @@ module Fog
           load(resource_groups)
         end
 
-        def get(identity)
-          all.find { |f| f.name == identity }
+        def get(resource_group_name)
+          resource_group = service.get_resource_group(resource_group_name)
+          resource_group_object = Fog::Resources::AzureRM::ResourceGroup.new(service: service)
+          resource_group_object.merge_attributes(Fog::Resources::AzureRM::ResourceGroup.parse(resource_group))
         end
       end
     end

@@ -5,8 +5,8 @@ class TestLoadBalancers < Minitest::Test
   def setup
     @service = Fog::Network::AzureRM.new(credentials)
     @load_balancers = Fog::Network::AzureRM::LoadBalancers.new(resource_group: 'fog-test-rg', service: @service)
-    network_client = @service.instance_variable_get(:@network_client)
-    @response = [ApiStub::Models::Network::LoadBalancer.create_load_balancer_response(network_client)]
+    @network_client = @service.instance_variable_get(:@network_client)
+    @response = [ApiStub::Models::Network::LoadBalancer.create_load_balancer_response(@network_client)]
   end
 
   def test_collection_methods
@@ -34,9 +34,9 @@ class TestLoadBalancers < Minitest::Test
   end
 
   def test_get_method_response
-    @service.stub :list_load_balancers, @response do
-      assert_instance_of Fog::Network::AzureRM::LoadBalancer, @load_balancers.get('mylb1')
-      assert @load_balancers.get('wrong-name').nil?, true
+    response = ApiStub::Models::Network::LoadBalancer.create_load_balancer_response(@network_client)
+    @service.stub :get_load_balancer, response do
+      assert_instance_of Fog::Network::AzureRM::LoadBalancer, @load_balancers.get('fog-test-rg', 'mylb1')
     end
   end
 end

@@ -4,9 +4,9 @@ require File.expand_path '../../test_helper', __dir__
 class TestResourceGroups < Minitest::Test
   def setup
     @service = Fog::Resources::AzureRM.new(credentials)
-    client = @service.instance_variable_get(:@rmc)
+    @rmc_client = @service.instance_variable_get(:@rmc)
     @resource_groups = Fog::Resources::AzureRM::ResourceGroups.new(service: @service)
-    @response = [ApiStub::Models::Resources::ResourceGroup.create_resource_group_response(client)]
+    @response = [ApiStub::Models::Resources::ResourceGroup.create_resource_group_response(@rmc_client)]
   end
 
   def test_collection_methods
@@ -30,9 +30,9 @@ class TestResourceGroups < Minitest::Test
   end
 
   def test_get_method_response
-    @service.stub :list_resource_groups, @response do
+    response = ApiStub::Models::Resources::ResourceGroup.create_resource_group_response(@rmc_client)
+    @service.stub :get_resource_group, response do
       assert_instance_of Fog::Resources::AzureRM::ResourceGroup, @resource_groups.get('fog-test-rg')
-      assert @resource_groups.get('wrong-name').nil?
     end
   end
 end

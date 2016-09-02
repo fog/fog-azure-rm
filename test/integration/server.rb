@@ -134,7 +134,7 @@ nic.destroy
 vnet = network.virtual_networks.get('TestRG-VM', 'testVnet')
 vnet.destroy
 
-storage = storage.storage_accounts(resource_group: 'TestRG-VM').get('fogstorageac')
+storage = storage.storage_accounts.get('TestRG-VM', 'fogstorageac')
 storage.destroy
 
 rg = rs.resource_groups.get('TestRG-VM')

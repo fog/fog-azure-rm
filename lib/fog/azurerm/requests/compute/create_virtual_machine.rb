@@ -1,5 +1,5 @@
 require 'base64'
-WHITE_SPACE = ' '
+WHITE_SPACE = ' '.freeze
 
 module Fog
   module Compute

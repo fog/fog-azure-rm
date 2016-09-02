@@ -43,7 +43,8 @@ Create a new linux server
         offer: 'UbuntuServer',
         sku: '14.04.2-LTS',
         version: 'latest',
-        platform: 'Linux'
+        platform: 'Linux',
+        custom_data: 'echo customData'            # Optional
     )
 ```
 Create a new windows server
@@ -63,9 +64,11 @@ Create a new windows server
         offer: 'WindowsServerEssentials',
         sku: 'WindowsServerEssentials',
         version: 'latest',
-        platform: 'Windows'
+        platform: 'Windows',
+        custom_data: 'echo customData'            # Optional
     )
 ```
+For more information about custom_data; see link: https://msdn.microsoft.com/en-us/library/azure/mt163591.aspx
 
 ## List Servers
 

@@ -137,5 +137,5 @@ vnet.destroy
 storage = storage.storage_accounts.get('TestRG-VM', 'fogstorageac')
 storage.destroy
 
-rg = rs.resource_groups.get('TestRG-VM')
-rg.destroy
+resource_group = rs.resource_groups.get('TestRG-VM')
+resource_group.destroy

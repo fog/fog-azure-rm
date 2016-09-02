@@ -120,8 +120,8 @@ application_gateway.gateways.create(
 ######################                      Get and Destroy Application Gateway                   ######################
 ########################################################################################################################
 
-ag = application_gateway.gateways.get('gateway', 'TestRG-AG')
-ag.destroy
+application_gateway = application_gateway.gateways.get('gateway', 'TestRG-AG')
+application_gateway.destroy
 
 ########################################################################################################################
 ######################                                   CleanUp                                  ######################
@@ -133,5 +133,5 @@ pubip.destroy
 vnet = network.virtual_networks.get('TestRG-AG', 'testVnet')
 vnet.destroy
 
-rg = rs.resource_groups.get('TestRG-AG')
-rg.destroy
+resource_group = rs.resource_groups.get('TestRG-AG')
+resource_group.destroy

@@ -18,9 +18,9 @@ module Fog
 
       # This class provides the mock implementation
       class Mock
-        def get_deployment(resource_group)
+        def get_deployment(*)
           deployments = {
-            id: "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/microsoft.resources/deployments/testdeployment",
+            id: "/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/microsoft.resources/deployments/testdeployment",
             name: 'testdeployment',
             properties: {
               templateLink: {

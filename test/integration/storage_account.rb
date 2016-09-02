@@ -86,5 +86,5 @@ premium_storage_account.destroy
 ######################                                   CleanUp                                  ######################
 ########################################################################################################################
 
-rg = rs.resource_groups.get('TestRG-SA')
-rg.destroy
+resource_group = rs.resource_groups.get('TestRG-SA')
+resource_group.destroy

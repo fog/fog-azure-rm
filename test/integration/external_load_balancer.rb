@@ -103,8 +103,8 @@ network.load_balancers.create(
 ######################                        Get and Destroy Load Balancer                       ######################
 ########################################################################################################################
 
-lb = network.load_balancers.get('TestRG-LB', 'lb')
-lb.destroy
+load_balancer = network.load_balancers.get('TestRG-LB', 'lb')
+load_balancer.destroy
 
 ########################################################################################################################
 ######################                                   CleanUp                                  ######################
@@ -116,5 +116,5 @@ pubip.destroy
 vnet = network.virtual_networks.get('TestRG-LB', 'testVnet')
 vnet.destroy
 
-rg = rs.resource_groups.get('TestRG-LB')
-rg.destroy
+resource_group = rs.resource_groups.get('TestRG-LB')
+resource_group.destroy

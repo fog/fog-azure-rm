@@ -8,11 +8,11 @@ module Fog
           Fog::Logger.debug msg
           begin
             resource_group = @rmc.resource_groups.get(resource_group_name)
-            Fog::Logger.debug "Getting Resource Group #{resource_group_name} successfully"
-            resource_group
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
+          Fog::Logger.debug "Getting Resource Group #{resource_group_name} successfully"
+          resource_group
         end
       end
 

@@ -22,10 +22,11 @@ module Fog
         attribute :copy_source
         attribute :directory
         attribute :etag
+        attribute :file_path
+        attribute :last_modified
         attribute :lease_duration
         attribute :lease_state
         attribute :lease_status
-        attribute :last_modified
         attribute :metadata
         attribute :sequence_number
         attribute :blob_type
@@ -33,7 +34,8 @@ module Fog
         def save(options = {})
           requires :key
           requires :directory
-          merge_attributes(File.parse(service.upload_block_blob_from_file(directory, key, options[:file_path], options)))
+          requires :file_path
+          merge_attributes(File.parse(service.upload_block_blob_from_file(directory, key, file_path, options)))
         end
 
         alias create save
@@ -47,6 +49,7 @@ module Fog
         def save_to_file(file_path, options = {})
           requires :key
           requires :directory
+          merge_attributes(file_path: file_path)
           merge_attributes(File.parse(service.download_blob_to_file(directory, key, file_path, options)))
         end
 

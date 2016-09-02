@@ -54,10 +54,11 @@ class TestFile < Minitest::Test
       :copy_source,
       :directory,
       :etag,
+      :file_path,
+      :last_modified,
       :lease_duration,
       :lease_state,
       :lease_status,
-      :last_modified,
       :metadata,
       :sequence_number,
       :blob_type
@@ -68,11 +69,12 @@ class TestFile < Minitest::Test
   end
 
   def test_save_method_response
+    @file.file_path = 'test.txt'
     @service.stub :upload_block_blob_from_file, @create_result do
       assert_instance_of Fog::Storage::AzureRM::File, @file.save
     end
     @service.stub :upload_block_blob_from_file, @create_result do
-      assert_instance_of Fog::Storage::AzureRM::File, @file.create(file_path: 'test.txt')
+      assert_instance_of Fog::Storage::AzureRM::File, @file.create
     end
   end
 
@@ -81,19 +83,20 @@ class TestFile < Minitest::Test
     small_file = File.new(small_file_name, 'w')
     small_file.puts(@content)
     small_file.close
+    @file.file_path = small_file_name
     @blob_client.stub :create_block_blob, @create_result do
-      assert_instance_of Fog::Storage::AzureRM::File, @file.create(file_path: small_file_name)
+      assert_instance_of Fog::Storage::AzureRM::File, @file.create
     end
     io_exception = -> (_container_name, _blob_name, _file_path, _option) { raise IOError.new }
     @blob_client.stub :create_block_blob, io_exception do
       assert_raises(RuntimeError) do
-        @file.create(file_path: small_file_name)
+        @file.create
       end
     end
     http_exception = -> (_container_name, _blob_name, _file_path, _option) { raise Azure::Core::Http::HTTPError.new(@mocked_response) }
     @blob_client.stub :create_block_blob, http_exception do
       assert_raises(RuntimeError) do
-        @file.create(file_path: small_file_name)
+        @file.create
       end
     end
     File.delete(small_file_name)
@@ -106,15 +109,17 @@ class TestFile < Minitest::Test
       large_file.puts(@content)
     end
     large_file.close
+    @file.file_path = large_file_name
     @blob_client.stub :put_blob_block, true do
       @blob_client.stub :commit_blob_blocks, @create_result do
-        assert_instance_of Fog::Storage::AzureRM::File, @file.create(file_path: large_file_name)
+        assert_instance_of Fog::Storage::AzureRM::File, @file.create
       end
     end
     File.delete(large_file_name)
   end
 
   def test_save_method_response_mock
+    @mock_file.file_path = 'mock_test.txt'
     assert_instance_of Fog::Storage::AzureRM::File, @mock_file.save
   end
 

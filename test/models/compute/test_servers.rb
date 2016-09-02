@@ -24,7 +24,7 @@ class TestServers < Minitest::Test
   end
 
   def test_all_method_response
-    response = [ApiStub::Models::Compute::Server.create_windows_virtual_machine_response(@compute_client)]
+    response = [@response]
     @service.stub :list_virtual_machines, response do
       assert_instance_of Fog::Compute::AzureRM::Servers, @servers.all
       assert @servers.all.size >= 1

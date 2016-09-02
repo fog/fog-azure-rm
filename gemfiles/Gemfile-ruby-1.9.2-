@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
 gem 'rest-client', '~> 1.6.9'
-gem 'mime-types', '< 2.0'
+gem 'mime-types', '<= 2.0'
 
 gemspec :path => '../'

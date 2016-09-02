@@ -1,4 +1,5 @@
 require 'base64'
+WHITE_SPACE = ' '
 
 module Fog
   module Compute
@@ -17,7 +18,7 @@ module Fog
           end
 
           string_data = vm_hash[:custom_data]
-          string_data = ' ' if string_data.nil?
+          string_data = WHITE_SPACE if string_data.nil?
           encoded_data = Base64.strict_encode64(string_data)
           virtual_machine.hardware_profile = define_hardware_profile(vm_hash[:vm_size])
           virtual_machine.storage_profile = define_storage_profile(vm_hash[:name],

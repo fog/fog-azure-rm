@@ -3,7 +3,7 @@ module ApiStub
     module Compute
       # Mock class for Virtual Machine Requests
       class VirtualMachine
-        def self.linux_virtual_machine_hash
+        def self.linux_virtual_machine_params
           {
             resource_group: 'fog-test-rg',
             name: 'fog-test-server',
@@ -27,7 +27,7 @@ module ApiStub
           }
         end
 
-        def self.windows_virtual_machine_hash
+        def self.windows_virtual_machine_params
           {
             resource_group: 'fog-test-rg',
             name: 'fog-test-server',
@@ -51,7 +51,7 @@ module ApiStub
           }
         end
 
-        def self.linux_virtual_machine_with_custom_data_hash
+        def self.linux_virtual_machine_with_custom_data_params
           {
             resource_group: 'fog-test-rg',
             name: 'fog-test-server',
@@ -76,7 +76,7 @@ module ApiStub
           }
         end
 
-        def self.windows_virtual_machine_with_custom_data_hash
+        def self.windows_virtual_machine_with_custom_data_params
           {
             resource_group: 'fog-test-rg',
             name: 'fog-test-server',

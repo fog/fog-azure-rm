@@ -3,8 +3,6 @@ sudo: false
 matrix:
   fast_finish: true
   include:
-    - rvm: 1.9.3
-      gemfile: gemfiles/Gemfile-ruby-1.9.2+
     - rvm: 2.0.0
       gemfile: Gemfile
     - rvm: 2.1.5

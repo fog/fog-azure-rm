@@ -5,13 +5,6 @@ require 'fog/azurerm/config'
 require 'fog/azurerm/utilities/general'
 require 'fog/azurerm/version'
 require 'fog/azurerm/core'
-#require 'fog/azurerm/dns'
-# require 'fog/azurerm/resources'
-#require 'fog/azurerm/storage'
-# require 'fog/azurerm/network'
-#require 'fog/azurerm/compute'
-#require 'fog/azurerm/application_gateway'
-# require 'fog/azurerm/traffic_manager'
 
 module Fog
   module Credentials

@@ -4,14 +4,15 @@ module Fog
       # This class provides the actual implemention for service calls.
       class Real
         def delete_deployment(resource_group, deployment_name)
-          Fog::Logger.debug "Deleting Deployment: #{deployment_name} in Resource Group: #{resource_group}"
+          msg = "Deleting Deployment: #{deployment_name} in Resource Group: #{resource_group}"
+          Fog::Logger.debug msg
           begin
             @rmc.deployments.delete(resource_group, deployment_name)
-            Fog::Logger.debug "Deployment: #{deployment_name} in Resource Group: #{resource_group} deleted successfully."
-            true
           rescue  MsRestAzure::AzureOperationError => e
-            raise Fog::AzureRm::OperationError.new(e)
+            raise_azure_exception(e, msg)
           end
+          Fog::Logger.debug "Deployment: #{deployment_name} in Resource Group: #{resource_group} deleted successfully."
+          true
         end
       end
 

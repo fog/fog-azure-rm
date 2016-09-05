@@ -26,7 +26,7 @@ network = Fog::Network::AzureRM.new(
 ######################                                 Prerequisites                              ######################
 ########################################################################################################################
 
-resources.resource_groups.create(
+resource_group = resources.resource_groups.create(
   name: 'TestRG-ER',
   location: 'eastus'
 )
@@ -78,3 +78,5 @@ circuit = network.express_route_circuits.get('TestRG-ER', 'testERCircuit')
 puts circuit.name
 
 circuit.destroy
+
+resource_group.destroy

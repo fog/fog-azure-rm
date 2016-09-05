@@ -5,13 +5,6 @@ require 'fog/azurerm/config'
 require 'fog/azurerm/utilities/general'
 require 'fog/azurerm/version'
 require 'fog/azurerm/core'
-#require 'fog/azurerm/dns'
-# require 'fog/azurerm/resources'
-#require 'fog/azurerm/storage'
-# require 'fog/azurerm/network'
-#require 'fog/azurerm/compute'
-#require 'fog/azurerm/application_gateway'
-# require 'fog/azurerm/traffic_manager'
 
 module Fog
   module Credentials
@@ -44,7 +37,7 @@ module Fog
     def self.services
       begin
         array_of_services = []
-        ENV['BUNDLE_GEM'] = File.expand_path('../../lib', File.dirname(__FILE__))
+        ENV['BUNDLE_GEM'] = File.expand_path('../lib', File.dirname(__dir__))
         gem_path = ENV['BUNDLE_GEM']
         files = Dir.entries(File.join(gem_path, '/fog/azurerm')).select { |f| !File.directory? f }
         files.each do |file|

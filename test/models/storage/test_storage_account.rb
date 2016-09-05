@@ -1,4 +1,5 @@
 require File.expand_path '../../test_helper', __dir__
+
 # Test class for Storage Account Model
 class TestStorageAccount < Minitest::Test
   def setup

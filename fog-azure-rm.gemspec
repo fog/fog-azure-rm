@@ -1,4 +1,4 @@
-lib = File.expand_path('../lib', __FILE__)
+lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'fog/azurerm/version'
 
@@ -23,6 +23,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'simplecov', '~> 0.11.2'
   spec.add_development_dependency 'codeclimate-test-reporter'
   spec.add_dependency 'fog-core', '~> 1.42.0'
+  spec.add_dependency 'rest-client', '~> 2.0.0'
   spec.add_dependency 'azure_mgmt_compute', '~> 0.5.0'
   spec.add_dependency 'azure_mgmt_resources', '~> 0.5.0'
   spec.add_dependency 'azure_mgmt_storage', '~> 0.5.0'

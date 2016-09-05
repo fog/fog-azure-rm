@@ -3,7 +3,7 @@ module Fog
     class AzureRM
       # This class provides the actual implementation for service call.
       class Real
-        def create_traffic_manager_profile(resource_group, name, traffic_routing_method, relative_name, ttl, protocol, port, path)
+        def create_or_update_traffic_manager_profile(resource_group, name, traffic_routing_method, relative_name, ttl, protocol, port, path)
           msg = "Creating Traffic Manager Profile: #{name}."
           Fog::Logger.debug msg
           profile_parameters = get_profile_object(traffic_routing_method, relative_name, ttl, protocol, port, path)
@@ -16,6 +16,8 @@ module Fog
           traffic_manager_profile
         end
 
+        private
+
         def get_profile_object(traffic_routing_method, relative_name, ttl, protocol, port, path)
           traffic_manager_profile = Azure::ARM::TrafficManager::Models::Profile.new
           traffic_manager_profile.traffic_routing_method = traffic_routing_method
@@ -25,8 +27,6 @@ module Fog
           traffic_manager_profile.monitor_config = get_traffic_manager_monitor_config(protocol, port, path)
           traffic_manager_profile
         end
-
-        private
 
         def get_traffic_manager_dns_config(relative_name, ttl)
           traffic_manager_dns_config = Azure::ARM::TrafficManager::Models::DnsConfig.new
@@ -45,7 +45,7 @@ module Fog
       end
       # This class provides the mock implementation for unit tests.
       class Mock
-        def create_traffic_manager_profile(*)
+        def create_or_update_traffic_manager_profile(*)
           profile = {
             'location' => 'global',
             'tags' => {},

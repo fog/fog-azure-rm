@@ -44,9 +44,7 @@ module Fog
         def save
           requires :name, :resource_group, :traffic_routing_method, :relative_name, :ttl,
                    :protocol, :port, :path
-          traffic_manager_profile = service.create_traffic_manager_profile(resource_group, name,
-                                                                           traffic_routing_method, relative_name, ttl,
-                                                                           protocol, port, path)
+          traffic_manager_profile = service.create_or_update_traffic_manager_profile(resource_group, name, traffic_routing_method, relative_name, ttl, protocol, port, path)
           merge_attributes(Fog::TrafficManager::AzureRM::TrafficManagerProfile.parse(traffic_manager_profile))
         end
 
@@ -57,7 +55,7 @@ module Fog
         def update(profile_params)
           validate_input(profile_params)
           merge_attributes(profile_params)
-          profile = service.update_traffic_manager_profile(resource_group, name, traffic_routing_method, relative_name, ttl, protocol, port, path)
+          profile = service.create_or_update_traffic_manager_profile(resource_group, name, traffic_routing_method, relative_name, ttl, protocol, port, path)
           merge_attributes(Fog::TrafficManager::AzureRM::TrafficManagerProfile.parse(profile))
         end
 

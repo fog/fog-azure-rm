@@ -113,8 +113,8 @@ network.load_balancers.create(
 ######################                        Get and Destroy Internal Load Balancer                       ######################
 ########################################################################################################################
 
-lb = network.load_balancers(resource_group: 'NRP-RG-Fog').get('lb')
-lb.destroy
+load_balancer = network.load_balancers.get('NRP-RG-Fog', 'lb')
+load_balancer.destroy
 
 ########################################################################################################################
 ######################                                   CleanUp                                  ######################
@@ -123,5 +123,5 @@ lb.destroy
 vnet = network.virtual_networks.get('NRP-RG-Fog', 'NRPVNet')
 vnet.destroy
 
-rg = rs.resource_groups.get('NRP-RG-Fog')
-rg.destroy
+resource_group = rs.resource_groups.get('NRP-RG-Fog')
+resource_group.destroy

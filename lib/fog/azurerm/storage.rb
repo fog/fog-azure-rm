@@ -19,6 +19,7 @@ module Fog
       request :create_storage_account
       request :list_storage_accounts
       request :delete_storage_account
+      request :get_storage_account
       request :list_storage_account_for_rg
       request :check_storage_account_name_availability
       request :get_storage_access_keys

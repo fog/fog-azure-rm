@@ -13,6 +13,7 @@ module Fog
       request :create_application_gateway
       request :delete_application_gateway
       request :list_application_gateways
+      request :get_application_gateway
 
       model_path 'fog/azurerm/models/application_gateway'
       model :gateway

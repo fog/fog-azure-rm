@@ -45,9 +45,9 @@ class TestStorageAccounts < Minitest::Test
   end
 
   def test_get_method_response
-    @service.stub :list_storage_account_for_rg, @list_storage_account_response do
-      assert_instance_of Fog::Storage::AzureRM::StorageAccount, @storage_accounts.get('fog-test-storage-account')
-      assert @storage_accounts.get('wrong-name').nil?, true
+    response = ApiStub::Models::Storage::StorageAccount.create_storage_account(@storage_mgmt_client)
+    @service.stub :get_storage_account, response do
+      assert_instance_of Fog::Storage::AzureRM::StorageAccount, @storage_accounts.get('fog-test-rg', 'fog-test-storage-account')
     end
   end
 

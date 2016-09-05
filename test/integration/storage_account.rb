@@ -75,16 +75,16 @@ storage.storage_accounts.create(
 ######################                         Get and Delete Storage Account                     ######################
 ########################################################################################################################
 
-standard_storage_account = storage.storage_accounts(resource_group: 'TestRG-SA').get('fogstandardsalrs')
+standard_storage_account = storage.storage_accounts.get('TestRG-SA', 'fogstandardsalrs')
 standard_storage_account.destroy
-standard_storage_account = storage.storage_accounts(resource_group: 'TestRG-SA').get('fogstandardsagrs')
+standard_storage_account = storage.storage_accounts.get('TestRG-SA', 'fogstandardsagrs')
 standard_storage_account.destroy
-premium_storage_account = storage.storage_accounts(resource_group: 'TestRG-SA').get('fogpremiumsa')
+premium_storage_account = storage.storage_accounts.get('TestRG-SA', 'fogpremiumsa')
 premium_storage_account.destroy
 
 ########################################################################################################################
 ######################                                   CleanUp                                  ######################
 ########################################################################################################################
 
-rg = rs.resource_groups.get('TestRG-SA')
-rg.destroy
+resource_group = rs.resource_groups.get('TestRG-SA')
+resource_group.destroy

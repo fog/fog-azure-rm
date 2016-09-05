@@ -6,14 +6,13 @@ class TestServers < Minitest::Test
     @service = Fog::Compute::AzureRM.new(credentials)
     @servers = Fog::Compute::AzureRM::Servers.new(resource_group: 'fog-test-rg', service: @service)
     @compute_client = @service.instance_variable_get(:@compute_mgmt_client)
-    @response = [ApiStub::Models::Compute::Server.create_windows_virtual_machine_response(@compute_client)]
+    @response = ApiStub::Models::Compute::Server.create_windows_virtual_machine_response(@compute_client)
   end
 
   def test_collection_methods
     methods = [
       :all,
-      :get,
-      :get_from_remote
+      :get
     ]
     methods.each do |method|
       assert @servers.respond_to? method, true
@@ -25,7 +24,8 @@ class TestServers < Minitest::Test
   end
 
   def test_all_method_response
-    @service.stub :list_virtual_machines, @response do
+    response = [@response]
+    @service.stub :list_virtual_machines, response do
       assert_instance_of Fog::Compute::AzureRM::Servers, @servers.all
       assert @servers.all.size >= 1
       @servers.all.each do |s|
@@ -35,16 +35,8 @@ class TestServers < Minitest::Test
   end
 
   def test_get_method_response
-    @service.stub :list_virtual_machines, @response do
-      assert_instance_of Fog::Compute::AzureRM::Server, @servers.get('fog-test-server')
-      assert @servers.get('wrong-name').nil?, true
-    end
-  end
-
-  def test_get_from_remote_method_response
-    response = ApiStub::Models::Compute::Server.create_windows_virtual_machine_response(@compute_client)
-    @service.stub :get_virtual_machine, response do
-      assert_instance_of Fog::Compute::AzureRM::Server, @servers.get_from_remote('fog-test-rg', 'fog-test-server')
+    @service.stub :get_virtual_machine, @response do
+      assert_instance_of Fog::Compute::AzureRM::Server, @servers.get('fog-test-rg', 'fog-test-server')
     end
   end
 end

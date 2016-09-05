@@ -138,8 +138,8 @@ Get a single record of Deployment
 
 ```ruby
       deployment = azure_resources_service
-                          .deployments(resource_group: '<Resource Group name>')
-                          .get('<Deployment name>')
+                          .deployments
+                          .get('<Resource Group name>', '<Deployment name>')
       puts "#{deployment.name}"
 ```
 

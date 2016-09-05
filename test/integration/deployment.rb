@@ -39,7 +39,7 @@ resources.deployments.create(
 ######################                    List and Get Deployment                              #########################
 ########################################################################################################################
 
-deployment = resources.deployments(resource_group: resource_group.name).get('testdeployment')
+deployment = resources.deployments.get(resource_group.name, 'testdeployment')
 
 ########################################################################################################################
 ######################               Destroy Deployment                                  ###############################

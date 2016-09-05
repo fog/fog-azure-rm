@@ -12,9 +12,9 @@ if ENV['CODECLIMATE_REPO_TOKEN']
 end
 
 require 'minitest/autorun'
-$LOAD_PATH.unshift(File.expand_path '../lib', __dir__)
-require File.expand_path '../lib/fog/azurerm', __dir__
-require File.expand_path './api_stub', __dir__
+$LOAD_PATH.unshift(File.expand_path '../../lib', __FILE__)
+require File.expand_path '../../lib/fog/azurerm', __FILE__
+require File.expand_path '.././api_stub', __FILE__
 def credentials
   {
     tenant_id: '<TENANT-ID>',

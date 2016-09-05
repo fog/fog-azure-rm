@@ -1,4 +1,4 @@
-require File.expand_path '../../test_helper', __dir__
+require File.expand_path '../../../test_helper', __FILE__
 
 # Test class for Start Virtual Machine Request
 class TestStartVirtualMachine < Minitest::Test

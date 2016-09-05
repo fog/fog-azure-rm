@@ -1,4 +1,4 @@
-require File.expand_path '../../../test_helper', __FILE__
+require File.expand_path '../../test_helper', __dir__
 
 # Test Class for List Storage Accounts For Resource Group Request
 class TestListStorageAccountsForRG < Minitest::Test

@@ -1,4 +1,4 @@
-require File.expand_path '../../../test_helper', __FILE__
+require File.expand_path '../../test_helper', __dir__
 
 # Test class for Get Virtual Network request
 class TestGetVirtualNetwork < Minitest::Test

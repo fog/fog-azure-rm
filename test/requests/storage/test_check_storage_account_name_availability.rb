@@ -1,4 +1,4 @@
-require File.expand_path '../../../test_helper', __FILE__
+require File.expand_path '../../test_helper', __dir__
 
 # Test Class for Check Storage Account Request
 class TestCheckStorageAccountNameAvailability < Minitest::Test

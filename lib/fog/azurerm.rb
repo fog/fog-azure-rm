@@ -8,28 +8,28 @@ require 'fog/azurerm/core'
 
 module Fog
   module Credentials
-    autoload :AzureRM, File.expand_path('../azurerm/credentials', __FILE__)
+    autoload :AzureRM, File.expand_path('azurerm/credentials', __dir__)
   end
   module Compute
-    autoload :AzureRM, File.expand_path('../azurerm/compute', __FILE__)
+    autoload :AzureRM, File.expand_path('azurerm/compute', __dir__)
   end
   module DNS
-    autoload :AzureRM, File.expand_path('../azurerm/dns', __FILE__)
+    autoload :AzureRM, File.expand_path('azurerm/dns', __dir__)
   end
   module Network
-    autoload :AzureRM, File.expand_path('../azurerm/network', __FILE__)
+    autoload :AzureRM, File.expand_path('azurerm/network', __dir__)
   end
   module Resources
-    autoload :AzureRM, File.expand_path('../azurerm/resources', __FILE__)
+    autoload :AzureRM, File.expand_path('azurerm/resources', __dir__)
   end
   module TrafficManager
-    autoload :AzureRM, File.expand_path('../azurerm/traffic_manager', __FILE__)
+    autoload :AzureRM, File.expand_path('azurerm/traffic_manager', __dir__)
   end
   module Storage
-    autoload :AzureRM, File.expand_path('../azurerm/storage', __FILE__)
+    autoload :AzureRM, File.expand_path('azurerm/storage', __dir__)
   end
   module ApplicationGateway
-    autoload :AzureRM, File.expand_path('../azurerm/application_gateway', __FILE__)
+    autoload :AzureRM, File.expand_path('azurerm/application_gateway', __dir__)
   end
 
   # Main AzureRM fog Provider Module
@@ -37,7 +37,7 @@ module Fog
     def self.services
       begin
         array_of_services = []
-        ENV['BUNDLE_GEM'] = File.expand_path('../../lib', File.dirname(__FILE__))
+        ENV['BUNDLE_GEM'] = File.expand_path('../lib', File.dirname(__dir__))
         gem_path = ENV['BUNDLE_GEM']
         files = Dir.entries(File.join(gem_path, '/fog/azurerm')).select { |f| !File.directory? f }
         files.each do |file|

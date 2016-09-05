@@ -1,4 +1,4 @@
-require File.expand_path '../../../test_helper', __FILE__
+require File.expand_path '../../test_helper', __dir__
 
 # Test Class for Delete Storage Account Request
 class TestDeleteStorageAccount < Minitest::Test

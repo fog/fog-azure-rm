@@ -4,7 +4,7 @@ require 'erb'
 require 'fog/azurerm/config'
 require 'fog/azurerm/utilities/general'
 require 'fog/azurerm/version'
-require 'fog/azurerm/core'
+require 'fog/core'
 
 module Fog
   module Credentials
@@ -34,6 +34,14 @@ module Fog
 
   # Main AzureRM fog Provider Module
   module AzureRM
+    extend Fog::Provider
+    service(:resources, 'Resources')
+    service(:dns, 'DNS')
+    service(:storage, 'Storage')
+    service(:network, 'Network')
+    service(:compute, 'Compute')
+    service(:application_gateway, 'ApplicationGateway')
+
     def self.services
       begin
         array_of_services = []
@@ -42,7 +50,6 @@ module Fog
         files = Dir.entries(File.join(gem_path, '/fog/azurerm')).select { |f| !File.directory? f }
         files.each do |file|
           next if file == 'config.rb'
-          next if file == 'core.rb'
           next if file == 'credentials.rb'
           next if file == 'docs'
           next if file == 'models'

@@ -1,5 +1,3 @@
-require 'fog/azurerm/core'
-
 module Fog
   module DNS
     # This class registers models, requests and collections

@@ -1,5 +1,3 @@
-require 'fog/azurerm/core'
-
 module Fog
   module Resources
     # This class registers models, requests and collections

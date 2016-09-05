@@ -16,8 +16,6 @@ module Fog
           traffic_manager_profile
         end
 
-        private
-
         def get_profile_object(traffic_routing_method, relative_name, ttl, protocol, port, path)
           traffic_manager_profile = Azure::ARM::TrafficManager::Models::Profile.new
           traffic_manager_profile.traffic_routing_method = traffic_routing_method
@@ -27,6 +25,8 @@ module Fog
           traffic_manager_profile.monitor_config = get_traffic_manager_monitor_config(protocol, port, path)
           traffic_manager_profile
         end
+
+        private
 
         def get_traffic_manager_dns_config(relative_name, ttl)
           traffic_manager_dns_config = Azure::ARM::TrafficManager::Models::DnsConfig.new

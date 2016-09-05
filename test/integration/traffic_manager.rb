@@ -67,6 +67,17 @@ end_point = traffic_manager.traffic_manager_end_points.get('TestRG-TM', 'test-tm
 end_point.destroy
 
 ########################################################################################################################
+######################                    Get and Update Traffic Manager Profile                 ######################
+########################################################################################################################
+
+traffic_manager_profile = traffic_manager.traffic_manager_profiles.get('TestRG-TM', 'test-tmp')
+traffic_manager_profile.update(traffic_routing_method: 'Weighted',
+                               ttl: '35',
+                               protocol: 'https',
+                               port: '90',
+                               path: '/monitorpage1.aspx')
+
+########################################################################################################################
 ######################                    Get and Destroy Traffic Manager Profile                 ######################
 ########################################################################################################################
 

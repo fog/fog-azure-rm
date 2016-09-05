@@ -10,5 +10,6 @@ module Fog
     service(:network, 'Network')
     service(:compute, 'Compute')
     service(:application_gateway, 'ApplicationGateway')
+    service(:traffic_manager, 'TrafficManager')
   end
 end

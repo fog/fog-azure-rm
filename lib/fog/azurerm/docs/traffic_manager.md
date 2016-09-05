@@ -61,6 +61,20 @@ Get a single record of Traffic Manager Profile
      puts "#{profile.name}"
 ```
 
+## Update a Traffic Manager Profile
+
+Get a Traffic Manager Profile object from the get method and then update that Traffic Manager Profile. You can update the Traffic Manager Profile by passing the modifiable attributes in the form of a hash.
+
+```ruby
+    profile.update(
+              traffic_routing_method: 'Weighted',
+              ttl: '35',
+              protocol: 'https',
+              port: '90',
+              path: '/monitorpage1.aspx'
+    )
+```
+
 ## Destroy a single Traffic Manager Profile
 
 Get a Traffic Manager Profile object from the get method and then destroy that Traffic Manager Profile.

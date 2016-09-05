@@ -53,6 +53,21 @@ module Fog
         def destroy
           service.delete_traffic_manager_profile(resource_group, name)
         end
+
+        def update(profile_params)
+          validate_input(profile_params)
+          merge_attributes(profile_params)
+          profile = service.update_traffic_manager_profile(resource_group, name, traffic_routing_method, relative_name, ttl, protocol, port, path)
+          merge_attributes(Fog::TrafficManager::AzureRM::TrafficManagerProfile.parse(profile))
+        end
+
+        private
+
+        def validate_input(attr_hash)
+          invalid_attr = [:resource_group, :name, :relative_name, :id]
+          result = invalid_attr & attr_hash.keys
+          raise 'Cannot modify the given attribute' unless result.empty?
+        end
       end
     end
   end

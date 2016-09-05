@@ -15,6 +15,7 @@ require 'minitest/autorun'
 $LOAD_PATH.unshift(File.expand_path '../../lib', __FILE__)
 require File.expand_path '../../lib/fog/azurerm', __FILE__
 require File.expand_path '../api_stub', __FILE__
+
 def credentials
   {
     tenant_id: '<TENANT-ID>',

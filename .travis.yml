@@ -5,14 +5,18 @@ matrix:
   include:
     - rvm: 2.0.0
       gemfile: Gemfile
+    - rvm: 2.1.0
+      gemfile: Gemfile
+    - rvm: 2.1.1
+      gemfile: Gemfile
     - rvm: 2.1.5
       gemfile: Gemfile
     - rvm: 2.2.0
       gemfile: Gemfile
     - rvm: 2.3.0
       gemfile: Gemfile
-    - rvm: jruby
-      gemfile: gemfiles/Gemfile-ruby-1.9.2+
+    - rvm: jruby-head
+      gemfile: Gemfile
 
 notifications:
   email:

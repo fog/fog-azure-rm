@@ -1,5 +1,5 @@
 require 'fog/core/collection'
-require 'fog/azurerm/models/network/network_interface'
+require 'fog/azurerm/models/network/virtual_network_gateway'
 
 module Fog
   module Network

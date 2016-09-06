@@ -65,6 +65,10 @@ module Fog
       request :get_express_route_circuit_authorization
       request :list_express_route_circuit_authorizations
       request :list_express_route_service_providers
+      request :create_or_update_virtual_network_gateway_connection
+      request :delete_virtual_network_gateway_connection
+      request :get_virtual_network_gateway_connection
+      request :list_virtual_network_gateway_connections
 
       model_path 'fog/azurerm/models/network'
       model :virtual_network
@@ -99,6 +103,8 @@ module Fog
       collection :express_route_circuit_authorizations
       model :express_route_service_provider
       collection :express_route_service_providers
+      model :virtual_network_gateway_connection
+      collection :virtual_network_gateway_connections
 
       # Mock class for Network Service
       class Mock

@@ -4,7 +4,7 @@ module Fog
       # Real class for Network Request
       class Real
         def create_or_update_express_route_circuit(circuit_parameters)
-          msg = "Exception creating/updating Express Route Circuit #{circuit_parameters[:circuit_name]} in Resource Group: #{circuit_parameters[:resource_group_name]}."
+          msg = "Creating/updating Express Route Circuit #{circuit_parameters[:circuit_name]} in Resource Group: #{circuit_parameters[:resource_group_name]}."
           Fog::Logger.debug msg
           circuit = get_express_route_circuit_object(circuit_parameters)
           begin

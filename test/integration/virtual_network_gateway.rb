@@ -67,8 +67,8 @@ network.virtual_network_gateways.create(
     {
       name: 'default',
       private_ipallocation_method: 'Dynamic',
-      public_ipaddress_id: '/subscriptions/{subscription_id}/resourceGroups/TestRG-VNG/providers/Microsoft.Network/publicIPAddresses/mypubip',
-      subnet_id: '/subscriptions/{subscription_id}/resourceGroups/TestRG-VNG/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/GatewaySubnet',
+      public_ipaddress_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-VNG/providers/Microsoft.Network/publicIPAddresses/mypubip",
+      subnet_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-VNG/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/GatewaySubnet",
       private_ipaddress: nil
     }
   ],
@@ -76,7 +76,7 @@ network.virtual_network_gateways.create(
   sku_name: 'Standard',
   sku_tier: 'Standard',
   sku_capacity: 2,
-  gateway_type: 'ExpressRoute',
+  gateway_type: 'vpn',
   enable_bgp: true,
   gateway_size: nil,
   asn: 100,
@@ -84,23 +84,7 @@ network.virtual_network_gateways.create(
   peer_weight: 3,
   vpn_type: 'RouteBased',
   vpn_client_address_pool: [],
-  gateway_default_site: '/subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/Microsoft.Network/localNetworkGateways/{local_network_gateway_name}',
-  default_sites: [],
-  vpn_client_configuration: {
-    address_pool: ['192.168.0.4', '192.168.0.5'],
-    root_certificates: [
-      {
-        name: 'root',
-        public_cert_data: 'certificate data'
-      }
-    ],
-    revoked_certificates: [
-      {
-        name: 'revoked',
-        thumbprint: 'thumb print detail'
-      }
-    ]
-  }
+  gateway_default_site: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-VNG/providers/Microsoft.Network/localNetworkGateways/{local_network_gateway_name}"
 )
 
 ########################################################################################################################
@@ -128,5 +112,5 @@ vnet = network.virtual_networks.get('TestRG-VNG', 'testVnet')
 vnet.destroy
 
 
-rg = rs.resource_groups.get('TestRG-VNG')
+rg = resource.resource_groups.get('TestRG-VNG')
 rg.destroy

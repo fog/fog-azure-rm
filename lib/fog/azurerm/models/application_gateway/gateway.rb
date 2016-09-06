@@ -112,9 +112,30 @@ module Fog
           validate_http_listeners(http_listeners) unless http_listeners.nil?
           validate_url_path_maps(url_path_maps) unless url_path_maps.nil?
           validate_request_routing_rules(request_routing_rules) unless request_routing_rules.nil?
-
-          gateway = service.create_application_gateway(name, location, resource_group, sku_name, sku_tier, sku_capacity, gateway_ip_configurations, ssl_certificates, frontend_ip_configurations, frontend_ports, probes, backend_address_pools, backend_http_settings_list, http_listeners, url_path_maps, request_routing_rules)
+          gateway_params = get_gateway_params
+          gateway = service.create_application_gateway(gateway_params)
           merge_attributes(Fog::ApplicationGateway::AzureRM::Gateway.parse(gateway))
+        end
+
+        def get_gateway_params
+          {
+              name: name,
+              location: location,
+              resource_group: resource_group,
+              sku_name: sku_name,
+              sku_tier: sku_tier,
+              sku_capacity: sku_capacity,
+              gateway_ip_configurations: gateway_ip_configurations,
+              ssl_certificates: ssl_certificates,
+              frontend_ip_configurations: frontend_ip_configurations,
+              frontend_ports: frontend_ports,
+              probes: probes,
+              backend_address_pools: backend_address_pools,
+              backend_http_settings_list: backend_http_settings_list,
+              http_listeners: http_listeners,
+              url_path_maps: url_path_maps,
+              request_routing_rules: request_routing_rules
+          }
         end
 
         def validate_gateway_ip_configurations(gateway_ip_configurations)
@@ -442,6 +463,139 @@ module Fog
             raise(ArgumentError, "#{missing[0...-1].join(', ')} and #{missing[-1]} are required for this operation")
           end
         end
+
+        def update_sku(sku_name, sku_tier = nil, sku_capacity = nil)
+
+        end
+
+        # def add_gateway_ip_configuration(gateway_ip_configuration_hash)
+        #   puts "Gateway Ip configuration in model: #{gateway_ip_configurations}"
+        #   ip_configurations = []
+        #   gateway_params = get_gateway_params
+        #   gateway_params[:gateway_ip_configurations].each do |ip_configuration|
+        #     hash = {}; ip_configuration.attributes.each { |key, value| hash[key] = value}
+        #     ip_configurations << hash
+        #   end
+        #   gateway_params[:gateway_ip_configurations] = ip_configurations
+        #   gateway_params[:gateway_ip_configurations] << gateway_ip_configuration_hash
+        #   gateway = service.create_application_gateway(gateway_params)
+        #   merge_attributes(Fog::ApplicationGateway::AzureRM::Gateway.parse(gateway))
+        # end
+
+        def add_gateway_ip_configuration(resource_group, name, gateway_ip_configuration_hash)
+          gateway = service.add_gateway_ip_configuration_in_gateway(resource_group, name, gateway_ip_configuration_hash)
+          merge_attributes(Fog::ApplicationGateway::AzureRM::Gateway.parse(gateway))
+        end
+
+        # def remove_gateway_ip_configuration(resource_group, name, gateway_ip_configuration_obj)
+        #   gateway = service.remove_gateway_ip_configuration_from_gateway(resource_group, name, gateway_ip_configuration_obj)
+        #   merge_attributes(Fog::ApplicationGateway::AzureRM::Gateway.parse(gateway))
+        # end
+        #
+        # def add_ssl_certificate(ssl_certificate_obj)
+        #   ssl_certificates << ssl_certificate_obj
+        #   gateway_params = get_gateway_params
+        #   gateway = service.create_application_gateway(gateway_params)
+        #   merge_attributes(Fog::ApplicationGateway::AzureRM::Gateway.parse(gateway))
+        # end
+        #
+        # def remove_ssl_certificate(resource_group, name, ssl_certificate_obj)
+        #   gateway = service.remove_ssl_certificate_from_gateway(resource_group, name, ssl_certificate_obj)
+        #   merge_attributes(Fog::ApplicationGateway::AzureRM::Gateway.parse(gateway))
+        # end
+        #
+        # def add_frontend_ip_configuration(frontend_ip_configuration_obj)
+        #   frontend_ip_configurations << frontend_ip_configuration_obj
+        #   gateway_params = get_gateway_params
+        #   gateway = service.create_application_gateway(gateway_params)
+        #   merge_attributes(Fog::ApplicationGateway::AzureRM::Gateway.parse(gateway))
+        # end
+        #
+        # def remove_frontend_ip_configuration(resource_group, name, frontend_ip_configuration_obj)
+        #   gateway = service.remove_frontend_ip_configuration_from_gateway(resource_group, name, frontend_ip_configuration_obj)
+        #   merge_attributes(Fog::ApplicationGateway::AzureRM::Gateway.parse(gateway))
+        # end
+        #
+        # def add_frontend_port(frontend_port_obj)
+        #   frontend_ports << frontend_port_obj
+        #   gateway_params = get_gateway_params
+        #   gateway = service.create_application_gateway(gateway_params)
+        #   merge_attributes(Fog::ApplicationGateway::AzureRM::Gateway.parse(gateway))
+        # end
+        #
+        # def remove_frontend_port(resource_group, name, frontend_port_obj)
+        #   gateway = service.remove_frontend_port_from_gateway(resource_group, name, frontend_port_obj)
+        #   merge_attributes(Fog::ApplicationGateway::AzureRM::Gateway.parse(gateway))
+        # end
+        #
+        # def add_probe(resource_group, name, probe_obj)
+        #   probes << probe_obj
+        #   gateway_params = get_gateway_params
+        #   gateway = service.create_application_gateway(gateway_params)
+        #   merge_attributes(Fog::ApplicationGateway::AzureRM::Gateway.parse(gateway))
+        # end
+        #
+        # def remove_probe(resource_group, name, probe_obj)
+        #   gateway = service.remove_probe_from_gateway(resource_group, name, probe_obj)
+        #   merge_attributes(Fog::ApplicationGateway::AzureRM::Gateway.parse(gateway))
+        # end
+        #
+        # def add_backend_address_pool(resource_group, name, backend_address_pool_obj)
+        #   backend_address_pools << backend_address_pool_obj
+        #   gateway_params = get_gateway_params
+        #   gateway = service.create_application_gateway(gateway_params)
+        #   merge_attributes(Fog::ApplicationGateway::AzureRM::Gateway.parse(gateway))
+        # end
+        #
+        # def remove_backend_address_pool(resource_group, name, backend_address_pool_obj)
+        #   gateway = service.remove_backend_address_pool_from_gateway(resource_group, name, backend_address_pool_obj)
+        #   merge_attributes(Fog::ApplicationGateway::AzureRM::Gateway.parse(gateway))
+        # end
+        #
+        # def add_backend_http_setting(resource_group, name, backend_http_setting_obj)
+        #   gateway = service.add_backend_http_setting_in_gateway(resource_group, name, backend_http_setting_obj)
+        #   merge_attributes(Fog::ApplicationGateway::AzureRM::Gateway.parse(gateway))
+        # end
+        #
+        # def remove_backend_http_setting(resource_group, name, backend_http_setting_obj)
+        #   gateway = service.remove_backend_http_setting_from_gateway(resource_group, name, backend_http_setting_obj)
+        #   merge_attributes(Fog::ApplicationGateway::AzureRM::Gateway.parse(gateway))
+        # end
+        #
+        # def add_http_listener(resource_group, name, http_listener_obj)
+        #   gateway = service.add_http_listener_in_gateway(resource_group, name, http_listener_obj)
+        #   merge_attributes(Fog::ApplicationGateway::AzureRM::Gateway.parse(gateway))
+        # end
+        #
+        # def remove_http_listener(resource_group, name, http_listener_obj)
+        #   gateway = service.remove_http_listener_from _gateway(resource_group, name, http_listener_obj)
+        #   merge_attributes(Fog::ApplicationGateway::AzureRM::Gateway.parse(gateway))
+        # end
+        #
+        # def add_url_path_map(resource_group, name, url_path_map_obj)
+        #   gateway = service.add_url_path_map_in_gateway(resource_group, name, url_path_map_obj)
+        #   merge_attributes(Fog::ApplicationGateway::AzureRM::Gateway.parse(gateway))
+        # end
+        #
+        # def remove_url_path_map(resource_group, name, url_path_map_obj)
+        #   gateway = service.remove_url_path_map_from_gateway(resource_group, name, url_path_map_obj)
+        #   merge_attributes(Fog::ApplicationGateway::AzureRM::Gateway.parse(gateway))
+        # end
+        #
+        # def add_request_routing_rule(resource_group, name, request_routing_rule_obj)
+        #   gateway = service.add_request_routing_rule_in_gateway(resource_group, name, request_routing_rule_obj)
+        #   merge_attributes(Fog::ApplicationGateway::AzureRM::Gateway.parse(gateway))
+        # end
+        #
+        # def remove_request_routing_rule(resource_group, name, request_routing_rule_obj)
+        #   gateway = service.remove_request_routing_rule_from_gateway(resource_group, name, request_routing_rule_obj)
+        #   merge_attributes(Fog::ApplicationGateway::AzureRM::Gateway.parse(gateway))
+        # end
+        #
+        #
+        # def add_remove_operations
+        #
+        # end
 
         def destroy
           service.delete_application_gateway(resource_group, name)

@@ -111,6 +111,5 @@ pubip.destroy
 vnet = network.virtual_networks.get('TestRG-VNG', 'testVnet')
 vnet.destroy
 
-
 rg = resource.resource_groups.get('TestRG-VNG')
 rg.destroy

@@ -31,6 +31,27 @@ resource.resource_groups.create(
   location: 'eastus'
 )
 
+network.virtual_networks.create(
+  name: 'testVnet',
+  location: 'eastus',
+  resource_group: 'TestRG-VNG',
+  network_address_list: '10.1.0.0/16,10.2.0.0/16'
+)
+
+network.subnets.create(
+  name: 'GatewaySubnet',
+  resource_group: 'TestRG-VNG',
+  virtual_network_name: 'testVnet',
+  address_prefix: '10.2.0.0/24'
+)
+
+network.public_ips.create(
+  name: 'mypubip',
+  resource_group: 'TestRG-VNG',
+  location: 'eastus',
+  public_ip_allocation_method: 'Dynamic'
+)
+
 ########################################################################################################################
 ######################                           Create Virtual Network Gateway                   ######################
 ########################################################################################################################
@@ -46,12 +67,12 @@ network.virtual_network_gateways.create(
     {
       name: 'default',
       private_ipallocation_method: 'Dynamic',
-      public_ipaddress_id: '/subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/Microsoft.Network/publicIPAddresses/{public_ip_name}',
-      subnet_id: '/subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/Microsoft.Network/virtualNetworks/{virtual_network_name}/subnets/{subnet_name}',
+      public_ipaddress_id: '/subscriptions/{subscription_id}/resourceGroups/TestRG-VNG/providers/Microsoft.Network/publicIPAddresses/mypubip',
+      subnet_id: '/subscriptions/{subscription_id}/resourceGroups/TestRG-VNG/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/GatewaySubnet',
       private_ipaddress: nil
     }
   ],
-  resource_group: 'learn_fog',
+  resource_group: 'TestRG-VNG',
   sku_name: 'Standard',
   sku_tier: 'Standard',
   sku_capacity: 2,
@@ -95,7 +116,17 @@ end
 ######################                  Get Virtual Network Gateway and CleanUp                   ######################
 ########################################################################################################################
 
-network_gateway = network.virtual_network_gateways.get('learn_fog', 'testVNG')
+network_gateway = network.virtual_network_gateways.get('TestRG-VNG', 'testnetworkgateway')
 puts network_gateway.name.to_s
 
 network_gateway.destroy
+
+pubip = network.public_ips.get('TestRG-VNG', 'mypubip')
+pubip.destroy
+
+vnet = network.virtual_networks.get('TestRG-VNG', 'testVnet')
+vnet.destroy
+
+
+rg = rs.resource_groups.get('TestRG-VNG')
+rg.destroy

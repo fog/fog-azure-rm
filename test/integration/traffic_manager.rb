@@ -58,6 +58,16 @@ traffic_manager.traffic_manager_end_points.create(
   target: 'test-app.com',
   endpoint_location: 'eastus'
 )
+########################################################################################################################
+######################                   Get and Update Traffic Manager Endpoint                ######################
+########################################################################################################################
+
+end_point = traffic_manager.traffic_manager_end_points.get('TestRG-TM', 'test-tmp', 'myendpoint', 'externalEndpoints')
+end_point.update(
+  type: 'externalEndpoints',
+  target: 'test-app1.com',
+  endpoint_location: 'centralus'
+)
 
 ########################################################################################################################
 ######################                   Get and Destroy Traffic Manager Endpoint                ######################

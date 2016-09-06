@@ -41,19 +41,30 @@ module Fog
           requires :target, :endpoint_location if type.eql?(EXTERNAL_ENDPOINTS)
           requires :target_resource_id, :endpoint_location, :min_child_endpoints if type.eql?(NESTED_ENDPOINTS)
 
-          if %w(azureEndpoints externalEndpoints nestedEndpoints).select { |type| type if type.eql?(type) }.any?
-            traffic_manager_endpoint = service.create_traffic_manager_endpoint(traffic_manager_endpoint_hash)
-            merge_attributes(Fog::TrafficManager::AzureRM::TrafficManagerEndPoint.parse(traffic_manager_endpoint))
-          else
-            raise(ArgumentError, ":type should be '#{AZURE_ENDPOINTS}', '#{EXTERNAL_ENDPOINTS}' or '#{NESTED_ENDPOINTS}'")
-          end
+          create_or_update
         end
 
         def destroy
           service.delete_traffic_manager_endpoint(resource_group, name, traffic_manager_profile_name, type)
         end
 
+        def update(endpoint_params)
+          validate_input(endpoint_params)
+          merge_attributes(endpoint_params)
+
+          create_or_update
+        end
+
         private
+
+        def create_or_update
+          if %w(azureEndpoints externalEndpoints nestedEndpoints).select { |type| type if type.eql?(type) }.any?
+            traffic_manager_endpoint = service.create_or_update_traffic_manager_endpoint(traffic_manager_endpoint_hash)
+            merge_attributes(Fog::TrafficManager::AzureRM::TrafficManagerEndPoint.parse(traffic_manager_endpoint))
+          else
+            raise(ArgumentError, ":type should be '#{AZURE_ENDPOINTS}', '#{EXTERNAL_ENDPOINTS}' or '#{NESTED_ENDPOINTS}'")
+          end
+        end
 
         def traffic_manager_endpoint_hash
           {
@@ -68,6 +79,12 @@ module Fog
             endpoint_location: endpoint_location,
             min_child_endpoints: min_child_endpoints
           }
+        end
+
+        def validate_input(attr_hash)
+          invalid_attr = [:resource_group, :name, :traffic_manager_profile_name, :id]
+          result = invalid_attr & attr_hash.keys
+          raise 'Cannot modify the given attribute' unless result.empty?
         end
       end
     end

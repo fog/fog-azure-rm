@@ -119,6 +119,15 @@ Get a single Traffic Manager Endpoint.
                  .get('<Resource Group name>', '<Profile Name>', '<Endpoint name>', '<Endpoint type>')
       puts "#{endpoint.name}"
 ```
+## Update a Traffic Manager Endpoint
+
+Get a Traffic Manager Endpoint object from the get method and then update that Traffic Manager Endpoint. You can update the Traffic Manager Endpoint by passing the modifiable attributes in the form of a hash.
+
+```ruby
+      endpoint.update(type: 'externalEndpoints',
+                      target: 'test1.com',
+                      endpoint_location: 'Central US')
+```
 
 ## Destroy a single Traffic Manager Endpoint
 

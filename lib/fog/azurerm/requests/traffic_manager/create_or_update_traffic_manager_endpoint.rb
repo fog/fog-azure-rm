@@ -3,7 +3,7 @@ module Fog
     class AzureRM
       # Real class for Traffic Manager Request
       class Real
-        def create_traffic_manager_endpoint(endpoint_hash)
+        def create_or_update_traffic_manager_endpoint(endpoint_hash)
           msg = "Creating Traffic Manager Endpoint: #{endpoint_hash[:name]}."
           Fog::Logger.debug msg
           endpoint_parameters = get_endpoint_object(endpoint_hash[:target_resource_id], endpoint_hash[:target], endpoint_hash[:weight], endpoint_hash[:priority], endpoint_hash[:endpoint_location], endpoint_hash[:min_child_endpoints])
@@ -33,7 +33,7 @@ module Fog
 
       # Mock class for TrafficManager Request
       class Mock
-        def create_traffic_manager_endpoint(*)
+        def create_or_update_traffic_manager_endpoint(*)
           endpoint = {
             'name' => '{endpoint-name}',
             'type' => 'Microsoft.Network/trafficManagerProfiles/externalEndpoints',

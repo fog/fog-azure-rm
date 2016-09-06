@@ -14,7 +14,7 @@ module Fog
       request :get_traffic_manager_profile
       request :list_traffic_manager_profiles
 
-      request :create_traffic_manager_endpoint
+      request :create_or_update_traffic_manager_endpoint
       request :delete_traffic_manager_endpoint
       request :get_traffic_manager_endpoint
 

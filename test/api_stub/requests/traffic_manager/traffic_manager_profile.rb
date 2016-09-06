@@ -136,6 +136,19 @@ module ApiStub
           profile_mapper = Azure::ARM::TrafficManager::Models::ProfileListResult.mapper
           traffic_manager_client.deserialize(profile_mapper, JSON.load(body), 'result.body')
         end
+
+        def self.profile_hash
+          {
+            resource_group: 'resource_group',
+            name: 'name',
+            traffic_routing_method: 'traffic_routing_method',
+            relative_name: 'relative_name',
+            ttl: 'ttl',
+            protocol: 'protocol',
+            port: 'port',
+            path: 'path'
+          }
+        end
       end
     end
   end

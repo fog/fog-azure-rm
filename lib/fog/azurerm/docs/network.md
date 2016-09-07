@@ -746,6 +746,52 @@ Get an express route circuit object from the get method and then destroy that ex
 ```ruby
     circuit.destroy
 ```
+# Express Route Authorization
+
+Authorization is part of Express Route circuit.
+
+## Create an Express Route Circuit Authorization
+
+Create a new Express Route Circuit Authorization. Parameter 'authorization_use_status' can be 'Available' or 'InUse'.
+
+```ruby
+    authorization = network.express_route_circuit_authorizations.create(
+    	"resource_group": "<Resourse Group Name>",
+    	"name": "<Resource-Unique-Name>",
+    	"circuit_name": "<Circuit Name>",
+    	"authorization_use_status": "Available",
+    	"authorization_name": "<Authorization-Name>",
+	)
+```
+
+## List Express Route Circuit Authorizations
+
+List all express route circuit authorizations in a resource group.
+
+```ruby
+    authorizations  = network.express_route_circuit_authorizations(resource_group: '<Resource Group Name>', circuit_name: '<Circuit Name>')
+	authorizations.each do |authorization|
+    	puts "#{authorization.name}"
+	end
+```
+
+## Retrieve single Express Route Circuit Authorization
+
+Get a single record of Express Route Circuit Authorization.
+
+```ruby
+    authorization = network.express_route_circuit_authorizations.get("<Resource Group Name>", "Circuit Name", "Authorization Name")
+	puts "#{authorization.name}"
+```
+
+## Destroy single Express Route Circuit Authorization
+
+Get an express route circuit authorization object from the get method and then destroy that express route circuit authorization.
+
+```ruby
+    authorization.destroy
+```
+
 
 # Express Route Peering
 

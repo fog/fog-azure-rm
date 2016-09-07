@@ -10,8 +10,8 @@ class TestVirtualNetworkGatewayConnections < Minitest::Test
 
   def test_collection_methods
     methods = [
-        :all,
-        :get
+      :all,
+      :get
     ]
     methods.each do |method|
       assert @gateway_connections.respond_to? method

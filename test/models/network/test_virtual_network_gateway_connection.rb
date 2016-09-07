@@ -11,8 +11,8 @@ class TestVirtualNetworkGatewayConnection < Minitest::Test
 
   def test_model_methods
     methods = [
-        :save,
-        :destroy
+      :save,
+      :destroy
     ]
     methods.each do |method|
       assert @gateway_connection.respond_to? method
@@ -21,24 +21,24 @@ class TestVirtualNetworkGatewayConnection < Minitest::Test
 
   def test_model_attributes
     attributes = [
-        :name,
-        :id,
-        :location,
-        :resource_group,
-        :tags,
-        :virtual_network_gateway1,
-        :virtual_network_gateway2,
-        :local_network_gateway2,
-        :enable_bgp,
-        :connection_type,
-        :authorization_key,
-        :routing_weight,
-        :shared_key,
-        :egress_bytes_transferred,
-        :ingress_bytes_transferred,
-        :peer,
-        :provisioning_state,
-        :connection_status
+      :name,
+      :id,
+      :location,
+      :resource_group,
+      :tags,
+      :virtual_network_gateway1,
+      :virtual_network_gateway2,
+      :local_network_gateway2,
+      :enable_bgp,
+      :connection_type,
+      :authorization_key,
+      :routing_weight,
+      :shared_key,
+      :egress_bytes_transferred,
+      :ingress_bytes_transferred,
+      :peer,
+      :provisioning_state,
+      :connection_status
     ]
     attributes.each do |attribute|
       assert @gateway_connection.respond_to? attribute

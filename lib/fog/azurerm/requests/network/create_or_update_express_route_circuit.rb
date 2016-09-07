@@ -19,52 +19,65 @@ module Fog
         private
 
         def get_express_route_circuit_object(circuit_parameters)
+          sku = create_express_route_circuit_sku(circuit_parameters[:sku_name], circuit_parameters[:sku_family], circuit_parameters[:sku_tier])
+          service_provider_prop = create_express_route_service_provider_properties(circuit_parameters[:service_provider_name], circuit_parameters[:peering_location], circuit_parameters[:bandwidth_in_mbps])
+          create_express_route_circuit(service_provider_prop, circuit_parameters[:peerings], circuit_parameters[:circuit_name], circuit_parameters[:location], sku, circuit_parameters[:tags] )
+        end
+
+        def create_express_route_circuit_sku(sku_name, sku_family, sku_tier)
           sku = Azure::ARM::Network::Models::ExpressRouteCircuitSku.new
-          sku.name = circuit_parameters[:sku_name]
-          sku.family = circuit_parameters[:sku_family]
-          sku.tier = circuit_parameters[:sku_tier]
+          sku.name = sku_name
+          sku.family = sku_family
+          sku.tier = sku_tier
+          sku
+        end
 
+        def create_express_route_service_provider_properties(service_provider_name, peering_location, bandwidth_in_mbps)
           service_provider_prop = Azure::ARM::Network::Models::ExpressRouteCircuitServiceProviderProperties.new
-          service_provider_prop.service_provider_name = circuit_parameters[:service_provider_name]
-          service_provider_prop.peering_location = circuit_parameters[:peering_location]
-          service_provider_prop.bandwidth_in_mbps = circuit_parameters[:bandwidth_in_mbps]
+          service_provider_prop.service_provider_name = service_provider_name
+          service_provider_prop.peering_location = peering_location
+          service_provider_prop.bandwidth_in_mbps = bandwidth_in_mbps
+          service_provider_prop
+        end
 
+        def create_express_route_circuit(service_provider_prop, peerings, circuit_name, location, sku, tags)
           express_route_circuit = Azure::ARM::Network::Models::ExpressRouteCircuit.new
           express_route_circuit.service_provider_properties = service_provider_prop
-          if circuit_parameters[:peerings]
-            circuit_peerings = get_circuit_peerings(circuit_parameters[:peerings])
-            express_route_circuit.peerings = circuit_peerings
-          end
-          express_route_circuit.name = circuit_parameters[:circuit_name]
-          express_route_circuit.location = circuit_parameters[:location]
+          express_route_circuit.peerings = get_circuit_peerings(peerings) if peerings
+          express_route_circuit.name = circuit_name
+          express_route_circuit.location = location
           express_route_circuit.sku = sku
-          express_route_circuit.tags = circuit_parameters[:tags] if express_route_circuit.tags.nil?
-
+          express_route_circuit.tags = tags if express_route_circuit.tags.nil?
           express_route_circuit
         end
 
         def get_circuit_peerings(peerings)
           circuit_peerings = []
           peerings.each do |peering|
-            circuit_peering = Azure::ARM::Network::Models::ExpressRouteCircuitPeering.new
-            circuit_peering.peering_type = peering[:peering_type]
-            circuit_peering.peer_asn = peering[:peer_asn]
-            circuit_peering.primary_peer_address_prefix = peering[:primary_peer_address_prefix]
-            circuit_peering.secondary_peer_address_prefix = peering[:secondary_peer_address_prefix]
-            circuit_peering.vlan_id = peering[:vlan_id]
-            if peering[:peering_type].casecmp(MICROSOFT_PEERING) == 0
-              peering_config = Azure::ARM::Network::Models::ExpressRouteCircuitPeeringConfig.new
-              peering_config.advertised_public_prefixes = peering[:advertised_public_prefixes]
-              peering_config.advertised_public_prefixes_state = peering[:advertised_public_prefix_state]
-              peering_config.customer_asn = peering[:customer_asn]
-              peering_config.routing_registry_name = peering[:routing_registry_name]
-              circuit_peering.microsoft_peering_config = peering_config
-            end
-
-            circuit_peering.name = peering[:name]
-            circuit_peerings.push(circuit_peering)
+            circuit_peering_object = get_circuit_peering_object(peering)
+            circuit_peerings.push(circuit_peering_object)
           end
           circuit_peerings
+        end
+
+        def create_express_route_circuit_peering(peering_type, peer_asn, primary_peer_address_prefix, secondary_peer_address_prefix, vlan_id, name)
+          circuit_peering = Azure::ARM::Network::Models::ExpressRouteCircuitPeering.new
+          circuit_peering.peering_type = peering_type
+          circuit_peering.peer_asn = peer_asn
+          circuit_peering.primary_peer_address_prefix = primary_peer_address_prefix
+          circuit_peering.secondary_peer_address_prefix = secondary_peer_address_prefix
+          circuit_peering.vlan_id = vlan_id
+          circuit_peering.name = name
+          circuit_peering
+        end
+
+        def create_express_route_circuit_peering_config(advertised_public_prefixes, advertised_public_prefix_state, customer_asn, routing_registry_name)
+          peering_config = Azure::ARM::Network::Models::ExpressRouteCircuitPeeringConfig.new
+          peering_config.advertised_public_prefixes = advertised_public_prefixes
+          peering_config.advertised_public_prefixes_state = advertised_public_prefix_state
+          peering_config.customer_asn = customer_asn
+          peering_config.routing_registry_name = routing_registry_name
+          peering_config
         end
       end
 

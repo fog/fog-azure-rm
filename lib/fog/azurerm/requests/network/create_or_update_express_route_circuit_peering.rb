@@ -16,27 +16,37 @@ module Fog
           peering
         end
 
-        private
-
         def get_circuit_peering_object(circuit_peering_params)
-          circuit_peering = Azure::ARM::Network::Models::ExpressRouteCircuitPeering.new
-          circuit_peering.name = circuit_peering_params[:peering_name]
-          circuit_peering.peering_type = circuit_peering_params[:peering_type]
-          circuit_peering.peer_asn = circuit_peering_params[:peer_asn]
-          circuit_peering.primary_peer_address_prefix = circuit_peering_params[:primary_peer_address_prefix]
-          circuit_peering.secondary_peer_address_prefix = circuit_peering_params[:secondary_peer_address_prefix]
-          circuit_peering.vlan_id = circuit_peering_params[:vlan_id]
+          circuit_peering = create_express_route_circuit_peering(circuit_peering_params[:peering_type], circuit_peering_params[:peer_asn], circuit_peering_params[:primary_peer_address_prefix], circuit_peering_params[:secondary_peer_address_prefix], circuit_peering_params[:vlan_id], circuit_peering_params[:name])
 
-          if circuit_peering_params[:peering_type].casecmp(MICROSOFT_PEERING) == 0
-            peering_config = Azure::ARM::Network::Models::ExpressRouteCircuitPeeringConfig.new
-            peering_config.advertised_public_prefixes = circuit_peering_params[:advertised_public_prefixes]
-            peering_config.advertised_public_prefixes_state = circuit_peering_params[:advertised_public_prefix_state]
-            peering_config.customer_asn = circuit_peering_params[:customer_asn]
-            peering_config.routing_registry_name = circuit_peering_params[:routing_registry_name]
+          if circuit_peering_params[:peering_type].casecmp(MICROSOFT_PEERING).zero?
+            peering_config = create_express_route_circuit_peering_config(circuit_peering_params[:advertised_public_prefixes], circuit_peering_params[:advertised_public_prefix_state], circuit_peering_params[:customer_asn], circuit_peering_params[:routing_registry_name])
             circuit_peering.microsoft_peering_config = peering_config
           end
 
           circuit_peering
+        end
+
+        private
+
+        def create_express_route_circuit_peering(peering_type, peer_asn, primary_peer_address_prefix, secondary_peer_address_prefix, vlan_id, name)
+          circuit_peering = Azure::ARM::Network::Models::ExpressRouteCircuitPeering.new
+          circuit_peering.peering_type = peering_type
+          circuit_peering.peer_asn = peer_asn
+          circuit_peering.primary_peer_address_prefix = primary_peer_address_prefix
+          circuit_peering.secondary_peer_address_prefix = secondary_peer_address_prefix
+          circuit_peering.vlan_id = vlan_id
+          circuit_peering.name = name
+          circuit_peering
+        end
+
+        def create_express_route_circuit_peering_config(advertised_public_prefixes, advertised_public_prefix_state, customer_asn, routing_registry_name)
+          peering_config = Azure::ARM::Network::Models::ExpressRouteCircuitPeeringConfig.new
+          peering_config.advertised_public_prefixes = advertised_public_prefixes
+          peering_config.advertised_public_prefixes_state = advertised_public_prefix_state
+          peering_config.customer_asn = customer_asn
+          peering_config.routing_registry_name = routing_registry_name
+          peering_config
         end
       end
 

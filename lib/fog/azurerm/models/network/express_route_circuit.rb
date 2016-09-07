@@ -22,36 +22,36 @@ module Fog
         attribute :peerings
 
         def self.parse(circuit)
-          hash = {}
-          hash['id'] = circuit.id
-          hash['name'] = circuit.name
-          hash['location'] = circuit.location
-          hash['service_key'] = circuit.service_key
-          hash['service_provider_notes'] = circuit.service_provider_notes
-          hash['resource_group'] = get_resource_group_from_id(circuit.id)
-          hash['resource_group'] = circuit.id.split('/')[4]
-          hash['tags'] = circuit.tags
+          express_route_circuit = {}
+          express_route_circuit['id'] = circuit.id
+          express_route_circuit['name'] = circuit.name
+          express_route_circuit['location'] = circuit.location
+          express_route_circuit['service_key'] = circuit.service_key
+          express_route_circuit['service_provider_notes'] = circuit.service_provider_notes
+          express_route_circuit['resource_group'] = get_resource_group_from_id(circuit.id)
+          express_route_circuit['resource_group'] = circuit.id.split('/')[4]
+          express_route_circuit['tags'] = circuit.tags
           sku = circuit.sku
           unless sku.nil?
-            hash['sku_name'] = sku.name
-            hash['sku_tier'] = sku.tier
-            hash['sku_family'] = sku.family
+            express_route_circuit['sku_name'] = sku.name
+            express_route_circuit['sku_tier'] = sku.tier
+            express_route_circuit['sku_family'] = sku.family
           end
-          hash['provisioning_state'] = circuit.provisioning_state
-          hash['circuit_provisioning_state'] = circuit.circuit_provisioning_state
-          hash['service_provider_provisioning_state'] = circuit.service_provider_provisioning_state
+          express_route_circuit['provisioning_state'] = circuit.provisioning_state
+          express_route_circuit['circuit_provisioning_state'] = circuit.circuit_provisioning_state
+          express_route_circuit['service_provider_provisioning_state'] = circuit.service_provider_provisioning_state
           service_provider_properties = circuit.service_provider_properties
           unless service_provider_properties.nil?
-            hash['service_provider_name'] = service_provider_properties.service_provider_name
-            hash['peering_location'] = service_provider_properties.peering_location
-            hash['bandwidth_in_mbps'] = service_provider_properties.bandwidth_in_mbps
+            express_route_circuit['service_provider_name'] = service_provider_properties.service_provider_name
+            express_route_circuit['peering_location'] = service_provider_properties.peering_location
+            express_route_circuit['bandwidth_in_mbps'] = service_provider_properties.bandwidth_in_mbps
           end
-          hash['peerings'] = []
+          express_route_circuit['peerings'] = []
           circuit.peerings.each do |peering|
             circuit_peering = Fog::Network::AzureRM::ExpressRouteCircuitPeering.new
-            hash['peerings'] << circuit_peering.merge_attributes(Fog::Network::AzureRM::ExpressRouteCircuitPeering.parse(peering))
+            express_route_circuit['peerings'] << circuit_peering.merge_attributes(Fog::Network::AzureRM::ExpressRouteCircuitPeering.parse(peering))
           end unless circuit.peerings.nil?
-          hash
+          express_route_circuit
         end
 
         def save

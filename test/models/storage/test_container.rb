@@ -31,10 +31,8 @@ class TestContainer < Minitest::Test
       :lease_status,
       :metadata
     ]
-    @service.stub :create_container, @create_result do
-      attributes.each do |attribute|
-        assert_respond_to @container, attribute
-      end
+    attributes.each do |attribute|
+      assert_respond_to @container, attribute
     end
   end
 

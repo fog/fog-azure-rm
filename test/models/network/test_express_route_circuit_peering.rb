@@ -9,20 +9,16 @@ class TestExpressRouteCircuitPeering < Minitest::Test
   end
 
   def test_model_methods
-    response = ApiStub::Models::Network::ExpressRouteCircuitPeering.create_express_route_circuit_peering_response(@network_client)
     methods = [
       :save,
       :destroy
     ]
-    @service.stub :create_or_update_express_route_circuit_peering, response do
-      methods.each do |method|
-        assert @circuit_peering.respond_to? method
-      end
+    methods.each do |method|
+      assert @circuit_peering.respond_to? method
     end
   end
 
   def test_model_attributes
-    response = ApiStub::Models::Network::ExpressRouteCircuitPeering.create_express_route_circuit_peering_response(@network_client)
     attributes = [
       :resource_group,
       :name,
@@ -37,10 +33,8 @@ class TestExpressRouteCircuitPeering < Minitest::Test
       :customer_asn,
       :routing_registry_name
     ]
-    @service.stub :create_or_update_express_route_circuit_peering, response do
-      attributes.each do |attribute|
-        assert @circuit_peering.respond_to? attribute
-      end
+    attributes.each do |attribute|
+      assert @circuit_peering.respond_to? attribute
     end
   end
 

@@ -33,12 +33,12 @@ module Fog
 
           unless gateway_connection.virtual_network_gateway1.nil?
             gateway1 = Fog::Network::AzureRM::VirtualNetworkGateway.new
-            hash['virtual_network_gateway1'] = gateway1.merge_attributes(Fog::Network::AzureRM::VirtualNetworkGateway.parse(gateway_connection.virtual_network_gateway1))
+            connection['virtual_network_gateway1'] = gateway1.merge_attributes(Fog::Network::AzureRM::VirtualNetworkGateway.parse(gateway_connection.virtual_network_gateway1))
           end
 
           unless gateway_connection.virtual_network_gateway2.nil?
             gateway2 = Fog::Network::AzureRM::VirtualNetworkGateway.new
-            hash['virtual_network_gateway2'] = gateway2.merge_attributes(Fog::Network::AzureRM::VirtualNetworkGateway.parse(gateway_connection.virtual_network_gateway2))
+            connection['virtual_network_gateway2'] = gateway2.merge_attributes(Fog::Network::AzureRM::VirtualNetworkGateway.parse(gateway_connection.virtual_network_gateway2))
           end
 
           connection['connection_type'] = gateway_connection.connection_type
@@ -56,7 +56,7 @@ module Fog
         end
 
         def save
-          requires :name, :location, :resource_group, :connectionType
+          requires :name, :location, :resource_group, :connection_type
           gateway_connection_params = gateway_connection_parameters
           gateway_connection = service.create_or_update_virtual_network_gateway_connection(gateway_connection_params)
           merge_attributes(Fog::Network::AzureRM::VirtualNetworkGatewayConnection.parse(gateway_connection))
@@ -70,24 +70,21 @@ module Fog
 
         def gateway_connection_parameters
           {
-              resource_group_name: resource_group,
-              name: name,
-              location: location,
-              tags: tags,
-              virtual_network_gateway1: virtual_network_gateway1,
-              virtual_network_gateway2: virtual_network_gateway2,
-              local_network_gateway2: local_network_gateway2,
-              enable_bgp: enable_bgp,
-              provisioning_state: provisioning_state,
-              connection_type: connection_type,
-              connection_status: connection_status,
-              authorization_key: authorization_key,
-              routing_weight: routing_weight,
-              shared_key: shared_key,
-              egress_bytes_transferred: egress_bytes_transferred,
-              ingress_bytes_transferred: ingress_bytes_transferred,
-              peer: peer,
-              resource_guid: resource_guid
+            resource_group_name: resource_group,
+            name: name,
+            location: location,
+            tags: tags,
+            virtual_network_gateway1: virtual_network_gateway1,
+            virtual_network_gateway2: virtual_network_gateway2,
+            local_network_gateway2: local_network_gateway2,
+            enable_bgp: enable_bgp,
+            connection_type: connection_type,
+            authorization_key: authorization_key,
+            routing_weight: routing_weight,
+            shared_key: shared_key,
+            egress_bytes_transferred: egress_bytes_transferred,
+            ingress_bytes_transferred: ingress_bytes_transferred,
+            peer: peer
           }
         end
       end

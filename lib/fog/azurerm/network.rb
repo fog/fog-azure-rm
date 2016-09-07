@@ -73,6 +73,9 @@ module Fog
       request :delete_virtual_network_gateway_connection
       request :get_virtual_network_gateway_connection
       request :list_virtual_network_gateway_connections
+      request :get_connection_shared_key
+      request :reset_connection_shared_key
+      request :set_connection_shared_key
 
       model_path 'fog/azurerm/models/network'
       model :virtual_network

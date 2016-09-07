@@ -27,11 +27,11 @@ module Fog
           gateway_connection.tags = gateway_connection_params[:tags] if gateway_connection.tags.nil?
 
           if gateway_connection_params[:virtual_network_gateway1]
-            gateway_connection.virtual_network_gateway1 = get_network_gateway_object(gateway_connection_params[:virtual_network_gateway1])
+            gateway_connection.virtual_network_gateway1 = get_virtual_network_gateway(gateway_connection_params[:resource_group_name], gateway_connection_params[:virtual_network_gateway1][:name])
           end
 
           if gateway_connection_params[:virtual_network_gateway2]
-            gateway_connection.virtual_network_gateway2 = get_network_gateway_object(gateway_connection_params[:virtual_network_gateway2])
+            gateway_connection.virtual_network_gateway2 = get_virtual_network_gateway(gateway_connection_params[:resource_group_name], gateway_connection_params[:virtual_network_gateway2][:name])
           end
 
           gateway_connection.authorization_key = gateway_connection_params[:authorization_key]
@@ -58,10 +58,10 @@ module Fog
             'location' => 'West US',
             'tags' => { 'key1' => 'value1' },
             'properties' => {
-              'gateway1' => {
+              'virtualNetworkGateway1' => {
                 'name' => 'firstgateway'
               },
-              'gateway2' => {
+              'virtualNetworkGateway2' => {
                 'name' => 'secondgateway'
               },
               'connectionType' => 'SiteToSite',

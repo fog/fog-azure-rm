@@ -15,17 +15,19 @@ module Fog
           resource_name = get_resource_from_resource_id(resource_id, RESOURCE_NAME)
           parent_resource_id = ''
 
-          Fog::Logger.debug "Creating Tag #{tag_name} for Resource #{resource_name}"
+          msg = "Creating Tag #{tag_name} for Resource #{resource_name}"
+          Fog::Logger.debug msg
+
           begin
             resource = @rmc.resources.get(resource_group_name, resource_provider_namespace, parent_resource_id, resource_type, resource_name, API_VERSION)
             resource.tags = {} if resource.tags.nil?
             resource.tags[tag_name] = tag_value
             @rmc.resources.create_or_update(resource_group_name, resource_provider_namespace, parent_resource_id, resource_type, resource_name, API_VERSION, resource)
-            Fog::Logger.debug "Tag #{tag_name} created successfully for Resource #{resource_name}"
-            true
           rescue MsRestAzure::AzureOperationError => e
-            raise Fog::AzureRm::OperationError.new(e)
+            raise_azure_exception(e, msg)
           end
+          Fog::Logger.debug "Tag #{tag_name} created successfully for Resource #{resource_name}"
+          true
         end
       end
 

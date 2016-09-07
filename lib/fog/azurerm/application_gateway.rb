@@ -1,5 +1,3 @@
-require 'fog/azurerm/core'
-
 module Fog
   module ApplicationGateway
     # Fog Service Class for AzureRM

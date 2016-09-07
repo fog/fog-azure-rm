@@ -4,14 +4,15 @@ module Fog
       # This class provides the actual implemention for service calls.
       class Real
         def list_deployments(resource_group)
-          Fog::Logger.debug "Listing Deployments in Resource Group: #{resource_group}"
+          msg = "Listing Deployments in Resource Group: #{resource_group}"
+          Fog::Logger.debug msg
           begin
             deployments = @rmc.deployments.list_as_lazy(resource_group)
-            Fog::Logger.debug "Deployments listed successfully in Resource Group: #{resource_group}"
-            deployments.value
           rescue  MsRestAzure::AzureOperationError => e
-            raise Fog::AzureRm::OperationError.new(e)
+            raise_azure_exception(e, msg)
           end
+          Fog::Logger.debug "Deployments listed successfully in Resource Group: #{resource_group}"
+          deployments.value
         end
       end
 

@@ -1,4 +1,3 @@
-require 'fog/azurerm/core'
 module Fog
   module Compute
     # This class registers models, requests and collections

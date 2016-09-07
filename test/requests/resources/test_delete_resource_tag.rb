@@ -1,4 +1,4 @@
-require File.expand_path '../../test_helper', __dir__
+require File.expand_path '../../../test_helper', __FILE__
 
 # Test class for Delete Resource Tag Request
 class TestDeleteResourceTag < Minitest::Test
@@ -23,7 +23,7 @@ class TestDeleteResourceTag < Minitest::Test
     @resources.stub :get, @resource_response do
       @resources.stub :create_or_update, response do
         resource_id = '/subscriptions/########-####-####-####-############/resourceGroups/{RESOURCE-GROUP}/providers/Microsoft.Network/{PROVIDER-NAME}/{RESOURCE-NAME}'
-        assert_raises(Fog::AzureRm::OperationError) { @service.delete_resource_tag(resource_id, 'tag_name', 'tag_value') }
+        assert_raises(RuntimeError) { @service.delete_resource_tag(resource_id, 'tag_name', 'tag_value') }
       end
     end
   end

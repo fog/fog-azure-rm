@@ -1,4 +1,4 @@
-require File.expand_path '../../test_helper', __dir__
+require File.expand_path '../../../test_helper', __FILE__
 
 # Test class for Create Resource Group Request
 class TestCreateResourceGroup < Minitest::Test
@@ -18,7 +18,7 @@ class TestCreateResourceGroup < Minitest::Test
   def test_create_resource_group_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @resource_groups.stub :create_or_update, response do
-      assert_raises(Fog::AzureRm::OperationError) { @service.create_resource_group('fog-test-rg', 'west us') }
+      assert_raises(RuntimeError) { @service.create_resource_group('fog-test-rg', 'west us') }
     end
   end
 end

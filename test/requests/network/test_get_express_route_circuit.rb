@@ -1,4 +1,4 @@
-require File.expand_path '../../test_helper', __dir__
+require File.expand_path '../../../test_helper', __FILE__
 
 # Test class for Get Express Route Circuit Request
 class TestGetExpressRouteCircuit < Minitest::Test

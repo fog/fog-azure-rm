@@ -1,4 +1,4 @@
-require File.expand_path '../../test_helper', __dir__
+require File.expand_path '../../../test_helper', __FILE__
 
 # Test class for List Deployment Request
 class TestListDeployment < Minitest::Test
@@ -19,7 +19,7 @@ class TestListDeployment < Minitest::Test
   def test_list_deployment_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @deployments.stub :list_as_lazy, response do
-      assert_raises(Fog::AzureRm::OperationError) { @service.list_deployments(@resource_group) }
+      assert_raises(RuntimeError) { @service.list_deployments(@resource_group) }
     end
   end
 end

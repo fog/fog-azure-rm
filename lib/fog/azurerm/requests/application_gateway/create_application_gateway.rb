@@ -4,7 +4,7 @@ module Fog
       # Real class for Application Gateway Request
       class Real
         def create_application_gateway(gateway_params)
-          msg = "Creating Application Gateway: #{gateway_params[:name]} in Resource Group: #{gateway_params[:resource_group]}."
+          msg = "Creating/Updated Application Gateway: #{gateway_params[:name]} in Resource Group: #{gateway_params[:resource_group]}."
           Fog::Logger.debug msg
           gateway = define_application_gateway(gateway_params)
           begin
@@ -12,7 +12,7 @@ module Fog
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
-          Fog::Logger.debug "Application Gateway #{gateway_params[:name]} created successfully."
+          Fog::Logger.debug "Application Gateway #{gateway_params[:name]} created/updated successfully."
           gateway_obj
         end
 
@@ -83,7 +83,6 @@ module Fog
         end
 
         def define_gateway_ip_configuration(gateway_ip_configurations)
-          puts "Gateway Ip Configuration: #{gateway_ip_configurations.inspect}"
           gateway_ip_configuration_arr = []
           gateway_ip_configurations.each do |ip_configuration|
             configuration = Azure::ARM::Network::Models::ApplicationGatewayIPConfiguration.new
@@ -172,7 +171,6 @@ module Fog
             backend_pool = Azure::ARM::Network::Models::ApplicationGatewayBackendAddressPool.new
 
             backend_addresses1 = bap[:ip_addresses]
-
             addresses = []
             backend_addresses1.each do |address|
               backend_add = Azure::ARM::Network::Models::ApplicationGatewayBackendAddress.new

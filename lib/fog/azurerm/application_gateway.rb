@@ -12,6 +12,8 @@ module Fog
       request :delete_application_gateway
       request :list_application_gateways
       request :get_application_gateway
+      request :update_subnet_id_in_gateway_ip_configuration
+      request :update_sku_attributes
 
       model_path 'fog/azurerm/models/application_gateway'
       model :gateway

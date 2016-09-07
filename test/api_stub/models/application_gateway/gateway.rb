@@ -130,6 +130,34 @@ module ApiStub
           gateway_mapper = Azure::ARM::Network::Models::ApplicationGateway.mapper
           gateway_client.deserialize(gateway_mapper, JSON.load(gateway), 'result.body')
         end
+
+        def self.ssl_certifcate
+          {
+            name: '<SSL Certificate name>',
+            data: 'Base-64 encoded pfx certificate',
+            password: 'azure',
+            public_cert_data: 'Base-64 encoded Public cert data corresponding to pfx specified in data.'
+          }
+        end
+
+        def self.frontend_port
+          {
+            name: '<Frontend port name>',
+            port: 80
+          }
+        end
+
+        def self.probe
+          {
+            name: '<Probe name>',
+            protocol: 'http',
+            host: 'localhost',
+            path: '/fog-test',
+            interval: 60,
+            timeout: 300,
+            unhealthy_threshold: 5
+          }
+        end
       end
     end
   end

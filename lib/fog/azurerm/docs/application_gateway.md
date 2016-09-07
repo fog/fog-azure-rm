@@ -127,6 +127,76 @@ Get a single record of Application Gateway
     puts "#{gateway.name}"
 ```
 
+
+## Update sku attributes (Name and Capacity)                
+
+```ruby
+    ag.update_sku('Standard_Small', '1')
+```
+
+## Update gateway ip configuration (Subnet id) 
+
+```ruby
+    ag.update_gateway_ip_configuration("/subscriptions/<Subscription_id>/<Resource Group name>/<Gateway Name>/providers/Microsoft.Network/virtualNetworks/<Virtual Network Name>/subnets/<Subnet Name>")
+```
+
+## Add/Remove SSL Certificates 
+
+```ruby
+    ag.add_ssl_certificate(
+      {
+        name: '<SSL Certificate name>',
+        data: 'Base-64 encoded pfx certificate',
+        password: 'azure',
+        public_cert_data: 'Base-64 encoded Public cert data corresponding to pfx specified in data.'
+      }
+    )
+    
+    ag.remove_ssl_certificate(
+      {
+       name: '<SSL Certificate name>',
+       data: 'Base-64 encoded pfx certificate',
+       password: 'azure',
+       public_cert_data: 'Base-64 encoded Public cert data corresponding to pfx specified in data.'
+     }
+    )
+```
+
+## Add/Remove Frontend ports    
+
+```ruby
+    ag.add_frontend_port({name: '<Frontend port name>', port: 80})
+    
+    ag.remove_frontend_port({name: '<Frontend port name>', port: 80})
+```
+
+## Add/Remove Probes    
+
+```ruby
+ ag.add_probe(
+  {
+    name: '<Probe name>',
+    protocol: 'http',
+    host: 'localhost',
+    path: '/fog-test',
+    interval: 60, 
+    timeout: 300,
+    unhealthy_threshold: 5
+   }
+ )
+    ag.remove__probe(
+  {
+    name: '<Probe name>',
+    protocol: 'http',
+    host: 'localhost',
+    path: '/fog-test',
+    interval: 60, 
+    timeout: 300,
+    unhealthy_threshold: 5
+   }
+)
+```
+
 ## Destroy a single Application Gateway
 
 Get a application gateway object from the get method and then destroy that application gateway.

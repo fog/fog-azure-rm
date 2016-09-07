@@ -1,4 +1,4 @@
-require File.expand_path '../../test_helper', __dir__
+require File.expand_path '../../../test_helper', __FILE__
 
 # Test class for Traffic Manager Profile Model
 class TestTrafficManagerProfile < Minitest::Test

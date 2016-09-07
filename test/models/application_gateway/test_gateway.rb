@@ -1,4 +1,4 @@
-require File.expand_path '../../test_helper', __dir__
+require File.expand_path '../../../test_helper', __FILE__
 
 # Test class for ApplicationGateway Model
 class TestGateway < Minitest::Test

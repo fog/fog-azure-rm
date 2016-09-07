@@ -1,4 +1,4 @@
-require File.expand_path '../../test_helper', __dir__
+require File.expand_path '../../../test_helper', __FILE__
 
 # Test class for Add Address Prefixes in Virtual Network Request
 class TestAddAddressPrefixesInVirtualNetwork < Minitest::Test

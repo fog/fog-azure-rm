@@ -1,6 +1,7 @@
 module ApiStub
   module Models
     module Network
+      # Mock class for Virtual Network Gateway Connection Models
       class VirtualNetworkGatewayConnection
         def self.create_virtual_network_gateway_connection_response(network_client)
           gateway_connection = '{

@@ -9,7 +9,7 @@ class TestSetConnectionSharedKey < Minitest::Test
   end
 
   def test_set_connection_shared_key_success
-    mocked_response = ApiStub::Requests::Network::VirtualNetworkGatewayConnection.set_connection_shared_key_response(@network_client)
+    mocked_response = ApiStub::Requests::Network::VirtualNetworkGatewayConnection.connection_shared_key_response(@network_client)
     @gateway_connections.stub :set_shared_key, mocked_response do
       assert_equal @service.set_connection_shared_key('fog-test-rg', 'fog-test-gateway-connection', 'hello'), mocked_response.value
     end

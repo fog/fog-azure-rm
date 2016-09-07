@@ -1,6 +1,7 @@
 module ApiStub
   module Requests
     module Network
+      # Mock class for Virtual Network Gateway Connection Requests
       class VirtualNetworkGatewayConnection
         def self.create_virtual_network_gateway_connection_response(network_client)
           gateway_connection = '{
@@ -52,7 +53,7 @@ module ApiStub
           network_client.deserialize(connection_mapper, JSON.load(gateway_connection), 'result.body')
         end
 
-        def self.set_connection_shared_key_response(network_client)
+        def self.connection_shared_key_response(network_client)
           shared_key = '{
             "value": "hello"
           }'

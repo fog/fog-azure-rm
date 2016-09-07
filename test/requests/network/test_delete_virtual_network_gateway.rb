@@ -8,14 +8,14 @@ class TestDeleteVirtualNetworkGateway < Minitest::Test
     @network_gateways = client.virtual_network_gateways
   end
 
-  def test_delete_network_interface_success
+  def test_delete_virtual_network_gateway_success
     response = ApiStub::Requests::Network::VirtualNetworkGateway.delete_virtual_network_gateway_response
     @network_gateways.stub :delete, response do
       assert @service.delete_virtual_network_gateway('fog-test-rg', 'fog-test-network-gateway'), response
     end
   end
 
-  def test_delete_network_interface_failure
+  def test_delete_virtual_network_gateway_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @network_gateways.stub :delete, response do
       assert_raises(RuntimeError) { @service.delete_virtual_network_gateway('fog-test-rg', 'fog-test-network-gateway') }

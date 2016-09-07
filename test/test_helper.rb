@@ -544,5 +544,28 @@ def express_route_circuit_authorization(service)
     authorization_use_status: 'Available',
     authorization_name: 'circuit-auth-name',
     service: service
+    )
+end
+
+def virtual_network_gateway_connection(service)
+  Fog::Network::AzureRM::VirtualNetworkGatewayConnection.new(
+    name: 'testNetworkGateway',
+    location: 'eastus',
+    tags: {
+      key1: 'value1',
+      key2: 'value2'
+    },
+    resource_group: 'learn_fog',
+    virtual_network_gateway1: {
+      name: 'firstgateway'
+    },
+    virtual_network_gateway2: {
+      name: 'secondgateway'
+    },
+    enable_bgp: true,
+    connection_type: 'ExpressRoute',
+    routing_weight: 2,
+    shared_key: 'shared_key',
+    service: service
   )
 end

@@ -22,17 +22,17 @@ module Fog
             'value' => [
               {
                 'name' => 'cn1',
-                'id' => '/subscriptions/{subscription-id}/resourceGroups/myrg1/providers/microsoft.network/connections/connection1',
+                'id' => '/subscriptions/{subscription-id}/resourceGroups/{resource_group_name}/providers/microsoft.network/connections/connection1',
                 'location' => 'West US',
                 'tags' => { 'key1' => 'value1' },
                 'properties' => {
-                  'gateway1' => {
+                  'virtualNetworkGateway1' => {
                     'name' => 'firstgateway',
-                    'id' => '/subscriptions/{subscription-id}/resourceGroups/myrg1/providers/microsoft.network/SiteToSite/firstgateway'
+                    'id' => '/subscriptions/{subscription-id}/resourceGroups/{resource_group_name}/providers/microsoft.network/SiteToSite/firstgateway'
                   },
-                  'gateway2' => {
+                  'virtualNetworkGateway2' => {
                     'name' => 'secondgateway',
-                    'id' => '/subscriptions/{subscription-id}/resourceGroups/myrg1/providers/microsoft.network/SiteToSite/secondgateway'
+                    'id' => '/subscriptions/{subscription-id}/resourceGroups/{resource_group_name}/providers/microsoft.network/SiteToSite/secondgateway'
                   },
                   'connectionType' => 'SiteToSite',
                   'connectivityState' => 'Connected'

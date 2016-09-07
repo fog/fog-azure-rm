@@ -71,10 +71,38 @@ circuits.each do |circuit|
 end
 
 ########################################################################################################################
+######################                Create Express Route Circuit Authorizations                   ####################
+########################################################################################################################
+authorization = network.express_route_circuit_authorizations.create(
+    resource_group: 'TestRG-ER',
+    circuit_name: 'testERCircuit',
+    authorization_use_status: 'Available',
+    authorization_name: 'Test-Auth',
+    name: 'Unique-Auth-Name'
+)
+
+########################################################################################################################
+######################                Get a Express Route Circuit Authorization                     ####################
+########################################################################################################################
+authorization = network.express_route_circuit_authorizations.get('TestRG-ER', 'auth-circuit', 'Test-Auth')
+puts "#{authorization.name}"
+
+########################################################################################################################
+######################                List Express Route Circuit Authorizations                     ####################
+########################################################################################################################
+authorizations = network.express_route_circuit_authorizations(resource_group: 'TestRG-ER', circuit_name: 'testERCircuit')
+authorizations.each do |auth|
+  puts "#{auth.name}"
+end
+
+########################################################################################################################
+######################                Destroy Express Route Circuit Authorization                     ####################
+########################################################################################################################
+authorization = network.express_route_circuit_authorizations.get('TestRG-ER', 'auth-circuit', 'Test-Auth')
+authorization.destroy
+
+########################################################################################################################
 ######################                                   CleanUp                                  ######################
 ########################################################################################################################
-
 circuit = network.express_route_circuits.get('TestRG-ER', 'testERCircuit')
-puts circuit.name
-
 circuit.destroy

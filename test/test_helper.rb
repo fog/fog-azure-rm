@@ -538,11 +538,11 @@ end
 
 def express_route_circuit_authorization(service)
   Fog::Network::AzureRM::ExpressRouteCircuitAuthorization.new(
-      name: 'UniqueAuthorizationName',
-      circuit_name: 'testCircuit',
-      resource_group: 'HaiderRG',
-      authorization_use_status: 'Available',
-      authorization_name: 'circuit-auth-name',
-      service: service
+    name: 'UniqueAuthorizationName',
+    circuit_name: 'testCircuit',
+    resource_group: 'HaiderRG',
+    authorization_use_status: 'Available',
+    authorization_name: 'circuit-auth-name',
+    service: service
   )
 end

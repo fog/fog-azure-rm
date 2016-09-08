@@ -4,16 +4,17 @@ module Fog
       # This class provides the actual implemention for service calls.
       class Real
         def create_deployment(resource_group, deployment_name, template_link, parameters_link)
-          Fog::Logger.debug "Creating Deployment: #{deployment_name} in Resource Group: #{resource_group}"
+          msg = "Creating Deployment: #{deployment_name} in Resource Group: #{resource_group}"
+          Fog::Logger.debug msg
           deployment = create_deployment_object(template_link, parameters_link)
           begin
             @rmc.deployments.validate(resource_group, deployment_name, deployment)
             deployment = @rmc.deployments.create_or_update(resource_group, deployment_name, deployment)
-            Fog::Logger.debug "Deployment: #{deployment_name} in Resource Group: #{resource_group} created successfully."
-            deployment
           rescue  MsRestAzure::AzureOperationError => e
-            raise Fog::AzureRm::OperationError.new(e)
+            raise_azure_exception(e, msg)
           end
+          Fog::Logger.debug "Deployment: #{deployment_name} in Resource Group: #{resource_group} created successfully."
+          deployment
         end
 
         private

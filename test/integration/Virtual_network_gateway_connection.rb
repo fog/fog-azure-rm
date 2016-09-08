@@ -190,5 +190,5 @@ vnet.destroy
 vnet = network.virtual_networks.get('TestRG-GC', 'testVnet2')
 vnet.destroy
 
-rg = resource.resource_groups.get('TestRG-GC')
-rg.destroy
+resource_group = resource.resource_groups.get('TestRG-GC')
+resource_group.destroy

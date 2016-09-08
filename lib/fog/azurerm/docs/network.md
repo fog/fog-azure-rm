@@ -902,7 +902,7 @@ Get single record of Virtual Network Gateway Connection
 
 ## Destroy single Virtual Network Gateway Connection
 
-Get a virtual network gateway connection object from the get method and then destroy that virtual network gateway.
+Get a virtual network gateway connection object from the get method and then destroy that virtual network gateway connection.
 
 ```ruby
 	gateway_connection.destroy

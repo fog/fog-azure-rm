@@ -1,7 +1,7 @@
 module Fog
   module Network
     class AzureRM
-      # Real class for Network Request
+      # Real class for Local Network Gateway Request
       class Real
         def delete_local_network_gateway(resource_group_name, local_network_gateway_name)
           msg = "Deleting Local Network Gateway: #{local_network_gateway_name}"
@@ -11,15 +11,15 @@ module Fog
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
-          Fog::Logger.debug "Local Network Gateway #{local_network_gateway_name} deleted successfully."
+          Fog::Logger.debug "Local Network Gateway #{local_network_gateway_name} from Resource group #{resource_group_name} deleted successfully."
           true
         end
       end
 
-      # Mock class for Network Request
+      # Mock class for Local Network Gateway Request
       class Mock
-        def delete_local_network_gateway(resource_group_name, local_network_gateway_name)
-          Fog::Logger.debug "Local Network Gateway #{local_network_gateway_name} from Resource group #{resource_group_name} deleted successfully."
+        def delete_local_network_gateway(*)
+          Fog::Logger.debug "Local Network Gateway testLocalNetworkGateway from Resource group learn_fog deleted successfully."
           true
         end
       end

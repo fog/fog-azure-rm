@@ -6,6 +6,7 @@ class TestLocalNetworkGateways < Minitest::Test
     @service = Fog::Network::AzureRM.new(credentials)
     @local_network_gateways = Fog::Network::AzureRM::LocalNetworkGateways.new(resource_group: 'fog-rg', service: @service)
     @network_client = @service.instance_variable_get(:@network_client)
+    @response = ApiStub::Models::Network::LocalNetworkGateway.create_local_network_gateway_response(@network_client)
   end
 
   def test_collection_methods
@@ -23,7 +24,7 @@ class TestLocalNetworkGateways < Minitest::Test
   end
 
   def test_all_method_response
-    response = [ApiStub::Models::Network::LocalNetworkGateway.create_local_network_gateway_response]
+    response = [@response]
     @service.stub :list_local_network_gateways, response do
       assert_instance_of Fog::Network::AzureRM::LocalNetworkGateways, @local_network_gateways.all
       assert @local_network_gateways.all.size >= 1
@@ -34,8 +35,7 @@ class TestLocalNetworkGateways < Minitest::Test
   end
 
   def test_get_method_response
-    response = ApiStub::Models::Network::LocalNetworkGateway.create_local_network_gateway_response
-    @service.stub :get_local_network_gateway, response do
+    @service.stub :get_local_network_gateway, @response do
       assert_instance_of Fog::Network::AzureRM::LocalNetworkGateway, @local_network_gateways.get('fog-rg', 'mylocalgateway1')
     end
   end

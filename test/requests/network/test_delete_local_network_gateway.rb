@@ -9,9 +9,8 @@ class TestDeleteLocalNetworkGateway < Minitest::Test
   end
 
   def test_delete_local_network_gateway_success
-    response = ApiStub::Requests::Network::LocalNetworkGateway.delete_local_network_gateway_response
-    @local_network_gateways.stub :delete, response do
-      assert @service.delete_local_network_gateway('fog-test-rg', 'fog-test-local-network-gateway'), response
+    @local_network_gateways.stub :delete, true do
+      assert @service.delete_local_network_gateway('fog-test-rg', 'fog-test-local-network-gateway')
     end
   end
 

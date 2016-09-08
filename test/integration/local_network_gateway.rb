@@ -72,5 +72,5 @@ puts local_network_gateway.name.to_s
 
 local_network_gateway.destroy
 
-rg = resource.resource_groups.get('TestRG-LNG')
-rg.destroy
+resource_group = resource.resource_groups.get('TestRG-LNG')
+resource_group.destroy

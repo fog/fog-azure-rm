@@ -5,7 +5,8 @@ class TestLocalNetworkGateway < Minitest::Test
   def setup
     @service = Fog::Network::AzureRM.new(credentials)
     @local_network_gateway = local_network_gateway(@service)
-    @response = ApiStub::Models::Network::LocalNetworkGateway.create_local_network_gateway_response
+    network_client = @service.instance_variable_get(:@network_client)
+    @response = ApiStub::Models::Network::LocalNetworkGateway.create_local_network_gateway_response(network_client)
   end
 
   def test_model_methods

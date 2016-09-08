@@ -17,33 +17,31 @@ module Fog
         attribute :provisioning_state
 
         def self.parse(local_network_gateway)
-          hash = {}
-          hash['id'] = local_network_gateway.id
-          hash['name'] = local_network_gateway.name
-          hash['location'] = local_network_gateway.location
-          hash['type'] = local_network_gateway.type
-          hash['resource_group'] = get_resource_group_from_id(local_network_gateway.id)
-          hash['tags'] = local_network_gateway.tags
+          local_network_gateway_hash = {}
+          local_network_gateway_hash['id'] = local_network_gateway.id
+          local_network_gateway_hash['name'] = local_network_gateway.name
+          local_network_gateway_hash['location'] = local_network_gateway.location
+          local_network_gateway_hash['type'] = local_network_gateway.type
+          local_network_gateway_hash['resource_group'] = get_resource_group_from_id(local_network_gateway.id)
+          local_network_gateway_hash['tags'] = local_network_gateway.tags
           local_network_address_space = local_network_gateway.local_network_address_space
-          unless local_network_address_space.nil?
-            hash['local_network_address_space_prefixes'] = local_network_address_space.address_prefixes
-          end
-          hash['gateway_ip_address'] = local_network_gateway.gateway_ip_address
+          local_network_gateway_hash['local_network_address_space_prefixes'] = local_network_address_space.address_prefixes unless local_network_address_space.nil?
+          local_network_gateway_hash['gateway_ip_address'] = local_network_gateway.gateway_ip_address
           bgp_settings = local_network_gateway.bgp_settings
           unless bgp_settings.nil?
-            hash['asn'] = bgp_settings.asn
-            hash['bgp_peering_address'] = bgp_settings.bgp_peering_address
-            hash['peer_weight'] = bgp_settings.peer_weight
+            local_network_gateway_hash['asn'] = bgp_settings.asn
+            local_network_gateway_hash['bgp_peering_address'] = bgp_settings.bgp_peering_address
+            local_network_gateway_hash['peer_weight'] = bgp_settings.peer_weight
           end
-          hash['provisioning_state'] = local_network_gateway.provisioning_state
-          hash
+          local_network_gateway_hash['provisioning_state'] = local_network_gateway.provisioning_state
+          local_network_gateway_hash
         end
 
         def save
           requires :name, :location, :resource_group, :local_network_address_space_prefixes, :gateway_ip_address, :asn, :bgp_peering_address, :peer_weight
           local_network_gateway_params = local_network_gateway_parameters
           local_network_gateway = service.create_or_update_local_network_gateway(local_network_gateway_params)
-          merge_attributes(Fog::Network::AzureRM::LocalNetworkGateway.parse(local_network_gateway))
+          merge_attributes(LocalNetworkGateway.parse(local_network_gateway))
         end
 
         def destroy

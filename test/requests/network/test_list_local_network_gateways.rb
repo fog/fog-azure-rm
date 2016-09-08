@@ -9,7 +9,7 @@ class TestListLocalNetwrokGateways < Minitest::Test
   end
 
   def test_list_local_network_gateways_success
-    mocked_response = ApiStub::Requests::Network::LocalNetworkGateway.list_local_network_gateway_response
+    mocked_response = ApiStub::Requests::Network::LocalNetworkGateway.list_local_network_gateway_response(@network_client)
     @local_network_gateways.stub :list_as_lazy, mocked_response do
       assert_equal @service.list_local_network_gateways('fog-test-rg'), mocked_response.value
     end

@@ -3,7 +3,7 @@ module ApiStub
     module Compute
       # Mock class for Virtual Machine Requests
       class VirtualMachine
-        def self.linux_virtual_machine_hash
+        def self.linux_virtual_machine_params
           {
             resource_group: 'fog-test-rg',
             name: 'fog-test-server',
@@ -27,7 +27,7 @@ module ApiStub
           }
         end
 
-        def self.windows_virtual_machine_hash
+        def self.windows_virtual_machine_params
           {
             resource_group: 'fog-test-rg',
             name: 'fog-test-server',
@@ -48,6 +48,56 @@ module ApiStub
             platform: 'Windows',
             provision_vm_agent: true,
             enable_automatic_updates: true
+          }
+        end
+
+        def self.linux_virtual_machine_with_custom_data_params
+          {
+            resource_group: 'fog-test-rg',
+            name: 'fog-test-server',
+            location: 'westus',
+            vm_size: 'Basic_A0',
+            storage_account_name: 'fogstrg',
+            username: 'fog',
+            password: 'fog',
+            disable_password_authentication: false,
+            ssh_key_path: '/home',
+            ssh_key_data: 'key',
+            network_interface_card_id: 'nic-id',
+            availability_set_id: 'as-id',
+            publisher: 'Canonical',
+            offer: 'UbuntuServer',
+            sku: '14.04.2-LTS',
+            version: 'latest',
+            platform: 'Linux',
+            provision_vm_agent: nil,
+            enable_automatic_updates: nil,
+            custom_data: 'echo customData'
+          }
+        end
+
+        def self.windows_virtual_machine_with_custom_data_params
+          {
+            resource_group: 'fog-test-rg',
+            name: 'fog-test-server',
+            location: 'westus',
+            vm_size: 'Basic_A0',
+            storage_account_name: 'fogstrg',
+            username: 'fog',
+            password: 'fog',
+            disable_password_authentication: nil,
+            ssh_key_path: '/home',
+            ssh_key_data: 'key',
+            network_interface_card_id: 'nic-id',
+            availability_set_id: 'as-id',
+            publisher: 'MicrosoftWindowsServerEssentials',
+            offer: 'WindowsServerEssentials',
+            sku: 'WindowsServerEssentials',
+            version: 'latest',
+            platform: 'Windows',
+            provision_vm_agent: true,
+            enable_automatic_updates: true,
+            custom_data: 'echo customData'
           }
         end
 
@@ -97,6 +147,83 @@ module ApiStub
                 "adminUsername":"fog",
                 "adminPassword":"fog",
                 "customData":"",
+                "windowsConfiguration": {
+                  "provisionVMAgent":true,
+                  "winRM": {
+                    "listeners": [ {
+                      "protocol": "https",
+                      "certificateUrl": "url-to-certificate"
+                    } ]
+                  },
+                  "enableAutomaticUpdates":true
+                },
+                "secrets":[ {
+                   "sourceVault": {
+                     "id": "/subscriptions/{subscription-id}/resourceGroups/myresourcegroup1/providers/Microsoft.KeyVault/vaults/myvault1"
+                   },
+                   "vaultCertificates": [ {
+                     "certificateUrl": "https://myvault1.vault.azure.net/secrets/{secretName}/{secretVersion}",
+                     "certificateStore": "{certificateStoreName}"
+                   } ]
+                 } ]
+              },
+              "networkProfile": {
+                "networkInterfaces": [ {
+                  "id":"/subscriptions/{subscription-id}/resourceGroups/myresourceGroup1/providers /Microsoft.Network/networkInterfaces/mynic1"
+                } ]
+              }
+            }
+          }'
+          vm_mapper = Azure::ARM::Compute::Models::VirtualMachine.mapper
+          compute_client.deserialize(vm_mapper, JSON.load(body), 'result.body')
+        end
+
+        def self.create_virtual_machine_with_custom_data_response(compute_client)
+          body = '{
+            "id":"/subscriptions/{subscription-id}/resourceGroups/fog-test-rg/providers/Microsoft.Compute/virtualMachines/fog-test-server",
+            "name":"fog-test-server",
+            "type":"Microsoft.Compute/virtualMachines",
+            "location":"westus",
+            "tags": {
+              "department":"finance"
+            },
+            "properties": {
+              "availabilitySet": {
+                "id":"/subscriptions/{subscription-id}/resourceGroups/myresourcegroup1/providers/Microsoft.Compute/availabilitySets/myav1"
+              },
+              "hardwareProfile": {
+                "vmSize":"Standard_A0"
+              },
+              "storageProfile": {
+                "imageReference": {
+                  "publisher":"MicrosoftWindowsServerEssentials",
+                  "offer":"WindowsServerEssentials",
+                  "sku":"WindowsServerEssentials",
+                  "version":"latest"
+                },
+                "osDisk": {
+                  "name":"myosdisk1",
+                  "vhd": {
+                    "uri":"http://mystorage1.blob.core.windows.net/vhds/myosdisk1.vhd"
+                  },
+                  "caching":"ReadWrite",
+                  "createOption":"FromImage"
+                },
+                "dataDisks": [ {
+                   "name":"mydatadisk1",
+                   "diskSizeGB":"1",
+                   "lun": 0,
+                   "vhd": {
+                     "uri" : "http://mystorage1.blob.core.windows.net/vhds/mydatadisk1.vhd"
+                   },
+                   "createOption":"Empty"
+                 } ]
+              },
+              "osProfile": {
+                "computerName":"fog-test-server",
+                "adminUsername":"fog",
+                "adminPassword":"fog",
+                "customData":"ZWNobyBjdXN0b21EYXRh",
                 "windowsConfiguration": {
                   "provisionVMAgent":true,
                   "winRM": {

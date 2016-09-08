@@ -9,20 +9,16 @@ class TestExpressRouteCircuitAuthorization < Minitest::Test
   end
 
   def test_model_methods
-    response = ApiStub::Models::Network::ExpressRouteCircuitAuthorization.create_express_route_circuit_authorization_response(@network_client)
     methods = [
       :save,
       :destroy
     ]
-    @service.stub :create_or_update_express_route_circuit_authorization, response do
-      methods.each do |method|
-        assert @circuit_authorization.respond_to? method
-      end
+    methods.each do |method|
+      assert @circuit_authorization.respond_to? method
     end
   end
 
   def test_model_attributes
-    response = ApiStub::Models::Network::ExpressRouteCircuitAuthorization.create_express_route_circuit_authorization_response(@network_client)
     attributes = [
       :name,
       :id,
@@ -34,10 +30,8 @@ class TestExpressRouteCircuitAuthorization < Minitest::Test
       :etag,
       :circuit_name
     ]
-    @service.stub :create_or_update_express_route_circuit_authorization, response do
-      attributes.each do |attribute|
-        assert @circuit_authorization.respond_to? attribute
-      end
+    attributes.each do |attribute|
+      assert @circuit_authorization.respond_to? attribute
     end
   end
 

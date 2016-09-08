@@ -1,7 +1,7 @@
 module Fog
   module Network
     class AzureRM
-      # Real class for Network Request
+      # Real class for Express Route Circuit Authorization Request
       class Real
         def create_or_update_express_route_circuit_authorization(circuit_authorization_params)
           msg = "Creating/updating Express Route Circuit Authorization #{circuit_authorization_params[:authorization_name]} in Resource Group: #{circuit_authorization_params[:resource_group]}."
@@ -30,7 +30,7 @@ module Fog
         end
       end
 
-      # Mock class for Network Request
+      # Mock class for Express Route Circuit Authorization Request
       class Mock
         def create_or_update_express_route_circuit_authorization(*)
           authorization = {

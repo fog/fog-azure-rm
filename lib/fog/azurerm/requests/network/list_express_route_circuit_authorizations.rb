@@ -1,7 +1,7 @@
 module Fog
   module Network
     class AzureRM
-      # Real class for Network Request
+      # Real class for Express Route Circuit Authorization Request
       class Real
         def list_express_route_circuit_authorizations(resource_group_name, circuit_name)
           msg = "Getting list of Express Route Circuit Authorizations from Resource Group #{resource_group_name}."
@@ -15,7 +15,7 @@ module Fog
         end
       end
 
-      # Mock class for Network Request
+      # Mock class for Express Route Circuit Authorization Request
       class Mock
         def list_express_route_circuit_authorizations(*)
           authorizations = [

@@ -41,7 +41,7 @@ module Fog
         private
 
         def express_route_circuit_authorization_params
-          circuit_authorization_parameters = {
+          {
             name: name,
             resource_group: resource_group,
             circuit_name: circuit_name,
@@ -51,7 +51,6 @@ module Fog
             provisioning_state: provisioning_state,
             etag: etag
           }
-          circuit_authorization_parameters
         end
       end
     end

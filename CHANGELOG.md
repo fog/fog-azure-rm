@@ -3,7 +3,13 @@
 **Added:**
 - Compute Service - Added Custom data support for creating Virtual Machine.
 - Network Service - Added Express Route Circuit Authorization.
+- Network Service - Added Virtual Network Gateway Connection support
+- Network Service - Added Local Network Gateway
 - Traffic Manager - Added support for Update Traffic Manager Profile and Endpoint.
+
+**Changed:**
+- Used autoload in place of require to avoid loading time issues
+- Used Fog DSL to register services
 
 ## 0.0.5
 

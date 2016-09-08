@@ -28,6 +28,7 @@ module ApiStub
       autoload :VirtualNetworkGateway, File.expand_path('api_stub/models/network/virtual_network_gateway', __dir__)
       autoload :ExpressRouteCircuit, File.expand_path('api_stub/models/network/express_route_circuit', __dir__)
       autoload :ExpressRouteCircuitPeering, File.expand_path('api_stub/models/network/express_route_circuit_peering', __dir__)
+      autoload :ExpressRouteCircuitAuthorization, File.expand_path('api_stub/models/network/express_route_circuit_authorization', __dir__)
       autoload :ExpressRouteServiceProvider, File.expand_path('api_stub/models/network/express_route_service_provider', __dir__)
     end
 
@@ -74,6 +75,7 @@ module ApiStub
       autoload :VirtualNetworkGateway, File.expand_path('api_stub/requests/network/virtual_network_gateway', __dir__)
       autoload :ExpressRouteCircuit, File.expand_path('api_stub/requests/network/express_route_circuit', __dir__)
       autoload :ExpressRouteCircuitPeering, File.expand_path('api_stub/requests/network/express_route_circuit_peering', __dir__)
+      autoload :ExpressRouteCircuitAuthorization, File.expand_path('api_stub/requests/network/express_route_circuit_authorization', __dir__)
       autoload :ExpressRouteServiceProvider, File.expand_path('api_stub/requests/network/express_route_service_provider', __dir__)
     end
 

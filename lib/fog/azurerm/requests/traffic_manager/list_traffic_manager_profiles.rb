@@ -73,7 +73,7 @@ module Fog
               }
             }
           ]
-          profiles_mapper = Azure::ARM::TrafficManager::Models::Profile.mapper
+          profiles_mapper = Azure::ARM::TrafficManager::Models::ProfileListResult.mapper
           @traffic_mgmt_client.deserialize(profiles_mapper, profiles, 'result.body')
         end
       end

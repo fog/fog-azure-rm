@@ -18,6 +18,11 @@ def get_traffic_manager_profile_name_from_endpoint_id(endpoint_id)
   endpoint_id.split('/')[8]
 end
 
+# Pick Express Route Circuit name from Id(String)
+def get_circuit_name_from_id(circuit_id)
+  circuit_id.split('/')[8]
+end
+
 def get_record_type(type)
   type.split('/').last
 end

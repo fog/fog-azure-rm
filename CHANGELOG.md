@@ -1,9 +1,9 @@
-## 0.0.6 - Upcoming Version
+## 0.0.6 - Upcoming version
 
 **Added:**
 - Compute Service - Added Custom data support for creating Virtual Machine.
-
-
+- Network Service - Added Express Route Circuit Authorization.
+- Traffic Manager - Added support for Update Traffic Manager Profile and Endpoint.
 
 ## 0.0.5
 

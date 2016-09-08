@@ -60,6 +60,10 @@ module Fog
       request :delete_express_route_circuit_peering
       request :get_express_route_circuit_peering
       request :list_express_route_circuit_peerings
+      request :create_or_update_express_route_circuit_authorization
+      request :delete_express_route_circuit_authorization
+      request :get_express_route_circuit_authorization
+      request :list_express_route_circuit_authorizations
       request :list_express_route_service_providers
 
       model_path 'fog/azurerm/models/network'
@@ -91,6 +95,8 @@ module Fog
       collection :express_route_circuits
       model :express_route_circuit_peering
       collection :express_route_circuit_peerings
+      model :express_route_circuit_authorization
+      collection :express_route_circuit_authorizations
       model :express_route_service_provider
       collection :express_route_service_providers
 

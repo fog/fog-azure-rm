@@ -1,3 +1,9 @@
+## 0.0.6 - Upcoming version
+
+**Added:**
+- Network Service - Added Express Route Circuit Authorization.
+- Traffic Manager - Added support for Update Traffic Manager Profile and Endpoint.
+
 ## 0.0.5
 
 **Added:**

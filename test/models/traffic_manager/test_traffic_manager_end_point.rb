@@ -41,7 +41,7 @@ class TestTrafficManagerEndPoint < Minitest::Test
 
   def test_save_method_response
     response = ApiStub::Models::TrafficManager::TrafficManagerEndPoint.create_traffic_manager_end_point_response(@traffic_manager_client)
-    @service.stub :create_traffic_manager_endpoint, response do
+    @service.stub :create_or_update_traffic_manager_endpoint, response do
       assert_instance_of Fog::TrafficManager::AzureRM::TrafficManagerEndPoint, @traffic_manager_end_point.save
     end
   end

@@ -30,7 +30,7 @@ resources.resource_groups.create(
   name: 'TestRG-ER',
   location: 'eastus'
 )
-
+puts 'Resource Group created!'
 ########################################################################################################################
 ################                               Create Express Route Circuit                            #################
 ########################################################################################################################
@@ -60,6 +60,7 @@ network.express_route_circuits.create(
     }
   ]
 )
+puts 'Express Route Circuit created!'
 
 ########################################################################################################################
 ######################                           List Express Route Circuit                         ####################
@@ -76,10 +77,11 @@ end
 network.express_route_circuit_authorizations.create(
   resource_group: 'TestRG-ER',
   circuit_name: 'testERCircuit',
-  authorization_use_status: 'Available',
+  authorization_status: 'Available',
   authorization_name: 'Test-Auth',
   name: 'Unique-Auth-Name'
 )
+puts 'Express Route Circuit Authorization created!'
 
 ########################################################################################################################
 ######################                Get a Express Route Circuit Authorization                     ####################
@@ -100,15 +102,18 @@ end
 ########################################################################################################################
 authorization = network.express_route_circuit_authorizations.get('TestRG-ER', 'testERCircuit', 'Test-Auth')
 authorization.destroy
+puts 'Express Route Circuit Authorization deleted!'
 
 ########################################################################################################################
 ######################                   Destroy Express Route Circuit                            ######################
 ########################################################################################################################
 circuit = network.express_route_circuits.get('TestRG-ER', 'testERCircuit')
 circuit.destroy
+puts 'Express Route Circuit deleted!'
 
 ########################################################################################################################
 ######################                         CleanUp                                            ######################
 ########################################################################################################################
 resource_group = resources.resource_groups.get('TestRG-ER')
 resource_group.destroy
+puts 'Resource Group deleted!'

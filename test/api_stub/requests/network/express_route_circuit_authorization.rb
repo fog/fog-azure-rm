@@ -21,7 +21,7 @@ module ApiStub
             resource_group: 'rg-name',
             name: 'auth-unique-name',
             circuit_name: 'circuit-name',
-            authorization_use_status: 'Available',
+            authorization_status: 'Available',
             authorization_name: 'authorization-name'
           }
         end

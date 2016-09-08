@@ -752,14 +752,14 @@ Authorization is part of Express Route circuit.
 
 ## Create an Express Route Circuit Authorization
 
-Create a new Express Route Circuit Authorization. Parameter 'authorization_use_status' can be 'Available' or 'InUse'.
+Create a new Express Route Circuit Authorization. Parameter 'authorization_status' can be 'Available' or 'InUse'.
 
 ```ruby
     authorization = network.express_route_circuit_authorizations.create(
     	"resource_group": "<Resourse Group Name>",
     	"name": "<Resource-Unique-Name>",
     	"circuit_name": "<Circuit Name>",
-    	"authorization_use_status": "Available",
+    	"authorization_status": "Available",
     	"authorization_name": "<Authorization-Name>",
 	)
 ```

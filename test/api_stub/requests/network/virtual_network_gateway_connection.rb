@@ -53,27 +53,11 @@ module ApiStub
           network_client.deserialize(connection_mapper, JSON.load(gateway_connection), 'result.body')
         end
 
-        def self.connection_shared_key_response(network_client)
-          shared_key = '{
-            "value": "hello"
-          }'
-          shared_key_mapper = Azure::ARM::Network::Models::ConnectionSharedKey.mapper
-          network_client.deserialize(shared_key_mapper, JSON.load(shared_key), 'result.body')
-        end
-
         def self.get_connection_shared_key_response(network_client)
           shared_key = '{
             "value": "hello"
           }'
           shared_key_mapper = Azure::ARM::Network::Models::ConnectionSharedKeyResult.mapper
-          network_client.deserialize(shared_key_mapper, JSON.load(shared_key), 'result.body')
-        end
-
-        def self.reset_connection_shared_key_response(network_client)
-          shared_key = '{
-            "KeyLength": "20"
-          }'
-          shared_key_mapper = Azure::ARM::Network::Models::ConnectionResetSharedKey.mapper
           network_client.deserialize(shared_key_mapper, JSON.load(shared_key), 'result.body')
         end
 

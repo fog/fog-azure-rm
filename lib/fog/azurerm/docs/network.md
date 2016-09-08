@@ -916,14 +916,14 @@ Create a new Virtual Network Gateway Connection.
         key1: 'value1',
         key2: 'value2'
       },
-      resource_group: 'learn_fog',
+      resource_group: '<Resource Group Name>',
       virtual_network_gateway1: {
         name: 'firstgateway',
-        resource_group: 'test_fog'
+        resource_group: '<Resource Group Name>'
       },
       virtual_network_gateway2: {
         name: 'secondgateway',
-        resource_group: 'test_fog'
+        resource_group: '<Resource Group Name>'
       }
       connection_type: 'VNet-to-VNet'
     )
@@ -945,7 +945,7 @@ List all virtual network gateway connections in a resource group
 Get single record of Virtual Network Gateway Connection
 
 ```ruby
-    gateway_connection = network.virtual_network_gateway_connections.get('<Resource Group Name>', '<Virtual Network Gateway Name>')
+    gateway_connection = network.virtual_network_gateway_connections.get('<Resource Group Name>', '<Virtual Network Gateway Connection Name>')
 	puts "#{gateway_connection.name}"
 ```
 
@@ -955,6 +955,25 @@ Get a virtual network gateway connection object from the get method and then des
 
 ```ruby
 	gateway_connection.destroy
+```
+
+## Get the shared key for a connection
+
+```ruby
+	shared_key = network.get_connection_shared_key('<Resource Group Name>', '<Virtual Network Gateway Connection Name>')
+    puts gateway_connection
+```
+
+## Set the shared key for a connection
+
+```ruby
+	network.set_connection_shared_key('<Resource Group Name>', '<Virtual Network Gateway Connection Name>', 'Value')
+```
+
+## Reset the shared key for a connection
+
+```ruby
+	network.reset_connection_shared_key('<Resource Group Name>', '<Virtual Network Gateway Connection Name>', <Key Length in Integer>)
 ```
 
 

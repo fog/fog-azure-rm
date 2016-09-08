@@ -9,9 +9,8 @@ class TestResetConnectionSharedKey < Minitest::Test
   end
 
   def test_reset_connection_shared_key_success
-    mocked_response = ApiStub::Requests::Network::VirtualNetworkGatewayConnection.reset_connection_shared_key_response(@network_client)
-    @gateway_connections.stub :reset_shared_key, mocked_response do
-      assert_equal @service.reset_connection_shared_key('fog-test-rg', 'fog-test-gateway-connection', '20'), mocked_response.key_length
+    @gateway_connections.stub :reset_shared_key, nil do
+      assert_equal @service.reset_connection_shared_key('fog-test-rg', 'fog-test-gateway-connection', '20'), true
     end
   end
 

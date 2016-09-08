@@ -1,6 +1,3 @@
-require 'fog/azurerm/core'
-require 'fog/azurerm/credentials'
-
 module Fog
   module DNS
     # This class registers models, requests and collections

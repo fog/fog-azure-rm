@@ -563,7 +563,7 @@ def virtual_network_gateway_connection(service)
       name: 'secondgateway'
     },
     enable_bgp: true,
-    connection_type: 'ExpressRoute',
+    connection_type: 'VNet-to-VNet',
     routing_weight: 2,
     shared_key: 'shared_key',
     service: service

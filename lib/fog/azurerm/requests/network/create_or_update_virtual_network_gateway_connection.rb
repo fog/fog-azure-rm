@@ -27,11 +27,11 @@ module Fog
           gateway_connection.tags = gateway_connection_params[:tags] if gateway_connection.tags.nil?
 
           if gateway_connection_params[:virtual_network_gateway1]
-            gateway_connection.virtual_network_gateway1 = get_virtual_network_gateway(gateway_connection_params[:resource_group_name], gateway_connection_params[:virtual_network_gateway1][:name])
+            gateway_connection.virtual_network_gateway1 = get_virtual_network_gateway(gateway_connection_params[:virtual_network_gateway1][:resource_group_name], gateway_connection_params[:virtual_network_gateway1][:name])
           end
 
           if gateway_connection_params[:virtual_network_gateway2]
-            gateway_connection.virtual_network_gateway2 = get_virtual_network_gateway(gateway_connection_params[:resource_group_name], gateway_connection_params[:virtual_network_gateway2][:name])
+            gateway_connection.virtual_network_gateway2 = get_virtual_network_gateway(gateway_connection_params[:virtual_network_gateway2][:resource_group_name], gateway_connection_params[:virtual_network_gateway2][:name])
           end
 
           gateway_connection.authorization_key = gateway_connection_params[:authorization_key]
@@ -41,7 +41,9 @@ module Fog
           gateway_connection.connection_status = gateway_connection_params[:connection_status]
           gateway_connection.egress_bytes_transferred = gateway_connection_params[:egress_bytes_transferred]
           gateway_connection.ingress_bytes_transferred = gateway_connection_params[:ingress_bytes_transferred]
-          gateway_connection.peer = gateway_connection_params[:peer]
+          peer = MsRestAzure::SubResource.new
+          peer.id = gateway_connection_params[:peer]
+          gateway_connection.peer = peer
           gateway_connection.resource_guid = gateway_connection_params[:resource_guid]
           gateway_connection.enable_bgp = gateway_connection_params[:enable_bgp]
           gateway_connection.provisioning_state = gateway_connection_params[:provisioning_state]

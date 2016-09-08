@@ -6,19 +6,18 @@ class TestCreateVirtualNetworkGatewayConnection < Minitest::Test
     @service = Fog::Network::AzureRM.new(credentials)
     @network_client = @service.instance_variable_get(:@network_client)
     @gateway_connections = @network_client.virtual_network_gateway_connections
+    @connection_response = ApiStub::Requests::Network::VirtualNetworkGatewayConnection.create_virtual_network_gateway_connection_response(@network_client)
   end
 
   def test_create_virtual_network_gateway_connection_success
     network_gateway_parms = {}
-    mocked_response = ApiStub::Requests::Network::VirtualNetworkGatewayConnection.create_virtual_network_gateway_connection_response(@network_client)
-    @gateway_connections.stub :create_or_update, mocked_response do
-      assert_equal @service.create_or_update_virtual_network_gateway_connection(network_gateway_parms), mocked_response
+    @gateway_connections.stub :create_or_update, @connection_response do
+      assert_equal @service.create_or_update_virtual_network_gateway_connection(network_gateway_parms), @connection_response
     end
   end
 
   def test_create_virtual_network_gateway_connection_argument_error_failure
-    response = ApiStub::Requests::Network::VirtualNetworkGatewayConnection.create_virtual_network_gateway_connection_response(@network_client)
-    @gateway_connections.stub :create_or_update, response do
+    @gateway_connections.stub :create_or_update, @connection_response do
       assert_raises ArgumentError do
         @service.create_or_update_virtual_network_gateway_connection
       end

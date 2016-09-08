@@ -6,6 +6,7 @@ class TestVirtualNetworkGatewayConnections < Minitest::Test
     @service = Fog::Network::AzureRM.new(credentials)
     @gateway_connections = Fog::Network::AzureRM::VirtualNetworkGatewayConnections.new(resource_group: 'fog-rg', service: @service)
     @network_client = @service.instance_variable_get(:@network_client)
+    @response = ApiStub::Models::Network::VirtualNetworkGatewayConnection.create_virtual_network_gateway_connection_response(@network_client)
   end
 
   def test_collection_methods
@@ -23,8 +24,8 @@ class TestVirtualNetworkGatewayConnections < Minitest::Test
   end
 
   def test_all_method_response
-    response = [ApiStub::Models::Network::VirtualNetworkGatewayConnection.create_virtual_network_gateway_connection_response(@network_client)]
-    @service.stub :list_virtual_network_gateway_connections, response do
+    connection_response = [@response]
+    @service.stub :list_virtual_network_gateway_connections, connection_response do
       assert_instance_of Fog::Network::AzureRM::VirtualNetworkGatewayConnections, @gateway_connections.all
       assert @gateway_connections.all.size >= 1
       @gateway_connections.all.each do |gateway_connection|
@@ -34,8 +35,7 @@ class TestVirtualNetworkGatewayConnections < Minitest::Test
   end
 
   def test_get_method_response
-    response = ApiStub::Models::Network::VirtualNetworkGatewayConnection.create_virtual_network_gateway_connection_response(@network_client)
-    @service.stub :get_virtual_network_gateway_connection, response do
+    @service.stub :get_virtual_network_gateway_connection, @response do
       assert_instance_of Fog::Network::AzureRM::VirtualNetworkGatewayConnection, @gateway_connections.get('fog-rg', 'cn1')
     end
   end

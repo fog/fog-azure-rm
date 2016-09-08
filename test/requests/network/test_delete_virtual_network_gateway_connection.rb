@@ -9,9 +9,8 @@ class TestDeleteVirtualNetworkGatewayConnection < Minitest::Test
   end
 
   def test_delete_virtual_network_gateway_connection_success
-    response = ApiStub::Requests::Network::VirtualNetworkGatewayConnection.delete_virtual_network_gateway_connection_response
-    @gateway_connections.stub :delete, response do
-      assert @service.delete_virtual_network_gateway_connection('fog-test-rg', 'fog-test-gateway-connection'), response
+    @gateway_connections.stub :delete, true do
+      assert @service.delete_virtual_network_gateway_connection('fog-test-rg', 'fog-test-gateway-connection'), true
     end
   end
 

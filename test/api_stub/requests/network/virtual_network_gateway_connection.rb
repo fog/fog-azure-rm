@@ -54,9 +54,7 @@ module ApiStub
         end
 
         def self.get_connection_shared_key_response(network_client)
-          shared_key = '{
-            "value": "hello"
-          }'
+          shared_key = '{ "value": "hello" }'
           shared_key_mapper = Azure::ARM::Network::Models::ConnectionSharedKeyResult.mapper
           network_client.deserialize(shared_key_mapper, JSON.load(shared_key), 'result.body')
         end

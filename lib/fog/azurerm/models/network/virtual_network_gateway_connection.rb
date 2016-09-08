@@ -32,13 +32,13 @@ module Fog
           connection['tags'] = gateway_connection.tags
 
           unless gateway_connection.virtual_network_gateway1.nil?
-            gateway1 = Fog::Network::AzureRM::VirtualNetworkGateway.new
-            connection['virtual_network_gateway1'] = gateway1.merge_attributes(Fog::Network::AzureRM::VirtualNetworkGateway.parse(gateway_connection.virtual_network_gateway1))
+            gateway1 = VirtualNetworkGateway.new
+            connection['virtual_network_gateway1'] = gateway1.merge_attributes(VirtualNetworkGateway.parse(gateway_connection.virtual_network_gateway1))
           end
 
           unless gateway_connection.virtual_network_gateway2.nil?
-            gateway2 = Fog::Network::AzureRM::VirtualNetworkGateway.new
-            connection['virtual_network_gateway2'] = gateway2.merge_attributes(Fog::Network::AzureRM::VirtualNetworkGateway.parse(gateway_connection.virtual_network_gateway2))
+            gateway2 = VirtualNetworkGateway.new
+            connection['virtual_network_gateway2'] = gateway2.merge_attributes(VirtualNetworkGateway.parse(gateway_connection.virtual_network_gateway2))
           end
 
           connection['connection_type'] = gateway_connection.connection_type
@@ -59,7 +59,7 @@ module Fog
           requires :name, :location, :resource_group, :connection_type
           gateway_connection_params = gateway_connection_parameters
           gateway_connection = service.create_or_update_virtual_network_gateway_connection(gateway_connection_params)
-          merge_attributes(Fog::Network::AzureRM::VirtualNetworkGatewayConnection.parse(gateway_connection))
+          merge_attributes(VirtualNetworkGatewayConnection.parse(gateway_connection))
         end
 
         def destroy

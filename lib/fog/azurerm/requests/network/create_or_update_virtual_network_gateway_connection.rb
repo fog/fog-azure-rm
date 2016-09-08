@@ -7,7 +7,7 @@ module Fog
         def create_or_update_virtual_network_gateway_connection(gateway_connection_params)
           msg = "Creating/Updating Virtual Network Gateway Connection: #{gateway_connection_params[:name]} in Resource Group: #{gateway_connection_params[:resource_group_name]}."
           Fog::Logger.debug msg
-          gateway_connection = get_network_gateway_object(gateway_connection_params)
+          gateway_connection = get_network_gateway_connection_object(gateway_connection_params)
           begin
             network_gateway_connection = @network_client.virtual_network_gateway_connections.create_or_update(gateway_connection_params[:resource_group_name], gateway_connection_params[:name], gateway_connection)
           rescue MsRestAzure::AzureOperationError => e
@@ -19,7 +19,7 @@ module Fog
 
         private
 
-        def get_network_gateway_object(gateway_connection_params)
+        def get_network_gateway_connection_object(gateway_connection_params)
           gateway_connection = Azure::ARM::Network::Models::VirtualNetworkGatewayConnection.new
 
           gateway_connection.name = gateway_connection_params[:name]

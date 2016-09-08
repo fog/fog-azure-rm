@@ -94,7 +94,8 @@ compute.servers.create(
   offer: 'UbuntuServer',
   sku: '14.04.2-LTS',
   version: 'latest',
-  platform: 'linux'
+  platform: 'linux',
+  custom_data: 'echo customData'
 )
 
 ########################################################################################################################

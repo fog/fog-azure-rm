@@ -4,3 +4,5 @@
 * Shaffan Chaudhry <shaffan.chaudhry@confiz.com>
 * Zeeshan Arshad <zeeshan.arshad@confiz.com>
 * Haider Ali <haider.ali@confiz.com>
+* Waqar Haider <waqar.haider@confiz.com>
+* Bilal Naeem <bilal.naeem@confiz.com>

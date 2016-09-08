@@ -1,6 +1,7 @@
 ## 0.0.6 - Upcoming version
 
 **Added:**
+- Compute Service - Added Custom data support for creating Virtual Machine.
 - Network Service - Added Express Route Circuit Authorization.
 - Traffic Manager - Added support for Update Traffic Manager Profile and Endpoint.
 
@@ -12,16 +13,16 @@
 - Network Service - Added VPN Gateway
 
 **Changed:**
-- Updated fog-azure-rm runtime gem dependencies to latest:
--- azure_mgmt_compute 0.5.0
--- azure_mgmt_network 0.5.0
--- azure_mgmt_resources 0.5.0
--- azure_mgmt_storage 0.5.0
--- azure_mgmt_traffic_manager 0.5.0
--- rest-client 2.0.0
--- fog-core 1.42.0
-- Traffic Manager Service - Moved Traffic Manager from Network Service to Traffic Manager Service.
-- Application Gateway Service - Moved Application Gateway from Network Service to Application Gateway Service.
+* Updated fog-azure-rm runtime gem dependencies to latest:
+  * azure_mgmt_compute 0.5.0
+  * azure_mgmt_network 0.5.0 
+  * azure_mgmt_resources 0.5.0
+  * azure_mgmt_storage 0.5.0 
+  * azure_mgmt_traffic_manager 0.5.0
+  * rest-client 2.0.0
+  * fog-core 1.42.0 
+* Traffic Manager Service - Moved Traffic Manager from Network Service to Traffic Manager Service.
+* Application Gateway Service - Moved Application Gateway from Network Service to Application Gateway Service.
 
 ## 0.0.4
 

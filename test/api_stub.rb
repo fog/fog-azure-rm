@@ -29,6 +29,7 @@ module ApiStub
       autoload :ExpressRouteCircuit, File.expand_path('api_stub/models/network/express_route_circuit', __dir__)
       autoload :ExpressRouteCircuitPeering, File.expand_path('api_stub/models/network/express_route_circuit_peering', __dir__)
       autoload :ExpressRouteServiceProvider, File.expand_path('api_stub/models/network/express_route_service_provider', __dir__)
+      autoload :LocalNetworkGateway, File.expand_path('api_stub/models/network/local_network_gateway', __dir__)
     end
 
     module ApplicationGateway
@@ -75,6 +76,7 @@ module ApiStub
       autoload :ExpressRouteCircuit, File.expand_path('api_stub/requests/network/express_route_circuit', __dir__)
       autoload :ExpressRouteCircuitPeering, File.expand_path('api_stub/requests/network/express_route_circuit_peering', __dir__)
       autoload :ExpressRouteServiceProvider, File.expand_path('api_stub/requests/network/express_route_service_provider', __dir__)
+      autoload :LocalNetworkGateway, File.expand_path('api_stub/requests/network/local_network_gateway', __dir__)
     end
 
     module ApplicationGateway

@@ -61,6 +61,10 @@ module Fog
       request :get_express_route_circuit_peering
       request :list_express_route_circuit_peerings
       request :list_express_route_service_providers
+      request :create_or_update_local_network_gateway
+      request :delete_local_network_gateway
+      request :get_local_network_gateway
+      request :list_local_network_gateways
 
       model_path 'fog/azurerm/models/network'
       model :virtual_network
@@ -93,6 +97,8 @@ module Fog
       collection :express_route_circuit_peerings
       model :express_route_service_provider
       collection :express_route_service_providers
+      model :local_network_gateway
+      collection :local_network_gateways
 
       # Mock class for Network Service
       class Mock

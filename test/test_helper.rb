@@ -494,6 +494,24 @@ def virtual_network_gateway(service)
   )
 end
 
+def local_network_gateway(service)
+  Fog::Network::AzureRM::LocalNetworkGateway.new(
+    name: 'testLocalNetworkGateway',
+    location: 'eastus',
+    tags: {
+        key1: 'value1',
+        key2: 'value2'
+    },
+    resource_group: 'learn_fog',
+    gateway_ip_address: '192.168.1.1',
+    local_network_address_space_prefixes: [],
+    asn: 100,
+    bgp_peering_address: '192.168.1.2',
+    peer_weight: 3,
+    service: service
+  )
+end
+
 def express_route_circuit(service)
   Fog::Network::AzureRM::ExpressRouteCircuit.new(
     name: 'testCircuit',

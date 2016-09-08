@@ -8,10 +8,11 @@ module Fog
           Fog::Logger.debug msg
           shared_key = get_shared_key_object(shared_key_value)
           begin
-            @network_client.virtual_network_gateway_connections.set_shared_key(resource_group_name, virtual_network_gateway_connection_name, shared_key).value
+            @network_client.virtual_network_gateway_connections.set_shared_key(resource_group_name, virtual_network_gateway_connection_name, shared_key)
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
+          true
         end
 
         private
@@ -27,6 +28,7 @@ module Fog
       class Mock
         def set_connection_shared_key(*)
           Fog::Logger.debug 'Set the shared key of Connection successfully.'
+          true
         end
       end
     end

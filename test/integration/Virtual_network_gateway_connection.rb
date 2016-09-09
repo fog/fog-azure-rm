@@ -88,7 +88,6 @@ network.local_network_gateways.create(
   peer_weight: 3
 )
 
-
 network.virtual_network_gateways.create(
   name: 'testnetworkgateway',
   location: 'eastus',

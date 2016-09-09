@@ -123,9 +123,6 @@ network_gateway.destroy
 pubip = network.public_ips.get('TestRG-VNG', 'mypubip')
 pubip.destroy
 
-vnet = network.virtual_networks.get('TestRG-VNG', 'testVnet')
-vnet.destroy
-
 local_network_gateway = network.local_network_gateways.get('TestRG-VNG', 'testlocalnetworkgateway')
 local_network_gateway.destroy
 

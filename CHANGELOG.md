@@ -1,4 +1,4 @@
-## 0.0.6 - Upcoming version
+## 0.0.6
 
 **Added:**
 - Compute Service - Added Custom data support for creating Virtual Machine.

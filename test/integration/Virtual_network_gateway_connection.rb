@@ -53,7 +53,7 @@ network.subnets.create(
 )
 
 network.subnets.create(
-  name: 'GatewaySubnet2',
+  name: 'GatewaySubnet',
   resource_group: 'TestRG-GC',
   virtual_network_name: 'testVnet2',
   address_prefix: '10.2.0.0/24'
@@ -72,6 +72,22 @@ network.public_ips.create(
   location: 'eastus',
   public_ip_allocation_method: 'Dynamic'
 )
+
+network.local_network_gateways.create(
+  name: 'testlocalnetworkgateway',
+  location: 'eastus',
+  tags: {
+    key1: 'value1',
+    key2: 'value2'
+  },
+  resource_group: 'TestRG-GC',
+  gateway_ip_address: '192.168.1.1',
+  local_network_address_space_prefixes: [],
+  asn: 100,
+  bgp_peering_address: '192.168.1.2',
+  peer_weight: 3
+)
+
 
 network.virtual_network_gateways.create(
   name: 'testnetworkgateway',
@@ -101,7 +117,7 @@ network.virtual_network_gateways.create(
   peer_weight: 3,
   vpn_type: 'RouteBased',
   vpn_client_address_pool: [],
-  gateway_default_site: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-GC/providers/Microsoft.Network/localNetworkGateways/{local_network_gateway_name}"
+  gateway_default_site: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-GC/providers/Microsoft.Network/localNetworkGateways/testlocalnetworkgateway"
 )
 
 network.virtual_network_gateways.create(
@@ -132,7 +148,7 @@ network.virtual_network_gateways.create(
   peer_weight: 3,
   vpn_type: 'RouteBased',
   vpn_client_address_pool: [],
-  gateway_default_site: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-GC/providers/Microsoft.Network/localNetworkGateways/{local_network_gateway_name}"
+  gateway_default_site: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-GC/providers/Microsoft.Network/localNetworkGateways/testlocalnetworkgateway"
 )
 
 ########################################################################################################################
@@ -177,6 +193,9 @@ network_gateway.destroy
 
 network_gateway = network.virtual_network_gateways.get('TestRG-GC', 'testnetworkgateway2')
 network_gateway.destroy
+
+local_network_gateway = network.local_network_gateways.get('TestRG-GC', 'testlocalnetworkgateway')
+local_network_gateway.destroy
 
 pubip = network.public_ips.get('TestRG-GC', 'mypubip')
 pubip.destroy

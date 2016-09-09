@@ -52,6 +52,21 @@ network.public_ips.create(
   public_ip_allocation_method: 'Dynamic'
 )
 
+network.local_network_gateways.create(
+  name: 'testlocalnetworkgateway',
+  location: 'eastus',
+  tags: {
+    key1: 'value1',
+    key2: 'value2'
+  },
+  resource_group: 'TestRG-VNG',
+  gateway_ip_address: '192.168.1.1',
+  local_network_address_space_prefixes: [],
+  asn: 100,
+  bgp_peering_address: '192.168.1.2',
+  peer_weight: 3
+)
+
 ########################################################################################################################
 ######################                           Create Virtual Network Gateway                   ######################
 ########################################################################################################################
@@ -84,7 +99,7 @@ network.virtual_network_gateways.create(
   peer_weight: 3,
   vpn_type: 'RouteBased',
   vpn_client_address_pool: [],
-  gateway_default_site: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-VNG/providers/Microsoft.Network/localNetworkGateways/{local_network_gateway_name}"
+  gateway_default_site: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-VNG/providers/Microsoft.Network/localNetworkGateways/testlocalnetworkgateway"
 )
 
 ########################################################################################################################
@@ -108,8 +123,8 @@ network_gateway.destroy
 pubip = network.public_ips.get('TestRG-VNG', 'mypubip')
 pubip.destroy
 
-vnet = network.virtual_networks.get('TestRG-VNG', 'testVnet')
-vnet.destroy
+local_network_gateway = network.local_network_gateways.get('TestRG-VNG', 'testlocalnetworkgateway')
+local_network_gateway.destroy
 
 rg = resource.resource_groups.get('TestRG-VNG')
 rg.destroy

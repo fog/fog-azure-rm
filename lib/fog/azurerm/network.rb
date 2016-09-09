@@ -69,6 +69,13 @@ module Fog
       request :delete_local_network_gateway
       request :get_local_network_gateway
       request :list_local_network_gateways
+      request :create_or_update_virtual_network_gateway_connection
+      request :delete_virtual_network_gateway_connection
+      request :get_virtual_network_gateway_connection
+      request :list_virtual_network_gateway_connections
+      request :get_connection_shared_key
+      request :reset_connection_shared_key
+      request :set_connection_shared_key
 
       model_path 'fog/azurerm/models/network'
       model :virtual_network
@@ -105,6 +112,8 @@ module Fog
       collection :express_route_service_providers
       model :local_network_gateway
       collection :local_network_gateways
+      model :virtual_network_gateway_connection
+      collection :virtual_network_gateway_connections
 
       # Mock class for Network Service
       class Mock

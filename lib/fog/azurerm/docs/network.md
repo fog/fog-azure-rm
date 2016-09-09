@@ -904,6 +904,78 @@ List all express route service providers
 	puts service_providers
 ```
 
+## Create Virtual Network Gateway Connection
+
+Create a new Virtual Network Gateway Connection.
+
+```ruby
+    gateway_connection = network.virtual_network_gateway_connections.create(
+      name: '<Virtual Network Gateway Connection Name>',
+      location: 'eastus',
+      tags: {
+        key1: 'value1',
+        key2: 'value2'
+      },
+      resource_group: '<Resource Group Name>',
+      virtual_network_gateway1: {
+        name: 'firstgateway',
+        resource_group: '<Resource Group Name>'
+      },
+      virtual_network_gateway2: {
+        name: 'secondgateway',
+        resource_group: '<Resource Group Name>'
+      }
+      connection_type: 'VNet-to-VNet'
+    )
+```
+
+## List Virtual Network Gateway Connections
+
+List all virtual network gateway connections in a resource group
+
+```ruby
+    gateway_connections = network.virtual_network_gateway_connections(resource_group: '<Resource Group Name>')
+	gateway_connections.each do |connection|
+    	puts "#{connection.name}"
+	end
+```
+
+## Retrieve single Virtual Network Gateway Connection
+
+Get single record of Virtual Network Gateway Connection
+
+```ruby
+    gateway_connection = network.virtual_network_gateway_connections.get('<Resource Group Name>', '<Virtual Network Gateway Connection Name>')
+	puts "#{gateway_connection.name}"
+```
+
+## Destroy single Virtual Network Gateway Connection
+
+Get a virtual network gateway connection object from the get method and then destroy that virtual network gateway connection.
+
+```ruby
+	gateway_connection.destroy
+```
+
+## Get the shared key for a connection
+
+```ruby
+	shared_key = network.get_connection_shared_key('<Resource Group Name>', '<Virtual Network Gateway Connection Name>')
+    puts gateway_connection
+```
+
+## Set the shared key for a connection
+
+```ruby
+	network.set_connection_shared_key('<Resource Group Name>', '<Virtual Network Gateway Connection Name>', 'Value')
+```
+
+## Reset the shared key for a connection
+
+```ruby
+	network.reset_connection_shared_key('<Resource Group Name>', '<Virtual Network Gateway Connection Name>', <Key Length in Integer>)
+```
+
 
 ## Support and Feedback
 Your feedback is highly appreciated! If you have specific issues with the fog ARM, you should file an issue via Github.

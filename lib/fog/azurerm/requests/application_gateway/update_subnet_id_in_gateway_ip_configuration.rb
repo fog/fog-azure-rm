@@ -10,7 +10,7 @@ module Fog
             ip_configuration[:subnet_id] = subnet_id
           end
           begin
-            gateway = create_application_gateway(gateway_params)
+            gateway = create_or_update_application_gateway(gateway_params)
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end

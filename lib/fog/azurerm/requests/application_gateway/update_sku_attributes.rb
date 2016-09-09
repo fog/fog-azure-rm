@@ -9,7 +9,7 @@ module Fog
           gateway_params[:sku_name] = sku_name if sku_name
           gateway_params[:sku_capacity] = sku_capacity if sku_capacity
           begin
-            gateway = create_application_gateway(gateway_params)
+            gateway = create_or_update_application_gateway(gateway_params)
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end

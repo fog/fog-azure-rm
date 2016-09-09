@@ -8,7 +8,7 @@ module Fog
       requires :subscription_id
 
       request_path 'fog/azurerm/requests/application_gateway'
-      request :create_application_gateway
+      request :create_or_update_application_gateway
       request :delete_application_gateway
       request :list_application_gateways
       request :get_application_gateway

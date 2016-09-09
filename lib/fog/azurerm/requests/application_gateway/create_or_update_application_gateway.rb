@@ -287,7 +287,7 @@ module Fog
 
       # Mock class for Network Request
       class Mock
-        def create_or_update_application_gateway(_name, _location, _resource_group, _sku_name, _sku_tier, _sku_capacity, _gateway_ip_configurations, _ssl_certificates, _frontend_ip_configurations, _frontend_ports, _probes, _backend_address_pools, _backend_http_settings_list, _http_listeners, _url_path_maps, _request_routing_rules)
+        def create_or_update_application_gateway(*)
         end
       end
     end

@@ -1,6 +1,7 @@
 module ApiStub
   module Requests
     module ApplicationGateway
+      # Mock class for Application Gateway Requests
       class Gateway
         def self.create_application_gateway_response(gateway_client)
           response = '{
@@ -147,24 +148,24 @@ module ApiStub
           http_listeners = ApiStub::Requests::ApplicationGateway::Gateway.http_listeners
           request_routing_rules = ApiStub::Requests::ApplicationGateway::Gateway.request_routing_rules
           params = {
-              name: 'gateway',
-              location: 'East US',
-              resource_group: 'fogRM-rg',
-              sku_name: 'Standard_Medium',
-              sku_tier: 'Standard',
-              sku_capacity: 2,
-              gateway_ip_configurations: gateway_ip_configurations,
-              ssl_certificates: ssl_certificates,
-              frontend_ip_configurations: frontend_ip_configurations,
-              frontend_ports: frontend_ports,
-              probes: probes,
-              backend_address_pools: backend_address_pools,
-              backend_http_settings_list: backend_http_settings_list,
-              http_listeners: http_listeners,
-              url_path_maps: url_path_maps,
-              request_routing_rules: request_routing_rules
+            name: 'gateway',
+            location: 'East US',
+            resource_group: 'fogRM-rg',
+            sku_name: 'Standard_Medium',
+            sku_tier: 'Standard',
+            sku_capacity: 2,
+            gateway_ip_configurations: gateway_ip_configurations,
+            ssl_certificates: ssl_certificates,
+            frontend_ip_configurations: frontend_ip_configurations,
+            frontend_ports: frontend_ports,
+            probes: probes,
+            backend_address_pools: backend_address_pools,
+            backend_http_settings_list: backend_http_settings_list,
+            http_listeners: http_listeners,
+            url_path_maps: url_path_maps,
+            request_routing_rules: request_routing_rules
           }
-         params
+          params
         end
 
         def self.list_application_gateway_response(gateway_client)

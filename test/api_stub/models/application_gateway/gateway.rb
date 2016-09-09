@@ -1,6 +1,7 @@
 module ApiStub
   module Models
     module ApplicationGateway
+      # Mock class for Application Gateway Model
       class Gateway
         def self.create_application_gateway_response(gateway_client)
           gateway = '{

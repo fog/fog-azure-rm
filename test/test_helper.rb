@@ -562,7 +562,7 @@ def express_route_circuit_authorization(service)
     authorization_use_status: 'Available',
     authorization_name: 'circuit-auth-name',
     service: service
-    )
+  )
 end
 
 def virtual_network_gateway_connection(service)

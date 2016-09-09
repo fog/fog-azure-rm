@@ -499,8 +499,8 @@ def local_network_gateway(service)
     name: 'testLocalNetworkGateway',
     location: 'eastus',
     tags: {
-        key1: 'value1',
-        key2: 'value2'
+      key1: 'value1',
+      key2: 'value2'
     },
     resource_group: 'learn_fog',
     gateway_ip_address: '192.168.1.1',

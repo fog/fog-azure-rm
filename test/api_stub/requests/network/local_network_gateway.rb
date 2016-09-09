@@ -19,8 +19,7 @@ module ApiStub
                   'asn' => 100,
                   'bgp_peering_address' => '192.168.1.2',
                   'peer_weight' => 3
-                },
-                'gateway_ip_address' => '192.168.1.1'
+                }
               }
           }
           local_network_gateway_mapper = Azure::ARM::Network::Models::LocalNetworkGateway.mapper
@@ -32,7 +31,7 @@ module ApiStub
         end
 
         def self.list_local_network_gateway_response(network_client)
-          local_network_gateway =  {
+          local_network_gateway = {
             'value' => [
               {
                 'id' => '/subscriptions/<Subscription_id>/resourceGroups/learn_fog/providers/Microsoft.Network/localNetworkGateways/testLocalNetworkGateway',

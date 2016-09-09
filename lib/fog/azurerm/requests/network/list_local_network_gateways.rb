@@ -18,25 +18,25 @@ module Fog
       # Mock class for Local Network Gateway Request
       class Mock
         def list_virtual_network_gateways(*)
-          local_network_gateway =  {
+          local_network_gateway = {
             'value' => [
-            {
-              'id' => '/subscriptions/<Subscription_id>/resourceGroups/learn_fog/providers/Microsoft.Network/localNetworkGateways/testLocalNetworkGateway',
-              'name' => 'testLocalNetworkGateway',
-              'type' => 'Microsoft.Network/localNetworkGateways',
-              'location' => 'eastus',
-              'properties' =>
-                {
-                  'local_network_address_space' => {
-                    'address_prefixes' => []
-                  },
-                  'gateway_ip_address' => '192.168.1.1',
-                  'bgp_settings' => {
-                    'asn' => 100,
-                    'bgp_peering_address' => '192.168.1.2',
-                    'peer_weight' => 3
+              {
+                'id' => '/subscriptions/<Subscription_id>/resourceGroups/learn_fog/providers/Microsoft.Network/localNetworkGateways/testLocalNetworkGateway',
+                'name' => 'testLocalNetworkGateway',
+                'type' => 'Microsoft.Network/localNetworkGateways',
+                'location' => 'eastus',
+                'properties' =>
+                  {
+                    'local_network_address_space' => {
+                      'address_prefixes' => []
+                    },
+                    'gateway_ip_address' => '192.168.1.1',
+                    'bgp_settings' => {
+                      'asn' => 100,
+                      'bgp_peering_address' => '192.168.1.2',
+                      'peer_weight' => 3
+                    }
                   }
-                }
               }
             ]
           }

@@ -34,3 +34,5 @@ StringLiterals:
   EnforcedStyle: single_quotes
 SignalException:
   EnforcedStyle: only_raise
+Style/FrozenStringLiteralComment:
+  Enabled: false

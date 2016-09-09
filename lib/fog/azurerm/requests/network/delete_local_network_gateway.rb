@@ -19,7 +19,7 @@ module Fog
       # Mock class for Local Network Gateway Request
       class Mock
         def delete_local_network_gateway(*)
-          Fog::Logger.debug "Local Network Gateway testLocalNetworkGateway from Resource group learn_fog deleted successfully."
+          Fog::Logger.debug 'Local Network Gateway testLocalNetworkGateway from Resource group learn_fog deleted successfully.'
           true
         end
       end

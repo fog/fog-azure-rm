@@ -7,12 +7,12 @@ class TestCreateOrUpdateApplicationGateway < Minitest::Test
     gateway_client = @service.instance_variable_get(:@network_client)
     @gateways = gateway_client.application_gateways
     @response = ApiStub::Requests::ApplicationGateway::Gateway.create_application_gateway_response(gateway_client)
+    @gateway_params = ApiStub::Requests::ApplicationGateway::Gateway.gateway_params
   end
 
   def test_create_or_update_application_gateway_success
-    gateway_params = ApiStub::Requests::ApplicationGateway::Gateway.gateway_params
     @gateways.stub :create_or_update, @response do
-      assert_equal @service.create_or_update_application_gateway(gateway_params), @response
+      assert_equal @service.create_or_update_application_gateway(@gateway_params), @response
     end
   end
 
@@ -26,10 +26,9 @@ class TestCreateOrUpdateApplicationGateway < Minitest::Test
 
   def test_create_or_update_application_gateway_exception_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
-    gateway_params = ApiStub::Requests::ApplicationGateway::Gateway.gateway_params
     @gateways.stub :create_or_update, response do
       assert_raises RuntimeError do
-        @service.create_or_update_application_gateway(gateway_params)
+        @service.create_or_update_application_gateway(@gateway_params)
       end
     end
   end

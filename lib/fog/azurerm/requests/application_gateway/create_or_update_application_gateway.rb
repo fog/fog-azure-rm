@@ -23,55 +23,16 @@ module Fog
           application_gateway.name = gateway_params[:name]
           application_gateway.location = gateway_params[:location]
 
-          if gateway_params[:gateway_ip_configurations]
-            gateway_ip_configuration_arr = define_gateway_ip_configuration(gateway_params[:gateway_ip_configurations])
-            application_gateway.gateway_ipconfigurations = gateway_ip_configuration_arr
-          end
-
-          if gateway_params[:ssl_certificates]
-            ssl_certificate_arr = define_ssl_certificate(gateway_params[:ssl_certificates])
-            application_gateway.ssl_certificates = ssl_certificate_arr
-          end
-
-          if gateway_params[:frontend_ip_configurations]
-            frontend_ip_configuration_arr = define_frontend_ip_configurations(gateway_params[:frontend_ip_configurations])
-            application_gateway.frontend_ipconfigurations = frontend_ip_configuration_arr
-          end
-
-          if gateway_params[:frontend_ports]
-            frontend_port_arr = define_frontend_ports(gateway_params[:frontend_ports])
-            application_gateway.frontend_ports = frontend_port_arr
-          end
-
-          if gateway_params[:probes]
-            probe_arr = define_probes(gateway_params[:probes])
-            application_gateway.probes = probe_arr
-          end
-
-          if gateway_params[:backend_address_pools]
-            backend_address_pool_arr = define_backend_address_pools(gateway_params[:backend_address_pools])
-            application_gateway.backend_address_pools = backend_address_pool_arr
-          end
-
-          if gateway_params[:backend_http_settings_list]
-            backend_http_setting_arr = define_backend_http_settings(gateway_params[:backend_http_settings_list])
-            application_gateway.backend_http_settings_collection = backend_http_setting_arr
-          end
-
-          if gateway_params[:http_listeners]
-            http_listener_arr = define_http_listeners(gateway_params[:http_listeners])
-            application_gateway.http_listeners = http_listener_arr
-          end
-
-          if gateway_params[:url_path_maps]
-            url_path_maps_arr = define_url_path_maps(gateway_params[:url_path_maps])
-            application_gateway.url_path_maps = url_path_maps_arr
-          end
-
-          if gateway_params[:request_routing_rules]
-            request_routing_rule_arr = define_request_routing_rules(gateway_params[:request_routing_rules])
-            application_gateway.request_routing_rules = request_routing_rule_arr
-          end
+          application_gateway.gateway_ipconfigurations = define_gateway_ip_configuration(gateway_params[:gateway_ip_configurations]) if gateway_params[:gateway_ip_configurations]
+          application_gateway.ssl_certificates = define_ssl_certificate(gateway_params[:ssl_certificates]) if gateway_params[:ssl_certificates]
+          application_gateway.frontend_ipconfigurations = define_frontend_ip_configurations(gateway_params[:frontend_ip_configurations]) if gateway_params[:frontend_ip_configurations]
+          application_gateway.frontend_ports = define_frontend_ports(gateway_params[:frontend_ports]) if gateway_params[:frontend_ports]
+          application_gateway.probes = define_probes(gateway_params[:probes]) if gateway_params[:probes]
+          application_gateway.backend_address_pools = define_backend_address_pools(gateway_params[:backend_address_pools]) if gateway_params[:backend_address_pools]
+          application_gateway.backend_http_settings_collection = define_backend_http_settings(gateway_params[:backend_http_settings_list]) if gateway_params[:backend_http_settings_list]
+          application_gateway.http_listeners = define_http_listeners(gateway_params[:http_listeners]) if gateway_params[:http_listeners]
+          application_gateway.url_path_maps = define_url_path_maps(gateway_params[:url_path_maps]) if gateway_params[:url_path_maps]
+          application_gateway.request_routing_rules = define_request_routing_rules(gateway_params[:request_routing_rules]) if gateway_params[:request_routing_rules]
 
           gateway_sku = Azure::ARM::Network::Models::ApplicationGatewaySku.new
           gateway_sku.name = gateway_params[:sku_name]

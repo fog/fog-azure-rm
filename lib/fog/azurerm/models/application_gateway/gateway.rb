@@ -119,22 +119,22 @@ module Fog
 
         def get_gateway_params
           {
-              name: name,
-              location: location,
-              resource_group: resource_group,
-              sku_name: sku_name,
-              sku_tier: sku_tier,
-              sku_capacity: sku_capacity,
-              gateway_ip_configurations: gateway_ip_configurations,
-              ssl_certificates: ssl_certificates,
-              frontend_ip_configurations: frontend_ip_configurations,
-              frontend_ports: frontend_ports,
-              probes: probes,
-              backend_address_pools: backend_address_pools,
-              backend_http_settings_list: backend_http_settings_list,
-              http_listeners: http_listeners,
-              url_path_maps: url_path_maps,
-              request_routing_rules: request_routing_rules
+            name: name,
+            location: location,
+            resource_group: resource_group,
+            sku_name: sku_name,
+            sku_tier: sku_tier,
+            sku_capacity: sku_capacity,
+            gateway_ip_configurations: gateway_ip_configurations,
+            ssl_certificates: ssl_certificates,
+            frontend_ip_configurations: frontend_ip_configurations,
+            frontend_ports: frontend_ports,
+            probes: probes,
+            backend_address_pools: backend_address_pools,
+            backend_http_settings_list: backend_http_settings_list,
+            http_listeners: http_listeners,
+            url_path_maps: url_path_maps,
+            request_routing_rules: request_routing_rules
           }
         end
 
@@ -467,69 +467,80 @@ module Fog
         def serialize_sub_resources(gateway_params)
           ip_configurations = []
           gateway_params[:gateway_ip_configurations].each do |ip_configuration|
-            hash = {}; ip_configuration.attributes.each { |key, value| hash[key] = value}
+            hash = {}
+            ip_configuration.attributes.each { |key, value| hash[key] = value }
             ip_configurations << hash
           end
           gateway_params[:gateway_ip_configurations] = ip_configurations
           ssl_certificates = []
           gateway_params[:ssl_certificates].each do |ssl_certificate|
-            hash = {}; ssl_certificate.attributes.each { |key, value| hash[key] = value}
+            hash = {}
+            ssl_certificate.attributes.each { |key, value| hash[key] = value }
             ssl_certificates << hash
           end
           gateway_params[:ssl_certificates] = ssl_certificates
           frontend_ip_configurations = []
           gateway_params[:frontend_ip_configurations].each do |frontend_ip_configuration|
-            hash = {}; frontend_ip_configuration.attributes.each { |key, value| hash[key] = value}
+            hash = {}
+            frontend_ip_configuration.attributes.each { |key, value| hash[key] = value }
             frontend_ip_configurations << hash
           end
           gateway_params[:frontend_ip_configurations] = frontend_ip_configurations
           frontend_ports = []
           gateway_params[:frontend_ports].each do |frontend_port|
-            hash = {}; frontend_port.attributes.each { |key, value| hash[key] = value}
+            hash = {}
+            frontend_port.attributes.each { |key, value| hash[key] = value }
             frontend_ports << hash
           end
           gateway_params[:frontend_ports] = frontend_ports
           probes = []
           gateway_params[:probes].each do |probe|
-            hash = {}; probe.attributes.each { |key, value| hash[key] = value}
+            hash = {}
+            probe.attributes.each { |key, value| hash[key] = value }
             probes << hash
           end
           gateway_params[:probes] = probes
           backend_address_pools = []
           gateway_params[:backend_address_pools].each do |backend_address_pool|
-            hash = {}; backend_address_pool.attributes.each { |key, value| hash[key] = value}
+            hash = {}
+            backend_address_pool.attributes.each { |key, value| hash[key] = value }
             backend_address_pools << hash
           end
           gateway_params[:backend_address_pools] = backend_address_pools
           backend_address_ip_addresses = []
           gateway_params[:backend_address_pools].each do |backend_address_pool|
             backend_address_pool[:ip_addresses].each do |ip_address|
-              hash = {}; ip_address.instance_variables.each_with_object({}) { |instance_variable| hash[:ipAddress] = ip_address.instance_variable_get(instance_variable)}
+              hash = {}
+              ip_address.instance_variables.each_with_object({}) { |instance_variable| hash[:ipAddress] = ip_address.instance_variable_get(instance_variable) }
               backend_address_ip_addresses << hash
             end
             backend_address_pool[:ip_addresses] = backend_address_ip_addresses
           end
           backend_http_settings_list = []
           gateway_params[:backend_http_settings_list].each do |backend_http_setting|
-            hash = {}; backend_http_setting.attributes.each { |key, value| hash[key] = value}
+            hash = {}
+            backend_http_setting.attributes.each { |key, value| hash[key] = value }
             backend_http_settings_list << hash
           end
           gateway_params[:backend_http_settings_list] = backend_http_settings_list
           http_listeners = []
           gateway_params[:http_listeners].each do |http_listener|
-            hash = {}; http_listener.attributes.each { |key, value| hash[key] = value}
+            hash = {}
+            http_listener.attributes.each { |key, value| hash[key] = value }
             http_listeners << hash
           end
           gateway_params[:http_listeners] = http_listeners
           url_path_maps = []
           gateway_params[:url_path_maps].each do |url_path_map|
-            hash = {}; url_path_map.attributes.each { |key, value| hash[key] = value}
+            hash = {}
+            url_path_map.attributes.each { |key, value| hash[key] = value }
             url_path_maps << hash
           end
           gateway_params[:url_path_maps] = url_path_maps
           request_routing_rules = []
           gateway_params[:request_routing_rules].each do |request_routing_rule|
-            hash = {}; request_routing_rule.attributes.each { |key, value| hash[key] = value}
+            hash = {}
+            request_routing_rule.attributes.each { |key, value| hash[key] = value }
             request_routing_rules << hash
           end
           gateway_params[:request_routing_rules] = request_routing_rules
@@ -554,7 +565,6 @@ module Fog
           gateway = service.create_or_update_application_gateway(gateway_hash)
           merge_attributes(Fog::ApplicationGateway::AzureRM::Gateway.parse(gateway))
         end
-
 
         def remove_ssl_certificate(ssl_certificate_obj)
           gateway_hash = serialize_sub_resources(get_gateway_params)

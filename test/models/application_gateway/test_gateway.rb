@@ -11,6 +11,9 @@ class TestGateway < Minitest::Test
     @service.stub :get_application_gateway, @response do
       @gateway_obj = gateways.get('fog-test-rg', 'gateway')
     end
+    @ssl_certifcate = ApiStub::Models::ApplicationGateway::Gateway.ssl_certifcate
+    @frontend_port = ApiStub::Models::ApplicationGateway::Gateway.frontend_port
+    @probe = ApiStub::Models::ApplicationGateway::Gateway.probe
   end
 
   def test_model_methods
@@ -55,7 +58,7 @@ class TestGateway < Minitest::Test
 
   def test_update_sku
     @service.stub :update_sku_attributes, @response do
-      assert_instance_of Fog::ApplicationGateway::AzureRM::Gateway, @gateway_obj.update_sku('Standard_Medium','2')
+      assert_instance_of Fog::ApplicationGateway::AzureRM::Gateway, @gateway_obj.update_sku('Standard_Medium', '2')
     end
   end
 
@@ -66,44 +69,38 @@ class TestGateway < Minitest::Test
   end
 
   def test_add_ssl_certificate
-    ssl_certifcate = ApiStub::Models::ApplicationGateway::Gateway.ssl_certifcate
     @service.stub :create_or_update_application_gateway, @response do
-      assert_instance_of Fog::ApplicationGateway::AzureRM::Gateway, @gateway_obj.add_ssl_certificate(ssl_certifcate)
+      assert_instance_of Fog::ApplicationGateway::AzureRM::Gateway, @gateway_obj.add_ssl_certificate(@ssl_certifcate)
     end
   end
 
   def test_remove_ssl_certificate
-    ssl_certifcate = ApiStub::Models::ApplicationGateway::Gateway.ssl_certifcate
     @service.stub :create_or_update_application_gateway, @response do
-      assert_instance_of Fog::ApplicationGateway::AzureRM::Gateway, @gateway_obj.remove_ssl_certificate(ssl_certifcate)
+      assert_instance_of Fog::ApplicationGateway::AzureRM::Gateway, @gateway_obj.remove_ssl_certificate(@ssl_certifcate)
     end
   end
 
   def test_add_frontend_port
-    frontend_port = ApiStub::Models::ApplicationGateway::Gateway.frontend_port
     @service.stub :create_or_update_application_gateway, @response do
-      assert_instance_of Fog::ApplicationGateway::AzureRM::Gateway, @gateway_obj.add_frontend_port(frontend_port)
+      assert_instance_of Fog::ApplicationGateway::AzureRM::Gateway, @gateway_obj.add_frontend_port(@frontend_port)
     end
   end
 
   def test_remove_frontend_port
-    frontend_port = ApiStub::Models::ApplicationGateway::Gateway.frontend_port
     @service.stub :create_or_update_application_gateway, @response do
-      assert_instance_of Fog::ApplicationGateway::AzureRM::Gateway, @gateway_obj.remove_frontend_port(frontend_port)
+      assert_instance_of Fog::ApplicationGateway::AzureRM::Gateway, @gateway_obj.remove_frontend_port(@frontend_port)
     end
   end
 
   def test_add_probe
-    probe = ApiStub::Models::ApplicationGateway::Gateway.probe
     @service.stub :create_or_update_application_gateway, @response do
-      assert_instance_of Fog::ApplicationGateway::AzureRM::Gateway, @gateway_obj.add_probe(probe)
+      assert_instance_of Fog::ApplicationGateway::AzureRM::Gateway, @gateway_obj.add_probe(@probe)
     end
   end
 
   def test_remove_probe
-    probe = ApiStub::Models::ApplicationGateway::Gateway.probe
     @service.stub :create_or_update_application_gateway, @response do
-      assert_instance_of Fog::ApplicationGateway::AzureRM::Gateway, @gateway_obj.remove_probe(probe)
+      assert_instance_of Fog::ApplicationGateway::AzureRM::Gateway, @gateway_obj.remove_probe(@probe)
     end
   end
 

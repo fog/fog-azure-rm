@@ -8,7 +8,7 @@ require 'yaml'
 
 azure_credentials = YAML.load_file('credentials/azure.yml')
 
-rs = Fog::Resources::AzureRM.new(
+resource = Fog::Resources::AzureRM.new(
   tenant_id: azure_credentials['tenant_id'],
   client_id: azure_credentials['client_id'],
   client_secret: azure_credentials['client_secret'],
@@ -33,7 +33,7 @@ network = Fog::Network::AzureRM.new(
 ######################                                 Prerequisites                              ######################
 ########################################################################################################################
 
-rs.resource_groups.create(
+resource.resource_groups.create(
   name: 'TestRG-AG',
   location: 'eastus'
 )
@@ -120,53 +120,53 @@ application_gateway.gateways.create(
 ######################                      Get Application Gateway                   ######################
 ########################################################################################################################
 
-ag = application_gateway.gateways.get('TestRG-AG', 'gateway')
+app_gateway = application_gateway.gateways.get('TestRG-AG', 'gateway')
 
 
 ########################################################################################################################
 ######################                Update sku attributes (Name and Capacity)                #########################
 ########################################################################################################################
 
-ag.update_sku('Standard_Small', '1')
+app_gateway.update_sku('Standard_Small', '1')
 
 ########################################################################################################################
 ######################              Update gateway ip configuration (Subnet id)                #########################
 ########################################################################################################################
 
 network.subnets.create(
-    name: 'mysubnet1',
-    resource_group: 'TestRG-AG',
-    virtual_network_name: 'testVnet',
-    address_prefix: '10.2.0.0/24'
+  name: 'mysubnet1',
+  resource_group: 'TestRG-AG',
+  virtual_network_name: 'testVnet',
+  address_prefix: '10.2.0.0/24'
 )
 
-ag.update_gateway_ip_configuration("/subscriptions/#{azure_credentials['subscription_id']}/resourcegroups/TestRG-AG/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/mysubnet1")
+app_gateway.update_gateway_ip_configuration("/subscriptions/#{azure_credentials['subscription_id']}/resourcegroups/TestRG-AG/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/mysubnet1")
 
 ########################################################################################################################
 ######################                          Add/Remove Frontend ports                      #########################
 ########################################################################################################################
 
-ag.add_frontend_port({name: 'frontendPort1', port: 80})
+app_gateway.add_frontend_port( {name: 'frontendPort1', port: 80 } )
 
-ag.remove_frontend_port({name: 'frontendPort1', port: 80})
+app_gateway.remove_frontend_port( {name: 'frontendPort1', port: 80 } )
 
 
 #######################################################################################################################
 #####################                             Add/Remove Probes                           #########################
 #######################################################################################################################
 
-ag.add_probe(
+app_gateway.add_probe(
   {
-  name: 'Probe1',
-  protocol: 'http',
-  host: 'localhost',
-  path: '/fog-test',
-  interval: 60,
-  timeout: 300,
-  unhealthy_threshold: 5
+    name: 'Probe1',
+    protocol: 'http',
+    host: 'localhost',
+    path: '/fog-test',
+    interval: 60,
+    timeout: 300,
+    unhealthy_threshold: 5
   }
 )
-ag.remove_probe(
+app_gateway.remove_probe(
   {
     name: 'Probe1',
     protocol: 'http',
@@ -178,12 +178,11 @@ ag.remove_probe(
   }
 )
 
-
 ########################################################################################################################
-######################                            Destroy Application Gateway                   ######################
+######################                            Destroy Application Gateway                     ######################
 ########################################################################################################################
 
-ag.destroy
+app_gateway.destroy
 
 ########################################################################################################################
 ######################                                   CleanUp                                  ######################
@@ -195,5 +194,5 @@ pubip.destroy
 vnet = network.virtual_networks.get('TestRG-AG', 'testVnet')
 vnet.destroy
 
-rg = rs.resource_groups.get('TestRG-AG')
-rg.destroy
+resource_group = resource.resource_groups.get('TestRG-AG')
+resource_group.destroy

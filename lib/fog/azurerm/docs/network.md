@@ -678,6 +678,55 @@ Get a virtual network gateway object from the get method and then destroy that v
 	network_gateway.destroy
 ```
 
+## Create Local Network Gateway
+
+Create a new Local Network Gateway.
+
+```ruby
+    local_network_gateway = network.local_network_gateways.create(
+        name: "<Local Network Gateway Name>",
+        location: "eastus",
+        tags: {
+          key1: "value1",
+          key2: "value2"
+        },
+        resource_group: "<Resource Group Name>",
+        gateway_ip_address: '192.168.1.1',
+        local_network_address_space_prefixes: [],
+        asn: 100,
+        bgp_peering_address: '192.168.1.2',
+        peer_weight: 3
+  )
+```
+
+## List Local Network Gateways
+
+List all local network gateways in a resource group
+
+```ruby
+    local_network_gateways = network.local_network_gateways(resource_group: '<Resource Group Name>')
+	local_network_gateways.each do |gateway|
+    	puts "#{gateway.name}"
+	end
+```
+
+## Retrieve single Local Network Gateway
+
+Get single record of Local Network Gateway
+
+```ruby
+    local_network_gateway = network.local_network_gateways.get('<Resource Group Name>', '<Local Network Gateway Name>')
+	puts "#{local_network_gateway.name}"
+```
+
+## Destroy single Local Network Gateway
+
+Get a local network gateway object from the get method and then destroy that local network gateway.
+
+```ruby
+	local_network_gateway.destroy
+```
+
 ## Express Route
 
 Microsoft Azure ExpressRoute lets you extend your on-premises networks into the Microsoft cloud over a dedicated private connection facilitated by a connectivity provider.

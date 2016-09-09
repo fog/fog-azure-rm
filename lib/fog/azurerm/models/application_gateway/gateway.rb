@@ -39,62 +39,62 @@ module Fog
 
           hash['gateway_ip_configurations'] = []
           gateway.gateway_ipconfigurations.each do |ip_configuration|
-            gateway_ip_configuration = Fog::ApplicationGateway::AzureRM::IPConfiguration.new
-            hash['gateway_ip_configurations'] << gateway_ip_configuration.merge_attributes(Fog::ApplicationGateway::AzureRM::IPConfiguration.parse(ip_configuration))
+            gateway_ip_configuration = IPConfiguration.new
+            hash['gateway_ip_configurations'] << gateway_ip_configuration.merge_attributes(IPConfiguration.parse(ip_configuration))
           end unless gateway.gateway_ipconfigurations.nil?
 
           hash['ssl_certificates'] = []
           gateway.ssl_certificates.each do |certificate|
-            ssl_certificate = Fog::ApplicationGateway::AzureRM::SslCertificate.new
-            hash['ssl_certificates'] << ssl_certificate.merge_attributes(Fog::ApplicationGateway::AzureRM::SslCertificate.parse(certificate))
+            ssl_certificate = SslCertificate.new
+            hash['ssl_certificates'] << ssl_certificate.merge_attributes(SslCertificate.parse(certificate))
           end unless gateway.ssl_certificates.nil?
 
           hash['frontend_ip_configurations'] = []
           gateway.frontend_ipconfigurations.each do |frontend_ip_config|
-            frontend_ip_configuration = Fog::ApplicationGateway::AzureRM::FrontendIPConfiguration.new
-            hash['frontend_ip_configurations'] << frontend_ip_configuration.merge_attributes(Fog::ApplicationGateway::AzureRM::FrontendIPConfiguration.parse(frontend_ip_config))
+            frontend_ip_configuration = FrontendIPConfiguration.new
+            hash['frontend_ip_configurations'] << frontend_ip_configuration.merge_attributes(FrontendIPConfiguration.parse(frontend_ip_config))
           end unless gateway.frontend_ipconfigurations.nil?
 
           hash['frontend_ports'] = []
           gateway.frontend_ports.each do |port|
-            frontend_port = Fog::ApplicationGateway::AzureRM::FrontendPort.new
-            hash['frontend_ports'] << frontend_port.merge_attributes(Fog::ApplicationGateway::AzureRM::FrontendPort.parse(port))
+            frontend_port = FrontendPort.new
+            hash['frontend_ports'] << frontend_port.merge_attributes(FrontendPort.parse(port))
           end unless gateway.frontend_ports.nil?
 
           hash['probes'] = []
           gateway.probes.each do |probe|
-            gateway_probe = Fog::ApplicationGateway::AzureRM::Probe.new
-            hash['probes'] << gateway_probe.merge_attributes(Fog::ApplicationGateway::AzureRM::Probe.parse(probe))
+            gateway_probe = Probe.new
+            hash['probes'] << gateway_probe.merge_attributes(Probe.parse(probe))
           end unless gateway.probes.nil?
 
           hash['backend_address_pools'] = []
           gateway.backend_address_pools.each do |address|
-            backend_address_pool = Fog::ApplicationGateway::AzureRM::BackendAddressPool.new
-            hash['backend_address_pools'] << backend_address_pool.merge_attributes(Fog::ApplicationGateway::AzureRM::BackendAddressPool.parse(address))
+            backend_address_pool = BackendAddressPool.new
+            hash['backend_address_pools'] << backend_address_pool.merge_attributes(BackendAddressPool.parse(address))
           end unless gateway.backend_address_pools.nil?
 
           hash['backend_http_settings_list'] = []
           gateway.backend_http_settings_collection.each do |http_setting|
-            backend_http_setting = Fog::ApplicationGateway::AzureRM::BackendHttpSetting.new
-            hash['backend_http_settings_list'] << backend_http_setting.merge_attributes(Fog::ApplicationGateway::AzureRM::BackendHttpSetting.parse(http_setting))
+            backend_http_setting = BackendHttpSetting.new
+            hash['backend_http_settings_list'] << backend_http_setting.merge_attributes(BackendHttpSetting.parse(http_setting))
           end unless gateway.backend_http_settings_collection.nil?
 
           hash['http_listeners'] = []
           gateway.http_listeners.each do |listener|
-            http_listener = Fog::ApplicationGateway::AzureRM::HttpListener.new
-            hash['http_listeners'] << http_listener.merge_attributes(Fog::ApplicationGateway::AzureRM::HttpListener.parse(listener))
+            http_listener = HttpListener.new
+            hash['http_listeners'] << http_listener.merge_attributes(HttpListener.parse(listener))
           end unless gateway.http_listeners.nil?
 
           hash['url_path_maps'] = []
           gateway.url_path_maps.each do |map|
-            url_path_map = Fog::ApplicationGateway::AzureRM::UrlPathMap.new
-            hash['url_path_maps'] << url_path_map.merge_attributes(Fog::ApplicationGateway::AzureRM::UrlPathMap.parse(map))
+            url_path_map = UrlPathMap.new
+            hash['url_path_maps'] << url_path_map.merge_attributes(UrlPathMap.parse(map))
           end unless gateway.url_path_maps.nil?
 
           hash['request_routing_rules'] = []
           gateway.request_routing_rules.each do |rule|
-            request_routing_rule = Fog::ApplicationGateway::AzureRM::RequestRoutingRule.new
-            hash['request_routing_rules'] << request_routing_rule.merge_attributes(Fog::ApplicationGateway::AzureRM::RequestRoutingRule.parse(rule))
+            request_routing_rule = RequestRoutingRule.new
+            hash['request_routing_rules'] << request_routing_rule.merge_attributes(RequestRoutingRule.parse(rule))
           end unless gateway.request_routing_rules.nil?
           hash
         end
@@ -112,9 +112,30 @@ module Fog
           validate_http_listeners(http_listeners) unless http_listeners.nil?
           validate_url_path_maps(url_path_maps) unless url_path_maps.nil?
           validate_request_routing_rules(request_routing_rules) unless request_routing_rules.nil?
-
-          gateway = service.create_application_gateway(name, location, resource_group, sku_name, sku_tier, sku_capacity, gateway_ip_configurations, ssl_certificates, frontend_ip_configurations, frontend_ports, probes, backend_address_pools, backend_http_settings_list, http_listeners, url_path_maps, request_routing_rules)
+          gateway_params = get_gateway_params
+          gateway = service.create_or_update_application_gateway(gateway_params)
           merge_attributes(Fog::ApplicationGateway::AzureRM::Gateway.parse(gateway))
+        end
+
+        def get_gateway_params
+          {
+            name: name,
+            location: location,
+            resource_group: resource_group,
+            sku_name: sku_name,
+            sku_tier: sku_tier,
+            sku_capacity: sku_capacity,
+            gateway_ip_configurations: gateway_ip_configurations,
+            ssl_certificates: ssl_certificates,
+            frontend_ip_configurations: frontend_ip_configurations,
+            frontend_ports: frontend_ports,
+            probes: probes,
+            backend_address_pools: backend_address_pools,
+            backend_http_settings_list: backend_http_settings_list,
+            http_listeners: http_listeners,
+            url_path_maps: url_path_maps,
+            request_routing_rules: request_routing_rules
+          }
         end
 
         def validate_gateway_ip_configurations(gateway_ip_configurations)
@@ -441,6 +462,143 @@ module Fog
           elsif missing.any?
             raise(ArgumentError, "#{missing[0...-1].join(', ')} and #{missing[-1]} are required for this operation")
           end
+        end
+
+        def serialize_sub_resources(gateway_params)
+          ip_configurations = []
+          gateway_params[:gateway_ip_configurations].each do |ip_configuration|
+            hash = {}
+            ip_configuration.attributes.each { |key, value| hash[key] = value }
+            ip_configurations << hash
+          end
+          gateway_params[:gateway_ip_configurations] = ip_configurations
+          ssl_certificates = []
+          gateway_params[:ssl_certificates].each do |ssl_certificate|
+            hash = {}
+            ssl_certificate.attributes.each { |key, value| hash[key] = value }
+            ssl_certificates << hash
+          end
+          gateway_params[:ssl_certificates] = ssl_certificates
+          frontend_ip_configurations = []
+          gateway_params[:frontend_ip_configurations].each do |frontend_ip_configuration|
+            hash = {}
+            frontend_ip_configuration.attributes.each { |key, value| hash[key] = value }
+            frontend_ip_configurations << hash
+          end
+          gateway_params[:frontend_ip_configurations] = frontend_ip_configurations
+          frontend_ports = []
+          gateway_params[:frontend_ports].each do |frontend_port|
+            hash = {}
+            frontend_port.attributes.each { |key, value| hash[key] = value }
+            frontend_ports << hash
+          end
+          gateway_params[:frontend_ports] = frontend_ports
+          probes = []
+          gateway_params[:probes].each do |probe|
+            hash = {}
+            probe.attributes.each { |key, value| hash[key] = value }
+            probes << hash
+          end
+          gateway_params[:probes] = probes
+          backend_address_pools = []
+          gateway_params[:backend_address_pools].each do |backend_address_pool|
+            hash = {}
+            backend_address_pool.attributes.each { |key, value| hash[key] = value }
+            backend_address_pools << hash
+          end
+          gateway_params[:backend_address_pools] = backend_address_pools
+          backend_address_ip_addresses = []
+          gateway_params[:backend_address_pools].each do |backend_address_pool|
+            backend_address_pool[:ip_addresses].each do |ip_address|
+              hash = {}
+              ip_address.instance_variables.each_with_object({}) { |instance_variable| hash[:ipAddress] = ip_address.instance_variable_get(instance_variable) }
+              backend_address_ip_addresses << hash
+            end
+            backend_address_pool[:ip_addresses] = backend_address_ip_addresses
+          end
+          backend_http_settings_list = []
+          gateway_params[:backend_http_settings_list].each do |backend_http_setting|
+            hash = {}
+            backend_http_setting.attributes.each { |key, value| hash[key] = value }
+            backend_http_settings_list << hash
+          end
+          gateway_params[:backend_http_settings_list] = backend_http_settings_list
+          http_listeners = []
+          gateway_params[:http_listeners].each do |http_listener|
+            hash = {}
+            http_listener.attributes.each { |key, value| hash[key] = value }
+            http_listeners << hash
+          end
+          gateway_params[:http_listeners] = http_listeners
+          url_path_maps = []
+          gateway_params[:url_path_maps].each do |url_path_map|
+            hash = {}
+            url_path_map.attributes.each { |key, value| hash[key] = value }
+            url_path_maps << hash
+          end
+          gateway_params[:url_path_maps] = url_path_maps
+          request_routing_rules = []
+          gateway_params[:request_routing_rules].each do |request_routing_rule|
+            hash = {}
+            request_routing_rule.attributes.each { |key, value| hash[key] = value }
+            request_routing_rules << hash
+          end
+          gateway_params[:request_routing_rules] = request_routing_rules
+          gateway_params
+        end
+
+        def update_sku(sku_name, sku_capacity = nil)
+          gateway_hash = serialize_sub_resources(get_gateway_params)
+          gateway = service.update_sku_attributes(gateway_hash, sku_name, sku_capacity)
+          merge_attributes(Fog::ApplicationGateway::AzureRM::Gateway.parse(gateway))
+        end
+
+        def update_gateway_ip_configuration(subnet_id)
+          gateway_hash = serialize_sub_resources(get_gateway_params)
+          gateway = service.update_subnet_id_in_gateway_ip_configuration(gateway_hash, subnet_id)
+          merge_attributes(Fog::ApplicationGateway::AzureRM::Gateway.parse(gateway))
+        end
+
+        def add_ssl_certificate(ssl_certificate_obj)
+          gateway_hash = serialize_sub_resources(get_gateway_params)
+          gateway_hash[:ssl_certificates] << ssl_certificate_obj
+          gateway = service.create_or_update_application_gateway(gateway_hash)
+          merge_attributes(Fog::ApplicationGateway::AzureRM::Gateway.parse(gateway))
+        end
+
+        def remove_ssl_certificate(ssl_certificate_obj)
+          gateway_hash = serialize_sub_resources(get_gateway_params)
+          gateway_hash[:ssl_certificates].delete(ssl_certificate_obj)
+          gateway = service.create_or_update_application_gateway(gateway_hash)
+          merge_attributes(Fog::ApplicationGateway::AzureRM::Gateway.parse(gateway))
+        end
+
+        def add_frontend_port(frontend_port_obj)
+          gateway_hash = serialize_sub_resources(get_gateway_params)
+          gateway_hash[:frontend_ports] << frontend_port_obj
+          gateway = service.create_or_update_application_gateway(gateway_hash)
+          merge_attributes(Fog::ApplicationGateway::AzureRM::Gateway.parse(gateway))
+        end
+
+        def remove_frontend_port(frontend_port_obj)
+          gateway_hash = serialize_sub_resources(get_gateway_params)
+          gateway_hash[:frontend_ports].delete(frontend_port_obj)
+          gateway = service.create_or_update_application_gateway(gateway_hash)
+          merge_attributes(Fog::ApplicationGateway::AzureRM::Gateway.parse(gateway))
+        end
+
+        def add_probe(probe_obj)
+          gateway_hash = serialize_sub_resources(get_gateway_params)
+          gateway_hash[:probes] << probe_obj
+          gateway = service.create_or_update_application_gateway(gateway_hash)
+          merge_attributes(Fog::ApplicationGateway::AzureRM::Gateway.parse(gateway))
+        end
+
+        def remove_probe(probe_obj)
+          gateway_hash = serialize_sub_resources(get_gateway_params)
+          gateway_hash[:probes].delete(probe_obj)
+          gateway = service.create_or_update_application_gateway(gateway_hash)
+          merge_attributes(Fog::ApplicationGateway::AzureRM::Gateway.parse(gateway))
         end
 
         def destroy

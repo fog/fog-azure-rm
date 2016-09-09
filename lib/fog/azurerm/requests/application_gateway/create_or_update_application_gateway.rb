@@ -3,80 +3,41 @@ module Fog
     class AzureRM
       # Real class for Application Gateway Request
       class Real
-        def create_application_gateway(name, location, resource_group, sku_name, sku_tier, sku_capacity, gateway_ip_configurations, ssl_certificates, frontend_ip_configurations, frontend_ports, probes, backend_address_pools, backend_http_settings_list, http_listeners, url_path_maps, request_routing_rules)
-          msg = "Creating Application Gateway: #{name} in Resource Group: #{resource_group}."
+        def create_or_update_application_gateway(gateway_params)
+          msg = "Creating/Updated Application Gateway: #{gateway_params[:name]} in Resource Group: #{gateway_params[:resource_group]}."
           Fog::Logger.debug msg
-          gateway = define_application_gateway(name, location, sku_name, sku_tier, sku_capacity, gateway_ip_configurations, ssl_certificates, frontend_ip_configurations, frontend_ports, probes, backend_address_pools, backend_http_settings_list, http_listeners, url_path_maps, request_routing_rules)
+          gateway = define_application_gateway(gateway_params)
           begin
-            gateway_obj = @network_client.application_gateways.create_or_update(resource_group, name, gateway)
+            gateway_obj = @network_client.application_gateways.create_or_update(gateway_params[:resource_group], gateway_params[:name], gateway)
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
-          Fog::Logger.debug "Application Gateway #{name} created successfully."
+          Fog::Logger.debug "Application Gateway #{gateway_params[:name]} created/updated successfully."
           gateway_obj
         end
 
         private
 
-        def define_application_gateway(name, location, sku_name, sku_tier, sku_capacity, gateway_ip_configurations, ssl_certificates, frontend_ip_configurations, frontend_ports, probes, backend_address_pools, backend_http_settings_list, http_listeners, url_path_maps, request_routing_rules)
+        def define_application_gateway(gateway_params)
           application_gateway = Azure::ARM::Network::Models::ApplicationGateway.new
-          application_gateway.name = name
-          application_gateway.location = location
+          application_gateway.name = gateway_params[:name]
+          application_gateway.location = gateway_params[:location]
 
-          if gateway_ip_configurations
-            gateway_ip_configuration_arr = define_gateway_ip_configuration(gateway_ip_configurations)
-            application_gateway.gateway_ipconfigurations = gateway_ip_configuration_arr
-          end
-
-          if ssl_certificates
-            ssl_certificate_arr = define_ssl_certificate(ssl_certificates)
-            application_gateway.ssl_certificates = ssl_certificate_arr
-          end
-
-          if frontend_ip_configurations
-            frontend_ip_configuration_arr = define_frontend_ip_configurations(frontend_ip_configurations)
-            application_gateway.frontend_ipconfigurations = frontend_ip_configuration_arr
-          end
-
-          if frontend_ports
-            frontend_port_arr = define_frontend_ports(frontend_ports)
-            application_gateway.frontend_ports = frontend_port_arr
-          end
-
-          if probes
-            probe_arr = define_probes(probes)
-            application_gateway.probes = probe_arr
-          end
-
-          if backend_address_pools
-            backend_address_pool_arr = define_backend_address_pools(backend_address_pools)
-            application_gateway.backend_address_pools = backend_address_pool_arr
-          end
-
-          if backend_http_settings_list
-            backend_http_setting_arr = define_backend_http_settings(backend_http_settings_list)
-            application_gateway.backend_http_settings_collection = backend_http_setting_arr
-          end
-
-          if http_listeners
-            http_listener_arr = define_http_listeners(http_listeners)
-            application_gateway.http_listeners = http_listener_arr
-          end
-
-          if url_path_maps
-            url_path_maps_arr = define_url_path_maps(url_path_maps)
-            application_gateway.url_path_maps = url_path_maps_arr
-          end
-
-          if request_routing_rules
-            request_routing_rule_arr = define_request_routing_rules(request_routing_rules)
-            application_gateway.request_routing_rules = request_routing_rule_arr
-          end
+          application_gateway.gateway_ipconfigurations = define_gateway_ip_configuration(gateway_params[:gateway_ip_configurations]) if gateway_params[:gateway_ip_configurations]
+          application_gateway.ssl_certificates = define_ssl_certificate(gateway_params[:ssl_certificates]) if gateway_params[:ssl_certificates]
+          application_gateway.frontend_ipconfigurations = define_frontend_ip_configurations(gateway_params[:frontend_ip_configurations]) if gateway_params[:frontend_ip_configurations]
+          application_gateway.frontend_ports = define_frontend_ports(gateway_params[:frontend_ports]) if gateway_params[:frontend_ports]
+          application_gateway.probes = define_probes(gateway_params[:probes]) if gateway_params[:probes]
+          application_gateway.backend_address_pools = define_backend_address_pools(gateway_params[:backend_address_pools]) if gateway_params[:backend_address_pools]
+          application_gateway.backend_http_settings_collection = define_backend_http_settings(gateway_params[:backend_http_settings_list]) if gateway_params[:backend_http_settings_list]
+          application_gateway.http_listeners = define_http_listeners(gateway_params[:http_listeners]) if gateway_params[:http_listeners]
+          application_gateway.url_path_maps = define_url_path_maps(gateway_params[:url_path_maps]) if gateway_params[:url_path_maps]
+          application_gateway.request_routing_rules = define_request_routing_rules(gateway_params[:request_routing_rules]) if gateway_params[:request_routing_rules]
 
           gateway_sku = Azure::ARM::Network::Models::ApplicationGatewaySku.new
-          gateway_sku.name = sku_name
-          gateway_sku.tier = sku_tier
-          gateway_sku.capacity = sku_capacity
+          gateway_sku.name = gateway_params[:sku_name]
+          gateway_sku.tier = gateway_params[:sku_tier]
+          gateway_sku.capacity = gateway_params[:sku_capacity]
           application_gateway.sku = gateway_sku
 
           application_gateway
@@ -171,7 +132,6 @@ module Fog
             backend_pool = Azure::ARM::Network::Models::ApplicationGatewayBackendAddressPool.new
 
             backend_addresses1 = bap[:ip_addresses]
-
             addresses = []
             backend_addresses1.each do |address|
               backend_add = Azure::ARM::Network::Models::ApplicationGatewayBackendAddress.new
@@ -327,7 +287,7 @@ module Fog
 
       # Mock class for Network Request
       class Mock
-        def create_application_gateway(_name, _location, _resource_group, _sku_name, _sku_tier, _sku_capacity, _gateway_ip_configurations, _ssl_certificates, _frontend_ip_configurations, _frontend_ports, _probes, _backend_address_pools, _backend_http_settings_list, _http_listeners, _url_path_maps, _request_routing_rules)
+        def create_or_update_application_gateway(*)
         end
       end
     end

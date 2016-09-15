@@ -8,7 +8,7 @@ module Fog
           Fog::Logger.debug msg
 
           begin
-            nsg_list_result = @network_client.network_security_groups.list(resource_group)
+            nsg_list_result = @network_client.network_security_groups.list_as_lazy(resource_group)
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end

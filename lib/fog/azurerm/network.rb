@@ -76,6 +76,10 @@ module Fog
       request :get_connection_shared_key
       request :reset_connection_shared_key
       request :set_connection_shared_key
+      request :create_or_update_network_security_rule
+      request :delete_network_security_rule
+      request :get_network_security_rule
+      request :list_network_security_rules
 
       model_path 'fog/azurerm/models/network'
       model :virtual_network
@@ -96,6 +100,7 @@ module Fog
       model :network_security_group
       collection :network_security_groups
       model :network_security_rule
+      collection :network_security_rules
       model :path_rule
       model :vpn_client_configuration
       model :vpn_client_revoked_certificates

@@ -16,6 +16,8 @@ module Fog
           peering
         end
 
+        private
+
         def get_circuit_peering_object(circuit_peering_params)
           circuit_peering = create_express_route_circuit_peering(circuit_peering_params[:peering_type], circuit_peering_params[:peer_asn], circuit_peering_params[:primary_peer_address_prefix], circuit_peering_params[:secondary_peer_address_prefix], circuit_peering_params[:vlan_id], circuit_peering_params[:name])
 
@@ -26,8 +28,6 @@ module Fog
 
           circuit_peering
         end
-
-        private
 
         def create_express_route_circuit_peering(peering_type, peer_asn, primary_peer_address_prefix, secondary_peer_address_prefix, vlan_id, name)
           circuit_peering = Azure::ARM::Network::Models::ExpressRouteCircuitPeering.new

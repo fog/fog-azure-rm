@@ -58,6 +58,16 @@ traffic_manager.traffic_manager_end_points.create(
   target: 'test-app.com',
   endpoint_location: 'eastus'
 )
+########################################################################################################################
+######################                   Get and Update Traffic Manager Endpoint                ######################
+########################################################################################################################
+
+end_point = traffic_manager.traffic_manager_end_points.get('TestRG-TM', 'test-tmp', 'myendpoint', 'externalEndpoints')
+end_point.update(
+  type: 'externalEndpoints',
+  target: 'test-app1.com',
+  endpoint_location: 'centralus'
+)
 
 ########################################################################################################################
 ######################                   Get and Destroy Traffic Manager Endpoint                ######################
@@ -65,6 +75,17 @@ traffic_manager.traffic_manager_end_points.create(
 
 end_point = traffic_manager.traffic_manager_end_points.get('TestRG-TM', 'test-tmp', 'myendpoint', 'externalEndpoints')
 end_point.destroy
+
+########################################################################################################################
+######################                    Get and Update Traffic Manager Profile                 ######################
+########################################################################################################################
+
+traffic_manager_profile = traffic_manager.traffic_manager_profiles.get('TestRG-TM', 'test-tmp')
+traffic_manager_profile.update(traffic_routing_method: 'Weighted',
+                               ttl: '35',
+                               protocol: 'https',
+                               port: '90',
+                               path: '/monitorpage1.aspx')
 
 ########################################################################################################################
 ######################                    Get and Destroy Traffic Manager Profile                 ######################

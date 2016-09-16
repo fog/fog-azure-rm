@@ -678,6 +678,55 @@ Get a virtual network gateway object from the get method and then destroy that v
 	network_gateway.destroy
 ```
 
+## Create Local Network Gateway
+
+Create a new Local Network Gateway.
+
+```ruby
+    local_network_gateway = network.local_network_gateways.create(
+        name: "<Local Network Gateway Name>",
+        location: "eastus",
+        tags: {
+          key1: "value1",
+          key2: "value2"
+        },
+        resource_group: "<Resource Group Name>",
+        gateway_ip_address: '192.168.1.1',
+        local_network_address_space_prefixes: [],
+        asn: 100,
+        bgp_peering_address: '192.168.1.2',
+        peer_weight: 3
+  )
+```
+
+## List Local Network Gateways
+
+List all local network gateways in a resource group
+
+```ruby
+    local_network_gateways = network.local_network_gateways(resource_group: '<Resource Group Name>')
+	local_network_gateways.each do |gateway|
+    	puts "#{gateway.name}"
+	end
+```
+
+## Retrieve single Local Network Gateway
+
+Get single record of Local Network Gateway
+
+```ruby
+    local_network_gateway = network.local_network_gateways.get('<Resource Group Name>', '<Local Network Gateway Name>')
+	puts "#{local_network_gateway.name}"
+```
+
+## Destroy single Local Network Gateway
+
+Get a local network gateway object from the get method and then destroy that local network gateway.
+
+```ruby
+	local_network_gateway.destroy
+```
+
 ## Express Route
 
 Microsoft Azure ExpressRoute lets you extend your on-premises networks into the Microsoft cloud over a dedicated private connection facilitated by a connectivity provider.
@@ -746,6 +795,52 @@ Get an express route circuit object from the get method and then destroy that ex
 ```ruby
     circuit.destroy
 ```
+# Express Route Authorization
+
+Authorization is part of Express Route circuit.
+
+## Create an Express Route Circuit Authorization
+
+Create a new Express Route Circuit Authorization. Parameter 'authorization_status' can be 'Available' or 'InUse'.
+
+```ruby
+    authorization = network.express_route_circuit_authorizations.create(
+    	"resource_group": "<Resourse Group Name>",
+    	"name": "<Resource-Unique-Name>",
+    	"circuit_name": "<Circuit Name>",
+    	"authorization_status": "Available",
+    	"authorization_name": "<Authorization-Name>",
+	)
+```
+
+## List Express Route Circuit Authorizations
+
+List all express route circuit authorizations in a resource group.
+
+```ruby
+    authorizations  = network.express_route_circuit_authorizations(resource_group: '<Resource Group Name>', circuit_name: '<Circuit Name>')
+	authorizations.each do |authorization|
+    	puts "#{authorization.name}"
+	end
+```
+
+## Retrieve single Express Route Circuit Authorization
+
+Get a single record of Express Route Circuit Authorization.
+
+```ruby
+    authorization = network.express_route_circuit_authorizations.get("<Resource Group Name>", "Circuit Name", "Authorization Name")
+	puts "#{authorization.name}"
+```
+
+## Destroy single Express Route Circuit Authorization
+
+Get an express route circuit authorization object from the get method and then destroy that express route circuit authorization.
+
+```ruby
+    authorization.destroy
+```
+
 
 # Express Route Peering
 
@@ -807,6 +902,78 @@ List all express route service providers
 ```ruby
     service_providers = network.express_route_service_providers
 	puts service_providers
+```
+
+## Create Virtual Network Gateway Connection
+
+Create a new Virtual Network Gateway Connection.
+
+```ruby
+    gateway_connection = network.virtual_network_gateway_connections.create(
+      name: '<Virtual Network Gateway Connection Name>',
+      location: 'eastus',
+      tags: {
+        key1: 'value1',
+        key2: 'value2'
+      },
+      resource_group: '<Resource Group Name>',
+      virtual_network_gateway1: {
+        name: 'firstgateway',
+        resource_group: '<Resource Group Name>'
+      },
+      virtual_network_gateway2: {
+        name: 'secondgateway',
+        resource_group: '<Resource Group Name>'
+      }
+      connection_type: 'VNet-to-VNet'
+    )
+```
+
+## List Virtual Network Gateway Connections
+
+List all virtual network gateway connections in a resource group
+
+```ruby
+    gateway_connections = network.virtual_network_gateway_connections(resource_group: '<Resource Group Name>')
+	gateway_connections.each do |connection|
+    	puts "#{connection.name}"
+	end
+```
+
+## Retrieve single Virtual Network Gateway Connection
+
+Get single record of Virtual Network Gateway Connection
+
+```ruby
+    gateway_connection = network.virtual_network_gateway_connections.get('<Resource Group Name>', '<Virtual Network Gateway Connection Name>')
+	puts "#{gateway_connection.name}"
+```
+
+## Destroy single Virtual Network Gateway Connection
+
+Get a virtual network gateway connection object from the get method and then destroy that virtual network gateway connection.
+
+```ruby
+	gateway_connection.destroy
+```
+
+## Get the shared key for a connection
+
+```ruby
+	shared_key = network.get_connection_shared_key('<Resource Group Name>', '<Virtual Network Gateway Connection Name>')
+    puts gateway_connection
+```
+
+## Set the shared key for a connection
+
+```ruby
+	network.set_connection_shared_key('<Resource Group Name>', '<Virtual Network Gateway Connection Name>', 'Value')
+```
+
+## Reset the shared key for a connection
+
+```ruby
+	network.reset_connection_shared_key('<Resource Group Name>', '<Virtual Network Gateway Connection Name>', <Key Length in Integer>)
 ```
 
 

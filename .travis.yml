@@ -1,20 +1,25 @@
 language: ruby
 sudo: false
+
+before_install:
+  - gem install bundler
+  - gem update bundler
+
 matrix:
   fast_finish: true
   include:
-    - rvm: 2.1
-    - rvm: 2.2
+    - rvm: 2.0.0
+    - rvm: 2.1.0
+    - rvm: 2.1.1
+    - rvm: 2.1.5
+    - rvm: 2.2.0
+    - rvm: 2.3.0
+    - rvm: jruby-head
 
 notifications:
   email:
     recipients:
-      - abbas.sheikh@confiz.com
-      - shaffan.chaudhry@confiz.com
-      - zeeshan.arshad@confiz.com
-      - samawia.moin@confiz.com
-      - waqar.haider@confiz.com
-      - bilal.naeem@confiz.com
+      - oneops_azure@confiz.com
     on_success: always
     on_failure: always
   

@@ -1,3 +1,6 @@
+require 'base64'
+WHITE_SPACE = ' '.freeze
+
 module Fog
   module Compute
     class AzureRM
@@ -14,27 +17,32 @@ module Fog
             virtual_machine.availability_set = sub_resource
           end
 
+          string_data = vm_hash[:custom_data]
+          string_data = WHITE_SPACE if string_data.nil?
+          encoded_data = Base64.strict_encode64(string_data)
           virtual_machine.hardware_profile = define_hardware_profile(vm_hash[:vm_size])
           virtual_machine.storage_profile = define_storage_profile(vm_hash[:name],
-                                                                 vm_hash[:storage_account_name],
-                                                                 vm_hash[:publisher],
-                                                                 vm_hash[:offer],
-                                                                 vm_hash[:sku],
-                                                                 vm_hash[:version])
-          virtual_machine.os_profile = if vm_hash[:platform].casecmp(WINDOWS) == 0
-                                       define_windows_os_profile(vm_hash[:name],
+                                                                   vm_hash[:storage_account_name],
+                                                                   vm_hash[:publisher],
+                                                                   vm_hash[:offer],
+                                                                   vm_hash[:sku],
+                                                                   vm_hash[:version])
+          virtual_machine.os_profile = if vm_hash[:platform].casecmp(WINDOWS).zero?
+                                         define_windows_os_profile(vm_hash[:name],
+                                                                   vm_hash[:username],
+                                                                   vm_hash[:password],
+                                                                   vm_hash[:provision_vm_agent],
+                                                                   vm_hash[:enable_automatic_updates],
+                                                                   encoded_data)
+                                       else
+                                         define_linux_os_profile(vm_hash[:name],
                                                                  vm_hash[:username],
                                                                  vm_hash[:password],
-                                                                 vm_hash[:provision_vm_agent],
-                                                                 vm_hash[:enable_automatic_updates])
-                                     else
-                                       define_linux_os_profile(vm_hash[:name],
-                                                               vm_hash[:username],
-                                                               vm_hash[:password],
-                                                               vm_hash[:disable_password_authentication],
-                                                               vm_hash[:ssh_key_path],
-                                                               vm_hash[:ssh_key_data])
-                                     end
+                                                                 vm_hash[:disable_password_authentication],
+                                                                 vm_hash[:ssh_key_path],
+                                                                 vm_hash[:ssh_key_data],
+                                                                 encoded_data)
+                                       end
           virtual_machine.network_profile = define_network_profile(vm_hash[:network_interface_card_id])
           virtual_machine.location = vm_hash[:location]
           begin
@@ -73,7 +81,7 @@ module Fog
           storage_profile
         end
 
-        def define_windows_os_profile(vm_name, username, password, provision_vm_agent, enable_automatic_updates)
+        def define_windows_os_profile(vm_name, username, password, provision_vm_agent, enable_automatic_updates, encoded_data)
           os_profile = Azure::ARM::Compute::Models::OSProfile.new
           windows_config = Azure::ARM::Compute::Models::WindowsConfiguration.new
           windows_config.provision_vmagent = provision_vm_agent
@@ -83,10 +91,11 @@ module Fog
           os_profile.computer_name = vm_name
           os_profile.admin_username = username
           os_profile.admin_password = password
+          os_profile.custom_data = encoded_data
           os_profile
         end
 
-        def define_linux_os_profile(vm_name, username, password, disable_password_authentication, ssh_key_path, ssh_key_data)
+        def define_linux_os_profile(vm_name, username, password, disable_password_authentication, ssh_key_path, ssh_key_data, encoded_data)
           os_profile = Azure::ARM::Compute::Models::OSProfile.new
           linux_config = Azure::ARM::Compute::Models::LinuxConfiguration.new
 
@@ -104,6 +113,7 @@ module Fog
           os_profile.computer_name = vm_name
           os_profile.admin_username = username
           os_profile.admin_password = password
+          os_profile.custom_data = encoded_data
           os_profile
         end
 
@@ -159,7 +169,8 @@ module Fog
                     {
                       'disablePasswordAuthentication' => true
                     },
-                  'secrets' => []
+                  'secrets' => [],
+                  'customData' => 'ZWNobyBjdXN0b21EYXRh'
                 },
               'networkProfile' =>
                 {

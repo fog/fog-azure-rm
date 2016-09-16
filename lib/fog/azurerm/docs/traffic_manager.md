@@ -61,6 +61,20 @@ Get a single record of Traffic Manager Profile
      puts "#{profile.name}"
 ```
 
+## Update a Traffic Manager Profile
+
+Get a Traffic Manager Profile object from the get method and then update that Traffic Manager Profile. You can update the Traffic Manager Profile by passing the modifiable attributes in the form of a hash.
+
+```ruby
+    profile.update(
+              traffic_routing_method: 'Weighted',
+              ttl: '35',
+              protocol: 'https',
+              port: '90',
+              path: '/monitorpage1.aspx'
+    )
+```
+
 ## Destroy a single Traffic Manager Profile
 
 Get a Traffic Manager Profile object from the get method and then destroy that Traffic Manager Profile.
@@ -104,6 +118,15 @@ Get a single Traffic Manager Endpoint.
                  .traffic_manager_end_points
                  .get('<Resource Group name>', '<Profile Name>', '<Endpoint name>', '<Endpoint type>')
       puts "#{endpoint.name}"
+```
+## Update a Traffic Manager Endpoint
+
+Get a Traffic Manager Endpoint object from the get method and then update that Traffic Manager Endpoint. You can update the Traffic Manager Endpoint by passing the modifiable attributes in the form of a hash.
+
+```ruby
+      endpoint.update(type: 'externalEndpoints',
+                      target: 'test1.com',
+                      endpoint_location: 'Central US')
 ```
 
 ## Destroy a single Traffic Manager Endpoint

@@ -1,4 +1,3 @@
-require 'fog/azurerm/core'
 module Fog
   module TrafficManager
     # This class registers models, requests and collections
@@ -9,12 +8,12 @@ module Fog
       requires :subscription_id
 
       request_path 'fog/azurerm/requests/traffic_manager'
-      request :create_traffic_manager_profile
+      request :create_or_update_traffic_manager_profile
       request :delete_traffic_manager_profile
       request :get_traffic_manager_profile
       request :list_traffic_manager_profiles
 
-      request :create_traffic_manager_endpoint
+      request :create_or_update_traffic_manager_endpoint
       request :delete_traffic_manager_endpoint
       request :get_traffic_manager_endpoint
 

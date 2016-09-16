@@ -31,6 +31,38 @@ def storage_account_credentials
   }
 end
 
+class MockBlob
+  def initialize
+    @properties = {}
+    @metadata = {}
+    yield self if block_given?
+  end
+
+  attr_accessor :name
+  attr_accessor :snapshot
+  attr_accessor :properties
+  attr_accessor :metadata
+end
+
+class MockResponse
+  def initialize(code, body, headers)
+    @status = code
+    @body = body
+    @headers = headers
+    @headers.each do |k, v|
+      @headers[k] = [v] unless v.respond_to? 'first'
+    end
+  end
+  attr_accessor :status
+  attr_accessor :body
+  attr_accessor :headers
+end
+
+def mocked_storage_http_error
+  mocked_net_response = MockResponse.new 'mocked_code', 'mocked_body', a: 'a', b: 'b'
+  Azure::Core::Http::HttpResponse.new mocked_net_response, 'mocked_uri'
+end
+
 def server(service)
   Fog::Compute::AzureRM::Server.new(
     name: 'fog-test-server',
@@ -121,8 +153,8 @@ def premium_check_for_invalid_replications(service)
 end
 
 def storage_container(service)
-  Fog::Storage::AzureRM::Container.new(
-    name: 'storage-test-container',
+  Fog::Storage::AzureRM::Directory.new(
+    key: 'storage-test-container',
     last_modified: 'Tue, 04 Aug 2015 06:01:08 GMT',
     etag: '0x8D29C92176C8352',
     lease_status: 'unlocked',
@@ -135,6 +167,71 @@ def storage_container(service)
     public_access_level: nil,
     service: service
   )
+end
+
+def storage_blob(service)
+  Fog::Storage::AzureRM::File.new(
+    key: 'storage-test-blob',
+    directory: 'storage-test-container',
+    last_modified: 'Tue, 04 Aug 2015 06:01:08 GMT',
+    etag: '0x8D29C92176C8352',
+    metadata: {
+      'key1' => 'value1',
+      'key2' => 'value2'
+    },
+    lease_status: 'unlocked',
+    lease_state: 'available',
+    lease_duration: nil,
+    content_length: 4_194_304,
+    content_type: 'application/octet-stream',
+    content_encoding: nil,
+    content_language: nil,
+    content_disposition: nil,
+    content_md5: 'tXAohIyxuu/t94Lp/ujeRw==',
+    cache_control: nil,
+    sequence_number: 0,
+    blob_type: 'PageBlob',
+    copy_id: '095adc3b-e277-4c3d-97e0-0abca881f60c',
+    copy_status: 'success',
+    copy_source: 'https://testaccount.blob.core.windows.net/testblob/4m?snapshot=2016-02-04T08%3A35%3A50.3157696Z',
+    copy_progress: '4194304/4194304',
+    copy_completion_time: 'Thu, 04 Feb 2016 08:35:52 GMT',
+    copy_status_description: nil,
+    accept_ranges: 0,
+    service: service
+  )
+end
+
+def storage_cloud_blob
+  mock_blob = MockBlob.new
+  mock_blob.name = 'storage-test-blob'
+  mock_blob.snapshot = nil
+  mock_blob.properties = {
+    lease_status: 'unlocked',
+    lease_state: 'available',
+    lease_duration: nil,
+    content_length: 4_194_304,
+    content_type: 'application/octet-stream',
+    content_encoding: nil,
+    content_language: nil,
+    content_disposition: nil,
+    content_md5: 'tXAohIyxuu/t94Lp/ujeRw==',
+    cache_control: nil,
+    sequence_number: 0,
+    blob_type: 'PageBlob',
+    copy_id: '095adc3b-e277-4c3d-97e0-0abca881f60c',
+    copy_status: 'success',
+    copy_source: 'https://testaccount.blob.core.windows.net/testblob/4m?snapshot=2016-02-04T08%3A35%3A50.3157696Z',
+    copy_progress: '4194304/4194304',
+    copy_completion_time: 'Thu, 04 Feb 2016 08:35:52 GMT',
+    copy_status_description: nil,
+    accept_ranges: 0
+  }
+  mock_blob.metadata = {
+    'key1' => 'value1',
+    'key2' => 'value2'
+  }
+  mock_blob
 end
 
 def public_ip(service)
@@ -494,6 +591,24 @@ def virtual_network_gateway(service)
   )
 end
 
+def local_network_gateway(service)
+  Fog::Network::AzureRM::LocalNetworkGateway.new(
+    name: 'testLocalNetworkGateway',
+    location: 'eastus',
+    tags: {
+      key1: 'value1',
+      key2: 'value2'
+    },
+    resource_group: 'learn_fog',
+    gateway_ip_address: '192.168.1.1',
+    local_network_address_space_prefixes: [],
+    asn: 100,
+    bgp_peering_address: '192.168.1.2',
+    peer_weight: 3,
+    service: service
+  )
+end
+
 def express_route_circuit(service)
   Fog::Network::AzureRM::ExpressRouteCircuit.new(
     name: 'testCircuit',
@@ -532,6 +647,40 @@ def express_route_circuit_peering(service)
     primary_peer_address_prefix: '192.168.1.0/30',
     secondary_peer_address_prefix: '192.168.2.0/30',
     vlan_id: 200,
+    service: service
+  )
+end
+
+def express_route_circuit_authorization(service)
+  Fog::Network::AzureRM::ExpressRouteCircuitAuthorization.new(
+    name: 'UniqueAuthorizationName',
+    circuit_name: 'testCircuit',
+    resource_group: 'HaiderRG',
+    authorization_use_status: 'Available',
+    authorization_name: 'circuit-auth-name',
+    service: service
+    )
+end
+
+def virtual_network_gateway_connection(service)
+  Fog::Network::AzureRM::VirtualNetworkGatewayConnection.new(
+    name: 'testNetworkGateway',
+    location: 'eastus',
+    tags: {
+      key1: 'value1',
+      key2: 'value2'
+    },
+    resource_group: 'learn_fog',
+    virtual_network_gateway1: {
+      name: 'firstgateway'
+    },
+    virtual_network_gateway2: {
+      name: 'secondgateway'
+    },
+    enable_bgp: true,
+    connection_type: 'VNet-to-VNet',
+    routing_weight: 2,
+    shared_key: 'shared_key',
     service: service
   )
 end

@@ -18,12 +18,21 @@ def get_traffic_manager_profile_name_from_endpoint_id(endpoint_id)
   endpoint_id.split('/')[8]
 end
 
+# Pick Express Route Circuit name from Id(String)
+def get_circuit_name_from_id(circuit_id)
+  circuit_id.split('/')[8]
+end
+
 def get_record_type(type)
   type.split('/').last
 end
 
 def raise_azure_exception(exception, msg)
-  message = "Exception in #{msg} #{exception.body['error']['message'] unless exception.body['error']['message'].nil?} Type: #{exception.class} \n "
+  message = if exception.respond_to? 'body'
+              "Exception in #{msg} #{exception.body['error']['message'] unless exception.body['error']['message'].nil?} Type: #{exception.class} \n "
+            else
+              exception.inspect
+            end
   Fog::Logger.debug exception.backtrace
   raise message
 end
@@ -43,4 +52,8 @@ def get_resource_from_resource_id(resource_id, position)
   raise 'Invalid Resource ID' if data.count < 9 && data.count != 5
 
   data[position]
+end
+
+def random_string(length)
+  (0...length).map { ('a'..'z').to_a[rand(26)] }.join
 end

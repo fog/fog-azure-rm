@@ -12,14 +12,14 @@ class TestCreateTrafficManagerEndPoint < Minitest::Test
   def test_create_traffic_manager_endpoint_success
     mocked_response = ApiStub::Requests::TrafficManager::TrafficManagerEndPoint.create_traffic_manager_endpoint_response(@traffic_manager_client)
     @end_points.stub :create_or_update, mocked_response do
-      assert_equal @service.create_traffic_manager_endpoint(@endpoint_hash), mocked_response
+      assert_equal @service.create_or_update_traffic_manager_endpoint(@endpoint_hash), mocked_response
     end
   end
 
   def test_create_traffic_manager_endpoint_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @end_points.stub :create_or_update, response do
-      assert_raises(RuntimeError) { @service.create_traffic_manager_endpoint(@endpoint_hash) }
+      assert_raises(RuntimeError) { @service.create_or_update_traffic_manager_endpoint(@endpoint_hash) }
     end
   end
 end

@@ -30,10 +30,8 @@ class TestStorageAccount < Minitest::Test
       :sku_name,
       :replication
     ]
-    @service.stub :create_storage_account, @storage_account_response do
-      attributes.each do |attribute|
-        assert_respond_to @storage_account, attribute
-      end
+    attributes.each do |attribute|
+      assert_respond_to @storage_account, attribute
     end
   end
 

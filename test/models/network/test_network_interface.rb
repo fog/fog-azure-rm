@@ -19,10 +19,8 @@ class TestNetworkInterface < Minitest::Test
       :detach_public_ip,
       :detach_network_security_group
     ]
-    @service.stub :create_or_update_network_interface, @response do
-      methods.each do |method|
-        assert @network_interface.respond_to? method
-      end
+    methods.each do |method|
+      assert @network_interface.respond_to? method
     end
   end
 
@@ -48,10 +46,8 @@ class TestNetworkInterface < Minitest::Test
       :internal_dns_name_label,
       :internal_fqd
     ]
-    @service.stub :create_or_update_network_interface, @response do
-      attributes.each do |attribute|
-        assert @network_interface.respond_to? attribute
-      end
+    attributes.each do |attribute|
+      assert @network_interface.respond_to? attribute
     end
   end
 

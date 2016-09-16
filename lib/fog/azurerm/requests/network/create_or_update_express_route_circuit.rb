@@ -21,7 +21,7 @@ module Fog
         def get_express_route_circuit_object(circuit_parameters)
           sku = create_express_route_circuit_sku(circuit_parameters[:sku_name], circuit_parameters[:sku_family], circuit_parameters[:sku_tier])
           service_provider_prop = create_express_route_service_provider_properties(circuit_parameters[:service_provider_name], circuit_parameters[:peering_location], circuit_parameters[:bandwidth_in_mbps])
-          create_express_route_circuit(service_provider_prop, circuit_parameters[:peerings], circuit_parameters[:circuit_name], circuit_parameters[:location], sku, circuit_parameters[:tags] )
+          create_express_route_circuit(service_provider_prop, circuit_parameters[:peerings], circuit_parameters[:circuit_name], circuit_parameters[:location], sku, circuit_parameters[:tags])
         end
 
         def create_express_route_circuit_sku(sku_name, sku_family, sku_tier)

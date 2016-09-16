@@ -2,8 +2,8 @@ module Fog
   module Storage
     class AzureRM
       # This class is giving implementation of create and delete a container.
-      class Container < Fog::Model
-        identity  :name
+      class Directory < Fog::Model
+        identity  :key, aliases: %w(Name name)
         attribute :etag
         attribute :last_modified
         attribute :lease_duration
@@ -13,31 +13,31 @@ module Fog
         attribute :public_access_level
 
         def create(options = {})
-          requires :name
-          merge_attributes(Container.parse(service.create_container(name, options)))
+          requires :key
+          merge_attributes(Directory.parse(service.create_container(key, options)))
         end
 
         alias save create
 
         def get_properties(options = { metadata: true })
-          requires :name
-          merge_attributes(Container.parse(service.get_container_properties(name, options)))
+          requires :key
+          merge_attributes(Directory.parse(service.get_container_properties(key, options)))
         end
 
-        def get_access_control_list(options = {})
-          requires :name
-          merge_attributes(Container.parse(service.get_container_access_control_list(name, options)[0]))
+        def access_control_list(options = {})
+          requires :key
+          merge_attributes(Directory.parse(service.get_container_access_control_list(key, options)[0]))
         end
 
         def destroy(options = {})
-          requires :name
-          service.delete_container name, options
+          requires :key
+          service.delete_container key, options
         end
 
         def self.parse(container)
           hash = {}
           if container.is_a? Hash
-            hash['name'] = container['name']
+            hash['key'] = container['name']
             hash['metadata'] = container['metadata']
             return hash unless container.key?('properties')
 
@@ -47,7 +47,7 @@ module Fog
             hash['lease_status'] = container['properties']['lease_status']
             hash['lease_state'] = container['properties']['lease_state']
           else
-            hash['name'] = container.name
+            hash['key'] = container.name
             hash['metadata'] = container.metadata
             return hash unless container.respond_to?('properties')
 

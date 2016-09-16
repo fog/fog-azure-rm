@@ -55,7 +55,7 @@ azure_storage_service = Fog::Storage.new(
 Check Storage Account Name Availability.This operation checks that account name is valid and is not already in use.
 
 ```ruby
-    azure_storage_service.storage_accounts.check_name_availability('<Storage Account name>')
+azure_storage_service.storage_accounts.check_name_availability('<Storage Account name>')
 ```
 
 ## Create Storage Account
@@ -153,19 +153,9 @@ puts "#{container.name}"
 List all the storage containers in the current storage accounts.
 
 ```ruby
-azure_storage_service.containers.each do |container|
-  puts "#{container.name}"
+azure_storage_service.directories.each do |directory|
+  puts "#{directory.name}"
 end
-```
-
-## Get storage container properties
-
-Get the storage container properties. The properties will not fetch the access control list. Call `get_container_access_control_list` to fetch it.
-
-```ruby
-container = azure_storage_service.containers.get('<container name>')
-properties = container.get_properties
-puts "#{properties.inspect}"
 ```
 
 ## Get the access control list of the storage container
@@ -173,8 +163,8 @@ puts "#{properties.inspect}"
 Get the permissions for the specified container. The permissions indicate whether container data may be accessed publicly.
 
 ```ruby
-container = azure_storage_service.containers.get('<container name>')
-access_control_list = container.get_access_control_list('<container name>')
+directory = azure_storage_service.directories.get('<container name>')
+access_control_list = directory.get_access_control_list('<container name>')
 puts "#{access_control_list.inspect}"
 ```
 
@@ -183,47 +173,124 @@ puts "#{access_control_list.inspect}"
 Mark the specified container for deletion. The container and any blobs contained within it are later deleted during garbage collection.
 
 ```ruby
-container = azure_storage_service.containers.get('<container name>')
-result = container.destroy
+directory = azure_storage_service.directories.get('<container name>')
+result = directory.destroy
 puts "#{result}"
 ```
 
-### Metadata
+## Upload a local file as a blob
+```ruby
+new_cloud_file = azure_storage_service.files.get('<Container name>', '<Blob name>').create(file_path: '<file path>')
+puts "#{new_cloud_file.inspect}"
+```
+
+## Download a blob to a local file
+```ruby
+blob = azure_storage_service.files.get('<Container name>', '<Blob name>').save_to_file('<file path>')
+puts "#{blob.inspect}"
+puts "File Size: #{::File.size <file_path>}"
+```
+
+## Delete the storage blob
+
+Mark the specified blob for deletion. The blob is later deleted during garbage collection.
+
+```ruby
+cloud_file = azure_storage_service.files.get('<container name>', '<blob name>')
+result = cloud_file.destroy
+puts "#{result}"
+```
+
+Note that in order to delete a blob, you must delete all of its snapshots.
+
+```ruby
+cloud_file = azure_storage_service.files.get('<container name>', '<blob name>')
+result = cloud_file.destroy(delete_snapshots: 'only')
+puts "#{result}"
+
+result = cloud_file.destroy
+puts "#{result}"
+```
+
+You can delete both at the same time by specifying the option.
+
+```ruby
+cloud_file = azure_storage_service.files.get('<container name>', '<blob name>')
+result = cloud_file.destroy(delete_snapshots: 'inlcude')
+puts "#{result}"
+```
+
+## Properties
+
+### Get storage container properties
+
+Get the storage container properties. The properties will not fetch the access control list. Call `get_container_access_control_list` to fetch it.
+
+```ruby
+directory = azure_storage_service.directories.get('<container name>')
+properties = directory.get_properties
+puts "#{properties.inspect}"
+```
+
+### Get storage blob properties
+
+Get the storage blob properties.
+
+```ruby
+cloud_file = azure_storage_service.files.get('<container name>', '<blob name>')
+properties = cloud_file.get_properties
+puts "#{properties.inspect}"
+```
+
+### Set storage blob properties
+
+Set the storage blob properties. The properties are passed in name/value pairs.
+
+```ruby
+cloud_file = azure_storage_service.files.get('<container name>', '<blob name>')
+properties = {
+  "content_language" => "English",
+  "content_disposition" => "attachment"
+}
+cloud_file.set_properties(properties)
+```
+
+## Metadata
 
 Metadata allows us to provide descriptive information about specific containers or blobs. This is simply providing name/value pairs of data we want to set on the container or blob.
 
-## Get Blob Metadata
+### Get Blob Metadata
 
 ```ruby
-      azure_storage_service.blobs.get_blob_metadata('<Container name>', '<Blob name>')
+azure_storage_service.files.get('<Container name>', '<Blob name>').get_metadata
 ```
 
-## Set Blob Metadata
+### Set Blob Metadata
 
 ```ruby
-      metadata = {
-        "Category" => "Images",
-        "Resolution" => "High"
-      }
-      azure_storage_service.blobs.set_blob_metadata('<Container name>', '<Blob name>', metadata)
+metadata = {
+  "Category" => "Images",
+  "Resolution" => "High"
+}
+azure_storage_service.files.get('<Container name>', '<Blob name>').set_metadata(metadata)
 ```
 
-## Get Container Metadata
+### Get Container Metadata
 
 ```ruby
-      azure_storage_service.containers.get_container_metadata('<Container name>')
+azure_storage_service.directories.get_metadata('<Container name>')
 ```
 
-## Set Container Metadata
+### Set Container Metadata
 
 ```ruby
-      metadata = {
-        "CreatedBy" => "User",
-        "SourceMachine" => "Mymachine",
-        "category" => "guidance",
-        "docType" => "textDocuments"
-       }
-      azure_storage_service.containers.set_container_metadata('<Container name>', metadata)
+metadata = {
+  "CreatedBy" => "User",
+  "SourceMachine" => "Mymachine",
+  "category" => "guidance",
+  "docType" => "textDocuments"
+  }
+azure_storage_service.directories.set_metadata('<Container name>', metadata)
 ```
 
 ## Support and Feedback

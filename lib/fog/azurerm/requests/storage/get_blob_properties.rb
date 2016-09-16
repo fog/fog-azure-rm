@@ -1,32 +1,26 @@
 module Fog
   module Storage
     class AzureRM
-      # This class provides the actual implementation for service calls.
+      # This class provides the actual implemention for service calls.
       class Real
-        def get_blob_metadata(container_name, name, options = {})
-          msg = "Getting Blob #{name} metadata in container #{container_name}."
-          Fog::Logger.debug msg
+        def get_blob_properties(container_name, name, options = {})
+          Fog::Logger.debug "Get Blob #{name} properties in container #{container_name}."
           begin
-            blob = @blob_client.get_blob_metadata(container_name, name, options)
-          rescue Azure::Core::Http::HTTPError => ex
-            raise_azure_exception(ex, msg)
-          end
-          Fog::Logger.debug "Getting metadata of blob #{name} successfully."
-          blob.metadata
+              blob_properties = @blob_client.get_blob_properties(container_name, name, options)
+              Fog::Logger.debug "Getting properties of blob #{name} successfully."
+              blob_properties
+            rescue Azure::Core::Http::HTTPError => ex
+              raise "Exception in getting properties of blob #{name}: #{ex.inspect}"
+            end
         end
       end
       # This class provides the mock implementation for unit tests.
       class Mock
-        def get_blob_metadata(container_name, name, _options = {})
+        def get_blob_properties(_container_name, name, _options = {})
           {
             'name' => name,
             'snapshot' => nil,
-            'metadata' => {
-              'container-name' => container_name,
-              'blob-name' => name,
-              'category' => 'Images',
-              'resolution' => 'High'
-            },
+            'metadata' => {},
             'properties' =>
               {
                 'last_modified' => 'Mon, 04 Jul 2016 09:30:31 GMT',

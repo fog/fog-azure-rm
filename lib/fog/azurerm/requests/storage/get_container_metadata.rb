@@ -3,11 +3,11 @@ module Fog
     class AzureRM
       # This class provides the actual implementation for service calls.
       class Real
-        def get_container_metadata(name)
+        def get_container_metadata(name, options = {})
           msg = "Getting Container #{name} metadata."
           Fog::Logger.debug msg
           begin
-            container = @blob_client.get_container_metadata(name)
+            container = @blob_client.get_container_metadata(name, options)
           rescue Azure::Core::Http::HTTPError => ex
             raise_azure_exception(ex, msg)
           end

@@ -1,17 +1,17 @@
 require 'fog/core/collection'
-require 'fog/azurerm/models/storage/container'
+require 'fog/azurerm/models/storage/directory'
 
 module Fog
   module Storage
     class AzureRM
       # This class is giving implementation of listing containers.
-      class Containers < Fog::Collection
-        model Fog::Storage::AzureRM::Container
+      class Directories < Fog::Collection
+        model Fog::Storage::AzureRM::Directory
 
-        def all(options = { :metadata => true })
+        def all(options = { metadata: true })
           containers = []
           service.list_containers(options).each do |container|
-            hash = Container.parse container
+            hash = Directory.parse container
             hash['public_access_level'] = 'unknown'
             containers << hash
           end
@@ -19,7 +19,7 @@ module Fog
         end
 
         def get(identity)
-          container = all(prefix: identity, metadata: true).find { |item| item.name == identity }
+          container = all(prefix: identity, metadata: true).find { |item| item.key == identity }
           return if container.nil?
 
           access_control_list = service.get_container_access_control_list(identity)[0]
@@ -31,12 +31,12 @@ module Fog
           container
         end
 
-        def get_container_metadata(name)
-          service.get_container_metadata(name)
+        def get_metadata(name, options = {})
+          service.get_container_metadata(name, options)
         end
 
-        def set_container_metadata(name, metadata)
-          service.set_container_metadata(name, metadata)
+        def set_metadata(name, metadata, options = {})
+          service.set_container_metadata(name, metadata, options)
         end
       end
     end

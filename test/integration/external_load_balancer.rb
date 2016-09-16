@@ -105,7 +105,7 @@ network.load_balancers.create(
 
 load_balancers = network.load_balancers(resource_group: 'TestRG-LB')
 load_balancers.each do |load_balancer|
-  Fog::Logger.debug "#{load_balancer.name}"
+  Fog::Logger.debug load_balancer.name
 end
 
 ########################################################################################################################

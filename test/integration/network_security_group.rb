@@ -80,7 +80,7 @@ nsg.update_security_rules(
 
 network_security_groups = network.network_security_groups(resource_group: 'TestRG-NSG')
 network_security_groups.each do |network_security_group|
-  Fog::Logger.debug "#{network_security_group.name}"
+  Fog::Logger.debug network_security_group.name
 end
 
 ########################################################################################################################

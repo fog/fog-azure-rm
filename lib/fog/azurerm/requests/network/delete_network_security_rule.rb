@@ -21,7 +21,7 @@ module Fog
       # Mock class for Network Request
       class Mock
         def delete_network_security_rule(*)
-          Fog::Logger.debug "Network Security Rule test-security-rule from Resource group test-rg deleted successfully."
+          Fog::Logger.debug 'Network Security Rule test-security-rule from Resource group test-rg deleted successfully.'
           true
         end
       end

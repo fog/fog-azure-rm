@@ -4,7 +4,9 @@ require File.expand_path '../../test_helper', __dir__
 class TestNetworkSecurityRule < Minitest::Test
   def setup
     @service = Fog::Network::AzureRM.new(credentials)
+    @client = @service.instance_variable_get(:@network_client)
     @network_security_rule = network_security_rule(@service)
+    @response = ApiStub::Models::Network::NetworkSecurityRule.create_network_security_rule_response(@client)
   end
 
   def test_model_attributes
@@ -25,6 +27,18 @@ class TestNetworkSecurityRule < Minitest::Test
     ]
     attributes.each do |attribute|
       assert @network_security_rule.respond_to? attribute
+    end
+  end
+
+  def test_save_method_response
+    @service.stub :create_or_update_network_security_rule, @response do
+      assert_instance_of Fog::Network::AzureRM::NetworkSecurityRule, @network_security_rule.save
+    end
+  end
+
+  def test_destroy_method_response
+    @service.stub :delete_network_security_rule, true do
+      assert @network_security_rule.destroy
     end
   end
 end

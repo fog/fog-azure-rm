@@ -9,17 +9,17 @@ require 'yaml'
 azure_credentials = YAML.load_file('credentials/azure.yml')
 
 rs = Fog::Resources::AzureRM.new(
-    tenant_id: azure_credentials['tenant_id'],
-    client_id: azure_credentials['client_id'],
-    client_secret: azure_credentials['client_secret'],
-    subscription_id: azure_credentials['subscription_id']
+  tenant_id: azure_credentials['tenant_id'],
+  client_id: azure_credentials['client_id'],
+  client_secret: azure_credentials['client_secret'],
+  subscription_id: azure_credentials['subscription_id']
 )
 
 network = Fog::Network::AzureRM.new(
-    tenant_id: azure_credentials['tenant_id'],
-    client_id: azure_credentials['client_id'],
-    client_secret: azure_credentials['client_secret'],
-    subscription_id: azure_credentials['subscription_id']
+  tenant_id: azure_credentials['tenant_id'],
+  client_id: azure_credentials['client_id'],
+  client_secret: azure_credentials['client_secret'],
+  subscription_id: azure_credentials['subscription_id']
 )
 
 ########################################################################################################################
@@ -27,8 +27,8 @@ network = Fog::Network::AzureRM.new(
 ########################################################################################################################
 
 rs.resource_groups.create(
-    name: 'TestRG-NSR',
-    location: 'eastus'
+  name: 'TestRG-NSR',
+  location: 'eastus'
 )
 
 ########################################################################################################################
@@ -36,9 +36,9 @@ rs.resource_groups.create(
 ########################################################################################################################
 
 network.network_security_groups.create(
-    name: 'testGroup',
-    resource_group: 'TestRG-NSR',
-    location: 'eastus'
+  name: 'testGroup',
+  resource_group: 'TestRG-NSR',
+  location: 'eastus'
 )
 
 ########################################################################################################################
@@ -74,7 +74,6 @@ end
 ########################################################################################################################
 
 nsr = network.network_security_rules.get('TestRG-NSR', 'testGroup', 'testRule')
-
 
 ########################################################################################################################
 ######################                                   CleanUp                                  ######################

@@ -70,4 +70,3 @@ module ApiStub
     end
   end
 end
-

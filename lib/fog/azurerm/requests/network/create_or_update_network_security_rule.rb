@@ -8,12 +8,12 @@ module Fog
           Fog::Logger.debug msg
           security_rule_params = get_security_rule_params(security_rule)
           begin
-            security_rule = @network_client.security_rules.create_or_update(security_rule[:resource_group], security_rule[:network_security_group_name], security_rule[:name], security_rule_params)
+            security_rule_obj = @network_client.security_rules.create_or_update(security_rule[:resource_group], security_rule[:network_security_group_name], security_rule[:name], security_rule_params)
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
           Fog::Logger.debug "Network Security Rule #{security_rule[:name]} Created/Updated Successfully!"
-          security_rule
+          security_rule_obj
         end
 
         def get_security_rule_params(security_rule_hash)

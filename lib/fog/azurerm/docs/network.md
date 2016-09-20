@@ -491,10 +491,10 @@ List all the network security rules in a resource group and network security gro
 Get a single record of Network Security Rule
 
 ```ruby
-    nsr = azure_network_service
+    network_security_rule = azure_network_service
                   .network_security_rules
                   .get(<Resource Group Name>','<Network Security Group name>', '<Security Rule name>')
-    puts "#{nsr.name}"              
+    puts "#{network_security_rule.name}"              
 ```
 
 ## Destroy a Network Security Rule
@@ -502,7 +502,7 @@ Get a single record of Network Security Rule
 Get a network security rule object from the get method and then destroy that network security rule.
 
 ```ruby
-    nsr.destroy
+    network_security_rule.destroy
 ```
 
 ## Create External Load Balancer

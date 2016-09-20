@@ -15,15 +15,15 @@ module Fog
           requires :network_security_group_name
           network_security_rules = []
           service.list_network_security_rules(resource_group, network_security_group_name).each do |nsr|
-            network_security_rules << Fog::Network::AzureRM::NetworkSecurityRule.parse(nsr)
+            network_security_rules << NetworkSecurityRule.parse(nsr)
           end
           load(network_security_rules)
         end
 
         def get(resource_group, network_security_group_name, name)
-          nsr = service.get_network_security_rule(resource_group, network_security_group_name, name)
-          network_security_rule = Fog::Network::AzureRM::NetworkSecurityRule.new(service: service)
-          network_security_rule.merge_attributes(Fog::Network::AzureRM::NetworkSecurityRule.parse(nsr))
+          network_security_rule = service.get_network_security_rule(resource_group, network_security_group_name, name)
+          network_security_rule_obj = NetworkSecurityRule.new(service: service)
+          network_security_rule_obj.merge_attributes(NetworkSecurityRule.parse(network_security_rule))
         end
       end
     end

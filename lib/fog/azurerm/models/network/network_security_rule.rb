@@ -38,8 +38,8 @@ module Fog
         def save
           requires :name, :network_security_group_name, :resource_group, :protocol, :source_port_range, :destination_port_range, :source_address_prefix, :destination_address_prefix, :access, :priority, :direction
           security_rule_params = get_security_rule_params
-          nsr = service.create_or_update_network_security_rule(security_rule_params)
-          merge_attributes(Fog::Network::AzureRM::NetworkSecurityRule.parse(nsr))
+          network_security_rule = service.create_or_update_network_security_rule(security_rule_params)
+          merge_attributes(NetworkSecurityRule.parse(network_security_rule))
         end
 
         def get_security_rule_params

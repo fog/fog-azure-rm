@@ -3,16 +3,16 @@ module Fog
     class AzureRM
       # Real class for Network Request
       class Real
-        def create_or_update_network_security_rule(security_rule_hash)
-          msg = "Creating/Updating Network Security Rule #{security_rule_hash[:name]} in Resource Group #{security_rule_hash[:resource_group]}."
+        def create_or_update_network_security_rule(security_rule)
+          msg = "Creating/Updating Network Security Rule #{security_rule[:name]} in Resource Group #{security_rule[:resource_group]}."
           Fog::Logger.debug msg
-          security_rule_params = get_security_rule_params(security_rule_hash)
+          security_rule_params = get_security_rule_params(security_rule)
           begin
-            security_rule = @network_client.security_rules.create_or_update(security_rule_hash[:resource_group], security_rule_hash[:network_security_group_name], security_rule_hash[:name], security_rule_params)
+            security_rule = @network_client.security_rules.create_or_update(security_rule[:resource_group], security_rule[:network_security_group_name], security_rule[:name], security_rule_params)
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
-          Fog::Logger.debug "Network Security Rule #{security_rule_hash[:name]} Created/Updated Successfully!"
+          Fog::Logger.debug "Network Security Rule #{security_rule[:name]} Created/Updated Successfully!"
           security_rule
         end
 
@@ -33,25 +33,25 @@ module Fog
       # Mock class for Network Security Rule Request
       class Mock
         def create_or_update_network_security_rule(*)
-          nsr = '{
-              "name":"myNsRule",
-              "id":"/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups/myNsg/securityRules/myNsRule",
-              "etag":"W/\"00000000-0000-0000-0000-000000000000\"",
-              "properties":{
-                "provisioningState":"Succeeded",
-                "description":"description-of-this-rule",
-                "protocol": "*",
-                "sourcePortRange":"source-port-range",
-                "destinationPortRange":"destination-port-range",
-                "sourceAddressPrefix":"*",
-                "destinationAddressPrefix":"*",
-                "access":"Allow",
-                "priority":6500,
-                "direction":"Inbound"
-              }
+          network_security_rule = '{
+            "name":"myNsRule",
+            "id":"/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups/myNsg/securityRules/myNsRule",
+            "etag":"W/\"00000000-0000-0000-0000-000000000000\"",
+            "properties":{
+              "provisioningState":"Succeeded",
+              "description":"description-of-this-rule",
+              "protocol": "*",
+              "sourcePortRange":"source-port-range",
+              "destinationPortRange":"destination-port-range",
+              "sourceAddressPrefix":"*",
+              "destinationAddressPrefix":"*",
+              "access":"Allow",
+              "priority":6500,
+              "direction":"Inbound"
+            }
           }'
-          nsr_mapper = Azure::ARM::Network::Models::SecurityRule.mapper
-          @network_client.deserialize(nsr_mapper, JSON.load(nsr), 'result.body')
+          network_security_rule_mapper = Azure::ARM::Network::Models::SecurityRule.mapper
+          @network_client.deserialize(network_security_rule_mapper, JSON.load(network_security_rule), 'result.body')
         end
       end
     end

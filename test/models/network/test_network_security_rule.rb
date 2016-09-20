@@ -6,7 +6,6 @@ class TestNetworkSecurityRule < Minitest::Test
     @service = Fog::Network::AzureRM.new(credentials)
     @client = @service.instance_variable_get(:@network_client)
     @network_security_rule = network_security_rule(@service)
-    @response = ApiStub::Models::Network::NetworkSecurityRule.create_network_security_rule_response(@client)
   end
 
   def test_model_attributes
@@ -31,7 +30,8 @@ class TestNetworkSecurityRule < Minitest::Test
   end
 
   def test_save_method_response
-    @service.stub :create_or_update_network_security_rule, @response do
+    response = ApiStub::Models::Network::NetworkSecurityRule.create_network_security_rule_response(@client)
+    @service.stub :create_or_update_network_security_rule, response do
       assert_instance_of Fog::Network::AzureRM::NetworkSecurityRule, @network_security_rule.save
     end
   end

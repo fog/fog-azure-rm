@@ -91,7 +91,7 @@ network.virtual_network_gateways.create(
   sku_name: 'Standard',
   sku_tier: 'Standard',
   sku_capacity: 2,
-  gateway_type: 'vpn',
+  gateway_type: 'expressroute',
   enable_bgp: true,
   gateway_size: nil,
   asn: 100,

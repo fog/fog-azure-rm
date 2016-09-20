@@ -1,3 +1,7 @@
+## Upcoming version
+**Added:**
+- Network Service - Added Network Security Rule.
+
 ## 0.0.6
 
 **Added:**

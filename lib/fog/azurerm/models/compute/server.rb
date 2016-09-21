@@ -29,6 +29,7 @@ module Fog
         attribute :network_interface_card_id
         attribute :availability_set_id
         attribute :custom_data
+        attribute :resources
 
         def self.parse(vm)
           hash = {}
@@ -60,6 +61,12 @@ module Fog
           end
           hash['network_interface_card_id'] = vm.network_profile.network_interfaces[0].id
           hash['availability_set_id'] = vm.availability_set.id unless vm.availability_set.nil?
+
+          hash['resources'] = []
+          vm.resources.each do |extension|
+            vm_extension = Fog::Compute::AzureRM::VirtualMachineExtension.new
+            hash['resources'] << vm_extension.merge_attributes(Fog::Compute::AzureRM::VirtualMachineExtension.parse(extension))
+          end unless vm.resources.nil?
           hash
         end
 
@@ -119,6 +126,18 @@ module Fog
           merge_attributes(Fog::Compute::AzureRM::Server.parse(vm))
         end
 
+        def add_or_update_extension(vm_extension_name, vm_extension_publisher, vm_extension_type, vm_extension_version)
+          vm_extension_params = get_extension_params(vm_extension_name, vm_extension_publisher, vm_extension_type, vm_extension_version)
+          vm_extension = service.add_or_update_vm_extension(vm_extension_params)
+          merge_attributes(Fog::Compute::AzureRM::VirtualMachineExtension.parse(vm_extension))
+        end
+
+        def get_extension(vm_extension_name)
+          extension = service.get_vm_extension(resource_group, name, vm_extension_name)
+          vm_extension = Fog::Compute::AzureRM::VirtualMachineExtension.new(service: service)
+          vm_extension.merge_attributes(Fog::Compute::AzureRM::VirtualMachineExtension.parse(extension))
+        end
+
         private
 
         def get_virtual_machine_params(ssh_key_path)
@@ -143,6 +162,18 @@ module Fog
             provision_vm_agent: provision_vm_agent,
             enable_automatic_updates: enable_automatic_updates,
             custom_data: custom_data
+          }
+        end
+
+        def get_extension_params(vm_extension_name, vm_extension_publisher, vm_extension_type, vm_extension_version)
+          {
+            virtual_machine_name: name,
+            resource_group: resource_group,
+            location: location,
+            vm_extension_name: vm_extension_name,
+            vm_extension_type: vm_extension_type,
+            vm_extension_publisher: vm_extension_publisher,
+            vm_extension_version: vm_extension_version
           }
         end
       end

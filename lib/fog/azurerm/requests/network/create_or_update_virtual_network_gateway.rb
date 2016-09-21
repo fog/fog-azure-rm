@@ -22,9 +22,6 @@ module Fog
         def get_network_gateway_object(virtual_network_params)
           network_gateway = Azure::ARM::Network::Models::VirtualNetworkGateway.new
 
-          default_site = MsRestAzure::SubResource.new
-          default_site.id = virtual_network_params[:gateway_default_site]
-
           sku = Azure::ARM::Network::Models::VirtualNetworkGatewaySku.new
           sku.name = virtual_network_params[:sku_name]
           sku.capacity = virtual_network_params[:sku_capacity]
@@ -35,7 +32,11 @@ module Fog
           network_gateway.provisioning_state = virtual_network_params[:provisioning_state]
           network_gateway.vpn_type = virtual_network_params[:vpn_type]
           network_gateway.sku = sku
-          network_gateway.gateway_default_site = default_site
+          if virtual_network_params[:gateway_default_site]
+            default_site = MsRestAzure::SubResource.new
+            default_site.id = virtual_network_params[:gateway_default_site]
+            network_gateway.gateway_default_site = default_site
+          end
           if virtual_network_params[:ip_configurations]
             ip_configurations = get_ip_configurations(virtual_network_params[:ip_configurations])
             network_gateway.ip_configurations = ip_configurations

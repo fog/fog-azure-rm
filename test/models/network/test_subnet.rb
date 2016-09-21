@@ -16,6 +16,7 @@ class TestSubnet < Minitest::Test
       :detach_network_security_group,
       :attach_route_table,
       :detach_route_table,
+      :get_available_ipaddress_count,
       :destroy
     ]
 

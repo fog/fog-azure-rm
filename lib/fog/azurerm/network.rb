@@ -31,6 +31,7 @@ module Fog
       request :detach_route_table_from_subnet
       request :list_subnets
       request :get_subnet
+      request :get_available_ipaddress_count
       request :delete_subnet
       request :create_or_update_network_interface
       request :delete_network_interface

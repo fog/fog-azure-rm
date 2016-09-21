@@ -40,6 +40,12 @@ compute.availability_sets.create(
   location: 'eastus',
   resource_group: 'TestRG-AS'
 )
+########################################################################################################################
+######################                       List Availability Sets                               ######################
+########################################################################################################################
+compute.availability_sets(resource_group: 'TestRG-AS').each do |availability_set|
+  Fog::Logger.debug "Name: #{availability_set.name}, Location: #{availability_set.location}"
+end
 
 ########################################################################################################################
 ######################                       Get and Delete Availability Set                      ######################

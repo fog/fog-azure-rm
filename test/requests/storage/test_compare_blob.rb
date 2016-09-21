@@ -10,11 +10,8 @@ class TestListBlobs < Minitest::Test
   end
 
   def test_compare_blob_success
-    @blob_client.stub :list_blobs, @compare_blob_response do
-      blob_properties_response = ApiStub::Requests::Storage::File.get_blob_properties
-      @blob_client.stub :get_blob_properties, blob_properties_response do
-        assert @service.compare_blob('container1', 'container2'), @compare_blob_response
-      end
+    @service.stub :get_identical_blobs_from_containers, @compare_blob_response do
+      assert @service.compare_blob('container1', 'container2'), @compare_blob_response
     end
   end
 end

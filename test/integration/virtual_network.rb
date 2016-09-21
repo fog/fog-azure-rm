@@ -116,7 +116,7 @@ vnet.update(
 ########################################################################################################################
 
 vnet.subnets.each do |subnet|
-  Fog::Logger.debug network.subnets.get('TestRG-VN', 'testVnet', subnet.name).get_available_ipaddress_count
+  Fog::Logger.debug network.subnets.get('TestRG-VN', 'testVnet', subnet.name).get_available_ipaddresses_count(false)
 end
 
 ########################################################################################################################

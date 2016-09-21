@@ -16,7 +16,7 @@ class TestSubnet < Minitest::Test
       :detach_network_security_group,
       :attach_route_table,
       :detach_route_table,
-      :get_available_ipaddress_count,
+      :get_available_ipaddresses_count,
       :destroy
     ]
 
@@ -69,6 +69,10 @@ class TestSubnet < Minitest::Test
     @service.stub :detach_route_table_from_subnet, @response do
       assert_instance_of Fog::Network::AzureRM::Subnet, @subnet.detach_route_table
     end
+  end
+
+  def test_get_available_ipaddresses_count_response
+    assert_instance_of Fixnum, @subnet.get_available_ipaddresses_count(false)
   end
 
   def test_destroy_method_response

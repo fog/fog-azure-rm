@@ -83,7 +83,7 @@ subnet = network.subnets.get(resource_group.name, virtual_network.name, subnet.n
 ######################                        List Free Ip Addresses in Subnet                    ######################
 ########################################################################################################################
 
-Fog::Logger.debug "Free IP Addresses: #{subnet.get_available_ipaddress_count.to_s}"
+Fog::Logger.debug subnet.get_available_ipaddresses_count(false)
 
 ########################################################################################################################
 ######################                             Delete Subnet                          ######################

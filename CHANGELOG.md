@@ -2,6 +2,7 @@
 
 **Added:**
 - Network Service - Added Network Security Rule.
+- Network Service - Added Get Available IP Addresses count in Subnet
 
 ## 0.0.6
 

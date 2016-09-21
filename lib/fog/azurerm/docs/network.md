@@ -201,6 +201,14 @@ Detach Route Table from Subnet
      puts "#{subnet.route_table_id}"
 ```
 
+## List Number of Available IP Addresses in Subnet
+
+The parameter is a boolean which checks if the Virtual Network the Subnet belongs to is attached to an Express Route Circuit or not
+
+```ruby
+    puts "#{subnet.get_available_ipaddresses_count(false)}"
+```
+
 ## Destroy a single Subnet
 
 Get a subnet object from the get method and then destroy that subnet.

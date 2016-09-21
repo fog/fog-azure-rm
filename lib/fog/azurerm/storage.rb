@@ -41,6 +41,8 @@ module Fog
       request :get_blob_properties
       request :upload_block_blob_from_file
       request :download_blob_to_file
+      request :copy_blob
+      request :compare_blob
       request :delete_blob
 
       model_path 'fog/azurerm/models/storage'

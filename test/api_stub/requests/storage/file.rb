@@ -93,6 +93,13 @@ module ApiStub
           }
         end
 
+        def self.copy_blob
+          {
+            'copyId' => 'abc123',
+            'copyStatus' => 'pending'
+          }
+        end
+
         def self.list_blobs
           [
             {

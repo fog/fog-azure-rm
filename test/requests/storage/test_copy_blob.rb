@@ -14,11 +14,4 @@ class TestListBlobs < Minitest::Test
       assert @service.copy_blob('destination_container', 'destination_blob', 'source_container', 'source_blob'), @copy_blob_reponse
     end
   end
-
-  def test_copy_blob_failure
-    response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
-    @blob_client.stub :copy_blob, response do
-      assert_raises(RuntimeError) { @service.copy_blob('destination_container', 'destination_blob', 'source_container', 'source_blob') }
-    end
-  end
 end

@@ -7,9 +7,7 @@ module Fog
           msg = "Comparing blobs from container #{container1} to container #{container2}"
           Fog::Logger.debug msg
           begin
-            blobs_in_container1 = list_blobs(container1)
-            blobs_in_container2 = list_blobs(container2)
-            identical_blobs = get_identical_blobs_from_containers(blobs_in_container1, blobs_in_container2)
+            identical_blobs = get_identical_blobs_from_containers(container1, container2)
           rescue Azure::Core::Http::HTTPError => ex
             raise_azure_exception(ex, msg)
           end
@@ -18,13 +16,16 @@ module Fog
 
         private
 
-        def get_identical_blobs_from_containers(container1_blobs, container2_blobs)
+        def get_identical_blobs_from_containers(container1, container2)
+          container1_blobs = list_blobs(container1)
+          container2_blobs = list_blobs(container2)
+
           identical_blobs = []
           container1_blobs.each do |container1_blob|
             container2_blobs.each do |container2_blob|
-              container1_prop = container1_blob.get_properties
-              container2_prop = container2_blob.get_properties
-              if container1_prop.equal?(container2_prop) && container1_blob.name.equals?(container2_blob.name)
+              container1_prop = get_blob_properties(container1, container1_blob.name)
+              container2_prop = get_blob_properties(container2, container2_blob.name)
+              if container1_blob.name == container2_blob.name && container1_prop.properties[:content_md5] == container2_prop.properties[:content_md5]
                 identical_blobs.push(container1_blob)
               end
             end
@@ -38,7 +39,7 @@ module Fog
         def compare_blob(*)
           [
             {
-              'name' => blob_name,
+              'name' => 'blob_name',
               'metadata' => {},
               'properties' =>
                 {

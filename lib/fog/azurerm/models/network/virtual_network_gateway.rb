@@ -52,13 +52,13 @@ module Fog
 
           hash['ip_configurations'] = []
           network_gateway.ip_configurations.each do |ip_config|
-            ip_configuration = Fog::Network::AzureRM::FrontendIPConfiguration.new
-            hash['ip_configurations'] << ip_configuration.merge_attributes(Fog::Network::AzureRM::FrontendIPConfiguration.parse(ip_config))
+            ip_configuration = FrontendIPConfiguration.new
+            hash['ip_configurations'] << ip_configuration.merge_attributes(FrontendIPConfiguration.parse(ip_config))
           end unless network_gateway.ip_configurations.nil?
 
           unless network_gateway.vpn_client_configuration.nil?
-            vpn_client_configuration = Fog::Network::AzureRM::VpnClientConfiguration.new
-            hash['vpn_client_configuration'] = vpn_client_configuration.merge_attributes(Fog::Network::AzureRM::VpnClientConfiguration.parse(network_gateway.vpn_client_configuration))
+            vpn_client_configuration = VpnClientConfiguration.new
+            hash['vpn_client_configuration'] = vpn_client_configuration.merge_attributes(VpnClientConfiguration.parse(network_gateway.vpn_client_configuration))
           end
 
           hash
@@ -69,7 +69,7 @@ module Fog
           validate_ip_configurations(ip_configurations) unless ip_configurations.nil?
           virtual_network_params = virtual_gateway_parameters
           network_gateway = service.create_or_update_virtual_network_gateway(virtual_network_params)
-          merge_attributes(Fog::Network::AzureRM::VirtualNetworkGateway.parse(network_gateway))
+          merge_attributes(VirtualNetworkGateway.parse(network_gateway))
         end
 
         def destroy

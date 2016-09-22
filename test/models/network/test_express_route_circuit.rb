@@ -9,20 +9,16 @@ class TestExpressRouteCircuit < Minitest::Test
   end
 
   def test_model_methods
-    response = ApiStub::Models::Network::ExpressRouteCircuit.create_express_route_circuit_response(@network_client)
     methods = [
       :save,
       :destroy
     ]
-    @service.stub :create_or_update_express_route_circuit, response do
-      methods.each do |method|
-        assert @circuit.respond_to? method
-      end
+    methods.each do |method|
+      assert @circuit.respond_to? method
     end
   end
 
   def test_model_attributes
-    response = ApiStub::Models::Network::ExpressRouteCircuit.create_express_route_circuit_response(@network_client)
     attributes = [
       :resource_group,
       :name,
@@ -36,10 +32,8 @@ class TestExpressRouteCircuit < Minitest::Test
       :bandwidth_in_mbps,
       :peerings
     ]
-    @service.stub :create_or_update_express_route_circuit, response do
-      attributes.each do |attribute|
-        assert @circuit.respond_to? attribute
-      end
+    attributes.each do |attribute|
+      assert @circuit.respond_to? attribute
     end
   end
 

@@ -13,18 +13,18 @@ module Fog
         attribute :ip_configurations_ids
 
         def self.parse(subnet)
-          hash = {}
-          hash['id'] = subnet.id
-          hash['name'] = subnet.name
-          hash['resource_group'] = get_resource_group_from_id(subnet.id)
-          hash['virtual_network_name'] = get_virtual_network_from_id(subnet.id)
-          hash['address_prefix'] = subnet.address_prefix
-          hash['network_security_group_id'] = nil
-          hash['network_security_group_id'] = subnet.network_security_group.id unless subnet.network_security_group.nil?
-          hash['route_table_id'] = nil
-          hash['route_table_id'] = subnet.route_table.id unless subnet.route_table.nil?
-          hash['ip_configurations_ids'] = subnet.ip_configurations.map(&:id) unless subnet.ip_configurations.nil?
-          hash
+          subnet_hash = {}
+          subnet_hash['id'] = subnet.id
+          subnet_hash['name'] = subnet.name
+          subnet_hash['resource_group'] = get_resource_group_from_id(subnet.id)
+          subnet_hash['virtual_network_name'] = get_virtual_network_from_id(subnet.id)
+          subnet_hash['address_prefix'] = subnet.address_prefix
+          subnet_hash['network_security_group_id'] = nil
+          subnet_hash['network_security_group_id'] = subnet.network_security_group.id unless subnet.network_security_group.nil?
+          subnet_hash['route_table_id'] = nil
+          subnet_hash['route_table_id'] = subnet.route_table.id unless subnet.route_table.nil?
+          subnet_hash['ip_configurations_ids'] = subnet.ip_configurations.map(&:id) unless subnet.ip_configurations.nil?
+          subnet_hash
         end
 
         def save

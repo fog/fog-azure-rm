@@ -10,14 +10,14 @@ class TestListNetworkSecurityGroup < Minitest::Test
 
   def test_list_network_security_group_success
     mocked_response = ApiStub::Requests::Network::NetworkSecurityGroup.list_network_security_group_response(@client)
-    @network_security_groups.stub :list, mocked_response do
+    @network_security_groups.stub :list_as_lazy, mocked_response do
       assert_equal @service.list_network_security_groups('fog-test-rg'), mocked_response.value
     end
   end
 
   def test_list_network_security_group_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
-    @network_security_groups.stub :list, response do
+    @network_security_groups.stub :list_as_lazy, response do
       assert_raises RuntimeError do
         @service.list_network_security_groups('fog-test-rg')
       end

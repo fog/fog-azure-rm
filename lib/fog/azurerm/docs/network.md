@@ -454,6 +454,57 @@ Get a network security group object from the get method and then destroy that ne
     nsg.destroy
 ```
 
+## Create Network Security Rule
+
+Network security rule requires a resource group and network security group to create. 
+
+```ruby
+     azure_network_service.network_security_rules.create(
+       name: '<Security Rule name>',
+       resource_group: '<Resource Group name>',
+       protocol: 'tcp',
+       network_security_group_name: '<Network Security Group name>',
+       source_port_range: '22',
+       destination_port_range: '22',
+       source_address_prefix: '0.0.0.0/0',
+       destination_address_prefix: '0.0.0.0/0',
+       access: 'Allow',
+       priority: '100',
+       direction: 'Inbound'
+     )
+```
+
+## List Network Security Rules 
+
+List all the network security rules in a resource group and network security group
+
+```ruby
+    network_security_rules = azure_network_service.network_security_rules(resource_group: '<Resource Group name>',
+                                                            network_security_group_name: '<Network Security Group name>')
+    network_security_rules.each do |network_security_rule|
+      puts network_security_rule.name
+    end
+```
+
+## Retrieve a single Network Security Rule
+
+Get a single record of Network Security Rule
+
+```ruby
+    network_security_rule = azure_network_service
+                  .network_security_rules
+                  .get(<Resource Group Name>','<Network Security Group name>', '<Security Rule name>')
+    puts "#{network_security_rule.name}"              
+```
+
+## Destroy a Network Security Rule
+
+Get a network security rule object from the get method and then destroy that network security rule.
+
+```ruby
+    network_security_rule.destroy
+```
+
 ## Create External Load Balancer
 
 Create a new load balancer.

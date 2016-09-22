@@ -34,6 +34,33 @@ module Fog
           hash['direction'] = nsr.direction
           hash
         end
+
+        def save
+          requires :name, :network_security_group_name, :resource_group, :protocol, :source_port_range, :destination_port_range, :source_address_prefix, :destination_address_prefix, :access, :priority, :direction
+          security_rule_params = get_security_rule_params
+          network_security_rule = service.create_or_update_network_security_rule(security_rule_params)
+          merge_attributes(NetworkSecurityRule.parse(network_security_rule))
+        end
+
+        def get_security_rule_params
+          {
+            name: name,
+            resource_group: resource_group,
+            protocol: protocol,
+            network_security_group_name: network_security_group_name,
+            source_port_range: source_port_range,
+            destination_port_range: destination_port_range,
+            source_address_prefix: source_address_prefix,
+            destination_address_prefix: destination_address_prefix,
+            access: access,
+            priority: priority,
+            direction: direction
+          }
+        end
+
+        def destroy
+          service.delete_network_security_rule(resource_group, network_security_group_name, name)
+        end
       end
     end
   end

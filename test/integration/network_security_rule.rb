@@ -15,7 +15,7 @@ rs = Fog::Resources::AzureRM.new(
   subscription_id: azure_credentials['subscription_id']
 )
 
-compute = Fog::Compute::AzureRM.new(
+network = Fog::Network::AzureRM.new(
   tenant_id: azure_credentials['tenant_id'],
   client_id: azure_credentials['client_id'],
   client_secret: azure_credentials['client_secret'],
@@ -27,36 +27,60 @@ compute = Fog::Compute::AzureRM.new(
 ########################################################################################################################
 
 rs.resource_groups.create(
-  name: 'TestRG-AS',
+  name: 'TestRG-NSR',
   location: 'eastus'
 )
 
 ########################################################################################################################
-######################                             Create Availability Set                        ######################
+######################                          Create Network Security Group                     ######################
 ########################################################################################################################
 
-compute.availability_sets.create(
-  name: 'test-availability-set',
-  location: 'eastus',
-  resource_group: 'TestRG-AS'
+network.network_security_groups.create(
+  name: 'testGroup',
+  resource_group: 'TestRG-NSR',
+  location: 'eastus'
 )
+
 ########################################################################################################################
-######################                       List Availability Sets                               ######################
+######################                          Create Network Security Rule                      ######################
 ########################################################################################################################
-compute.availability_sets(resource_group: 'TestRG-AS').each do |availability_set|
-  Fog::Logger.debug "Name: #{availability_set.name}, Location: #{availability_set.location}"
+
+network.network_security_rules.create(
+  name: 'testRule',
+  resource_group: 'TestRG-NSR',
+  protocol: 'tcp',
+  network_security_group_name: 'testGroup',
+  source_port_range: '22',
+  destination_port_range: '22',
+  source_address_prefix: '0.0.0.0/0',
+  destination_address_prefix: '0.0.0.0/0',
+  access: 'Allow',
+  priority: '100',
+  direction: 'Inbound'
+)
+
+########################################################################################################################
+######################                        List Network Security Rules                         ######################
+########################################################################################################################
+
+network_security_rules = network.network_security_rules(resource_group: 'TestRG-NSR',
+                                                        network_security_group_name: 'testGroup')
+network_security_rules.each do |network_security_rule|
+  Fog::Logger.debug network_security_rule.name
 end
 
 ########################################################################################################################
-######################                       Get and Delete Availability Set                      ######################
+######################                          Get Network Security Rule                         ######################
 ########################################################################################################################
 
-avail_set = compute.availability_sets.get('TestRG-AS', 'test-availability-set')
-avail_set.destroy
+nsr = network.network_security_rules.get('TestRG-NSR', 'testGroup', 'testRule')
 
 ########################################################################################################################
 ######################                                   CleanUp                                  ######################
 ########################################################################################################################
 
-rg = rs.resource_groups.get('TestRG-AS')
+nsr.destroy
+nsg = network.network_security_groups.get('TestRG-NSR', 'testGroup')
+nsg.destroy
+rg = rs.resource_groups.get('TestRG-NSR')
 rg.destroy

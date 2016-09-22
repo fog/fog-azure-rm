@@ -53,6 +53,10 @@ module Fog
           merge_attributes(Fog::Network::AzureRM::Subnet.parse(subnet))
         end
 
+        def get_available_ipaddresses_count(express_route_enabled)
+          service.get_available_ipaddresses_count(name, address_prefix, ip_configurations_ids, express_route_enabled)
+        end
+
         def destroy
           service.delete_subnet(resource_group, name, virtual_network_name)
         end

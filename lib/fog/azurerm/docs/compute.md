@@ -39,16 +39,17 @@ Create a new linux server
         password: '<Password for VM>',
         disable_password_authentication: false,
         network_interface_card_id: '/subscriptions/{Subscription-Id}/resourceGroups/{Resource-Group-Name}/providers/Microsoft.Network/networkInterfaces/{Network-Interface-Id}',
-        publisher: 'Canonical',
-        offer: 'UbuntuServer',
-        sku: '14.04.2-LTS',
-        version: 'latest',
+        publisher: 'Canonical',                    # Not required if custom image is being used 
+        offer: 'UbuntuServer',                     # Not required if custom image is being used
+        sku: '14.04.2-LTS',                        # Not required if custom image is being used
+        version: 'latest',                         # Not required if custom image is being used
         platform: 'Linux',
-        is_from_custom_image: false,               # By setting it to true, will create this VM from provided VHD image.               
+        is_from_custom_image: false,               # By setting it to true, will create this VM from provided VHD image.
         vhd_path: '<Path of VHD>',                 # Should be uploaded at some storage account in same resource group.
         custom_data: 'echo customData',            # Optional, if you want to add custom data in this VM.
     )
 ```
+
 Create a new windows server
 
 ```ruby
@@ -62,16 +63,19 @@ Create a new windows server
         password: '<Password for VM>',
         disable_password_authentication: false,
         network_interface_card_id: '/subscriptions/{Subscription-Id}/resourceGroups/{Resource-Group-Name}/providers/Microsoft.Network/networkInterfaces/{Network-Interface-Id}',
-        publisher: 'MicrosoftWindowsServerEssentials',
-        offer: 'WindowsServerEssentials',
-        sku: 'WindowsServerEssentials',
-        version: 'latest',
+        publisher: 'MicrosoftWindowsServerEssentials',   # Not required if custom image is being used
+        offer: 'WindowsServerEssentials',                # Not required if custom image is being used  
+        sku: 'WindowsServerEssentials',                  # Not required if custom image is being used
+        version: 'latest',                               # Not required if custom image is being used
         platform: 'Windows',
-        is_from_custom_image: false,              # By setting it to true, will create this VM from provided VHD image.               
-        vhd_path: '<Path of VHD>',                # Should be uploaded at some storage account in same resource group.
-        custom_data: 'echo customData'            # Optional, if you want to add custom data in this VM.
+        is_from_custom_image: false,                     # By setting it to true, will create this VM from provided VHD image.               
+        vhd_path: '<Path of VHD>',                       # Should be uploaded at some storage account in same resource group.
+        custom_data: 'echo customData'                   # Optional, if you want to add custom data in this VM.
     )
 ```
+If you want to create this virtual machine from custom image; parameter 'storage_account_name' should be set to the same storage account that contains VHD image.  
+ 
+ 
 For more information about custom_data; see link: https://msdn.microsoft.com/en-us/library/azure/mt163591.aspx
 
 ## List Servers

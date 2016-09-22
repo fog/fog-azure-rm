@@ -29,6 +29,8 @@ module Fog
         attribute :network_interface_card_id
         attribute :availability_set_id
         attribute :custom_data
+        attribute :is_from_custom_image
+        attribute :vhd_path
 
         def self.parse(vm)
           hash = {}
@@ -66,8 +68,10 @@ module Fog
 
         def save
           requires :name, :location, :resource_group, :vm_size, :storage_account_name,
-                   :username, :password, :network_interface_card_id, :publisher, :offer, :sku, :version
+                   :username, :password, :network_interface_card_id, :is_from_custom_image
           requires :disable_password_authentication if platform.casecmp('linux').zero?
+          requires :publisher, :offer, :sku, :version unless is_from_custom_image
+          requires :vhd_path if is_from_custom_image
           ssh_key_path = "/home/#{username}/.ssh/authorized_keys" unless ssh_key_data.nil?
           virtual_machine_params = get_virtual_machine_params(ssh_key_path)
           vm = service.create_virtual_machine(virtual_machine_params)
@@ -143,7 +147,9 @@ module Fog
             platform: platform,
             provision_vm_agent: provision_vm_agent,
             enable_automatic_updates: enable_automatic_updates,
-            custom_data: custom_data
+            custom_data: custom_data,
+            is_from_custom_image: is_from_custom_image,
+            vhd_path: vhd_path
           }
         end
       end

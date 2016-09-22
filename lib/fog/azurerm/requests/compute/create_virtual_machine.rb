@@ -26,7 +26,13 @@ module Fog
                                                                    vm_hash[:publisher],
                                                                    vm_hash[:offer],
                                                                    vm_hash[:sku],
-                                                                   vm_hash[:version])
+                                                                   vm_hash[:version],
+                                                                   vm_hash[:is_from_custom_image],
+                                                                   vm_hash[:vhd_path])
+
+
+
+
           virtual_machine.os_profile = if vm_hash[:platform].casecmp(WINDOWS).zero?
                                          define_windows_os_profile(vm_hash[:name],
                                                                    vm_hash[:username],
@@ -62,17 +68,22 @@ module Fog
           hw_profile
         end
 
-        def define_storage_profile(vm_name, storage_account_name, publisher, offer, sku, version)
+        def define_storage_profile(vm_name, storage_account_name, publisher, offer, sku, version, is_from_custom_image, vhd_path)
           storage_profile = Azure::ARM::Compute::Models::StorageProfile.new
           os_disk = Azure::ARM::Compute::Models::OSDisk.new
           vhd = Azure::ARM::Compute::Models::VirtualHardDisk.new
           image_reference = Azure::ARM::Compute::Models::ImageReference.new
 
-          image_reference.publisher = publisher
-          image_reference.offer = offer
-          image_reference.sku = sku
-          image_reference.version = version
-          vhd.uri = "http://#{storage_account_name}.blob.core.windows.net/vhds/#{vm_name}_os_disk.vhd"
+          if is_from_custom_image
+            vhd.uri = vhd_path
+          else
+            vhd.uri = "http://#{storage_account_name}.blob.core.windows.net/vhds/#{vm_name}_os_disk.vhd"
+            image_reference.publisher = publisher
+            image_reference.offer = offer
+            image_reference.sku = sku
+            image_reference.version = version
+          end
+
           os_disk.name = "#{vm_name}_os_disk"
           os_disk.vhd = vhd
           os_disk.create_option = Azure::ARM::Compute::Models::DiskCreateOptionTypes::FromImage

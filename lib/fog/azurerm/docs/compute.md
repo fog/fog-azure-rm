@@ -44,7 +44,9 @@ Create a new linux server
         sku: '14.04.2-LTS',
         version: 'latest',
         platform: 'Linux',
-        custom_data: 'echo customData'            # Optional
+        is_from_custom_image: false,               # By setting it to true, will create this VM from provided VHD image.               
+        vhd_path: '<Path of VHD>',                 # Should be uploaded at some storage account in same resource group.
+        custom_data: 'echo customData',            # Optional, if you want to add custom data in this VM.
     )
 ```
 Create a new windows server
@@ -65,7 +67,9 @@ Create a new windows server
         sku: 'WindowsServerEssentials',
         version: 'latest',
         platform: 'Windows',
-        custom_data: 'echo customData'            # Optional
+        is_from_custom_image: false,              # By setting it to true, will create this VM from provided VHD image.               
+        vhd_path: '<Path of VHD>',                # Should be uploaded at some storage account in same resource group.
+        custom_data: 'echo customData'            # Optional, if you want to add custom data in this VM.
     )
 ```
 For more information about custom_data; see link: https://msdn.microsoft.com/en-us/library/azure/mt163591.aspx
@@ -98,7 +102,7 @@ Get a single record of Server
 Get the server object and attach a Data Disk to it.
 
 ```ruby
-      server.attach_data_disk('<Disk Name>', <Size in GB>, '<Storage Account Name>)
+      server.attach_data_disk('<Disk Name>', <Size in GB>, '<Storage Account Name>')
 ```
 
 ## Detach a Data Disk from Server

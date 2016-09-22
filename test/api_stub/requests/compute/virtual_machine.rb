@@ -255,6 +255,83 @@ module ApiStub
           compute_client.deserialize(vm_mapper, JSON.load(body), 'result.body')
         end
 
+        def self.create_virtual_machine_from_custom_image_response(compute_client)
+          body = '{
+            "id":"/subscriptions/{subscription-id}/resourceGroups/fog-test-rg/providers/Microsoft.Compute/virtualMachines/fog-test-server",
+            "name":"fog-test-server",
+            "type":"Microsoft.Compute/virtualMachines",
+            "location":"westus",
+            "tags": {
+              "department":"finance"
+            },
+            "properties": {
+              "availabilitySet": {
+                "id":"/subscriptions/{subscription-id}/resourceGroups/myresourcegroup1/providers/Microsoft.Compute/availabilitySets/myav1"
+              },
+              "hardwareProfile": {
+                "vmSize":"Standard_A0"
+              },
+              "storageProfile": {
+                "imageReference": {
+                  "publisher":"",
+                  "offer":"",
+                  "sku":"",
+                  "version":""
+                },
+                "osDisk": {
+                  "name":"myosdisk1",
+                  "vhd": {
+                    "uri":"https://custimagestorage.blob.core.windows.net/customimage/trusty-server-cloudimg-amd64-disk1.vhd"
+                  },
+                  "caching":"ReadWrite",
+                  "createOption":"FromImage"
+                },
+                "dataDisks": [ {
+                   "name":"mydatadisk1",
+                   "diskSizeGB":"1",
+                   "lun": 0,
+                   "vhd": {
+                     "uri" : "http://mystorage1.blob.core.windows.net/vhds/mydatadisk1.vhd"
+                   },
+                   "createOption":"Empty"
+                 } ]
+              },
+              "osProfile": {
+                "computerName":"fog-test-server",
+                "adminUsername":"fog",
+                "adminPassword":"fog",
+                "customData":"",
+                "windowsConfiguration": {
+                  "provisionVMAgent":true,
+                  "winRM": {
+                    "listeners": [ {
+                      "protocol": "https",
+                      "certificateUrl": "url-to-certificate"
+                    } ]
+                  },
+                  "enableAutomaticUpdates":true
+                },
+                "secrets":[ {
+                   "sourceVault": {
+                     "id": "/subscriptions/{subscription-id}/resourceGroups/myresourcegroup1/providers/Microsoft.KeyVault/vaults/myvault1"
+                   },
+                   "vaultCertificates": [ {
+                     "certificateUrl": "https://myvault1.vault.azure.net/secrets/{secretName}/{secretVersion}",
+                     "certificateStore": "{certificateStoreName}"
+                   } ]
+                 } ]
+              },
+              "networkProfile": {
+                "networkInterfaces": [ {
+                  "id":"/subscriptions/{subscription-id}/resourceGroups/myresourceGroup1/providers /Microsoft.Network/networkInterfaces/mynic1"
+                } ]
+              }
+            }
+          }'
+          vm_mapper = Azure::ARM::Compute::Models::VirtualMachine.mapper
+          compute_client.deserialize(vm_mapper, JSON.load(body), 'result.body')
+        end
+
         def self.detach_data_disk_from_vm_response(compute_client)
           body = '{
             "id":"/subscriptions/{subscription-id}/resourceGroups/fog-test-rg/providers/Microsoft.Compute/virtualMachines/fog-test-server",

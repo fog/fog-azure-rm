@@ -89,7 +89,7 @@ network.virtual_network_gateways.create(
 
 network_gateways = network.virtual_network_gateways(resource_group: 'TestRG-VNG')
 network_gateways.each do |gateway|
-  puts gateway.name.to_s
+  Fog::Logger.debug gateway.name.to_s
 end
 
 ########################################################################################################################
@@ -97,7 +97,7 @@ end
 ########################################################################################################################
 
 network_gateway = network.virtual_network_gateways.get('TestRG-VNG', 'testnetworkgateway')
-puts network_gateway.name.to_s
+Fog::Logger.debug network_gateway.name.to_s
 
 network_gateway.destroy
 

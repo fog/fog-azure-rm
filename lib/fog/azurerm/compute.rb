@@ -27,6 +27,7 @@ module Fog
       request :attach_data_disk_to_vm
       request :detach_data_disk_from_vm
       request :add_or_update_vm_extension
+      request :delete_vm_extension
       request :get_vm_extension
 
       model_path 'fog/azurerm/models/compute'

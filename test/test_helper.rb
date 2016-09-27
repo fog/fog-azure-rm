@@ -83,6 +83,22 @@ def server(service)
   )
 end
 
+def virtual_machine_extension(service)
+  Fog::Compute::AzureRM::VirtualMachineExtension.new(
+    name: 'fog-test-extension',
+    location: 'West US',
+    resource_group: 'fog-test-rg',
+    vm_name: 'fog-test-vm',
+    type: 'fog-test-extension-type',
+    publisher: 'fog-test-extension-publisher',
+    type_handler_version: 'fog-test-extension-version',
+    auto_upgrade_minor_version: 'fog-test-extension-upgrade',
+    settings: '{"Key" => "Value"}',
+    protected_settings: '{"Key" => "Value"}',
+    service: service
+  )
+end
+
 def availability_set(service)
   Fog::Compute::AzureRM::AvailabilitySet.new(
     name: 'availability-set',

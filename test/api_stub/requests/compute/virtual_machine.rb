@@ -101,6 +101,50 @@ module ApiStub
           }
         end
 
+        def self.linux_virtual_machine_with_custom_image_params
+          {
+            resource_group: 'fog-test-rg',
+            name: 'fog-test-server',
+            location: 'westus',
+            vm_size: 'Basic_A0',
+            storage_account_name: 'fogstrg',
+            username: 'fog',
+            password: 'fog',
+            disable_password_authentication: false,
+            ssh_key_path: '/home',
+            ssh_key_data: 'key',
+            network_interface_card_id: 'nic-id',
+            availability_set_id: 'as-id',
+            platform: 'Linux',
+            provision_vm_agent: nil,
+            enable_automatic_updates: nil,
+            is_from_custom_image: true,
+            vhd_path: 'https://custimagestorage.blob.core.windows.net/customvhd/ubuntu-image.vhd'
+          }
+        end
+
+        def self.windows_virtual_machine_with_custom_image_params
+          {
+            resource_group: 'fog-test-rg',
+            name: 'fog-test-server',
+            location: 'westus',
+            vm_size: 'Basic_A0',
+            storage_account_name: 'fogstrg',
+            username: 'fog',
+            password: 'fog',
+            disable_password_authentication: nil,
+            ssh_key_path: '/home',
+            ssh_key_data: 'key',
+            network_interface_card_id: 'nic-id',
+            availability_set_id: 'as-id',
+            platform: 'Windows',
+            provision_vm_agent: true,
+            enable_automatic_updates: true,
+            is_from_custom_image: true,
+            vhd_path: 'https://custimagestorage.blob.core.windows.net/customvhd/windows-image.vhd'
+          }
+        end
+
         def self.create_virtual_machine_response(compute_client)
           body = '{
             "id":"/subscriptions/{subscription-id}/resourceGroups/fog-test-rg/providers/Microsoft.Compute/virtualMachines/fog-test-server",

@@ -41,10 +41,12 @@ module Fog
           hash['vm_size'] = vm.hardware_profile.vm_size
           hash['os_disk_name'] = vm.storage_profile.os_disk.name
           hash['os_disk_vhd_uri'] = vm.storage_profile.os_disk.vhd.uri
-          hash['publisher'] = vm.storage_profile.image_reference.publisher
-          hash['offer'] = vm.storage_profile.image_reference.offer
-          hash['sku'] = vm.storage_profile.image_reference.sku
-          hash['version'] = vm.storage_profile.image_reference.version
+          unless vm.storage_profile.image_reference.nil?
+            hash['publisher'] = vm.storage_profile.image_reference.publisher
+            hash['offer'] = vm.storage_profile.image_reference.offer
+            hash['sku'] = vm.storage_profile.image_reference.sku
+            hash['version'] = vm.storage_profile.image_reference.version
+          end
           hash['username'] = vm.os_profile.admin_username
           hash['custom_data'] = vm.os_profile.custom_data
           hash['data_disks'] = []

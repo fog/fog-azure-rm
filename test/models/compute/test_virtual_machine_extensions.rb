@@ -10,8 +10,8 @@ class TestVirtualMachineExtensions < Minitest::Test
 
   def test_collection_methods
     methods = [
-        :all,
-        :get
+      :all,
+      :get
     ]
     methods.each do |method|
       assert @vm_extensions.respond_to? method, true
@@ -20,8 +20,8 @@ class TestVirtualMachineExtensions < Minitest::Test
 
   def test_collection_attributes
     attributes = [
-        :resource_group,
-        :vm_name
+      :resource_group,
+      :vm_name
     ]
     attributes.each do |attribute|
       assert @vm_extensions.respond_to? attribute, true

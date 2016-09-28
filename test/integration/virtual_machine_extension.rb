@@ -106,7 +106,7 @@ compute.virtual_machine_extensions.create(
   type: 'IaaSAntimalware',
   type_handler_version: '1.3',
   auto_upgrade_minor_version: true,
-  settings: {"AntimalwareEnabled": "true", "RealtimeProtectionEnabled": "false", "ScheduledScanSettings": {"isEnabled": "false", "day": "7", "time": "120", "scanType": "Quick"}, "Exclusions": {"Extensions": "", "Paths": "", "Processes": ""}},
+  settings: {'AntimalwareEnabled': 'true', 'RealtimeProtectionEnabled': 'false', 'ScheduledScanSettings': {'isEnabled': 'false', 'day': '7', 'time': '120', 'scanType': 'Quick'}, 'Exclusions': {'Extensions': '', 'Paths': '', 'Processes': ''}},
   protected_settings: {}
 )
 

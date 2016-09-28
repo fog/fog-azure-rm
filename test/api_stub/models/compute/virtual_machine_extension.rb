@@ -16,8 +16,8 @@ module ApiStub
               'autoUpgradeMinorVersion' => 'true',
               'forceUpdateTag' => 'RerunExtension',
               'settings' => {
-                  'AnitmalwareEnabled' => 'true',
-                  'RealtimeProtectionEnabled' => 'false'
+                'AnitmalwareEnabled' => 'true',
+                'RealtimeProtectionEnabled' => 'false'
               },
               'protected_settings' => {}
             }

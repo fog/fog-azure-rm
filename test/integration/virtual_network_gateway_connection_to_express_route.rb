@@ -27,34 +27,30 @@ network = Fog::Network::AzureRM.new(
 ########################################################################################################################
 
 resource.resource_groups.create(
-  name: 'TestRG-VNG',
+  name: 'TestRG-GCE',
   location: 'eastus'
 )
 
 network.virtual_networks.create(
   name: 'testVnet',
   location: 'eastus',
-  resource_group: 'TestRG-VNG',
+  resource_group: 'TestRG-GCE',
   network_address_list: '10.1.0.0/16,10.2.0.0/16'
 )
 
 network.subnets.create(
   name: 'GatewaySubnet',
-  resource_group: 'TestRG-VNG',
+  resource_group: 'TestRG-GCE',
   virtual_network_name: 'testVnet',
   address_prefix: '10.2.0.0/24'
 )
 
 network.public_ips.create(
   name: 'mypubip',
-  resource_group: 'TestRG-VNG',
+  resource_group: 'TestRG-GCE',
   location: 'eastus',
   public_ip_allocation_method: 'Dynamic'
 )
-
-########################################################################################################################
-######################                           Create Virtual Network Gateway                   ######################
-########################################################################################################################
 
 network.virtual_network_gateways.create(
   name: 'testnetworkgateway',
@@ -67,12 +63,12 @@ network.virtual_network_gateways.create(
     {
       name: 'default',
       private_ipallocation_method: 'Dynamic',
-      public_ipaddress_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-VNG/providers/Microsoft.Network/publicIPAddresses/mypubip",
-      subnet_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-VNG/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/GatewaySubnet",
+      public_ipaddress_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-GCE/providers/Microsoft.Network/publicIPAddresses/mypubip",
+      subnet_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-GCE/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/GatewaySubnet",
       private_ipaddress: nil
     }
   ],
-  resource_group: 'TestRG-VNG',
+  resource_group: 'TestRG-GCE',
   sku_name: 'Basic',
   sku_tier: 'Basic',
   sku_capacity: 2,
@@ -84,25 +80,37 @@ network.virtual_network_gateways.create(
 )
 
 ########################################################################################################################
-######################                      List Virtual Network Gateways                         ######################
+###############          Create Virtual Network Gateway Connection to Express Route Circuit                  ###########
 ########################################################################################################################
 
-network_gateways = network.virtual_network_gateways(resource_group: 'TestRG-VNG')
-network_gateways.each do |gateway|
-  Fog::Logger.debug gateway.name.to_s
-end
+network.virtual_network_gateway_connections.create(
+  name: 'testnetworkgateway-to-expressroute',
+  location: 'eastus',
+  resource_group: 'TestRG-GCE',
+  virtual_network_gateway1: {
+    name: 'testnetworkgateway',
+    resource_group: 'TestRG-GCE'
+  },
+  # Please provide Provisioned Express Route Circuit resource id below
+  peer: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroup/TestRG-GCE/providers/Microsoft.Network/expressRouteCircuits/[circuit_name]",
+  connection_type: 'ExpressRoute'
+)
 
 ########################################################################################################################
-######################                  Get Virtual Network Gateway and CleanUp                   ######################
+######################                                       CleanUp                             #######################
 ########################################################################################################################
 
-network_gateway = network.virtual_network_gateways.get('TestRG-VNG', 'testnetworkgateway')
-Fog::Logger.debug network_gateway.name.to_s
+gateway_connection = network.virtual_network_gateway_connections.get('TestRG-GCE', 'testnetworkgateway-to-expressroute')
+gateway_connection.destroy
 
+network_gateway = network.virtual_network_gateways.get('TestRG-GCE', 'testnetworkgateway')
 network_gateway.destroy
 
-pubip = network.public_ips.get('TestRG-VNG', 'mypubip')
+pubip = network.public_ips.get('TestRG-GCE', 'mypubip')
 pubip.destroy
 
-rg = resource.resource_groups.get('TestRG-VNG')
-rg.destroy
+vnet = network.virtual_networks.get('TestRG-GCE', 'testVnet')
+vnet.destroy
+
+resource_group = resource.resource_groups.get('TestRG-GCE')
+resource_group.destroy

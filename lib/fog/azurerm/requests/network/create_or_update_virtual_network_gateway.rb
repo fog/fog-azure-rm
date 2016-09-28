@@ -22,31 +22,23 @@ module Fog
         def get_network_gateway_object(virtual_network_params)
           network_gateway = Azure::ARM::Network::Models::VirtualNetworkGateway.new
 
-          default_site = MsRestAzure::SubResource.new
-          default_site.id = virtual_network_params[:gateway_default_site]
-
-          sku = Azure::ARM::Network::Models::VirtualNetworkGatewaySku.new
-          sku.name = virtual_network_params[:sku_name]
-          sku.capacity = virtual_network_params[:sku_capacity]
-          sku.tier = virtual_network_params[:sku_tier]
-
           network_gateway.enable_bgp = virtual_network_params[:enable_bgp]
           network_gateway.gateway_type = virtual_network_params[:gateway_type]
           network_gateway.provisioning_state = virtual_network_params[:provisioning_state]
           network_gateway.vpn_type = virtual_network_params[:vpn_type]
-          network_gateway.sku = sku
-          network_gateway.gateway_default_site = default_site
+          network_gateway.sku = get_virtual_network_gateway_sku(virtual_network_params)
+          if virtual_network_params[:gateway_default_site]
+            default_site = MsRestAzure::SubResource.new
+            default_site.id = virtual_network_params[:gateway_default_site]
+            network_gateway.gateway_default_site = default_site
+          end
           if virtual_network_params[:ip_configurations]
             ip_configurations = get_ip_configurations(virtual_network_params[:ip_configurations])
             network_gateway.ip_configurations = ip_configurations
           end
 
           if virtual_network_params[:enable_bgp]
-            bgp_settings = Azure::ARM::Network::Models::BgpSettings.new
-            bgp_settings.asn = virtual_network_params[:asn]
-            bgp_settings.bgp_peering_address = virtual_network_params[:bgp_peering_address]
-            bgp_settings.peer_weight = virtual_network_params[:peer_weight]
-            network_gateway.bgp_settings = bgp_settings
+            network_gateway.bgp_settings = get_bgp_settings(virtual_network_params)
           end
 
           if virtual_network_params[:vpn_client_configuration]
@@ -59,6 +51,22 @@ module Fog
           network_gateway.tags = virtual_network_params[:tags] if network_gateway.tags.nil?
 
           network_gateway
+        end
+
+        def get_bgp_settings(virtual_network_params)
+          bgp_settings = Azure::ARM::Network::Models::BgpSettings.new
+          bgp_settings.asn = virtual_network_params[:asn]
+          bgp_settings.bgp_peering_address = virtual_network_params[:bgp_peering_address]
+          bgp_settings.peer_weight = virtual_network_params[:peer_weight]
+          bgp_settings
+        end
+
+        def get_virtual_network_gateway_sku(virtual_network_params)
+          sku = Azure::ARM::Network::Models::VirtualNetworkGatewaySku.new
+          sku.name = virtual_network_params[:sku_name]
+          sku.capacity = virtual_network_params[:sku_capacity]
+          sku.tier = virtual_network_params[:sku_tier]
+          sku
         end
 
         def get_vpn_client_config(vpn_client_config)

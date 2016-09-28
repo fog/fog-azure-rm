@@ -12,14 +12,14 @@ class TestUpdateVMExtension < Minitest::Test
 
   def test_update_vm_extension_success
     @vm_extension.stub :create_or_update, @response do
-      assert_equal @service.add_or_update_vm_extension(@vm_extension_hash), @response
+      assert_equal @service.create_or_update_vm_extension(@vm_extension_hash), @response
     end
   end
 
   def test_update_vm_extension_argument_error
     @vm_extension.stub :create_or_update, @response do
       assert_raises ArgumentError do
-        @service.add_or_update_vm_extension
+        @service.create_or_update_vm_extension
       end
     end
   end
@@ -28,7 +28,7 @@ class TestUpdateVMExtension < Minitest::Test
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @vm_extension.stub :create_or_update, response do
       assert_raises RuntimeError do
-        @service.add_or_update_vm_extension(@vm_extension_hash)
+        @service.create_or_update_vm_extension(@vm_extension_hash)
       end
     end
   end

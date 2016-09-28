@@ -40,14 +40,14 @@ class TestVirtualMachineExtension < Minitest::Test
 
   def test_save_method_response
     response = ApiStub::Models::Compute::VirtualMachineExtension.create_vm_extension_response(@compute_client)
-    @service.stub :add_or_update_vm_extension, response do
+    @service.stub :create_or_update_vm_extension, response do
       assert_instance_of Fog::Compute::AzureRM::VirtualMachineExtension, @virtual_machine_extension.save
     end
   end
 
   def test_update_method_response
     response = ApiStub::Models::Compute::VirtualMachineExtension.create_vm_extension_response(@compute_client)
-    @service.stub :add_or_update_vm_extension, response do
+    @service.stub :create_or_update_vm_extension, response do
       assert_instance_of Fog::Compute::AzureRM::VirtualMachineExtension, @virtual_machine_extension.update({})
     end
   end

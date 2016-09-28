@@ -38,7 +38,7 @@ storage_account = storage.storage_accounts.create(
 )
 
 access_key = storage_account.get_access_keys[0].value
-puts access_key.inspect
+Fog::Logger.debug access_key.inspect
 storage_data = Fog::Storage.new(
   provider: 'AzureRM',
   azure_storage_account_name: storage_account.name,
@@ -56,7 +56,7 @@ storage_data.directories.create(
   key: container_name
 )
 
-test_container = storage_data.directories.create(
+storage_data.directories.create(
     key: test_container_name
 )
 
@@ -108,13 +108,13 @@ File.delete(large_file_name)
 ######################                    Copy Blob                                             ########################
 ########################################################################################################################
 
-puts storage_data.copy_blob(test_container_name, small_blob_name, container_name, small_blob_name)
+Fog::Logger.debug storage_data.copy_blob(test_container_name, small_blob_name, container_name, small_blob_name)
 
 ########################################################################################################################
 ######################                    Compare Blob                                             #####################
 ########################################################################################################################
 
-puts storage_data.compare_blob(container_name, test_container_name)
+Fog::Logger.debug storage_data.compare_blob(container_name, test_container_name)
 
 ########################################################################################################################
 ######################                    Blob Exist                                               #####################
@@ -122,14 +122,14 @@ puts storage_data.compare_blob(container_name, test_container_name)
 
 blob = storage_data.check_blob_exist(container_name, small_blob_name)
 if blob
-  puts 'Blob exist'
+  Fog::Logger.debug 'Blob exist'
 end
 
 ########################################################################################################################
 ######################                    Blob Count in a Container                                #####################
 ########################################################################################################################
 
-puts storage_data.list_blobs(container_name).length
+Fog::Logger.debug storage_data.list_blobs(container_name).length
 
 ########################################################################################################################
 ######################                          Set blob properties                               ######################
@@ -156,7 +156,7 @@ File.delete(downloaded_file_name)
 ########################################################################################################################
 
 lease_id_blob = storage_data.acquire_blob_lease(container_name, large_blob_name)
-puts lease_id_blob
+Fog::Logger.debug lease_id_blob
 
 ########################################################################################################################
 ######################                            Release Leased Blob                             ######################
@@ -176,7 +176,7 @@ blob_object.destroy
 ########################################################################################################################
 
 lease_id_container = storage_data.acquire_container_lease(container_name)
-puts lease_id_container
+Fog::Logger.debug lease_id_container
 
 ########################################################################################################################
 ######################                            Release Leased Container                        ######################

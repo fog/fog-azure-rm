@@ -1,7 +1,7 @@
 require File.expand_path '../../test_helper', __dir__
 
 # Storage Blob Class
-class TestListBlobs < Minitest::Test
+class TestCopyBlob < Minitest::Test
   # This class posesses the test cases for the requests of copying blobs.
   def setup
     @service = Fog::Storage::AzureRM.new(storage_account_credentials)

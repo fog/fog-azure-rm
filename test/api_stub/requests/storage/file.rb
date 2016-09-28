@@ -100,7 +100,7 @@ module ApiStub
           }
         end
 
-        def self.list_blobs
+        def self.list_blobs_response
           [
             {
               'name' => 'testblob1',

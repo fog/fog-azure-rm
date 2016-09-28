@@ -3,7 +3,7 @@ module Fog
     class AzureRM
       # Real class for Compute Request
       class Real
-        def add_or_update_vm_extension(vm_extension_params)
+        def create_or_update_vm_extension(vm_extension_params)
           msg = "Creating/Updating Extension #{vm_extension_params[:name]} for Virtual Machine #{vm_extension_params[:vm_name]} in Resource Group #{vm_extension_params[:resource_group]}"
           Fog::Logger.debug msg
 

@@ -171,5 +171,57 @@ Get an availability set object from the get method and then destroy that availab
       availability_set.destroy
 ```
 
+## Create Virtual Machine Extension
+
+Installs an extension to the specified virtual machine.
+
+```ruby
+    azure_compute_service.virtual_machine_extensions.create(
+        name: <Extension Name>,
+        resource_group: <Resource Group>,
+        location: <Location>,
+        vm_name: <Virtual Machine Name>, # Extension will be installed on this VM
+        publisher: <Extension publisher>,
+        type: <Extension type>,
+        type_handler_version: <Extension version>,
+        auto_upgrade_minor_version: <true|false>, # Optional
+        settings: {JSON object}, # Format: {"key": "value", "key": {"key": "value"}}
+        protected_settings: {JSON object}
+    )
+```
+
+## Get Extension from Virtual Machine
+
+Retrieves the given extension from the virtual machine
+
+```ruby
+    vm_extension = azure_compute_service.virtual_machine_extensions.get(
+        '<Resource Group Name>', '<Virtual Machine Name>', '<Extension Name>'
+    )
+```
+
+## Update Extension
+
+Update the given extension. The attributes that can be modified are
+- auto_upgrade_minor_version
+- settings
+- protected_settings
+
+```ruby
+    vm_extension.update(
+        auto_upgrade_minor_version: <true|false>,
+        settings: {JSON object},
+        protected_settings: {JSON object}
+    )
+```
+
+## Destroy Extension
+
+Destroy the given extension from the virtual machine
+
+```ruby
+    vm_extension.destroy
+```
+
 ## Support and Feedback
 Your feedback is appreciated! If you have specific issues with the fog ARM, you should file an issue via Github.

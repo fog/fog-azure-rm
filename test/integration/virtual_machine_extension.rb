@@ -77,9 +77,9 @@ network.network_interfaces.create(
 )
 
 compute.servers.create(
-  name: 'TestVME',
+  name: 'TestVM',
   location: 'eastus',
-  resource_group: 'TestRG-VM',
+  resource_group: 'TestRG-VME',
   vm_size: 'Basic_A0',
   storage_account_name: 'fogstorageac',
   username: 'testuser',
@@ -105,9 +105,9 @@ compute.virtual_machine_extensions.create(
   publisher: 'Microsoft.Azure.Security',
   type: 'IaaSAntimalware',
   type_handler_version: '1.3',
-  auto_upgrade_minor_version: 'true',
-  settings: '{"AntimalwareEnabled": "true", "RealtimeProtectionEnabled": "false", "ScheduledScanSettings": {"isEnabled": "false", "day": "7", "time": "120", "scanType": "Quick"}, "Exclusions": {"Extensions": "", "Paths": "", "Processes": ""}}',
-  protected_settings: '{}'
+  auto_upgrade_minor_version: true,
+  settings: {"AntimalwareEnabled": "true", "RealtimeProtectionEnabled": "false", "ScheduledScanSettings": {"isEnabled": "false", "day": "7", "time": "120", "scanType": "Quick"}, "Exclusions": {"Extensions": "", "Paths": "", "Processes": ""}},
+  protected_settings: {}
 )
 
 ########################################################################################################################

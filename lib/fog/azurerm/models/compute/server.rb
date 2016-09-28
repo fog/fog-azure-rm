@@ -60,6 +60,7 @@ module Fog
           end
           hash['network_interface_card_id'] = vm.network_profile.network_interfaces[0].id
           hash['availability_set_id'] = vm.availability_set.id unless vm.availability_set.nil?
+
           hash
         end
 
@@ -70,7 +71,7 @@ module Fog
           ssh_key_path = "/home/#{username}/.ssh/authorized_keys" unless ssh_key_data.nil?
           virtual_machine_params = get_virtual_machine_params(ssh_key_path)
           vm = service.create_virtual_machine(virtual_machine_params)
-          merge_attributes(Fog::Compute::AzureRM::Server.parse(vm))
+          merge_attributes(Server.parse(vm))
         end
 
         def destroy
@@ -111,12 +112,12 @@ module Fog
 
         def attach_data_disk(disk_name, disk_size, storage_account_name)
           vm = service.attach_data_disk_to_vm(resource_group, name, disk_name, disk_size, storage_account_name)
-          merge_attributes(Fog::Compute::AzureRM::Server.parse(vm))
+          merge_attributes(Server.parse(vm))
         end
 
         def detach_data_disk(disk_name)
           vm = service.detach_data_disk_from_vm(resource_group, name, disk_name)
-          merge_attributes(Fog::Compute::AzureRM::Server.parse(vm))
+          merge_attributes(Server.parse(vm))
         end
 
         private

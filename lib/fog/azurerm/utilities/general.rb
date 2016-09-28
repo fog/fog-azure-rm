@@ -8,6 +8,11 @@ def get_virtual_network_from_id(subnet_id)
   subnet_id.split('/')[8]
 end
 
+# Pick Virtual Machine name from Virtual Machine Extension Id(String)
+def get_virtual_machine_from_id(vme_id)
+  vme_id.split('/')[8]
+end
+
 # Extract Endpoint type from (String)
 def get_end_point_type(endpoint_type)
   endpoint_type.split('/')[2]

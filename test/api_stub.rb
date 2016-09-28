@@ -4,6 +4,7 @@ module ApiStub
     module Compute
       autoload :Server, File.expand_path('api_stub/models/compute/server', __dir__)
       autoload :AvailabilitySet, File.expand_path('api_stub/models/compute/availability_set', __dir__)
+      autoload :VirtualMachineExtension, File.expand_path('api_stub/models/compute/virtual_machine_extension', __dir__)
     end
 
     module Resources
@@ -54,6 +55,7 @@ module ApiStub
     module Compute
       autoload :AvailabilitySet, File.expand_path('api_stub/requests/compute/availability_set', __dir__)
       autoload :VirtualMachine, File.expand_path('api_stub/requests/compute/virtual_machine', __dir__)
+      autoload :VirtualMachineExtension, File.expand_path('api_stub/requests/compute/virtual_machine_extension', __dir__)
     end
 
     module Resources

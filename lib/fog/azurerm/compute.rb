@@ -26,12 +26,17 @@ module Fog
       request :check_vm_status
       request :attach_data_disk_to_vm
       request :detach_data_disk_from_vm
+      request :create_or_update_vm_extension
+      request :delete_vm_extension
+      request :get_vm_extension
 
       model_path 'fog/azurerm/models/compute'
       model :availability_set
       collection :availability_sets
       model :server
       collection :servers
+      model :virtual_machine_extension
+      collection :virtual_machine_extensions
 
       # This class provides the mock implementation for unit tests.
       class Mock

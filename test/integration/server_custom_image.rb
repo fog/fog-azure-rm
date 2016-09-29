@@ -92,14 +92,14 @@ compute.servers.create(
   network_interface_card_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-VM/providers/Microsoft.Network/networkInterfaces/NetInt",
   platform: 'linux',
   is_from_custom_image: true,
-  vhd_path: 'https://custimagestorage.blob.core.windows.net/newcustomvhd/ubuntu.vhd'
+  vhd_path: 'https://custimagestorage.blob.core.windows.net/newcustomvhd/trusty-server-cloudimg-amd64-disk1-zeeshan.vhd'
 )
 
 ########################################################################################################################
 ######################                            Get and Delete Server                           ######################
 ########################################################################################################################
 
-server = compute.servers(resource_group: 'TestRG-VM').get('TestVM')
+server = compute.servers.get('TestRG-VM', 'TestVM')
 server.destroy
 
 ########################################################################################################################

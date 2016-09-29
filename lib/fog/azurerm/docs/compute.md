@@ -44,8 +44,7 @@ Create a new linux server
         sku: '14.04.2-LTS',                        # Not required if custom image is being used
         version: 'latest',                         # Not required if custom image is being used
         platform: 'Linux',
-        is_from_custom_image: false,               # By setting it to true, will create this VM from provided VHD image.
-        vhd_path: '<Path of VHD>',                 # Should be uploaded at some storage account in same resource group.
+        vhd_path: '<Path of VHD>',                 # Optional, if you want to create the VM from a custom image.
         custom_data: 'echo customData',            # Optional, if you want to add custom data in this VM.
     )
 ```
@@ -68,13 +67,10 @@ Create a new windows server
         sku: 'WindowsServerEssentials',                  # Not required if custom image is being used
         version: 'latest',                               # Not required if custom image is being used
         platform: 'Windows',
-        is_from_custom_image: false,                     # By setting it to true, will create this VM from provided VHD image.               
-        vhd_path: '<Path of VHD>',                       # Should be uploaded at some storage account in same resource group.
+        vhd_path: '<Path of VHD>',                       # Optional, if you want to create the VM from a custom image.
         custom_data: 'echo customData'                   # Optional, if you want to add custom data in this VM.
     )
 ```
-If you want to create this virtual machine from custom image; parameter 'storage_account_name' should be set to the same storage account that contains VHD image.  
- 
  
 For more information about custom_data; see link: https://msdn.microsoft.com/en-us/library/azure/mt163591.aspx
 

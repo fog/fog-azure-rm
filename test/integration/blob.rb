@@ -57,7 +57,7 @@ storage_data.directories.create(
 )
 
 storage_data.directories.create(
-    key: test_container_name
+  key: test_container_name
 )
 
 ########################################################################################################################

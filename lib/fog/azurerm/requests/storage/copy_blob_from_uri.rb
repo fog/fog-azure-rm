@@ -3,7 +3,7 @@ module Fog
     class AzureRM
       # This class provides the actual implementation for service calls.
       class Real
-        def copy_blob_from_uri(destination_container, destination_blob, source_blob_uri, options={})
+        def copy_blob_from_uri(destination_container, destination_blob, source_blob_uri, options = {})
           msg = "Copying blob: #{source_blob_uri} to container #{destination_container}"
           Fog::Logger.debug msg
           begin
@@ -20,8 +20,8 @@ module Fog
       class Mock
         def copy_blob_from_uri(*)
           {
-              'copyId' => 'abc123',
-              'copyStatus' => 'pending'
+            'copyId' => 'abc123',
+            'copyStatus' => 'pending'
           }
         end
       end

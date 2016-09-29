@@ -3,7 +3,7 @@ module Fog
     class AzureRM
       # This class provides the actual implementation for service calls.
       class Real
-        def copy_blob(destination_container, destination_blob, source_container, source_blob, options={})
+        def copy_blob(destination_container, destination_blob, source_container, source_blob, options = {})
           msg = "Copying blob: #{source_blob} from container #{source_container} to container #{destination_container}"
           Fog::Logger.debug msg
           begin

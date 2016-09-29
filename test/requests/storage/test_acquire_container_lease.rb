@@ -9,7 +9,7 @@ class TestListBlobs < Minitest::Test
   end
 
   def test_acquire_container_lease_success
-    lease_id = {'leaseId' => 'abc123'}
+    lease_id = { 'leaseId' => 'abc123' }
     @blob_client.stub :acquire_container_lease, lease_id do
       assert @service.acquire_container_lease('test_container'), lease_id
     end

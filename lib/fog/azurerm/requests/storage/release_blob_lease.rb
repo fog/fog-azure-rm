@@ -3,7 +3,7 @@ module Fog
     class AzureRM
       # This class provides the actual implementation for service calls.
       class Real
-        def release_blob_lease(container_name, name, lease_id, options={})
+        def release_blob_lease(container_name, name, lease_id, options = {})
           msg = "Releasing blob: #{name} of container #{container_name} having lease_id #{lease_id}"
           Fog::Logger.debug msg
           begin

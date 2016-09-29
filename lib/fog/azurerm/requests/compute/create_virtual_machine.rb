@@ -26,7 +26,11 @@ module Fog
                                                                    vm_hash[:publisher],
                                                                    vm_hash[:offer],
                                                                    vm_hash[:sku],
-                                                                   vm_hash[:version])
+                                                                   vm_hash[:version],
+                                                                   vm_hash[:vhd_path],
+                                                                   vm_hash[:platform],
+                                                                   vm_hash[:resource_group])
+
           virtual_machine.os_profile = if vm_hash[:platform].casecmp(WINDOWS).zero?
                                          define_windows_os_profile(vm_hash[:name],
                                                                    vm_hash[:username],
@@ -62,21 +66,54 @@ module Fog
           hw_profile
         end
 
-        def define_storage_profile(vm_name, storage_account_name, publisher, offer, sku, version)
+        def define_storage_profile(vm_name, storage_account_name, publisher, offer, sku, version, vhd_path, platform, resource_group)
           storage_profile = Azure::ARM::Compute::Models::StorageProfile.new
           os_disk = Azure::ARM::Compute::Models::OSDisk.new
           vhd = Azure::ARM::Compute::Models::VirtualHardDisk.new
-          image_reference = Azure::ARM::Compute::Models::ImageReference.new
 
-          image_reference.publisher = publisher
-          image_reference.offer = offer
-          image_reference.sku = sku
-          image_reference.version = version
           vhd.uri = "http://#{storage_account_name}.blob.core.windows.net/vhds/#{vm_name}_os_disk.vhd"
+
+          if vhd_path.nil?
+            image_reference = Azure::ARM::Compute::Models::ImageReference.new
+            image_reference.publisher = publisher
+            image_reference.offer = offer
+            image_reference.sku = sku
+            image_reference.version = version
+            storage_profile.image_reference = image_reference
+          else
+            # Copy if VHD does not exist belongs to same storage account.
+            vhd_storage_account = (vhd_path.split('/')[2]).split('.')[0]
+            if storage_account_name != vhd_storage_account
+              storage_account = @storage_service.storage_accounts.get(resource_group, storage_account_name)
+              access_key = storage_account.get_access_keys[0].value
+              storage_data = Fog::Storage.new(provider: 'AzureRM', azure_storage_account_name: storage_account_name, azure_storage_access_key: access_key)
+
+              container_name = 'customimagevhd'
+              blob_name = 'vhd_image.vhd'
+              storage_data.directories.create(
+                key: container_name
+              )
+
+              storage_data.copy_blob_from_uri(container_name, blob_name, vhd_path)
+              until storage_data.get_blob_properties(container_name, blob_name).properties[:copy_status] == 'success'
+                Fog::Logger.debug 'Waiting disk to ready'
+                sleep(10)
+              end
+              new_vhd_path = "http://#{storage_account_name}.blob.core.windows.net/customimagevhd/vhd_image.vhd"
+              Fog::Logger.debug "Path:#{new_vhd_path}. | Copy done"
+            else
+              new_vhd_path = vhd_path
+            end
+
+            img_vhd = Azure::ARM::Compute::Models::VirtualHardDisk.new
+            img_vhd.uri = new_vhd_path
+            os_disk.image = img_vhd
+            os_disk.os_type = platform
+          end
+
           os_disk.name = "#{vm_name}_os_disk"
           os_disk.vhd = vhd
           os_disk.create_option = Azure::ARM::Compute::Models::DiskCreateOptionTypes::FromImage
-          storage_profile.image_reference = image_reference
           storage_profile.os_disk = os_disk
           storage_profile
         end

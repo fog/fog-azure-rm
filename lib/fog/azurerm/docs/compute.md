@@ -39,14 +39,16 @@ Create a new linux server
         password: '<Password for VM>',
         disable_password_authentication: false,
         network_interface_card_id: '/subscriptions/{Subscription-Id}/resourceGroups/{Resource-Group-Name}/providers/Microsoft.Network/networkInterfaces/{Network-Interface-Id}',
-        publisher: 'Canonical',
-        offer: 'UbuntuServer',
-        sku: '14.04.2-LTS',
-        version: 'latest',
+        publisher: 'Canonical',                    # Not required if custom image is being used 
+        offer: 'UbuntuServer',                     # Not required if custom image is being used
+        sku: '14.04.2-LTS',                        # Not required if custom image is being used
+        version: 'latest',                         # Not required if custom image is being used
         platform: 'Linux',
-        custom_data: 'echo customData'            # Optional
+        vhd_path: '<Path of VHD>',                 # Optional, if you want to create the VM from a custom image.
+        custom_data: 'echo customData',            # Optional, if you want to add custom data in this VM.
     )
 ```
+
 Create a new windows server
 
 ```ruby
@@ -60,14 +62,16 @@ Create a new windows server
         password: '<Password for VM>',
         disable_password_authentication: false,
         network_interface_card_id: '/subscriptions/{Subscription-Id}/resourceGroups/{Resource-Group-Name}/providers/Microsoft.Network/networkInterfaces/{Network-Interface-Id}',
-        publisher: 'MicrosoftWindowsServerEssentials',
-        offer: 'WindowsServerEssentials',
-        sku: 'WindowsServerEssentials',
-        version: 'latest',
+        publisher: 'MicrosoftWindowsServerEssentials',   # Not required if custom image is being used
+        offer: 'WindowsServerEssentials',                # Not required if custom image is being used  
+        sku: 'WindowsServerEssentials',                  # Not required if custom image is being used
+        version: 'latest',                               # Not required if custom image is being used
         platform: 'Windows',
-        custom_data: 'echo customData'            # Optional
+        vhd_path: '<Path of VHD>',                       # Optional, if you want to create the VM from a custom image.
+        custom_data: 'echo customData'                   # Optional, if you want to add custom data in this VM.
     )
 ```
+ 
 For more information about custom_data; see link: https://msdn.microsoft.com/en-us/library/azure/mt163591.aspx
 
 ## List Servers
@@ -98,7 +102,7 @@ Get a single record of Server
 Get the server object and attach a Data Disk to it.
 
 ```ruby
-      server.attach_data_disk('<Disk Name>', <Size in GB>, '<Storage Account Name>)
+      server.attach_data_disk('<Disk Name>', <Size in GB>, '<Storage Account Name>')
 ```
 
 ## Detach a Data Disk from Server

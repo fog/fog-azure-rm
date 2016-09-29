@@ -118,8 +118,7 @@ module ApiStub
             platform: 'Linux',
             provision_vm_agent: nil,
             enable_automatic_updates: nil,
-            is_from_custom_image: true,
-            vhd_path: 'https://custimagestorage.blob.core.windows.net/customvhd/ubuntu-image.vhd'
+            vhd_path: 'https://fogstrg.blob.core.windows.net/customvhd/ubuntu-image.vhd'
           }
         end
 
@@ -140,8 +139,7 @@ module ApiStub
             platform: 'Windows',
             provision_vm_agent: true,
             enable_automatic_updates: true,
-            is_from_custom_image: true,
-            vhd_path: 'https://custimagestorage.blob.core.windows.net/customvhd/windows-image.vhd'
+            vhd_path: 'https://fogstrg.blob.core.windows.net/customvhd/windows-image.vhd'
           }
         end
 

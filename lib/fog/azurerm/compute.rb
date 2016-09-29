@@ -66,6 +66,7 @@ module Fog
           @compute_mgmt_client.subscription_id = options[:subscription_id]
           @storage_mgmt_client = ::Azure::ARM::Storage::StorageManagementClient.new(credentials)
           @storage_mgmt_client.subscription_id = options[:subscription_id]
+          @storage_service = Fog::Storage::AzureRM.new(tenant_id: options[:tenant_id], client_id: options[:client_id], client_secret: options[:client_secret], subscription_id: options[:subscription_id])
         end
       end
     end

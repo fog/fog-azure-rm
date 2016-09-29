@@ -69,7 +69,7 @@ module Fog
 
         def save
           requires :name, :location, :resource_group, :vm_size, :storage_account_name,
-                   :username, :password, :network_interface_card_id, :is_from_custom_image
+                   :username, :password, :network_interface_card_id
           requires :disable_password_authentication if platform.casecmp('linux').zero?
           requires :publisher, :offer, :sku, :version if vhd_path.nil?
           ssh_key_path = "/home/#{username}/.ssh/authorized_keys" unless ssh_key_data.nil?

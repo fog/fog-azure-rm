@@ -82,23 +82,25 @@ module Fog
             storage_profile.image_reference = image_reference
           else
             # Copy if VHD does not exist belongs to same storage account.
-            vhd_storage_account =  (vhd_path.split('/')[2]).split('.')[0]
+            vhd_storage_account = (vhd_path.split('/')[2]).split('.')[0]
             if storage_account_name != vhd_storage_account
-              storage_account = Fog::Storage::AzureRM.get_storage_account(resource_group, storage_account_name)
-              access_key = storage_account.get_access_keys['key1']
-              storage_data = Fog::Storage.new(
-                  provider: 'AzureRM',
-                  azure_storage_account_name: storage_account_name,
-                  azure_storage_access_key: access_key
+              storage_account = @storage_service.storage_accounts.get(resource_group, storage_account_name)
+              access_key = storage_account.get_access_keys[0].value
+              storage_data = Fog::Storage.new(provider: 'AzureRM', azure_storage_account_name: storage_account_name, azure_storage_access_key: access_key)
+
+              container_name = 'customimagevhd'
+              blob_name = 'vhd_image.vhd'
+              storage_data.directories.create(
+                key: container_name
               )
 
-              puts 'started copy'
-
-              storage_data.copy_blob('customimagevhd', 'vhd_image.vhd', vhd_path)
-
+              storage_data.copy_blob_from_uri(container_name, blob_name, vhd_path)
+              until storage_data.get_blob_properties(container_name, blob_name).properties[:copy_status] == 'success'
+                Fog::Logger.debug 'Waiting disk to ready'
+                sleep(10)
+              end
               new_vhd_path = "http://#{storage_account_name}.blob.core.windows.net/customimagevhd/vhd_image.vhd"
-              puts "Path:#{new_vhd_path}. | Copy done"
-
+              Fog::Logger.debug "Path:#{new_vhd_path}. | Copy done"
             else
               new_vhd_path = vhd_path
             end

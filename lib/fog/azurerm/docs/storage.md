@@ -184,6 +184,11 @@ new_cloud_file = azure_storage_service.files.get('<Container name>', '<Blob name
 puts "#{new_cloud_file.inspect}"
 ```
 
+## Copy Blob from one container to another
+```ruby
+puts storage_data.copy_blob(destination_container_name, destination_blob_name, source_container_name, source_blob_name)
+```
+
 ## Download a blob to a local file
 ```ruby
 blob = azure_storage_service.files.get('<Container name>', '<Blob name>').save_to_file('<file path>')

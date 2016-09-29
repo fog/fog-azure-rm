@@ -44,6 +44,7 @@ module Fog
       request :upload_block_blob_from_file
       request :download_blob_to_file
       request :copy_blob
+      request :copy_blob_from_uri
       request :compare_blob
       request :check_blob_exist
       request :acquire_blob_lease

@@ -27,6 +27,8 @@ module Fog
       request :delete_disk
       # Azure Storage Container requests
       request :create_container
+      request :release_container_lease
+      request :acquire_container_lease
       request :delete_container
       request :list_containers
       request :get_container_metadata
@@ -41,6 +43,12 @@ module Fog
       request :get_blob_properties
       request :upload_block_blob_from_file
       request :download_blob_to_file
+      request :copy_blob
+      request :copy_blob_from_uri
+      request :compare_blob
+      request :check_blob_exist
+      request :acquire_blob_lease
+      request :release_blob_lease
       request :delete_blob
 
       model_path 'fog/azurerm/models/storage'

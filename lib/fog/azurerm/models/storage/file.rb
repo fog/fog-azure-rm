@@ -34,7 +34,6 @@ module Fog
         def save(options = {})
           requires :key
           requires :directory
-          requires :file_path
           merge_attributes(File.parse(service.upload_block_blob_from_file(directory, key, file_path, options)))
         end
 

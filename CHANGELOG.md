@@ -1,4 +1,4 @@
-## 0.0.7 
+## 0.0.8 
 
 **Added:**
 - Compute Service - Added support to create virtual machine from a custom image.

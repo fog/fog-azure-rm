@@ -4,12 +4,12 @@ require 'yaml'
 
 class TestResourceGroupSmoke < MiniTest::Test
   begin
-    azure_credentials = YAML.load_file(Dir.pwd + '\test\integration\credentials\azure.yml')
+    #azure_credentials = YAML.load_file(Dir.pwd + '\test\integration\credentials\azure.yml')
     @@resource = Fog::Resources::AzureRM.new(
-        tenant_id: azure_credentials['tenant_id'],
-        client_id: azure_credentials['client_id'],
-        client_secret: azure_credentials['client_secret'],
-        subscription_id: azure_credentials['subscription_id']
+        tenant_id: ENV['TENANT_ID'],
+        client_id: ENV['CLIENT_ID'],
+        client_secret: ENV['CLIENT_SECRET'],
+        subscription_id: ENV['SUBSCRIPTION_ID']
     )
   rescue StandardError => e
     puts e

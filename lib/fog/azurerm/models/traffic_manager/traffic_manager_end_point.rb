@@ -18,21 +18,11 @@ module Fog
         attribute :min_child_endpoints
 
         def self.parse(endpoint)
-          hash = {}
-          hash['id'] = endpoint.id
-          hash['name'] = endpoint.name
-          hash['resource_group'] = get_resource_group_from_id(endpoint.id)
-          hash['type'] = get_end_point_type(endpoint.type)
-          hash['target_resource_id'] = endpoint.target_resource_id
-          hash['target'] = endpoint.target
-          hash['endpoint_status'] = endpoint.endpoint_status
-          hash['endpoint_monitor_status'] = endpoint.endpoint_monitor_status
-          hash['weight'] = endpoint.weight
-          hash['priority'] = endpoint.priority
-          hash['endpoint_location'] = endpoint.endpoint_location
-          hash['min_child_endpoints'] = endpoint.min_child_endpoints
-          hash['traffic_manager_profile_name'] = get_traffic_manager_profile_name_from_endpoint_id(endpoint.id)
-          hash
+          traffic_manager_endpoint = get_hash_from_object(endpoint)
+          traffic_manager_endpoint['type'] = get_end_point_type(endpoint.type)
+          traffic_manager_endpoint['resource_group'] = get_resource_group_from_id(endpoint.id)
+          traffic_manager_endpoint['traffic_manager_profile_name'] = get_traffic_manager_profile_name_from_endpoint_id(endpoint.id)
+          traffic_manager_endpoint
         end
 
         def save

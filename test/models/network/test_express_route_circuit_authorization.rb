@@ -25,7 +25,7 @@ class TestExpressRouteCircuitAuthorization < Minitest::Test
       :resource_group,
       :authorization_name,
       :authorization_key,
-      :authorization_status,
+      :authorization_use_status,
       :provisioning_state,
       :etag,
       :circuit_name

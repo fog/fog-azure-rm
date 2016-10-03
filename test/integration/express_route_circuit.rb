@@ -77,7 +77,7 @@ end
 network.express_route_circuit_authorizations.create(
   resource_group: 'TestRG-ER',
   circuit_name: 'testERCircuit',
-  authorization_status: 'Available',
+  authorization_use_status: 'Available',
   authorization_name: 'Test-Auth',
   name: 'Unique-Auth-Name'
 )

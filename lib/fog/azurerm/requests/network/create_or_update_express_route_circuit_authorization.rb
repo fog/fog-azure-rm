@@ -22,7 +22,7 @@ module Fog
           circuit_authorization = Azure::ARM::Network::Models::ExpressRouteCircuitAuthorization.new
           circuit_authorization.name = circuit_authorization_params[:authorization_name]
           circuit_authorization.authorization_key = circuit_authorization_params[:authorization_key]
-          circuit_authorization.authorization_use_status = circuit_authorization_params[:authorization_status]
+          circuit_authorization.authorization_use_status = circuit_authorization_params[:authorization_use_status]
           circuit_authorization.provisioning_state = circuit_authorization_params[:provisioning_state]
           circuit_authorization.etag = circuit_authorization_params[:etag]
 

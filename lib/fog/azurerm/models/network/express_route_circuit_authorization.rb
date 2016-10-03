@@ -8,22 +8,15 @@ module Fog
         attribute :resource_group
         attribute :authorization_name
         attribute :authorization_key
-        attribute :authorization_status
+        attribute :authorization_use_status
         attribute :provisioning_state
         attribute :etag
         attribute :circuit_name
 
         def self.parse(circuit_authorization)
-          circuit_auth_hash = {}
-          circuit_auth_hash['id'] = circuit_authorization.id
+          circuit_auth_hash = get_hash_from_object(circuit_authorization)
           circuit_auth_hash['resource_group'] = get_resource_group_from_id(circuit_authorization.id)
           circuit_auth_hash['circuit_name'] = get_circuit_name_from_id(circuit_authorization.id)
-          circuit_auth_hash['authorization_key'] = circuit_authorization.authorization_key
-          circuit_auth_hash['authorization_status'] = circuit_authorization.authorization_use_status
-          circuit_auth_hash['provisioning_state'] = circuit_authorization.provisioning_state
-          circuit_auth_hash['name'] = circuit_authorization.name
-          circuit_auth_hash['etag'] = circuit_authorization.etag
-
           circuit_auth_hash
         end
 
@@ -47,7 +40,7 @@ module Fog
             circuit_name: circuit_name,
             authorization_name: authorization_name,
             authorization_key: authorization_key,
-            authorization_status: authorization_status,
+            authorization_use_status: authorization_use_status,
             provisioning_state: provisioning_state,
             etag: etag
           }

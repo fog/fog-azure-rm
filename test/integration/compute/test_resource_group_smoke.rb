@@ -5,6 +5,7 @@ require 'yaml'
 class TestResourceGroupSmoke < MiniTest::Test
   begin
     #azure_credentials = YAML.load_file(Dir.pwd + '\test\integration\credentials\azure.yml')
+    puts "Client ID: #{ENV['client_id']}"
     @@resource = Fog::Resources::AzureRM.new(
         tenant_id: ENV['tenant_id'],
         client_id: ENV['client_id'],

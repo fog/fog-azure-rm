@@ -23,7 +23,7 @@ class TestDirectory < Minitest::Test
       :destroy
     ]
     methods.each do |method|
-      assert @directory.respond_to? method, true
+      assert_respond_to @directory, method
     end
   end
 

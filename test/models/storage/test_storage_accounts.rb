@@ -15,12 +15,12 @@ class TestStorageAccounts < Minitest::Test
       :get
     ]
     methods.each do |method|
-      assert @storage_accounts.respond_to? method, true
+      assert_respond_to @storage_accounts, method
     end
   end
 
   def test_collection_attributes
-    assert @storage_accounts.respond_to? :resource_group, true
+    assert_respond_to @storage_accounts, :resource_group
   end
 
   def test_all_method_response_for_rg

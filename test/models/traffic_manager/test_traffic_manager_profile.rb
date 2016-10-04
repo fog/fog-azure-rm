@@ -16,7 +16,7 @@ class TestTrafficManagerProfile < Minitest::Test
       :update
     ]
     methods.each do |method|
-      assert @traffic_manager_profile.respond_to? method
+      assert_respond_to @traffic_manager_profile, method
     end
   end
 
@@ -38,7 +38,7 @@ class TestTrafficManagerProfile < Minitest::Test
       :endpoints
     ]
     attributes.each do |attribute|
-      assert @traffic_manager_profile.respond_to? attribute
+      assert_respond_to @traffic_manager_profile, attribute
     end
   end
 

@@ -14,13 +14,13 @@ class TestSubnets < Minitest::Test
       :get
     ]
     methods.each do |method|
-      assert @subnets.respond_to? method
+      assert_respond_to @subnets, method
     end
   end
 
   def test_collection_attributes
-    assert @subnets.respond_to? :resource_group
-    assert @subnets.respond_to? :virtual_network_name
+    assert_respond_to @subnets, :resource_group
+    assert_respond_to @subnets, :virtual_network_name
   end
 
   def test_all_method_response

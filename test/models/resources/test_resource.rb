@@ -16,7 +16,7 @@ class TestResource < Minitest::Test
       :tags
     ]
     attributes.each do |attribute|
-      assert @resource.respond_to? attribute, true
+      assert_respond_to @resource, attribute
     end
   end
 end

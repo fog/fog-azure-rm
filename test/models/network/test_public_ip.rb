@@ -15,7 +15,7 @@ class TestPublicIp < Minitest::Test
       :update
     ]
     methods.each do |method|
-      assert @public_ip.respond_to? method
+      assert_respond_to @public_ip, method
     end
   end
 
@@ -34,7 +34,7 @@ class TestPublicIp < Minitest::Test
       :reverse_fqdn
     ]
     attributes.each do |attribute|
-      assert @public_ip.respond_to? attribute
+      assert_respond_to @public_ip, attribute
     end
   end
 

@@ -21,7 +21,7 @@ class TestSubnet < Minitest::Test
     ]
 
     methods.each do |method|
-      assert @subnet.respond_to? method
+      assert_respond_to @subnet, method
     end
   end
 
@@ -37,7 +37,7 @@ class TestSubnet < Minitest::Test
       :ip_configurations_ids
     ]
     attributes.each do |attribute|
-      assert @subnet.respond_to? attribute
+      assert_respond_to @subnet, attribute
     end
   end
 

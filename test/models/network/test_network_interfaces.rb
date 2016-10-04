@@ -14,12 +14,12 @@ class TestNetworkInterfaces < Minitest::Test
       :get
     ]
     methods.each do |method|
-      assert @network_interfaces.respond_to? method
+      assert_respond_to @network_interfaces, method
     end
   end
 
   def test_collection_attributes
-    assert @network_interfaces.respond_to? :resource_group
+    assert_respond_to @network_interfaces, :resource_group
   end
 
   def test_all_method_response

@@ -22,7 +22,7 @@ class TestGateway < Minitest::Test
       :destroy
     ]
     methods.each do |method|
-      assert @gateway.respond_to? method
+      assert_respond_to @gateway, method
     end
   end
 
@@ -46,7 +46,7 @@ class TestGateway < Minitest::Test
       :request_routing_rules
     ]
     attributes.each do |attribute|
-      assert @gateway.respond_to? attribute
+      assert_respond_to @gateway, attribute
     end
   end
 

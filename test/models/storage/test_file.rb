@@ -30,7 +30,7 @@ class TestFile < Minitest::Test
       :destroy
     ]
     methods.each do |method|
-      assert @file.respond_to? method, true
+      assert_respond_to @file, method
     end
   end
 

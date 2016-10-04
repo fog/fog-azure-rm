@@ -16,13 +16,13 @@ class TestTrafficManagerEndPoints < Minitest::Test
       :get
     ]
     methods.each do |method|
-      assert @traffic_manager_end_points.respond_to? method
+      assert_respond_to @traffic_manager_end_points, method
     end
   end
 
   def test_collection_attributes
-    assert @traffic_manager_end_points.respond_to? :resource_group
-    assert @traffic_manager_end_points.respond_to? :traffic_manager_profile_name
+    assert_respond_to @traffic_manager_end_points, :resource_group
+    assert_respond_to @traffic_manager_end_points, :traffic_manager_profile_name
   end
 
   def test_all_method_response

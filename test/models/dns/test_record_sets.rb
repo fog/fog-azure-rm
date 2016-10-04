@@ -14,14 +14,14 @@ class TestRecordSets < Minitest::Test
       :get
     ]
     methods.each do |method|
-      assert @record_sets.respond_to? method, true
+      assert_respond_to @record_sets, method
     end
   end
 
   def test_collection_attributes
-    assert @record_sets.respond_to? :resource_group, true
-    assert @record_sets.respond_to? :zone_name, true
-    assert @record_sets.respond_to? :type, true
+    assert_respond_to @record_sets, :resource_group
+    assert_respond_to @record_sets, :zone_name
+    assert_respond_to @record_sets, :type
   end
 
   def test_all_method_response

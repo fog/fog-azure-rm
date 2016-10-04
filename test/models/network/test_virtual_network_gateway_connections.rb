@@ -15,12 +15,12 @@ class TestVirtualNetworkGatewayConnections < Minitest::Test
       :get
     ]
     methods.each do |method|
-      assert @gateway_connections.respond_to? method
+      assert_respond_to @gateway_connections, method
     end
   end
 
   def test_collection_attributes
-    assert @gateway_connections.respond_to? :resource_group
+    assert_respond_to @gateway_connections, :resource_group
   end
 
   def test_all_method_response

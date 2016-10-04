@@ -1,3 +1,8 @@
+## Upcoming Version
+
+**Added:**
+- Azure SQL Service - Support added.
+
 ## 0.0.8 
 
 **Added:**

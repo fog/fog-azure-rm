@@ -31,6 +31,9 @@ module Fog
   module ApplicationGateway
     autoload :AzureRM, File.expand_path('azurerm/application_gateway', __dir__)
   end
+  module SQL
+    autoload :AzureRM, File.expand_path('azurerm/sql', __dir__)
+  end
 
   # Main AzureRM fog Provider Module
   module AzureRM
@@ -42,5 +45,6 @@ module Fog
     service(:compute, 'Compute')
     service(:application_gateway, 'ApplicationGateway')
     service(:traffic_manager, 'TrafficManager')
+    service(:sql, 'Sql')
   end
 end

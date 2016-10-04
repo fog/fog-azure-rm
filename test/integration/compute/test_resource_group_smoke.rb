@@ -33,6 +33,7 @@ class TestResourceGroupSmoke < MiniTest::Test
     assert_instance_of Fog::Resources::AzureRM::ResourceGroup, resource_group
   end
 
+  
   def test_all_resource_groups
   skip
   end

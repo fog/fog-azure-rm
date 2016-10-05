@@ -161,7 +161,6 @@ subnet_id = network.subnets.create(
   address_prefix: '10.1.0.0/24'
 ).id
 
-# app_gateway.update_gateway_ip_configuration("/subscriptions/#{azure_credentials['subscription_id']}/resourcegroups/TestRG-AG/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/mysubnet1")
 app_gateway.update_gateway_ip_configuration(subnet_id)
 
 ########################################################################################################################

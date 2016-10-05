@@ -17,7 +17,7 @@ module Fog
       end
 
       class Mock
-        def start_application_gateway(*)
+        def stop_application_gateway(*)
           Fog::Logger.debug 'Successfully stopped Application Gateway {name} in Resource Group {resource_group}'
           true
         end

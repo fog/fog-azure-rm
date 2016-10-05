@@ -50,6 +50,11 @@ module Fog
       request :acquire_blob_lease
       request :release_blob_lease
       request :delete_blob
+      # Azure Recovery Vault requests
+      request :create_or_update_recovery_vault
+      request :get_recovery_vault
+      request :list_recovery_vaults
+      request :delete_recovery_vault
 
       model_path 'fog/azurerm/models/storage'
       model :storage_account
@@ -59,6 +64,7 @@ module Fog
       collection :directories
       model :file
       collection :files
+      model :recovery_vault
 
       # This class provides the mock implementation for unit tests.
       class Mock

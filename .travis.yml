@@ -5,6 +5,9 @@ before_install:
   - gem install bundler
   - gem update bundler
 
+install:
+  - travis_wait
+
 matrix:
   fast_finish: true
   include:

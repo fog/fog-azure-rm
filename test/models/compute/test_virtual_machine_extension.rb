@@ -15,7 +15,7 @@ class TestVirtualMachineExtension < Minitest::Test
       :destroy
     ]
     methods.each do |method|
-      assert @virtual_machine_extension.respond_to? method, true
+      assert_respond_to @virtual_machine_extension, method
     end
   end
 
@@ -34,7 +34,7 @@ class TestVirtualMachineExtension < Minitest::Test
       :protected_settings
     ]
     attributes.each do |attribute|
-      assert @virtual_machine_extension.respond_to? attribute, true
+      assert_respond_to @virtual_machine_extension, attribute
     end
   end
 

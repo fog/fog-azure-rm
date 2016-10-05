@@ -14,7 +14,7 @@ class TestZone < Minitest::Test
       :destroy
     ]
     methods.each do |method|
-      assert @zone.respond_to? method, true
+      assert_respond_to @zone, method
     end
   end
 
@@ -25,7 +25,7 @@ class TestZone < Minitest::Test
       :resource_group
     ]
     attributes.each do |attribute|
-      assert @zone.respond_to? attribute, true
+      assert_respond_to @zone, attribute
     end
   end
 

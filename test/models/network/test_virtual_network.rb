@@ -22,7 +22,7 @@ class TestVirtualNetwork < Minitest::Test
       :destroy
     ]
     methods.each do |method|
-      assert @virtual_network.respond_to? method
+      assert_respond_to @virtual_network, method
     end
   end
 
@@ -37,7 +37,7 @@ class TestVirtualNetwork < Minitest::Test
       :resource_group
     ]
     attributes.each do |attribute|
-      assert @virtual_network.respond_to? attribute
+      assert_respond_to @virtual_network, attribute
     end
   end
 

@@ -15,7 +15,7 @@ class TestZones < Minitest::Test
       :check_for_zone
     ]
     methods.each do |method|
-      assert @zones.respond_to? method, true
+      assert_respond_to @zones, method
     end
   end
 

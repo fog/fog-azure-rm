@@ -34,7 +34,7 @@ class TestNetworkSecurityGroup < Minitest::Test
       :default_security_rules
     ]
     attributes.each do |attribute|
-      assert @network_security_group.respond_to? attribute
+      assert_respond_to @network_security_group, attribute
     end
   end
 

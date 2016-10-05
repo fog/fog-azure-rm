@@ -15,7 +15,7 @@ class TestLoadBalancer < Minitest::Test
       :destroy
     ]
     methods.each do |method|
-      assert @load_balancer.respond_to? method
+      assert_respond_to @load_balancer, method
     end
   end
 
@@ -33,7 +33,7 @@ class TestLoadBalancer < Minitest::Test
       :inbound_nat_pools
     ]
     attributes.each do |attribute|
-      assert @load_balancer.respond_to? attribute
+      assert_respond_to @load_balancer, attribute
     end
   end
 

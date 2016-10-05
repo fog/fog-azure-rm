@@ -18,7 +18,7 @@ class TestStorageAccount < Minitest::Test
       :get_access_keys
     ]
     methods.each do |method|
-      assert @storage_account.respond_to? method, true
+      assert_respond_to @storage_account, method
     end
   end
 

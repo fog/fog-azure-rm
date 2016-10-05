@@ -15,12 +15,12 @@ class TestNetworkSecurityGroups < Minitest::Test
       :get
     ]
     methods.each do |method|
-      assert @network_security_groups.respond_to? method
+      assert_respond_to @network_security_groups, method
     end
   end
 
   def test_collection_attributes
-    assert @network_security_groups.respond_to? :resource_group
+    assert_respond_to @network_security_groups, :resource_group
   end
 
   def test_all_method_response

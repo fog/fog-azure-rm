@@ -20,7 +20,7 @@ class TestFiles < Minitest::Test
       :get
     ]
     methods.each do |method|
-      assert @files.respond_to? method, true
+      assert_respond_to @files, method
     end
   end
 

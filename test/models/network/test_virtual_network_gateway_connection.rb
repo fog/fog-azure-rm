@@ -14,7 +14,7 @@ class TestVirtualNetworkGatewayConnection < Minitest::Test
       :destroy
     ]
     methods.each do |method|
-      assert @gateway_connection.respond_to? method
+      assert_respond_to @gateway_connection, method
     end
   end
 
@@ -40,7 +40,7 @@ class TestVirtualNetworkGatewayConnection < Minitest::Test
       :connection_status
     ]
     attributes.each do |attribute|
-      assert @gateway_connection.respond_to? attribute
+      assert_respond_to @gateway_connection, attribute
     end
   end
 

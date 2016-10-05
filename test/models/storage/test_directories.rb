@@ -24,7 +24,7 @@ class TestDirectories < Minitest::Test
       :get
     ]
     methods.each do |method|
-      assert @directories.respond_to? method, true
+      assert_respond_to @directories, method
     end
   end
 

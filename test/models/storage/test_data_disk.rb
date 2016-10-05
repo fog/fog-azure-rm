@@ -17,7 +17,7 @@ class TestDataDisk < Minitest::Test
       :create_option
     ]
     attributes.each do |attribute|
-      assert @data_disk.respond_to? attribute, true
+      assert_respond_to @data_disk, attribute
     end
   end
 end

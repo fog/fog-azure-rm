@@ -15,7 +15,7 @@ class TestDeployments < Minitest::Test
       :get
     ]
     methods.each do |method|
-      assert @deployments.respond_to? method, true
+      assert_respond_to @deployments, method
     end
   end
 

@@ -15,7 +15,7 @@ class TestLocalNetworkGateway < Minitest::Test
       :destroy
     ]
     methods.each do |method|
-      assert @local_network_gateway.respond_to? method
+      assert_respond_to @local_network_gateway, method
     end
   end
 
@@ -35,7 +35,7 @@ class TestLocalNetworkGateway < Minitest::Test
       :provisioning_state
     ]
     attributes.each do |attribute|
-      assert @local_network_gateway.respond_to? attribute
+      assert_respond_to @local_network_gateway, attribute
     end
   end
 

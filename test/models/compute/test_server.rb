@@ -23,7 +23,7 @@ class TestServer < Minitest::Test
       :detach_data_disk
     ]
     methods.each do |method|
-      assert @server.respond_to? method, true
+      assert_respond_to @server, method
     end
   end
 
@@ -54,7 +54,7 @@ class TestServer < Minitest::Test
       :availability_set_id
     ]
     attributes.each do |attribute|
-      assert @server.respond_to? attribute, true
+      assert_respond_to @server, attribute
     end
   end
 

@@ -14,7 +14,7 @@ class TestExpressRouteCircuitPeering < Minitest::Test
       :destroy
     ]
     methods.each do |method|
-      assert @circuit_peering.respond_to? method
+      assert_respond_to @circuit_peering, method
     end
   end
 
@@ -34,7 +34,7 @@ class TestExpressRouteCircuitPeering < Minitest::Test
       :routing_registry_name
     ]
     attributes.each do |attribute|
-      assert @circuit_peering.respond_to? attribute
+      assert_respond_to @circuit_peering, attribute
     end
   end
 

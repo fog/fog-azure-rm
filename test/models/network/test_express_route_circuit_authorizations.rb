@@ -14,13 +14,13 @@ class TestExpressRouteCircuitAuthorizations < Minitest::Test
       :get
     ]
     methods.each do |method|
-      assert @circuit_authorizations.respond_to? method
+      assert_respond_to @circuit_authorizations, method
     end
   end
 
   def test_collection_attributes
-    assert @circuit_authorizations.respond_to? :resource_group
-    assert @circuit_authorizations.respond_to? :circuit_name
+    assert_respond_to @circuit_authorizations, :resource_group
+    assert_respond_to @circuit_authorizations, :circuit_name
   end
 
   def test_all_method_response

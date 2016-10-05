@@ -15,12 +15,12 @@ class TestLocalNetworkGateways < Minitest::Test
       :get
     ]
     methods.each do |method|
-      assert @local_network_gateways.respond_to? method
+      assert_respond_to @local_network_gateways, method
     end
   end
 
   def test_collection_attributes
-    assert @local_network_gateways.respond_to? :resource_group
+    assert_respond_to @local_network_gateways, :resource_group
   end
 
   def test_all_method_response

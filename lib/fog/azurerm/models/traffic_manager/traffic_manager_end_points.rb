@@ -8,15 +8,10 @@ module Fog
         model Fog::TrafficManager::AzureRM::TrafficManagerEndPoint
 
         def all
-          requires :resource_group
-          requires :traffic_manager_profile_name
+          requires :resource_group, :traffic_manager_profile_name
 
-          traffic_manager_endpoints = []
-          profile = service.get_traffic_manager_profile(resource_group, traffic_manager_profile_name)
-          end_points = profile.endpoints
-          end_points.each do |endpoint|
-            traffic_manager_endpoints << Fog::TrafficManager::AzureRM::TrafficManagerEndPoint.parse(endpoint)
-          end
+          end_points = service.get_traffic_manager_profile(resource_group, traffic_manager_profile_name).endpoints
+          traffic_manager_endpoints = end_points.map { |endpoint| Fog::TrafficManager::AzureRM::TrafficManagerEndPoint.parse(endpoint) }
           load(traffic_manager_endpoints)
         end
 

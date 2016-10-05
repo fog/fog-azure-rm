@@ -22,8 +22,7 @@ module Fog
 
         def save
           requires :name, :resource_group, :circuit_name
-          circuit_authorization_parameters = express_route_circuit_authorization_params
-          circuit_authorization = service.create_or_update_express_route_circuit_authorization(circuit_authorization_parameters)
+          circuit_authorization = service.create_or_update_express_route_circuit_authorization(express_route_circuit_authorization_params)
           merge_attributes(ExpressRouteCircuitAuthorization.parse(circuit_authorization))
         end
 

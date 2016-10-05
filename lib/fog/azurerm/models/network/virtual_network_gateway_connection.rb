@@ -41,8 +41,7 @@ module Fog
 
         def save
           requires :name, :location, :resource_group, :connection_type
-          gateway_connection_params = gateway_connection_parameters
-          gateway_connection = service.create_or_update_virtual_network_gateway_connection(gateway_connection_params)
+          gateway_connection = service.create_or_update_virtual_network_gateway_connection(gateway_connection_parameters)
           merge_attributes(VirtualNetworkGatewayConnection.parse(gateway_connection))
         end
 

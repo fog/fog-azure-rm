@@ -11,12 +11,8 @@ module Fog
         attribute :circuit_name
 
         def all
-          requires :resource_group
-          requires :circuit_name
-          circuit_authorizations = []
-          service.list_express_route_circuit_authorizations(resource_group, circuit_name).each do |circuit_authorization|
-            circuit_authorizations << ExpressRouteCircuitAuthorization.parse(circuit_authorization)
-          end
+          requires :resource_group, :circuit_name
+          circuit_authorizations = service.list_express_route_circuit_authorizations(resource_group, circuit_name).map { |circuit_authorization| ExpressRouteCircuitAuthorization.parse(circuit_authorization) }
           load(circuit_authorizations)
         end
 

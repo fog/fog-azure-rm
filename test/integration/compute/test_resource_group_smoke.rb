@@ -28,7 +28,8 @@ class TestResourceGroupSmoke < MiniTest::Test
   end
 
   def test_create_resource_group
-    @resource_group_name = 'fog-smoke-test-rg' + Time.now
+    @resource_group_name = "fog-smoke-test-rg-#{Time.now}"
+    puts @resource_group_name
     resource_group = @resource.resource_groups.create(name: @resource_group_name, location: 'eastus')
     assert_instance_of Fog::Resources::AzureRM::ResourceGroup, resource_group
   end

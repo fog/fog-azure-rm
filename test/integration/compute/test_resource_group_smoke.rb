@@ -10,6 +10,9 @@ class TestResourceGroupSmoke < MiniTest::Test
         client_secret: ENV['CLIENT_SECRET'],
         subscription_id: ENV['SUBSCRIPTION_ID']
     )
+    time = Time.now.to_s
+    new_time = time.split(/\W+/).join
+    @@resource_group_name = "fog-smoke-test-rg-#{new_time}"
   rescue StandardError => e
     puts e
   end
@@ -28,9 +31,6 @@ class TestResourceGroupSmoke < MiniTest::Test
   end
 
   def test_create_resource_group
-    time = Time.now.to_s
-    new_time = time.split(/\W+/).join
-    @@resource_group_name = "fog-smoke-test-rg-#{new_time}"
     resource_group = @resource.resource_groups.create(name: @@resource_group_name, location: 'eastus')
     assert_instance_of Fog::Resources::AzureRM::ResourceGroup, resource_group
   end

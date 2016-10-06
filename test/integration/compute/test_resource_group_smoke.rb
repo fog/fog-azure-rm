@@ -10,7 +10,8 @@ class TestResourceGroupSmoke < MiniTest::Test
         client_secret: ENV['CLIENT_SECRET'],
         subscription_id: ENV['SUBSCRIPTION_ID']
     )
-    time = Time.now.to_s
+    time = Time.now.to_f.to_s
+    puts "Time: #{time}"
     new_time = time.split(/\W+/).join
     @@resource_group_name = "fog-smoke-test-rg-#{new_time}"
   rescue StandardError => e

@@ -1,0 +1,43 @@
+module Fog
+  module Sql
+    # This class registers models, requests and collections
+    class AzureRM < Fog::Service
+      requires :tenant_id
+      requires :client_id
+      requires :client_secret
+      requires :subscription_id
+
+      request_path 'fog/azurerm/requests/sql'
+      request :create_or_update_sql_server
+      request :delete_sql_server
+      request :get_sql_server
+      request :list_sql_servers
+
+      model_path 'fog/azurerm/models/sql'
+      model :sql_server
+      collection :sql_servers
+
+      # This class provides the actual implementation for service calls.
+      class Real
+        def initialize(options)
+          @tenant_id = options[:tenant_id]
+          @client_id = options[:client_id]
+          @client_secret = options[:client_secret]
+          @subscription_id = options[:subscription_id]
+          @resources = Fog::Resources::AzureRM.new(
+            tenant_id: options[:tenant_id],
+            client_id: options[:client_id],
+            client_secret: options[:client_secret],
+            subscription_id: options[:subscription_id]
+          )
+        end
+      end
+      # This class provides the mock implementation for unit tests.
+      class Mock
+        def initialize(_options = {})
+
+        end
+      end
+    end
+  end
+end

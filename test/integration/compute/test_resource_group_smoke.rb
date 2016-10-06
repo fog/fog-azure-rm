@@ -18,14 +18,14 @@ class TestResourceGroupSmoke < MiniTest::Test
     puts e
   end
 
-  # Minitest.after_run do
-  #   begin
-  #     resource_group = @resource.resource_groups.get(@resource_group_name)
-  #     resource_group.destroy
-  #   rescue StandardError => e
-  #     puts e
-  #   end
-  # end
+  Minitest.after_run do
+    begin
+      resource_group = @resource.resource_groups.get(@resource_group_name)
+      resource_group.destroy
+    rescue StandardError => e
+      puts e
+    end
+  end
 
   def setup
     @resource = @@resource
@@ -43,8 +43,8 @@ class TestResourceGroupSmoke < MiniTest::Test
   skip
   end
 
-  def test_get_resource_group
-    resource_group = @resource.resource_groups.get(@resource_group_name)
-    assert_instance_of Fog::Resources::AzureRM::ResourceGroup, resource_group
-  end
+  # def test_get_resource_group
+  #   resource_group = @resource.resource_groups.get(@resource_group_name)
+  #   assert_instance_of Fog::Resources::AzureRM::ResourceGroup, resource_group
+  # end
 end

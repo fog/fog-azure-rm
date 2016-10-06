@@ -50,7 +50,7 @@ module Fog
         def create_or_update
           if %w(azureEndpoints externalEndpoints nestedEndpoints).select { |type| type if type.eql?(type) }.any?
             traffic_manager_endpoint = service.create_or_update_traffic_manager_endpoint(traffic_manager_endpoint_hash)
-            merge_attributes(Fog::TrafficManager::AzureRM::TrafficManagerEndPoint.parse(traffic_manager_endpoint))
+            merge_attributes(TrafficManagerEndPoint.parse(traffic_manager_endpoint))
           else
             raise(ArgumentError, ":type should be '#{AZURE_ENDPOINTS}', '#{EXTERNAL_ENDPOINTS}' or '#{NESTED_ENDPOINTS}'")
           end

@@ -4,7 +4,8 @@ module Fog
       # Real class for Virtual Network Gateway Connection Request
       class Real
         def get_virtual_network_gateway_connection(resource_group_name, gateway_connection_name)
-          msg = "Getting Virtual Network Gateway Connection #{gateway_connection_name} from Resource Group #{resource_group_name}."
+          msg = @logger_messages['network']['virtual_network_gateway_connection']['message']['get']
+                .gsub('NAME', gateway_connection_name).gsub('RESOURCE_GROUP', resource_group_name)
           Fog::Logger.debug msg
           begin
             gateway_connection = @network_client.virtual_network_gateway_connections.get(resource_group_name, gateway_connection_name)

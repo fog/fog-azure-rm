@@ -6,7 +6,7 @@ module Fog
     class AzureRM
       # LocalNetworkGateways collection class for Network Service
       class LocalNetworkGateways < Fog::Collection
-        model Fog::Network::AzureRM::LocalNetworkGateway
+        model LocalNetworkGateway
         attribute :resource_group
 
         def all

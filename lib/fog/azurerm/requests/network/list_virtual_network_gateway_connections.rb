@@ -4,7 +4,8 @@ module Fog
       # Real class for Network Request
       class Real
         def list_virtual_network_gateway_connections(resource_group_name)
-          msg = "Getting list of Virtual Network Gateway Connection from Resource Group #{resource_group_name}."
+          msg = @logger_messages['network']['virtual_network_gateway_connection']['message']['list']
+                .gsub('RESOURCE_GROUP', resource_group_name)
           Fog::Logger.debug msg
           begin
             gateway_connections = @network_client.virtual_network_gateway_connections.list_as_lazy(resource_group_name)

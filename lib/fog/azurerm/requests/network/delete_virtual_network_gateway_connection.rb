@@ -4,7 +4,8 @@ module Fog
       # Real class for Network Request
       class Real
         def delete_virtual_network_gateway_connection(resource_group_name, gateway_connection_name)
-          msg = "Deleting Virtual Network Gateway Connection #{gateway_connection_name} from Resource Group #{resource_group_name}."
+          msg = @logger_messages['network']['virtual_network_gateway_connection']['message']['delete']
+                .gsub('NAME', gateway_connection_name).gsub('RESOURCE_GROUP', resource_group_name)
           Fog::Logger.debug msg
           begin
             @network_client.virtual_network_gateway_connections.delete(resource_group_name, gateway_connection_name)

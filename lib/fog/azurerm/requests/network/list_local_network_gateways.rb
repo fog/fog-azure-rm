@@ -4,7 +4,8 @@ module Fog
       # Real class for Local Network Gateway Request
       class Real
         def list_local_network_gateways(resource_group_name)
-          msg = "Getting list of Local Network Gateway from Resource Group #{resource_group_name}."
+          msg = @logger_messages['network']['local_network_gateway']['message']['list']
+                .gsub('RESOURCE_GROUP', resource_group_name)
           Fog::Logger.debug msg
           begin
             local_network_gateways = @network_client.local_network_gateways.list_as_lazy(resource_group_name)

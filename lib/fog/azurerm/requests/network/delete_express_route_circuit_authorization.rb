@@ -4,7 +4,8 @@ module Fog
       # Real class for Express Route Circuit Authorization Request
       class Real
         def delete_express_route_circuit_authorization(resource_group_name, circuit_name, authorization_name)
-          msg = "Deleting Express Route Circuit Authorization #{authorization_name} from Resource Group #{resource_group_name}."
+          msg = @logger_messages['network']['express_route_circuit_authentication']['message']['delete']
+                .gsub('NAME', authorization_name).gsub('RESOURCE_GROUP', resource_group_name)
           Fog::Logger.debug msg
           begin
             @network_client.express_route_circuit_authorizations.delete(resource_group_name, circuit_name, authorization_name)

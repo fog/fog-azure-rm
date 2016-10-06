@@ -10,7 +10,7 @@ class TestCreateLocalNetworkGateway < Minitest::Test
   end
 
   def test_create_local_network_gateway_success
-    network_gateway_parms = {}
+    network_gateway_parms = { name: 'temp', resource_group: 'Test' }
     @local_network_gateways.stub :create_or_update, @response do
       assert_equal @service.create_or_update_local_network_gateway(network_gateway_parms), @response
     end
@@ -25,7 +25,7 @@ class TestCreateLocalNetworkGateway < Minitest::Test
   end
 
   def test_create_local_network_gateway_exception_failure
-    local_network_gateway_parms = {}
+    local_network_gateway_parms = { name: 'temp', resource_group: 'Test' }
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @local_network_gateways.stub :create_or_update, response do
       assert_raises RuntimeError do

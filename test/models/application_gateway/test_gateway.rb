@@ -114,13 +114,13 @@ class TestGateway < Minitest::Test
     end
   end
 
-  def test_start
+  def test_start_method_response
     @service.stub :start_application_gateway, true do
       assert_equal true, @gateway_obj.start
     end
   end
 
-  def test_stop
+  def test_stop_method_response
     @service.stub :stop_application_gateway, true do
       assert_equal true, @gateway_obj.stop
     end

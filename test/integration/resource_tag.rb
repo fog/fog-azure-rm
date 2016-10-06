@@ -16,10 +16,10 @@ resources = Fog::Resources::AzureRM.new(
 )
 
 network = Fog::Network::AzureRM.new(
-    tenant_id: azure_credentials['tenant_id'],
-    client_id: azure_credentials['client_id'],
-    client_secret: azure_credentials['client_secret'],
-    subscription_id: azure_credentials['subscription_id']
+  tenant_id: azure_credentials['tenant_id'],
+  client_id: azure_credentials['client_id'],
+  client_secret: azure_credentials['client_secret'],
+  subscription_id: azure_credentials['subscription_id']
 )
 
 ########################################################################################################################
@@ -32,10 +32,10 @@ resource_group = resources.resource_groups.create(
 )
 
 resource_id = network.public_ips.create(
-    name: 'mypubip',
-    resource_group: 'TestRG-RT',
-    location: 'eastus',
-    public_ip_allocation_method: 'Static'
+  name: 'mypubip',
+  resource_group: 'TestRG-RT',
+  location: 'eastus',
+  public_ip_allocation_method: 'Static'
 ).id
 
 ########################################################################################################################

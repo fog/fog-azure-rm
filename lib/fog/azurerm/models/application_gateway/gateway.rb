@@ -601,6 +601,14 @@ module Fog
           merge_attributes(Fog::ApplicationGateway::AzureRM::Gateway.parse(gateway))
         end
 
+        def start
+          service.start_application_gateway(resource_group, name)
+        end
+
+        def stop
+          service.stop_application_gateway(resource_group, name)
+        end
+
         def destroy
           service.delete_application_gateway(resource_group, name)
         end

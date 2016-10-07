@@ -1,4 +1,4 @@
-#SQL
+#Azure SQL
 
 This document explains how to get started using Azure SQL Services with Fog.
 
@@ -20,8 +20,12 @@ Next, create a connection to the SQL Service:
         client_id:       '<Clientid>',           # Client id of Azure Active Directory Application
         client_secret:   '<ClientSecret>',       # Client Secret of Azure Active Directory Application
         subscription_id: '<Subscriptionid>'      # Subscription id of an Azure Account
-)
+    )
 ```
+
+The {server-name} and {database-name} value must be set using all lowercase ANSI letters , hyphen, and the numbers 1 through 9. Do not use a hyphen as the leading or trailing character.
+
+
 ## Create SQL Server
 
 Create a new Server
@@ -36,8 +40,10 @@ Create a new Server
         administrator_login_password: 'svr@admin123'   # Specifies the password of the SQL administrator.
     )
 ```
-## List SQL Servers
+For more information, see link: https://msdn.microsoft.com/en-us/library/azure/mt297738.aspx
 
+## List SQL Servers
+Get a list of servers in given resource group
 ```ruby
     servers  = azure_sql_service.sql_servers(resource_group: '<Resource Group Name>')
     servers.each do |server|
@@ -61,6 +67,62 @@ Get SQL Server object from the get method(described above) and destroy that Serv
 
 ```ruby
       server.destroy
+```
+
+## Create SQL Database
+
+Creates a new Sql Database
+
+In parameter {create_mode}: 'Copy', 'NonReadableSecondary', and 'OnlineSecondary' are not supported by SQL Data Warehouse.
+
+If parameter {edition} is set to DataWarehouse, the acceptable values for parameter {requested_service_objective_name} are: ['DW100', 'DW200', 'DW300', 'DW400', 'DW500', 'DW600', 'DW1000', 'DW1200', 'DW1500', 'DW2000', 'DW3000', 'DW6000'] 
+
+```ruby
+    azure_sql_service.sql_databases.create(
+        resource_group: '<Resource Group Name>',
+        location: 'East US',
+        server_name: '<Server Name>',
+        name: '<Database Name>',
+        create_mode: '<Create Mode>',           # Optional. Specifies the type of database to create. The default value is Default. The acceptable values are: [Copy, Default, NonReadableSecondary, OnlineSecondary, PointInTimeRestore, PointInTimeRestore, Restore]
+        edition: '<Edition>',                   # Conditional. Specifies the edition of the database. If createMode is set to Default, then this value must be specified. The acceptable value are: [Basic, Standard, Premium, DataWarehouse]
+        source_database_id: '<URI>',                  # Conditional. Specifies the URI of the source database. If createMode is not set to Default, then this value must be specified.
+        collation: '<Collation>',                     # Conditional. Specifies the name of the collation. If createMode is set to Default, then this value must be specified. 
+        max_size_bytes: '<Size>',                     # Conditional. Specifies the maximum size to which the database may grow. If createMode is set to Default, then this value must be specified.
+        requested_service_objective_name: '<Name>' ,  # Conditional. Specifies the requested service level of the database. If requestedServiceObjectiveId is specified, then this value must not be specified. The acceptable value are: [Basic, S0, S1, S2, S3, P1, P2, P4, P6, P11, ElasticPool]
+        restore_point_in_time: '<String>',            # Conditional. Specifies the point in time for the restore. If createMode is set to PointInTimeRestore, then this value must be specified. 
+        source_database_deletion_date: '<Date>',      # Conditional. Specifies the deletion date of the source database. If createMode is set to Restore, then this value must be specified
+        elastic_pool_name: '<Pool Name>',             # Conditional. Specifies the name of the elastic database pool. If requestedServiceObjectiveId or requestedServiceObjectiveName is set to ElasticPool, then this value must be specified.
+        requested_service_objective_id: '<GUID>'      # Conditional. Specifies the identifier of the requested service level. If requestedServiceObjectiveName is specified, then this value must not be specified.   
+    )
+```
+For more information see link: https://msdn.microsoft.com/en-us/library/azure/mt163685.aspx  
+
+## List SQL Databases
+Get a list of databases in given resource group
+
+```ruby
+    databases  = azure_sql_service.sql_databases(resource_group: '<Resource Group Name>', server_name: '<Server Name>')
+    databases.each do |database|
+      puts "Listing : #{database.name}"
+    end
+```
+
+## Retrieve a single SQL Database
+
+Get a single record of SQL Database
+
+```ruby
+     database = azure_sql_service.sql_databases
+                   .get('<Resource Group Name>', '<Server Name>', '<Database Name>')
+     puts "Database Name: #{database.name}"
+```
+
+## Destroy a SQL Database
+
+Get SQL Database object from the get method(described above) and destroy that Database.
+
+```ruby
+      database.destroy
 ```
 
 

@@ -21,8 +21,8 @@ module Fog
       model_path 'fog/azurerm/models/sql'
       model :sql_server
       collection :sql_servers
-      model :database
-      collection :databases
+      model :sql_database
+      collection :sql_databases
 
       # This class provides the actual implementation for service calls.
       class Real

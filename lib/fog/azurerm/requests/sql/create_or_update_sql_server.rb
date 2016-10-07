@@ -7,7 +7,7 @@ module Fog
           msg = "Creating SQL Server: #{server_hash[:name]}."
           Fog::Logger.debug msg
           resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription_id}/resourceGroups/#{server_hash[:resource_group]}/providers/Microsoft.Sql/servers/#{server_hash[:name]}?api-version=2014-04-01-preview"
-          request_parameters = format_request_parameters(server_hash[:location], server_hash[:version], server_hash[:administrator_login], server_hash[:administrator_login_password])
+          request_parameters = format_server_parameters(server_hash[:location], server_hash[:version], server_hash[:administrator_login], server_hash[:administrator_login_password])
           begin
             token = Fog::Credentials::AzureRM.get_token(@tenant_id, @client_id, @client_secret)
             response = RestClient.put(
@@ -26,7 +26,7 @@ module Fog
         end
 
         private
-        def format_request_parameters(location, version, admin_login, admin_password)
+        def format_server_parameters(location, version, admin_login, admin_password)
           parameters = {}
           properties = {}
 

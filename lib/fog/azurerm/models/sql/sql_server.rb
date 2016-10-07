@@ -49,7 +49,7 @@ module Fog
             version: version,
             location: location,
             administrator_login: administrator_login,
-            administrator_login_password: administrator_login_password,
+            administrator_login_password: administrator_login_password
           }
         end
       end

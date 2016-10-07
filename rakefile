@@ -1,5 +1,5 @@
 require 'rake/testtask'
-task default: :cc_coverage, default: :it_coverage
+task default: :cc_coverage
 task :test do
   ENV['COVERAGE'] = nil
   ENV['CODECLIMATE_REPO_TOKEN'] = nil

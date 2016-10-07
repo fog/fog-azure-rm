@@ -17,12 +17,12 @@ module Fog
               content_type: :json,
               authorization: token
             )
-            Fog::Logger.debug "SQL Server: #{server_hash[:name]} created successfully."
-            JSON.parse(response)
+
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, JSON.parse(e.response)['message'])
           end
           Fog::Logger.debug "SQL Server: #{server_hash[:name]} created successfully."
+          JSON.parse(response)
         end
 
         private
@@ -46,19 +46,14 @@ module Fog
       # Mock class for Sql Server Request
       class Mock
         def create_or_update_sql_server(*)
-          '{
-            "location": "{server-location}"
-            "tags": {
-              "{tag-name}": "{tag-value}"
-            },
-            "properties": {
-              "version": "{server-version}",
-              "administratorLogin": "{admin-name}",
-              "administratorLoginPassword": "{admin-password}",
-              "state": "{server-state}"
+          {
+            'location' => '{server-location}',
+            'properties' => {
+              'version' => '{server-version}',
+              'administratorLogin' => '{admin-name}',
+              'administratorLoginPassword' => '{admin-password}'
             }
-          }'
-
+          }
         end
       end
     end

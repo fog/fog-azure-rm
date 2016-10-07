@@ -10,9 +10,9 @@ module Fog
         attribute :location
         attribute :version
         attribute :state
-        attribute :administratorLogin
-        attribute :administratorLoginPassword
-        attribute :fullyQualifiedDomainName
+        attribute :administrator_login
+        attribute :administrator_login_password
+        attribute :fully_qualified_domain_name
 
         def self.parse(server)
           server_hash = {}
@@ -24,15 +24,15 @@ module Fog
 
           server_hash['state'] = server['properties']['state']
           server_hash['version'] = server['properties']['version']
-          server_hash['administratorLogin'] = server['properties']['administratorLogin']
-          server_hash['administratorLoginPassword'] = server['properties']['administratorLoginPassword']
-          server_hash['fullyQualifiedDomainName'] = server['properties']['fullyQualifiedDomainName']
+          server_hash['administrator_login'] = server['properties']['administratorLogin']
+          server_hash['administrator_login_password'] = server['properties']['administratorLoginPassword']
+          server_hash['fully_qualified_domain_name'] = server['properties']['fullyQualifiedDomainName']
 
           server_hash
         end
 
         def save
-          requires :name, :resource_group, :location, :version, :administratorLogin, :administratorLoginPassword
+          requires :name, :resource_group, :location, :version, :administrator_login, :administrator_login_password
           sql_server = service.create_or_update_sql_server(server_params_hash)
           merge_attributes(Fog::Sql::AzureRM::SqlServer.parse(sql_server))
         end
@@ -48,8 +48,8 @@ module Fog
             name: name,
             version: version,
             location: location,
-            administrator_login: administratorLogin,
-            administrator_login_password: administratorLoginPassword,
+            administrator_login: administrator_login,
+            administrator_login_password: administrator_login_password,
           }
         end
       end

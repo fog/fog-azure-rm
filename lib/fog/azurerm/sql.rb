@@ -13,9 +13,16 @@ module Fog
       request :get_sql_server
       request :list_sql_servers
 
+      request :create_or_update_database
+      request :delete_database
+      request :get_database
+      request :list_databases
+
       model_path 'fog/azurerm/models/sql'
       model :sql_server
       collection :sql_servers
+      model :database
+      collection :databases
 
       # This class provides the actual implementation for service calls.
       class Real

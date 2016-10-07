@@ -26,7 +26,14 @@ module Fog
       # Mock class for Sql Server Request
       class Mock
         def get_sql_server(*)
-
+          {
+            'location' => '{server-location}',
+            'properties' => {
+              'version' => '{server-version}',
+              'administratorLogin' => '{admin-name}',
+              'administratorLoginPassword' => '{admin-password}'
+            }
+          }
         end
       end
     end

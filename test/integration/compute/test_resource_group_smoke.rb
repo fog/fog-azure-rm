@@ -3,8 +3,8 @@ require 'minitest/autorun'
 require 'yaml'
 
 class TestResourceGroupSmoke < MiniTest::Test
-  begin
-    @@resource = Fog::Resources::AzureRM.new(
+  def setup
+    @resource = Fog::Resources::AzureRM.new(
         tenant_id: ENV['TENANT_ID'],
         client_id: ENV['CLIENT_ID'],
         client_secret: ENV['CLIENT_SECRET'],
@@ -12,28 +12,16 @@ class TestResourceGroupSmoke < MiniTest::Test
     )
     time = Time.now.to_f.to_s
     new_time = time.split(/\W+/).join
-    @@resource_group_name = "fog-smoke-test-rg-#{new_time}"
-  rescue StandardError => e
-    puts e
-  end
-
-  def setup
-    @resource = @@resource
-  end
-
-  Minitest.after_run do
-    begin
-      resource_group = @resource.resource_groups.get(@@resource_group_name)
-      resource_group.destroy
-    rescue StandardError => e
-      puts e
-    end
+    @resource_group_name = "fog-smoke-test-rg-#{new_time}"
   end
 
   def test_resource_group
-    resource_group = @resource.resource_groups.create(name: @@resource_group_name, location: 'eastus')
+    resource_group = @resource.resource_groups.create(name: @resource_group_name, location: 'eastus')
     assert_instance_of Fog::Resources::AzureRM::ResourceGroup, resource_group
-    resource_group = @resource.resource_groups.get(@@resource_group_name)
+
+    resource_group = @resource.resource_groups.get(@resource_group_name)
     assert_instance_of Fog::Resources::AzureRM::ResourceGroup, resource_group
+
+    resource_group.destroy
   end
 end

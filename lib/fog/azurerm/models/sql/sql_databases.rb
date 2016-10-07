@@ -12,7 +12,7 @@ module Fog
           requires :server_name
 
           databases = []
-          service.list_databases(resource_group).each do |database|
+          service.list_databases(resource_group, server_name).each do |database|
             databases << Fog::Sql::AzureRM::SqlDatabase.parse(database)
           end
           load(databases)

@@ -41,6 +41,7 @@ module Fog
           database_hash['collation'] = database['properties']['collation']
           database_hash['create_mode'] = database['properties']['createMode']
           database_hash['database_id'] = database['properties']['databaseId']
+          database_hash['server_name'] = get_server_name_from_id(database['id'])
           database_hash['creation_date'] = database['properties']['creationDate']
           database_hash['max_size_bytes'] = database['properties']['maxSizeBytes']
           database_hash['source_database_id'] = database['properties']['sourceDatabaseId']
@@ -58,12 +59,12 @@ module Fog
 
         def save
           requires :resource_group, :server_name, :name, :location
-          sql_database = service.create_or_update_sql_database(database_params_hash)
+          sql_database = service.create_or_update_database(database_params_hash)
           merge_attributes(Fog::Sql::AzureRM::SqlDatabase.parse(sql_database))
         end
 
         def destroy
-          service.delete_sql_database(resource_group, server_name, name)
+          service.delete_database(resource_group, server_name, name)
         end
 
         private
@@ -81,7 +82,8 @@ module Fog
             requested_service_objective_name: requested_service_objective_name,
             restore_point_in_time: restore_point_in_time,
             source_database_deletion_date: source_database_deletion_date,
-            elastic_pool_name: elastic_pool_name
+            elastic_pool_name: elastic_pool_name,
+            requested_service_objective_id: requested_service_objective_id
           }
         end
       end

@@ -1,6 +1,3 @@
-require 'fog/core/collection'
-require 'fog/azurerm/models/network/express_route_circuit_authorization'
-
 module Fog
   module Network
     class AzureRM

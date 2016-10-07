@@ -30,7 +30,7 @@ resources.resource_groups.create(
   name: 'TestRG-ER',
   location: 'eastus'
 )
-puts 'Resource Group created!'
+Fog::Logger.debug 'Resource Group created!'
 ########################################################################################################################
 ################                               Create Express Route Circuit                            #################
 ########################################################################################################################
@@ -60,7 +60,7 @@ network.express_route_circuits.create(
     }
   ]
 )
-puts 'Express Route Circuit created!'
+Fog::Logger.debug 'Express Route Circuit created!'
 
 ########################################################################################################################
 ######################                           List Express Route Circuit                         ####################
@@ -68,7 +68,7 @@ puts 'Express Route Circuit created!'
 
 circuits = network.express_route_circuits(resource_group: 'TestRG-ER')
 circuits.each do |circuit|
-  puts circuit.name
+  Fog::Logger.debug circuit.name
 end
 
 ########################################################################################################################
@@ -81,20 +81,20 @@ network.express_route_circuit_authorizations.create(
   authorization_name: 'Test-Auth',
   name: 'Unique-Auth-Name'
 )
-puts 'Express Route Circuit Authorization created!'
+Fog::Logger.debug 'Express Route Circuit Authorization created!'
 
 ########################################################################################################################
 ######################                Get a Express Route Circuit Authorization                     ####################
 ########################################################################################################################
 authorization = network.express_route_circuit_authorizations.get('TestRG-ER', 'testERCircuit', 'Test-Auth')
-puts authorization.name.to_s
+Fog::Logger.debug authorization.name.to_s
 
 ########################################################################################################################
 ######################                List Express Route Circuit Authorizations                     ####################
 ########################################################################################################################
 authorizations = network.express_route_circuit_authorizations(resource_group: 'TestRG-ER', circuit_name: 'testERCircuit')
 authorizations.each do |auth|
-  puts auth.name.to_s
+  Fog::Logger.debug auth.name.to_s
 end
 
 ########################################################################################################################
@@ -102,18 +102,18 @@ end
 ########################################################################################################################
 authorization = network.express_route_circuit_authorizations.get('TestRG-ER', 'testERCircuit', 'Test-Auth')
 authorization.destroy
-puts 'Express Route Circuit Authorization deleted!'
+Fog::Logger.debug 'Express Route Circuit Authorization deleted!'
 
 ########################################################################################################################
 ######################                   Destroy Express Route Circuit                            ######################
 ########################################################################################################################
 circuit = network.express_route_circuits.get('TestRG-ER', 'testERCircuit')
 circuit.destroy
-puts 'Express Route Circuit deleted!'
+Fog::Logger.debug 'Express Route Circuit deleted!'
 
 ########################################################################################################################
 ######################                         CleanUp                                            ######################
 ########################################################################################################################
 resource_group = resources.resource_groups.get('TestRG-ER')
 resource_group.destroy
-puts 'Resource Group deleted!'
+Fog::Logger.debug 'Resource Group deleted!'

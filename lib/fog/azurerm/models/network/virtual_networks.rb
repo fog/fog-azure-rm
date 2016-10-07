@@ -1,28 +1,25 @@
-require 'fog/core/collection'
-require 'fog/azurerm/models/network/virtual_network'
-
 module Fog
   module Network
     class AzureRM
       # This class is giving implementation of all/list, get and
       # check name availability for virtual network.
       class VirtualNetworks < Fog::Collection
-        model Fog::Network::AzureRM::VirtualNetwork
+        model VirtualNetwork
         attribute :resource_group
 
         def all
           requires :resource_group
           virtual_networks = []
           service.list_virtual_networks(resource_group).each do |vnet|
-            virtual_networks << Fog::Network::AzureRM::VirtualNetwork.parse(vnet)
+            virtual_networks << VirtualNetwork.parse(vnet)
           end
           load(virtual_networks)
         end
 
         def get(resource_group_name, virtual_network_name)
           virtual_network = service.get_virtual_network(resource_group_name, virtual_network_name)
-          virtual_network_object = Fog::Network::AzureRM::VirtualNetwork.new(service: service)
-          virtual_network_object.merge_attributes(Fog::Network::AzureRM::VirtualNetwork.parse(virtual_network))
+          virtual_network_object = VirtualNetwork.new(service: service)
+          virtual_network_object.merge_attributes(VirtualNetwork.parse(virtual_network))
         end
 
         def check_if_exists(resource_group, name)

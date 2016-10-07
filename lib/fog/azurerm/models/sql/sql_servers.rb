@@ -19,7 +19,7 @@ module Fog
         def get(resource_group, server_name)
           server = service.get_sql_server(resource_group, server_name)
           server_obj = Fog::Sql::AzureRM::SqlServer.new(service: service)
-          server_obj.merge_attributes(Fog::TrafficManager::AzureRM::TrafficManagerProfile.parse(server))
+          server_obj.merge_attributes(Fog::Sql::AzureRM::SqlServer.parse(server))
         end
       end
     end

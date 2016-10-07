@@ -31,7 +31,7 @@ module Fog
   module ApplicationGateway
     autoload :AzureRM, File.expand_path('azurerm/application_gateway', __dir__)
   end
-  module SQL
+  module Sql
     autoload :AzureRM, File.expand_path('azurerm/sql', __dir__)
   end
 

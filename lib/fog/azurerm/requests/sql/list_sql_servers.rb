@@ -19,14 +19,31 @@ module Fog
             raise_azure_exception(e, JSON.parse(e.response)['message'])
           end
           Fog::Logger.debug "Sql Servers listed successfully in Resource Group: #{resource_group}"
-          JSON.parse(response)['values']
+          JSON.parse(response)['value']
         end
       end
 
       # Mock class for Sql Server Request
       class Mock
         def list_sql_servers(*)
-
+          [
+            {
+              'location' => '{server-location}',
+              'properties' => {
+                'version' => '{server-version}',
+                'administratorLogin' => '{admin-name}',
+                'administratorLoginPassword' => '{admin-password}'
+              }
+            },
+            {
+              'location' => '{server-location}',
+              'properties' => {
+                'version' => '{server-version}',
+                'administratorLogin' => '{admin-name}',
+                'administratorLoginPassword' => '{admin-password}'
+              }
+            }
+          ]
         end
       end
     end

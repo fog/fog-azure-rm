@@ -1,5 +1,5 @@
 require 'rake/testtask'
-task default: :cc_coverage
+task :default => [:cc_coverage, :it_coverage]
 task :test do
   ENV['COVERAGE'] = nil
   ENV['CODECLIMATE_REPO_TOKEN'] = nil
@@ -26,4 +26,3 @@ task :it_coverage do
   ENV['COVERAGE'] = 'true'
   Dir.glob('**/integration/**/test_*.rb').each { |file| require File.expand_path file, __dir__ }
 end
-

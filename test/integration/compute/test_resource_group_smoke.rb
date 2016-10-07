@@ -31,17 +31,19 @@ class TestResourceGroupSmoke < MiniTest::Test
     @resource = @@resource
   end
 
-  def test_create_resource_group
+  def test_resource_group
     resource_group = @resource.resource_groups.create(name: @@resource_group_name, location: 'eastus')
     assert_instance_of Fog::Resources::AzureRM::ResourceGroup, resource_group
-  end
-
-  def test_all_resource_groups
-  skip
-  end
-
-  def test_get_resource_group
     resource_group = @resource.resource_groups.get(@@resource_group_name)
     assert_instance_of Fog::Resources::AzureRM::ResourceGroup, resource_group
   end
+
+  # def test_all_resource_groups
+  # skip
+  # end
+  #
+  # def test_get_resource_group
+  #   resource_group = @resource.resource_groups.get(@@resource_group_name)
+  #   assert_instance_of Fog::Resources::AzureRM::ResourceGroup, resource_group
+  # end
 end

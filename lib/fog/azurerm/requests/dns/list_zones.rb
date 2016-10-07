@@ -4,34 +4,27 @@ module Fog
       # Real class for DNS Request
       class Real
         def list_zones
-          zone_hash_array = []
-          @resources.resource_groups.each do |rg|
-            list_zones_by_rg(rg.name).each do |zone_hash|
-              zone_hash_array << zone_hash
-            end
+          msg = 'Getting list of Zones.'
+          Fog::Logger.debug msg
+          begin
+            zones = @dns_client.zones.list_in_subscription
+          rescue MsRestAzure::AzureOperationError => e
+            raise_azure_exception(e, msg)
           end
-          zone_hash_array
+          zones
         end
 
         private
 
         def list_zones_by_rg(resource_group)
-          resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription_id}/resourceGroups/#{resource_group}/providers/Microsoft.Network/dnsZones?api-version=2015-05-04-preview"
+          msg = "Getting list of Zones in Resource Group #{resource_group}."
+          Fog::Logger.debug msg
           begin
-            token = Fog::Credentials::AzureRM.get_token(@tenant_id, @client_id, @client_secret)
-            dns_response = RestClient.get(
-              resource_url,
-              accept: 'application/json',
-              content_type: 'application/json',
-              authorization: token
-            )
-            parsed_zone = JSON.parse(dns_response)
-            parsed_zone['value']
-          rescue Exception => e
-            Fog::Logger.warning "Exception listing zones in resource group #{resource_group}"
-            msg = "AzureDns::RecordSet - Exception is: #{e.message}"
-            raise msg
+            zones = @dns_client.zones.list_in_resource_group(resource_group)
+          rescue MsRestAzure::AzureOperationError => e
+            raise_azure_exception(e, msg)
           end
+          zones
         end
       end
 
@@ -50,12 +43,7 @@ module Fog
               {
                 'maxNumberOfRecordSets' => 5000,
                 'nameServers' =>
-                  [
-                    'ns1-05.azure-dns.com.',
-                    'ns2-05.azure-dns.net.',
-                    'ns3-05.azure-dns.org.',
-                    'ns4-05.azure-dns.info.'
-                  ],
+                  %w('ns1-05.azure-dns.com.', 'ns2-05.azure-dns.net.', 'ns3-05.azure-dns.org.', 'ns4-05.azure-dns.info.'),
                 'numberOfRecordSets' => 2,
                 'parentResourceGroupName' => 'fog_test_rg'
               }
@@ -71,12 +59,7 @@ module Fog
               {
                 'maxNumberOfRecordSets' => 5000,
                 'nameServers' =>
-                [
-                  'ns1-02.azure-dns.com.',
-                  'ns2-02.azure-dns.net.',
-                  'ns3-02.azure-dns.org.',
-                  'ns4-02.azure-dns.info.'
-                ],
+                  %w('ns1-02.azure-dns.com.', 'ns2-02.azure-dns.net.', 'ns3-02.azure-dns.org.', 'ns4-02.azure-dns.info.'),
                 'numberOfRecordSets' => 2,
                 'parentResourceGroupName' => 'fog_test_rg'
               }

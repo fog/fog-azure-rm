@@ -12,7 +12,7 @@ module Fog
         attribute :tags
         attribute :etag
         attribute :number_of_record_sets
-        attribute :max_number_of_recordsets
+        attribute :max_number_of_record_sets
 
         def self.parse(zone)
           hash = {}
@@ -29,14 +29,28 @@ module Fog
         end
 
         def save
-          requires :name
-          requires :resource_group
-          zone = service.create_or_update_zone(resource_group, name)
+          requires :name, :resource_group, :location
+          zone = service.create_or_update_zone(zone_params)
           merge_attributes(Fog::DNS::AzureRM::Zone.parse(zone))
         end
 
         def destroy
           service.delete_zone(resource_group, name)
+        end
+
+        private
+
+        def zone_params
+          {
+            name: name,
+            resource_group: resource_group,
+            location: location,
+            type: type,
+            tags: tags,
+            number_of_record_sets: number_of_record_sets,
+            max_number_of_record_sets: max_number_of_record_sets,
+            etag: etag
+          }
         end
       end
     end

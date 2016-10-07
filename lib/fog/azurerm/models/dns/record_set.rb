@@ -44,13 +44,8 @@ module Fog
         end
 
         def save
-          requires :name
-          requires :resource_group
-          requires :zone_name
-          requires :records
-          requires :type
-          requires :ttl
-          record_set = service.create_or_update_record_set(resource_group, name, zone_name, records, type, ttl)
+          requires :name, :resource_group, :zone_name, :records, :type, :ttl
+          record_set = service.create_or_update_record_set(record_set_params)
           merge_attributes(Fog::DNS::AzureRM::RecordSet.parse(record_set))
         end
 
@@ -77,6 +72,23 @@ module Fog
           records.delete(record)
           record_set = service.create_or_update_record_set(resource_group, name, zone_name, records, get_record_type(type), ttl)
           merge_attributes(Fog::DNS::AzureRM::RecordSet.parse(record_set))
+        end
+
+        private
+
+        def record_set_params
+          {
+            name: name,
+            resource_group: resource_group,
+            location: location,
+            zone_name: zone_name,
+            records: records,
+            type: type,
+            ttl: ttl,
+            fqdn: fqdn,
+            cname_record: cname_record,
+            a_record: a_record
+          }
         end
       end
     end

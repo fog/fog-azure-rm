@@ -4,32 +4,23 @@ module Fog
       # Real class for DNS Request
       class Real
         def get_zone(resource_group, name)
-          resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription_id}/resourceGroups/#{resource_group}/providers/Microsoft.Network/dnsZones/#{name}?api-version=2016-04-01"
-          Fog::Logger.debug "Getting a zone: #{name}"
-
+          msg = "Getting Zone #{name} from Resource Group #{resource_group}."
+          Fog::Logger.debug msg
           begin
-            token = Fog::Credentials::AzureRM.get_token(@tenant_id, @client_id, @client_secret)
-            dns_response = RestClient.get(
-              resource_url,
-              accept: 'application/json',
-              content_type: 'application/json',
-              authorization: token
-            )
-          rescue Exception => e
-            Fog::Logger.warning "Exception trying to get existing zone: #{name}."
-            msg = "AzureDns::RecordSet - Exception is: #{e.message}"
-            raise msg
+            zone = @dns_client.zones.get(resource_group, name)
+          rescue MsRestAzure::AzureOperationError => e
+            raise_azure_exception(e, msg)
           end
-          JSON.parse(dns_response)
+          zone
         end
       end
 
       # Mock class for DNS Request
       class Mock
-        def get_zone(resource_group, name)
+        def get_zone(*)
           {
-            'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/dnszones/#{name}",
-            'name' => name,
+            'id' => '/subscriptions/########-####-####-####-############/resourceGroups/resource_group/providers/Microsoft.Network/dnszones/zone_name',
+            'name' => 'zone_name',
             'type' => 'Microsoft.Network/dnszones',
             'etag' => '00000003-0000-0000-bd66-02b337a4d101',
             'location' => 'global',
@@ -39,9 +30,9 @@ module Fog
                 'maxNumberOfRecordSets' => 100_00,
                 'nameServers' => nil,
                 'numberOfRecordSets' => 2,
-                'parentResourceGroupName' => resource_group
+                'parentResourceGroupName' => 'resource_group'
               },
-            'resource_group' => resource_group
+            'resource_group' => 'resource_group'
           }
         end
       end

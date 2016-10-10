@@ -15,7 +15,7 @@ class TestDeleteSqlServer < Minitest::Test
     end
   end
 
-  def test_delete__sql_server_failure
+  def test_delete_sql_server_failure
     @token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
       assert_raises ArgumentError do
         @service.delete_sql_server('fog-test-zone')
@@ -23,7 +23,7 @@ class TestDeleteSqlServer < Minitest::Test
     end
   end
 
-  def test_delete__sql_server_exception
+  def test_delete_sql_server_exception
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @token_provider.stub :get_authentication_header, response do
       assert_raises Exception do

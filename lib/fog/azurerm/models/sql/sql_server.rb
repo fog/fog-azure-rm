@@ -15,25 +15,23 @@ module Fog
         attribute :fully_qualified_domain_name
 
         def self.parse(server)
-          server_hash = {}
-          server_hash['id'] = server['id']
-          server_hash['type'] = server['type']
-          server_hash['name'] = server['name']
-          server_hash['resource_group'] = get_resource_group_from_id(server['id'])
-          server_hash['location'] = server['location']
-
-          server_hash['state'] = server['properties']['state']
-          server_hash['version'] = server['properties']['version']
-          server_hash['administrator_login'] = server['properties']['administratorLogin']
-          server_hash['administrator_login_password'] = server['properties']['administratorLoginPassword']
-          server_hash['fully_qualified_domain_name'] = server['properties']['fullyQualifiedDomainName']
-
-          server_hash
+          {
+            id: server['id'],
+            type: server['type'],
+            name: server['name'],
+            location: server['location'],
+            state: server['properties']['state'],
+            version: server['properties']['version'],
+            resource_group: get_resource_group_from_id(server['id']),
+            administrator_login: server['properties']['administratorLogin'],
+            administrator_login_password: server['properties']['administratorLoginPassword'],
+            fully_qualified_domain_name: server['properties']['fullyQualifiedDomainName']
+          }
         end
 
         def save
           requires :name, :resource_group, :location, :version, :administrator_login, :administrator_login_password
-          sql_server = service.create_or_update_sql_server(server_params_hash)
+          sql_server = service.create_or_update_sql_server(database_params)
           merge_attributes(Fog::Sql::AzureRM::SqlServer.parse(sql_server))
         end
 
@@ -43,7 +41,7 @@ module Fog
 
         private
 
-        def server_params_hash
+        def database_params
           {
             resource_group: resource_group,
             name: name,

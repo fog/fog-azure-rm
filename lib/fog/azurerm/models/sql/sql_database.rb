@@ -27,37 +27,35 @@ module Fog
         attribute :source_database_deletion_date
 
         def self.parse(database)
-          database_hash = {}
-
-          database_hash['id'] = database['id']
-          database_hash['type'] = database['type']
-          database_hash['name'] = database['name']
-          database_hash['resource_group'] = get_resource_group_from_id(database['id'])
-          database_hash['location'] = database['location']
-          database_hash['edition'] = database['properties']['edition']
-          database_hash['elastic_pool_name'] = database['elasticPoolName']
-          database_hash['collation'] = database['properties']['collation']
-          database_hash['create_mode'] = database['properties']['createMode']
-          database_hash['database_id'] = database['properties']['databaseId']
-          database_hash['server_name'] = get_server_name_from_id(database['id'])
-          database_hash['creation_date'] = database['properties']['creationDate']
-          database_hash['max_size_bytes'] = database['properties']['maxSizeBytes']
-          database_hash['source_database_id'] = database['properties']['sourceDatabaseId']
-          database_hash['restore_point_in_time'] = database['properties']['restorePointInTime']
-          database_hash['earliest_restore_date'] = database['properties']['earliestRestoreDate']
-          database_hash['service_level_objective'] = database['properties']['serviceLevelObjective']
-          database_hash['default_secondary_location'] = database['properties']['defaultSecondaryLocation']
-          database_hash['source_database_deletion_date'] = database['properties']['sourceDatabaseDeletionDate']
-          database_hash['requested_service_objective_id'] = database['properties']['requestedServiceObjectiveId']
-          database_hash['requested_service_objective_name'] = database['properties']['requestedServiceObjectiveName']
-          database_hash['current_service_level_objective_id'] = database['properties']['currentServiceLevelObjectiveId']
-
-          database_hash
+          {
+            id: database['id'],
+            type: database['type'],
+            name: database['name'],
+            location: database['location'],
+            edition: database['properties']['edition'],
+            elastic_pool_name: database['elasticPoolName'],
+            collation: database['properties']['collation'],
+            create_mode: database['properties']['createMode'],
+            database_id: database['properties']['databaseId'],
+            server_name: get_server_name_from_id(database['id']),
+            creation_date: database['properties']['creationDate'],
+            max_size_bytes: database['properties']['maxSizeBytes'],
+            resource_group: get_resource_group_from_id(database['id']),
+            source_database_id: database['properties']['sourceDatabaseId'],
+            restore_point_in_time: database['properties']['restorePointInTime'],
+            earliest_restore_date: database['properties']['earliestRestoreDate'],
+            service_level_objective: database['properties']['serviceLevelObjective'],
+            default_secondary_location: database['properties']['defaultSecondaryLocation'],
+            source_database_deletion_date: database['properties']['sourceDatabaseDeletionDate'],
+            requested_service_objective_id: database['properties']['requestedServiceObjectiveId'],
+            requested_service_objective_name: database['properties']['requestedServiceObjectiveName'],
+            current_service_level_objective_id: database['properties']['currentServiceLevelObjectiveId'],
+          }
         end
 
         def save
           requires :resource_group, :server_name, :name, :location
-          sql_database = service.create_or_update_database(database_params_hash)
+          sql_database = service.create_or_update_database(database_params)
           merge_attributes(Fog::Sql::AzureRM::SqlDatabase.parse(sql_database))
         end
 
@@ -67,7 +65,7 @@ module Fog
 
         private
 
-        def database_params_hash
+        def database_params
           {
             resource_group: resource_group,
             server_name: server_name,

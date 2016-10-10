@@ -24,7 +24,7 @@ class TestDeleteSqlServer < Minitest::Test
   end
 
   def test_delete__sql_server_exception
-    response = -> { fail Exception.new('mocked exception') }
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @token_provider.stub :get_authentication_header, response do
       assert_raises Exception do
         assert @service.delete_sql_server('fog-test-rg', 'fog-test-server-name')

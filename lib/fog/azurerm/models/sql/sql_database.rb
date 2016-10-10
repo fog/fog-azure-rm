@@ -26,8 +26,6 @@ module Fog
         attribute :source_database_id
         attribute :source_database_deletion_date
 
-
-
         def self.parse(database)
           database_hash = {}
 
@@ -68,6 +66,7 @@ module Fog
         end
 
         private
+
         def database_params_hash
           {
             resource_group: resource_group,

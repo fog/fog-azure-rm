@@ -10,7 +10,7 @@ class TestCreateOrUpdateDatabase < Minitest::Test
 
   def test_create_or_update_database_success
     database_response = ApiStub::Requests::Sql::SqlDatabase.create_database_response
-    data_hash =  ApiStub::Requests::Sql::SqlDatabase.database_hash
+    data_hash = ApiStub::Requests::Sql::SqlDatabase.database_hash
     @token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
       RestClient.stub :put, database_response do
         assert_equal @service.create_or_update_database(data_hash), JSON.parse(database_response)

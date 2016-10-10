@@ -25,6 +25,7 @@ module Fog
         end
 
         private
+
         def format_database_parameters(location, create_mode, edition, source_database_id, collation, max_size_bytes, requested_service_objective_name, restore_point_in_time, source_database_deletion_date, elastic_pool_name, requested_service_objective_id)
           parameters = {}
           properties = {}
@@ -40,14 +41,12 @@ module Fog
           properties['requestedServiceObjectiveId'] = requested_service_objective_id unless requested_service_objective_id.nil?
           properties['requestedServiceObjectiveName'] = requested_service_objective_name unless requested_service_objective_name.nil?
 
-
           parameters['tags'] = {}
           parameters['location'] = location
           parameters['properties'] = properties
 
           parameters
         end
-
       end
 
       # Mock class for Sql Database Request

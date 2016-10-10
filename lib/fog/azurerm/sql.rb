@@ -42,7 +42,6 @@ module Fog
       # This class provides the mock implementation for unit tests.
       class Mock
         def initialize(_options = {})
-
         end
       end
     end

@@ -31,6 +31,7 @@ def storage_account_credentials
   }
 end
 
+# Mock Class for Blob
 class MockBlob
   def initialize
     @properties = {}
@@ -44,6 +45,7 @@ class MockBlob
   attr_accessor :metadata
 end
 
+# Mock Class for Response
 class MockResponse
   def initialize(code, body, headers)
     @status = code

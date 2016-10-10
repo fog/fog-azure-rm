@@ -42,6 +42,7 @@ module Fog
         end
 
         private
+
         def server_params_hash
           {
             resource_group: resource_group,

@@ -50,4 +50,4 @@ Plugin Root
                              |--- storage
 ```
 
-For more information aboute fog struture [Click Here](http://fog.io/about/structure.html)
+For more information about fog structure [Click Here](http://fog.io/about/structure.html)

@@ -26,6 +26,7 @@ module Fog
         end
 
         private
+
         def format_server_parameters(location, version, admin_login, admin_password)
           parameters = {}
           properties = {}
@@ -40,7 +41,6 @@ module Fog
 
           parameters
         end
-
       end
 
       # Mock class for Sql Server Request

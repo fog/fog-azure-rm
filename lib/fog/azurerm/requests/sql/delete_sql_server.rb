@@ -10,10 +10,10 @@ module Fog
           begin
             token = Fog::Credentials::AzureRM.get_token(@tenant_id, @client_id, @client_secret)
             RestClient.delete(
-                  resource_url,
-                  accept: :json,
-                  content_type: :json,
-                  authorization: token
+              resource_url,
+              accept: :json,
+              content_type: :json,
+              authorization: token
             )
             Fog::Logger.debug "SQL Server: #{name} deleted successfully."
             true
@@ -22,6 +22,7 @@ module Fog
           end
         end
       end
+
       # Mock class for Sql Server Request
       class Mock
         def delete_sql_server(*)

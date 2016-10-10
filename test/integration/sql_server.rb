@@ -9,17 +9,17 @@ require 'yaml'
 azure_credentials = YAML.load_file('credentials/azure.yml')
 
 resources = Fog::Resources::AzureRM.new(
-    tenant_id: azure_credentials['tenant_id'],
-    client_id: azure_credentials['client_id'],
-    client_secret: azure_credentials['client_secret'],
-    subscription_id: azure_credentials['subscription_id']
+  tenant_id: azure_credentials['tenant_id'],
+  client_id: azure_credentials['client_id'],
+  client_secret: azure_credentials['client_secret'],
+  subscription_id: azure_credentials['subscription_id']
 )
 
 azure_sql_service = Fog::Sql::AzureRM.new(
-    tenant_id: azure_credentials['tenant_id'],
-    client_id: azure_credentials['client_id'],
-    client_secret: azure_credentials['client_secret'],
-    subscription_id: azure_credentials['subscription_id']
+  tenant_id: azure_credentials['tenant_id'],
+  client_id: azure_credentials['client_id'],
+  client_secret: azure_credentials['client_secret'],
+  subscription_id: azure_credentials['subscription_id']
 )
 
 ########################################################################################################################
@@ -27,14 +27,14 @@ azure_sql_service = Fog::Sql::AzureRM.new(
 ########################################################################################################################
 
 resources.resource_groups.create(
-    name: 'TestRG-SQL',
-    location: 'eastus'
+  name: 'TestRG-SQL',
+  location: 'eastus'
 )
 
 ########################################################################################################################
 ######################                         Create Sql Server                                  ######################
 ########################################################################################################################
-server_name = rand(0...99999)
+server_name = rand(0...999_99)
 
 azure_sql_service.sql_servers.create(
   name: server_name,
@@ -48,7 +48,7 @@ azure_sql_service.sql_servers.create(
 ########################################################################################################################
 ######################                        Create Sql Database                                 ######################
 ########################################################################################################################
-database_name = rand(0...99999)
+database_name = rand(0...999_99)
 
 azure_sql_service.sql_databases.create(
   resource_group: 'TestRG-SQL',
@@ -61,44 +61,40 @@ azure_sql_service.sql_databases.create(
 ######################                   Get Sql Database                                         ######################
 ########################################################################################################################
 
-database = azure_sql_service.sql_databases
-              .get('TestRG-SQL', server_name, database_name)
+database = azure_sql_service.sql_databases.get('TestRG-SQL', server_name, database_name)
 puts "GET Database: #{database.name}"
 
 ########################################################################################################################
 ######################                        List Sql Database                                   ######################
 ########################################################################################################################
 
-databases  = azure_sql_service.sql_databases(resource_group: 'TestRG-SQL', server_name: server_name)
-databases.each do |database|
-  puts "List Databases: #{database.name}"
+databases = azure_sql_service.sql_databases(resource_group: 'TestRG-SQL', server_name: server_name)
+databases.each do |a_database|
+  puts "List Databases: #{a_database.name}"
 end
 
 ########################################################################################################################
 ######################                   Get and Destroy Sql Database                             ######################
 ########################################################################################################################
 
-database = azure_sql_service.sql_databases
-               .get('TestRG-SQL', server_name, database_name)
+database = azure_sql_service.sql_databases.get('TestRG-SQL', server_name, database_name)
 database.destroy
 
 ########################################################################################################################
 ######################                       Get Sql Server                                       ######################
 ########################################################################################################################
 
-server = azure_sql_service
-              .sql_servers.get('TestRG-SQL', server_name)
+server = azure_sql_service.sql_servers.get('TestRG-SQL', server_name)
 puts "GET Server: #{server.name}"
 
 ########################################################################################################################
 ######################                             List Sql Servers                               ######################
 ########################################################################################################################
 
-servers  = azure_sql_service.sql_servers(resource_group: 'TestRG-SQL')
-servers.each do |server|
-  puts "List Serves : #{server.name}"
+servers = azure_sql_service.sql_servers(resource_group: 'TestRG-SQL')
+servers.each do |a_server|
+  puts "List Serves : #{a_server.name}"
 end
-
 
 ########################################################################################################################
 ######################                    Get and Destroy Sql Servers                             ######################

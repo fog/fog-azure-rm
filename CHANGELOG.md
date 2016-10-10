@@ -1,7 +1,7 @@
 ## Upcoming Version
 
 **Added:**
-- Azure SQL Service - Support for SQL Server, SQL Databases added.
+- Azure SQL Service - Support for SQL Server, SQL Databases and Data warehouse added.
 
 ## 0.0.8 
 

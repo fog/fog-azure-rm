@@ -10,7 +10,7 @@ class TestCreateOrUpdateSqlServer < Minitest::Test
 
   def test_create_or_update_sql_server_success
     server_response = ApiStub::Requests::Sql::SqlServer.create_sql_server_response
-    data_hash =  ApiStub::Requests::Sql::SqlServer.sql_server_hash
+    data_hash = ApiStub::Requests::Sql::SqlServer.sql_server_hash
     @token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
       RestClient.stub :put, server_response do
         assert_equal @service.create_or_update_sql_server(data_hash), JSON.parse(server_response)

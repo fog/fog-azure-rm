@@ -62,7 +62,7 @@ azure_sql_service.sql_databases.create(
 ########################################################################################################################
 
 database = azure_sql_service.sql_databases.get('TestRG-SQL', server_name, database_name)
-puts "GET Database: #{database.name}"
+Fog::Logger.debug "GET Database: #{database.name}"
 
 ########################################################################################################################
 ######################                        List Sql Database                                   ######################
@@ -70,7 +70,7 @@ puts "GET Database: #{database.name}"
 
 databases = azure_sql_service.sql_databases(resource_group: 'TestRG-SQL', server_name: server_name)
 databases.each do |a_database|
-  puts "List Databases: #{a_database.name}"
+  Fog::Logger.debug "List Databases: #{a_database.name}"
 end
 
 ########################################################################################################################
@@ -85,7 +85,7 @@ database.destroy
 ########################################################################################################################
 
 server = azure_sql_service.sql_servers.get('TestRG-SQL', server_name)
-puts "GET Server: #{server.name}"
+Fog::Logger.debug "GET Server: #{server.name}"
 
 ########################################################################################################################
 ######################                             List Sql Servers                               ######################
@@ -93,7 +93,7 @@ puts "GET Server: #{server.name}"
 
 servers = azure_sql_service.sql_servers(resource_group: 'TestRG-SQL')
 servers.each do |a_server|
-  puts "List Serves : #{a_server.name}"
+  Fog::Logger.debug "List Serves : #{a_server.name}"
 end
 
 ########################################################################################################################

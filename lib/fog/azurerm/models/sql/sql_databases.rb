@@ -5,7 +5,7 @@ module Fog
       class SqlDatabases < Fog::Collection
         attribute :resource_group
         attribute :server_name
-        model Fog::Sql::AzureRM::SqlDatabase
+        model SqlDatabase
 
         def all
           requires :resource_group
@@ -13,15 +13,15 @@ module Fog
 
           databases = []
           service.list_databases(resource_group, server_name).each do |database|
-            databases << Fog::Sql::AzureRM::SqlDatabase.parse(database)
+            databases << SqlDatabase.parse(database)
           end
           load(databases)
         end
 
         def get(resource_group, server_name, name)
           database = service.get_database(resource_group, server_name, name)
-          database_obj = Fog::Sql::AzureRM::SqlDatabase.new(service: service)
-          database_obj.merge_attributes(Fog::Sql::AzureRM::SqlDatabase.parse(database))
+          database_obj = SqlDatabase.new(service: service)
+          database_obj.merge_attributes(SqlDatabase.parse(database))
         end
       end
     end

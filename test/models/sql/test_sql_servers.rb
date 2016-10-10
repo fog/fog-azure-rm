@@ -14,12 +14,12 @@ class TestSqlServers < Minitest::Test
       :get
     ]
     methods.each do |method|
-      assert @sql_servers.respond_to? method, true
+      assert_respond_to @sql_servers, method
     end
   end
 
   def test_collection_attributes
-    assert @sql_servers.respond_to? :resource_group, true
+    assert_respond_to @sql_servers, :resource_group
   end
 
   def test_all_method_response

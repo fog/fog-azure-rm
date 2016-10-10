@@ -4,10 +4,10 @@ require 'minitest/autorun'
 class TestResourceGroupSmoke < MiniTest::Test
   def setup
     @resource = Fog::Resources::AzureRM.new(
-        tenant_id: ENV['TENANT_ID'],
-        client_id: ENV['CLIENT_ID'],
-        client_secret: ENV['CLIENT_SECRET'],
-        subscription_id: ENV['SUBSCRIPTION_ID']
+      tenant_id: ENV['TENANT_ID'],
+      client_id: ENV['CLIENT_ID'],
+      client_secret: ENV['CLIENT_SECRET'],
+      subscription_id: ENV['SUBSCRIPTION_ID']
     )
     time = Time.now.to_f.to_s
     new_time = time.split(/\W+/).join

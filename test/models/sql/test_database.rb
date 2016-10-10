@@ -13,7 +13,7 @@ class TestDatabase < Minitest::Test
       :destroy
     ]
     methods.each do |method|
-      assert @database.respond_to? method, true
+      assert_respond_to @database, method
     end
   end
 
@@ -43,7 +43,7 @@ class TestDatabase < Minitest::Test
       :source_database_deletion_date
     ]
     attributes.each do |attribute|
-      assert @database.respond_to? attribute, true
+      assert_respond_to @database, attribute
     end
   end
 

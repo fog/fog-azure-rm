@@ -14,13 +14,13 @@ class TestDatabases < Minitest::Test
       :get
     ]
     methods.each do |method|
-      assert @databases.respond_to? method, true
+      assert_respond_to @databases, method
     end
   end
 
   def test_collection_attributes
-    assert @databases.respond_to? :resource_group, true
-    assert @databases.respond_to? :server_name, true
+    assert_respond_to @databases, :resource_group
+    assert_respond_to @databases, :server_name
   end
 
   def test_all_method_response

@@ -13,7 +13,7 @@ class TestSqlServer < Minitest::Test
       :destroy
     ]
     methods.each do |method|
-      assert @sql_server.respond_to? method, true
+      assert_respond_to @sql_server, method
     end
   end
 
@@ -31,7 +31,7 @@ class TestSqlServer < Minitest::Test
       :fully_qualified_domain_name
     ]
     attributes.each do |attribute|
-      assert @sql_server.respond_to? attribute, true
+      assert_respond_to @sql_server, attribute
     end
   end
 

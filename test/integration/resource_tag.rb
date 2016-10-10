@@ -15,17 +15,28 @@ resources = Fog::Resources::AzureRM.new(
   subscription_id: azure_credentials['subscription_id']
 )
 
+network = Fog::Network::AzureRM.new(
+  tenant_id: azure_credentials['tenant_id'],
+  client_id: azure_credentials['client_id'],
+  client_secret: azure_credentials['client_secret'],
+  subscription_id: azure_credentials['subscription_id']
+)
+
 ########################################################################################################################
 ######################                                 Prerequisites                              ######################
 ########################################################################################################################
 
 resource_group = resources.resource_groups.create(
-  name: 'TestRG-ZN',
+  name: 'TestRG-RT',
   location: 'eastus'
 )
 
-# Will remove this hardcoded string when other services will be updated too
-resource_id = "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-ZN/providers/Microsoft.Network/virtualNetworks/testvnet"
+resource_id = network.public_ips.create(
+  name: 'mypubip',
+  resource_group: 'TestRG-RT',
+  location: 'eastus',
+  public_ip_allocation_method: 'Static'
+).id
 
 ########################################################################################################################
 ######################                                Tag Resource                          ############################

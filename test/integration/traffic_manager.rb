@@ -39,7 +39,7 @@ traffic_manager.traffic_manager_profiles.create(
   name: 'test-tmp',
   resource_group: 'TestRG-TM',
   traffic_routing_method: 'Performance',
-  relative_name: 'testapp',
+  relative_name: 'testapplication',
   ttl: '30',
   protocol: 'http',
   port: '80',

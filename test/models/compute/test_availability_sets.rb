@@ -16,12 +16,12 @@ class TestAvailabilitySets < Minitest::Test
       :get
     ]
     methods.each do |method|
-      assert @availability_sets.respond_to? method, true
+      assert_respond_to @availability_sets, method
     end
   end
 
   def test_collection_attributes
-    assert @availability_sets.respond_to? :resource_group, true
+    assert_respond_to @availability_sets, :resource_group
   end
 
   def test_all_method_response

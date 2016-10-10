@@ -15,7 +15,7 @@ class TestVirtualNetworkGateway < Minitest::Test
       :destroy
     ]
     methods.each do |method|
-      assert @network_gateway.respond_to? method
+      assert_respond_to @network_gateway, method
     end
   end
 
@@ -44,7 +44,7 @@ class TestVirtualNetworkGateway < Minitest::Test
       :peer_weight
     ]
     attributes.each do |attribute|
-      assert @network_gateway.respond_to? attribute
+      assert_respond_to @network_gateway, attribute
     end
   end
 

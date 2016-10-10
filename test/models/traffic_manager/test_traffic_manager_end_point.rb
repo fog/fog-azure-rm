@@ -14,7 +14,7 @@ class TestTrafficManagerEndPoint < Minitest::Test
       :destroy
     ]
     methods.each do |method|
-      assert @traffic_manager_end_point.respond_to? method
+      assert_respond_to @traffic_manager_end_point, method
     end
   end
 
@@ -35,7 +35,7 @@ class TestTrafficManagerEndPoint < Minitest::Test
       :min_child_endpoints
     ]
     attributes.each do |attribute|
-      assert @traffic_manager_end_point.respond_to? attribute
+      assert_respond_to @traffic_manager_end_point, attribute
     end
   end
 

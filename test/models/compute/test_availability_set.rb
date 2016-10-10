@@ -15,7 +15,7 @@ class TestAvailabilitySet < Minitest::Test
       :destroy
     ]
     methods.each do |method|
-      assert @availability_set.respond_to? method, true
+      assert_respond_to @availability_set, method
     end
   end
 

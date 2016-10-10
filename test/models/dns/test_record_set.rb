@@ -15,7 +15,7 @@ class TestRecordSet < Minitest::Test
       :get_records
     ]
     methods.each do |method|
-      assert @record_set.respond_to? method, true
+      assert_respond_to @record_set, method
     end
   end
 
@@ -29,7 +29,7 @@ class TestRecordSet < Minitest::Test
       :ttl
     ]
     attributes.each do |attribute|
-      assert @record_set.respond_to? attribute, true
+      assert_respond_to @record_set, attribute
     end
   end
 

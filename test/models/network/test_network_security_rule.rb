@@ -25,7 +25,7 @@ class TestNetworkSecurityRule < Minitest::Test
       :direction
     ]
     attributes.each do |attribute|
-      assert @network_security_rule.respond_to? attribute
+      assert_respond_to @network_security_rule, attribute
     end
   end
 

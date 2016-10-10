@@ -15,7 +15,7 @@ class TestResourceGroups < Minitest::Test
       :get
     ]
     methods.each do |method|
-      assert @resource_groups.respond_to? method, true
+      assert_respond_to @resource_groups, method
     end
   end
 

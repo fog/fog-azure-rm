@@ -20,7 +20,7 @@ class TestNetworkInterface < Minitest::Test
       :detach_network_security_group
     ]
     methods.each do |method|
-      assert @network_interface.respond_to? method
+      assert_respond_to @network_interface, method
     end
   end
 
@@ -47,7 +47,7 @@ class TestNetworkInterface < Minitest::Test
       :internal_fqd
     ]
     attributes.each do |attribute|
-      assert @network_interface.respond_to? attribute
+      assert_respond_to @network_interface, attribute
     end
   end
 

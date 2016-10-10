@@ -13,7 +13,7 @@ class TestExpressRouteServiceProviders < Minitest::Test
       :all
     ]
     methods.each do |method|
-      assert @service_providers.respond_to? method
+      assert_respond_to @service_providers, method
     end
   end
 

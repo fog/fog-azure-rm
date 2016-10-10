@@ -15,7 +15,7 @@ class TestDeployment < Minitest::Test
       :destroy
     ]
     methods.each do |method|
-      assert @deployment.respond_to? method, true
+      assert_respond_to @deployment, method
     end
   end
 
@@ -37,7 +37,7 @@ class TestDeployment < Minitest::Test
       :provisioning_state
     ]
     attributes.each do |attribute|
-      assert @deployment.respond_to? attribute, true
+      assert_respond_to @deployment, attribute
     end
   end
 

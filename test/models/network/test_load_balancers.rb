@@ -15,12 +15,12 @@ class TestLoadBalancers < Minitest::Test
       :get
     ]
     methods.each do |method|
-      assert @load_balancers.respond_to? method
+      assert_respond_to @load_balancers, method
     end
   end
 
   def test_collection_attributes
-    assert @load_balancers.respond_to? :resource_group
+    assert_respond_to @load_balancers, :resource_group
   end
 
   def test_all_method_response

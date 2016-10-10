@@ -19,10 +19,20 @@ class TestGateway < Minitest::Test
   def test_model_methods
     methods = [
       :save,
-      :destroy
+      :destroy,
+      :update_sku,
+      :update_gateway_ip_configuration,
+      :add_ssl_certificate,
+      :remove_ssl_certificate,
+      :add_frontend_port,
+      :remove_frontend_port,
+      :add_probe,
+      :remove_probe,
+      :start,
+      :stop
     ]
     methods.each do |method|
-      assert @gateway.respond_to? method
+      assert_respond_to @gateway, method
     end
   end
 
@@ -46,7 +56,7 @@ class TestGateway < Minitest::Test
       :request_routing_rules
     ]
     attributes.each do |attribute|
-      assert @gateway.respond_to? attribute
+      assert_respond_to @gateway, attribute
     end
   end
 
@@ -101,6 +111,18 @@ class TestGateway < Minitest::Test
   def test_remove_probe
     @service.stub :create_or_update_application_gateway, @response do
       assert_instance_of Fog::ApplicationGateway::AzureRM::Gateway, @gateway_obj.remove_probe(@probe)
+    end
+  end
+
+  def test_start_method_response
+    @service.stub :start_application_gateway, true do
+      assert_equal true, @gateway_obj.start
+    end
+  end
+
+  def test_stop_method_response
+    @service.stub :stop_application_gateway, true do
+      assert_equal true, @gateway_obj.stop
     end
   end
 

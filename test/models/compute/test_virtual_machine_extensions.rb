@@ -14,7 +14,7 @@ class TestVirtualMachineExtensions < Minitest::Test
       :get
     ]
     methods.each do |method|
-      assert @vm_extensions.respond_to? method, true
+      assert_respond_to @vm_extensions, method
     end
   end
 
@@ -24,7 +24,7 @@ class TestVirtualMachineExtensions < Minitest::Test
       :vm_name
     ]
     attributes.each do |attribute|
-      assert @vm_extensions.respond_to? attribute, true
+      assert_respond_to @vm_extensions, attribute
     end
   end
 

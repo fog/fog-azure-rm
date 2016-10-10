@@ -15,12 +15,12 @@ class TestVirtualNetworks < Minitest::Test
       :check_if_exists
     ]
     methods.each do |method|
-      assert @virtual_networks.respond_to? method
+      assert_respond_to @virtual_networks, method
     end
   end
 
   def test_collection_attributes
-    assert @virtual_networks.respond_to? :resource_group
+    assert_respond_to @virtual_networks, :resource_group
   end
 
   def test_all_method_response

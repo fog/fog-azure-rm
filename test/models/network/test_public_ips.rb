@@ -16,12 +16,12 @@ class TestPublicIps < Minitest::Test
       :check_if_exists
     ]
     methods.each do |method|
-      assert @public_ips.respond_to? method
+      assert_respond_to @public_ips, method
     end
   end
 
   def test_collection_attributes
-    assert @public_ips.respond_to? :resource_group
+    assert_respond_to @public_ips, :resource_group
   end
 
   def test_all_method_response

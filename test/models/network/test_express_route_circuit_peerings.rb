@@ -14,13 +14,13 @@ class TestExpressRouteCircuitPeerings < Minitest::Test
       :get
     ]
     methods.each do |method|
-      assert @circuit_peerings.respond_to? method
+      assert_respond_to @circuit_peerings, method
     end
   end
 
   def test_collection_attributes
-    assert @circuit_peerings.respond_to? :resource_group
-    assert @circuit_peerings.respond_to? :circuit_name
+    assert_respond_to @circuit_peerings, :resource_group
+    assert_respond_to @circuit_peerings, :circuit_name
   end
 
   def test_all_method_response

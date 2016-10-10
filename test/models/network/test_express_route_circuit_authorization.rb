@@ -14,7 +14,7 @@ class TestExpressRouteCircuitAuthorization < Minitest::Test
       :destroy
     ]
     methods.each do |method|
-      assert @circuit_authorization.respond_to? method
+      assert_respond_to @circuit_authorization, method
     end
   end
 
@@ -31,7 +31,7 @@ class TestExpressRouteCircuitAuthorization < Minitest::Test
       :circuit_name
     ]
     attributes.each do |attribute|
-      assert @circuit_authorization.respond_to? attribute
+      assert_respond_to @circuit_authorization, attribute
     end
   end
 

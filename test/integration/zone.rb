@@ -9,18 +9,18 @@ require 'yaml'
 azure_credentials = YAML.load_file('credentials/azure.yml')
 
 rs = Fog::Resources::AzureRM.new(
-  tenant_id: azure_credentials['tenant_id'],
-  client_id: azure_credentials['client_id'],
-  client_secret: azure_credentials['client_secret'],
-  subscription_id: azure_credentials['subscription_id']
+    tenant_id: azure_credentials['tenant_id'],
+    client_id: azure_credentials['client_id'],
+    client_secret: azure_credentials['client_secret'],
+    subscription_id: azure_credentials['subscription_id']
 )
 
 dns = Fog::DNS.new(
-  provider: 'AzureRM',
-  tenant_id: azure_credentials['tenant_id'],
-  client_id: azure_credentials['client_id'],
-  client_secret: azure_credentials['client_secret'],
-  subscription_id: azure_credentials['subscription_id']
+    provider: 'AzureRM',
+    tenant_id: azure_credentials['tenant_id'],
+    client_id: azure_credentials['client_id'],
+    client_secret: azure_credentials['client_secret'],
+    subscription_id: azure_credentials['subscription_id']
 )
 
 ########################################################################################################################
@@ -28,8 +28,8 @@ dns = Fog::DNS.new(
 ########################################################################################################################
 
 rs.resource_groups.create(
-  name: 'TestRG-ZN',
-  location: 'eastus'
+    name: 'TestRG-ZN',
+    location: 'eastus'
 )
 
 ########################################################################################################################
@@ -37,8 +37,9 @@ rs.resource_groups.create(
 ########################################################################################################################
 
 dns.zones.create(
-  name: 'test-zone.com',
-  resource_group: 'TestRG-ZN'
+    name: 'test-zone.com',
+    location: 'global',
+    resource_group: 'TestRG-ZN'
 )
 
 ########################################################################################################################

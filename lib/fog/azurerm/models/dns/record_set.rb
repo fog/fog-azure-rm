@@ -7,45 +7,41 @@ module Fog
         attribute :id
         identity :name
         attribute :resource_group
-        attribute :location
         attribute :zone_name
         attribute :records
         attribute :type
         attribute :ttl
-        attribute :fqdn
         attribute :cname_record
-        attribute :a_record
+        attribute :a_records
 
         def self.parse(recordset)
           hash = {}
-          hash['id'] = recordset['id']
-          hash['name'] = recordset['name']
-          hash['resource_group'] = recordset['id'].split('/')[4]
-          hash['location'] = recordset['location']
-          hash['zone_name'] = recordset['id'].split('/')[8]
-          hash['type'] = recordset['type']
-          type = recordset['type'].split('/')[2]
+          hash['id'] = recordset.id
+          hash['name'] = recordset.name
+          hash['resource_group'] = get_resource_group_from_id(recordset.id)
+          hash['zone_name'] = recordset.id.split('/')[8]
+          hash['type'] = recordset.type
+          type = recordset.type.split('/')[2]
           hash['records'] = []
           if type == 'A'
-            record_entries = recordset['properties']['ARecords']
+            record_entries = recordset.arecords
             record_entries.each do |record|
-              hash['records'] << record['ipv4Address']
+              hash['records'] << record.ipv4address
             end
           end
           if type == 'CNAME'
-            record_entries = recordset['properties']['CNAMERecord']['cname']
+            record_entries = recordset.cname_record
             hash['records'] << record_entries
           end
-          hash['a_record'] = recordset['properties']['ARecords'] if type == 'A'
-          hash['cname_record'] = recordset['properties']['CNAMERecord'] if type == 'CNAME'
-          hash['ttl'] = recordset['properties']['TTL']
-          hash['fqdn'] = recordset['properties']['fqdn']
+          hash['a_records'] = recordset.arecords if type == 'A'
+          hash['cname_record'] = recordset.cname_record if type == 'CNAME'
+          hash['ttl'] = recordset.ttl
           hash
         end
 
         def save
           requires :name, :resource_group, :zone_name, :records, :type, :ttl
-          record_set = service.create_or_update_record_set(record_set_params)
+          record_set = service.create_or_update_record_set(record_set_params, type)
           merge_attributes(Fog::DNS::AzureRM::RecordSet.parse(record_set))
         end
 
@@ -58,19 +54,19 @@ module Fog
         end
 
         def update_ttl(ttl)
-          record_set = service.create_or_update_record_set(resource_group, name, zone_name, records, get_record_type(type), ttl)
+          record_set = service.create_or_update_record_set(record_set_params, get_record_type(type))
           merge_attributes(Fog::DNS::AzureRM::RecordSet.parse(record_set))
         end
 
         def add_a_type_record(record)
           records << record
-          record_set = service.create_or_update_record_set(resource_group, name, zone_name, records, get_record_type(type), ttl)
+          record_set = service.create_or_update_record_set(record_set_params, get_record_type(type))
           merge_attributes(Fog::DNS::AzureRM::RecordSet.parse(record_set))
         end
 
         def remove_a_type_record(record)
           records.delete(record)
-          record_set = service.create_or_update_record_set(resource_group, name, zone_name, records, get_record_type(type), ttl)
+          record_set = service.create_or_update_record_set(record_set_params, get_record_type(type))
           merge_attributes(Fog::DNS::AzureRM::RecordSet.parse(record_set))
         end
 
@@ -80,14 +76,11 @@ module Fog
           {
             name: name,
             resource_group: resource_group,
-            location: location,
             zone_name: zone_name,
             records: records,
-            type: type,
             ttl: ttl,
-            fqdn: fqdn,
             cname_record: cname_record,
-            a_record: a_record
+            a_records: a_records
           }
         end
       end

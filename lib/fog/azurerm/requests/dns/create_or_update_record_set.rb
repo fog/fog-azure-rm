@@ -3,12 +3,12 @@ module Fog
     class AzureRM
       # Real class for DNS Request
       class Real
-        def create_or_update_record_set(record_set_params)
+        def create_or_update_record_set(record_set_params, type)
           msg = "Creating/updating Recordset #{record_set_params[:name]} in Resource Group: #{record_set_params[:resource_group]}."
           Fog::Logger.debug msg
-          recordset_object = get_record_set_object(record_set_params)
+          recordset_object = get_record_set_object(record_set_params, type)
           begin
-            record_set = @dns_client.record_sets.create_or_update(record_set_params[:resource_group], record_set_params[:zone_name], record_set_params[:name], record_set_params[:type], recordset_object)
+            record_set = @dns_client.record_sets.create_or_update(record_set_params[:resource_group], record_set_params[:zone_name], record_set_params[:name], type, recordset_object)
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
@@ -18,15 +18,13 @@ module Fog
 
         private
 
-        def get_record_set_object(record_set_params)
-          record_set = Azure::ARM::DNS::Models::RecordSet.new
+        def get_record_set_object(record_set_params, type)
+          record_set = Azure::ARM::Dns::Models::RecordSet.new
           record_set.name = record_set_params[:name]
-          record_set.location = record_set_params[:location]
-          record_set.type = record_set_params[:type]
+          record_set.type = type
           record_set.ttl = record_set_params[:ttl]
-          record_set.tags = record_set_params[:tags] if record_set.tags.nil?
           record_set.etag = record_set_params[:etag]
-          case record_set_params[:type]
+          case type
           when 'A'
             a_type_records_array = []
             record_set_params[:records].each do |ip|
@@ -36,7 +34,7 @@ module Fog
             end
             record_set.arecords = a_type_records_array
           when 'CNAME'
-            record_set.cname_record =  records.first # because cname only has 1 value and we know the object is an array passed in.
+            record_set.cname_record =  record_set_params[:records].first # because cname only has 1 value and we know the object is an array passed in.
           end
 
           record_set

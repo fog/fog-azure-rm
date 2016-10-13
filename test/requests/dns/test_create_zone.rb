@@ -4,32 +4,33 @@ require File.expand_path '../../test_helper', __dir__
 class TestCreateZone < Minitest::Test
   def setup
     @service = Fog::DNS::AzureRM.new(credentials)
-    @zones = @service.zones
-    @token_provider = Fog::Credentials::AzureRM.instance_variable_get(:@token_provider)
+    @dns_client1 = @service.instance_variable_get(:@dns_client)
+    @zones = @dns_client1.zones
   end
 
   def test_create_or_update_zone_success
-    response = ApiStub::Requests::DNS::Zone.rest_client_put_method_for_zone_resonse
-    @token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
-      RestClient.stub :put, response do
-        assert_equal @service.create_or_update_zone('fog-test-rg', 'fog-test-zone'), JSON.parse(response)
-      end
+    mocked_response = ApiStub::Requests::DNS::Zone.zone_response(@dns_client1)
+    zone_params = { }
+    @zones.stub :create_or_update, mocked_response do
+      assert_equal @service.create_or_update_zone(zone_params), mocked_response
     end
   end
 
   def test_create_or_update_zone_failure
-    @token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
+    response = ApiStub::Requests::DNS::RecordSet.list_record_sets_response(@dns_client1)
+    @zones.stub :create_or_update, response do
       assert_raises ArgumentError do
-        @service.create_or_update_zone('fog-test-zone')
+        @service.create_or_update_zone
       end
     end
   end
 
   def test_create_or_update_zone_exception
-    response = -> { fail RestClient::Exception.new("'body': {'error': {'code': 'ResourceNotFound', 'message': 'mocked exception message'}}") }
-    @token_provider.stub :get_authentication_header, response do
-      assert_raises Exception do
-        @service.create_or_update_zone('fog-test-rg', 'fog-test-zone')
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
+    zone_params = { }
+    @zones.stub :create_or_update, response do
+      assert_raises RuntimeError do
+        @service.create_or_update_zone(zone_params)
       end
     end
   end

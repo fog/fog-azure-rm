@@ -14,10 +14,12 @@ module Fog
           Fog::Logger.debug "Getting Load Balancer #{load_balancer_name} Successfully."
           load_balancer
         end
-        # Mock class for Load-Balancer Request
-        class Mock
-          def get_load_balancer(*)
-            response = '{
+      end
+
+      # Mock class for Load-Balancer Request
+      class Mock
+        def get_load_balancer(*)
+          response = '{
             "name":"mylb1",
             "id":"/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/mylb1",
             "location":"North US",
@@ -159,9 +161,8 @@ module Fog
               ]
             }
           }'
-            load_balancer_mapper = Azure::ARM::Network::Models::LoadBalancer.mapper
-            @network_client.deserialize(load_balancer_mapper, JSON.load(response), 'result.body')
-          end
+          load_balancer_mapper = Azure::ARM::Network::Models::LoadBalancer.mapper
+          @network_client.deserialize(load_balancer_mapper, JSON.load(response), 'result.body')
         end
       end
     end

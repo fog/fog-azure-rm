@@ -4,7 +4,8 @@ module Fog
       # Real class for Express Route Circuit Authorization Request
       class Real
         def list_express_route_circuit_authorizations(resource_group_name, circuit_name)
-          msg = "Getting list of Express Route Circuit Authorizations from Resource Group #{resource_group_name}."
+          msg = @logger_messages['network']['express_route_circuit_authentication']['message']['list']
+                .gsub('RESOURCE_GROUP', resource_group_name)
           Fog::Logger.debug msg
           begin
             circuit_authorizations = @network_client.express_route_circuit_authorizations.list(resource_group_name, circuit_name)

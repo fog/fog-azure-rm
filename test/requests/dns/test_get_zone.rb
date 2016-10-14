@@ -4,21 +4,20 @@ require File.expand_path '../../test_helper', __dir__
 class TestGetZone < Minitest::Test
   def setup
     @service = Fog::DNS::AzureRM.new(credentials)
-    @zones = @service.zones
-    @token_provider = Fog::Credentials::AzureRM.instance_variable_get(:@token_provider)
+    @dns_client1 = @service.instance_variable_get(:@dns_client)
+    @zones = @dns_client1.zones
   end
 
   def test_get_zone_success
-    response = ApiStub::Requests::DNS::Zone.rest_client_put_method_for_zone_resonse
-    @token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
-      RestClient.stub :get, response do
-        assert_equal @service.get_zone('fog-test-rg', 'fog-test-zone'), JSON.parse(response)
-      end
+    mocked_response = ApiStub::Requests::DNS::Zone.zone_response(@dns_client1)
+    @zones.stub :get, mocked_response do
+      assert_equal @service.get_zone('fog-test-rg', 'zone_name'), mocked_response
     end
   end
 
   def test_get_zone_failure
-    @token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
+    response = ApiStub::Requests::DNS::RecordSet.list_record_sets_response(@dns_client1)
+    @zones.stub :get, response do
       assert_raises ArgumentError do
         @service.get_zone('fog-test-rg')
       end
@@ -26,20 +25,10 @@ class TestGetZone < Minitest::Test
   end
 
   def test_get_zone_exception
-    response = -> { fail Exception.new('mocked exception') }
-    @token_provider.stub :get_authentication_header, response do
-      assert_raises Exception do
-        @service.get_zone('fog-test-rg', 'fog-test-zone')
-      end
-    end
-  end
-
-  def test_get_zone_parsing_exception
-    @token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
-      RestClient.stub :get, '{invalid json}' do
-        assert_raises Exception do
-          @service..get_zone('fog-test-rg', 'fog-test-zone')
-        end
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
+    @zones.stub :get, response do
+      assert_raises RuntimeError do
+        @service.get_zone('fog-test-rg', 'zone_name')
       end
     end
   end

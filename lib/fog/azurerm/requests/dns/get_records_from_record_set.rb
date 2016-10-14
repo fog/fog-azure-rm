@@ -7,14 +7,14 @@ module Fog
           msg = "Getting all records from RecordSet #{name} of type '#{record_type}' in zone #{zone_name}"
           Fog::Logger.debug msg
           begin
-            record_set = @dns_client.get(resource_group, zone_name, name, record_type)
+            record_set = @dns_client.record_sets.get(resource_group, zone_name, name, record_type)
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
 
           case record_type
             when 'A'
-              record_set.a_record
+              record_set.arecords
             when 'CNAME'
               record_set.cname_record
           end

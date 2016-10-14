@@ -4,51 +4,38 @@ require File.expand_path '../../test_helper', __dir__
 class TestGetRecordsFromRecordSet < Minitest::Test
   def setup
     @service = Fog::DNS::AzureRM.new(credentials)
-    @record_sets = @service.record_sets
-    @token_provider = Fog::Credentials::AzureRM.instance_variable_get(:@token_provider)
+    @dns_client1 = @service.instance_variable_get(:@dns_client)
+    @record_sets = @dns_client1.record_sets
   end
 
   def test_get_records_from_record_set_of_a_type_success
-    response = ApiStub::Requests::DNS::RecordSet.record_set_response_for_a_type_response
-    @token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
-      RestClient.stub :get, response do
-        assert_equal @service.get_records_from_record_set('fog-test-rg', 'fog-test-record-set', 'fog-test-zone', 'A'), ['4.3.2.1', '5.3.2.1']
-      end
+    mocked_response = ApiStub::Requests::DNS::RecordSet.record_set_response_for_a_type_response(@dns_client1)
+    @record_sets.stub :get, mocked_response do
+      assert_equal @service.get_records_from_record_set('fog-test-rg', 'fog-test-record-set', 'fog-test-zone', 'A'), mocked_response.arecords
     end
   end
 
   def test_get_records_from_record_set_of_cname_type_success
-    response = ApiStub::Requests::DNS::RecordSet.record_set_response_for_cname_type
-    @token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
-      RestClient.stub :get, response do
-        assert_equal @service.get_records_from_record_set('fog-test-rg', 'fog-test-record-set', 'fog-test-zone', 'CNAME'), ['test.fog.com']
-      end
+    mocked_response = ApiStub::Requests::DNS::RecordSet.record_set_response_for_cname_type(@dns_client1)
+    @record_sets.stub :get, mocked_response do
+      assert_equal @service.get_records_from_record_set('fog-test-rg', 'fog-test-record-set', 'fog-test-zone', 'CNAME'), mocked_response.cname_record
     end
   end
 
   def test_get_records_from_record_set_failure
-    @token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
+    response = ApiStub::Requests::DNS::RecordSet.list_record_sets_response(@dns_client1)
+    @record_sets.stub :get, response do
       assert_raises ArgumentError do
-        @service.get_records_from_record_set('fog-test-record-set')
+        @service.get_records_from_record_set('fog-test-rg', 'fog-test-record-set', 'fog-test-zone')
       end
     end
   end
 
   def test_get_records_from_record_set_exception
-    response = -> { fail Exception.new('mocked exception') }
-    @token_provider.stub :get_authentication_header, response do
-      assert_raises Exception do
-        @service.get_records_from_record_set('fog-test-rg', 'fog-test-record-set', 'fog-test-zone', 'A')
-      end
-    end
-  end
-
-  def test_get_records_from_record_set_parsing_exception
-    @token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
-      RestClient.stub :get, '{invalid json}' do
-        assert_raises Exception do
-          @service.get_records_from_record_set('fog-test-rg', 'fog-test-record-set', 'fog-test-zone', 'A')
-        end
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
+    @record_sets.stub :get, response do
+      assert_raises RuntimeError do
+        @service.get_records_from_record_set('fog-test-rg', 'fog-test-record-set', 'fog-test-zone', 'CNAME')
       end
     end
   end

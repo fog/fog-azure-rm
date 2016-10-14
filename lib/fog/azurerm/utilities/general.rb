@@ -29,6 +29,11 @@ def get_traffic_manager_profile_name_from_endpoint_id(endpoint_id)
   endpoint_id.split('/')[8]
 end
 
+# Get server name from ID (String)
+def get_server_name_from_id(database_id)
+  database_id.split('/')[8]
+end
+
 # Pick Express Route Circuit name from Id(String)
 def get_circuit_name_from_id(circuit_id)
   circuit_id.split('/')[8]

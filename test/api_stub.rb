@@ -49,6 +49,11 @@ module ApiStub
       autoload :Zone, File.expand_path('api_stub/models/dns/zone', __dir__)
       autoload :RecordSet, File.expand_path('api_stub/models/dns/record_set', __dir__)
     end
+
+    module Sql
+      autoload :SqlServer, File.expand_path('api_stub/models/sql/sql_server', __dir__)
+      autoload :SqlDatabase, File.expand_path('api_stub/models/sql/sql_database', __dir__)
+    end
   end
 
   module Requests
@@ -99,6 +104,11 @@ module ApiStub
     module DNS
       autoload :Zone, File.expand_path('api_stub/requests/dns/zone', __dir__)
       autoload :RecordSet, File.expand_path('api_stub/requests/dns/record_set', __dir__)
+    end
+
+    module Sql
+      autoload :SqlServer, File.expand_path('api_stub/requests/sql/sql_server', __dir__)
+      autoload :SqlDatabase, File.expand_path('api_stub/requests/sql/database', __dir__)
     end
   end
 end

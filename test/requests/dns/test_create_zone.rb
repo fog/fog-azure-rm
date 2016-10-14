@@ -10,7 +10,7 @@ class TestCreateZone < Minitest::Test
 
   def test_create_or_update_zone_success
     mocked_response = ApiStub::Requests::DNS::Zone.zone_response(@dns_client1)
-    zone_params = { }
+    zone_params = {}
     @zones.stub :create_or_update, mocked_response do
       assert_equal @service.create_or_update_zone(zone_params), mocked_response
     end
@@ -27,7 +27,7 @@ class TestCreateZone < Minitest::Test
 
   def test_create_or_update_zone_exception
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
-    zone_params = { }
+    zone_params = {}
     @zones.stub :create_or_update, response do
       assert_raises RuntimeError do
         @service.create_or_update_zone(zone_params)

@@ -45,7 +45,7 @@ module Fog
             'properties' =>
               {
                 'maxNumberOfRecordSets' => 5000,
-                'nameServers' =>%w('ns1-05.azure-dns.com.', 'ns2-05.azure-dns.net.', 'ns3-05.azure-dns.org.', 'ns4-05.azure-dns.info.'),
+                'nameServers' => %w(ns1-05.azure-dns.com. ns2-05.azure-dns.net. ns3-05.azure-dns.org. ns4-05.azure-dns.info.),
                 'numberOfRecordSets' => 2,
                 'parentResourceGroupName' => resource_group
               }

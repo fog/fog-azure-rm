@@ -13,10 +13,10 @@ module Fog
           end
 
           case record_type
-            when 'A'
-              record_set.arecords
-            when 'CNAME'
-              record_set.cname_record
+          when 'A'
+            record_set.arecords
+          when 'CNAME'
+            record_set.cname_record
           end
         end
       end
@@ -24,7 +24,7 @@ module Fog
       # Mock class for DNS Request
       class Mock
         def get_records_from_record_set(*)
-          %w('1.2.3.4', '1.2.3.5', '1.2.3.6')
+          %w(1.2.3.4 1.2.3.5 1.2.3.6)
         end
       end
     end

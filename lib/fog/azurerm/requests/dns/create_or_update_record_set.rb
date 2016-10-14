@@ -34,7 +34,7 @@ module Fog
             end
             record_set.arecords = a_type_records_array
           when 'CNAME'
-            record_set.cname_record =  record_set_params[:records].first # because cname only has 1 value and we know the object is an array passed in.
+            record_set.cname_record = record_set_params[:records].first # because cname only has 1 value and we know the object is an array passed in.
           end
 
           record_set
@@ -45,16 +45,16 @@ module Fog
       class Mock
         def create_or_update_record_set(*)
           {
-            'id' => "/subscriptions/########-####-####-####-############/resourceGroups/resource_group/providers/Microsoft.Network/dnszones/zone_name/record_type/name",
+            'id' => '/subscriptions/########-####-####-####-############/resourceGroups/resource_group/providers/Microsoft.Network/dnszones/zone_name/record_type/name',
             'name' => 'name',
-            'type' => "Microsoft.Network/dnszones/record_type",
+            'type' => 'Microsoft.Network/dnszones/record_type',
             'etag' => '7f159cb1-653d-4920-bc03-153c700412a2',
             'location' => 'global',
             'tags' => {},
             'properties' =>
               {
                 'metadata' => {},
-                'fqdn' => "name.zone_name",
+                'fqdn' => 'name.zone_name',
                 'TTL' => 10,
                 'ARecords' =>
                   [

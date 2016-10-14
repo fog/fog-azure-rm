@@ -376,6 +376,7 @@ end
 def zone(service)
   Fog::DNS::AzureRM::Zone.new(
     name: 'fog-test-zone.com',
+    location: 'global',
     id: '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/dnszones/fog-test-zone.com',
     resource_group: 'fog-test-rg',
     service: service

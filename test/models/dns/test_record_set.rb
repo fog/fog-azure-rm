@@ -5,7 +5,8 @@ class TestRecordSet < Minitest::Test
   def setup
     @service = Fog::DNS::AzureRM.new(credentials)
     @record_set = record_set(@service)
-    @response = ApiStub::Models::DNS::RecordSet.create_record_set_obj
+    @dns_client1 = @service.instance_variable_get(:@dns_client)
+    @response = ApiStub::Models::DNS::RecordSet.create_record_set_obj(@dns_client1)
   end
 
   def test_model_methods
@@ -38,7 +39,7 @@ class TestRecordSet < Minitest::Test
       assert_instance_of Fog::DNS::AzureRM::RecordSet, @record_set.save
     end
     record_set_cname = record_set_cname(@service)
-    response = ApiStub::Models::DNS::RecordSet.response_for_cname
+    response = ApiStub::Models::DNS::RecordSet.response_for_cname(@dns_client1)
     @service.stub :create_or_update_record_set, response do
       assert_instance_of Fog::DNS::AzureRM::RecordSet, record_set_cname.save
     end

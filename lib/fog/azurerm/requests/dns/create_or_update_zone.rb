@@ -3,41 +3,40 @@ module Fog
     class AzureRM
       # Real class for DNS Request
       class Real
-        def create_or_update_zone(resource_group, name)
-          Fog::Logger.debug "Creating/Updating Zone #{name} ..."
-          resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription_id}/resourceGroups/#{resource_group}/providers/Microsoft.Network/dnsZones/#{name}?api-version=2015-05-04-preview"
-
-          body = {
-            location: 'global',
-            tags: {},
-            properties: {}
-          }
-
+        def create_or_update_zone(zone_params)
+          msg = "Creating/updating Zone #{zone_params[:name]} in Resource Group: #{zone_params[:resource_group]}."
+          Fog::Logger.debug msg
+          zone_object = get_zone_object(zone_params)
           begin
-            token = Fog::Credentials::AzureRM.get_token(@tenant_id, @client_id, @client_secret)
-            response = RestClient.put(
-              resource_url,
-              body.to_json,
-              accept: 'application/json',
-              content_type: 'application/json',
-              authorization: token
-            )
-            Fog::Logger.debug "Zone #{name} created successfully."
-            parsed_response = JSON.parse(response)
-            parsed_response
-          rescue Exception => e
-            Fog::Logger.warning "Exception creating zone #{name} in resource group #{resource_group}"
-            msg = "AzureDns::Zone - Exception is: #{e.message}"
-            raise msg
+            zone = @dns_client.zones.create_or_update(zone_params[:resource_group], zone_params[:name], zone_object)
+          rescue MsRestAzure::AzureOperationError => e
+            raise_azure_exception(e, msg)
           end
+          Fog::Logger.debug "Zone #{zone_params[:name]} created/updated successfully."
+          zone
+        end
+
+        private
+
+        def get_zone_object(zone_params)
+          zone = Azure::ARM::Dns::Models::Zone.new
+          zone.name = zone_params[:name]
+          zone.location = zone_params[:location]
+          zone.type = zone_params[:type]
+          zone.number_of_record_sets = zone_params[:number_of_record_sets]
+          zone.max_number_of_record_sets = zone_params[:max_number_of_record_sets]
+          zone.tags = zone_params[:tags] if zone.tags.nil?
+          zone.etag = zone_params[:etag]
+
+          zone
         end
       end
 
       # Mock class for DNS Request
       class Mock
-        def create_or_update_zone(resource_group, name)
+        def create_or_update_zone(*)
           {
-            'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/dnszones/#{name}",
+            'id' => '/subscriptions/########-####-####-####-############/resourceGroups/resource_group/providers/Microsoft.Network/dnszones/name',
             'name' => name,
             'type' => 'Microsoft.Network/dnszones',
             'etag' => '00000002-0000-0000-76c2-f7ad90b5d101',
@@ -46,13 +45,7 @@ module Fog
             'properties' =>
               {
                 'maxNumberOfRecordSets' => 5000,
-                'nameServers' =>
-                [
-                  'ns1-05.azure-dns.com.',
-                  'ns2-05.azure-dns.net.',
-                  'ns3-05.azure-dns.org.',
-                  'ns4-05.azure-dns.info.'
-                ],
+                'nameServers' => %w(ns1-05.azure-dns.com. ns2-05.azure-dns.net. ns3-05.azure-dns.org. ns4-05.azure-dns.info.),
                 'numberOfRecordSets' => 2,
                 'parentResourceGroupName' => resource_group
               }

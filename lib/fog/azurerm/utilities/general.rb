@@ -18,6 +18,14 @@ def get_end_point_type(endpoint_type)
   endpoint_type.split('/')[2]
 end
 
+def get_record_set_from_id(id)
+  id.split('/')[8]
+end
+
+def get_type_from_recordset_type(type)
+  type.split('/')[2]
+end
+
 def get_hash_from_object(object)
   hash = {}
   object.instance_variables.each { |attr| hash[attr.to_s.delete('@')] = object.instance_variable_get(attr) }

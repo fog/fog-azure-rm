@@ -4,12 +4,12 @@ require File.expand_path '../../test_helper', __dir__
 class TestCreateZone < Minitest::Test
   def setup
     @service = Fog::DNS::AzureRM.new(credentials)
-    @dns_client1 = @service.instance_variable_get(:@dns_client)
-    @zones = @dns_client1.zones
+    @dns_client = @service.instance_variable_get(:@dns_client)
+    @zones = @dns_client.zones
   end
 
   def test_create_or_update_zone_success
-    mocked_response = ApiStub::Requests::DNS::Zone.zone_response(@dns_client1)
+    mocked_response = ApiStub::Requests::DNS::Zone.zone_response(@dns_client)
     zone_params = {}
     @zones.stub :create_or_update, mocked_response do
       assert_equal @service.create_or_update_zone(zone_params), mocked_response
@@ -17,7 +17,7 @@ class TestCreateZone < Minitest::Test
   end
 
   def test_create_or_update_zone_failure
-    response = ApiStub::Requests::DNS::RecordSet.list_record_sets_response(@dns_client1)
+    response = ApiStub::Requests::DNS::RecordSet.list_record_sets_response(@dns_client)
     @zones.stub :create_or_update, response do
       assert_raises ArgumentError do
         @service.create_or_update_zone

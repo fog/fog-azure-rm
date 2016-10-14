@@ -19,9 +19,9 @@ module Fog
           hash['id'] = recordset.id
           hash['name'] = recordset.name
           hash['resource_group'] = get_resource_group_from_id(recordset.id)
-          hash['zone_name'] = recordset.id.split('/')[8]
+          hash['zone_name'] = get_record_set_from_id(recordset.id)
           hash['type'] = recordset.type
-          type = recordset.type.split('/')[2]
+          type = get_type_from_recordset_type(recordset.type)
           hash['records'] = []
           if type == 'A'
             record_entries = recordset.arecords

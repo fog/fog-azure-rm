@@ -4,8 +4,8 @@ require File.expand_path '../../test_helper', __dir__
 class TestDeleteRecordSet < Minitest::Test
   def setup
     @service = Fog::DNS::AzureRM.new(credentials)
-    @dns_client1 = @service.instance_variable_get(:@dns_client)
-    @record_sets = @dns_client1.record_sets
+    @dns_client = @service.instance_variable_get(:@dns_client)
+    @record_sets = @dns_client.record_sets
   end
 
   def test_delete_record_set_success

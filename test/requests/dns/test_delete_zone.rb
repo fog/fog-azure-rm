@@ -4,8 +4,8 @@ require File.expand_path '../../test_helper', __dir__
 class TestDeleteZone < Minitest::Test
   def setup
     @service = Fog::DNS::AzureRM.new(credentials)
-    @dns_client1 = @service.instance_variable_get(:@dns_client)
-    @zones = @dns_client1.zones
+    @dns_client = @service.instance_variable_get(:@dns_client)
+    @zones = @dns_client.zones
   end
 
   def test_delete_zone_success

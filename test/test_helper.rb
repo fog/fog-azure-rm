@@ -727,3 +727,15 @@ def sql_server(service)
     service: service
   )
 end
+
+def sql_server_firewall_rule(service)
+  Fog::Sql::AzureRM::FirewallRule.new(
+    name: 'fog-test-firewall-rule-name',
+    id: '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/vm_custom_image/providers/Microsoft.Sql/servers/test-sql-server-confiz123/firewallRules/rule-name',
+    resource_group: 'fog-test-rg',
+    server_name: 'server-name',
+    start_ip: '10.10.10.10',
+    end_ip: '10.10.10.10',
+    service: service
+  )
+end

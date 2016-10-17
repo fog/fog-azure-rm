@@ -8,10 +8,7 @@ module Fog
 
         def all
           requires :resource_group
-          gateway_connections = []
-          service.list_virtual_network_gateway_connections(resource_group).each do |connection|
-            gateway_connections << VirtualNetworkGatewayConnection.parse(connection)
-          end
+          gateway_connections = service.list_virtual_network_gateway_connections(resource_group).map { |connection| VirtualNetworkGatewayConnection.parse(connection) }
           load(gateway_connections)
         end
 

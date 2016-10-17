@@ -1,3 +1,13 @@
+## 0.0.9
+
+**Added:**
+- Azure SQL Service - Added support for SQL Server, SQL Databases and Data warehouse.
+
+**Changed:**
+- DNS Service - DNS Service moved from API calls to Azure latest SDK.
+
+
+
 ## 0.0.8 
 
 **Added:**

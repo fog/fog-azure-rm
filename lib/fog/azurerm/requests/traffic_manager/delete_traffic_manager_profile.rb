@@ -16,7 +16,7 @@ module Fog
       end
       # Mock class for TrafficManager Request
       class Mock
-        def delete_subnet(resource_group, name)
+        def delete_traffic_manager_profile(resource_group, name)
           Fog::Logger.debug "Traffic Manager Profile #{name} from Resource group #{resource_group} deleted successfully."
           true
         end

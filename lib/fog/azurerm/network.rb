@@ -138,6 +138,7 @@ module Fog
         def initialize(options)
           begin
             require 'azure_mgmt_network'
+            require 'yaml'
           rescue LoadError => e
             retry if require('rubygems')
             raise e.message
@@ -150,6 +151,8 @@ module Fog
           @client_id = options[:client_id]
           @client_secret = options[:client_secret]
           @subscription_id = options[:subscription_id]
+          current_directory = File.dirname(__FILE__)
+          @logger_messages = YAML.load_file("#{current_directory}/utilities/logger_messages.yml")
         end
       end
     end

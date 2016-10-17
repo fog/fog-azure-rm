@@ -5,7 +5,8 @@ class TestZone < Minitest::Test
   def setup
     @service = Fog::DNS::AzureRM.new(credentials)
     @zone = zone(@service)
-    @response = ApiStub::Models::DNS::Zone.create_zone_obj
+    @dns_client1 = @service.instance_variable_get(:@dns_client)
+    @response = ApiStub::Models::DNS::Zone.create_zone_obj(@dns_client1)
   end
 
   def test_model_methods

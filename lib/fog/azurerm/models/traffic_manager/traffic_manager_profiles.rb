@@ -8,10 +8,7 @@ module Fog
 
         def all
           requires :resource_group
-          traffic_manager_profiles = []
-          service.list_traffic_manager_profiles(resource_group).each do |profile|
-            traffic_manager_profiles << TrafficManagerProfile.parse(profile)
-          end
+          traffic_manager_profiles = service.list_traffic_manager_profiles(resource_group).map { |profile| TrafficManagerProfile.parse(profile) }
           load(traffic_manager_profiles)
         end
 

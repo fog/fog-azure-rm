@@ -38,6 +38,7 @@ rs.resource_groups.create(
 
 dns.zones.create(
   name: 'test-zone.com',
+  location: 'global',
   resource_group: 'TestRG-ZN'
 )
 

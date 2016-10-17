@@ -10,12 +10,8 @@ module Fog
         def all
           requires :resource_group, :traffic_manager_profile_name
 
-          traffic_manager_endpoints = []
-          profile = service.get_traffic_manager_profile(resource_group, traffic_manager_profile_name)
-          end_points = profile.endpoints
-          end_points.each do |endpoint|
-            traffic_manager_endpoints << TrafficManagerEndPoint.parse(endpoint)
-          end
+          end_points = service.get_traffic_manager_profile(resource_group, traffic_manager_profile_name).endpoints
+          traffic_manager_endpoints = end_points.map { |endpoint| TrafficManagerEndPoint.parse(endpoint) }
           load(traffic_manager_endpoints)
         end
 

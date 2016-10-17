@@ -1,0 +1,19 @@
+network:
+  express_route_circuit_authentication:
+    message:
+      create: Creating/updating Express Route Circuit Authorization 'NAME' in Resource Group 'RESOURCE_GROUP'.
+      delete: Deleting Express Route Circuit Authorization 'NAME' from Resource Group 'RESOURCE_GROUP'.
+      get: Getting Express Route Circuit Authorization 'NAME' from Resource Group 'RESOURCE_GROUP'.
+      list: Getting list of Express Route Circuit Authorizations from Resource Group 'RESOURCE_GROUP'.
+  local_network_gateway:
+    message:
+      create: Creating/Updating Local Network Gateway 'NAME' in Resource Group 'RESOURCE_GROUP'.
+      delete: Deleting Local Network Gateway 'NAME' in Resource Group 'RESOURCE_GROUP'.
+      get: Getting Local Network Gateway 'NAME' in Resource Group 'RESOURCE_GROUP'.
+      list: Getting list of Local Network Gateways in Resource Group 'RESOURCE_GROUP'.
+  virtual_network_gateway_connection:
+    message:
+      create: Creating/Updating Virtual Network Gateway Connection 'NAME' in Resource Group 'RESOURCE_GROUP'.
+      delete: Deleting Virtual Network Gateway Connection 'NAME' in Resource Group 'RESOURCE_GROUP'.
+      get: Getting Virtual Network Gateway Connection 'NAME' in Resource Group 'RESOURCE_GROUP'.
+      list: Getting list of Virtual Network Gateway Connections in Resource Group 'RESOURCE_GROUP'.

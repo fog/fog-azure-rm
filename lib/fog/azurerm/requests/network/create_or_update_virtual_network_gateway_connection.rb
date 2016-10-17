@@ -5,7 +5,9 @@ module Fog
       # Real class for Network Request
       class Real
         def create_or_update_virtual_network_gateway_connection(gateway_connection_params)
-          msg = "Creating/Updating Virtual Network Gateway Connection: #{gateway_connection_params[:name]} in Resource Group: #{gateway_connection_params[:resource_group_name]}."
+          msg = @logger_messages['network']['virtual_network_gateway_connection']['message']['create']
+                .gsub('NAME', gateway_connection_params[:name])
+                .gsub('RESOURCE_GROUP', gateway_connection_params[:resource_group_name])
           Fog::Logger.debug msg
           gateway_connection = get_network_gateway_connection_object(gateway_connection_params)
           begin

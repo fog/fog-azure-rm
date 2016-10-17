@@ -8,10 +8,7 @@ module Fog
 
         def all
           requires :resource_group
-          local_network_gateways = []
-          service.list_local_network_gateways(resource_group).each do |gateway|
-            local_network_gateways << LocalNetworkGateway.parse(gateway)
-          end
+          local_network_gateways = service.list_local_network_gateways(resource_group).map { |gateway| LocalNetworkGateway.parse(gateway) }
           load(local_network_gateways)
         end
 

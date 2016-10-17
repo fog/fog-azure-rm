@@ -24,12 +24,7 @@ module Fog
         attribute :provisioning_state
 
         def self.parse(gateway_connection)
-          connection = {}
-          connection['id'] = gateway_connection.id
-          connection['name'] = gateway_connection.name
-          connection['location'] = gateway_connection.location
-          connection['resource_group'] = get_resource_group_from_id(gateway_connection.id)
-          connection['tags'] = gateway_connection.tags
+          connection = get_hash_from_object(gateway_connection)
 
           unless gateway_connection.virtual_network_gateway1.nil?
             gateway1 = VirtualNetworkGateway.new
@@ -40,25 +35,13 @@ module Fog
             gateway2 = VirtualNetworkGateway.new
             connection['virtual_network_gateway2'] = gateway2.merge_attributes(VirtualNetworkGateway.parse(gateway_connection.virtual_network_gateway2))
           end
-
-          connection['connection_type'] = gateway_connection.connection_type
-          connection['connection_status'] = gateway_connection.connection_status
-          connection['authorization_key'] = gateway_connection.authorization_key
-          connection['routing_weight'] = gateway_connection.routing_weight
-          connection['shared_key'] = gateway_connection.shared_key
-          connection['egress_bytes_transferred'] = gateway_connection.egress_bytes_transferred
-          connection['ingress_bytes_transferred'] = gateway_connection.ingress_bytes_transferred
-          connection['peer'] = gateway_connection.peer
-          connection['enable_bgp'] = gateway_connection.enable_bgp
-          connection['provisioning_state'] = gateway_connection.provisioning_state
-
+          connection['resource_group'] = get_resource_group_from_id(gateway_connection.id)
           connection
         end
 
         def save
           requires :name, :location, :resource_group, :connection_type
-          gateway_connection_params = gateway_connection_parameters
-          gateway_connection = service.create_or_update_virtual_network_gateway_connection(gateway_connection_params)
+          gateway_connection = service.create_or_update_virtual_network_gateway_connection(gateway_connection_parameters)
           merge_attributes(VirtualNetworkGatewayConnection.parse(gateway_connection))
         end
 

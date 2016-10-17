@@ -34,10 +34,19 @@ module Fog
       # This class provides the actual implemention for service calls.
       class Real
         def initialize(options)
+          begin
+            require 'azure_mgmt_dns'
+          rescue LoadError => e
+            retry if require('rubygems')
+            raise e.message
+          end
+
+          credentials = Fog::Credentials::AzureRM.get_credentials(options[:tenant_id], options[:client_id], options[:client_secret])
+          @dns_client = ::Azure::ARM::Dns::DnsManagementClient.new(credentials)
+          @dns_client.subscription_id = options[:subscription_id]
           @tenant_id = options[:tenant_id]
           @client_id = options[:client_id]
           @client_secret = options[:client_secret]
-          @subscription_id = options[:subscription_id]
           @resources = Fog::Resources::AzureRM.new(
             tenant_id: options[:tenant_id],
             client_id: options[:client_id],

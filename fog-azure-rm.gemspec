@@ -28,6 +28,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'azure_mgmt_resources', '~> 0.6.0'
   spec.add_dependency 'azure_mgmt_storage', '~> 0.6.0'
   spec.add_dependency 'azure_mgmt_network', '~> 0.6.0'
+  spec.add_dependency 'azure_mgmt_dns', '~> 0.6.0'
   spec.add_dependency 'azure_mgmt_traffic_manager', '~> 0.6.0'
   spec.add_dependency 'azure-storage', '~> 0.11.1.preview'
 end

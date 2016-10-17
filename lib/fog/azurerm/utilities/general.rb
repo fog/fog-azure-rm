@@ -18,9 +18,28 @@ def get_end_point_type(endpoint_type)
   endpoint_type.split('/')[2]
 end
 
+def get_record_set_from_id(id)
+  id.split('/')[8]
+end
+
+def get_type_from_recordset_type(type)
+  type.split('/')[2]
+end
+
+def get_hash_from_object(object)
+  hash = {}
+  object.instance_variables.each { |attr| hash[attr.to_s.delete('@')] = object.instance_variable_get(attr) }
+  hash
+end
+
 # Extract Traffic Manager Profile Name from Endpoint id(String)
 def get_traffic_manager_profile_name_from_endpoint_id(endpoint_id)
   endpoint_id.split('/')[8]
+end
+
+# Get server name from ID (String)
+def get_server_name_from_id(database_id)
+  database_id.split('/')[8]
 end
 
 # Pick Express Route Circuit name from Id(String)

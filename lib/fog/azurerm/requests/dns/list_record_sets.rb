@@ -4,31 +4,23 @@ module Fog
       # Real class for DNS Request
       class Real
         def list_record_sets(resource_group, zone_name)
-          resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription_id}/resourceGroups/#{resource_group}/providers/Microsoft.Network/dnsZones/#{zone_name}/recordsets?api-version=2015-05-04-preview"
+          msg = 'Getting list of Record sets.'
+          Fog::Logger.debug msg
           begin
-            token = Fog::Credentials::AzureRM.get_token(@tenant_id, @client_id, @client_secret)
-            dns_response = RestClient.get(
-              resource_url,
-              accept: 'application/json',
-              content_type: 'application/json',
-              authorization: token
-            )
-            parsed_record_set = JSON.parse(dns_response)
-            parsed_record_set['value']
-          rescue Exception => e
-            Fog::Logger.warning "Exception listing recordsets in zone #{zone_name} in resource group #{resource_group}"
-            msg = "AzureDns::RecordSet - Exception is: #{e.message}"
-            raise msg
+            zones = @dns_client.record_sets.list_all_in_resource_group(resource_group, zone_name)
+          rescue MsRestAzure::AzureOperationError => e
+            raise_azure_exception(e, msg)
           end
+          zones
         end
       end
 
       # Mock class for DNS Request
       class Mock
-        def list_record_sets(resource_group, zone_name)
+        def list_record_sets(*)
           [
             {
-              'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/dnszones/#{zone_name}/A/test_record",
+              'id' => '/subscriptions/########-####-####-####-############/resourceGroups/resource_group/providers/Microsoft.Network/dnszones/zone_name/A/test_record',
               'name' => 'test_record',
               'type' => 'Microsoft.Network/dnszones/A',
               'etag' => '7f159cb1-653d-4920-bc03-153c700412a2',
@@ -36,7 +28,7 @@ module Fog
               'properties' =>
               {
                 'metadata' => nil,
-                'fqdn' => "test_record.#{zone_name}.",
+                'fqdn' => 'test_record.zone_name',
                 'TTL' => 60,
                 'ARecords' =>
                 [
@@ -47,7 +39,7 @@ module Fog
               }
             },
             {
-              'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Network/dnszones/#{zone_name}/CNAME/test_record1",
+              'id' => '/subscriptions/########-####-####-####-############/resourceGroups/resource_group/providers/Microsoft.Network/dnszones/zone_name/CNAME/test_record1',
               'name' => 'test_record1',
               'type' => 'Microsoft.Network/dnszones/CNAME',
               'etag' => 'cc5ceb6e-16ad-4a5f-bbd7-9bc31c12d0cf',
@@ -55,7 +47,7 @@ module Fog
               'properties' =>
               {
                 'metadata' => nil,
-                'fqdn' => "test_record1.#{zone_name}.",
+                'fqdn' => 'test_record1.zone_name',
                 'TTL' => 60,
                 'CNAMERecord' =>
                 {

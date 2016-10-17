@@ -57,6 +57,11 @@ module Fog
       request :get_recovery_vault
       request :list_recovery_vaults
       request :delete_recovery_vault
+      request :enable_backup_protection
+      request :set_recovery_vault_context
+      request :get_backup_protection_policy
+      request :refresh_containers
+      request :get_backup_protectable_items
 
       model_path 'fog/azurerm/models/storage'
       model :storage_account
@@ -67,6 +72,7 @@ module Fog
       model :file
       collection :files
       model :recovery_vault
+      collection :recovery_vaults
 
       # This class provides the mock implementation for unit tests.
       class Mock
@@ -92,6 +98,11 @@ module Fog
             retry if require('rubygems')
             raise e.message
           end
+
+          @tenant_id = options[:tenant_id]
+          @client_id = options[:client_id]
+          @client_secret = options[:client_secret]
+          @subscription_id = options[:subscription_id]
 
           credentials = Fog::Credentials::AzureRM.get_credentials(options[:tenant_id], options[:client_id], options[:client_secret])
           unless credentials.nil?

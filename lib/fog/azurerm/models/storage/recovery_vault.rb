@@ -28,6 +28,15 @@ module Fog
           merge_attributes(RecoveryVault.parse(recovery_vault))
         end
 
+        def enable_backup_protection(vm_name, vm_resource_group)
+          requires :name, :resource_group
+          service.enable_backup_protection(name, resource_group, vm_name, vm_resource_group)
+        end
+
+        def refresh_containers
+          service.refresh_containers(resource_group, name)
+        end
+
         def destroy
           service.delete_recovery_vault(resource_group, name)
         end

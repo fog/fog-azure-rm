@@ -1,6 +1,3 @@
-require 'fog/core/collection'
-require 'fog/azurerm/models/storage/recovery_vault'
-
 module Fog
   module Storage
     class AzureRM

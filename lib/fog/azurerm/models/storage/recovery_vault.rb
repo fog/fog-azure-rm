@@ -33,8 +33,8 @@ module Fog
           service.enable_backup_protection(name, resource_group, vm_name, vm_resource_group)
         end
 
-        def refresh_containers
-          service.refresh_containers(resource_group, name)
+        def start_backup(vm_name)
+          service.start_backup(resource_group, name, vm_name)
         end
 
         def destroy

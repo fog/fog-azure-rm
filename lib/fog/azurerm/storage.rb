@@ -60,6 +60,9 @@ module Fog
       request :get_backup_protection_policy
       request :refresh_containers
       request :get_backup_protectable_items
+      request :start_backup
+      request :get_backup_item
+      request :get_backup_container
 
       model_path 'fog/azurerm/models/storage'
       model :storage_account

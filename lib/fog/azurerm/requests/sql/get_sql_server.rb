@@ -15,8 +15,8 @@ module Fog
               content_type: :json,
               authorization: token
             )
-          rescue MsRestAzure::AzureOperationError => e
-            raise_azure_exception(e, JSON.parse(e.response)['message'])
+          rescue RestClient::Exception => e
+            raise JSON.parse(e.response)['message']
           end
           Fog::Logger.debug "Sql Server fetched successfully in Resource Group: #{resource_group}"
           JSON.parse(response)

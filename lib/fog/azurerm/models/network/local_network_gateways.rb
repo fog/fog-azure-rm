@@ -6,15 +6,12 @@ module Fog
     class AzureRM
       # LocalNetworkGateways collection class for Network Service
       class LocalNetworkGateways < Fog::Collection
-        model Fog::Network::AzureRM::LocalNetworkGateway
+        model LocalNetworkGateway
         attribute :resource_group
 
         def all
           requires :resource_group
-          local_network_gateways = []
-          service.list_local_network_gateways(resource_group).each do |gateway|
-            local_network_gateways << LocalNetworkGateway.parse(gateway)
-          end
+          local_network_gateways = service.list_local_network_gateways(resource_group).map { |gateway| LocalNetworkGateway.parse(gateway) }
           load(local_network_gateways)
         end
 

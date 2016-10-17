@@ -5,7 +5,8 @@ class TestRecordSets < Minitest::Test
   def setup
     @service = Fog::DNS::AzureRM.new(credentials)
     @record_sets = Fog::DNS::AzureRM::RecordSets.new(resource_group: 'fog-test-rg', zone_name: 'fog-test-zone.com', type: 'A', service: @service)
-    @response = [ApiStub::Models::DNS::RecordSet.list_record_sets]
+    @dns_client1 = @service.instance_variable_get(:@dns_client)
+    @response = [ApiStub::Models::DNS::RecordSet.create_record_set_obj(@dns_client1)]
   end
 
   def test_collection_methods
@@ -35,8 +36,8 @@ class TestRecordSets < Minitest::Test
   end
 
   def test_all_method_name_response
-    name_response = ApiStub::Models::DNS::RecordSet.list_record_sets
-    name_response['name'] = '@'
+    name_response = ApiStub::Models::DNS::RecordSet.create_record_set_obj(@dns_client1)
+    name_response.name = '@'
     response = [name_response]
     @service.stub :list_record_sets, response do
       assert_instance_of Fog::DNS::AzureRM::RecordSets, @record_sets.all
@@ -44,7 +45,7 @@ class TestRecordSets < Minitest::Test
   end
 
   def test_get_method_response
-    response = ApiStub::Models::DNS::RecordSet.create_record_set_obj
+    response = ApiStub::Models::DNS::RecordSet.create_record_set_obj(@dns_client1)
     @service.stub :get_record_set, response do
       assert_instance_of Fog::DNS::AzureRM::RecordSet, @record_sets.get('fog-test-rg', 'fog-test-record-set', 'fog-test-zone', 'A')
     end

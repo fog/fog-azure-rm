@@ -31,6 +31,7 @@ def storage_account_credentials
   }
 end
 
+# Mock Class for Blob
 class MockBlob
   def initialize
     @properties = {}
@@ -44,6 +45,7 @@ class MockBlob
   attr_accessor :metadata
 end
 
+# Mock Class for Response
 class MockResponse
   def initialize(code, body, headers)
     @status = code
@@ -374,6 +376,7 @@ end
 def zone(service)
   Fog::DNS::AzureRM::Zone.new(
     name: 'fog-test-zone.com',
+    location: 'global',
     id: '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/dnszones/fog-test-zone.com',
     resource_group: 'fog-test-rg',
     service: service
@@ -697,6 +700,30 @@ def virtual_network_gateway_connection(service)
     connection_type: 'VNet-to-VNet',
     routing_weight: 2,
     shared_key: 'shared_key',
+    service: service
+  )
+end
+
+def database(service)
+  Fog::Sql::AzureRM::SqlDatabase.new(
+    name: 'fog-test-zone.com',
+    id: '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/vm_custom_image/providers/Microsoft.Sql/servers/test-sql-server-confiz123/databases/confiztestdatab98',
+    resource_group: 'fog-test-rg',
+    server_name: 'fog-test-server-name',
+    location: 'eastus',
+    service: service
+  )
+end
+
+def sql_server(service)
+  Fog::Sql::AzureRM::SqlServer.new(
+    name: 'fog-test-zone.com',
+    id: '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/vm_custom_image/providers/Microsoft.Sql/servers/test-sql-server-confiz123',
+    resource_group: 'fog-test-rg',
+    location: 'eastus',
+    version: '2.0',
+    administrator_login: 'test-admin@3',
+    administrator_login_password: 'pass@swe',
     service: service
   )
 end

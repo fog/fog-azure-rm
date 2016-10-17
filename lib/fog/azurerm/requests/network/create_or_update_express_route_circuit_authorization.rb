@@ -4,7 +4,9 @@ module Fog
       # Real class for Express Route Circuit Authorization Request
       class Real
         def create_or_update_express_route_circuit_authorization(circuit_authorization_params)
-          msg = "Creating/updating Express Route Circuit Authorization #{circuit_authorization_params[:authorization_name]} in Resource Group: #{circuit_authorization_params[:resource_group]}."
+          msg = @logger_messages['network']['express_route_circuit_authentication']['message']['create']
+                .gsub('NAME', circuit_authorization_params[:authorization_name])
+                .gsub('RESOURCE_GROUP', circuit_authorization_params[:resource_group])
           Fog::Logger.debug msg
           circuit_authorization = get_circuit_authorization_object(circuit_authorization_params)
           begin
@@ -22,7 +24,7 @@ module Fog
           circuit_authorization = Azure::ARM::Network::Models::ExpressRouteCircuitAuthorization.new
           circuit_authorization.name = circuit_authorization_params[:authorization_name]
           circuit_authorization.authorization_key = circuit_authorization_params[:authorization_key]
-          circuit_authorization.authorization_use_status = circuit_authorization_params[:authorization_status]
+          circuit_authorization.authorization_use_status = circuit_authorization_params[:authorization_use_status]
           circuit_authorization.provisioning_state = circuit_authorization_params[:provisioning_state]
           circuit_authorization.etag = circuit_authorization_params[:etag]
 

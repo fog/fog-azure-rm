@@ -4,32 +4,21 @@ require File.expand_path '../../test_helper', __dir__
 class TestDeleteZone < Minitest::Test
   def setup
     @service = Fog::DNS::AzureRM.new(credentials)
-    @zones = @service.zones
-    @token_provider = Fog::Credentials::AzureRM.instance_variable_get(:@token_provider)
+    @dns_client = @service.instance_variable_get(:@dns_client)
+    @zones = @dns_client.zones
   end
 
   def test_delete_zone_success
-    @token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
-      RestClient.stub :delete, true do
-        assert @service.delete_zone('fog-test-rg', 'fog-test-zone')
-      end
+    response = true
+    @zones.stub :delete, response do
+      assert @service.delete_zone('fog-test-rg', 'fog-test-zone'), response
     end
   end
 
   def test_delete_zone_failure
-    @token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
-      assert_raises ArgumentError do
-        @service.delete_zone('fog-test-zone')
-      end
-    end
-  end
-
-  def test_delete_zone_exception
-    response = -> { fail Exception.new('mocked exception') }
-    @token_provider.stub :get_authentication_header, response do
-      assert_raises Exception do
-        assert @service.delete_zone('fog-test-rg', 'fog-test-zone')
-      end
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
+    @zones.stub :delete, response do
+      assert_raises(RuntimeError) { @service.delete_zone('fog-test-rg', 'fog-test-zone') }
     end
   end
 end

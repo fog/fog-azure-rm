@@ -5,7 +5,8 @@ class TestZones < Minitest::Test
   def setup
     @service = Fog::DNS::AzureRM.new(credentials)
     @zones = Fog::DNS::AzureRM::Zones.new(service: @service)
-    @response = [ApiStub::Models::DNS::Zone.list_zones]
+    @dns_client1 = @service.instance_variable_get(:@dns_client)
+    @response = [ApiStub::Models::DNS::Zone.create_zone_obj(@dns_client1)]
   end
 
   def test_collection_methods
@@ -30,7 +31,7 @@ class TestZones < Minitest::Test
   end
 
   def test_get_method_response
-    response = ApiStub::Models::DNS::Zone.create_zone_obj
+    response = ApiStub::Models::DNS::Zone.create_zone_obj(@dns_client1)
     @service.stub :get_zone, response do
       assert_instance_of Fog::DNS::AzureRM::Zone, @zones.get('fog-test-rg', 'fog-test-zone.com')
     end

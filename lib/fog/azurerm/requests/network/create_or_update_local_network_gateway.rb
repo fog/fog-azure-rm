@@ -4,7 +4,9 @@ module Fog
       # Real class for Local Network Gateway Request
       class Real
         def create_or_update_local_network_gateway(local_network_gateway_params)
-          msg = "Creating/Updating Local Network Gateway: #{local_network_gateway_params[:name]} in Resource Group: #{local_network_gateway_params[:resource_group]}."
+          msg = @logger_messages['network']['local_network_gateway']['message']['create']
+                .gsub('NAME', local_network_gateway_params[:name])
+                .gsub('RESOURCE_GROUP', local_network_gateway_params[:resource_group])
           Fog::Logger.debug msg
           local_network_gateway = get_local_network_gateway_object(local_network_gateway_params)
           begin

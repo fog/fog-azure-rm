@@ -28,7 +28,7 @@ module Fog
         def save
           requires :resource_group, :server_name, :name, :start_ip, :end_ip
           firewall_rule = service.create_or_update_firewall_rule(firewall_params)
-          merge_attributes(Fog::Sql::AzureRM::FirewallRule.parse(firewall_rule))
+          merge_attributes(FirewallRule.parse(firewall_rule))
         end
 
         def destroy

@@ -8,7 +8,7 @@ module Fog
           Fog::Logger.debug msg
 
           resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription_id}/resourceGroups/#{firewall_hash[:resource_group]}/providers/Microsoft.Sql/servers/#{firewall_hash[:server_name]}/firewallRules/#{firewall_hash[:name]}?api-version=2014-04-01-preview"
-          request_parameters = format_server_firewall_parameters(firewall_hash[:start_ip], firewall_hash[:end_ip])
+          request_parameters = get_server_firewall_parameters(firewall_hash[:start_ip], firewall_hash[:end_ip])
           begin
             token = Fog::Credentials::AzureRM.get_token(@tenant_id, @client_id, @client_secret)
             response = RestClient.put(
@@ -27,7 +27,7 @@ module Fog
 
         private
 
-        def format_server_firewall_parameters(start_ip, end_ip)
+        def get_server_firewall_parameters(start_ip, end_ip)
           parameters = {}
           properties = {}
 

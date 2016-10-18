@@ -8,8 +8,7 @@ module Fog
         model FirewallRule
 
         def all
-          requires :resource_group
-          requires :server_name
+          requires :resource_group, :server_name
 
           firewall_rules = []
           service.list_firewall_rules(resource_group, server_name).each do |firewall_rule|

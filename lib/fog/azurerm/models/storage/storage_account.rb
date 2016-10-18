@@ -5,10 +5,12 @@ module Fog
       # delete/destroy for storage account.
       class StorageAccount < Fog::Model
         identity  :name
+        attribute :id
         attribute :location
         attribute :resource_group
         attribute :sku_name
         attribute :replication
+        attribute :encryption
 
         def self.parse(storage_account)
           hash = {}
@@ -18,6 +20,7 @@ module Fog
           hash['resource_group'] = get_resource_group_from_id(storage_account.id)
           hash['sku_name'] = storage_account.sku.name.split('_').first
           hash['replication'] = storage_account.sku.name.split('_').last
+          hash['encryption'] = storage_account.encryption.services.blob.enabled unless storage_account.encryption.nil?
           hash
         end
 
@@ -31,7 +34,7 @@ module Fog
           validate_sku_name!
           storage_account_arguments = get_storage_account_arguments
           storage_account = service.create_storage_account(storage_account_arguments)
-          merge_attributes(Fog::Storage::AzureRM::StorageAccount.parse(storage_account))
+          merge_attributes(StorageAccount.parse(storage_account))
         end
 
         def get_storage_account_arguments
@@ -40,8 +43,17 @@ module Fog
             name: name,
             sku_name: sku_name,
             location: location,
-            replication: replication
+            replication: replication,
+            encryption: encryption
           }
+        end
+
+        def update(storage_account_params)
+          validate_input(storage_account_params)
+          storage_account_params = merge_attributes(storage_account_params).all_attributes
+
+          storage_account = service.update_storage_account(storage_account_params)
+          merge_attributes(StorageAccount.parse(storage_account))
         end
 
         def validate_sku_name!
@@ -61,6 +73,14 @@ module Fog
 
         def destroy
           service.delete_storage_account(resource_group, name)
+        end
+
+        private
+
+        def validate_input(attr_hash)
+          invalid_attr = [:resource_group, :name, :location, :id]
+          result = invalid_attr & attr_hash.keys
+          raise 'Cannot modify the given attribute' unless result.empty?
         end
 
         private :get_storage_account_arguments, :validate_sku_name!

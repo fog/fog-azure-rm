@@ -34,7 +34,8 @@ module ApiStub
             name: 'fog_test_storage_account',
             sku_name: 'Standard',
             location: 'West US',
-            replication: 'LRS'
+            replication: 'LRS',
+            encryption: true
           }
         end
 

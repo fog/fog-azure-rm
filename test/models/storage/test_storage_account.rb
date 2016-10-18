@@ -56,6 +56,12 @@ class TestStorageAccount < Minitest::Test
     end
   end
 
+  def test_update_method_response
+    @service.stub :update_storage_account, @storage_account_response do
+      assert_instance_of Fog::Storage::AzureRM::StorageAccount, @storage_account.update({})
+    end
+  end
+
   def test_get_access_keys_method_response
     key1 = Azure::ARM::Storage::Models::StorageAccountKey.new
     key1.key_name = 'key1'

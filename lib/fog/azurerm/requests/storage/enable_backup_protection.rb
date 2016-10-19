@@ -36,6 +36,14 @@ module Fog
           rescue Exception => e
             raise_azure_exception(e, msg)
           end
+
+          @job = get_backup_job_for_vm(rv_name, rv_resource_group, vm_name, vm_resource_group, 'ConfigureBackup')
+
+          until @job.nil?
+            sleep 10
+            @job = get_backup_job_for_vm(rv_name, rv_resource_group, vm_name, vm_resource_group, 'ConfigureBackup')
+          end
+
           Fog::Logger.debug "Successfully enabled backup protection for VM #{vm_name} in Resource Group #{vm_resource_group}"
         end
       end

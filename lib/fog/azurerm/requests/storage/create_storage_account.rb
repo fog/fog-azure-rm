@@ -32,12 +32,12 @@ module Fog
           params.location = location
           unless encryption_enabled.nil?
             encryption = Azure::ARM::Storage::Models::Encryption.new
-            encryptionServices = Azure::ARM::Storage::Models::EncryptionServices.new
-            encryptionService = Azure::ARM::Storage::Models::EncryptionService.new
-            encryptionService.enabled = encryption_enabled
-            encryptionService.last_enabled_time = Time.new if encryptionService.enabled
-            encryptionServices.blob = encryptionService
-            encryption.services = encryptionServices
+            encryption_services = Azure::ARM::Storage::Models::EncryptionServices.new
+            encryption_service = Azure::ARM::Storage::Models::EncryptionService.new
+            encryption_service.enabled = encryption_enabled
+            encryption_service.last_enabled_time = Time.new if encryption_service.enabled
+            encryption_services.blob = encryption_service
+            encryption.services = encryption_services
             params.encryption = encryption
           end
           params

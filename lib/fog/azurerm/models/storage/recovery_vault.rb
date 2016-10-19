@@ -33,8 +33,12 @@ module Fog
           service.enable_backup_protection(name, resource_group, vm_name, vm_resource_group)
         end
 
-        def start_backup(vm_name)
-          service.start_backup(resource_group, name, vm_name)
+        def start_backup(vm_name, vm_resource_group)
+          service.start_backup(resource_group, name, vm_name, vm_resource_group)
+        end
+
+        def disable_backup_protection(vm_name, vm_resource_group)
+          service.disable_backup_protection(name, resource_group, vm_name, vm_resource_group)
         end
 
         def destroy

@@ -3,14 +3,14 @@ module Fog
     class AzureRM
       # Real class for Recovery Vault request
       class Real
-        def start_backup(resource_group, name, vm_name)
+        def start_backup(resource_group, name, vm_name, vm_resource_group)
           msg = "Starting backup for VM #{vm_name}"
           Fog::Logger.debug msg
 
           backup_items = get_backup_item(resource_group, name, vm_name)
-          backup_item = backup_items.select { |item| (item['properties']['friendlyName'].eql? vm_name.downcase) &&  (resource_group.eql? get_resource_group_from_id(item['properties']['virtualMachineId'])) }[0]
+          backup_item = backup_items.select { |item| (item['properties']['friendlyName'].eql? vm_name.downcase) &&  (vm_resource_group.eql? get_resource_group_from_id(item['properties']['virtualMachineId'])) }[0]
 
-          resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription_id}/resourceGroups/#{resource_group}/providers/Microsoft.RecoveryServices/vaults/#{name}/backupFabrics/Azure/protectionContainers/IaasVMContainer;#{backup_item['name']}/protectedItems/VM;#{backup_item['name']}/backup?api-version=2016-05-01"
+          resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription_id}/resourceGroups/#{resource_group}/providers/Microsoft.RecoveryServices/vaults/#{name}/backupFabrics/Azure/protectionContainers/iaasvmcontainer;#{backup_item['name']}/protectedItems/vm;#{backup_item['name']}/backup?api-version=2016-05-01"
           body = {
             properties: {
               objectType: 'IaasVMBackupRequest'
@@ -18,7 +18,7 @@ module Fog
           }
           begin
             token = Fog::Credentials::AzureRM.get_token(@tenant_id, @client_id, @client_secret)
-            RestClient.put(
+            RestClient.post(
               resource_url,
               body.to_json,
               accept: 'application/json',

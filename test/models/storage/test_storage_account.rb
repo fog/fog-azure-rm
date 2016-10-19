@@ -28,7 +28,8 @@ class TestStorageAccount < Minitest::Test
       :location,
       :resource_group,
       :sku_name,
-      :replication
+      :replication,
+      :encryption
     ]
     attributes.each do |attribute|
       assert_respond_to @storage_account, attribute

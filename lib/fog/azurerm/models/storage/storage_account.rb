@@ -32,8 +32,7 @@ module Fog
           self.sku_name = STANDARD_STORAGE if sku_name.nil?
           self.replication = ALLOWED_STANDARD_REPLICATION.first if replication.nil?
           validate_sku_name!
-          storage_account_arguments = get_storage_account_arguments
-          storage_account = service.create_storage_account(storage_account_arguments)
+          storage_account = service.create_storage_account(get_storage_account_arguments)
           merge_attributes(StorageAccount.parse(storage_account))
         end
 

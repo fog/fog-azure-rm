@@ -35,9 +35,7 @@ module Fog
             encryptionServices = Azure::ARM::Storage::Models::EncryptionServices.new
             encryptionService = Azure::ARM::Storage::Models::EncryptionService.new
             encryptionService.enabled = encryption_enabled
-            if encryptionService.enabled
-              encryptionService.last_enabled_time = Time.new
-            end
+            encryptionService.last_enabled_time = Time.new if encryptionService.enabled
             encryptionServices.blob = encryptionService
             encryption.services = encryptionServices
             params.encryption = encryption

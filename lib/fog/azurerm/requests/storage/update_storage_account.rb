@@ -30,9 +30,7 @@ module Fog
             encryption_services = Azure::ARM::Storage::Models::EncryptionServices.new
             encryption_service = Azure::ARM::Storage::Models::EncryptionService.new
             encryption_service.enabled = storage_account_hash[:encryption]
-            if encryption_service.enabled
-              encryption_service.last_enabled_time = Time.new
-            end
+            encryption_service.last_enabled_time = Time.new if encryption_service.enabled
             encryption_services.blob = encryption_service
             encryption.services = encryption_services
             params.encryption = encryption

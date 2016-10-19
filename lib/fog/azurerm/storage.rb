@@ -63,6 +63,9 @@ module Fog
       request :get_backup_item
       request :get_backup_container
       request :disable_backup_protection
+      request :get_all_backup_jobs
+      request :get_all_backup_jobs
+      request :get_backup_job_for_vm
 
       model_path 'fog/azurerm/models/storage'
       model :storage_account

@@ -7,10 +7,8 @@ module Fog
           msg = "Disabling protection for VM #{vm_name} in Recovery Vault #{rv_name}"
           Fog::Logger.debug msg
 
-          compute_service = Fog::Compute::AzureRM.new(tenant_id: @tenant_id, client_id: @client_id, client_secret: @client_secret, subscription_id: @subscription_id)
-
           set_recovery_vault_context(rv_resource_group, rv_name)
-          vm_id = compute_service.servers.get(vm_resource_group, vm_name).id
+          vm_id = get_virtual_machine_id(vm_resource_group, vm_name)
 
           resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription_id}/resourceGroups/#{rv_resource_group}/providers/Microsoft.RecoveryServices/vaults/#{rv_name}/backupFabrics/Azure/protectionContainers/iaasvmcontainer;iaasvmcontainerv2;#{vm_resource_group.downcase};#{vm_name.downcase}/protectedItems/vm;iaasvmcontainerv2;#{vm_resource_group.downcase};#{vm_name.downcase}?api-version=2016-05-01"
           body = {
@@ -35,14 +33,24 @@ module Fog
           rescue Exception => e
             raise_azure_exception(e, msg)
           end
+
           Fog::Logger.debug "Successfully disabled protection for VM #{vm_name} in Recovery Vault #{rv_name}"
+          true
+        end
+
+        private
+        
+        def get_virtual_machine_id(vm_resource_group, vm_name)
+          compute_service = Fog::Compute::AzureRM.new(tenant_id: @tenant_id, client_id: @client_id, client_secret: @client_secret, subscription_id: @subscription_id)
+          compute_service.get_virtual_machine(vm_resource_group, vm_name).id
         end
       end
 
       # Mock class for Recovery Vault request
       class Mock
         def disable_backup_protection(*)
-
+          Fog::Logger.debug 'Successfully disabled protection for VM {vm_name} in Recovery Vault {rv_name}'
+          true
         end
       end
     end

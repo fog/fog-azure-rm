@@ -32,8 +32,10 @@ module Fog
               raise_azure_exception(e, msg)
             end
             Fog::Logger.debug "Successfully started backup for VM #{vm_name} in Recovery Vault #{name}"
+            true
           else
             Fog::Logger.debug "Backup already in progress for VM #{vm_name} in Recovery Vault #{name}"
+            false
           end
         end
       end
@@ -41,7 +43,8 @@ module Fog
       # Mock class for Recovery Vault request
       class Mock
         def start_backup(*)
-
+          Fog::Logger.debug 'Successfully started backup for VM {vm_name} in Recovery Vault {name}'
+          true
         end
       end
     end

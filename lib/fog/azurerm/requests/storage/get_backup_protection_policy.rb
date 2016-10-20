@@ -26,7 +26,38 @@ module Fog
 
       # Mock class for Recovery Vault request
       class Mock
-
+        body = '{
+          "value": [{
+            "id": "/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.RecoveryServices/vaults/fog-test-vault/backupPolicies/DefaultPolicy",
+            "name": "DefaultPolicy",
+            "type": "Microsoft.RecoveryServices/vaults/backupPolicies",
+            "properties": {
+              "backupManagementType": "AzureIaasVM",
+              "schedulePolicy": {
+                "schedulePolicyType": "SimpleSchedulePolicy",
+                "scheduleRunFrequency": "Daily",
+                "scheduleRunTimes": [
+                  "2016-10-13T19:30:00Z"
+                ],
+                "scheduleWeeklyFrequency": 0
+              },
+              "retentionPolicy": {
+                "retentionPolicyType": "LongTermRetentionPolicy",
+                "dailySchedule": {
+                  "retentionTimes": [
+                    "2016-10-13T19:30:00Z"
+                  ],
+                  "retentionDuration": {
+                    "count": 30,
+                    "durationType": "Days"
+                  }
+                }
+              },
+              "protectedItemsCount": 0
+            }
+          }]
+        }'
+        JSON.parse(body)['value']
       end
     end
   end

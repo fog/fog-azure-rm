@@ -20,13 +20,15 @@ module Fog
             raise_azure_exception(e, msg)
           end
           Fog::Logger.debug "Successfully set context for Recovery Vault #{name}"
+          true
         end
       end
 
       # Mock class for Recovery Vault request
       class Mock
         def set_recovery_vault_context(*)
-
+          Fog::Logger.debug 'Successfully set context for Recovery Vault {name}'
+          true
         end
       end
     end

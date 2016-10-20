@@ -19,14 +19,29 @@ module Fog
             raise_azure_exception(e, msg)
           end
           Fog::Logger.debug "Recovery Vault #{name} from Resource Group #{resource_group} retrieved successfully"
-          JSON.parse(recovery_vault_response)['value'][0]
+          result = JSON.parse(recovery_vault_response)['value']
+          result.select { |vault| vault['name'].eql? name }[0]
         end
       end
 
       # Mock class for Recovery Vault request
       class Mock
         def get_recovery_vault(*)
-
+          body = '{
+            "value": [{
+              "location": "westus",
+              "name": "fog-test-vault",
+              "properties": {
+                "provisioningState": "Succeeded"
+              },
+              "id": "/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.RecoveryServices/vaults/fog-test-vault",
+              "type": "Microsoft.RecoveryServices/vaults",
+              "sku": {
+                "name": "standard"
+              }
+            }]
+          }'
+          JSON.parse(body)['value'][0]
         end
       end
     end

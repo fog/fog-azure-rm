@@ -34,7 +34,19 @@ module Fog
       # Mock class for Recovery Vault request
       class Mock
         def create_or_update_recovery_vault(*)
-
+          recovery_vault = '{
+            "location": "westus",
+            "name": "fog-test-vault",
+            "properties": {
+              "provisioningState": "Succeeded"
+            },
+            "id": "/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.RecoveryServices/vaults/fog-test-vault",
+            "type": "Microsoft.RecoveryServices/vaults",
+            "sku": {
+              "name": "standard"
+            }
+          }'
+          JSON.parse(recovery_vault)
         end
       end
     end

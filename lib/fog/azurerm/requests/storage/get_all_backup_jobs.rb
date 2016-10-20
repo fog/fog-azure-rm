@@ -27,7 +27,28 @@ module Fog
       # Mock class for Recovery Vault request
       class Mock
         def get_all_backup_jobs(*)
-
+          body = '{
+            "value": [{
+              "id": "/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.RecoveryServices/vaults/fog-test-vault/backupJobs/########-####-####-####-############",
+              "name": "########-####-####-####-############",
+              "type": "Microsoft.RecoveryServices/vaults/backupJobs",
+              "properties": {
+                "jobType": "AzureIaaSVMJob",
+                "duration": "XX:XX:XX.XXXXXXX",
+                "actionsInfo": [
+                  1
+                ],
+                "virtualMachineVersion": "Compute",
+                "entityFriendlyName": "fog-test-vm",
+                "backupManagementType": "AzureIaasVM",
+                "operation": "Backup",
+                "status": "InProgress",
+                "startTime": "2016-10-19T07:49:31.1466534Z",
+                "activityId": "########-####-####-####-############"
+              }
+            }]
+          }'
+          JSON.parse(body)['value']
         end
       end
     end

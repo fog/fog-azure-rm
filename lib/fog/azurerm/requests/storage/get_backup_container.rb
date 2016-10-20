@@ -27,7 +27,25 @@ module Fog
       # Mock class for Recovery Vault request
       class Mock
         def get_backup_container(*)
-
+          body = '{
+            "value": [{
+              "id": "/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.RecoveryServices/vaults/fog-test-vault/backupFabrics/Azure/protectionContainers/IaasVMContainer;iaasvmcontainerv2;fog-test-vm-rg;fog-test-vm",
+              "name": "IaasVMContainer;iaasvmcontainerv2;fog-test-vm-rg;fog-test-vm",
+              "type": "Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers",
+              "properties": {
+                "virtualMachineId": "/subscriptions/########-####-####-####-############/resourceGroups/TestRG/providers/Microsoft.Compute/virtualMachines/TestVM",
+                "virtualMachineVersion": "Compute",
+                "resourceGroup": "fog-test-vm-rg",
+                "friendlyName": "fog-test-vm",
+                "backupManagementType": "AzureIaasVM",
+                "registrationStatus": "Registered",
+                "healthStatus": "Healthy",
+                "containerType": "Microsoft.Compute/virtualMachines",
+                "protectableObjectType": "Microsoft.Compute/virtualMachines"
+              }
+            }]
+          }'
+          JSON.parse(body)['value']
         end
       end
     end

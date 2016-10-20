@@ -17,9 +17,9 @@ module Fog
         end
 
         def get(resource_group_name, virtual_machine_name)
-          storage_account = service.get_virtual_machine(resource_group_name, virtual_machine_name)
-          storage_account_obj = Server.new(service: service)
-          storage_account_obj.merge_attributes(Server.parse(storage_account))
+          virtual_machine = service.get_virtual_machine(resource_group_name, virtual_machine_name)
+          virtual_machine_obj = Server.new(service: service)
+          virtual_machine_obj.merge_attributes(Server.parse(virtual_machine))
         end
       end
     end

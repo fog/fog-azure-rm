@@ -40,7 +40,7 @@ class TestRecoveryVaults < Minitest::Test
 
   def test_get_method_response
     response = ApiStub::Models::Storage::RecoveryVault.create_method_response
-    @service.stub :get_recovery_vault,response do
+    @service.stub :get_recovery_vault, response do
       assert_instance_of Fog::Storage::AzureRM::RecoveryVault, @recovery_vaults.get('fog-test-rg', 'fog-test-vault')
     end
   end

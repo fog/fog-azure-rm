@@ -1,6 +1,7 @@
 module Fog
   module Storage
     class AzureRM
+      # Real class for Recovery Vault request
       class Real
         def delete_recovery_vault(resource_group, name)
           msg = "Deleting Recovery Vault #{name} from Resource Group #{resource_group}"
@@ -22,6 +23,7 @@ module Fog
         end
       end
 
+      # Mock class for Recovery Vault request
       class Mock
         def delete_recovery_vault(*)
           Fog::Logger.debug 'Recovery Vault TestVault in Resource Group TestRG deleted successfully'

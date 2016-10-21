@@ -8,11 +8,11 @@ module Fog
           Fog::Logger.debug msg
 
           backup_jobs = get_all_backup_jobs(rv_name, rv_resource_group)
-          backup_job = backup_jobs.select { |job|
-            (job['properties']['status'].eql? 'InProgress') &&
-            (job['properties']['entityFriendlyName'].eql? vm_name.downcase) &&
-            (job['properties']['operation'].eql? operation)
-          }
+          backup_job = backup_jobs.select do |job|
+              (job['properties']['status'].eql? 'InProgress') &&
+              (job['properties']['entityFriendlyName'].eql? vm_name.downcase) &&
+              (job['properties']['operation'].eql? operation)
+          end
 
           backup_job[0]
         end
@@ -45,7 +45,7 @@ module Fog
               "activityId": "383f05d9-a4bf-4b95-bb41-d39849b3a86e-2016-10-13 09:55:53Z-PS"
             }
           }'
-          JSON.parse(response)
+          JSON.parse(body)
         end
       end
     end

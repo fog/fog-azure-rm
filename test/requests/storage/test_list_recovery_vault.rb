@@ -20,7 +20,7 @@ class TestListRecoveryVault < Minitest::Test
   def test_list_recovery_vault_argument_error
     @token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
       assert_raises ArgumentError do
-        @service.list_recovery_vaults()
+        @service.list_recovery_vaults
       end
     end
   end

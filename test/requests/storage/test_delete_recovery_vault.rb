@@ -1,5 +1,6 @@
 require File.expand_path '../../test_helper', __dir__
 
+# Test class for Delete Recovery Vault request
 class TestDeleteRecoveryVault < Minitest::Test
   def setup
     @service = Fog::Storage::AzureRM.new(credentials)

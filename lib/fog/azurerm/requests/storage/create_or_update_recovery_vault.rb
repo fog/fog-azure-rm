@@ -17,11 +17,11 @@ module Fog
           begin
             token = Fog::Credentials::AzureRM.get_token(@tenant_id, @client_id, @client_secret)
             response = RestClient.put(
-                resource_url,
-                body.to_json,
-                accept: 'application/json',
-                content_type: 'application/json',
-                authorization: token
+              resource_url,
+              body.to_json,
+              accept: 'application/json',
+              content_type: 'application/json',
+              authorization: token
             )
           rescue Exception => e
             raise_azure_exception(e, msg)

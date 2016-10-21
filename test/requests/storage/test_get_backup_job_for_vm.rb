@@ -1,5 +1,6 @@
 require File.expand_path '../../test_helper', __dir__
 
+# Test class for Get Backup Job for VM request
 class TestGetBackupJobForVM < Minitest::Test
   def setup
     @service = Fog::Storage::AzureRM.new(credentials)

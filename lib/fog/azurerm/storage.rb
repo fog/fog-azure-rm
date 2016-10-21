@@ -17,6 +17,7 @@ module Fog
       request_path 'fog/azurerm/requests/storage'
       # Azure Storage Account requests
       request :create_storage_account
+      request :update_storage_account
       request :list_storage_accounts
       request :delete_storage_account
       request :get_storage_account

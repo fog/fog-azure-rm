@@ -74,7 +74,8 @@ azure_storage_service.storage_accounts.create(
   :location => 'West US',
   :resource_group => '<Resource Group name>',
   :account_type => '<Standard/Premium>'                # Optional. Default value 'Standard'. Allowed values can only be Standard or Premium
-  :replication => 'LRS'                                # Optional. Default value 'LRS' 
+  :replication => 'LRS',                               # Optional. Default value 'LRS'
+  :encryption => true                                  # Optional. If you want to enable encryption. Default value is 'false'
 )
 ```
 Premium Storage account store data on solid state drives (SSDs). For more details on standard and premium storage accounts, see [Introduction to Microsoft Azure Storage](https://azure.microsoft.com/en-us/documentation/articles/storage-introduction/) and [Premium Storage: High-Performance Storage for Azure Virtual Machine Workloads](https://azure.microsoft.com/en-us/documentation/articles/storage-premium-storage/).
@@ -108,6 +109,18 @@ storage_acc = azure_storage_service
                 .storage_accounts
                 .get('<Resource Group name>', '<Storage Account name>')
 puts "#{storage_acc.name}"
+```
+
+## Enable encryption on Storage Account
+
+Get a single record of Storage Account and enable encryption on that Storage Account
+
+```ruby
+storage_acc = azure_storage_service
+                .storage_accounts
+                .get('<Resource Group name>', '<Storage Account name>')
+
+storage_acc.update(encryption: true)
 ```
 
 ## Get Access Keys

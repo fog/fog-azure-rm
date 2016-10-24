@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ $TRAVIS_BRANCH == 'master' ]
+if [ $TRAVIS_BRANCH == 'develop' ]
 then
   rake cc_coverage
   rake integration_tests

@@ -1,6 +1,7 @@
 #!/bin/bash
 
-if [[ $TRAVIS_BRANCH == 'fog/fog-azure-rm/master' ]]
+if [ $TRAVIS_BRANCH == 'master' ]
+then
   rake cc_coverage
   rake integration_tests
 else

@@ -5,6 +5,8 @@ before_install:
   - gem install bundler
   - gem update bundler
 
+script: sh rake-script.sh
+
 matrix:
   fast_finish: true
   include:

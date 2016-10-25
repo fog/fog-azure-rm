@@ -1,3 +1,9 @@
+## Upcoming Version
+
+**Added:**
+- Azure SQL Service - Added support for SQL Server Firewall Rules.
+- Storage Service - Added support for Recovery Vault
+
 ## 0.0.9
 
 **Added:**
@@ -6,7 +12,7 @@
 **Changed:**
 - DNS Service - DNS Service moved from API calls to Azure latest SDK.
 
-
+=======
 
 ## 0.0.8 
 
@@ -19,7 +25,6 @@
     get blob properties, set blob metadata, get blob metadata, get blob, list blob functionality for storage
 - Added get container properties, get container metadata, set container metadata, get container, list container,
     delete container,  Get the access control list of the container
-
 
 ## 0.0.6
 

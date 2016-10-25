@@ -50,15 +50,16 @@ storage_data = Fog::Storage.new(
 ######################                                Create Container                            ######################
 ########################################################################################################################
 
-storage_data.containers.create(
-  name: 'fogcontainer'
+storage_data.directories.create(
+  name: 'fogcontainer',
+  key: access_key
 )
 
 ########################################################################################################################
 ######################                          Get Container Properties                          ######################
 ########################################################################################################################
 
-container = storage_data.containers.get('fogcontainer')
+container = storage_data.directories.get('fogcontainer')
 container.get_properties
 
 ########################################################################################################################

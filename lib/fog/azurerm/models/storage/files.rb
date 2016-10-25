@@ -1,12 +1,9 @@
-require 'fog/core/collection'
-require 'fog/azurerm/models/storage/file'
-
 module Fog
   module Storage
     class AzureRM
       # This class is giving implementation of listing blobs.
       class Files < Fog::Collection
-        model Fog::Storage::AzureRM::File
+        model File
         attribute :directory
 
         def all(options = { metadata: true })

@@ -8,7 +8,8 @@ module Fog
           Fog::Logger.debug msg
           storage_account_params = get_storage_account_params(storage_account_hash[:sku_name],
                                                               storage_account_hash[:location],
-                                                              storage_account_hash[:replication])
+                                                              storage_account_hash[:replication],
+                                                              storage_account_hash[:encryption])
           begin
             storage_account = @storage_mgmt_client.storage_accounts.create(storage_account_hash[:resource_group],
                                                                            storage_account_hash[:name],
@@ -22,13 +23,23 @@ module Fog
 
         private
 
-        def get_storage_account_params(sku_name, location, replication)
+        def get_storage_account_params(sku_name, location, replication, encryption_enabled)
           params = Azure::ARM::Storage::Models::StorageAccountCreateParameters.new
           sku = Azure::ARM::Storage::Models::Sku.new
           sku.name = "#{sku_name}_#{replication}"
           params.sku = sku
           params.kind = Azure::ARM::Storage::Models::Kind::Storage
           params.location = location
+          unless encryption_enabled.nil?
+            encryption = Azure::ARM::Storage::Models::Encryption.new
+            encryption_services = Azure::ARM::Storage::Models::EncryptionServices.new
+            encryption_service = Azure::ARM::Storage::Models::EncryptionService.new
+            encryption_service.enabled = encryption_enabled
+            encryption_service.last_enabled_time = Time.new if encryption_service.enabled
+            encryption_services.blob = encryption_service
+            encryption.services = encryption_services
+            params.encryption = encryption
+          end
           params
         end
       end

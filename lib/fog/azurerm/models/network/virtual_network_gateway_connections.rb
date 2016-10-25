@@ -1,6 +1,3 @@
-require 'fog/core/collection'
-require 'fog/azurerm/models/network/virtual_network_gateway_connection'
-
 module Fog
   module Network
     class AzureRM

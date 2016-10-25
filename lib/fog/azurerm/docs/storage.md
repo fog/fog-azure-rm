@@ -74,7 +74,8 @@ azure_storage_service.storage_accounts.create(
   :location => 'West US',
   :resource_group => '<Resource Group name>',
   :account_type => '<Standard/Premium>'                # Optional. Default value 'Standard'. Allowed values can only be Standard or Premium
-  :replication => 'LRS'                                # Optional. Default value 'LRS' 
+  :replication => 'LRS',                               # Optional. Default value 'LRS'
+  :encryption => true                                  # Optional. If you want to enable encryption. Default value is 'false'
 )
 ```
 Premium Storage account store data on solid state drives (SSDs). For more details on standard and premium storage accounts, see [Introduction to Microsoft Azure Storage](https://azure.microsoft.com/en-us/documentation/articles/storage-introduction/) and [Premium Storage: High-Performance Storage for Azure Virtual Machine Workloads](https://azure.microsoft.com/en-us/documentation/articles/storage-premium-storage/).
@@ -110,6 +111,18 @@ storage_acc = azure_storage_service
 puts "#{storage_acc.name}"
 ```
 
+## Enable encryption on Storage Account
+
+Get a single record of Storage Account and enable encryption on that Storage Account
+
+```ruby
+storage_acc = azure_storage_service
+                .storage_accounts
+                .get('<Resource Group name>', '<Storage Account name>')
+
+storage_acc.update(encryption: true)
+```
+
 ## Get Access Keys
 
 Get access keys of a storage account
@@ -129,12 +142,20 @@ Get storage account object from the get method and then destroy that storage acc
 storage_acc.destroy
 ```
 
+## Create a Disk
+
+Create a Disk in storage account.
+
+```ruby
+azure_storage_service.create_disk('<Data Disk Name>', options = {})
+```
+
 ## Delete a Disk
 
 Delete a Disk from a storage account. Disk must be in unlocked state i.e detached from server(virtual machine) to successfully perform this action.
 
 ```ruby
-azure_storage_service.delete_disk('<Resource Group name>', '<Storage Account name>', '<Data Disk Name>')
+azure_storage_service.delete_disk('<Data Disk Name>')
 ```
 
 ## Create a storage container
@@ -297,6 +318,72 @@ metadata = {
   }
 azure_storage_service.directories.set_metadata('<Container name>', metadata)
 ```
+
+### Create Recovery Vault
+
+Create a new Recovery Vault object
+
+```ruby
+azure_storage_service.recovery_vaults.create(
+  name: '<vault_name>',
+  location: '<location>',
+  resource_group: '<resource_group_name>'
+```
+
+### Get Recovery Vault
+
+Retrieves a Recovery Vault object
+
+```ruby
+recovery_vault = azure_storage_service.recovery_vaults.get(
+  'Vault Name',
+  'Vault Resource Group'
+)
+```
+
+### List Recovery Vaults
+
+List the Recovery Vaults in a resource group
+
+```ruby
+azure_storage_service.recovery_vaults('Resource Group Name').each do |recovery_vault|
+  puts recovery_vault.inspect
+end
+```
+
+### Enable Backup Protection
+
+Enables backup protection for a virtual machine in the recovery vault. Backup protection for a virtual machine must be enabled before running backup.
+
+```ruby
+recovery_vault.enable_backup_protection('Virtual Machine Name', 'Virtual Machine Resource Group')
+```
+
+### Disable Backup Protection
+
+Disables backup protection for a virtual machine in the recovery vault.
+
+```ruby
+recovery_vault.disable_backup_protection('Virtual Machine Name', 'Virtual Machine Resource Group')
+```
+
+### Start Backup
+
+Starts the backup process for a given virtual machine
+
+```ruby
+recovery_vault.start_backup('Virtual Machine Name', 'Virtual Machine Resource Group')
+```
+
+### Destroy Recovery Vault
+
+Destroys the Recovery Vault
+
+```ruby
+recovery_vault.destroy
+```
+
+Note that a Recovery Vault must not contain any backup protectable items or tasks running in order for you to delete it. If any item is present, it must be deleted from the portal first before running this command.
 
 ## Support and Feedback
 Your feedback is appreciated! If you have specific issues with the fog ARM, you should file an issue via Github.

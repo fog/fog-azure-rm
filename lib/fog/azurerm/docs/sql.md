@@ -125,6 +125,45 @@ Get SQL Database object from the get method(described above) and destroy that Da
       database.destroy
 ```
 
+## Create Firewall Rule
+
+Create a new Firewall Rule
+
+```ruby
+    azure_sql_service.firewall_rules.create(
+        name: '<Firewall Rule Name>',
+        resource_group: '<Resource Group Name>',
+        server_location: '<Server Name>',
+        start_ip: '<Start IP Address>',           # Specifies the starting IP address to allow through the firewall.
+        end_ip: '<End IP Address>',               # Specifies the ending IP address to allow through the firewall.
+        
+    )
+```
+
+## List Firewall Rules
+Get a list of Firewall Rules on a SQL Server in given resource group
+```ruby
+    firewall_rules  = azure_sql_service.firewall_rules(resource_group: '<Resource Group Name>', server_name: '<Server Name>')
+    firewall_rules.each do |firewall_rule|
+      puts "Listing : #{firewall_rule.name}"
+    end
+```
+
+## Retrieve a single Firewall Rule
+Get a single record of Firewall rule on SQL Server
+```ruby
+     firewall_rule = azure_sql_service.firewall_rules
+                   .get('<Resource Group Name>', '<Server Name>', '<Firewall Rule Name>')
+     puts "Get: Firewall Rule Name: #{firewall_rule.name}"
+```
+
+## Destroy a Firewall Rule
+Get Firewall Rule object from the get method(described above) and destroy that Firewall Rule.
+
+```ruby
+      firewall_rule.destroy
+```
+
 
 ## Support and Feedback
 Your feedback is appreciated! If you have specific issues with the fog ARM, you should file an issue via Github.

@@ -70,8 +70,8 @@ storage_data.delete_disk('datadisk1')
 container = storage_data.directories.get('vhds')
 container.destroy
 
-storage = storage.storage_accounts.get('TestRG-VM', 'fogstorageac')
+storage = storage.storage_accounts.get('TestRG-DD', 'fogstorageac')
 storage.destroy
 
-resource_group = rs.resource_groups.get('TestRG-VM')
+resource_group = rs.resource_groups.get('TestRG-DD')
 resource_group.destroy

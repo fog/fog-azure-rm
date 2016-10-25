@@ -1,7 +1,7 @@
 module Fog
   module Storage
     class AzureRM
-      # This class provides the actual implemention for service calls.
+      # This class provides the actual implementation for service calls.
       class Real
         SINGLE_BLOB_PUT_THRESHOLD = 32 * 1024 * 1024
         BLOCK_SIZE = 4 * 1024 * 1024
@@ -28,9 +28,9 @@ module Fog
                   blocks << [block_id]
                 end
               end
-              blob = @blob_client.commit_blob_blocks container_name, blob_name, blocks, options
+              @blob_client.commit_blob_blocks container_name, blob_name, blocks, options
+              blob = get_blob_metadata(container_name, blob_name, options)
             end
-
             Fog::Logger.debug "Uploading #{file_path} successfully."
             blob
           rescue IOError => ex

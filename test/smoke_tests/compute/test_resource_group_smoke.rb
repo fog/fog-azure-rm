@@ -11,7 +11,7 @@ class TestResourceGroupSmoke < MiniTest::Test
         subscription_id: ENV['SUBSCRIPTION_ID']
       )
     else
-      azure_credentials = YAML.load_file('integration/credentials/azure.yml')
+      azure_credentials = YAML.load_file('../integration/credentials/azure.yml')
       @resource = Fog::Resources::AzureRM.new(
         tenant_id: azure_credentials['tenant_id'],
         client_id: azure_credentials['client_id'],

@@ -26,6 +26,7 @@ module Fog
       request :get_storage_access_keys
       # Azure Storage Disk requests
       request :delete_disk
+      request :create_disk
       # Azure Storage Container requests
       request :create_container
       request :release_container_lease

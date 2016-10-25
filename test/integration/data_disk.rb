@@ -26,58 +26,52 @@ storage = Fog::Storage::AzureRM.new(
 ######################                                 Prerequisites                              ######################
 ########################################################################################################################
 
-resource_group = rs.resource_groups.create(
-  name: 'TestRG-VM',
+rs.resource_groups.create(
+  name: 'TestRG-DD',
   location: 'eastus'
 )
 
 storage_account = storage.storage_accounts.create(
   name: 'fogstorageac',
   location: 'eastus',
-  resource_group: 'TestRG-VM'
+  resource_group: 'TestRG-DD',
+  account_type: 'Standard',
+  replication: 'LRS'
 )
 
-keys = storage_account.get_access_keys
-access_key = keys.first.value
-
+access_key = storage_account.get_access_keys[0].value
+Fog::Logger.debug access_key.inspect
 storage_data = Fog::Storage.new(
   provider: 'AzureRM',
   azure_storage_account_name: storage_account.name,
   azure_storage_access_key: access_key
 )
-
-########################################################################################################################
-######################                                Create Container                            ######################
-########################################################################################################################
-
 storage_data.directories.create(
-  name: 'fogcontainer',
+  name: 'vhds',
   key: access_key
 )
 
 ########################################################################################################################
-######################                          Get Container Properties                          ######################
+######################                               Create Disk                                  ######################
 ########################################################################################################################
 
-container = storage_data.directories.get('fogcontainer')
-container.get_properties
+storage_data.create_disk('datadisk1', options = {})
 
 ########################################################################################################################
-######################                      Get container access control List                     ######################
+######################                                Delete Data Disk                            ######################
 ########################################################################################################################
 
-container.get_access_control_list
-
-########################################################################################################################
-######################                            Delete Container                                ######################
-########################################################################################################################
-
-container.destroy
+storage_data.delete_disk('datadisk1')
 
 ########################################################################################################################
 ######################                                   CleanUp                                  ######################
 ########################################################################################################################
 
-storage_account.destroy
+container = storage_data.directories.get('vhds')
+container.destroy
 
+storage = storage.storage_accounts.get('TestRG-DD', 'fogstorageac')
+storage.destroy
+
+resource_group = rs.resource_groups.get('TestRG-DD')
 resource_group.destroy

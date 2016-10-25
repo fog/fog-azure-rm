@@ -142,12 +142,20 @@ Get storage account object from the get method and then destroy that storage acc
 storage_acc.destroy
 ```
 
+## Create a Disk
+
+Create a Disk in storage account.
+
+```ruby
+azure_storage_service.create_disk('<Data Disk Name>', options = {})
+```
+
 ## Delete a Disk
 
 Delete a Disk from a storage account. Disk must be in unlocked state i.e detached from server(virtual machine) to successfully perform this action.
 
 ```ruby
-azure_storage_service.delete_disk('<Resource Group name>', '<Storage Account name>', '<Data Disk Name>')
+azure_storage_service.delete_disk('<Data Disk Name>')
 ```
 
 ## Create a storage container

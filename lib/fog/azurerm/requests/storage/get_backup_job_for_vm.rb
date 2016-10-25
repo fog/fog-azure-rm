@@ -9,9 +9,9 @@ module Fog
 
           backup_jobs = get_all_backup_jobs(rv_name, rv_resource_group)
           backup_jobs = backup_jobs.select do |job|
-              (job['properties']['status'].eql? 'InProgress') &&
-              (job['properties']['entityFriendlyName'].eql? vm_name.downcase) &&
-              (job['properties']['operation'].eql? operation)
+            (job['properties']['status'].eql? 'InProgress') &&
+            (job['properties']['entityFriendlyName'].eql? vm_name.downcase) &&
+            (job['properties']['operation'].eql? operation)
           end
 
           backup_jobs[0]

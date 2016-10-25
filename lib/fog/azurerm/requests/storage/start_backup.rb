@@ -11,7 +11,7 @@ module Fog
 
           job = get_backup_job_for_vm(name, resource_group, vm_name, vm_resource_group, 'Backup')
 
-          if !job.nil?
+          unless job.nil?
             Fog::Logger.debug "Backup already in progress for VM #{vm_name} in Recovery Vault #{name}"
             return false
           end

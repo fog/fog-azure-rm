@@ -5,7 +5,6 @@ class TestRecoveryVaults < Minitest::Test
   def setup
     @service = Fog::Storage::AzureRM.new(credentials)
     @recovery_vaults = Fog::Storage::AzureRM::RecoveryVaults.new(resource_group: 'fog-test-rg', service: @service)
-    @response = [ApiStub::Models::Storage::RecoveryVault.create_method_response]
   end
 
   def test_collection_methods
@@ -29,7 +28,8 @@ class TestRecoveryVaults < Minitest::Test
   end
 
   def test_all_method_response
-    @service.stub :list_recovery_vaults, @response do
+    response = [ApiStub::Models::Storage::RecoveryVault.create_method_response]
+    @service.stub :list_recovery_vaults, response do
       assert_instance_of Fog::Storage::AzureRM::RecoveryVaults, @recovery_vaults.all
       assert @recovery_vaults.all.size >= 1
       @recovery_vaults.all.each do |recovery_vault|

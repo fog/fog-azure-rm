@@ -1,3 +1,5 @@
+CONFIGURE_BACKUP = 'ConfigureBackup'.freeze
+
 module Fog
   module Storage
     class AzureRM
@@ -31,15 +33,15 @@ module Fog
               content_type: 'application/json',
               authorization: token
             )
-          rescue Exception => e
+          rescue RestClient::Exception => e
             raise_azure_exception(e, msg)
           end
 
-          @job = get_backup_job_for_vm(rv_name, rv_resource_group, vm_name, vm_resource_group, 'ConfigureBackup')
+          @job = get_backup_job_for_vm(rv_name, rv_resource_group, vm_name, vm_resource_group, CONFIGURE_BACKUP)
 
           until @job.nil?
             sleep 10
-            @job = get_backup_job_for_vm(rv_name, rv_resource_group, vm_name, vm_resource_group, 'ConfigureBackup')
+            @job = get_backup_job_for_vm(rv_name, rv_resource_group, vm_name, vm_resource_group, CONFIGURE_BACKUP)
           end
 
           Fog::Logger.debug "Successfully enabled backup protection for VM #{vm_name} in Resource Group #{vm_resource_group}"

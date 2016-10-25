@@ -41,19 +41,19 @@ class TestRecoveryVault < Minitest::Test
     end
   end
 
-  def enable_backup_protection_method_response
+  def test_enable_backup_protection_method_response
     @service.stub :enable_backup_protection, true do
-      assert @recovery_vault.enable_backup_protection
+      assert @recovery_vault.enable_backup_protection('test-vm', 'test-vm-rg')
     end
   end
 
-  def disable_backup_protection_method_response
+  def test_disable_backup_protection_method_response
     @service.stub :disable_backup_protection, true do
-      assert @recovery_vault.disable_backup_protection
+      assert @recovery_vault.disable_backup_protection('test-vm', 'test-vm-rg')
     end
   end
 
-  def destroy_method_response
+  def test_destroy_method_response
     @service.stub :delete_recovery_vault, true do
       assert @recovery_vault.destroy
     end

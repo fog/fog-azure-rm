@@ -8,13 +8,13 @@ module Fog
           Fog::Logger.debug msg
 
           backup_jobs = get_all_backup_jobs(rv_name, rv_resource_group)
-          backup_job = backup_jobs.select do |job|
+          backup_jobs = backup_jobs.select do |job|
               (job['properties']['status'].eql? 'InProgress') &&
               (job['properties']['entityFriendlyName'].eql? vm_name.downcase) &&
               (job['properties']['operation'].eql? operation)
           end
 
-          backup_job[0]
+          backup_jobs[0]
         end
       end
 

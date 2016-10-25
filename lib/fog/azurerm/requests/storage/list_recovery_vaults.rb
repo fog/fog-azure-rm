@@ -15,7 +15,7 @@ module Fog
               content_type: 'application/json',
               authorization: token
             )
-          rescue Exception => e
+          rescue RestClient::Exception => e
             raise_azure_exception(e, msg)
           end
           Fog::Logger.debug "Recovery Vaults in Resource Group #{resource_group} listed successfully"

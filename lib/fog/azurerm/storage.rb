@@ -60,7 +60,6 @@ module Fog
       request :enable_backup_protection
       request :set_recovery_vault_context
       request :get_backup_protection_policy
-      request :refresh_containers
       request :start_backup
       request :get_backup_item
       request :get_backup_container

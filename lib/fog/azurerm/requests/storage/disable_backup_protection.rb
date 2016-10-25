@@ -1,3 +1,5 @@
+PROTECTION_STOPPED = 'ProtectionStopped'.freeze
+
 module Fog
   module Storage
     class AzureRM
@@ -16,7 +18,7 @@ module Fog
               protectedItemType: 'Microsoft.Compute/virtualMachines',
               policyId: '',
               sourceResourceId: vm_id,
-              protectionState: 'ProtectionStopped'
+              protectionState: PROTECTION_STOPPED
             },
             tags: {}
           }
@@ -30,7 +32,7 @@ module Fog
               content_type: 'application/json',
               authorization: token
             )
-          rescue Exception => e
+          rescue RestClient::Exception => e
             raise_azure_exception(e, msg)
           end
 

@@ -4,7 +4,6 @@ require File.expand_path '../../test_helper', __dir__
 class TestGetBackupJobForVM < Minitest::Test
   def setup
     @service = Fog::Storage::AzureRM.new(credentials)
-    @recovery_vaults = @service.recovery_vaults
     @token_provider = Fog::Credentials::AzureRM.instance_variable_get(:@token_provider)
   end
 

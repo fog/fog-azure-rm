@@ -16,7 +16,7 @@ module Fog
               content_type: 'application/json',
               authorization: token
             )
-          rescue Exception => e
+          rescue RestClient::Exception => e
             raise_azure_exception(e, msg)
           end
           Fog::Logger.debug "Successfully retrieved backup item from Recovery Vault #{rv_name}"

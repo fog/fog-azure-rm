@@ -15,12 +15,12 @@ module Fog
               content_type: 'application/json',
               authorization: token
             )
-          rescue Exception => e
+          rescue RestClient::Exception => e
             raise_azure_exception(e, msg)
           end
           Fog::Logger.debug "Recovery Vault #{name} from Resource Group #{resource_group} retrieved successfully"
-          result = JSON.parse(recovery_vault_response)['value']
-          result.select { |vault| vault['name'].eql? name }[0]
+          recovery_vault = JSON.parse(recovery_vault_response)['value']
+          recovery_vault.select { |vault| vault['name'].eql? name }[0]
         end
       end
 

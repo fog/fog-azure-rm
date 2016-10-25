@@ -17,6 +17,7 @@ module ApiStub
       autoload :StorageAccount, File.expand_path('api_stub/models/storage/storageaccount', __dir__)
       autoload :File, ::File.expand_path('api_stub/models/storage/file', __dir__)
       autoload :Directory, ::File.expand_path('api_stub/models/storage/directory', __dir__)
+      autoload :RecoveryVault, ::File.expand_path('api_stub/models/storage/recovery_vault', __dir__)
     end
 
     module Network
@@ -74,6 +75,7 @@ module ApiStub
       autoload :StorageAccount, File.expand_path('api_stub/requests/storage/storageaccount', __dir__)
       autoload :File, ::File.expand_path('api_stub/requests/storage/file', __dir__)
       autoload :Directory, ::File.expand_path('api_stub/requests/storage/directory', __dir__)
+      autoload :RecoveryVault, ::File.expand_path('api_stub/requests/storage/recovery_vault', __dir__)
     end
 
     module Network

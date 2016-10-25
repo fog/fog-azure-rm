@@ -739,3 +739,17 @@ def sql_server_firewall_rule(service)
     service: service
   )
 end
+
+def recovery_vault(service)
+  Fog::Storage::AzureRM::RecoveryVault.new(
+    name: 'fog-test-vault',
+    id: '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/fog-test-rg/providers/Microsoft.RecoveryServices/vaults/fog-test-vault',
+    resource_group: 'fog-test-rg',
+    location: 'westus',
+    type: 'Microsoft.RecoveryServices/vaults',
+    sku: {
+      name: 'standard'
+    },
+    service: service
+  )
+end

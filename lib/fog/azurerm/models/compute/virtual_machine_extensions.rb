@@ -1,6 +1,3 @@
-require 'fog/core/collection'
-require 'fog/azurerm/models/compute/virtual_machine_extension'
-
 module Fog
   module Compute
     class AzureRM

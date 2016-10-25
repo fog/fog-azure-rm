@@ -74,7 +74,8 @@ azure_storage_service.storage_accounts.create(
   :location => 'West US',
   :resource_group => '<Resource Group name>',
   :account_type => '<Standard/Premium>'                # Optional. Default value 'Standard'. Allowed values can only be Standard or Premium
-  :replication => 'LRS'                                # Optional. Default value 'LRS' 
+  :replication => 'LRS',                               # Optional. Default value 'LRS'
+  :encryption => true                                  # Optional. If you want to enable encryption. Default value is 'false'
 )
 ```
 Premium Storage account store data on solid state drives (SSDs). For more details on standard and premium storage accounts, see [Introduction to Microsoft Azure Storage](https://azure.microsoft.com/en-us/documentation/articles/storage-introduction/) and [Premium Storage: High-Performance Storage for Azure Virtual Machine Workloads](https://azure.microsoft.com/en-us/documentation/articles/storage-premium-storage/).
@@ -110,6 +111,18 @@ storage_acc = azure_storage_service
 puts "#{storage_acc.name}"
 ```
 
+## Enable encryption on Storage Account
+
+Get a single record of Storage Account and enable encryption on that Storage Account
+
+```ruby
+storage_acc = azure_storage_service
+                .storage_accounts
+                .get('<Resource Group name>', '<Storage Account name>')
+
+storage_acc.update(encryption: true)
+```
+
 ## Get Access Keys
 
 Get access keys of a storage account
@@ -129,12 +142,20 @@ Get storage account object from the get method and then destroy that storage acc
 storage_acc.destroy
 ```
 
+## Create a Disk
+
+Create a Disk in storage account.
+
+```ruby
+azure_storage_service.create_disk('<Data Disk Name>', options = {})
+```
+
 ## Delete a Disk
 
 Delete a Disk from a storage account. Disk must be in unlocked state i.e detached from server(virtual machine) to successfully perform this action.
 
 ```ruby
-azure_storage_service.delete_disk('<Resource Group name>', '<Storage Account name>', '<Data Disk Name>')
+azure_storage_service.delete_disk('<Data Disk Name>')
 ```
 
 ## Create a storage container

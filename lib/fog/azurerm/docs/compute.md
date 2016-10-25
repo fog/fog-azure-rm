@@ -93,7 +93,7 @@ Get a single record of Server
 ```ruby
       server = azure_compute_service
                           .servers(resource_group: '<Resource Group name>')
-                          .get('Server name>')
+                          .get('<Resource Group name>', 'Server name>')
       puts "#{server.name}"
 ```
 

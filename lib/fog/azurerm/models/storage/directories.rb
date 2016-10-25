@@ -1,12 +1,9 @@
-require 'fog/core/collection'
-require 'fog/azurerm/models/storage/directory'
-
 module Fog
   module Storage
     class AzureRM
       # This class is giving implementation of listing containers.
       class Directories < Fog::Collection
-        model Fog::Storage::AzureRM::Directory
+        model Directory
 
         def all(options = { metadata: true })
           containers = []

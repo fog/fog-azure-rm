@@ -54,6 +54,7 @@ module ApiStub
     module Sql
       autoload :SqlServer, File.expand_path('api_stub/models/sql/sql_server', __dir__)
       autoload :SqlDatabase, File.expand_path('api_stub/models/sql/sql_database', __dir__)
+      autoload :SqlFirewallRule, File.expand_path('api_stub/models/sql/sql_firewall_rule', __dir__)
     end
   end
 
@@ -111,6 +112,7 @@ module ApiStub
     module Sql
       autoload :SqlServer, File.expand_path('api_stub/requests/sql/sql_server', __dir__)
       autoload :SqlDatabase, File.expand_path('api_stub/requests/sql/database', __dir__)
+      autoload :FirewallRule, File.expand_path('api_stub/requests/sql/firewall_rule', __dir__)
     end
   end
 end

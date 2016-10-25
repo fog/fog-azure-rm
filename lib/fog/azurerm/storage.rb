@@ -17,6 +17,7 @@ module Fog
       request_path 'fog/azurerm/requests/storage'
       # Azure Storage Account requests
       request :create_storage_account
+      request :update_storage_account
       request :list_storage_accounts
       request :delete_storage_account
       request :get_storage_account
@@ -25,6 +26,7 @@ module Fog
       request :get_storage_access_keys
       # Azure Storage Disk requests
       request :delete_disk
+      request :create_disk
       # Azure Storage Container requests
       request :create_container
       request :release_container_lease

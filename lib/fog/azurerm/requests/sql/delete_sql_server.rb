@@ -17,8 +17,8 @@ module Fog
             )
             Fog::Logger.debug "SQL Server: #{name} deleted successfully."
             true
-          rescue MsRestAzure::AzureOperationError => e
-            raise_azure_exception(e, JSON.parse(e.response)['message'])
+          rescue RestClient::Exception => e
+            raise JSON.parse(e.response)['message']
           end
         end
       end

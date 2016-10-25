@@ -28,7 +28,8 @@ class TestStorageAccount < Minitest::Test
       :location,
       :resource_group,
       :sku_name,
-      :replication
+      :replication,
+      :encryption
     ]
     attributes.each do |attribute|
       assert_respond_to @storage_account, attribute
@@ -53,6 +54,12 @@ class TestStorageAccount < Minitest::Test
       assert_raises RuntimeError do
         @premium_invalid_replication.save
       end
+    end
+  end
+
+  def test_update_method_response
+    @service.stub :update_storage_account, @storage_account_response do
+      assert_instance_of Fog::Storage::AzureRM::StorageAccount, @storage_account.update({})
     end
   end
 

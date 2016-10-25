@@ -9,6 +9,7 @@ module Fog
         attribute :vhd_uri
         attribute :caching
         attribute :create_option
+        attribute :file_path
 
         def self.parse(disk)
           hash = {}

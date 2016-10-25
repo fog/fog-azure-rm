@@ -56,7 +56,8 @@ storage.storage_accounts.create(
   location: 'eastus',
   resource_group: 'TestRG-SA',
   sku_name: 'Standard',
-  replication: 'GRS'
+  replication: 'GRS',
+  encryption: true
 )
 
 ########################################################################################################################
@@ -70,6 +71,13 @@ storage.storage_accounts.create(
   sku_name: 'Premium',
   replication: 'LRS'
 )
+
+########################################################################################################################
+######################                         Get and Update Storage Account                     ######################
+########################################################################################################################
+
+premium_storage_account = storage.storage_accounts.get('TestRG-SA', 'fogpremiumsa')
+premium_storage_account.update(encryption: true)
 
 ########################################################################################################################
 ######################                         Get and Delete Storage Account                     ######################

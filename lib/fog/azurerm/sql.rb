@@ -18,11 +18,20 @@ module Fog
       request :get_database
       request :list_databases
 
+      request :create_or_update_firewall_rule
+      request :delete_firewall_rule
+      request :get_firewall_rule
+      request :list_firewall_rules
+
       model_path 'fog/azurerm/models/sql'
       model :sql_server
       collection :sql_servers
+
       model :sql_database
       collection :sql_databases
+
+      model :firewall_rule
+      collection :firewall_rules
 
       # This class provides the actual implementation for service calls.
       class Real

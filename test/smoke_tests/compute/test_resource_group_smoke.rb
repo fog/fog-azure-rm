@@ -2,6 +2,7 @@ require 'fog/azurerm'
 require 'minitest/autorun'
 
 class TestResourceGroupSmoke < MiniTest::Test
+  
   def setup
     @resource = Fog::Resources::AzureRM.new(
       tenant_id: ENV['TENANT_ID'],

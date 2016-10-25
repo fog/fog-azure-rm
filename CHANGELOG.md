@@ -1,3 +1,9 @@
+## 0.0.10
+
+**Added:**
+- Storage Service - Added support for Recovery Vault
+
+
 ## 0.0.9
 
 **Added:**
@@ -5,7 +11,6 @@
 
 **Changed:**
 - DNS Service - DNS Service moved from API calls to Azure latest SDK.
-
 
 
 ## 0.0.8 

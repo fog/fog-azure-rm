@@ -1,15 +1,21 @@
-## Upcoming Version
+## 0.1.0
 
 **Added:**
 - Azure SQL Service - Added support for SQL Server Firewall Rules.
+- Azure Recovery Vault - Added support for Azure Recovery Vault.
+- Azure Storage Service - Encryption support for storage account and Added support to create new data disk.
+
 
 ## 0.0.9
 
 **Added:**
 - Azure SQL Service - Added support for SQL Server, SQL Databases and Data warehouse.
+- Updated fog-azure-rm runtime gem dependencies to latest.
 
 **Changed:**
 - DNS Service - DNS Service moved from API calls to Azure latest SDK.
+
+
 
 ## 0.0.8 
 
@@ -22,6 +28,7 @@
     get blob properties, set blob metadata, get blob metadata, get blob, list blob functionality for storage
 - Added get container properties, get container metadata, set container metadata, get container, list container,
     delete container,  Get the access control list of the container
+
 
 ## 0.0.6
 

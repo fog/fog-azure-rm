@@ -1,7 +1,7 @@
 module Fog
   module Storage
     class AzureRM
-      # This class provides the actual implemention for service calls.
+      # This class provides the actual implementation for service calls.
       class Real
         def check_blob_exist(container_name, name, options = {})
           Fog::Logger.debug "Check Blob #{name} exist in container #{container_name}."

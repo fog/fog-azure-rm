@@ -1,7 +1,7 @@
 module Fog
   module Resources
     class AzureRM
-      # This class provides the actual implemention for service calls.
+      # This class provides the actual implementation for service calls.
       class Real
         def delete_resource_group(name)
           msg = "Deleting Resource Group: #{name}."

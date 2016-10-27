@@ -1,7 +1,7 @@
 module Fog
   module Storage
     class AzureRM
-      # This class provides the actual implemention for service calls.
+      # This class provides the actual implementation for service calls.
       class Real
         def create_disk(blob_name, options = {})
           msg = "Creating disk(blob) #{blob_name}"

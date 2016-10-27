@@ -1,7 +1,7 @@
 module Fog
   module Network
     class AzureRM
-      # This class provides the actual implemention for service calls.
+      # This class provides the actual implementation for service calls.
       class Real
         def list_virtual_networks(resource_group)
           msg = "Listing Virtual Networks in Resource Group #{resource_group}"

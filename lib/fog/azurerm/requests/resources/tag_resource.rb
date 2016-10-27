@@ -1,7 +1,7 @@
 module Fog
   module Resources
     class AzureRM
-      # This class provides the actual implemention for service calls.
+      # This class provides the actual implementation for service calls.
       class Real
         def tag_resource(resource_id, tag_name, tag_value)
           split_resource = resource_id.split('/') unless resource_id.nil?

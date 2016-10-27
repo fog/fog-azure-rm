@@ -1,7 +1,7 @@
 module Fog
   module Storage
     class AzureRM
-      # This class provides the actual implemention for service calls.
+      # This class provides the actual implementation for service calls.
       class Real
         def download_blob_to_file(container_name, blob_name, file_path, options = {})
           Fog::Logger.debug "Downloading file #{file_path} from blob #{blob_name} in the container #{container_name}."

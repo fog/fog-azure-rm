@@ -1,7 +1,7 @@
 module Fog
   module Storage
     class AzureRM
-      # This class provides the actual implemention for service calls.
+      # This class provides the actual implementation for service calls.
       class Real
         SINGLE_BLOB_PUT_THRESHOLD = 32 * 1024 * 1024
         BLOCK_SIZE = 4 * 1024 * 1024

@@ -1,7 +1,7 @@
 module Fog
   module Storage
     class AzureRM
-      # This class provides the actual implemention for service calls.
+      # This class provides the actual implementation for service calls.
       class Real
         def set_blob_properties(container_name, name, properties = {})
           Fog::Logger.debug "Set Blob #{name} properties #{properties.inspect} in container #{container_name}."

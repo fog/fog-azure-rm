@@ -1,7 +1,7 @@
 module Fog
   module Storage
     class AzureRM
-      # This class provides the actual implemention for service calls.
+      # This class provides the actual implementation for service calls.
       class Real
         def delete_blob(container_name, blob_name, options = {})
           Fog::Logger.debug "Deleting blob: #{blob_name} in container #{container_name}."

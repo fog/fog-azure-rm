@@ -49,7 +49,7 @@ module Fog
           end
         end
       end
-      # This class provides the actual implemention for service calls.
+      # This class provides the actual implementation for service calls.
       class Real
         def initialize(options)
           begin

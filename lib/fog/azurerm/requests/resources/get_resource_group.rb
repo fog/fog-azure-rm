@@ -1,7 +1,7 @@
 module Fog
   module Resources
     class AzureRM
-      # This class provides the actual implemention for service calls.
+      # This class provides the actual implementation for service calls.
       class Real
         def get_resource_group(resource_group_name)
           msg = "Getting Resource Group #{resource_group_name}"

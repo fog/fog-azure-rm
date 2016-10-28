@@ -14,8 +14,8 @@ module Fog
 
         def get(resource_group, traffic_manager_profile_name)
           profile = service.get_traffic_manager_profile(resource_group, traffic_manager_profile_name)
-          profile_obj = TrafficManagerProfile.new(service: service)
-          profile_obj.merge_attributes(TrafficManagerProfile.parse(profile))
+          profile_fog = TrafficManagerProfile.new(service: service)
+          profile_fog.merge_attributes(TrafficManagerProfile.parse(profile))
         end
       end
     end

@@ -67,8 +67,7 @@ module Fog
         def save
           requires :name, :location, :resource_group, :gateway_type, :enable_bgp
           validate_ip_configurations(ip_configurations) unless ip_configurations.nil?
-          virtual_network_params = virtual_gateway_parameters
-          network_gateway = service.create_or_update_virtual_network_gateway(virtual_network_params)
+          network_gateway = service.create_or_update_virtual_network_gateway(virtual_gateway_parameters)
           merge_attributes(VirtualNetworkGateway.parse(network_gateway))
         end
 

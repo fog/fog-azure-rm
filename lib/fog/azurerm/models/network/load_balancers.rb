@@ -16,9 +16,9 @@ module Fog
         end
 
         def get(resource_group_name, load_balancer_name)
-          lb = service.get_load_balancer(resource_group_name, load_balancer_name)
-          load_balancer = LoadBalancer.new(service: service)
-          load_balancer.merge_attributes(LoadBalancer.parse(lb))
+          load_balancer = service.get_load_balancer(resource_group_name, load_balancer_name)
+          load_balancer_fog = LoadBalancer.new(service: service)
+          load_balancer_fog.merge_attributes(LoadBalancer.parse(load_balancer))
         end
       end
     end

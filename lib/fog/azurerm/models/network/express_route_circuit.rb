@@ -56,8 +56,7 @@ module Fog
 
         def save
           requires :location, :tags, :resource_group, :service_provider_name, :peering_location, :bandwidth_in_mbps
-          express_route_parameters = express_route_circuit_params
-          circuit = service.create_or_update_express_route_circuit(express_route_parameters)
+          circuit = service.create_or_update_express_route_circuit(express_route_circuit_params)
           merge_attributes(Fog::Network::AzureRM::ExpressRouteCircuit.parse(circuit))
         end
 

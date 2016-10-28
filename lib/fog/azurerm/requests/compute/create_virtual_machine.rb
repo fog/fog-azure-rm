@@ -66,30 +66,34 @@ module Fog
           hw_profile
         end
 
+        def image_reference(publisher, offer, sku, version)
+          image_reference = Azure::ARM::Compute::Models::ImageReference.new
+          image_reference.publisher = publisher
+          image_reference.offer = offer
+          image_reference.sku = sku
+          image_reference.version = version
+          image_reference
+        end
+
         def define_storage_profile(vm_name, storage_account_name, publisher, offer, sku, version, vhd_path, platform, resource_group)
           storage_profile = Azure::ARM::Compute::Models::StorageProfile.new
           os_disk = Azure::ARM::Compute::Models::OSDisk.new
           vhd = Azure::ARM::Compute::Models::VirtualHardDisk.new
 
-          vhd.uri = "http://#{storage_account_name}.blob.core.windows.net/vhds/#{vm_name}_os_disk.vhd"
+          vhd.uri = get_blob_link(storage_account_name) + "/vhds/#{vm_name}_os_disk.vhd"
 
           if vhd_path.nil?
-            image_reference = Azure::ARM::Compute::Models::ImageReference.new
-            image_reference.publisher = publisher
-            image_reference.offer = offer
-            image_reference.sku = sku
-            image_reference.version = version
-            storage_profile.image_reference = image_reference
+            storage_profile.image_reference = image_reference(publisher, offer, sku, version)
           else
             # Copy if VHD does not exist belongs to same storage account.
             vhd_storage_account = (vhd_path.split('/')[2]).split('.')[0]
             if storage_account_name != vhd_storage_account
               storage_account = @storage_service.storage_accounts.get(resource_group, storage_account_name)
-              access_key = storage_account.get_access_keys[0].value
-              storage_data = Fog::Storage.new(provider: 'AzureRM', azure_storage_account_name: storage_account_name, azure_storage_access_key: access_key)
-
-              container_name = 'customimagevhd'
-              blob_name = 'vhd_image.vhd'
+              access_key = storage_account.get_access_keys.first.value
+              storage_data = Fog::Storage::AzureRM.new(provider: 'AzureRM', azure_storage_account_name: storage_account_name, azure_storage_access_key: access_key)
+              new_time = get_time
+              container_name = "customvhd#{new_time}"
+              blob_name = "vhd_image#{new_time}.vhd"
               storage_data.directories.create(
                 key: container_name
               )
@@ -99,7 +103,7 @@ module Fog
                 Fog::Logger.debug 'Waiting disk to ready'
                 sleep(10)
               end
-              new_vhd_path = "http://#{storage_account_name}.blob.core.windows.net/customimagevhd/vhd_image.vhd"
+              new_vhd_path = get_blob_link(storage_account_name) + "/#{container_name}/#{blob_name}"
               Fog::Logger.debug "Path:#{new_vhd_path}. | Copy done"
             else
               new_vhd_path = vhd_path

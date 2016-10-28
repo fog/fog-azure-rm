@@ -16,8 +16,8 @@ module Fog
 
         def get(resource_group_name)
           resource_group = service.get_resource_group(resource_group_name)
-          resource_group_object = ResourceGroup.new(service: service)
-          resource_group_object.merge_attributes(ResourceGroup.parse(resource_group))
+          resource_group_fog = ResourceGroup.new(service: service)
+          resource_group_fog.merge_attributes(ResourceGroup.parse(resource_group))
         end
       end
     end

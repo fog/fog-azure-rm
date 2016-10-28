@@ -20,8 +20,8 @@ module Fog
 
         def get(resource_group, server_name, name)
           database = service.get_database(resource_group, server_name, name)
-          database_obj = SqlDatabase.new(service: service)
-          database_obj.merge_attributes(SqlDatabase.parse(database))
+          database_fog = SqlDatabase.new(service: service)
+          database_fog.merge_attributes(SqlDatabase.parse(database))
         end
       end
     end

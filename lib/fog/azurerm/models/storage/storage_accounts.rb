@@ -23,8 +23,8 @@ module Fog
 
         def get(resource_group_name, storage_account_name)
           storage_account = service.get_storage_account(resource_group_name, storage_account_name)
-          storage_account_object = StorageAccount.new(service: service)
-          storage_account_object.merge_attributes(StorageAccount.parse(storage_account))
+          storage_account_fog = StorageAccount.new(service: service)
+          storage_account_fog.merge_attributes(StorageAccount.parse(storage_account))
         end
 
         def check_name_availability(name)

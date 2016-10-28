@@ -6,12 +6,12 @@ class TestCompareBlobs < Minitest::Test
   def setup
     @service = Fog::Storage::AzureRM.new(storage_account_credentials)
     @blob_client = @service.instance_variable_get(:@blob_client)
-    @compare_blob_response = ApiStub::Requests::Storage::File.list_blobs_response
+    @compare_container_blobs_response = ApiStub::Requests::Storage::File.list_blobs_response
   end
 
-  def test_compare_blobs_success
-    @service.stub :get_identical_blobs_from_containers, @compare_blob_response do
-      assert @service.compare_blob('container1', 'container2'), @compare_blob_response
+  def test_compare_container_blobss_success
+    @service.stub :get_identical_blobs_from_containers, @compare_container_blobs_response do
+      assert @service.compare_container_blobs('container1', 'container2'), @compare_container_blobs_response
     end
   end
 end

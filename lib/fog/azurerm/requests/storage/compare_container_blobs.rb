@@ -3,7 +3,7 @@ module Fog
     class AzureRM
       # This class provides the actual implementation for service calls.
       class Real
-        def compare_blob(container1, container2)
+        def compare_container_blobs(container1, container2)
           msg = "Comparing blobs from container #{container1} to container #{container2}"
           Fog::Logger.debug msg
           begin
@@ -36,7 +36,7 @@ module Fog
 
       # This class provides the mock implementation for unit tests.
       class Mock
-        def compare_blob(*)
+        def compare_container_blobs(*)
           [
             {
               'name' => 'blob_name',

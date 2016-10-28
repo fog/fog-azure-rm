@@ -19,8 +19,8 @@ module Fog
 
         def get(resource_group, server_name, rule_name)
           firewall_rule = service.get_firewall_rule(resource_group, server_name, rule_name)
-          firewall_rule_obj = FirewallRule.new(service: service)
-          firewall_rule_obj.merge_attributes(FirewallRule.parse(firewall_rule))
+          firewall_rule_fog = FirewallRule.new(service: service)
+          firewall_rule_fog.merge_attributes(FirewallRule.parse(firewall_rule))
         end
       end
     end

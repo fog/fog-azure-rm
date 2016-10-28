@@ -21,8 +21,8 @@ module Fog
 
         def get(resource_group, name, zone_name, record_type)
           record_set = service.get_record_set(resource_group, name, zone_name, record_type)
-          record_set_obj = RecordSet.new(service: service)
-          record_set_obj.merge_attributes(RecordSet.parse(record_set))
+          record_set_fog = RecordSet.new(service: service)
+          record_set_fog.merge_attributes(RecordSet.parse(record_set))
         end
       end
     end

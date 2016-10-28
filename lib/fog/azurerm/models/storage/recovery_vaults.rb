@@ -18,8 +18,8 @@ module Fog
 
         def get(resource_group, name)
           recovery_vault = service.get_recovery_vault(resource_group, name)
-          recovery_vault_obj = RecoveryVault.new(service: service)
-          recovery_vault_obj.merge_attributes(RecoveryVault.parse(recovery_vault))
+          recovery_vault_fog = RecoveryVault.new(service: service)
+          recovery_vault_fog.merge_attributes(RecoveryVault.parse(recovery_vault))
         end
       end
     end

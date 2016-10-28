@@ -47,7 +47,7 @@ module Fog
       request :download_blob_to_file
       request :copy_blob
       request :copy_blob_from_uri
-      request :compare_blob
+      request :compare_container_blobs
       request :check_blob_exist
       request :acquire_blob_lease
       request :release_blob_lease

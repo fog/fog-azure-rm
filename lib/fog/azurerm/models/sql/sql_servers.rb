@@ -18,8 +18,8 @@ module Fog
 
         def get(resource_group, server_name)
           server = service.get_sql_server(resource_group, server_name)
-          server_obj = SqlServer.new(service: service)
-          server_obj.merge_attributes(SqlServer.parse(server))
+          server_fog = SqlServer.new(service: service)
+          server_fog.merge_attributes(SqlServer.parse(server))
         end
       end
     end

@@ -59,8 +59,7 @@ module Fog
         def save
           requires :name, :resource_group, :circuit_name, :peering_type, :peer_asn, :primary_peer_address_prefix, :secondary_peer_address_prefix, :vlan_id
           requires :advertised_public_prefixes if peering_type.casecmp(MICROSOFT_PEERING) == 0
-          circuit_peering_parameters = express_route_circuit_peering_params
-          circuit_peering = service.create_or_update_express_route_circuit_peering(circuit_peering_parameters)
+          circuit_peering = service.create_or_update_express_route_circuit_peering(express_route_circuit_peering_params)
           merge_attributes(Fog::Network::AzureRM::ExpressRouteCircuitPeering.parse(circuit_peering))
         end
 

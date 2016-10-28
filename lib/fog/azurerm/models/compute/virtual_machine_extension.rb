@@ -33,7 +33,6 @@ module Fog
 
         def save
           requires :resource_group, :location, :name, :vm_name, :type, :publisher, :type_handler_version, :settings
-          vm_extension_params = get_vm_extension_params
           vm_extension = service.create_or_update_vm_extension(vm_extension_params)
           merge_attributes(VirtualMachineExtension.parse(vm_extension))
         end
@@ -41,7 +40,6 @@ module Fog
         def update(vm_extension_input)
           validate_input(vm_extension_input)
           merge_attributes(vm_extension_input) unless vm_extension_input.empty?
-          vm_extension_params = get_vm_extension_params
           vm_extension = service.create_or_update_vm_extension(vm_extension_params)
           merge_attributes(VirtualMachineExtension.parse(vm_extension))
         end
@@ -58,7 +56,7 @@ module Fog
           raise 'Cannot modify the given attribute(s)' unless result.empty?
         end
 
-        def get_vm_extension_params
+        def vm_extension_params
           {
             resource_group: resource_group,
             location: location,

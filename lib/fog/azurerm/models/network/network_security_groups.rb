@@ -16,9 +16,9 @@ module Fog
         end
 
         def get(resource_group, name)
-          nsg = service.get_network_security_group(resource_group, name)
-          network_security_group = NetworkSecurityGroup.new(service: service)
-          network_security_group.merge_attributes(NetworkSecurityGroup.parse(nsg))
+          network_security_group = service.get_network_security_group(resource_group, name)
+          network_security_group_fog = NetworkSecurityGroup.new(service: service)
+          network_security_group_fog.merge_attributes(NetworkSecurityGroup.parse(network_security_group))
         end
       end
     end

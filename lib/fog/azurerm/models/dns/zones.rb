@@ -16,8 +16,8 @@ module Fog
 
         def get(resource_group, name)
           zone = service.get_zone(resource_group, name)
-          zone_obj = Zone.new(service: service)
-          zone_obj.merge_attributes(Zone.parse(zone))
+          zone_fog = Zone.new(service: service)
+          zone_fog.merge_attributes(Zone.parse(zone))
         end
 
         def check_for_zone(resource_group, name)

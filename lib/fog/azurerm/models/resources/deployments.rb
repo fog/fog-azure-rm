@@ -17,8 +17,8 @@ module Fog
 
         def get(resource_group_name, deployment_name)
           deployment = service.get_deployment(resource_group_name, deployment_name)
-          deployment_object = Deployment.new(service: service)
-          deployment_object.merge_attributes(Deployment.parse(deployment))
+          deployment_fog = Deployment.new(service: service)
+          deployment_fog.merge_attributes(Deployment.parse(deployment))
         end
       end
     end

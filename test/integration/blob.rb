@@ -120,7 +120,7 @@ Fog::Logger.debug storage_data.copy_blob_from_uri(test_container_name, large_fil
 ######################                    Compare Blob                                             #####################
 ########################################################################################################################
 
-Fog::Logger.debug storage_data.compare_blob(container_name, test_container_name)
+Fog::Logger.debug storage_data.compare_container_blobs(container_name, test_container_name)
 
 ########################################################################################################################
 ######################                    Blob Exist                                               #####################

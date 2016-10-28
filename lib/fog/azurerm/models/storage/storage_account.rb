@@ -32,11 +32,11 @@ module Fog
           self.sku_name = STANDARD_STORAGE if sku_name.nil?
           self.replication = ALLOWED_STANDARD_REPLICATION.first if replication.nil?
           validate_sku_name!
-          storage_account = service.create_storage_account(get_storage_account_arguments)
+          storage_account = service.create_storage_account(storage_account_params)
           merge_attributes(StorageAccount.parse(storage_account))
         end
 
-        def get_storage_account_arguments
+        def storage_account_params
           {
             resource_group: resource_group,
             name: name,
@@ -82,7 +82,7 @@ module Fog
           raise 'Cannot modify the given attribute' unless result.empty?
         end
 
-        private :get_storage_account_arguments, :validate_sku_name!
+        private :storage_account_params, :validate_sku_name!
       end
     end
   end

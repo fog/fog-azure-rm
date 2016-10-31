@@ -3,7 +3,7 @@ require 'minitest/autorun'
 # Integration smoke test class to test resource group
 class TestResourceGroupSmoke < MiniTest::Test
   def setup
-    if !ENV['TENANT_ID'].nil? && !ENV['CLIENT_ID'].nil? && !ENV['CLIENT_SECRET'].nil? && !ENV['SUBSCRIPTION_ID'].nil?
+    if !ENV['AZURE_TENANT_ID'].nil? && !ENV['AZURE_CLIENT_ID'].nil? && !ENV['AZURE_CLIENT_SECRET'].nil? && !ENV['AZURE_SUBSCRIPTION_ID'].nil?
       @resource = Fog::Resources::AzureRM.new(
         tenant_id: ENV['AZURE_TENANT_ID'],
         client_id: ENV['AZURE_CLIENT_ID'],

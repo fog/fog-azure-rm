@@ -26,30 +26,30 @@ notifications:
       - oneops_azure@confiz.com
     on_success: always
     on_failure: always
-  
-  
+
+
 addons:
     jwt:
         azure_client_id:
-          secure: "B/uoe8F8uEjvFXsmaxTFvUcBZ8Y8GB2JWvScZH+Jb+0uLTWe1TElgwQkWU4L9qjiPBl1K2Nx6XvFNcUG/Eg28FwT2JyKvIpmzLCcmICAgre0dHqgr+5e0M4JNS4Nk0ORoGdNNCUoG3srtikrBxqCe6alyX3sZxFYvciul2FUJXUtlwe9V9ADGOl2IvGI+3U2k9Dw2kVx76w
+          secure: B/uoe8F8uEjvFXsmaxTFvUcBZ8Y8GB2JWvScZH+Jb+0uLTWe1TElgwQkWU4L9qjiPBl1K2Nx6XvFNcUG/Eg28FwT2JyKvIpmzLCcmICAgre0dHqgr+5e0M4JNS4Nk0ORoGdNNCUoG3srtikrBxqCe6alyX3sZxFYvciul2FUJXUtlwe9V9ADGOl2IvGI+3U2k9Dw2kVx76w
                   CZa6oEx/OgLJerATg2sJvH0ynWi3DmHHVxSUlJGsHrg/xHolqd3Xgb7ijjdUqCHUv3OKBuX30wdmKvonoJ7hSIVv/GPpqb2WL275puNbAu+rRG7xHH4C8O1ntpHzCQmlPqO7B0vr83Y+iAw7D21SDUe6i8P/ODvyQ9j/mt+oRnUTYh14PVydk4//yLfF3u2Vk95WTKP7QKBdjUPe9kq6n/
                   4BmxOic6ZLbA1+oaCsO6RvMCsxhlXkLc6GX2sbaHwoTyaPHT3s3aF6NON/dmXfqgLHWCRaoLzvRoeO8yA8fuJalXfY2MEODvY7EwoLu2Z0q6jMMoTjyKYL/N0QSXwvab3Dm0VOCHZwEJyxAVbmGkgCYq/qviQmBU9SWkhBNHlt08xHqxmhsuIdqdV5nIWJ+c6RJivSpuK3r06Ia/BMpnSL
-                  p0XjvsbO171jn3nyd+PAp2B47F31GXwPxroXQV7Z/mYlgiBK6Kbo="
+                  p0XjvsbO171jn3nyd+PAp2B47F31GXwPxroXQV7Z/mYlgiBK6Kbo=
         azure_client_secret:
-          secure: "mJG0EOaBCUe+tHKAQfMQinzKNIK2JOTX5fOmPxgavGItr/tawQQQd+UdH8Sk2gipdXUKZHoulMkkSy/eRsEkury1VjHyh5YAkiuoYhNjeq88s+JqEA9UcAxSBXGqp+k+i7WgYIR4dhU+meWk8zKJU5qWQAOe/o2dfro5sz4V5v1/VJyaiaiFZskvhJqgi6JjOKZ65qrV3ED
+          secure: mJG0EOaBCUe+tHKAQfMQinzKNIK2JOTX5fOmPxgavGItr/tawQQQd+UdH8Sk2gipdXUKZHoulMkkSy/eRsEkury1VjHyh5YAkiuoYhNjeq88s+JqEA9UcAxSBXGqp+k+i7WgYIR4dhU+meWk8zKJU5qWQAOe/o2dfro5sz4V5v1/VJyaiaiFZskvhJqgi6JjOKZ65qrV3ED
                   fGfdOBqwtYPMcHF/QE1aRMILZOc7Ws82HUN2fxg+/FOSuO6GHH+QkTIBD7nSb+DVG4OZtOzFSASWbRIueSTsimT1uO2AjwbjXFr5+vjkaA4EgZ4g1CwoKh7n1R2C9Fnde+pLFWuIJ8BX/fte1zbL8w3p6AzvDh2tB1AW5jlQAKxK168WuupSLlvrpC/AVGPcqnUxXaPNE/ovq2aGPo5pl/
                   35dpAu0afU/CgFAtP0gRvNaNuC/FxbrLLKW6kBsBS2W6kakHrWKXZlJoNP66oc5uPtB0oGY0dVh/PyNP1boH0xNyad0CmnX6p8XrL+3TyM4F1G3prP7gqch8Bn21i96aLnsso6RgGA8NCgvPzMn5XVUrTAwlMqUm+Tn2h54qGJ3dTQ86O/DEuzpYiuAYp3w1bnccTzOTK/Tx8cwBtSah7y
-                  D1Mp59UVTtiA2eJk4fFh41uh6XZu2kET7QsNADBH777konBD+bUQ="
+                  D1Mp59UVTtiA2eJk4fFh41uh6XZu2kET7QsNADBH777konBD+bUQ=
         azure_subscription_id:
-          secure: "IGasREY1Dpqt19sOGbot42egueOq2kV0Pdv4MfOER5IMKMpTDMGYRDmWQvFGHOoWgGsm7asuHbTV1+S1xENNdHHGun6xuHoPV1iwluzT6ZQCf2sFoOtkfIyNBh58Zy/jFRJy1P210PdXf91KcJE/BIcHlDkjqxcRQz1+8EbWW9B5FMotdR7qX02PJZyEQzxZmLKnh67i17Z
+          secure: IGasREY1Dpqt19sOGbot42egueOq2kV0Pdv4MfOER5IMKMpTDMGYRDmWQvFGHOoWgGsm7asuHbTV1+S1xENNdHHGun6xuHoPV1iwluzT6ZQCf2sFoOtkfIyNBh58Zy/jFRJy1P210PdXf91KcJE/BIcHlDkjqxcRQz1+8EbWW9B5FMotdR7qX02PJZyEQzxZmLKnh67i17Z
                   +YD/ot5oEti3hheogdu+DCJfDYtf1WEi3u/eW3mk574lDiyqbV8+flbOfRipRG0FPF0XTQR2hDiuNOsmfN+LqNVbD0/hAYv9lTE2RfIgRpA+XfgycsSTr2En/TvnGNVJydPzPEZR1Hbcizp68ThmzXUg2TqpRmwtYtfQr5IQmDQPUQgQgRLlFQ9odMSzVq2RFDKAnJgUnOEo5n12ZLfRsv
                   f9JnrmXLeHi6pp/OmACEFriQr2sc0buJyXfTGMl2wIJ7EiO3bqgTKHqRRAh1FPiV4+XXw1xUc9y+y0Zd4Ps8bTf71z5M4kKdp6VuC2uXEyZLJ8XDA6Z/z4+PzTbXrjEpcEGTgsZKpjD+VyNhS4+ItW6SnY8IIDrX4GezP5Ar/0gr14PN61HxQZAMMwFGAJV4OQ5FDARbnJsssVH8HlXnl3
-                  bjelfRF9Cy9ZqotnNanckBWBl+mt2H9q6XNPODNQguHWW29RbzOQ="
+                  bjelfRF9Cy9ZqotnNanckBWBl+mt2H9q6XNPODNQguHWW29RbzOQ=
         azure_tenant_id:
-          secure: "fGoE42HpC4gXU0lziHqORIo3auvy/e0h8BvqBEe+3i56imNHhRYiz2qOrksNBYtvhfUFQ+bEHnMYgLg6R1oDTnSjUKnig+4e3QTwPuvIXReipoNMQObcW08yR62DWzfXQOvhRtgs/fY2t8QgsA7UF1Y1nU+DYw9MQaOxQq2Y+/DJazgqtLnVFdbVjv6N0VNkjBg+49JS8Ep
+          secure: fGoE42HpC4gXU0lziHqORIo3auvy/e0h8BvqBEe+3i56imNHhRYiz2qOrksNBYtvhfUFQ+bEHnMYgLg6R1oDTnSjUKnig+4e3QTwPuvIXReipoNMQObcW08yR62DWzfXQOvhRtgs/fY2t8QgsA7UF1Y1nU+DYw9MQaOxQq2Y+/DJazgqtLnVFdbVjv6N0VNkjBg+49JS8Ep
                   B6UaqmPn2gxg2zNsJlIiJgQmLvRT8v1JywmmGZkCzqQHO+xG6Wc75Yi7lRmiKL463wx5455QFFuvxrG+/n0pv1YTA5B1pbpDHKYbWysoRDmyl2PgsMKeuzkaj6WRA7hXUparbSFkdzCEE1Sk53s4z/tagpGV0StaThTc0uMICZalT4MglOKdW5OEEgX0PT6GCeFPBYBqIjSxZY30YumgiA
                   36nFnAlNL6i5RuuYvYwCiqIXp/CDezSzgiOlx8Y0immnot1lf+pbPt648qRrV77vb841/soQM9YifylFG/CgvffFVBee3d+1Jhm9vtg+p4UDrPflsgnueXKSCjRgdLvD3mtRDvumtZgRR+GQoWuXOlk0/uQYlbyVEGh118u8CdD+r6hhPmCK5WtwL2T5lfTw97jgERtQTUgGubGn00D9PB
-                  0LS/iCm0BwIclYpl6szyQ3Er2zbHuFjfwp6TdB8IKkqdz6JhkJ3o="
+                  0LS/iCm0BwIclYpl6szyQ3Er2zbHuFjfwp6TdB8IKkqdz6JhkJ3o=
 
     code_climate:
         repo_token: b1401494baa004d90402414cb33a7fc6420fd3693e60c677a120ddefd7d84cfd

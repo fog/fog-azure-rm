@@ -5,10 +5,10 @@ class TestResourceGroupSmoke < MiniTest::Test
   def setup
     if !ENV['TENANT_ID'].nil? && !ENV['CLIENT_ID'].nil? && !ENV['CLIENT_SECRET'].nil? && !ENV['SUBSCRIPTION_ID'].nil?
       @resource = Fog::Resources::AzureRM.new(
-        tenant_id: ENV['TENANT_ID'],
-        client_id: ENV['CLIENT_ID'],
-        client_secret: ENV['CLIENT_SECRET'],
-        subscription_id: ENV['SUBSCRIPTION_ID']
+        tenant_id: ENV['AZURE_TENANT_ID'],
+        client_id: ENV['AZURE_CLIENT_ID'],
+        client_secret: ENV['AZURE_CLIENT_SECRET'],
+        subscription_id: ENV['AZURE_SUBSCRIPTION_ID']
       )
     else
       azure_credentials = YAML.load_file('../../integration/credentials/azure.yml')

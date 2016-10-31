@@ -5,4 +5,5 @@ then
   rake integration_tests
 else
   rake cc_coverage
+  rake integration_tests
 fi

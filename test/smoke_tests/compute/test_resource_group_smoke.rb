@@ -1,4 +1,4 @@
-require 'fog/azurerm'
+require File.expand_path '../lib/fog/azurerm', __dir__
 require 'minitest/autorun'
 # Integration smoke test class to test resource group
 class TestResourceGroupSmoke < MiniTest::Test

@@ -114,7 +114,7 @@ Fog::Logger.debug storage_data.copy_blob(test_container_name, small_blob_name, c
 ######################                    Copy Blob from URI                                    ########################
 ########################################################################################################################
 blob_uri = "http://storageaccounttestblob.blob.core.windows.net/#{container_name}/#{large_file_name}"
-Fog::Logger.debug storage_data.copy_blob_from_uri(test_container_name, 'small_blob_name', blob_uri)
+Fog::Logger.debug storage_data.copy_blob_from_uri(test_container_name, large_file_name, blob_uri)
 
 ########################################################################################################################
 ######################                    Compare Blob                                             #####################

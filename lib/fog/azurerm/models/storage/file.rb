@@ -34,6 +34,7 @@ module Fog
         def save(options = {})
           requires :key
           requires :directory
+          merge_attributes(options)
           merge_attributes(File.parse(service.upload_block_blob_from_file(directory, key, file_path, options)))
         end
 
@@ -79,7 +80,7 @@ module Fog
         end
 
         def self.parse(blob)
-          if blob.is_a? Hash
+          if (blob.is_a? Hash) || (blob.is_a? Array)
             parse_hash blob
           else
             parse_object blob

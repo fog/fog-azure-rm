@@ -95,7 +95,7 @@ File.delete(small_file_name)
 large_file_name = 'large_test_file.dat'
 large_blob_name = large_file_name
 large_file = File.new(large_file_name, 'w')
-33.times do
+40.times do
   large_file.puts(content)
 end
 large_file.close

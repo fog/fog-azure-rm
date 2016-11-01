@@ -20,3 +20,4 @@ AZURE_ENDPOINTS = 'azureEndpoints'.freeze
 EXTERNAL_ENDPOINTS = 'externalEndpoints'.freeze
 NESTED_ENDPOINTS = 'nestedEndpoints'.freeze
 GLOBAL = 'global'.freeze
+WORKER_THREAD_COUNT = 8

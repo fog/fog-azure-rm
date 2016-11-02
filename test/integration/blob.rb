@@ -27,14 +27,14 @@ storage = Fog::Storage::AzureRM.new(
 ########################################################################################################################
 
 resource_group = rs.resource_groups.create(
-  name: 'TestRG-VM',
+  name: 'TestRG-BLOB',
   location: 'eastus'
 )
 
 storage_account = storage.storage_accounts.create(
   name: 'storageaccounttestblob',
   location: 'eastus',
-  resource_group: 'TestRG-VM'
+  resource_group: 'TestRG-BLOB'
 )
 
 access_key = storage_account.get_access_keys[0].value

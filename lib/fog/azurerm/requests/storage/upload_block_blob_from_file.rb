@@ -22,16 +22,33 @@ module Fog
             else
               blocks = []
               ::File.open file_path, 'rb' do |file|
-                file_blocks = create_file_blocks(file)
+                worker_threads = []
 
-                thread_blocks = divide_blocks(file_blocks)
+                while(read_bytes = file.read(BLOCK_SIZE))
+                  block_id = Base64.strict_encode64 random_string(32)
 
-                worker_threads = create_worker_threads(thread_blocks, container_name, blob_name, options)
+                  while worker_threads.length >= WORKER_THREAD_COUNT
+                    worker_threads.each do |thread|
+                      if thread.status == false
+                        worker_threads.delete(thread)
+                      elsif thread.status.nil?
+                        raise 'Exception while uploading block'
+                      end
+                    end
+                  end
 
-                waitForThreadCompletion(worker_threads)
+                  worker_threads << Thread.new { upload_file_block(container_name, blob_name, block_id, read_bytes, options) }
+                  blocks << [block_id]
+                end
 
-                file_blocks.each do |block|
-                  blocks << [block[1]]
+                until worker_threads.length.zero?
+                  worker_threads.each do |thread|
+                    if thread.status == false
+                      worker_threads.delete(thread)
+                    elsif thread.status.nil?
+                      raise 'Exception while uploading block'
+                    end
+                  end
                 end
               end
 
@@ -49,76 +66,8 @@ module Fog
 
         private
 
-        def upload_file_blocks(container_name, blob_name, blocks, options)
-          blocks.each do |block|
-            @blob_client.put_blob_block(container_name, blob_name, block[1], block[0], options)
-          end
-        end
-
-        def create_file_blocks(file)
-          blocks = []
-          while(read_bytes = file.read(BLOCK_SIZE))
-            block_id = Base64.strict_encode64 random_string(32)
-            blocks << [read_bytes, block_id]
-          end
-          blocks
-        end
-
-        def divide_blocks(file_blocks)
-          number_of_blocks = file_blocks.length
-          chunk_size = number_of_blocks / WORKER_THREAD_COUNT
-
-          start_index = 0
-          end_index = chunk_size - 1
-          block_list = []
-
-          WORKER_THREAD_COUNT.times do
-            block_list << file_blocks[start_index..end_index]
-            start_index = end_index + 1
-            end_index += chunk_size
-          end
-
-          if start_index < file_blocks.length
-            block_list << file_blocks[start_index..file_blocks.length]
-          end
-
-          if block_list.length > WORKER_THREAD_COUNT
-            current_block = 0
-            block_list[WORKER_THREAD_COUNT].each do |file_block|
-              block_list[current_block] << file_block
-              current_block += 1
-            end
-          end
-
-          block_list[0, WORKER_THREAD_COUNT]
-        end
-
-        def create_worker_threads(block_list, container_name, blob_name, options)
-          thread_list = []
-          block_list.each do |blocks|
-            thread_list << Thread.new{upload_file_blocks(container_name, blob_name, blocks, options)}
-          end
-          thread_list
-        end
-
-        def waitForThreadCompletion(thread_list)
-          upload_completed = false
-          completed_threads = 0
-          until upload_completed do
-            thread_list.each do |thread|
-              if thread.status == false
-                completed_threads += 1
-              elsif thread.status.nil?
-                raise 'Exception in uploading'
-              end
-            end
-
-            if completed_threads == WORKER_THREAD_COUNT
-              upload_completed = true
-            else
-              completed_threads = 0
-            end
-          end
+        def upload_file_block(container_name, blob_name, block_id, block_content, options)
+          @blob_client.put_blob_block(container_name, blob_name, block_id, block_content, options)
         end
       end
 

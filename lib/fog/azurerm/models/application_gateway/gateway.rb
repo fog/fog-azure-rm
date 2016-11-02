@@ -113,7 +113,7 @@ module Fog
           validate_url_path_maps(url_path_maps) unless url_path_maps.nil?
           validate_request_routing_rules(request_routing_rules) unless request_routing_rules.nil?
           gateway = service.create_or_update_application_gateway(application_gateway_params)
-          merge_attributes(Fog::ApplicationGateway::AzureRM::Gateway.parse(gateway))
+          merge_attributes(Gateway.parse(gateway))
         end
 
         def application_gateway_params

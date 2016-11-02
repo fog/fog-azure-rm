@@ -8,8 +8,7 @@ module Fog
         model SqlDatabase
 
         def all
-          requires :resource_group
-          requires :server_name
+          requires :resource_group, :server_name
 
           databases = []
           service.list_databases(resource_group, server_name).each do |database|

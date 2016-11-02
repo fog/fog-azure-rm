@@ -110,12 +110,10 @@ class TestFile < Minitest::Test
     end
     large_file.close
     @file.file_path = large_file_name
-    @service.stub :upload_file_block, true do
-      @blob_client.stub :put_blob_block, true do
-        @blob_client.stub :commit_blob_blocks, nil do
-          @service.stub :get_blob_metadata, @create_result do
-            assert_instance_of Fog::Storage::AzureRM::File, @file.create
-          end
+    @blob_client.stub :put_blob_block, true do
+      @blob_client.stub :commit_blob_blocks, nil do
+        @service.stub :get_blob_metadata, @create_result do
+          assert_instance_of Fog::Storage::AzureRM::File, @file.create
         end
       end
     end

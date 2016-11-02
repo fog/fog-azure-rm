@@ -24,7 +24,7 @@ module Fog
               ::File.open file_path, 'rb' do |file|
                 worker_threads = []
 
-                while(read_bytes = file.read(BLOCK_SIZE))
+                while (read_bytes = file.read(BLOCK_SIZE))
                   block_id = Base64.strict_encode64 random_string(32)
 
                   while worker_threads.length >= WORKER_THREAD_COUNT

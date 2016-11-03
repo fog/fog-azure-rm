@@ -21,7 +21,7 @@ module Fog
           hash = {}
           hash['id'] = nsr.id
           hash['name'] = nsr.name
-          hash['resource_group'] = get_resource_from_resource_id(nsr.id, RESOURCE_GROUP_NAME)
+          hash['resource_group'] = get_resource_group_from_id(nsr.id)
           hash['network_security_group_name'] = get_resource_from_resource_id(nsr.id, RESOURCE_NAME)
           hash['description'] = nsr.description
           hash['protocol'] = nsr.protocol
@@ -37,12 +37,11 @@ module Fog
 
         def save
           requires :name, :network_security_group_name, :resource_group, :protocol, :source_port_range, :destination_port_range, :source_address_prefix, :destination_address_prefix, :access, :priority, :direction
-          security_rule_params = get_security_rule_params
           network_security_rule = service.create_or_update_network_security_rule(security_rule_params)
           merge_attributes(NetworkSecurityRule.parse(network_security_rule))
         end
 
-        def get_security_rule_params
+        def security_rule_params
           {
             name: name,
             resource_group: resource_group,

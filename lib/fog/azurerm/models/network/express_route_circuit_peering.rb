@@ -29,7 +29,7 @@ module Fog
           express_route_circuit_peering['id'] = circuit_peering.id
           express_route_circuit_peering['name'] = circuit_peering.name
           express_route_circuit_peering['resource_group'] = get_resource_group_from_id(circuit_peering.id)
-          express_route_circuit_peering['circuit_name'] = circuit_peering.id.split('/')[8]
+          express_route_circuit_peering['circuit_name'] = get_circuit_name_from_id(circuit_peering.id)
           express_route_circuit_peering['provisioning_state'] = circuit_peering.provisioning_state
           express_route_circuit_peering['peering_type'] = circuit_peering.peering_type
           express_route_circuit_peering['peer_asn'] = circuit_peering.peer_asn
@@ -59,9 +59,8 @@ module Fog
         def save
           requires :name, :resource_group, :circuit_name, :peering_type, :peer_asn, :primary_peer_address_prefix, :secondary_peer_address_prefix, :vlan_id
           requires :advertised_public_prefixes if peering_type.casecmp(MICROSOFT_PEERING) == 0
-          circuit_peering_parameters = express_route_circuit_peering_params
-          circuit_peering = service.create_or_update_express_route_circuit_peering(circuit_peering_parameters)
-          merge_attributes(Fog::Network::AzureRM::ExpressRouteCircuitPeering.parse(circuit_peering))
+          circuit_peering = service.create_or_update_express_route_circuit_peering(express_route_circuit_peering_params)
+          merge_attributes(ExpressRouteCircuitPeering.parse(circuit_peering))
         end
 
         def destroy
@@ -71,7 +70,7 @@ module Fog
         private
 
         def express_route_circuit_peering_params
-          circuit_peering_parameters = {
+          {
             resource_group_name: resource_group,
             peering_name: name,
             circuit_name: circuit_name,
@@ -85,7 +84,6 @@ module Fog
             customer_asn: customer_asn,
             routing_registry_name: routing_registry_name
           }
-          circuit_peering_parameters
         end
       end
     end

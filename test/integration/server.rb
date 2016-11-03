@@ -118,10 +118,9 @@ virtual_machine.detach_data_disk('datadisk1')
 
 access_key = storage_account.get_access_keys[0].value
 Fog::Logger.debug access_key.inspect
-storage_data = Fog::Storage.new(
-    provider: 'AzureRM',
-    azure_storage_account_name: storage_account.name,
-    azure_storage_access_key: access_key
+storage_data = Fog::Storage::AzureRM.new(
+  azure_storage_account_name: storage_account.name,
+  azure_storage_access_key: access_key
 )
 storage_data.delete_disk('datadisk1')
 

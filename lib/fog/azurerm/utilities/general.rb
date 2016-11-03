@@ -8,9 +8,13 @@ def get_virtual_network_from_id(subnet_id)
   subnet_id.split('/')[8]
 end
 
+def get_circuit_name_from_id(circuit_peering_id)
+  circuit_peering_id.split('/')[8]
+end
+
 # Pick Virtual Machine name from Virtual Machine Extension Id(String)
 def get_virtual_machine_from_id(vme_id)
-  vme_id.split('/')[8]
+  vme_id.split('/')[VM_NAME_POSITION]
 end
 
 # Extract Endpoint type from (String)
@@ -80,4 +84,13 @@ end
 
 def random_string(length)
   (0...length).map { ('a'..'z').to_a[rand(26)] }.join
+end
+
+def get_time
+  time = Time.now.to_f.to_s
+  time.split(/\W+/).join
+end
+
+def get_blob_link(storage_account_name)
+  "http://#{storage_account_name}.blob.core.windows.net"
 end

@@ -18,8 +18,8 @@ module Fog
 
         def get(resource_group, virtual_network_name, subnet_name)
           subnet = service.get_subnet(resource_group, virtual_network_name, subnet_name)
-          subnet_object = Subnet.new(service: service)
-          subnet_object.merge_attributes(Subnet.parse(subnet))
+          subnet_fog = Subnet.new(service: service)
+          subnet_fog.merge_attributes(Subnet.parse(subnet))
         end
       end
     end

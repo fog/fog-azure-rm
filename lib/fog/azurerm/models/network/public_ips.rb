@@ -17,8 +17,8 @@ module Fog
 
         def get(resource_group_name, public_ip_name)
           public_ip = service.get_public_ip(resource_group_name, public_ip_name)
-          public_ip_object = PublicIp.new(service: service)
-          public_ip_object.merge_attributes(PublicIp.parse(public_ip))
+          public_ip_fog = PublicIp.new(service: service)
+          public_ip_fog.merge_attributes(PublicIp.parse(public_ip))
         end
 
         def check_if_exists(resource_group, name)

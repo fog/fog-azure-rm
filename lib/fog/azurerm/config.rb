@@ -21,3 +21,4 @@ EXTERNAL_ENDPOINTS = 'externalEndpoints'.freeze
 NESTED_ENDPOINTS = 'nestedEndpoints'.freeze
 GLOBAL = 'global'.freeze
 WORKER_THREAD_COUNT = 8
+VM_NAME_POSITION = 8

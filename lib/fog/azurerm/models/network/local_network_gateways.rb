@@ -14,8 +14,8 @@ module Fog
 
         def get(resource_group_name, name)
           local_network_gateway = service.get_local_network_gateway(resource_group_name, name)
-          local_network_gateway_obj = LocalNetworkGateway.new(service: service)
-          local_network_gateway_obj.merge_attributes(LocalNetworkGateway.parse(local_network_gateway))
+          local_network_gateway_fog = LocalNetworkGateway.new(service: service)
+          local_network_gateway_fog.merge_attributes(LocalNetworkGateway.parse(local_network_gateway))
         end
       end
     end

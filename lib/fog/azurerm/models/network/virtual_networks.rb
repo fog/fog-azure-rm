@@ -18,8 +18,8 @@ module Fog
 
         def get(resource_group_name, virtual_network_name)
           virtual_network = service.get_virtual_network(resource_group_name, virtual_network_name)
-          virtual_network_object = VirtualNetwork.new(service: service)
-          virtual_network_object.merge_attributes(VirtualNetwork.parse(virtual_network))
+          virtual_network_fog = VirtualNetwork.new(service: service)
+          virtual_network_fog.merge_attributes(VirtualNetwork.parse(virtual_network))
         end
 
         def check_if_exists(resource_group, name)

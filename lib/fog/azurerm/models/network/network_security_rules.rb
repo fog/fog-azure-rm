@@ -18,8 +18,8 @@ module Fog
 
         def get(resource_group, network_security_group_name, name)
           network_security_rule = service.get_network_security_rule(resource_group, network_security_group_name, name)
-          network_security_rule_obj = NetworkSecurityRule.new(service: service)
-          network_security_rule_obj.merge_attributes(NetworkSecurityRule.parse(network_security_rule))
+          network_security_rule_fog = NetworkSecurityRule.new(service: service)
+          network_security_rule_fog.merge_attributes(NetworkSecurityRule.parse(network_security_rule))
         end
       end
     end

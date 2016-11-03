@@ -1,4 +1,3 @@
-require 'fog/azurerm/models/storage/data_disk'
 module Fog
   module Compute
     class AzureRM
@@ -37,14 +36,16 @@ module Fog
           hash['name'] = vm.name
           hash['location'] = vm.location
           hash['resource_group'] = get_resource_group_from_id(vm.id)
-          hash['vm_size'] = vm.hardware_profile.vm_size
-          hash['os_disk_name'] = vm.storage_profile.os_disk.name
-          hash['os_disk_vhd_uri'] = vm.storage_profile.os_disk.vhd.uri
-          unless vm.storage_profile.image_reference.nil?
-            hash['publisher'] = vm.storage_profile.image_reference.publisher
-            hash['offer'] = vm.storage_profile.image_reference.offer
-            hash['sku'] = vm.storage_profile.image_reference.sku
-            hash['version'] = vm.storage_profile.image_reference.version
+          hash['vm_size'] = vm.hardware_profile.vm_size unless vm.hardware_profile.vm_size.nil?
+          unless vm.storage_profile.nil?
+            hash['os_disk_name'] = vm.storage_profile.os_disk.name
+            hash['os_disk_vhd_uri'] = vm.storage_profile.os_disk.vhd.uri
+            unless vm.storage_profile.image_reference.nil?
+              hash['publisher'] = vm.storage_profile.image_reference.publisher
+              hash['offer'] = vm.storage_profile.image_reference.offer
+              hash['sku'] = vm.storage_profile.image_reference.sku
+              hash['version'] = vm.storage_profile.image_reference.version
+            end
           end
           hash['username'] = vm.os_profile.admin_username
           hash['custom_data'] = vm.os_profile.custom_data
@@ -73,8 +74,7 @@ module Fog
           requires :disable_password_authentication if platform.casecmp('linux').zero?
           requires :publisher, :offer, :sku, :version if vhd_path.nil?
           ssh_key_path = "/home/#{username}/.ssh/authorized_keys" unless ssh_key_data.nil?
-          virtual_machine_params = get_virtual_machine_params(ssh_key_path)
-          vm = service.create_virtual_machine(virtual_machine_params)
+          vm = service.create_virtual_machine(virtual_machine_params(ssh_key_path))
           merge_attributes(Server.parse(vm))
         end
 
@@ -126,7 +126,7 @@ module Fog
 
         private
 
-        def get_virtual_machine_params(ssh_key_path)
+        def virtual_machine_params(ssh_key_path)
           {
             resource_group: resource_group,
             name: name,

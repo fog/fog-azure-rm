@@ -22,8 +22,8 @@ module Fog
 
         def get(resource_group, identity)
           availability_set = service.get_availability_set(resource_group, identity)
-          availability_set_obj = AvailabilitySet.new(service: service)
-          availability_set_obj.merge_attributes(AvailabilitySet.parse(availability_set))
+          availability_set_fog = AvailabilitySet.new(service: service)
+          availability_set_fog.merge_attributes(AvailabilitySet.parse(availability_set))
         end
       end
     end

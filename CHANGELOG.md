@@ -1,3 +1,8 @@
+## Upcoming Version
+
+**Added:**
+- Storage Service - Multi-thread support for uploading blobs
+
 ## 0.1.0
 
 **Added:**

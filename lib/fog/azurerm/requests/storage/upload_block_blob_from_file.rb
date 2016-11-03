@@ -22,24 +22,55 @@ module Fog
             else
               blocks = []
               ::File.open file_path, 'rb' do |file|
+                worker_threads = []
+
                 while (read_bytes = file.read(BLOCK_SIZE))
                   block_id = Base64.strict_encode64 random_string(32)
-                  @blob_client.put_blob_block container_name, blob_name, block_id, read_bytes, options
+
+                  while worker_threads.length >= WORKER_THREAD_COUNT
+                    worker_threads.each do |thread|
+                      if thread.status == false
+                        worker_threads.delete(thread)
+                      elsif thread.status.nil?
+                        raise 'Exception while uploading block'
+                      end
+                    end
+                  end
+
+                  worker_threads << Thread.new { upload_file_block(container_name, blob_name, block_id, read_bytes, options) }
                   blocks << [block_id]
                 end
-              end
-              blob = @blob_client.commit_blob_blocks container_name, blob_name, blocks, options
-            end
 
-            Fog::Logger.debug "Uploading #{file_path} successfully."
-            blob
+                until worker_threads.length.zero?
+                  worker_threads.each do |thread|
+                    if thread.status == false
+                      worker_threads.delete(thread)
+                    elsif thread.status.nil?
+                      raise 'Exception while uploading block'
+                    end
+                  end
+                end
+              end
+
+              @blob_client.commit_blob_blocks(container_name, blob_name, blocks, options)
+              blob = get_blob_metadata(container_name, blob_name, options)
+            end
           rescue IOError => ex
             raise "Exception in reading #{file_path}: #{ex.inspect}"
           rescue Azure::Core::Http::HTTPError => ex
             raise "Exception in uploading #{file_path}: #{ex.inspect}"
           end
+          Fog::Logger.debug "Uploading #{file_path} successfully."
+          blob
+        end
+
+        private
+
+        def upload_file_block(container_name, blob_name, block_id, block_content, options)
+          @blob_client.put_blob_block(container_name, blob_name, block_id, block_content, options)
         end
       end
+
       # This class provides the mock implementation for unit tests.
       class Mock
         def upload_block_blob_from_file(_container_name, blob_name, _file_path, _options = {})

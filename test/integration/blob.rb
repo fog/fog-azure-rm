@@ -27,14 +27,14 @@ storage = Fog::Storage::AzureRM.new(
 ########################################################################################################################
 
 resource_group = rs.resource_groups.create(
-  name: 'TestRG-VM',
+  name: 'TestRG-BLOB',
   location: 'eastus'
 )
 
 storage_account = storage.storage_accounts.create(
   name: 'storageaccounttestblob',
   location: 'eastus',
-  resource_group: 'TestRG-VM'
+  resource_group: 'TestRG-BLOB'
 )
 
 access_key = storage_account.get_access_keys[0].value
@@ -114,7 +114,7 @@ Fog::Logger.debug storage_data.copy_blob(test_container_name, small_blob_name, c
 ######################                    Copy Blob from URI                                    ########################
 ########################################################################################################################
 blob_uri = "http://storageaccounttestblob.blob.core.windows.net/#{container_name}/#{large_file_name}"
-Fog::Logger.debug storage_data.copy_blob_from_uri(test_container_name, 'small_blob_name', blob_uri)
+Fog::Logger.debug storage_data.copy_blob_from_uri(test_container_name, large_file_name, blob_uri)
 
 ########################################################################################################################
 ######################                    Compare Blob                                             #####################

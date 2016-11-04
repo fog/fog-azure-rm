@@ -19,10 +19,10 @@ module Fog
               authorization: token
             )
           rescue RestClient::Exception => e
-            raise JSON.parse(e.response)['message']
+            raise ::JSON.parse(e.response)['message']
           end
           Fog::Logger.debug "SQL Firewall Rule : #{firewall_hash[:name]} created successfully."
-          JSON.parse(response)
+          ::JSON.parse(response)
         end
 
         private

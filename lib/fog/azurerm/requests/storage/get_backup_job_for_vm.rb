@@ -45,7 +45,7 @@ module Fog
               "activityId": "383f05d9-a4bf-4b95-bb41-d39849b3a86e-2016-10-13 09:55:53Z-PS"
             }
           }'
-          JSON.parse(body)
+          ::JSON.parse(body)
         end
       end
     end

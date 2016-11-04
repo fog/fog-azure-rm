@@ -19,7 +19,7 @@ module Fog
             Fog::Logger.debug "SQL Firewall Rule: #{rule_name} deleted successfully."
             true
           rescue RestClient::Exception => e
-            raise JSON.parse(e.response)['message']
+            raise ::JSON.parse(e.response)['message']
           end
         end
       end

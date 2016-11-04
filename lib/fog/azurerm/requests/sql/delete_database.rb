@@ -16,7 +16,7 @@ module Fog
               authorization: token
             )
           rescue RestClient::Exception => e
-            raise JSON.parse(e.response)['message']
+            raise ::JSON.parse(e.response)['message']
           end
           Fog::Logger.debug "SQL Database: #{name} deleted successfully."
           true

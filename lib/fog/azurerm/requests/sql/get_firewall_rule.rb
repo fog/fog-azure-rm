@@ -16,10 +16,10 @@ module Fog
               authorization: token
             )
           rescue RestClient::Exception => e
-            raise JSON.parse(e.response)['message']
+            raise ::JSON.parse(e.response)['message']
           end
           Fog::Logger.debug "Sql Server Firewall Rule fetched successfully from Server: #{server_name}, Resource Group: #{resource_group}"
-          JSON.parse(response)
+          ::JSON.parse(response)
         end
       end
 

@@ -18,7 +18,7 @@ module Fog
             Fog::Logger.debug "SQL Server: #{name} deleted successfully."
             true
           rescue RestClient::Exception => e
-            raise JSON.parse(e.response)['message']
+            raise ::JSON.parse(e.response)['message']
           end
         end
       end

@@ -3,6 +3,17 @@
 **Added:**
 - Storage Service - Multi-thread support for uploading blobs
 
+**Changed:**
+* Updated fog-azure-rm runtime gem dependencies to latest:
+  * azure_mgmt_compute 0.7.0
+  * azure_mgmt_network 0.7.0
+  * azure_mgmt_resources 0.7.0
+  * azure_mgmt_storage 0.7.0
+  * azure_mgmt_dns 0.7.0
+  * azure_mgmt_traffic_manager 0.7.0
+  * azure-storage 0.11.3.preview'
+
+
 ## 0.1.0
 
 **Added:**

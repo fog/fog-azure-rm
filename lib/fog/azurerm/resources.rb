@@ -54,7 +54,7 @@ module Fog
           end
 
           credentials = Fog::Credentials::AzureRM.get_credentials(options[:tenant_id], options[:client_id], options[:client_secret])
-          @rmc = ::Azure::ARM::Resources::ResourceManagementClient.new(credentials)
+          @rmc = ::Azure::ARM::Resources::ResourceManagementClient.new(credentials, resource_manager_endpoint_url)
           @rmc.subscription_id = options[:subscription_id]
         end
       end

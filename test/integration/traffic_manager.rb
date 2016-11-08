@@ -28,7 +28,7 @@ traffic_manager = Fog::TrafficManager::AzureRM.new(
 
 resources.resource_groups.create(
   name: 'TestRG-TM',
-  location: 'eastus'
+  location: LOCATION
 )
 
 ########################################################################################################################

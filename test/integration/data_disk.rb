@@ -28,12 +28,12 @@ storage = Fog::Storage::AzureRM.new(
 
 rs.resource_groups.create(
   name: 'TestRG-DD',
-  location: 'eastus'
+  location: LOCATION
 )
 
 storage_account = storage.storage_accounts.create(
   name: 'fogstorageac',
-  location: 'eastus',
+  location: LOCATION,
   resource_group: 'TestRG-DD',
   account_type: 'Standard',
   replication: 'LRS'

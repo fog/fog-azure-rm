@@ -28,7 +28,7 @@ network = Fog::Network::AzureRM.new(
 
 rs.resource_groups.create(
   name: 'TestRG-PB',
-  location: 'eastus'
+  location: LOCATION
 )
 
 ########################################################################################################################
@@ -44,7 +44,7 @@ network.public_ips.check_if_exists('TestRG-PB', 'mypubip')
 network.public_ips.create(
   name: 'mypubip',
   resource_group: 'TestRG-PB',
-  location: 'eastus',
+  location: LOCATION,
   public_ip_allocation_method: 'Static'
 )
 

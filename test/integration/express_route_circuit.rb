@@ -28,7 +28,7 @@ network = Fog::Network::AzureRM.new(
 
 resources.resource_groups.create(
   name: 'TestRG-ER',
-  location: 'eastus'
+  location: LOCATION
 )
 Fog::Logger.debug 'Resource Group created!'
 ########################################################################################################################
@@ -37,7 +37,7 @@ Fog::Logger.debug 'Resource Group created!'
 
 network.express_route_circuits.create(
   name: 'testERCircuit',
-  location: 'eastus',
+  location: LOCATION,
   tags: {
     key1: 'value1',
     key2: 'value2'

@@ -44,9 +44,11 @@ rs.resource_groups.create(
   name: 'TestRG-VME',
   location: LOCATION
 )
-
+time = Time.now.to_f.to_s
+new_time = time.split(/\W+/).join.slice(0,4)
+storage_account_name = "fog#{new_time}storageac"
 storage.storage_accounts.create(
-  name: 'fogstorageac',
+  name: storage_account_name,
   location: LOCATION,
   resource_group: 'TestRG-VME',
   account_type: 'Standard',
@@ -81,7 +83,7 @@ compute.servers.create(
   location: LOCATION,
   resource_group: 'TestRG-VME',
   vm_size: 'Basic_A0',
-  storage_account_name: 'fogstorageac',
+  storage_account_name: storage_account_name,
   username: 'testuser',
   password: 'Confiz=123',
   disable_password_authentication: false,
@@ -141,7 +143,7 @@ nic.destroy
 vnet = network.virtual_networks.get('TestRG-VME', 'testVnet')
 vnet.destroy
 
-storage = storage.storage_accounts.get('TestRG-VME', 'fogstorageac')
+storage = storage.storage_accounts.get('TestRG-VME', storage_account_name)
 storage.destroy
 
 resource_group = rs.resource_groups.get('TestRG-VME')

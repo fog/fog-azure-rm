@@ -27,30 +27,34 @@ module Fog
         attribute :source_database_deletion_date
 
         def self.parse(database)
-          {
-            id: database['id'],
-            type: database['type'],
-            name: database['name'],
-            location: database['location'],
-            edition: database['properties']['edition'],
-            elastic_pool_name: database['elasticPoolName'],
-            collation: database['properties']['collation'],
-            create_mode: database['properties']['createMode'],
-            database_id: database['properties']['databaseId'],
-            server_name: get_server_name_from_id(database['id']),
-            creation_date: database['properties']['creationDate'],
-            max_size_bytes: database['properties']['maxSizeBytes'],
-            resource_group: get_resource_group_from_id(database['id']),
-            source_database_id: database['properties']['sourceDatabaseId'],
-            restore_point_in_time: database['properties']['restorePointInTime'],
-            earliest_restore_date: database['properties']['earliestRestoreDate'],
-            service_level_objective: database['properties']['serviceLevelObjective'],
-            default_secondary_location: database['properties']['defaultSecondaryLocation'],
-            source_database_deletion_date: database['properties']['sourceDatabaseDeletionDate'],
-            requested_service_objective_id: database['properties']['requestedServiceObjectiveId'],
-            requested_service_objective_name: database['properties']['requestedServiceObjectiveName'],
-            current_service_level_objective_id: database['properties']['currentServiceLevelObjectiveId'],
-          }
+          sql_database_hash = {}
+          sql_database_hash['id'] = database['id'] unless database['id'].nil?
+          sql_database_hash['type'] = database['type'] unless database['type'].nil?
+          sql_database_hash['name'] = database['name'] unless database['name'].nil?
+          sql_database_hash['location'] = database['location'] unless database['location'].nil?
+          sql_database_hash['elastic_pool_name'] = database['elasticPoolName']  unless database['elasticPoolName'].nil?
+          unless database['id'].nil?
+          sql_database_hash['server_name']= get_server_name_from_id(database['id'])
+          sql_database_hash['resource_group']= get_resource_group_from_id(database['id'])
+          end
+          unless database['properties'].nil?
+          sql_database_hash['edition']= database['properties']['edition']
+          sql_database_hash['collation']= database['properties']['collation']
+          sql_database_hash['create_mode']= database['properties']['createMode']
+          sql_database_hash['database_id']= database['properties']['databaseId']
+          sql_database_hash['creation_date']= database['properties']['creationDate']
+          sql_database_hash['max_size_bytes']= database['properties']['maxSizeBytes']
+          sql_database_hash['source_database_id']= database['properties']['sourceDatabaseId']
+          sql_database_hash['restore_point_in_time']= database['properties']['restorePointInTime']
+          sql_database_hash['earliest_restore_date']= database['properties']['earliestRestoreDate']
+          sql_database_hash['service_level_objective']= database['properties']['serviceLevelObjective']
+          sql_database_hash['default_secondary_location']= database['properties']['defaultSecondaryLocation']
+          sql_database_hash['source_database_deletion_date']= database['properties']['sourceDatabaseDeletionDate']
+          sql_database_hash['requested_service_objective_id']= database['properties']['requestedServiceObjectiveId']
+          sql_database_hash['requested_service_objective_name']= database['properties']['requestedServiceObjectiveName']
+          sql_database_hash['current_service_level_objective_id']= database['properties']['currentServiceLevelObjectiveId']
+          end
+          sql_database_hash
         end
 
         def save

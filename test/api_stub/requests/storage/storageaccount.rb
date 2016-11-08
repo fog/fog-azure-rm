@@ -114,7 +114,7 @@ module ApiStub
         def self.list_keys_response
           key1 = Azure::ARM::Storage::Models::StorageAccountKey.new
           key1.key_name = 'key1'
-          key1.value = 'sfhyuiafhhfids0943'
+          key1.value = 'YWNjZXNzLWtleQ=='
           key1.permissions = 'Full'
           storage_account_key_list = Azure::ARM::Storage::Models::StorageAccountListKeysResult.new
           storage_account_key_list.keys = [key1]

@@ -3,28 +3,19 @@ module Fog
     class AzureRM
       # This class provides the actual implementation for service calls.
       class Real
-        def delete_disk(blob_name)
-          msg = "Deleting Disk: #{blob_name}."
+        def delete_disk(disk_name)
+          msg = "Deleting Disk: #{disk_name}."
           Fog::Logger.debug msg
-          begin
-            result = delete_blob('vhds', "#{blob_name}.vhd")
-          rescue Azure::Core::Http::HTTPError => e
-            raise_azure_exception(e, msg)
-          end
-          if result.nil?
-            Fog::Logger.debug "Successfully deleted Disk: #{blob_name}."
-            true
-          else
-            Fog::Logger.debug 'Error deleting Disk.'
-            false
-          end
+          delete_blob('vhds', "#{disk_name}.vhd")
+          Fog::Logger.debug "Successfully deleted Disk: #{disk_name}."
+          true
         end
       end
+
       # This class provides the mock implementation for unit tests.
       class Mock
         def delete_disk(*)
-          Fog::Logger.debug 'Deleting Disk: test_blob.'
-          Fog::Logger.debug 'Successfully deleted Disk: test_blob.'
+          Fog::Logger.debug 'Successfully deleted Disk'
           true
         end
       end

@@ -53,68 +53,137 @@ test_container_name = 'testcontainer'
 ########################################################################################################################
 
 storage_data.directories.create(
-  key: container_name
+  key: container_name,
+  public: true
 )
 
 storage_data.directories.create(
-  key: test_container_name
+  key: test_container_name,
+  public: false
 )
 
 ########################################################################################################################
-######################                          Get Container Properties                          ######################
+######################                      Get container                                         ######################
 ########################################################################################################################
 
 container = storage_data.directories.get(container_name)
-container.get_properties
+test_container = storage_data.directories.get(test_container_name)
 
 ########################################################################################################################
-######################                      Get container access control List                     ######################
+######################                          Create a small block blob                         ######################
 ########################################################################################################################
 
-container.access_control_list
-
-########################################################################################################################
-######################                          Create a small blob                               ######################
-########################################################################################################################
-
-small_file_name = 'small_test_file.dat'
-small_blob_name = small_file_name
+small_blob_name = 'small_test_file.dat'
 content = Array.new(1024 * 1024) { [*'0'..'9', *'a'..'z'].sample }.join
-small_file = File.new(small_file_name, 'w')
-small_file.puts(content)
-small_file.close
 
-storage_data.files.get(container_name, small_blob_name).create(file_path: small_file_name)
-
-File.delete(small_file_name)
+options = {
+  key: small_blob_name,
+  body: content
+}
+container.files.create(options)
 
 ########################################################################################################################
-######################                          Create a large blob                               ######################
+######################                          Create a large block blob                         ######################
 ########################################################################################################################
 
-large_file_name = 'large_test_file.dat'
-large_blob_name = large_file_name
-large_file = File.new(large_file_name, 'w')
-33.times do
-  large_file.puts(content)
+large_blob_name = 'large_test_file.dat'
+begin
+  large_blob_file_name = '/tmp/large_test_file.dat'
+  File.open(large_blob_file_name, 'wb') do |large_file|
+    33.times do
+      large_file.puts(content)
+    end
+  end
+
+  File.open(large_blob_file_name) do |file|
+    options = {
+      key: large_blob_name,
+      body: file
+    }
+    container.files.create(options)
+  end
+ensure
+  File.delete(large_blob_file_name) if File.exist?(large_blob_file_name)
 end
-large_file.close
 
-storage_data.files.get(container_name, large_blob_name).create(file_path: large_file_name)
+########################################################################################################################
+######################                          Create a small page blob                          ######################
+########################################################################################################################
 
-File.delete(large_file_name)
+small_page_blob_name = 'small_test_file.vhd'
+content = Array.new(1024 * 1024 + 512) { [*'0'..'9', *'a'..'z'].sample }.join
+
+options = {
+  key: small_page_blob_name,
+  body: content,
+  blob_type: 'PageBlob'
+}
+container.files.create(options)
+
+########################################################################################################################
+######################                          Create a large page blob                          ######################
+########################################################################################################################
+
+begin
+  large_page_blob_file_name = '/tmp/large_test_file.vhd'
+  large_page_blob_name = 'large_test_file.vhd'
+  File.open(large_page_blob_file_name, 'wb') do |large_file|
+    content = Array.new(1024 * 1024) { [*'0'..'9', *'a'..'z'].sample }.join
+    33.times do
+      large_file.puts(content)
+    end
+    content = Array.new(512) { [*'0'..'9', *'a'..'z'].sample }.join
+    large_file.puts(content)
+  end
+
+  File.open(large_page_blob_file_name) do |file|
+    options = {
+      key: large_page_blob_name,
+      body: file,
+      blob_type: 'PageBlob'
+    }
+    container.files.create(options)
+  end
+ensure
+  File.delete(large_page_blob_file_name) if File.exist?(large_page_blob_file_name)
+end
+
+########################################################################################################################
+######################                    Blob Exist                                               #####################
+########################################################################################################################
+
+Fog::Logger.debug 'Blob exist' if container.files.head(small_blob_name)
 
 ########################################################################################################################
 ######################                    Copy Blob                                             ########################
 ########################################################################################################################
 
-Fog::Logger.debug storage_data.copy_blob(test_container_name, small_blob_name, container_name, small_blob_name)
+container.files.head(small_blob_name).copy(test_container_name, small_blob_name)
+
+########################################################################################################################
+######################                            Get a public URL                                ######################
+########################################################################################################################
+
+blob_uri = container.files.head(large_blob_name).public_url
 
 ########################################################################################################################
 ######################                    Copy Blob from URI                                    ########################
 ########################################################################################################################
-blob_uri = "http://storageaccounttestblob.blob.core.windows.net/#{container_name}/#{large_file_name}"
-Fog::Logger.debug storage_data.copy_blob_from_uri(test_container_name, large_file_name, blob_uri)
+
+copied_blob = test_container.files.new(key: 'small_blob_name')
+Fog::Logger.debug copied_blob.copy_from_uri(blob_uri)
+
+########################################################################################################################
+######################                      Update blob                                           ######################
+########################################################################################################################
+
+copied_blob.content_encoding = 'utf-8'
+copied_blob.metadata = { 'owner' => 'azure' }
+copied_blob.save(update_body: false)
+
+temp = test_container.files.head(small_blob_name)
+Fog::Logger.debug temp.content_encoding
+Fog::Logger.debug temp.metadata
 
 ########################################################################################################################
 ######################                    Compare Blob                                             #####################
@@ -126,36 +195,65 @@ Fog::Logger.debug storage_data.compare_container_blobs(container_name, test_cont
 ######################                    Blob Exist                                               #####################
 ########################################################################################################################
 
-blob = storage_data.check_blob_exist(container_name, small_blob_name)
-if blob
-  Fog::Logger.debug 'Blob exist'
-end
+Fog::Logger.debug 'Blob exist' if container.files.head(small_blob_name)
 
 ########################################################################################################################
 ######################                    Blob Count in a Container                                #####################
 ########################################################################################################################
 
-Fog::Logger.debug storage_data.list_blobs(container_name).length
+Fog::Logger.debug container.files.all.length
 
 ########################################################################################################################
-######################                          Set blob properties                               ######################
+######################                    List Blobs in a Container                                #####################
 ########################################################################################################################
 
-storage_data.files.get(container_name, large_blob_name).set_properties(content_encoding: 'utf-8')
+container.files.each do |temp_file|
+  Fog::Logger.debug temp_file
+end
 
 ########################################################################################################################
-######################                          Get blob properties                               ######################
+######################                            Downlaod a small blob                           ######################
 ########################################################################################################################
 
-storage_data.files.get(container_name, large_blob_name).get_properties
+begin
+  downloaded_file_name = '/tmp/downloaded_' + small_blob_name
+  blob = container.files.get(small_blob_name)
+  File.open(downloaded_file_name, 'wb') do |file|
+    file.write(blob.body)
+  end
+ensure
+  File.delete(downloaded_file_name) if File.exist?(downloaded_file_name)
+end
 
 ########################################################################################################################
-######################                            Downlaod blob                                   ######################
+######################                            Downlaod a large blob                           ######################
 ########################################################################################################################
 
-downloaded_file_name = 'downloaded_' + small_blob_name
-storage_data.files.get(container_name, large_blob_name).save_to_file(downloaded_file_name)
-File.delete(downloaded_file_name)
+begin
+  downloaded_file_name = '/tmp/downloaded_' + large_blob_name
+  File.open(downloaded_file_name, 'wb') do |file|
+    container.files.get(large_blob_name) do |chunk, remaining_bytes, total_bytes|
+      Fog::Logger.debug "remaining_bytes: #{remaining_bytes}, total_bytes: #{total_bytes}"
+      file.write(chunk)
+    end
+  end
+ensure
+  File.delete(downloaded_file_name) if File.exist?(downloaded_file_name)
+end
+
+########################################################################################################################
+######################                            Get a https URL with expires                    ######################
+########################################################################################################################
+
+test_blob = test_container.files.head(small_blob_name)
+Fog::Logger.debug test_blob.public?
+Fog::Logger.debug test_blob.url(Time.now + 3600)
+
+########################################################################################################################
+######################                            Get a http URL with expires                     ######################
+########################################################################################################################
+
+Fog::Logger.debug test_blob.url(Time.now + 3600, scheme: 'http')
 
 ########################################################################################################################
 ######################                            Lease Blob                                      ######################
@@ -174,8 +272,8 @@ storage_data.release_blob_lease(container_name, large_blob_name, lease_id_blob)
 ######################                            Delete Blob                                     ######################
 ########################################################################################################################
 
-blob_object = storage_data.files.get(container_name, large_blob_name).get_properties
-blob_object.destroy
+blob = container.files.head(large_blob_name)
+blob.destroy
 
 ########################################################################################################################
 ######################                            Lease Container                                 ######################

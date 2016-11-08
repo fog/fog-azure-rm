@@ -53,9 +53,9 @@ end
 
 def raise_azure_exception(exception, msg)
   message = if exception.respond_to? 'body'
-              "Exception in #{msg} #{exception.body['error']['message'] unless exception.body['error']['message'].nil?} Type: #{exception.class} \n "
+              "Exception in #{msg} #{exception.body['error']['message'] unless exception.body['error']['message'].nil?} Type: #{exception.class}\n#{exception.backtrace.join("\n")}"
             else
-              exception.inspect
+              "#{exception.inspect}\n#{exception.backtrace.join("\n")}"
             end
   Fog::Logger.debug exception.backtrace
   raise message
@@ -115,4 +115,36 @@ end
 def get_time
   time = Time.now.to_f.to_s
   time.split(/\W+/).join.slice(0,5)
+end
+
+# Parse storage blob/container to a hash
+def parse_storage_object(object)
+  data = {}
+  if object.is_a? Hash
+    object.each do |k, v|
+      if k == 'properties'
+        v.each do |j, l|
+          data[j] = l
+        end
+      else
+        data[k] = v
+      end
+    end
+  else
+    object.instance_variables.each do |p|
+      kname = p.to_s.delete('@')
+      if kname == 'properties'
+        properties = object.instance_variable_get(p)
+        properties.each do |k, v|
+          data[k.to_s] = v
+        end
+      else
+        data[kname] = object.instance_variable_get(p)
+      end
+    end
+  end
+
+  data['last_modified'] = Time.parse(data['last_modified'])
+  data['etag'].delete!('"')
+  data
 end

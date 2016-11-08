@@ -163,10 +163,11 @@ azure_storage_service.delete_disk('<Data Disk Name>')
 Create a storage container in the current storage account.
 
 ```ruby
-container = azure_storage_service.create_container(
-  name: '<container name>'
+directory = azure_storage_service.directories.create(
+  key: '<container name>',
+  public: true
 )
-puts "#{container.name}"
+puts directory.key
 ```
 
 ## List storage containers
@@ -174,19 +175,28 @@ puts "#{container.name}"
 List all the storage containers in the current storage accounts.
 
 ```ruby
-azure_storage_service.directories.each do |directory|
-  puts "#{directory.name}"
+azure_storage_service.directories.all.each do |directory|
+  puts directory.key
 end
 ```
 
-## Get the access control list of the storage container
+## Get the access control level of the storage container
 
 Get the permissions for the specified container. The permissions indicate whether container data may be accessed publicly.
 
 ```ruby
-directory = azure_storage_service.directories.get('<container name>')
-access_control_list = directory.get_access_control_list('<container name>')
-puts "#{access_control_list.inspect}"
+directory = azure_storage_service.directories.get('<Container Name>', max_results: 1)
+puts directory.acl
+```
+
+## Set the access control level of the storage container
+
+Set the permissions for the specified container. The permissions indicate whether container data may be accessed publicly.
+
+```ruby
+directory = azure_storage_service.directories.get('<Container Name>', max_results: 1)
+directory.acl = 'container'
+directory.save(is_create: false)
 ```
 
 ## Delete the storage container
@@ -194,27 +204,95 @@ puts "#{access_control_list.inspect}"
 Mark the specified container for deletion. The container and any blobs contained within it are later deleted during garbage collection.
 
 ```ruby
-directory = azure_storage_service.directories.get('<container name>')
-result = directory.destroy
-puts "#{result}"
+directory = azure_storage_service.directories.get('<Container Name>', max_results: 1)
+puts directory.destroy
 ```
 
-## Upload a local file as a blob
+## Upload data as a block blob
 ```ruby
-new_cloud_file = azure_storage_service.files.get('<Container name>', '<Blob name>').create(file_path: '<file path>')
-puts "#{new_cloud_file.inspect}"
+directory = azure_storage_service.directories.get('<Container Name>', max_results: 1)
+options = {
+  key: '<Blob Name>',
+  body: '<Blob Content>'
+}
+new_block_blob = directory.files.create(options)
+puts new_block_blob.inspect
+```
+
+## Upload a local file as a block blob
+```ruby
+directory = azure_storage_service.directories.get('<Container Name>', max_results: 1)
+File.open('<File Path>') do |file|
+  options = {
+    key: '<Blob Name>',
+    body: file
+  }
+  new_block_blob = directory.files.create(options)
+  puts new_block_blob.inspect
+end
+```
+
+## Upload VHD data as a page blob
+```ruby
+directory = azure_storage_service.directories.get('<Container Name>', max_results: 1)
+options = {
+  key: '<Blob Name>',
+  body: '<Blob Content>',
+  blob_type: 'PageBlob'
+}
+new_page_blob = directory.files.create(options)
+puts new_page_blob.inspect
+```
+
+## Upload a local VHD as a page blob
+```ruby
+directory = azure_storage_service.directories.get('<Container Name>', max_results: 1)
+File.open('<File Path>') do |file|
+  options = {
+    key: '<Blob Name>',
+    body: file,
+    blob_type: 'PageBlob'
+  }
+  new_page_blob = directory.files.create(options)
+  puts new_page_blob.inspect
+end
 ```
 
 ## Copy Blob from one container to another
 ```ruby
-puts storage_data.copy_blob('<destination_container_name>', '<destination_blob_name>', '<source_container_name>', '<source_blob_name>')
+directory = azure_storage_service.directories.get('<Source Container Name>', max_results: 1)
+copied_blob = directory.files.head('<Source Blob Name>').copy('<Destination Container Name>', '<Destination Blob Name>')
+puts copied_blob.inspect
 ```
 
-## Download a blob to a local file
+## Copy Blob from one uri to self
 ```ruby
-blob = azure_storage_service.files.get('<Container name>', '<Blob name>').save_to_file('<file path>')
-puts "#{blob.inspect}"
-puts "File Size: #{::File.size <file_path>}"
+directory = azure_storage_service.directories.get('<Destination Container Name>', max_results: 1)
+copied_blob = directory.files.new(key: '<Destination Blob Name>')
+copied_blob.copy_from_uri('<Source Blob Uri>')
+puts copied_blob.inspect
+```
+
+## Download a small blob to a local file
+```ruby
+directory = azure_storage_service.directories.get('<Container Name>', max_results: 1)
+blob = directory.files.get('<Blob Name>')
+File.open('<File Path>', 'wb') do |file|
+  file.write(blob.body)
+end
+puts "File Size: #{::File.size <File Path>}"
+```
+
+## Download a large blob to a local file
+```ruby
+directory = azure_storage_service.directories.get('<Container Name>', max_results: 1)
+File.open('<File Path>', 'wb') do |file|
+  directory.files.get('<Blob Name>') do |chunk, remaining_bytes, total_bytes|
+    puts "remaining_bytes: #{remaining_bytes}, total_bytes: #{total_bytes}"
+    file.write(chunk)
+  end
+end
+puts "File Size: #{::File.size <File Path>}"
 ```
 
 ## Delete the storage blob
@@ -222,63 +300,21 @@ puts "File Size: #{::File.size <file_path>}"
 Mark the specified blob for deletion. The blob is later deleted during garbage collection.
 
 ```ruby
-cloud_file = azure_storage_service.files.get('<container name>', '<blob name>')
-result = cloud_file.destroy
-puts "#{result}"
-```
-
-Note that in order to delete a blob, you must delete all of its snapshots.
-
-```ruby
-cloud_file = azure_storage_service.files.get('<container name>', '<blob name>')
-result = cloud_file.destroy(delete_snapshots: 'only')
-puts "#{result}"
-
-result = cloud_file.destroy
-puts "#{result}"
-```
-
-You can delete both at the same time by specifying the option.
-
-```ruby
-cloud_file = azure_storage_service.files.get('<container name>', '<blob name>')
-result = cloud_file.destroy(delete_snapshots: 'inlcude')
-puts "#{result}"
-```
-
-## Properties
-
-### Get storage container properties
-
-Get the storage container properties. The properties will not fetch the access control list. Call `get_container_access_control_list` to fetch it.
-
-```ruby
-directory = azure_storage_service.directories.get('<container name>')
-properties = directory.get_properties
-puts "#{properties.inspect}"
-```
-
-### Get storage blob properties
-
-Get the storage blob properties.
-
-```ruby
-cloud_file = azure_storage_service.files.get('<container name>', '<blob name>')
-properties = cloud_file.get_properties
-puts "#{properties.inspect}"
+directory = azure_storage_service.directories.get('<Container Name>', max_results: 1)
+blob = directory.files.head('<Blob Name>')
+puts blob.destroy
 ```
 
 ### Set storage blob properties
 
-Set the storage blob properties. The properties are passed in name/value pairs.
+Set the storage blob properties.
 
 ```ruby
-cloud_file = azure_storage_service.files.get('<container name>', '<blob name>')
-properties = {
-  "content_language" => "English",
-  "content_disposition" => "attachment"
-}
-cloud_file.set_properties(properties)
+directory = azure_storage_service.directories.get('<Container Name>', max_results: 1)
+blob = directory.files.head('<Blob Name>')
+blob.content_language = "English"
+blob.content_disposition = "attachment"
+blob.save(update_body: false)
 ```
 
 ## Metadata
@@ -288,35 +324,41 @@ Metadata allows us to provide descriptive information about specific containers 
 ### Get Blob Metadata
 
 ```ruby
-azure_storage_service.files.get('<Container name>', '<Blob name>').get_metadata
+directory = azure_storage_service.directories.get('<Container Name>', max_results: 1)
+blob = directory.files.head('<Blob Name>')
+puts blob.metadata
 ```
 
 ### Set Blob Metadata
 
 ```ruby
-metadata = {
+directory = azure_storage_service.directories.get('<Container Name>', max_results: 1)
+blob = directory.files.head('<Blob Name>')
+blob.metadata = {
   "Category" => "Images",
   "Resolution" => "High"
 }
-azure_storage_service.files.get('<Container name>', '<Blob name>').set_metadata(metadata)
+blob.save(update_body: false)
 ```
 
 ### Get Container Metadata
 
 ```ruby
-azure_storage_service.directories.get_metadata('<Container name>')
+directory = azure_storage_service.directories.get('<Container Name>', max_results: 1)
+puts directory.metadata
 ```
 
 ### Set Container Metadata
 
 ```ruby
-metadata = {
+directory = azure_storage_service.directories.get('<Container Name>', max_results: 1)
+directory.metadata = {
   "CreatedBy" => "User",
   "SourceMachine" => "Mymachine",
   "category" => "guidance",
   "docType" => "textDocuments"
   }
-azure_storage_service.directories.set_metadata('<Container name>', metadata)
+directory.save(is_create: false)
 ```
 
 ### Create Recovery Vault

@@ -15,6 +15,8 @@ if ENV['CODECLIMATE_REPO_TOKEN']
 end
 
 require 'minitest/autorun'
+require 'azure/core/http/http_error'
+require 'azure/core/http/http_response'
 $LOAD_PATH.unshift(File.expand_path '../lib', __dir__)
 require File.expand_path '../lib/fog/azurerm', __dir__
 require File.expand_path './api_stub', __dir__
@@ -65,6 +67,11 @@ end
 
 def mocked_storage_http_error
   mocked_net_response = MockResponse.new 'mocked_code', 'mocked_body', a: 'a', b: 'b'
+  Azure::Core::Http::HttpResponse.new mocked_net_response, 'mocked_uri'
+end
+
+def mocked_storage_http_not_found_error
+  mocked_net_response = MockResponse.new '404', 'mocked_body', a: 'a', b: 'b'
   Azure::Core::Http::HttpResponse.new mocked_net_response, 'mocked_uri'
 end
 
@@ -173,28 +180,29 @@ def premium_check_for_invalid_replications(service)
   )
 end
 
-def storage_container(service)
+def mock_storage_directory(service)
   Fog::Storage::AzureRM::Directory.new(
-    key: 'storage-test-container',
-    last_modified: 'Tue, 04 Aug 2015 06:01:08 GMT',
+    key: 'test_container',
+    acl: 'container',
     etag: '0x8D29C92176C8352',
-    lease_status: 'unlocked',
-    lease_state: 'available',
+    last_modified: Time.parse('Tue, 04 Aug 2015 06:01:08 GMT'),
     lease_duration: nil,
+    lease_state: 'available',
+    lease_status: 'unlocked',
     metadata: {
       'key1' => 'value1',
       'key2' => 'value2'
     },
-    public_access_level: nil,
-    service: service
+    service: service,
+    collection: Fog::Storage::AzureRM::Directories.new(service: @service)
   )
 end
 
-def storage_blob(service)
+def mock_storage_file(service)
   Fog::Storage::AzureRM::File.new(
-    key: 'storage-test-blob',
-    directory: 'storage-test-container',
-    last_modified: 'Tue, 04 Aug 2015 06:01:08 GMT',
+    key: 'test_blob',
+    directory: mock_storage_directory(service),
+    last_modified: Time.parse('Tue, 04 Aug 2015 06:01:08 GMT'),
     etag: '0x8D29C92176C8352',
     metadata: {
       'key1' => 'value1',
@@ -211,7 +219,7 @@ def storage_blob(service)
     content_md5: 'tXAohIyxuu/t94Lp/ujeRw==',
     cache_control: nil,
     sequence_number: 0,
-    blob_type: 'PageBlob',
+    blob_type: 'BlockBlob',
     copy_id: '095adc3b-e277-4c3d-97e0-0abca881f60c',
     copy_status: 'success',
     copy_source: 'https://testaccount.blob.core.windows.net/testblob/4m?snapshot=2016-02-04T08%3A35%3A50.3157696Z',
@@ -219,14 +227,14 @@ def storage_blob(service)
     copy_completion_time: 'Thu, 04 Feb 2016 08:35:52 GMT',
     copy_status_description: nil,
     accept_ranges: 0,
-    service: service
+    service: service,
+    collection: Fog::Storage::AzureRM::Files.new(service: @service, directory: mock_storage_directory(service))
   )
 end
 
-def storage_cloud_blob
+def mock_storage_blob
   mock_blob = MockBlob.new
-  mock_blob.name = 'storage-test-blob'
-  mock_blob.snapshot = nil
+  mock_blob.name = 'test_blob'
   mock_blob.properties = {
     lease_status: 'unlocked',
     lease_state: 'available',
@@ -242,11 +250,13 @@ def storage_cloud_blob
     blob_type: 'PageBlob',
     copy_id: '095adc3b-e277-4c3d-97e0-0abca881f60c',
     copy_status: 'success',
-    copy_source: 'https://testaccount.blob.core.windows.net/testblob/4m?snapshot=2016-02-04T08%3A35%3A50.3157696Z',
+    copy_source: 'https://sa.blob.core.windows.net/test_container/test_blob?snapshot=2016-02-04T08%3A35%3A50.3157696Z',
     copy_progress: '4194304/4194304',
     copy_completion_time: 'Thu, 04 Feb 2016 08:35:52 GMT',
     copy_status_description: nil,
-    accept_ranges: 0
+    accept_ranges: 0,
+    last_modified: 'Tue, 04 Aug 2015 06:01:08 GMT',
+    etag: '"0x8D29C92176C8352"'
   }
   mock_blob.metadata = {
     'key1' => 'value1',
@@ -544,7 +554,7 @@ def gateway(service)
               backend_address_pool_id: '/subscriptions/########-####-####-####-############/resourceGroups/fogRM-rg/providers/Microsoft.Network/applicationGateways/gateway/backendAddressPools/AG-BackEndAddressPool',
               backend_http_settings_id: '/subscriptions/########-####-####-####-############/resourceGroups/fogRM-rg/providers/Microsoft.Network/applicationGateways/gateway/backendHttpSettingsCollection/gateway_settings',
               paths: [
-                %w('/usr', '/etc')
+                %w(/usr /etc)
               ]
             }
           ]

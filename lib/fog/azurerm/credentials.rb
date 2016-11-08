@@ -20,7 +20,7 @@ module Fog
         @client_id = client_id
         @client_secret = client_secret
         return if @tenant_id.nil? || @client_id.nil? || @client_secret.nil?
-        @token_provider = MsRestAzure::ApplicationTokenProvider.new(@tenant_id, @client_id, @client_secret)
+        @token_provider = MsRestAzure::ApplicationTokenProvider.new(@tenant_id, @client_id, @client_secret, active_directory_service_settings)
         @credentials = MsRest::TokenCredentials.new(@token_provider)
         @credentials
       end

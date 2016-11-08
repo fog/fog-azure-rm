@@ -35,7 +35,7 @@ module Fog
           end
 
           credentials = Fog::Credentials::AzureRM.get_credentials(options[:tenant_id], options[:client_id], options[:client_secret])
-          @traffic_mgmt_client = ::Azure::ARM::TrafficManager::TrafficManagerManagementClient.new(credentials)
+          @traffic_mgmt_client = ::Azure::ARM::TrafficManager::TrafficManagerManagementClient.new(credentials, resource_manager_endpoint_url)
           @traffic_mgmt_client.subscription_id = options[:subscription_id]
         end
       end

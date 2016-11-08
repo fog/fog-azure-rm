@@ -111,7 +111,7 @@ module Fog
 
           credentials = Fog::Credentials::AzureRM.get_credentials(options[:tenant_id], options[:client_id], options[:client_secret])
           unless credentials.nil?
-            @storage_mgmt_client = ::Azure::ARM::Storage::StorageManagementClient.new(credentials)
+            @storage_mgmt_client = ::Azure::ARM::Storage::StorageManagementClient.new(credentials, resource_manager_endpoint_url)
             @storage_mgmt_client.subscription_id = options[:subscription_id]
           end
 

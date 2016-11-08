@@ -2,6 +2,7 @@
 
 **Added:**
 - Storage Service - Multi-thread support for uploading blobs
+- Updated integration scripts to support all Azure locations(Global, China, Gov, Germany)
 
 ## 0.1.0
 

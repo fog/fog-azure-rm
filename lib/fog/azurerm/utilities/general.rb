@@ -94,3 +94,29 @@ end
 def get_blob_link(storage_account_name)
   "http://#{storage_account_name}.blob.core.windows.net"
 end
+
+def active_directory_service_settings
+  case CLOUD
+  when 'AzureChina'
+    MsRestAzure::ActiveDirectoryServiceSettings.get_azure_china_settings
+  when 'AzureGermanCloud'
+    MsRestAzure::ActiveDirectoryServiceSettings.get_azure_german_settings
+  when 'AzureUSGovernment'
+    MsRestAzure::ActiveDirectoryServiceSettings.get_azure_us_government_settings
+  else
+    MsRestAzure::ActiveDirectoryServiceSettings.get_azure_settings
+  end
+end
+
+def resource_manager_endpoint_url
+  case CLOUD
+  when 'AzureChina'
+    AZURE_CHINA_RM_ENDPOINT_URL
+  when 'AzureGermanCloud'
+    GERMAN_CLOUD_RM_ENDPOINT_URL
+  when 'AzureUSGovernment'
+    US_GOVERNMENT_RM_ENDPOINT_URL
+  else
+    AZURE_GLOBAL_RM_ENDPOINT_URL
+  end
+end

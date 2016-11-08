@@ -42,7 +42,7 @@ module Fog
           end
 
           credentials = Fog::Credentials::AzureRM.get_credentials(options[:tenant_id], options[:client_id], options[:client_secret])
-          @dns_client = ::Azure::ARM::Dns::DnsManagementClient.new(credentials)
+          @dns_client = ::Azure::ARM::Dns::DnsManagementClient.new(credentials, resource_manager_endpoint_url)
           @dns_client.subscription_id = options[:subscription_id]
           @tenant_id = options[:tenant_id]
           @client_id = options[:client_id]

@@ -9,17 +9,17 @@ require 'yaml'
 azure_credentials = YAML.load_file('credentials/azure.yml')
 
 rs = Fog::Resources::AzureRM.new(
-  tenant_id: azure_credentials['tenant_id'],
-  client_id: azure_credentials['client_id'],
-  client_secret: azure_credentials['client_secret'],
-  subscription_id: azure_credentials['subscription_id']
+    tenant_id: azure_credentials['tenant_id'],
+    client_id: azure_credentials['client_id'],
+    client_secret: azure_credentials['client_secret'],
+    subscription_id: azure_credentials['subscription_id']
 )
 
 storage = Fog::Storage::AzureRM.new(
-  tenant_id: azure_credentials['tenant_id'],
-  client_id: azure_credentials['client_id'],
-  client_secret: azure_credentials['client_secret'],
-  subscription_id: azure_credentials['subscription_id']
+    tenant_id: azure_credentials['tenant_id'],
+    client_id: azure_credentials['client_id'],
+    client_secret: azure_credentials['client_secret'],
+    subscription_id: azure_credentials['subscription_id']
 )
 
 ########################################################################################################################
@@ -27,23 +27,26 @@ storage = Fog::Storage::AzureRM.new(
 ########################################################################################################################
 
 resource_group = rs.resource_groups.create(
-  name: 'TestRG-VM',
-  location: 'eastus'
+    name: 'TestRG-Con',
+    location: 'eastus'
 )
+time = Time.now.to_f.to_s
+new_time = time.split(/\W+/).join.slice(0,8)
+storage_account_name = "fog#{new_time}storageac"
 
 storage_account = storage.storage_accounts.create(
-  name: 'fogstorageac',
-  location: 'eastus',
-  resource_group: 'TestRG-VM'
+    name: storage_account_name,
+    location: 'eastus',
+    resource_group: 'TestRG-Con'
 )
 
 keys = storage_account.get_access_keys
 access_key = keys.first.value
 
 storage_data = Fog::Storage.new(
-  provider: 'AzureRM',
-  azure_storage_account_name: storage_account.name,
-  azure_storage_access_key: access_key
+    provider: 'AzureRM',
+    azure_storage_account_name: storage_account.name,
+    azure_storage_access_key: access_key
 )
 
 ########################################################################################################################
@@ -51,8 +54,7 @@ storage_data = Fog::Storage.new(
 ########################################################################################################################
 
 storage_data.directories.create(
-  name: 'fogcontainer',
-  key: access_key
+    key: 'fogcontainer'
 )
 
 ########################################################################################################################
@@ -66,7 +68,7 @@ container.get_properties
 ######################                      Get container access control List                     ######################
 ########################################################################################################################
 
-container.get_access_control_list
+container.access_control_list
 
 ########################################################################################################################
 ######################                            Delete Container                                ######################

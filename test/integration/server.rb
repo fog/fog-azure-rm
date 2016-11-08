@@ -45,8 +45,12 @@ rs.resource_groups.create(
   location: 'eastus'
 )
 
+time = Time.now.to_f.to_s
+new_time = time.split(/\W+/).join.slice(4)
+storage_account_name = "fog#{new_time}storageac"
+
 storage_account = storage.storage_accounts.create(
-  name: 'fogstorageac',
+  name: storage_account_name,
   location: 'eastus',
   resource_group: 'TestRG-VM',
   account_type: 'Standard',
@@ -85,7 +89,7 @@ compute.servers.create(
   location: 'eastus',
   resource_group: 'TestRG-VM',
   vm_size: 'Basic_A0',
-  storage_account_name: 'fogstorageac',
+  storage_account_name: storage_account_name,
   username: 'testuser',
   password: 'Confiz=123',
   disable_password_authentication: false,
@@ -103,7 +107,7 @@ compute.servers.create(
 ########################################################################################################################
 
 virtual_machine = compute.servers.get('TestRG-VM', 'TestVM')
-virtual_machine.attach_data_disk('datadisk1', 10, 'fogstorageac')
+virtual_machine.attach_data_disk('datadisk1', 10, storage_account_name)
 
 ########################################################################################################################
 ######################                          Detach Data Disk from VM                            ######################
@@ -194,7 +198,7 @@ nic.destroy
 vnet = network.virtual_networks.get('TestRG-VM', 'testVnet')
 vnet.destroy
 
-storage = storage.storage_accounts.get('TestRG-VM', 'fogstorageac')
+storage = storage.storage_accounts.get('TestRG-VM', storage_account_name)
 storage.destroy
 
 resource_group = rs.resource_groups.get('TestRG-VM')

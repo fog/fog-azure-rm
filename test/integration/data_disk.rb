@@ -47,8 +47,7 @@ storage_data = Fog::Storage.new(
   azure_storage_access_key: access_key
 )
 storage_data.directories.create(
-  name: 'vhds',
-  key: access_key
+  key: 'vhds'
 )
 
 ########################################################################################################################

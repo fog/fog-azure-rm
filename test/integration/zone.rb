@@ -29,7 +29,7 @@ dns = Fog::DNS.new(
 
 rs.resource_groups.create(
   name: 'TestRG-ZN',
-  location: 'eastus'
+  location: LOCATION
 )
 
 ########################################################################################################################

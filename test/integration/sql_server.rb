@@ -28,7 +28,7 @@ azure_sql_service = Fog::Sql::AzureRM.new(
 
 resources.resource_groups.create(
   name: 'TestRG-SQL',
-  location: 'eastus'
+  location: LOCATION
 )
 
 ########################################################################################################################
@@ -39,7 +39,7 @@ server_name = rand(0...999_99)
 azure_sql_service.sql_servers.create(
   name: server_name,
   resource_group: 'TestRG-SQL',
-  location: 'East US',
+  location: LOCATION,
   version: '2.0',
   administrator_login: 'testserveradmin',
   administrator_login_password: 'db@admin=123'
@@ -52,7 +52,7 @@ database_name = rand(0...999_99)
 
 azure_sql_service.sql_databases.create(
   resource_group: 'TestRG-SQL',
-  location: 'East US',
+  location: LOCATION,
   server_name: server_name,
   name: database_name
 )

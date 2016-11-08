@@ -28,13 +28,13 @@ network = Fog::Network::AzureRM.new(
 
 resource_group = resources.resource_groups.create(
   name: 'TestRG-RT',
-  location: 'eastus'
+  location: LOCATION
 )
 
 resource_id = network.public_ips.create(
   name: 'mypubip',
   resource_group: 'TestRG-RT',
-  location: 'eastus',
+  location: LOCATION,
   public_ip_allocation_method: 'Static'
 ).id
 

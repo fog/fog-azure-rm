@@ -28,7 +28,7 @@ network = Fog::Network::AzureRM.new(
 
 resource.resource_groups.create(
   name: 'TestRG-LNG',
-  location: 'eastus'
+  location: LOCATION
 )
 
 ########################################################################################################################
@@ -37,7 +37,7 @@ resource.resource_groups.create(
 
 network.local_network_gateways.create(
   name: 'testlocalnetworkgateway',
-  location: 'eastus',
+  location: LOCATION,
   tags: {
     key1: 'value1',
     key2: 'value2'

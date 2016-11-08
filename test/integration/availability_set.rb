@@ -28,7 +28,7 @@ compute = Fog::Compute::AzureRM.new(
 
 rs.resource_groups.create(
   name: 'TestRG-AS',
-  location: 'eastus'
+  location: LOCATION
 )
 
 ########################################################################################################################
@@ -37,7 +37,7 @@ rs.resource_groups.create(
 
 compute.availability_sets.create(
   name: 'test-availability-set',
-  location: 'eastus',
+  location: LOCATION,
   resource_group: 'TestRG-AS'
 )
 ########################################################################################################################

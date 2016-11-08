@@ -42,12 +42,12 @@ network = Fog::Network::AzureRM.new(
 
 rs.resource_groups.create(
   name: 'TestRG-VM',
-  location: 'eastus'
+  location: LOCATION
 )
 
 storage.storage_accounts.create(
   name: 'fogstorageac',
-  location: 'eastus',
+  location: LOCATION,
   resource_group: 'TestRG-VM',
   account_type: 'Standard',
   replication: 'LRS'
@@ -55,7 +55,7 @@ storage.storage_accounts.create(
 
 network.virtual_networks.create(
   name:             'testVnet',
-  location:         'eastus',
+  location:         LOCATION,
   resource_group:   'TestRG-VM',
   network_address_list:  '10.1.0.0/16,10.2.0.0/16'
 )
@@ -70,7 +70,7 @@ network.subnets.create(
 network.network_interfaces.create(
   name: 'NetInt',
   resource_group: 'TestRG-VM',
-  location: 'eastus',
+  location: LOCATION,
   subnet_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-VM/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/mysubnet",
   ip_configuration_name: 'testIpConfiguration',
   private_ip_allocation_method: 'Dynamic'
@@ -82,7 +82,7 @@ network.network_interfaces.create(
 
 compute.servers.create(
   name: 'TestVM',
-  location: 'eastus',
+  location: LOCATION,
   resource_group: 'TestRG-VM',
   vm_size: 'Basic_A0',
   storage_account_name: 'fogstorageac',

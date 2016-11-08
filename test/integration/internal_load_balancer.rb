@@ -28,12 +28,12 @@ network = Fog::Network::AzureRM.new(
 
 rs.resource_groups.create(
   name: 'NRP-RG-Fog',
-  location: 'westus'
+  location: LOCATION
 )
 
 network.virtual_networks.create(
   name: 'NRPVNet',
-  location: 'westus',
+  location: LOCATION,
   resource_group: 'NRP-RG-Fog',
   dns_servers: %w(10.1.0.0 10.2.0.0),
   address_prefixes: %w(10.1.0.0/16 10.2.0.0/16)
@@ -53,7 +53,7 @@ subnet = network.subnets.create(
 network.load_balancers.create(
   name: 'lb',
   resource_group: 'NRP-RG-Fog',
-  location: 'westus',
+  location: LOCATION,
   frontend_ip_configurations:
     [
       {

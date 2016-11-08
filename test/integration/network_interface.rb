@@ -28,12 +28,12 @@ network = Fog::Network::AzureRM.new(
 
 rs.resource_groups.create(
   name: 'TestRG-NI',
-  location: 'eastus'
+  location: LOCATION
 )
 
 network.virtual_networks.create(
   name: 'testVnet',
-  location: 'eastus',
+  location: LOCATION,
   resource_group: 'TestRG-NI',
   network_address_list: '10.1.0.0/16,10.2.0.0/16'
 )
@@ -55,21 +55,21 @@ network.subnets.create(
 network.public_ips.create(
   name: 'mypubip',
   resource_group: 'TestRG-NI',
-  location: 'eastus',
+  location: LOCATION,
   public_ip_allocation_method: 'Dynamic'
 )
 
 network.public_ips.create(
   name: 'mypubip1',
   resource_group: 'TestRG-NI',
-  location: 'eastus',
+  location: LOCATION,
   public_ip_allocation_method: 'Dynamic'
 )
 
 network.network_security_groups.create(
   name: 'test_nsg',
   resource_group: 'TestRG-NI',
-  location: 'eastus',
+  location: LOCATION,
   security_rules:
     [
       {
@@ -93,7 +93,7 @@ network.network_security_groups.create(
 network.network_interfaces.create(
   name: 'NetInt',
   resource_group: 'TestRG-NI',
-  location: 'eastus',
+  location: LOCATION,
   subnet_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-NI/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/mysubnet",
   public_ip_address_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-NI/providers/Microsoft.Network/publicIPAddresses/mypubip",
   ip_configuration_name: 'testIpConfiguration',

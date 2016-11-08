@@ -28,19 +28,19 @@ network = Fog::Network::AzureRM.new(
 
 resource.resource_groups.create(
   name: 'TestRG-GC',
-  location: 'eastus'
+  location: LOCATION
 )
 
 network.virtual_networks.create(
   name: 'testVnet',
-  location: 'eastus',
+  location: LOCATION,
   resource_group: 'TestRG-GC',
   network_address_list: '10.1.0.0/16,10.2.0.0/16'
 )
 
 network.virtual_networks.create(
   name: 'testVnet2',
-  location: 'eastus',
+  location: LOCATION,
   resource_group: 'TestRG-GC',
   network_address_list: '10.3.0.0/16,10.4.0.0/16'
 )
@@ -62,20 +62,20 @@ network.subnets.create(
 network.public_ips.create(
   name: 'mypubip',
   resource_group: 'TestRG-GC',
-  location: 'eastus',
+  location: LOCATION,
   public_ip_allocation_method: 'Dynamic'
 )
 
 network.public_ips.create(
   name: 'mypubip2',
   resource_group: 'TestRG-GC',
-  location: 'eastus',
+  location: LOCATION,
   public_ip_allocation_method: 'Dynamic'
 )
 
 network.local_network_gateways.create(
   name: 'testlocalnetworkgateway',
-  location: 'eastus',
+  location: LOCATION,
   tags: {
     key1: 'value1',
     key2: 'value2'
@@ -90,7 +90,7 @@ network.local_network_gateways.create(
 
 network.virtual_network_gateways.create(
   name: 'testnetworkgateway',
-  location: 'eastus',
+  location: LOCATION,
   tags: {
     key1: 'value1',
     key2: 'value2'
@@ -121,7 +121,7 @@ network.virtual_network_gateways.create(
 
 network.virtual_network_gateways.create(
   name: 'testnetworkgateway2',
-  location: 'eastus',
+  location: LOCATION,
   tags: {
     key1: 'value1',
     key2: 'value2'
@@ -156,7 +156,7 @@ network.virtual_network_gateways.create(
 
 network.virtual_network_gateway_connections.create(
   name: 'testnetworkgateway2-to-testnetworkgateway',
-  location: 'eastus',
+  location: LOCATION,
   resource_group: 'TestRG-GC',
   virtual_network_gateway1: {
     name: 'testnetworkgateway2',

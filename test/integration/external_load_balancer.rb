@@ -28,12 +28,12 @@ network = Fog::Network::AzureRM.new(
 
 rs.resource_groups.create(
   name: 'TestRG-LB',
-  location: 'westus'
+  location: LOCATION
 )
 
 network.virtual_networks.create(
   name: 'testVnet',
-  location: 'westus',
+  location: LOCATION,
   resource_group: 'TestRG-LB',
   dns_servers: %w(10.1.0.0 10.2.0.0),
   address_prefixes: %w(10.1.0.0/16 10.2.0.0/16)
@@ -49,7 +49,7 @@ network.subnets.create(
 pip = network.public_ips.create(
   name: 'mypubip',
   resource_group: 'TestRG-LB',
-  location: 'westus',
+  location: LOCATION,
   public_ip_allocation_method: 'Dynamic'
 )
 
@@ -60,7 +60,7 @@ pip = network.public_ips.create(
 network.load_balancers.create(
   name: 'lb',
   resource_group: 'TestRG-LB',
-  location: 'westus',
+  location: LOCATION,
   frontend_ip_configurations:
   [
     {

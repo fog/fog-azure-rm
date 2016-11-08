@@ -30,3 +30,5 @@ AZURE_GLOBAL_RM_ENDPOINT_URL = 'https://management.azure.com/'.freeze
 AZURE_CHINA_RM_ENDPOINT_URL = 'https://management.chinacloudapi.cn'.freeze
 GERMAN_CLOUD_RM_ENDPOINT_URL = 'https://management.microsoftazure.de'.freeze
 US_GOVERNMENT_RM_ENDPOINT_URL = 'https://management.usgovcloudapi.net'.freeze
+
+LOCATION = 'eastus'.freeze

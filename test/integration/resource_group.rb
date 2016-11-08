@@ -21,7 +21,7 @@ resource = Fog::Resources::AzureRM.new(
 
 resource.resource_groups.create(
   name: 'TestRG-ZN',
-  location: 'eastus'
+  location: LOCATION
 )
 
 ########################################################################################################################

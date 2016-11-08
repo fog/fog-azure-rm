@@ -28,7 +28,7 @@ storage = Fog::Storage::AzureRM.new(
 
 rs.resource_groups.create(
   name: 'TestRG-SA',
-  location: 'eastus'
+  location: LOCATION
 )
 
 ########################################################################################################################
@@ -43,7 +43,7 @@ storage.storage_accounts.check_name_availability('test-storage')
 
 storage.storage_accounts.create(
   name: 'fogstandardsalrs',
-  location: 'eastus',
+  location: LOCATION,
   resource_group: 'TestRG-SA'
 )
 
@@ -53,7 +53,7 @@ storage.storage_accounts.create(
 
 storage.storage_accounts.create(
   name: 'fogstandardsagrs',
-  location: 'eastus',
+  location: LOCATION,
   resource_group: 'TestRG-SA',
   sku_name: 'Standard',
   replication: 'GRS',
@@ -66,7 +66,7 @@ storage.storage_accounts.create(
 
 storage.storage_accounts.create(
   name: 'fogpremiumsa',
-  location: 'eastus',
+  location: LOCATION,
   resource_group: 'TestRG-SA',
   sku_name: 'Premium',
   replication: 'LRS'

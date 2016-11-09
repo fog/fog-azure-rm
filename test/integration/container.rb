@@ -27,14 +27,16 @@ storage = Fog::Storage::AzureRM.new(
 ########################################################################################################################
 
 resource_group = rs.resource_groups.create(
-  name: 'TestRG-VM',
+  name: 'TestRG-Con',
   location: LOCATION
 )
 
+storage_account_name = "fog#{get_time}storageac"
+
 storage_account = storage.storage_accounts.create(
-  name: 'fogstorageac',
+  name: storage_account_name,
   location: LOCATION,
-  resource_group: 'TestRG-VM'
+  resource_group: 'TestRG-Con'
 )
 
 keys = storage_account.get_access_keys
@@ -51,8 +53,7 @@ storage_data = Fog::Storage.new(
 ########################################################################################################################
 
 storage_data.directories.create(
-  name: 'fogcontainer',
-  key: access_key
+  key: 'fogcontainer'
 )
 
 ########################################################################################################################
@@ -66,7 +67,7 @@ container.get_properties
 ######################                      Get container access control List                     ######################
 ########################################################################################################################
 
-container.get_access_control_list
+container.access_control_list
 
 ########################################################################################################################
 ######################                            Delete Container                                ######################

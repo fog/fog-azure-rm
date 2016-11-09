@@ -82,11 +82,6 @@ def random_string(length)
   (0...length).map { ('a'..'z').to_a[rand(26)] }.join
 end
 
-def get_time
-  time = Time.now.to_f.to_s
-  time.split(/\W+/).join
-end
-
 def get_blob_link(storage_account_name)
   "http://#{storage_account_name}.blob.core.windows.net"
 end
@@ -115,4 +110,9 @@ def resource_manager_endpoint_url
   else
     AZURE_GLOBAL_RM_ENDPOINT_URL
   end
+end
+
+def get_time
+  time = Time.now.to_f.to_s
+  time.split(/\W+/).join.slice(0,5)
 end

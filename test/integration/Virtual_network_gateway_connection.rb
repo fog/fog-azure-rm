@@ -32,17 +32,17 @@ resource.resource_groups.create(
 )
 
 network.virtual_networks.create(
-  name: 'testVnet',
-  location: LOCATION,
-  resource_group: 'TestRG-GC',
-  network_address_list: '10.1.0.0/16,10.2.0.0/16'
+  name:             'testVnet',
+  location:         LOCATION,
+  resource_group:   'TestRG-GC',
+  address_prefixes:  %w(10.1.0.0/16 10.2.0.0/16)
 )
 
 network.virtual_networks.create(
-  name: 'testVnet2',
-  location: LOCATION,
-  resource_group: 'TestRG-GC',
-  network_address_list: '10.3.0.0/16,10.4.0.0/16'
+  name:             'testVnet2',
+  location:         LOCATION,
+  resource_group:   'TestRG-GC',
+  address_prefixes:  %w(10.3.0.0/16 10.4.0.0/16)
 )
 
 network.subnets.create(
@@ -56,7 +56,7 @@ network.subnets.create(
   name: 'GatewaySubnet',
   resource_group: 'TestRG-GC',
   virtual_network_name: 'testVnet2',
-  address_prefix: '10.2.0.0/24'
+  address_prefix: '10.3.0.0/24'
 )
 
 network.public_ips.create(

@@ -45,9 +45,7 @@ rs.resource_groups.create(
   location: 'eastus'
 )
 
-time = Time.now.to_f.to_s
-new_time = time.split(/\W+/).join.slice(4)
-storage_account_name = "fog#{new_time}storageac"
+storage_account_name = "fog#{get_time}storageac"
 
 storage.storage_accounts.create(
   name: storage_account_name,

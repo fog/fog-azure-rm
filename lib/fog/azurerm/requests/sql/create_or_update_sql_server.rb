@@ -6,7 +6,7 @@ module Fog
         def create_or_update_sql_server(server_hash)
           msg = "Creating SQL Server: #{server_hash[:name]}."
           Fog::Logger.debug msg
-          resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription_id}/resourceGroups/#{server_hash[:resource_group]}/providers/Microsoft.Sql/servers/#{server_hash[:name]}?api-version=2014-04-01-preview"
+          resource_url = "#{resource_manager_endpoint_url}/subscriptions/#{@subscription_id}/resourceGroups/#{server_hash[:resource_group]}/providers/Microsoft.Sql/servers/#{server_hash[:name]}?api-version=2014-04-01-preview"
           request_parameters = get_server_parameters(server_hash[:location], server_hash[:version], server_hash[:administrator_login], server_hash[:administrator_login_password])
           begin
             token = Fog::Credentials::AzureRM.get_token(@tenant_id, @client_id, @client_secret)

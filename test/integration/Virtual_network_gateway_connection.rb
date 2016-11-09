@@ -32,17 +32,17 @@ resource.resource_groups.create(
 )
 
 network.virtual_networks.create(
-    name:             'testVnet',
-    location:         LOCATION,
-    resource_group:   'TestRG-GC',
-    address_prefixes:  %w(10.1.0.0/16 10.2.0.0/16)
+  name:             'testVnet',
+  location:         LOCATION,
+  resource_group:   'TestRG-GC',
+  address_prefixes:  %w(10.1.0.0/16 10.2.0.0/16)
 )
 
 network.virtual_networks.create(
-    name:             'testVnet2',
-    location:         LOCATION,
-    resource_group:   'TestRG-GC',
-    address_prefixes:  %w(10.3.0.0/16 10.4.0.0/16)
+  name:             'testVnet2',
+  location:         LOCATION,
+  resource_group:   'TestRG-GC',
+  address_prefixes:  %w(10.3.0.0/16 10.4.0.0/16)
 )
 
 network.subnets.create(

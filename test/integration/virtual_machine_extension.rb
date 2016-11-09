@@ -44,9 +44,8 @@ rs.resource_groups.create(
   name: 'TestRG-VME',
   location: LOCATION
 )
-time = Time.now.to_f.to_s
-new_time = time.split(/\W+/).join.slice(0,4)
-storage_account_name = "fog#{new_time}storageac"
+
+storage_account_name = "fog#{get_time}storageac"
 storage.storage_accounts.create(
   name: storage_account_name,
   location: LOCATION,

@@ -32,27 +32,27 @@ module Fog
           sql_database['type'] = database['type'] unless database['type'].nil?
           sql_database['name'] = database['name'] unless database['name'].nil?
           sql_database['location'] = database['location'] unless database['location'].nil?
-          sql_database['elastic_pool_name'] = database['elasticPoolName']  unless database['elasticPoolName'].nil?
+          sql_database['elastic_pool_name'] = database['elasticPoolName'] unless database['elasticPoolName'].nil?
           unless database['id'].nil?
-          sql_database['server_name']= get_server_name_from_id(database['id'])
-          sql_database['resource_group']= get_resource_group_from_id(database['id'])
+            sql_database['server_name'] = get_server_name_from_id(database['id'])
+            sql_database['resource_group'] = get_resource_group_from_id(database['id'])
           end
           unless database['properties'].nil?
-          sql_database['edition']= database['properties']['edition']
-          sql_database['collation']= database['properties']['collation']
-          sql_database['create_mode']= database['properties']['createMode']
-          sql_database['database_id']= database['properties']['databaseId']
-          sql_database['creation_date']= database['properties']['creationDate']
-          sql_database['max_size_bytes']= database['properties']['maxSizeBytes']
-          sql_database['source_database_id']= database['properties']['sourceDatabaseId']
-          sql_database['restore_point_in_time']= database['properties']['restorePointInTime']
-          sql_database['earliest_restore_date']= database['properties']['earliestRestoreDate']
-          sql_database['service_level_objective']= database['properties']['serviceLevelObjective']
-          sql_database['default_secondary_location']= database['properties']['defaultSecondaryLocation']
-          sql_database['source_database_deletion_date']= database['properties']['sourceDatabaseDeletionDate']
-          sql_database['requested_service_objective_id']= database['properties']['requestedServiceObjectiveId']
-          sql_database['requested_service_objective_name']= database['properties']['requestedServiceObjectiveName']
-          sql_database['current_service_level_objective_id']= database['properties']['currentServiceLevelObjectiveId']
+            sql_database['edition'] = database['properties']['edition']
+            sql_database['collation'] = database['properties']['collation']
+            sql_database['create_mode'] = database['properties']['createMode']
+            sql_database['database_id'] = database['properties']['databaseId']
+            sql_database['creation_date'] = database['properties']['creationDate']
+            sql_database['max_size_bytes'] = database['properties']['maxSizeBytes']
+            sql_database['source_database_id'] = database['properties']['sourceDatabaseId']
+            sql_database['restore_point_in_time'] = database['properties']['restorePointInTime']
+            sql_database['earliest_restore_date'] = database['properties']['earliestRestoreDate']
+            sql_database['service_level_objective'] = database['properties']['serviceLevelObjective']
+            sql_database['default_secondary_location'] = database['properties']['defaultSecondaryLocation']
+            sql_database['source_database_deletion_date'] = database['properties']['sourceDatabaseDeletionDate']
+            sql_database['requested_service_objective_id'] = database['properties']['requestedServiceObjectiveId']
+            sql_database['requested_service_objective_name'] = database['properties']['requestedServiceObjectiveName']
+            sql_database['current_service_level_objective_id'] = database['properties']['currentServiceLevelObjectiveId']
           end
           sql_database
         end

@@ -1,9 +1,11 @@
 if ENV['COVERAGE']
   require 'simplecov'
   SimpleCov.start do
-    # add_filter 'test'
+    add_filter 'test'
     command_name 'Minitest'
   end
+  path = ::File.expand_path(::File.dirname('coverage'))
+  puts "Path: #{path}"
 end
 
 require 'minitest/autorun'

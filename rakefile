@@ -1,5 +1,5 @@
 require 'rake/testtask'
-task default: :cc_coverage
+task default: :coverage
 task :test do
   ENV['COVERAGE'] = nil
   ENV['CODECLIMATE_REPO_TOKEN'] = nil
@@ -19,8 +19,6 @@ desc 'Generates a coverage report for minitest-cases using code-climate'
 task :cc_coverage do
   ENV['COVERAGE'] = nil
   ENV['CODECLIMATE_REPO_TOKEN'] = 'b1401494baa004d90402414cb33a7fc6420fd3693e60c677a120ddefd7d84cfd'
-  Dir.glob('test/models/**/test_*.rb').each { |file| require File.expand_path file, __dir__ }
-  Dir.glob('test/requests/**/test_*.rb').each { |file| require File.expand_path file, __dir__ }
   sh 'codeclimate-test-reporter'
 end
 

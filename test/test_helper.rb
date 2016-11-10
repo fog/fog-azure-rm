@@ -4,8 +4,6 @@ if ENV['COVERAGE']
     add_filter 'test'
     command_name 'Minitest'
   end
-  path = ::File.expand_path(::File.dirname('coverage'))
-  puts "Path: #{path}"
 end
 
 if ENV['CODECLIMATE_REPO_TOKEN']

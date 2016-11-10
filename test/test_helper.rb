@@ -6,11 +6,6 @@ if ENV['COVERAGE']
   end
 end
 
-if ENV['CODECLIMATE_REPO_TOKEN']
-  require 'simplecov'
-  SimpleCov.start
-end
-
 require 'minitest/autorun'
 $LOAD_PATH.unshift(File.expand_path '../lib', __dir__)
 require File.expand_path '../lib/fog/azurerm', __dir__

@@ -1,5 +1,5 @@
 #!/bin/bash
-if [ $TRAVIS_PULL_REQUEST != "true"]
+if [ $TRAVIS_PULL_REQUEST != "true" ]
 then
   rake cc_coverage
   rake integration_tests

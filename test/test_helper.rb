@@ -7,15 +7,11 @@ if ENV['COVERAGE']
 end
 
 if ENV['CODECLIMATE_REPO_TOKEN']
-  require "codeclimate-test-reporter"
   require 'simplecov'
-
-  SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[SimpleCov::Formatter::HTMLFormatter,CodeClimate::TestReporter::Formatter]
-
-  dir = File.join("..", "coverage")
-  SimpleCov.coverage_dir(dir)
-  SimpleCov.start
-  exec( "codeclimate-test-reporter --directory /home/travis/build/fog/coverage" )
+  SimpleCov.start do
+    add_filter 'test'
+    command_name 'Minitest'
+  end
 end
 
 require 'minitest/autorun'

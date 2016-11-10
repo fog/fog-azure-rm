@@ -6,7 +6,8 @@ before_install:
   - gem update bundler
 
 script: sh rake-script.sh
-
+after_script:
+- codeclimate-test-reporter --directory /home/travis/build/fog/coverage
 matrix:
   fast_finish: true
   include:

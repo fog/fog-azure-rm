@@ -14,7 +14,8 @@ if ENV['CODECLIMATE_REPO_TOKEN']
 
   dir = File.join("..", "coverage")
   SimpleCov.coverage_dir(dir)
-  SimpleCov.start CodeClimate::TestReporter.configuration.profile
+  SimpleCov.start
+  exec( "sh codeclimate-test-reporter --directory /home/travis/build/fog/coverage" )
 end
 
 require 'minitest/autorun'

@@ -21,7 +21,7 @@ task :cc_coverage do
   ENV['CODECLIMATE_REPO_TOKEN'] = 'b1401494baa004d90402414cb33a7fc6420fd3693e60c677a120ddefd7d84cfd'
   Dir.glob('test/models/**/test_*.rb').each { |file| require File.expand_path file, __dir__ }
   Dir.glob('test/requests/**/test_*.rb').each { |file| require File.expand_path file, __dir__ }
-  path = ::File.expand_path(::File.dirname('coverage'))
+  path = ::File.expand_path(::File.dirname('.resultset.json'))
   puts "Path: #{path}"
 end
 

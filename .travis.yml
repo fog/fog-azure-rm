@@ -7,7 +7,7 @@ before_install:
 
 script: sh rake-script.sh
 after_script:
-- codeclimate-test-reporter --directory /home/travis/build/fog/coverage
+- codeclimate-test-reporter --directory /home/travis/build/fog/fog-azure-rm/coverage
 matrix:
   fast_finish: true
   include:

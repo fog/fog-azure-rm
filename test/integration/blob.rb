@@ -136,7 +136,7 @@ begin
     end
     content = Array.new(512) { [*'0'..'9', *'a'..'z'].sample }.join
     large_file.puts(content)
-    large_file.truncate(33*1024*1024 + 512)
+    large_file.truncate(33 * 1024 * 1024 + 512)
   end
 
   File.open(large_page_blob_file_name) do |file|

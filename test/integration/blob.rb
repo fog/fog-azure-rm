@@ -89,7 +89,7 @@ container.files.create(options)
 large_blob_name = 'large_test_file.dat'
 begin
   large_blob_file_name = '/tmp/large_test_file.dat'
-  File.open(large_blob_file_name, 'wb') do |large_file|
+  File.open(large_blob_file_name, 'w') do |large_file|
     33.times do
       large_file.puts(content)
     end
@@ -127,7 +127,7 @@ container.files.create(options)
 begin
   large_page_blob_file_name = '/tmp/large_test_file.vhd'
   large_page_blob_name = 'large_test_file.vhd'
-  File.open(large_page_blob_file_name, 'wb') do |large_file|
+  File.open(large_page_blob_file_name, 'w') do |large_file|
     content = Array.new(1024 * 1024) { [*'0'..'9', *'a'..'z'].sample }.join
     33.times do
       large_file.puts(content)

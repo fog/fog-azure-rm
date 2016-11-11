@@ -31,8 +31,10 @@ resource_group = rs.resource_groups.create(
   location: LOCATION
 )
 
+storage_account_name = "fog#{get_time}storageac"
+
 storage_account = storage.storage_accounts.create(
-  name: 'storageaccounttestblob',
+  name: storage_account_name,
   location: LOCATION,
   resource_group: 'TestRG-BLOB'
 )
@@ -134,6 +136,7 @@ begin
     end
     content = Array.new(512) { [*'0'..'9', *'a'..'z'].sample }.join
     large_file.puts(content)
+    large_file.truncate(33*1024*1024 + 512)
   end
 
   File.open(large_page_blob_file_name) do |file|

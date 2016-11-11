@@ -175,7 +175,7 @@ puts directory.key
 List all the storage containers in the current storage accounts.
 
 ```ruby
-azure_storage_service.directories.all.each do |directory|
+azure_storage_service.directories.each do |directory|
   puts directory.key
 end
 ```

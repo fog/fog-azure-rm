@@ -191,7 +191,19 @@ puts directory.acl
 
 ## Set the access control level of the storage container
 
-Set the permissions for the specified container. The permissions indicate whether container data may be accessed publicly.
+Set the permissions for the specified container. The permissions indicate whether container data may be accessed publicly. The container permissions provide the following options for managing container access:
+
+  - container
+
+    Full public read access. Container and blob data can be read via anonymous request. Clients can enumerate blobs within the container via anonymous request, but cannot enumerate containers within the storage account.
+
+  - blob
+
+    Public read access for blobs only. Blob data within this container can be read via anonymous request, but container data is not available. Clients cannot enumerate blobs within the container via anonymous request.
+
+  - nil
+
+    No public read access. Container and blob data can be read by the account owner only.
 
 ```ruby
 directory = azure_storage_service.directories.get('<Container Name>', max_results: 1)

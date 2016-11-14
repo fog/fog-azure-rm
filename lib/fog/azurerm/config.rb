@@ -32,3 +32,11 @@ GERMAN_CLOUD_RM_ENDPOINT_URL = 'https://management.microsoftazure.de'.freeze
 US_GOVERNMENT_RM_ENDPOINT_URL = 'https://management.usgovcloudapi.net'.freeze
 
 LOCATION = 'eastus'.freeze
+
+# State of the copy operation
+COPY_STATUS = {
+  # The copy completed successfully.
+  SUCCESS: 'success',
+  # The copy is in progress
+  PENDING: 'pending'
+}.freeze

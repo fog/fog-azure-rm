@@ -94,20 +94,7 @@ module Fog
           options = options.reject { |key, value| key == 'content_md5' || value.nil? || value.to_s.empty? }
 
           if update_body
-            if options[:blob_type].nil? || options[:blob_type] == 'BlockBlob'
-              if Fog::Storage.get_body_size(body) <= SINGLE_BLOB_PUT_THRESHOLD
-                blob = service.create_block_blob(directory.key, key, body, options)
-              else
-                multipart_save_block_blob(options)
-                blob = service.get_blob_properties(directory.key, key)
-              end
-            else
-              blob_size = Fog::Storage.get_body_size(body)
-              raise "The page blob size must be aligned to a 512-byte boundary. But the file size is #{blob_size}." if (blob_size % 512).nonzero?
-
-              save_page_blob(blob_size, options)
-              blob = service.get_blob_properties(directory.key, key)
-            end
+            blob = save_blob(options)
 
             data = parse_storage_object(blob)
             merge_attributes(data)
@@ -263,7 +250,7 @@ module Fog
         # Wait the copy operation to finish
         def wait_copy_operation_to_finish(target_directory_key, target_file_key, copy_id, copy_status, timeout)
           start_time = Time.new
-          while copy_status == 'pending'
+          while copy_status == COPY_STATUS[:PENDING]
             blob = service.get_blob_properties(target_directory_key, target_file_key)
             blob_props = blob.properties
             if !copy_id.nil? && blob_props[:copy_id] != copy_id
@@ -272,7 +259,7 @@ module Fog
 
             copy_status_description = blob_props[:copy_status_description]
             copy_status = blob_props[:copy_status]
-            break if copy_status != 'pending'
+            break if copy_status != COPY_STATUS[:PENDING]
 
             elapse_time = Time.new - start_time
             raise TimeoutError.new("The copy operation cannot be finished in #{timeout} seconds") if !timeout.nil? && elapse_time >= timeout
@@ -284,7 +271,7 @@ module Fog
             sleep(interval)
           end
 
-          if copy_status != 'success'
+          if copy_status != COPY_STATUS[:SUCCESS]
             raise "Failed to copy to #{target_directory_key}/#{target_file_key}: \n\tcopy status: #{copy_status}\n\tcopy description: #{copy_status_description}"
           end
         rescue => e
@@ -295,6 +282,24 @@ module Fog
             nil
           end
           raise e
+        end
+
+        # Upload blob
+        def save_blob(options)
+          if options[:blob_type].nil? || options[:blob_type] == 'BlockBlob'
+            if Fog::Storage.get_body_size(body) <= SINGLE_BLOB_PUT_THRESHOLD
+              service.create_block_blob(directory.key, key, body, options)
+            else
+              multipart_save_block_blob(options)
+              service.get_blob_properties(directory.key, key)
+            end
+          else
+            blob_size = Fog::Storage.get_body_size(body)
+            raise "The page blob size must be aligned to a 512-byte boundary. But the file size is #{blob_size}." if (blob_size % 512).nonzero?
+
+            save_page_blob(blob_size, options)
+            service.get_blob_properties(directory.key, key)
+          end
         end
 
         # Upload a large block blob
@@ -354,7 +359,8 @@ module Fog
             if body.respond_to?(:rewind)
               begin
                 body.rewind
-              rescue
+              rescue => e
+                Fog::Logger.debug "body responds to :rewind but throws an exception when calling :rewind: #{e.inspect}"
                 nil
               end
             end

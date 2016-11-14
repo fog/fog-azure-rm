@@ -19,8 +19,20 @@ module Fog
         # Set the the permission
         #
         # @param new_acl [String] permission. Options: container, blob or nil. unknown is for internal usage.
+        #                                     container: Full public read access. Container and blob data can be read via anonymous request.
+        #                                                Clients can enumerate blobs within the container via anonymous request, but cannot
+        #                                                enumerate containers within the storage account.
+        #                                     blob: Public read access for blobs only. Blob data within this container can be read via
+        #                                           anonymous request, but container data is not available. Clients cannot enumerate blobs
+        #                                           within the container via anonymous request.
+        #                                     nil: No public read access. Container and blob data can be read by the account owner only.
+        #                                     unknown: Internal usage in fog-azure-rm.
+        #
         # @return [String] Permission.
+        #
         # @exception ArgumentError Raised when new_acl is not 'container', 'blob', nil or 'unknown'.
+        #
+        # Reference: https://msdn.microsoft.com/en-us/library/azure/dd179391.aspx
         #
         def acl=(new_acl)
           raise ArgumentError.new("acl must be one of [#{VALID_ACLS.join(', ')}nil]") unless VALID_ACLS.include?(new_acl)

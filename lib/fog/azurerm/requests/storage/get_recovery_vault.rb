@@ -19,7 +19,7 @@ module Fog
             raise_azure_exception(e, msg)
           end
           Fog::Logger.debug "Recovery Vault #{name} from Resource Group #{resource_group} retrieved successfully"
-          recovery_vault = JSON.parse(recovery_vault_response)['value']
+          recovery_vault = ::JSON.parse(recovery_vault_response)['value']
           recovery_vault.select { |vault| vault['name'].eql? name }[0]
         end
       end
@@ -41,7 +41,7 @@ module Fog
               }
             }]
           }'
-          JSON.parse(body)['value'][0]
+          ::JSON.parse(body)['value'][0]
         end
       end
     end

@@ -20,7 +20,7 @@ module Fog
             raise_azure_exception(e, msg)
           end
           Fog::Logger.debug "Successfully retrieved backup protection policy from Resource Group #{resource_group}"
-          JSON.parse(response)['value']
+          ::JSON.parse(response)['value']
         end
       end
 
@@ -57,7 +57,7 @@ module Fog
             }
           }]
         }'
-        JSON.parse(body)['value']
+        ::JSON.parse(body)['value']
       end
     end
   end

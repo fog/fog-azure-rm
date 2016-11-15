@@ -20,7 +20,7 @@ module Fog
             raise_azure_exception(e, msg)
           end
           Fog::Logger.debug "Successfully retrieved backup jobs for Recovery Vault #{rv_name}"
-          JSON.parse(response)['value']
+          Fog::JSON.decode(response)['value']
         end
       end
 
@@ -48,7 +48,7 @@ module Fog
               }
             }]
           }'
-          JSON.parse(body)['value']
+          Fog::JSON.decode(body)['value']
         end
       end
     end

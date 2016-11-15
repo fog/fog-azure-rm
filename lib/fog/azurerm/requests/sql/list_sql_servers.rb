@@ -16,10 +16,10 @@ module Fog
               authorization: token
             )
           rescue RestClient::Exception => e
-            raise JSON.parse(e.response)['message']
+            raise_azure_exception(e, msg)
           end
           Fog::Logger.debug "Sql Servers listed successfully in Resource Group: #{resource_group}"
-          JSON.parse(response)['value']
+          Fog::JSON.decode(response)['value']
         end
       end
 

@@ -27,7 +27,7 @@ module Fog
             raise_azure_exception(e, msg)
           end
           Fog::Logger.debug "Recovery Vault #{name} created/updated successfully"
-          JSON.parse(response)
+          Fog::JSON.decode(response)
         end
       end
 
@@ -46,7 +46,7 @@ module Fog
               "name": "standard"
             }
           }'
-          JSON.parse(recovery_vault)
+          Fog::JSON.decode(recovery_vault)
         end
       end
     end

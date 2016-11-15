@@ -5,6 +5,7 @@ require 'fog/azurerm/config'
 require 'fog/azurerm/utilities/general'
 require 'fog/azurerm/version'
 require 'fog/core'
+require 'fog/json'
 
 module Fog
   # Autoload Module for Credentials

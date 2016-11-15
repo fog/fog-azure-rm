@@ -112,9 +112,9 @@ def resource_manager_endpoint_url
   end
 end
 
-def get_time
+def current_time
   time = Time.now.to_f.to_s
-  time.split(/\W+/).join.slice(0,5)
+  time.split(/\W+/).join
 end
 
 # Parse storage blob/container to a hash

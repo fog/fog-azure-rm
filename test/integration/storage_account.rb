@@ -26,73 +26,85 @@ storage = Fog::Storage::AzureRM.new(
 ######################                                 Prerequisites                              ######################
 ########################################################################################################################
 
-rs.resource_groups.create(
-  name: 'TestRG-SA',
-  location: LOCATION
-)
+begin
+  resource_group = rs.resource_groups.create(
+    name: 'TestRG-SA',
+    location: LOCATION
+  )
 
-########################################################################################################################
-######################                    Check Storage Account name Availability                 ######################
-########################################################################################################################
+  ########################################################################################################################
+  ######################                    Check Storage Account name Availability                 ######################
+  ########################################################################################################################
 
-storage.storage_accounts.check_name_availability('test-storage')
+  storage_account_avail = storage.storage_accounts.check_name_availability('test-storage')
+  puts 'Storage account available' if storage_account_avail
+  puts 'Storage account unavailale' unless storage_account_avail
 
-########################################################################################################################
-###############  Create A Standard Storage Account of Replication: LRS (Locally-redundant storage)       ###############
-########################################################################################################################
+  ########################################################################################################################
+  ###############  Create A Standard Storage Account of Replication: LRS (Locally-redundant storage)       ###############
+  ########################################################################################################################
 
-storage.storage_accounts.create(
-  name: 'fogstandardsalrs',
-  location: LOCATION,
-  resource_group: 'TestRG-SA'
-)
+  storage_account = storage.storage_accounts.create(
+    name: 'fogstandardsalrs',
+    location: LOCATION,
+    resource_group: 'TestRG-SA'
+  )
+  puts "Created storage account for standard lrs replication: #{storage_account.name}"
 
-########################################################################################################################
-###############      Create A Standard Storage Account of Replication: GRS (Geo-redundant storage)     #################
-########################################################################################################################
+  ########################################################################################################################
+  ###############      Create A Standard Storage Account of Replication: GRS (Geo-redundant storage)     #################
+  ########################################################################################################################
 
-storage.storage_accounts.create(
-  name: 'fogstandardsagrs',
-  location: LOCATION,
-  resource_group: 'TestRG-SA',
-  sku_name: 'Standard',
-  replication: 'GRS',
-  encryption: true
-)
+  storage_account = storage.storage_accounts.create(
+    name: 'fogstandardsagrs',
+    location: LOCATION,
+    resource_group: 'TestRG-SA',
+    sku_name: 'Standard',
+    replication: 'GRS',
+    encryption: true
+  )
+  puts "Created storage account for standard grs replication: #{storage_account.name}"
 
-########################################################################################################################
-###########   Create A Premium(SSD) Storage Account of its only Replication: LRS (Locally-redundant storage)  ##########
-########################################################################################################################
+  ########################################################################################################################
+  ###########   Create A Premium(SSD) Storage Account of its only Replication: LRS (Locally-redundant storage)  ##########
+  ########################################################################################################################
 
-storage.storage_accounts.create(
-  name: 'fogpremiumsa',
-  location: LOCATION,
-  resource_group: 'TestRG-SA',
-  sku_name: 'Premium',
-  replication: 'LRS'
-)
+  storage_account = storage.storage_accounts.create(
+    name: 'fogpremiumsa',
+    location: LOCATION,
+    resource_group: 'TestRG-SA',
+    sku_name: 'Premium',
+    replication: 'LRS'
+  )
+  puts "Created storage account for premium lrs replication: #{storage_account.name}"
 
-########################################################################################################################
-######################                         Get and Update Storage Account                     ######################
-########################################################################################################################
+  ########################################################################################################################
+  ######################                         Get and Update Storage Account                     ######################
+  ########################################################################################################################
 
-premium_storage_account = storage.storage_accounts.get('TestRG-SA', 'fogpremiumsa')
-premium_storage_account.update(encryption: true)
+  premium_storage_account = storage.storage_accounts.get('TestRG-SA', 'fogpremiumsa')
+  puts "Get storage account: #{premium_storage_account.name}"
+  premium_storage_account.update(encryption: true)
+  puts 'Updated encrytion of storage account'
 
-########################################################################################################################
-######################                         Get and Delete Storage Account                     ######################
-########################################################################################################################
+  ########################################################################################################################
+  ######################                         Get and Delete Storage Account                     ######################
+  ########################################################################################################################
 
-standard_storage_account = storage.storage_accounts.get('TestRG-SA', 'fogstandardsalrs')
-standard_storage_account.destroy
-standard_storage_account = storage.storage_accounts.get('TestRG-SA', 'fogstandardsagrs')
-standard_storage_account.destroy
-premium_storage_account = storage.storage_accounts.get('TestRG-SA', 'fogpremiumsa')
-premium_storage_account.destroy
+  standard_storage_account = storage.storage_accounts.get('TestRG-SA', 'fogstandardsalrs')
+  puts "Deleted storage account for standard lrs replication: #{standard_storage_account.destroy}"
+  standard_storage_account = storage.storage_accounts.get('TestRG-SA', 'fogstandardsagrs')
+  puts "Deleted storage account for standard grs replication: #{standard_storage_account.destroy}"
+  premium_storage_account = storage.storage_accounts.get('TestRG-SA', 'fogpremiumsa')
+  puts "Deleted storage account for premium lrs replication: #{premium_storage_account.destroy}"
 
-########################################################################################################################
-######################                                   CleanUp                                  ######################
-########################################################################################################################
+  ########################################################################################################################
+  ######################                                   CleanUp                                  ######################
+  ########################################################################################################################
 
-resource_group = rs.resource_groups.get('TestRG-SA')
-resource_group.destroy
+  resource_group = rs.resource_groups.get('TestRG-SA')
+  resource_group.destroy
+rescue
+  puts 'Integration Test for storage account is failing'
+  resource_group.destroy unless resource_group.nil?
+end

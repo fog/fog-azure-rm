@@ -28,193 +28,218 @@ network = Fog::Network::AzureRM.new(
   client_secret: azure_credentials['client_secret'],
   subscription_id: azure_credentials['subscription_id']
 )
+########################################################################################################################
+######################                               Resource names                                #####################
+########################################################################################################################
+
+time = current_time
+resource_group_name = "AG-RG-#{time}"
+virtual_network_name = "Vnet#{time}"
+subnet_name = "Sub#{time}"
+public_ip_name = "Pip#{time}"
+app_gateway_name = "AG#{time}"
 
 ########################################################################################################################
 ######################                                 Prerequisites                               #####################
 ########################################################################################################################
 
-resource.resource_groups.create(
-  name: 'TestRG-AG',
-  location: LOCATION
-)
+begin
+  resource_group = resource.resource_groups.create(
+    name: resource_group_name,
+    location: LOCATION
+  )
 
-network.virtual_networks.create(
-  name: 'testVnet',
-  location: LOCATION,
-  resource_group: 'TestRG-AG',
-  dns_servers: %w(10.1.0.0 10.2.0.0),
-  address_prefixes: %w(10.1.0.0/16 10.2.0.0/16)
-)
+  network.virtual_networks.create(
+    name: virtual_network_name,
+    location: LOCATION,
+    resource_group: resource_group_name,
+    dns_servers: %w(10.1.0.0 10.2.0.0),
+    address_prefixes: %w(10.1.0.0/16 10.2.0.0/16)
+  )
 
-network.subnets.create(
-  name: 'mysubnet',
-  resource_group: 'TestRG-AG',
-  virtual_network_name: 'testVnet',
-  address_prefix: '10.2.0.0/24'
-)
+  network.subnets.create(
+    name: subnet_name,
+    resource_group: resource_group_name,
+    virtual_network_name: virtual_network_name,
+    address_prefix: '10.2.0.0/24'
+  )
 
-network.public_ips.create(
-  name: 'mypubip',
-  resource_group: 'TestRG-AG',
-  location: LOCATION,
-  public_ip_allocation_method: 'Dynamic'
-)
+  network.public_ips.create(
+    name: public_ip_name,
+    resource_group: resource_group_name,
+    location: LOCATION,
+    public_ip_allocation_method: 'Dynamic'
+  )
 
-#######################################################################################################################
-#####################                          Create Application Gateway                        ######################
-#######################################################################################################################
+  #######################################################################################################################
+  #####################                          Create Application Gateway                        ######################
+  #######################################################################################################################
 
-application_gateway.gateways.create(
-  name: 'gateway',
-  location: LOCATION,
-  resource_group: 'TestRG-AG',
-  sku_name: 'Standard_Medium',
-  sku_tier: 'Standard',
-  sku_capacity: '2',
-  gateway_ip_configurations: [
-    {
-      name: 'gatewayIpConfigName',
-      subnet_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourcegroups/TestRG-AG/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/mysubnet"
-    }
-  ],
-  frontend_ip_configurations: [
-    {
-      name: 'frontendIpConfig',
-      private_ip_allocation_method: 'Dynamic',
-      public_ip_address_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourcegroups/TestRG-AG/providers/Microsoft.Network/publicIPAddresses/mypubip",
-      private_ip_address: '10.0.1.5'
-    }
-  ],
-  frontend_ports: [
-    {
-      name: 'frontendPort',
-      port: 443
-    }
-  ],
-  backend_address_pools: [
-    {
-      name: 'backendAddressPool',
-      ip_addresses: [
-        {
-          ipAddress: '10.0.1.6'
+  app_gateway = application_gateway.gateways.create(
+    name: app_gateway_name,
+    location: LOCATION,
+    resource_group: resource_group_name,
+    sku_name: 'Standard_Medium',
+    sku_tier: 'Standard',
+    sku_capacity: '2',
+    gateway_ip_configurations: [
+      {
+        name: 'gatewayIpConfigName',
+        subnet_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourcegroups/#{resource_group_name}/providers/Microsoft.Network/virtualNetworks/#{virtual_network_name}/subnets/#{subnet_name}"
+      }
+    ],
+    frontend_ip_configurations: [
+      {
+        name: 'frontendIpConfig',
+        private_ip_allocation_method: 'Dynamic',
+        public_ip_address_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourcegroups/#{resource_group_name}/providers/Microsoft.Network/publicIPAddresses/#{public_ip_name}",
+        private_ip_address: '10.0.1.5'
+      }
+    ],
+    frontend_ports: [
+      {
+        name: 'frontendPort',
+        port: 443
+      }
+    ],
+    backend_address_pools: [
+      {
+        name: 'backendAddressPool',
+        ip_addresses: [
+          {
+            ipAddress: '10.0.1.6'
 
-        }
-      ]
-    }
-  ],
-  backend_http_settings_list: [
-    {
-      name: 'gateway_settings',
-      port: 80,
-      protocol: 'Http',
-      cookie_based_affinity: 'Enabled',
-      request_timeout: '30'
-    }
-  ],
-  http_listeners: [
-    {
-      name: 'gateway_listener',
-      frontend_ip_config_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-AG/providers/Microsoft.Network/applicationGateways/gateway/frontendIPConfigurations/frontendIpConfig",
-      frontend_port_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-AG/providers/Microsoft.Network/applicationGateways/gateway/frontendPorts/frontendPort",
-      protocol: 'Http',
-      host_name: '',
-      require_server_name_indication: 'false'
-    }
-  ],
-  request_routing_rules: [
-    {
-      name: 'gateway_request_route_rule',
-      type: 'Basic',
-      http_listener_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-AG/providers/Microsoft.Network/applicationGateways/gateway/httpListeners/gateway_listener",
-      backend_address_pool_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-AG/providers/Microsoft.Network/applicationGateways/gateway/backendAddressPools/backendAddressPool",
-      backend_http_settings_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-AG/providers/Microsoft.Network/applicationGateways/gateway/backendHttpSettingsCollection/gateway_settings",
-      url_path_map: ''
-    }
-  ]
-)
-########################################################################################################################
-######################                      Get Application Gateway                   ######################
-########################################################################################################################
+          }
+        ]
+      }
+    ],
+    backend_http_settings_list: [
+      {
+        name: 'gateway_settings',
+        port: 80,
+        protocol: 'Http',
+        cookie_based_affinity: 'Enabled',
+        request_timeout: '30'
+      }
+    ],
+    http_listeners: [
+      {
+        name: 'gateway_listener',
+        frontend_ip_config_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/#{resource_group_name}/providers/Microsoft.Network/applicationGateways/#{app_gateway_name}/frontendIPConfigurations/frontendIpConfig",
+        frontend_port_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/#{resource_group_name}/providers/Microsoft.Network/applicationGateways/#{app_gateway_name}/frontendPorts/frontendPort",
+        protocol: 'Http',
+        host_name: '',
+        require_server_name_indication: 'false'
+      }
+    ],
+    request_routing_rules: [
+      {
+        name: 'gateway_request_route_rule',
+        type: 'Basic',
+        http_listener_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/#{resource_group_name}/providers/Microsoft.Network/applicationGateways/#{app_gateway_name}/httpListeners/gateway_listener",
+        backend_address_pool_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/#{resource_group_name}/providers/Microsoft.Network/applicationGateways/#{app_gateway_name}/backendAddressPools/backendAddressPool",
+        backend_http_settings_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/#{resource_group_name}/providers/Microsoft.Network/applicationGateways/#{app_gateway_name}/backendHttpSettingsCollection/gateway_settings",
+        url_path_map: ''
+      }
+    ]
+  )
+  puts "Created application gateway #{app_gateway.name}"
+  ########################################################################################################################
+  ######################                      Get Application Gateway                   ######################
+  ########################################################################################################################
 
-app_gateway = application_gateway.gateways.get('TestRG-AG', 'gateway')
+  app_gateway = application_gateway.gateways.get(resource_group_name, app_gateway_name)
+  puts "Get application gateway: #{app_gateway.name}"
 
-########################################################################################################################
-######################                Update sku attributes (Name and Capacity)                #########################
-########################################################################################################################
+  ########################################################################################################################
+  ######################                Update sku attributes (Name and Capacity)                #########################
+  ########################################################################################################################
 
-app_gateway.update_sku('Standard_Small', '1')
+  app_gateway.update_sku('Standard_Small', '1')
+  puts 'Updated application gateway sku'
 
-########################################################################################################################
-######################                       Stop Application Gateway                          #########################
-########################################################################################################################
+  ########################################################################################################################
+  ######################                       Stop Application Gateway                          #########################
+  ########################################################################################################################
 
-app_gateway.stop
+  app_gateway.stop
+  puts 'Application Gateway stopped!'
 
-########################################################################################################################
-######################              Update gateway ip configuration (Subnet id)                #########################
-########################################################################################################################
+  ########################################################################################################################
+  ######################              Update gateway ip configuration (Subnet id)                #########################
+  ########################################################################################################################
 
-subnet_id = network.subnets.create(
-  name: 'mysubnet1',
-  resource_group: 'TestRG-AG',
-  virtual_network_name: 'testVnet',
-  address_prefix: '10.1.0.0/24'
-).id
+  subnet_id = network.subnets.create(
+    name: "#{subnet_name}1",
+    resource_group: resource_group_name,
+    virtual_network_name: virtual_network_name,
+    address_prefix: '10.1.0.0/24'
+  ).id
 
-app_gateway.update_gateway_ip_configuration(subnet_id)
+  app_gateway.update_gateway_ip_configuration(subnet_id)
+  puts 'Updated Application Gateway ip configuration'
 
-########################################################################################################################
-######################                       Start Application Gateway                         #########################
-########################################################################################################################
+  ########################################################################################################################
+  ######################                       Start Application Gateway                         #########################
+  ########################################################################################################################
 
-app_gateway.start
+  app_gateway.start
+  puts 'Application Gateway started!'
 
-########################################################################################################################
-######################                          Add/Remove Frontend ports                      #########################
-########################################################################################################################
+  ########################################################################################################################
+  ######################                          Add/Remove Frontend ports                      #########################
+  ########################################################################################################################
 
-app_gateway.add_frontend_port(name: 'frontendPort1', port: 80)
+  app_gateway.add_frontend_port(name: 'frontendPort1', port: 80)
+  puts 'Added Frontend port in application gateway'
 
-app_gateway.remove_frontend_port(name: 'frontendPort1', port: 80)
+  app_gateway.remove_frontend_port(name: 'frontendPort1', port: 80)
+  puts 'Removed Frontend port in application gateway'
 
-#######################################################################################################################
-#####################                             Add/Remove Probes                           #########################
-#######################################################################################################################
+  #######################################################################################################################
+  #####################                             Add/Remove Probes                           #########################
+  #######################################################################################################################
 
-app_gateway.add_probe(
-  name: 'Probe1',
-  protocol: 'http',
-  host: 'localhost',
-  path: '/fog-test',
-  interval: 60,
-  timeout: 300,
-  unhealthy_threshold: 5
-)
-app_gateway.remove_probe(
-  name: 'Probe1',
-  protocol: 'http',
-  host: 'localhost',
-  path: '/fog-test',
-  interval: 60,
-  timeout: 300,
-  unhealthy_threshold: 5
-)
+  app_gateway.add_probe(
+    name: 'Probe1',
+    protocol: 'http',
+    host: 'localhost',
+    path: '/fog-test',
+    interval: 60,
+    timeout: 300,
+    unhealthy_threshold: 5
+  )
+  puts 'Added probe in application gateway'
+  app_gateway.remove_probe(
+    name: 'Probe1',
+    protocol: 'http',
+    host: 'localhost',
+    path: '/fog-test',
+    interval: 60,
+    timeout: 300,
+    unhealthy_threshold: 5
+  )
+  puts 'Removed probe in application gateway'
 
-########################################################################################################################
-######################                            Destroy Application Gateway                     ######################
-########################################################################################################################
+  ########################################################################################################################
+  ######################                            Destroy Application Gateway                     ######################
+  ########################################################################################################################
 
-app_gateway.destroy
+  puts "Deleted application gateway: #{app_gateway.destroy}"
 
-########################################################################################################################
-######################                                   CleanUp                                  ######################
-########################################################################################################################
+  ########################################################################################################################
+  ######################                                   CleanUp                                  ######################
+  ########################################################################################################################
 
-pubip = network.public_ips.get('TestRG-AG', 'mypubip')
-pubip.destroy
+  pubip = network.public_ips.get(resource_group_name, public_ip_name)
+  pubip.destroy
 
-vnet = network.virtual_networks.get('TestRG-AG', 'testVnet')
-vnet.destroy
+  vnet = network.virtual_networks.get(resource_group_name, virtual_network_name)
+  vnet.destroy
 
-resource_group = resource.resource_groups.get('TestRG-AG')
-resource_group.destroy
+  resource_group = resource.resource_groups.get(resource_group_name)
+  resource_group.destroy
+rescue
+  puts 'Integration Test for application gateway is failing'
+  resource_group.destroy unless resource_group.nil?
+end

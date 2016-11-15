@@ -26,83 +26,90 @@ network = Fog::Network::AzureRM.new(
 ######################                                 Prerequisites                              ######################
 ########################################################################################################################
 
-resource.resource_groups.create(
-  name: 'TestRG-VNG',
-  location: LOCATION
-)
+begin
+  resource_group = resource.resource_groups.create(
+    name: 'TestRG-VNG',
+    location: LOCATION
+  )
 
-network.virtual_networks.create(
-  name: 'testVnet',
-  location: LOCATION,
-  resource_group: 'TestRG-VNG',
-  network_address_list: '10.1.0.0/16,10.2.0.0/16'
-)
+  network.virtual_networks.create(
+    name: 'testVnet',
+    location: LOCATION,
+    resource_group: 'TestRG-VNG',
+    network_address_list: '10.1.0.0/16,10.2.0.0/16'
+  )
 
-network.subnets.create(
-  name: 'GatewaySubnet',
-  resource_group: 'TestRG-VNG',
-  virtual_network_name: 'testVnet',
-  address_prefix: '10.2.0.0/24'
-)
+  network.subnets.create(
+    name: 'GatewaySubnet',
+    resource_group: 'TestRG-VNG',
+    virtual_network_name: 'testVnet',
+    address_prefix: '10.2.0.0/24'
+  )
 
-network.public_ips.create(
-  name: 'mypubip',
-  resource_group: 'TestRG-VNG',
-  location: LOCATION,
-  public_ip_allocation_method: 'Dynamic'
-)
+  network.public_ips.create(
+    name: 'mypubip',
+    resource_group: 'TestRG-VNG',
+    location: LOCATION,
+    public_ip_allocation_method: 'Dynamic'
+  )
 
-########################################################################################################################
-######################                           Create Virtual Network Gateway                   ######################
-########################################################################################################################
+  ########################################################################################################################
+  ######################                           Create Virtual Network Gateway                   ######################
+  ########################################################################################################################
 
-network.virtual_network_gateways.create(
-  name: 'testnetworkgateway',
-  location: LOCATION,
-  tags: {
-    key1: 'value1',
-    key2: 'value2'
-  },
-  ip_configurations: [
-    {
-      name: 'default',
-      private_ipallocation_method: 'Dynamic',
-      public_ipaddress_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-VNG/providers/Microsoft.Network/publicIPAddresses/mypubip",
-      subnet_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-VNG/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/GatewaySubnet",
-      private_ipaddress: nil
-    }
-  ],
-  resource_group: 'TestRG-VNG',
-  sku_name: 'Basic',
-  sku_tier: 'Basic',
-  sku_capacity: 2,
-  gateway_type: 'ExpressRoute',
-  enable_bgp: false,
-  gateway_size: nil,
-  vpn_type: 'RouteBased',
-  vpn_client_address_pool: nil
-)
+  virtual_network_gateway = network.virtual_network_gateways.create(
+    name: 'testnetworkgateway',
+    location: LOCATION,
+    tags: {
+      key1: 'value1',
+      key2: 'value2'
+    },
+    ip_configurations: [
+      {
+        name: 'default',
+        private_ipallocation_method: 'Dynamic',
+        public_ipaddress_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-VNG/providers/Microsoft.Network/publicIPAddresses/mypubip",
+        subnet_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-VNG/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/GatewaySubnet",
+        private_ipaddress: nil
+      }
+    ],
+    resource_group: 'TestRG-VNG',
+    sku_name: 'Basic',
+    sku_tier: 'Basic',
+    sku_capacity: 2,
+    gateway_type: 'ExpressRoute',
+    enable_bgp: false,
+    gateway_size: nil,
+    vpn_type: 'RouteBased',
+    vpn_client_address_pool: nil
+  )
+  puts "Created virtual network gateway: #{virtual_network_gateway.name}"
 
-########################################################################################################################
-######################                      List Virtual Network Gateways                         ######################
-########################################################################################################################
+  ########################################################################################################################
+  ######################                      List Virtual Network Gateways                         ######################
+  ########################################################################################################################
 
-network_gateways = network.virtual_network_gateways(resource_group: 'TestRG-VNG')
-network_gateways.each do |gateway|
-  Fog::Logger.debug gateway.name.to_s
+  network_gateways = network.virtual_network_gateways(resource_group: 'TestRG-VNG')
+  puts 'List virtual network gateways:'
+  network_gateways.each do |gateway|
+    puts gateway.name
+  end
+
+  ########################################################################################################################
+  ######################                  Get Virtual Network Gateway and CleanUp                   ######################
+  ########################################################################################################################
+
+  network_gateway = network.virtual_network_gateways.get('TestRG-VNG', 'testnetworkgateway')
+  puts "Get virtual network gateway: #{network_gateway.name}"
+
+  puts "Deleted virtual network gateway: #{network_gateway.destroy}"
+
+  pubip = network.public_ips.get('TestRG-VNG', 'mypubip')
+  pubip.destroy
+
+  rg = resource.resource_groups.get('TestRG-VNG')
+  rg.destroy
+rescue
+  puts 'Integration Test for virtual network gateway is failing'
+  resource_group.destroy unless resource_group.nil?
 end
-
-########################################################################################################################
-######################                  Get Virtual Network Gateway and CleanUp                   ######################
-########################################################################################################################
-
-network_gateway = network.virtual_network_gateways.get('TestRG-VNG', 'testnetworkgateway')
-Fog::Logger.debug network_gateway.name.to_s
-
-network_gateway.destroy
-
-pubip = network.public_ips.get('TestRG-VNG', 'mypubip')
-pubip.destroy
-
-rg = resource.resource_groups.get('TestRG-VNG')
-rg.destroy

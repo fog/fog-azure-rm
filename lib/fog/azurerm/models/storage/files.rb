@@ -3,13 +3,13 @@ module Fog
     class AzureRM
       # This class is giving implementation of listing blobs.
       class Files < Fog::Collection
-        model File
+        model Fog::Storage::AzureRM::File
         attribute :directory
 
         def all(options = { metadata: true })
           files = []
           service.list_blobs(directory, options).each do |blob|
-            hash = File.parse blob
+            hash = Fog::Storage::AzureRM::File.parse blob
             hash['directory'] = directory
             files << hash
           end
@@ -17,7 +17,7 @@ module Fog
         end
 
         def get(directory, name)
-          file = File.new(service: service)
+          file = Fog::Storage::AzureRM::File.new(service: service)
           file.directory = directory
           file.key = name
           file

@@ -3,7 +3,7 @@ module Fog
     class AzureRM
       # collection class for Network Security Rule
       class NetworkSecurityRules < Fog::Collection
-        model NetworkSecurityRule
+        model Fog::Network::AzureRM::NetworkSecurityRule
         attribute :resource_group
         attribute :network_security_group_name
 
@@ -11,15 +11,15 @@ module Fog
           requires :resource_group, :network_security_group_name
           network_security_rules = []
           service.list_network_security_rules(resource_group, network_security_group_name).each do |nsr|
-            network_security_rules << NetworkSecurityRule.parse(nsr)
+            network_security_rules << Fog::Network::AzureRM::NetworkSecurityRule.parse(nsr)
           end
           load(network_security_rules)
         end
 
         def get(resource_group, network_security_group_name, name)
           network_security_rule = service.get_network_security_rule(resource_group, network_security_group_name, name)
-          network_security_rule_fog = NetworkSecurityRule.new(service: service)
-          network_security_rule_fog.merge_attributes(NetworkSecurityRule.parse(network_security_rule))
+          network_security_rule_fog = Fog::Network::AzureRM::NetworkSecurityRule.new(service: service)
+          network_security_rule_fog.merge_attributes(Fog::Network::AzureRM::NetworkSecurityRule.parse(network_security_rule))
         end
       end
     end

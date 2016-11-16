@@ -22,7 +22,7 @@ module ApiStub
               }
           }'
           nsr_mapper = Azure::ARM::Network::Models::SecurityRule.mapper
-          network_client.deserialize(nsr_mapper, JSON.load(nsr), 'result.body')
+          network_client.deserialize(nsr_mapper, Fog::JSON.decode(nsr), 'result.body')
         end
       end
     end

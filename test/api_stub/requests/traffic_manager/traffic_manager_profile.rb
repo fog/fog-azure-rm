@@ -66,7 +66,7 @@ module ApiStub
             }
           }'
           profile_mapper = Azure::ARM::TrafficManager::Models::Profile.mapper
-          traffic_manager_client.deserialize(profile_mapper, JSON.load(body), 'result.body')
+          traffic_manager_client.deserialize(profile_mapper, Fog::JSON.decode(body), 'result.body')
         end
 
         def self.list_traffic_manager_profiles_response(traffic_manager_client)
@@ -134,7 +134,7 @@ module ApiStub
             }]
           }'
           profile_mapper = Azure::ARM::TrafficManager::Models::ProfileListResult.mapper
-          traffic_manager_client.deserialize(profile_mapper, JSON.load(body), 'result.body')
+          traffic_manager_client.deserialize(profile_mapper, Fog::JSON.decode(body), 'result.body')
         end
 
         def self.profile_hash

@@ -217,7 +217,7 @@ module ApiStub
             }
           }'
           vm_mapper = Azure::ARM::Compute::Models::VirtualMachine.mapper
-          compute_client.deserialize(vm_mapper, JSON.load(body), 'result.body')
+          compute_client.deserialize(vm_mapper, Fog::JSON.decode(body), 'result.body')
         end
 
         def self.create_virtual_machine_with_custom_data_response(compute_client)
@@ -294,7 +294,7 @@ module ApiStub
             }
           }'
           vm_mapper = Azure::ARM::Compute::Models::VirtualMachine.mapper
-          compute_client.deserialize(vm_mapper, JSON.load(body), 'result.body')
+          compute_client.deserialize(vm_mapper, Fog::JSON.decode(body), 'result.body')
         end
 
         def self.create_virtual_machine_from_custom_image_response(compute_client)
@@ -371,7 +371,7 @@ module ApiStub
             }
           }'
           vm_mapper = Azure::ARM::Compute::Models::VirtualMachine.mapper
-          compute_client.deserialize(vm_mapper, JSON.load(body), 'result.body')
+          compute_client.deserialize(vm_mapper, Fog::JSON.decode(body), 'result.body')
         end
 
         def self.detach_data_disk_from_vm_response(compute_client)
@@ -440,7 +440,7 @@ module ApiStub
             }
           }'
           vm_mapper = Azure::ARM::Compute::Models::VirtualMachine.mapper
-          compute_client.deserialize(vm_mapper, JSON.load(body), 'result.body')
+          compute_client.deserialize(vm_mapper, Fog::JSON.decode(body), 'result.body')
         end
 
         def self.virtual_machine_response(compute_client)
@@ -627,7 +627,7 @@ module ApiStub
             ]
           }'
           vm_mapper = Azure::ARM::Compute::Models::VirtualMachineListResult.mapper
-          compute_client.deserialize(vm_mapper, JSON.load(body), 'result.body')
+          compute_client.deserialize(vm_mapper, Fog::JSON.decode(body), 'result.body')
         end
 
         def self.list_available_sizes_for_virtual_machine_response(compute_client)
@@ -644,7 +644,7 @@ module ApiStub
             ]
           }'
           vm_mapper = Azure::ARM::Compute::Models::VirtualMachineSizeListResult.mapper
-          compute_client.deserialize(vm_mapper, JSON.load(body), 'result.body')
+          compute_client.deserialize(vm_mapper, Fog::JSON.decode(body), 'result.body')
         end
 
         def self.virtual_machine_instance_view_response(compute_client)
@@ -701,7 +701,7 @@ module ApiStub
               }
             }'
           vm_mapper = Azure::ARM::Compute::Models::VirtualMachine.mapper
-          compute_client.deserialize(vm_mapper, JSON.load(body), 'result.body')
+          compute_client.deserialize(vm_mapper, Fog::JSON.decode(body), 'result.body')
         end
 
         def self.vm_status_response
@@ -792,7 +792,7 @@ module ApiStub
                 }
               }'
           vm_mapper = Azure::ARM::Compute::Models::VirtualMachine.mapper
-          compute_client.deserialize(vm_mapper, JSON.load(body), 'result.body')
+          compute_client.deserialize(vm_mapper, Fog::JSON.decode(body), 'result.body')
         end
 
         def self.virtual_machine_15_data_disks_response(compute_client)
@@ -935,7 +935,7 @@ module ApiStub
                 }
               }'
           vm_mapper = Azure::ARM::Compute::Models::VirtualMachine.mapper
-          compute_client.deserialize(vm_mapper, JSON.load(body), 'result.body')
+          compute_client.deserialize(vm_mapper, Fog::JSON.decode(body), 'result.body')
         end
       end
     end

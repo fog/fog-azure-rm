@@ -4,21 +4,21 @@ module Fog
       # Deployments collection class
       class Deployments < Fog::Collection
         attribute :resource_group
-        model Deployment
+        model Fog::Resources::AzureRM::Deployment
 
         def all
           requires :resource_group
           deployments = []
           service.list_deployments(resource_group).each do |deployment|
-            deployments << Deployment.parse(deployment)
+            deployments << Fog::Resources::AzureRM::Deployment.parse(deployment)
           end
           load(deployments)
         end
 
         def get(resource_group_name, deployment_name)
           deployment = service.get_deployment(resource_group_name, deployment_name)
-          deployment_fog = Deployment.new(service: service)
-          deployment_fog.merge_attributes(Deployment.parse(deployment))
+          deployment_fog = Fog::Resources::AzureRM::Deployment.new(service: service)
+          deployment_fog.merge_attributes(Fog::Resources::AzureRM::Deployment.parse(deployment))
         end
       end
     end

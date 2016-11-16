@@ -121,7 +121,7 @@ module ApiStub
             ]
           }'
           vm_mapper = Azure::ARM::Compute::Models::VirtualMachineSizeListResult.mapper
-          compute_client.deserialize(vm_mapper, JSON.load(body), 'result.body').value
+          compute_client.deserialize(vm_mapper, Fog::JSON.decode(body), 'result.body').value
         end
 
         def self.attach_data_disk_response(compute_client)

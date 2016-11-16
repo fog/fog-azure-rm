@@ -6,7 +6,7 @@ module Fog
         def get_firewall_rule(resource_group, server_name, rule_name)
           msg = "Getting Sql Server Firewall Rule: #{rule_name} from SQL Server: #{server_name} in Resource Group: #{resource_group}..."
           Fog::Logger.debug msg
-          resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription_id}/resourceGroups/#{resource_group}/providers/Microsoft.Sql/servers/#{server_name}/firewallRules/#{rule_name}?api-version=2014-04-01-preview"
+          resource_url = "#{resource_manager_endpoint_url}/subscriptions/#{@subscription_id}/resourceGroups/#{resource_group}/providers/Microsoft.Sql/servers/#{server_name}/firewallRules/#{rule_name}?api-version=2014-04-01-preview"
           begin
             token = Fog::Credentials::AzureRM.get_token(@tenant_id, @client_id, @client_secret)
             response = RestClient.get(

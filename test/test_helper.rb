@@ -8,7 +8,10 @@ end
 
 if ENV['CODECLIMATE_REPO_TOKEN']
   require 'simplecov'
-  SimpleCov.start
+  SimpleCov.start do
+    add_filter 'test'
+    command_name 'Minitest'
+  end
 end
 
 require 'minitest/autorun'

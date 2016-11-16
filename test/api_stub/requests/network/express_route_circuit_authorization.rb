@@ -13,7 +13,7 @@ module ApiStub
             }
           }'
           circuit_auth_mapper = Azure::ARM::Network::Models::ExpressRouteCircuitAuthorization.mapper
-          network_client.deserialize(circuit_auth_mapper, JSON.load(authorization), 'result.body')
+          network_client.deserialize(circuit_auth_mapper, Fog::JSON.decode(authorization), 'result.body')
         end
 
         def self.auth_hash

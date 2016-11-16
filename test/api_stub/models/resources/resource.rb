@@ -16,7 +16,7 @@ module ApiStub
                 "name": "free"
             }
           }'
-          JSON.load(body)
+          Fog::JSON.decode(body)
         end
 
         def self.list_resources_response(client)
@@ -35,7 +35,7 @@ module ApiStub
             }]
           }'
           result_mapper = Azure::ARM::Resources::Models::ResourceListResult.mapper
-          client.deserialize(result_mapper, JSON.load(resources), 'result.body').value
+          client.deserialize(result_mapper, Fog::JSON.decode(resources), 'result.body').value
         end
       end
     end

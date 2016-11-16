@@ -5,13 +5,13 @@ module Fog
       class AzureResources < Fog::Collection
         attribute :tag_name
         attribute :tag_value
-        model AzureResource
+        model Fog::Resources::AzureRM::AzureResource
 
         def all
           unless tag_name.nil? && tag_value.nil?
             resources = []
             service.list_tagged_resources(tag_name, tag_value).each do |resource|
-              resources << AzureResource.parse(resource)
+              resources << Fog::Resources::AzureRM::AzureResource.parse(resource)
             end
             resources.inspect
             return load(resources)

@@ -5,21 +5,21 @@ module Fog
       # for Server.
       class Servers < Fog::Collection
         attribute :resource_group
-        model Server
+        model Fog::Compute::AzureRM::Server
 
         def all
           requires :resource_group
           virtual_machines = []
           service.list_virtual_machines(resource_group).each do |vm|
-            virtual_machines << Server.parse(vm)
+            virtual_machines << Fog::Compute::AzureRM::Server.parse(vm)
           end
           load(virtual_machines)
         end
 
         def get(resource_group_name, virtual_machine_name)
           virtual_machine = service.get_virtual_machine(resource_group_name, virtual_machine_name)
-          virtual_machine_fog = Server.new(service: service)
-          virtual_machine_fog.merge_attributes(Server.parse(virtual_machine))
+          virtual_machine_fog = Fog::Compute::AzureRM::Server.new(service: service)
+          virtual_machine_fog.merge_attributes(Fog::Compute::AzureRM::Server.parse(virtual_machine))
         end
       end
     end

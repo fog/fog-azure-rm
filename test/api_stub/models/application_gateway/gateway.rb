@@ -129,7 +129,7 @@ module ApiStub
               }
             }'
           gateway_mapper = Azure::ARM::Network::Models::ApplicationGateway.mapper
-          gateway_client.deserialize(gateway_mapper, JSON.load(gateway), 'result.body')
+          gateway_client.deserialize(gateway_mapper, Fog::JSON.decode(gateway), 'result.body')
         end
 
         def self.ssl_certifcate

@@ -54,7 +54,7 @@ module ApiStub
              }
           }'
           vnet_mapper = Azure::ARM::Network::Models::VirtualNetwork.mapper
-          network_client.deserialize(vnet_mapper, JSON.load(body), 'result.body')
+          network_client.deserialize(vnet_mapper, Fog::JSON.decode(body), 'result.body')
         end
 
         def self.list_virtual_networks_response(network_client)
@@ -113,7 +113,7 @@ module ApiStub
             } ]
           }'
           vnet_mapper = Azure::ARM::Network::Models::VirtualNetworkListResult.mapper
-          network_client.deserialize(vnet_mapper, JSON.load(body), 'result.body')
+          network_client.deserialize(vnet_mapper, Fog::JSON.decode(body), 'result.body')
         end
 
         def self.delete_virtual_network_response

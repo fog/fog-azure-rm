@@ -18,7 +18,7 @@ module ApiStub
             }
           }'
           endpoint_mapper = Azure::ARM::TrafficManager::Models::Endpoint.mapper
-          traffic_manager_client.deserialize(endpoint_mapper, JSON.load(body), 'result.body')
+          traffic_manager_client.deserialize(endpoint_mapper, Fog::JSON.decode(body), 'result.body')
         end
 
         def self.endpoint_hash

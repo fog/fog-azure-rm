@@ -36,8 +36,8 @@ module Fog
           traffic_manager_profile['resource_group'] = get_resource_group_from_id(profile.id)
           traffic_manager_profile['endpoints'] = []
           profile.endpoints.each do |endpoint|
-            end_point = TrafficManagerEndPoint.new
-            traffic_manager_profile['endpoints'] << end_point.merge_attributes(TrafficManagerEndPoint.parse(endpoint))
+            end_point = Fog::TrafficManager::AzureRM::TrafficManagerEndPoint.new
+            traffic_manager_profile['endpoints'] << end_point.merge_attributes(Fog::TrafficManager::AzureRM::TrafficManagerEndPoint.parse(endpoint))
           end
           traffic_manager_profile
         end
@@ -46,7 +46,7 @@ module Fog
           requires :name, :resource_group, :traffic_routing_method, :relative_name, :ttl,
                    :protocol, :port, :path
           traffic_manager_profile = service.create_or_update_traffic_manager_profile(traffic_manager_profile_hash)
-          merge_attributes(TrafficManagerProfile.parse(traffic_manager_profile))
+          merge_attributes(Fog::TrafficManager::AzureRM::TrafficManagerProfile.parse(traffic_manager_profile))
         end
 
         def destroy
@@ -57,7 +57,7 @@ module Fog
           validate_input(profile_params)
           merge_attributes(profile_params)
           profile = service.create_or_update_traffic_manager_profile(traffic_manager_profile_hash)
-          merge_attributes(TrafficManagerProfile.parse(profile))
+          merge_attributes(Fog::TrafficManager::AzureRM::TrafficManagerProfile.parse(profile))
         end
 
         private

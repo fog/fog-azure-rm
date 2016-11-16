@@ -28,7 +28,7 @@ module ApiStub
              }
           }'
           subnet_mapper = Azure::ARM::Network::Models::Subnet.mapper
-          network_client.deserialize(subnet_mapper, JSON.load(subnet), 'result.body')
+          network_client.deserialize(subnet_mapper, Fog::JSON.decode(subnet), 'result.body')
         end
       end
     end

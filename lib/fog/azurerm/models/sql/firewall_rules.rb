@@ -5,22 +5,22 @@ module Fog
       class FirewallRules < Fog::Collection
         attribute :resource_group
         attribute :server_name
-        model FirewallRule
+        model Fog::Sql::AzureRM::FirewallRule
 
         def all
           requires :resource_group, :server_name
 
           firewall_rules = []
           service.list_firewall_rules(resource_group, server_name).each do |firewall_rule|
-            firewall_rules << FirewallRule.parse(firewall_rule)
+            firewall_rules << Fog::Sql::AzureRM::FirewallRule.parse(firewall_rule)
           end
           load(firewall_rules)
         end
 
         def get(resource_group, server_name, rule_name)
           firewall_rule = service.get_firewall_rule(resource_group, server_name, rule_name)
-          firewall_rule_fog = FirewallRule.new(service: service)
-          firewall_rule_fog.merge_attributes(FirewallRule.parse(firewall_rule))
+          firewall_rule_fog = Fog::Sql::AzureRM::FirewallRule.new(service: service)
+          firewall_rule_fog.merge_attributes(Fog::Sql::AzureRM::FirewallRule.parse(firewall_rule))
         end
       end
     end

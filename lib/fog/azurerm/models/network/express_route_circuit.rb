@@ -47,8 +47,8 @@ module Fog
           end
           express_route_circuit['peerings'] = []
           circuit.peerings.each do |peering|
-            circuit_peering = ExpressRouteCircuitPeering.new
-            express_route_circuit['peerings'] << circuit_peering.merge_attributes(ExpressRouteCircuitPeering.parse(peering))
+            circuit_peering = Fog::Network::AzureRM::ExpressRouteCircuitPeering.new
+            express_route_circuit['peerings'] << circuit_peering.merge_attributes(Fog::Network::AzureRM::ExpressRouteCircuitPeering.parse(peering))
           end unless circuit.peerings.nil?
           express_route_circuit
         end
@@ -56,7 +56,7 @@ module Fog
         def save
           requires :location, :tags, :resource_group, :service_provider_name, :peering_location, :bandwidth_in_mbps
           circuit = service.create_or_update_express_route_circuit(express_route_circuit_params)
-          merge_attributes(ExpressRouteCircuit.parse(circuit))
+          merge_attributes(Fog::Network::AzureRM::ExpressRouteCircuit.parse(circuit))
         end
 
         def destroy

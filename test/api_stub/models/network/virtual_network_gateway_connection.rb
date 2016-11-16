@@ -23,7 +23,7 @@ module ApiStub
             }
           }'
           connection_mapper = Azure::ARM::Network::Models::VirtualNetworkGatewayConnection.mapper
-          network_client.deserialize(connection_mapper, JSON.load(gateway_connection), 'result.body')
+          network_client.deserialize(connection_mapper, Fog::JSON.decode(gateway_connection), 'result.body')
         end
       end
     end

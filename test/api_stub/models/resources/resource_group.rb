@@ -16,7 +16,7 @@ module ApiStub
             }
           }'
           result_mapper = Azure::ARM::Resources::Models::ResourceGroup.mapper
-          client.deserialize(result_mapper, JSON.load(resource_group), 'result.body')
+          client.deserialize(result_mapper, Fog::JSON.decode(resource_group), 'result.body')
         end
       end
     end

@@ -25,7 +25,7 @@ module Fog
         def save
           requires :name, :location, :resource_group
           recovery_vault = service.create_or_update_recovery_vault(resource_group, location, name)
-          merge_attributes(RecoveryVault.parse(recovery_vault))
+          merge_attributes(Fog::Storage::AzureRM::RecoveryVault.parse(recovery_vault))
         end
 
         def enable_backup_protection(vm_name, vm_resource_group)

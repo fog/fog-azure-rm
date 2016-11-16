@@ -3,7 +3,7 @@ module Fog
     class AzureRM
       # This class is giving implementation of listing containers.
       class Directories < Fog::Collection
-        model Directory
+        model Fog::Storage::AzureRM::Directory
 
         def all(options = { metadata: true })
           containers = []

@@ -20,32 +20,32 @@ module Fog
       class Mock
         def list_vaults(*)
           vaults = [
-              {
-                'id' => '/subscriptions/<AZURE_SUBSCRIPTION_ID>/resourceGroups/RubySDKTest_azure_mgmt_kv/providers/Microsoft.KeyVault/vaults/sampleVault758347',
-                'name' => 'sampleVault758347',
-                'type' => 'Microsoft.KeyVault/vaults',
-                'location' => 'westus',
-                'tags' => {},
-                'properties' => {
-                  'sku' => {
-                    'family' => 'A',
-                    'name' => 'standard'
-                  },
-                  'tenantId' => '<AZURE_TENANT_ID>',
-                  'accessPolicies' => [
-                    {
-                      'tenantId' => '<AZURE_TENANT_ID>',
-                      'objectId' => '<AZURE_OBJECT_ID>',
-                      'permissions' => {
-                        'keys' => ['all'],
-                        'secrets' => ['all']
-                      }
+            {
+              'id' => '/subscriptions/<AZURE_SUBSCRIPTION_ID>/resourceGroups/RubySDKTest_azure_mgmt_kv/providers/Microsoft.KeyVault/vaults/sampleVault758347',
+              'name' => 'sampleVault758347',
+              'type' => 'Microsoft.KeyVault/vaults',
+              'location' => 'westus',
+              'tags' => {},
+              'properties' => {
+                'sku' => {
+                  'family' => 'A',
+                  'name' => 'standard'
+                },
+                'tenantId' => '<AZURE_TENANT_ID>',
+                'accessPolicies' => [
+                  {
+                    'tenantId' => '<AZURE_TENANT_ID>',
+                    'objectId' => '<AZURE_OBJECT_ID>',
+                    'permissions' => {
+                      'keys' => ['all'],
+                      'secrets' => ['all']
                     }
-                  ],
-                  'enabledForDeployment' => false,
-                  'vaultUri' => 'https =>//samplevault758347.vault.azure.net/'
-                }
+                  }
+                ],
+                'enabledForDeployment' => false,
+                'vaultUri' => 'https =>//samplevault758347.vault.azure.net/'
               }
+            }
           ]
           vaults_mapper = Azure::ARM::KeyVault::Models::VaultListResult.mapper
           @kay_vault_client.deserialize(vaults_mapper, vaults, 'result.body')

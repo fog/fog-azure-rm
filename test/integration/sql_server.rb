@@ -34,7 +34,7 @@ resources.resource_groups.create(
 ########################################################################################################################
 ######################                         Create Sql Server                                  ######################
 ########################################################################################################################
-begin
+# begin
 server_name = rand(0...999_99)
 
 azure_sql_service.sql_servers.create(
@@ -64,10 +64,10 @@ azure_sql_service.sql_databases.create(
 
 sleep 60
 database = azure_sql_service.sql_databases.get('TestRG-SQL', server_name, database_name)
-rescue
-  resource_group = resources.resource_groups.get('TestRG-SQL')
-  resource_group.destroy
-end
+# rescue
+#   resource_group = resources.resource_groups.get('TestRG-SQL')
+#   resource_group.destroy
+# end
 Fog::Logger.debug "GET Database: #{database.name}"
 
 ########################################################################################################################

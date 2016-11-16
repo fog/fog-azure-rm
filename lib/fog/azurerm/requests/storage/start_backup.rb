@@ -16,7 +16,7 @@ module Fog
             return false
           end
 
-          backup_items = get_backup_item(resource_group, name, vm_name)
+          backup_items = get_backup_item(resource_group, name)
           backup_item = backup_items.select { |item| (item['properties']['friendlyName'].eql? vm_name.downcase) && (vm_resource_group.eql? get_resource_group_from_id(item['properties']['virtualMachineId'])) }[0]
 
           resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription_id}/resourceGroups/#{resource_group}/providers/Microsoft.RecoveryServices/vaults/#{name}/backupFabrics/Azure/protectionContainers/iaasvmcontainer;#{backup_item['name']}/protectedItems/vm;#{backup_item['name']}/backup?api-version=2016-05-01"

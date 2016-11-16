@@ -64,7 +64,7 @@ module ApiStub
             }
           }'
           network_interface_mapper = Azure::ARM::Network::Models::NetworkInterface.mapper
-          network_client.deserialize(network_interface_mapper, JSON.load(body), 'result.body')
+          network_client.deserialize(network_interface_mapper, Fog::JSON.decode(body), 'result.body')
         end
 
         def self.detach_pip_from_nic_response(network_client)
@@ -126,7 +126,7 @@ module ApiStub
             }
           }'
           network_interface_mapper = Azure::ARM::Network::Models::NetworkInterface.mapper
-          network_client.deserialize(network_interface_mapper, JSON.load(body), 'result.body')
+          network_client.deserialize(network_interface_mapper, Fog::JSON.decode(body), 'result.body')
         end
 
         def self.detach_nsg_from_nic_response(network_client)
@@ -185,7 +185,7 @@ module ApiStub
             }
           }'
           network_interface_mapper = Azure::ARM::Network::Models::NetworkInterface.mapper
-          network_client.deserialize(network_interface_mapper, JSON.load(body), 'result.body')
+          network_client.deserialize(network_interface_mapper, Fog::JSON.decode(body), 'result.body')
         end
 
         def self.list_network_interfaces_response(network_client)
@@ -252,7 +252,7 @@ module ApiStub
             } ]
           }'
           network_interface_list_mapper = Azure::ARM::Network::Models::NetworkInterfaceListResult.mapper
-          network_client.deserialize(network_interface_list_mapper, JSON.load(body), 'result.body')
+          network_client.deserialize(network_interface_list_mapper, Fog::JSON.decode(body), 'result.body')
         end
 
         def self.delete_network_interface_response

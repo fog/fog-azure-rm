@@ -16,7 +16,7 @@ module ApiStub
             }
           }'
           result_mapper = Azure::ARM::Resources::Models::ResourceGroup.mapper
-          client.deserialize(result_mapper, JSON.load(body), 'result.body')
+          client.deserialize(result_mapper, Fog::JSON.decode(body), 'result.body')
         end
 
         def self.list_resource_group_response(client)
@@ -35,7 +35,7 @@ module ApiStub
             "nextLink": "https://management.azure.com/subscriptions/########-####-####-####-############/resourcegroups?api-version=2015-01-01&$skiptoken=######"
           }'
           result_mapper = Azure::ARM::Resources::Models::ResourceGroupListResult.mapper
-          client.deserialize(result_mapper, JSON.load(body), 'result.body')
+          client.deserialize(result_mapper, Fog::JSON.decode(body), 'result.body')
         end
 
         def self.list_resource_groups_for_zones

@@ -33,7 +33,7 @@ module Fog
         def save
           requires :name, :location, :resource_group, :local_network_address_space_prefixes, :gateway_ip_address, :asn, :bgp_peering_address, :peer_weight
           local_network_gateway = service.create_or_update_local_network_gateway(local_network_gateway_parameters)
-          merge_attributes(LocalNetworkGateway.parse(local_network_gateway))
+          merge_attributes(Fog::Network::AzureRM::LocalNetworkGateway.parse(local_network_gateway))
         end
 
         def destroy

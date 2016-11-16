@@ -33,7 +33,7 @@ module Fog
           self.replication = ALLOWED_STANDARD_REPLICATION.first if replication.nil?
           validate_sku_name!
           storage_account = service.create_storage_account(storage_account_params)
-          merge_attributes(StorageAccount.parse(storage_account))
+          merge_attributes(Fog::Storage::AzureRM::StorageAccount.parse(storage_account))
         end
 
         def storage_account_params
@@ -52,7 +52,7 @@ module Fog
           storage_account_params = merge_attributes(storage_account_params).all_attributes
 
           storage_account = service.update_storage_account(storage_account_params)
-          merge_attributes(StorageAccount.parse(storage_account))
+          merge_attributes(Fog::Storage::AzureRM::StorageAccount.parse(storage_account))
         end
 
         def validate_sku_name!

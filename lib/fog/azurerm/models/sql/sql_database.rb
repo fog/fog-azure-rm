@@ -60,7 +60,7 @@ module Fog
         def save
           requires :resource_group, :server_name, :name, :location
           sql_database = service.create_or_update_database(database_params)
-          merge_attributes(SqlDatabase.parse(sql_database))
+          merge_attributes(Fog::Sql::AzureRM::SqlDatabase.parse(sql_database))
         end
 
         def destroy

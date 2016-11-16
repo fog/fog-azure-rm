@@ -35,7 +35,7 @@ module Fog
           requires :key
           requires :directory
           merge_attributes(options)
-          merge_attributes(File.parse(service.upload_block_blob_from_file(directory, key, file_path, options)))
+          merge_attributes(Fog::Storage::AzureRM::File.parse(service.upload_block_blob_from_file(directory, key, file_path, options)))
         end
 
         alias create save
@@ -50,13 +50,13 @@ module Fog
           requires :key
           requires :directory
           merge_attributes(file_path: file_path)
-          merge_attributes(File.parse(service.download_blob_to_file(directory, key, file_path, options)))
+          merge_attributes(Fog::Storage::AzureRM::File.parse(service.download_blob_to_file(directory, key, file_path, options)))
         end
 
         def get_properties(options = {})
           requires :key
           requires :directory
-          merge_attributes(File.parse(service.get_blob_properties(directory, key, options)))
+          merge_attributes(Fog::Storage::AzureRM::File.parse(service.get_blob_properties(directory, key, options)))
         end
 
         def set_properties(properties = {})

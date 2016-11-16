@@ -14,19 +14,19 @@ module Fog
 
         def create(options = {})
           requires :key
-          merge_attributes(Directory.parse(service.create_container(key, options)))
+          merge_attributes(Fog::Storage::AzureRM::Directory.parse(service.create_container(key, options)))
         end
 
         alias save create
 
         def get_properties(options = { metadata: true })
           requires :key
-          merge_attributes(Directory.parse(service.get_container_properties(key, options)))
+          merge_attributes(Fog::Storage::AzureRM::Directory.parse(service.get_container_properties(key, options)))
         end
 
         def access_control_list(options = {})
           requires :key
-          merge_attributes(Directory.parse(service.get_container_access_control_list(key, options)[0]))
+          merge_attributes(Fog::Storage::AzureRM::Directory.parse(service.get_container_access_control_list(key, options)[0]))
         end
 
         def destroy(options = {})

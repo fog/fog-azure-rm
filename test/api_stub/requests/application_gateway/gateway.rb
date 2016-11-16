@@ -136,7 +136,7 @@ module ApiStub
             }
           }'
           gateway_mapper = Azure::ARM::Network::Models::ApplicationGateway.mapper
-          gateway_client.deserialize(gateway_mapper, JSON.load(response), 'result.body')
+          gateway_client.deserialize(gateway_mapper, Fog::JSON.decode(response), 'result.body')
         end
 
         def self.gateway_params
@@ -303,7 +303,7 @@ module ApiStub
             }]
           }'
           gateway_list_mapper = Azure::ARM::Network::Models::ApplicationGatewayListResult.mapper
-          gateway_client.deserialize(gateway_list_mapper, JSON.load(response), 'result.body')
+          gateway_client.deserialize(gateway_list_mapper, Fog::JSON.decode(response), 'result.body')
         end
 
         def self.delete_application_gateway_response

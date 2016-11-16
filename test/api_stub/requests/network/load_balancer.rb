@@ -146,7 +146,7 @@ module ApiStub
             }
           }'
           load_balancer_mapper = Azure::ARM::Network::Models::LoadBalancer.mapper
-          network_client.deserialize(load_balancer_mapper, JSON.load(response), 'result.body')
+          network_client.deserialize(load_balancer_mapper, Fog::JSON.decode(response), 'result.body')
         end
 
         def self.list_load_balancers_response(network_client)
@@ -297,7 +297,7 @@ module ApiStub
             ]
           }'
           load_balancer_mapper = Azure::ARM::Network::Models::LoadBalancerListResult.mapper
-          network_client.deserialize(load_balancer_mapper, JSON.load(response), 'result.body')
+          network_client.deserialize(load_balancer_mapper, Fog::JSON.decode(response), 'result.body')
         end
 
         def self.delete_load_balancer_response

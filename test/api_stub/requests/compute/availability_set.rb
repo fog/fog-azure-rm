@@ -15,7 +15,7 @@ module ApiStub
                     "virtualMachines":[]
                   }'
           availability_set_mapper = Azure::ARM::Compute::Models::AvailabilitySet.mapper
-          compute_client.deserialize(availability_set_mapper, JSON.load(body), 'result.body')
+          compute_client.deserialize(availability_set_mapper, Fog::JSON.decode(body), 'result.body')
         end
 
         def self.list_availability_set_response(sdk_compute_client)
@@ -32,7 +32,7 @@ module ApiStub
               } ]
           }'
           availability_set_mapper = Azure::ARM::Compute::Models::AvailabilitySetListResult.mapper
-          sdk_compute_client.deserialize(availability_set_mapper, JSON.load(body), 'result.body')
+          sdk_compute_client.deserialize(availability_set_mapper, Fog::JSON.decode(body), 'result.body')
         end
 
         def self.get_availability_set_response(sdk_compute_client)
@@ -49,7 +49,7 @@ module ApiStub
               } ]
           }'
           availability_set_mapper = Azure::ARM::Compute::Models::AvailabilitySet.mapper
-          sdk_compute_client.deserialize(availability_set_mapper, JSON.load(body), 'result.body')
+          sdk_compute_client.deserialize(availability_set_mapper, Fog::JSON.decode(body), 'result.body')
         end
       end
     end

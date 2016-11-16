@@ -65,7 +65,7 @@ module ApiStub
              }
           }'
           result_mapper = Azure::ARM::Network::Models::NetworkSecurityGroup.mapper
-          network_client.deserialize(result_mapper, JSON.load(nsg), 'result.body')
+          network_client.deserialize(result_mapper, Fog::JSON.decode(nsg), 'result.body')
         end
 
         def self.add_security_rules_response(network_client)
@@ -144,7 +144,7 @@ module ApiStub
              }
           }'
           result_mapper = Azure::ARM::Network::Models::NetworkSecurityGroup.mapper
-          network_client.deserialize(result_mapper, JSON.load(nsg), 'result.body')
+          network_client.deserialize(result_mapper, Fog::JSON.decode(nsg), 'result.body')
         end
 
         def self.list_network_security_group_response(network_client)
@@ -217,7 +217,7 @@ module ApiStub
             ]
           }'
           result_mapper = Azure::ARM::Network::Models::NetworkInterfaceListResult.mapper
-          network_client.deserialize(result_mapper, JSON.load(nsg_list), 'result.body')
+          network_client.deserialize(result_mapper, Fog::JSON.decode(nsg_list), 'result.body')
         end
       end
     end

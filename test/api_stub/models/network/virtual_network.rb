@@ -54,7 +54,7 @@ module ApiStub
              }
           }'
           vnet_mapper = Azure::ARM::Network::Models::VirtualNetwork.mapper
-          network_client.deserialize(vnet_mapper, JSON.load(vnet), 'result.body')
+          network_client.deserialize(vnet_mapper, Fog::JSON.decode(vnet), 'result.body')
         end
       end
     end

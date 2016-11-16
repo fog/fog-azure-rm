@@ -116,12 +116,12 @@ module Fog
 
         def attach_data_disk(disk_name, disk_size, storage_account_name)
           vm = service.attach_data_disk_to_vm(resource_group, name, disk_name, disk_size, storage_account_name)
-          merge_attributes(Server.parse(vm))
+          merge_attributes(Fog::Compute::AzureRM::Server.parse(vm))
         end
 
         def detach_data_disk(disk_name)
           vm = service.detach_data_disk_from_vm(resource_group, name, disk_name)
-          merge_attributes(Server.parse(vm))
+          merge_attributes(Fog::Compute::AzureRM::Server.parse(vm))
         end
 
         private

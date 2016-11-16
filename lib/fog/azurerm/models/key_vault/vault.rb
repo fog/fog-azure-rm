@@ -66,13 +66,13 @@ module Fog
 
         def vault_hash
           {
-              resource_group: resource_group,
-              name: name,
-              location: location,
-              tenant_id: tenant_id,
-              sku_family: sku_family,
-              sku_name: sku_name,
-              access_policies: access_policies
+            resource_group: resource_group,
+            name: name,
+            location: location,
+            tenant_id: tenant_id,
+            sku_family: sku_family,
+            sku_name: sku_name,
+            access_policies: access_policies
           }
         end
       end

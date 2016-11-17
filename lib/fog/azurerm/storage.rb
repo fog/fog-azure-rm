@@ -33,25 +33,35 @@ module Fog
       request :acquire_container_lease
       request :delete_container
       request :list_containers
-      request :get_container_metadata
-      request :set_container_metadata
+      request :put_container_metadata
       request :get_container_properties
-      request :get_container_access_control_list
+      request :get_container_acl
+      request :put_container_acl
+      request :get_container_url
       # Azure Storage Blob requests
       request :list_blobs
-      request :set_blob_metadata
-      request :get_blob_metadata
-      request :set_blob_properties
+      request :put_blob_metadata
+      request :put_blob_properties
       request :get_blob_properties
-      request :upload_block_blob_from_file
-      request :download_blob_to_file
       request :copy_blob
       request :copy_blob_from_uri
       request :compare_container_blobs
-      request :check_blob_exist
       request :acquire_blob_lease
       request :release_blob_lease
       request :delete_blob
+      request :get_blob
+      request :get_blob_url
+      request :get_blob_http_url
+      request :get_blob_https_url
+      request :create_block_blob
+      request :put_blob_block
+      request :commit_blob_blocks
+      request :create_page_blob
+      request :put_blob_pages
+      request :wait_blob_copy_operation_to_finish
+      request :save_page_blob
+      request :multipart_save_block_blob
+
       # Azure Recovery Vault requests
       request :create_or_update_recovery_vault
       request :get_recovery_vault
@@ -97,6 +107,7 @@ module Fog
           begin
             require 'azure_mgmt_storage'
             require 'azure/storage'
+            require 'securerandom'
             @debug = ENV['DEBUG'] || options[:debug]
             require 'azure/core/http/debug_filter' if @debug
           rescue LoadError => e
@@ -115,15 +126,17 @@ module Fog
             @storage_mgmt_client.subscription_id = options[:subscription_id]
           end
 
-          if Fog::Credentials::AzureRM.new_account_credential? options
-            Azure::Storage.setup(storage_account_name: options[:azure_storage_account_name],
-                                 storage_access_key: options[:azure_storage_access_key],
-                                 storage_connection_string: options[:azure_storage_connection_string])
+          return unless Fog::Credentials::AzureRM.new_account_credential?(options)
 
-            @blob_client = Azure::Storage::Blob::BlobService.new
-            @blob_client.with_filter(Azure::Storage::Core::Filter::ExponentialRetryPolicyFilter.new)
-            @blob_client.with_filter(Azure::Core::Http::DebugFilter.new) if @debug
-          end
+          Azure::Storage.setup(storage_account_name: options[:azure_storage_account_name],
+                               storage_access_key: options[:azure_storage_access_key],
+                               storage_connection_string: options[:azure_storage_connection_string])
+
+          @blob_client = Azure::Storage::Blob::BlobService.new
+          @blob_client.with_filter(Azure::Storage::Core::Filter::ExponentialRetryPolicyFilter.new)
+          @blob_client.with_filter(Azure::Core::Http::DebugFilter.new) if @debug
+          @signature_client = Azure::Storage::Core::Auth::SharedAccessSignature.new(options[:azure_storage_account_name],
+                                                                                    options[:azure_storage_access_key])
         end
       end
     end

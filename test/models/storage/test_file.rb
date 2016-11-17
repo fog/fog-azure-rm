@@ -3,31 +3,29 @@ require File.expand_path '../../test_helper', __dir__
 # Test class for Storage Container Model
 class TestFile < Minitest::Test
   def setup
-    Fog.mock!
-    @mock_service = Fog::Storage::AzureRM.new(storage_account_credentials)
-    @mock_file = storage_blob(@mock_service)
-    Fog.unmock!
     @service = Fog::Storage::AzureRM.new(storage_account_credentials)
-    @file = storage_blob(@service)
-    @cloud_blob = storage_cloud_blob
-    @blob_client = @service.instance_variable_get(:@blob_client)
+    @directory = directory(@service)
+    @file = file(@service)
+    @raw_cloud_blob = storage_blob
+
     @mocked_response = mocked_storage_http_error
-    @content = Array.new(1024 * 1024) { 'a' }.join
-    @get_metadata_result = ApiStub::Models::Storage::File.test_get_blob_metadata
-    @create_result = ApiStub::Models::Storage::File.upload_block_blob_from_file
-    @download_result = ApiStub::Models::Storage::File.download_blob_to_file
-    @get_properties_result = ApiStub::Models::Storage::File.get_blob_properties
+    @blob = ApiStub::Models::Storage::File.blob
+    @metadata = ApiStub::Models::Storage::File.blob_metadata
+    @blob_list = ApiStub::Models::Storage::File.blob_list
+    @blob_https_url = ApiStub::Models::Storage::File.blob_https_url
   end
 
   def test_model_methods
     methods = [
       :save,
-      :save_to_file,
-      :get_properties,
-      :set_properties,
-      :set_metadata,
-      :get_metadata,
-      :destroy
+      :body,
+      :body=,
+      :copy,
+      :copy_from_uri,
+      :destroy,
+      :public?,
+      :public_url,
+      :url
     ]
     methods.each do |method|
       assert_respond_to @file, method
@@ -37,14 +35,15 @@ class TestFile < Minitest::Test
   def test_model_attributes
     attributes = [
       :key,
+      :body,
+      :directory,
       :accept_ranges,
-      :cache_control,
-      :committed_block_count,
       :content_length,
       :content_type,
       :content_md5,
       :content_encoding,
       :content_language,
+      :cache_control,
       :content_disposition,
       :copy_completion_time,
       :copy_status,
@@ -52,209 +51,244 @@ class TestFile < Minitest::Test
       :copy_id,
       :copy_progress,
       :copy_source,
-      :directory,
       :etag,
-      :file_path,
       :last_modified,
       :lease_duration,
       :lease_state,
       :lease_status,
-      :metadata,
       :sequence_number,
-      :blob_type
+      :blob_type,
+      :metadata
     ]
     attributes.each do |attribute|
       assert_respond_to @file, attribute
     end
   end
 
-  def test_save_method_response
-    @file.file_path = 'test.txt'
-    @service.stub :upload_block_blob_from_file, @create_result do
-      assert_instance_of Fog::Storage::AzureRM::File, @file.save
-    end
-    @service.stub :upload_block_blob_from_file, @create_result do
-      assert_instance_of Fog::Storage::AzureRM::File, @file.create
+  def test_save_method_with_small_block_blob_success
+    @file.body = 'd' * 1025 # SINGLE_BLOB_PUT_THRESHOLD is 32 * 1024 * 1024
+
+    @service.stub :create_block_blob, @raw_cloud_blob do
+      assert @file.save
     end
   end
 
-  def test_save_small_blob_method_response
-    small_file_name = 'small_test_file.dat'
-    small_file = File.new(small_file_name, 'w')
-    small_file.puts(@content)
-    small_file.close
-    @file.file_path = small_file_name
-    @blob_client.stub :create_block_blob, @create_result do
-      assert_instance_of Fog::Storage::AzureRM::File, @file.create
-    end
-    io_exception = -> (_container_name, _blob_name, _file_path, _option) { raise IOError.new }
-    @blob_client.stub :create_block_blob, io_exception do
-      assert_raises(RuntimeError) do
-        @file.create
+  def test_save_method_with_large_block_blob_success
+    @file.body = 'd' * (32 * 1024 * 1024 + 1) # SINGLE_BLOB_PUT_THRESHOLD is 32 * 1024 * 1024
+
+    @service.stub :multipart_save_block_blob, true do
+      @service.stub :get_blob_properties, @raw_cloud_blob do
+        assert @file.save
       end
     end
-    http_exception = -> (_container_name, _blob_name, _file_path, _option) { raise Azure::Core::Http::HTTPError.new(@mocked_response) }
-    @blob_client.stub :create_block_blob, http_exception do
-      assert_raises(RuntimeError) do
-        @file.create
-      end
-    end
-    File.delete(small_file_name)
   end
 
-  def test_save_large_blob_method_response
-    large_file_name = 'large_test_file.dat'
-    large_file = File.new(large_file_name, 'w')
-    33.times do
-      large_file.puts(@content)
+  def test_save_method_with_page_blob_success
+    options = { blob_type: 'PageBlob' }
+    @file.metadata = @metadata
+    @file.body = 'd' * 5 * 1024 * 1024 # MAXIMUM_CHUNK_SIZE is 4 * 1024 * 1024
+
+    @service.stub :save_page_blob, true do
+      @service.stub :get_blob_properties, @raw_cloud_blob do
+        assert @file.save(options)
+      end
     end
-    large_file.close
-    @file.file_path = large_file_name
-    @blob_client.stub :put_blob_block, true do
-      @blob_client.stub :commit_blob_blocks, nil do
-        @service.stub :get_blob_metadata, @create_result do
-          assert_instance_of Fog::Storage::AzureRM::File, @file.create
+  end
+
+  def test_save_method_with_not_update_body_success
+    options = { update_body: false }
+    @file.metadata = @metadata
+
+    @service.stub :put_blob_metadata, true do
+      @service.stub :put_blob_properties, true do
+        @service.stub :get_blob_properties, @raw_cloud_blob do
+          assert @file.save(options)
         end
       end
     end
-    File.delete(large_file_name)
   end
 
-  def test_save_method_response_mock
-    @mock_file.file_path = 'mock_test.txt'
-    assert_instance_of Fog::Storage::AzureRM::File, @mock_file.save
-  end
-
-  def test_save_to_file
-    @service.stub :download_blob_to_file, @download_result do
-      assert_instance_of Fog::Storage::AzureRM::File, @file.save_to_file('test.txt')
+  def test_save_method_without_directory_exception
+    assert_raises(ArgumentError) do
+      @file.attributes.delete(:directory)
+      @file.save
     end
   end
 
-  def test_save_to_file_io_exception
-    io_exception = -> (_container_name, _blob_name, _option) { raise IOError.new }
-    @blob_client.stub :get_blob, io_exception do
-      assert_raises(RuntimeError) do
-        @file.save_to_file('test.txt')
+  def test_save_method_without_key_exception
+    assert_raises(ArgumentError) do
+      @file.attributes.delete(:key)
+      @file.save
+    end
+  end
+
+  def test_save_method_create_without_body_exception
+    assert_raises(ArgumentError) do
+      @file.attributes.delete(:body)
+      @file.save
+    end
+  end
+
+  def test_get_body_method_local_success
+    @file.attributes[:body] = 'body'
+    assert_equal 'body', @file.body
+
+    @file.attributes[:body] = nil
+    @file.attributes[:last_modified] = nil
+    assert_equal '', @file.body
+  end
+
+  def test_get_body_method_remote_success
+    @file.attributes[:body] = nil
+    remote_file = @file.dup
+    body_content = 'data'
+    @file.collection.stub :get, remote_file do
+      remote_file.stub :body, body_content do
+        body = @file.body
+        assert_equal body_content, body
+        assert_equal body_content, @file.attributes[:body]
       end
     end
   end
 
-  def test_save_to_file_http_exception
-    http_exception = -> (_container_name, _blob_name, _option) { raise Azure::Core::Http::HTTPError.new(@mocked_response) }
-    @blob_client.stub :get_blob, http_exception do
-      assert_raises(RuntimeError) do
-        @file.save_to_file('test.txt')
+  def test_get_body_method_remote_not_found_success
+    @file.attributes[:body] = nil
+    @file.collection.stub :get, nil do
+      body = @file.body
+      assert_equal '', body
+      assert_equal '', @file.attributes[:body]
+    end
+  end
+
+  def test_set_body_method_success
+    @file.body = 'new_body'
+    assert_equal 'new_body', @file.attributes[:body]
+  end
+
+  def test_copy_method_success
+    copy_id = @raw_cloud_blob.properties[:copy_id]
+    copy_status = 'pending'
+
+    @service.stub :get_blob_properties, @raw_cloud_blob do
+      @service.stub :copy_blob, [copy_id, copy_status] do
+        @service.stub :wait_blob_copy_operation_to_finish, true do
+          target_file = @file.copy('target_container', 'target_blob')
+          assert_instance_of Fog::Storage::AzureRM::File, target_file
+        end
       end
     end
   end
 
-  def test_save_to_file_mock
-    assert_instance_of Fog::Storage::AzureRM::File, @mock_file.save_to_file('test.txt')
-  end
+  def test_copy_from_uri_method_success
+    copy_id = @raw_cloud_blob.properties[:copy_id]
+    copy_status = 'pending'
 
-  def test_get_blob_properties
-    @service.stub :get_blob_properties, @get_properties_result do
-      assert_instance_of Fog::Storage::AzureRM::File, @file.get_properties
-    end
-  end
-
-  def test_get_cloud_blob_properties
-    @service.stub :get_blob_properties, @cloud_blob do
-      assert_instance_of Fog::Storage::AzureRM::File, @file.get_properties
-    end
-  end
-
-  def test_get_blob_properties_http_exception
-    http_exception = -> (_container_name, _blob_name, _option) { raise Azure::Core::Http::HTTPError.new(@mocked_response) }
-    @blob_client.stub :get_blob_properties, http_exception do
-      assert_raises(RuntimeError) do
-        @file.get_properties
+    @service.stub :get_blob_properties, @raw_cloud_blob do
+      @service.stub :copy_blob_from_uri, [copy_id, copy_status] do
+        @service.stub :wait_blob_copy_operation_to_finish, true do
+          assert @file.copy_from_uri('source_uri')
+        end
       end
     end
   end
 
-  def test_get_blob_properties_mock
-    assert_instance_of Fog::Storage::AzureRM::File, @mock_file.get_properties
-  end
-
-  def test_set_blob_properties
-    @service.stub :set_blob_properties, true do
-      assert @file.set_properties
+  def test_copy_from_uri_method_without_directory_exception
+    assert_raises(ArgumentError) do
+      @file.attributes.delete(:directory)
+      @file.copy_from_uri('source_uri')
     end
   end
 
-  def test_set_blob_properties_http_exception
-    http_exception = -> (_container_name, _blob_name, _properties) { raise Azure::Core::Http::HTTPError.new(@mocked_response) }
-    @blob_client.stub :set_blob_properties, http_exception do
-      assert_raises(RuntimeError) do
-        @file.set_properties
-      end
+  def test_copy_from_uri_method_without_key_exception
+    assert_raises(ArgumentError) do
+      @file.attributes.delete(:key)
+      @file.copy_from_uri('source_uri')
     end
   end
 
-  def test_set_blob_properties_mock
-    assert @mock_file.set_properties
-  end
-
-  def test_get_blob_metadata
-    @service.stub :get_blob_metadata, @get_metadata_result do
-      file = @file.get_metadata
-      assert_instance_of Fog::Storage::AzureRM::File, file
-      assert_equal @get_metadata_result, file.metadata
-    end
-  end
-
-  def test_get_blob_metadata_http_exception
-    http_exception = -> (_container_name, _blob_name, _option) { raise Azure::Core::Http::HTTPError.new(@mocked_response) }
-    @blob_client.stub :get_blob_metadata, http_exception do
-      assert_raises(RuntimeError) do
-        @file.get_metadata
-      end
-    end
-  end
-
-  def test_get_blob_metadata_mock
-    blob = @mock_file.get_metadata
-    assert_instance_of Fog::Storage::AzureRM::File, blob
-    assert_equal @get_metadata_result, blob.metadata
-  end
-
-  def test_set_blob_metadata
-    @service.stub :set_blob_metadata, true do
-      assert @file.set_metadata(@get_metadata_result)
-    end
-  end
-
-  def test_set_blob_metadata_http_exception
-    http_exception = -> (_container_name, _blob_name, _metadata, _option) { raise Azure::Core::Http::HTTPError.new(@mocked_response) }
-    @blob_client.stub :set_blob_metadata, http_exception do
-      assert_raises(RuntimeError) do
-        @file.set_metadata @get_metadata_result
-      end
-    end
-  end
-
-  def test_set_blob_metadata_mock
-    assert @mock_file.set_metadata(@get_metadata_result)
-  end
-
-  def test_delete_method_true_response
+  def test_destroy_method_success
     @service.stub :delete_blob, true do
       assert @file.destroy
+      assert @file.attributes[:body].nil?
     end
   end
 
-  def test_delete_method_exception
-    exception = -> (_container_name, _blob_name, _option) { raise Azure::Core::Http::HTTPError.new(@mocked_response) }
-    @blob_client.stub :delete_blob, exception do
-      assert_raises(RuntimeError) do
-        assert @file.destroy
+  def test_destroy_method_without_directory_exception
+    assert_raises(ArgumentError) do
+      @file.attributes.delete(:directory)
+      @file.destroy
+    end
+  end
+
+  def test_destroy_method_without_key_exception
+    assert_raises(ArgumentError) do
+      @file.attributes.delete(:key)
+      @file.destroy
+    end
+  end
+
+  def test_public_method_success
+    @file.directory.acl = 'container'
+    assert @file.public?
+
+    @file.directory.acl = 'blob'
+    assert @file.public?
+
+    @file.directory.acl = nil
+    assert !@file.public?
+  end
+
+  def test_public_method_without_directory_exception
+    assert_raises(ArgumentError) do
+      @file.attributes.delete(:directory)
+      @file.public?
+    end
+  end
+
+  def test_public_url_method_success
+    @file.stub :public?, false do
+      assert @file.public_url.nil?
+    end
+
+    @file.stub :public?, true do
+      @service.stub :get_blob_url, @blob_https_url do
+        assert @file.public_url, @blob_https_url
+      end
+    end
+
+    http_url = @blob_https_url.gsub('https:', 'http:')
+    options = { scheme: 'https' }
+    @file.stub :public?, true do
+      @service.stub :get_blob_url, http_url do
+        assert @file.public_url(options), http_url
       end
     end
   end
 
-  def test_delete_method_response_mock
-    assert @mock_file.destroy
+  def test_public_url_method_without_directory_exception
+    assert_raises(ArgumentError) do
+      @file.attributes.delete(:directory)
+      @file.public_url
+    end
+  end
+
+  def test_public_url_method_without_key_exception
+    assert_raises(ArgumentError) do
+      @file.attributes.delete(:key)
+      @file.public_url
+    end
+  end
+
+  def test_url_method_success
+    @file.collection.stub :get_url, @blob_https_url do
+      assert @file.url(Time.now + 3600), @blob_https_url
+    end
+  end
+
+  def test_url_method_without_key_exception
+    assert_raises(ArgumentError) do
+      @file.attributes.delete(:key)
+      @file.url(Time.now + 3600)
+    end
   end
 end

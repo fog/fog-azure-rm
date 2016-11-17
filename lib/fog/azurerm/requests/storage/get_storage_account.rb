@@ -8,8 +8,8 @@ module Fog
           Fog::Logger.debug msg
           begin
             storage_account = @storage_mgmt_client.storage_accounts.get_properties(resource_group_name, storage_account_name)
-          rescue MsRestAzure::AzureOperationError => e
-            raise_azure_exception(e, msg)
+          rescue MsRestAzure::AzureOperationError => ex
+            raise_azure_exception(ex, msg)
           end
           Fog::Logger.debug "Getting storage account: #{storage_account_name} successfully."
           storage_account

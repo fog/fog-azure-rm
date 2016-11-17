@@ -4,13 +4,16 @@ module Fog
       # This class provides the actual implementation for service calls.
       class Real
         def create_container(name, options = {})
-          msg = "Creating container: #{name}."
+          options[:request_id] = SecureRandom.uuid
+          msg = "Creating container: #{name}. options: #{options}"
           Fog::Logger.debug msg
+
           begin
             container = @blob_client.create_container(name, options)
           rescue Azure::Core::Http::HTTPError => ex
             raise_azure_exception(ex, msg)
           end
+
           Fog::Logger.debug "Container #{name} created successfully."
           container
         end
@@ -20,16 +23,15 @@ module Fog
       class Mock
         def create_container(*)
           {
-            'name' => 'testcontainer1',
-            'properties' =>
-              {
-                'last_modified' => 'Mon, 04 Jul 2016 02:50:20 GMT',
-                'etag' => '0x8D3A3B5F017F52D',
-                'lease_status' => 'unlocked',
-                'lease_state' => 'available'
-              },
+            'name' => 'test_container',
             'public_access_level' => nil,
-            'metadata' => {}
+            'metadata' => {},
+            'properties' => {
+              'last_modified' => 'Mon, 04 Jul 2016 02:50:20 GMT',
+              'etag' => '0x8D3A3B5F017F52D',
+              'lease_status' => 'unlocked',
+              'lease_state' => 'available'
+            }
           }
         end
       end

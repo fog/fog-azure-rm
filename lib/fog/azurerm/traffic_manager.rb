@@ -35,8 +35,10 @@ module Fog
           end
 
           credentials = Fog::Credentials::AzureRM.get_credentials(options[:tenant_id], options[:client_id], options[:client_secret])
+          telemetry = "fog-azure-rm/#{Fog::AzureRM::VERSION}"
           @traffic_mgmt_client = ::Azure::ARM::TrafficManager::TrafficManagerManagementClient.new(credentials, resource_manager_endpoint_url)
           @traffic_mgmt_client.subscription_id = options[:subscription_id]
+          @traffic_mgmt_client.add_user_agent_information(telemetry)
         end
       end
       # This class provides the mock implementation for unit tests.

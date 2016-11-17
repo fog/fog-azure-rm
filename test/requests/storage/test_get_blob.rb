@@ -12,7 +12,7 @@ class TestGetBlob < Minitest::Test
     @service = Fog::Storage::AzureRM.new(storage_account_credentials)
     @blob_client = @service.instance_variable_get(:@blob_client)
 
-    @raw_cloud_blob = mock_storage_blob
+    @raw_cloud_blob = storage_blob
     @blob = ApiStub::Requests::Storage::File.blob
     @blob_with_content = [
       @blob,

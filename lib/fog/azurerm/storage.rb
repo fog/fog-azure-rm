@@ -58,6 +58,9 @@ module Fog
       request :commit_blob_blocks
       request :create_page_blob
       request :put_blob_pages
+      request :wait_blob_copy_operation_to_finish
+      request :save_page_blob
+      request :multipart_save_block_blob
 
       # Azure Recovery Vault requests
       request :create_or_update_recovery_vault

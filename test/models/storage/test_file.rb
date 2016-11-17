@@ -4,9 +4,9 @@ require File.expand_path '../../test_helper', __dir__
 class TestFile < Minitest::Test
   def setup
     @service = Fog::Storage::AzureRM.new(storage_account_credentials)
-    @directory = mock_storage_directory(@service)
-    @file = mock_storage_file(@service)
-    @raw_cloud_blob = mock_storage_blob
+    @directory = directory(@service)
+    @file = file(@service)
+    @raw_cloud_blob = storage_blob
 
     @mocked_response = mocked_storage_http_error
     @blob = ApiStub::Models::Storage::File.blob
@@ -73,101 +73,12 @@ class TestFile < Minitest::Test
     end
   end
 
-  def test_save_method_with_small_block_blob_with_file_handle_success
-    data_length = 1025
-    temp_file = '/dev/null'
-    File.open(temp_file, 'r') do |file_handle|
-      @file.body = file_handle
-      file_handle.stub :size, data_length do
-        @service.stub :create_block_blob, @raw_cloud_blob do
-          assert @file.save
-        end
-      end
-    end
-  end
-
   def test_save_method_with_large_block_blob_success
     @file.body = 'd' * (32 * 1024 * 1024 + 1) # SINGLE_BLOB_PUT_THRESHOLD is 32 * 1024 * 1024
 
-    @service.stub :create_block_blob, @raw_cloud_blob do
-      @service.stub :put_blob_block, true do
-        @service.stub :commit_blob_blocks, true do
-          @service.stub :get_blob_properties, @raw_cloud_blob do
-            assert @file.save
-          end
-        end
-      end
-    end
-  end
-
-  def test_save_method_with_large_block_blob_with_file_handle_success
-    i = 0
-    multiple_values = lambda do |*|
-      i += 1
-      return 'd' * 4 * 1024 * 1024 if i == 1
-      return 'd' * (1 * 1024 * 1024 + 1) if i == 2
-      return nil
-    end
-    temp_file = '/dev/null'
-    File.open(temp_file, 'r') do |file_handle|
-      @file.body = file_handle
-      file_handle.stub :size, 64 * 1024 * 1024 + 1 do # Force to test multipart_save_block_blob
-        file_handle.stub :read, multiple_values do
-          file_handle.stub :rewind, nil do
-            @service.stub :create_block_blob, @raw_cloud_blob do
-              @service.stub :put_blob_block, true do
-                @service.stub :commit_blob_blocks, true do
-                  @service.stub :get_blob_properties, @raw_cloud_blob do
-                    assert @file.save
-                  end
-                end
-              end
-            end
-          end
-        end
-      end
-    end
-  end
-
-  def test_save_method_with_large_block_blob_with_file_handle_do_not_support_rewind_success
-    i = 0
-    multiple_values = lambda do |*|
-      i += 1
-      return 'd' * 4 * 1024 * 1024 if i == 1
-      return 'd' * (1 * 1024 * 1024 + 1) if i == 2
-      return nil
-    end
-    temp_file = '/dev/null'
-    exception = ->(*) { raise 'do not support rewind' }
-    File.open(temp_file, 'r') do |file_handle|
-      @file.body = file_handle
-      file_handle.stub :size, 64 * 1024 * 1024 + 1 do # Force to test multipart_save_block_blob
-        file_handle.stub :read, multiple_values do
-          file_handle.stub :rewind, exception do
-            @service.stub :create_block_blob, @raw_cloud_blob do
-              @service.stub :put_blob_block, true do
-                @service.stub :commit_blob_blocks, true do
-                  @service.stub :get_blob_properties, @raw_cloud_blob do
-                    assert @file.save
-                  end
-                end
-              end
-            end
-          end
-        end
-      end
-    end
-  end
-
-  def test_save_method_with_large_block_blob_fail_when_delete_blob_http_exception
-    @file.body = 'd' * (32 * 1024 * 1024 + 1) # SINGLE_BLOB_PUT_THRESHOLD is 32 * 1024 * 1024
-
-    http_exception = ->(*) { raise Azure::Core::Http::HTTPError.new(@mocked_response) }
-    @service.stub :create_block_blob, http_exception do
-      @service.stub :delete_blob, http_exception do
-        assert_raises(Azure::Core::Http::HTTPError) do
-          @file.save
-        end
+    @service.stub :multipart_save_block_blob, true do
+      @service.stub :get_blob_properties, @raw_cloud_blob do
+        assert @file.save
       end
     end
   end
@@ -177,70 +88,9 @@ class TestFile < Minitest::Test
     @file.metadata = @metadata
     @file.body = 'd' * 5 * 1024 * 1024 # MAXIMUM_CHUNK_SIZE is 4 * 1024 * 1024
 
-    @service.stub :create_page_blob, true do
-      @service.stub :put_blob_pages, true do
-        @service.stub :get_blob_properties, @raw_cloud_blob do
-          assert @file.save(options)
-        end
-      end
-    end
-  end
-
-  def test_save_method_with_page_blob_with_file_handle_success
-    options = { blob_type: 'PageBlob' }
-    data_length = 5 * 1024 * 1024 # MAXIMUM_CHUNK_SIZE is 4 * 1024 * 1024
-    i = 0
-    multiple_values = lambda do |*|
-      i += 1
-      return 'd' * 4 * 1024 * 1024 if i == 1
-      return 'd' * 1 * 1024 * 1024 if i == 2
-      return nil
-    end
-    temp_file = '/dev/null'
-    File.open(temp_file, 'r') do |file_handle|
-      @file.body = file_handle
-      file_handle.stub :read, multiple_values do
-        file_handle.stub :size, data_length do
-          file_handle.stub :rewind, nil do
-            @service.stub :create_page_blob, true do
-              @service.stub :put_blob_pages, true do
-                @service.stub :get_blob_properties, @raw_cloud_blob do
-                  assert @file.save(options)
-                end
-              end
-            end
-          end
-        end
-      end
-    end
-  end
-
-  def test_save_method_with_page_blob_with_file_handle_do_not_support_rewind_success
-    options = { blob_type: 'PageBlob' }
-    data_length = 5 * 1024 * 1024 # MAXIMUM_CHUNK_SIZE is 4 * 1024 * 1024
-    i = 0
-    multiple_values = lambda do |*|
-      i += 1
-      return 'd' * 4 * 1024 * 1024 if i == 1
-      return 'd' * 1 * 1024 * 1024 if i == 2
-      return nil
-    end
-    temp_file = '/dev/null'
-    exception = ->(*) { raise 'do not support rewind' }
-    File.open(temp_file, 'r') do |file_handle|
-      @file.body = file_handle
-      file_handle.stub :read, multiple_values do
-        file_handle.stub :size, data_length do
-          file_handle.stub :rewind, exception do
-            @service.stub :create_page_blob, true do
-              @service.stub :put_blob_pages, true do
-                @service.stub :get_blob_properties, @raw_cloud_blob do
-                  assert @file.save(options)
-                end
-              end
-            end
-          end
-        end
+    @service.stub :save_page_blob, true do
+      @service.stub :get_blob_properties, @raw_cloud_blob do
+        assert @file.save(options)
       end
     end
   end
@@ -253,43 +103,6 @@ class TestFile < Minitest::Test
       @service.stub :put_blob_properties, true do
         @service.stub :get_blob_properties, @raw_cloud_blob do
           assert @file.save(options)
-        end
-      end
-    end
-  end
-
-  def test_save_method_http_exception
-    options = { blob_type: 'PageBlob' }
-    @file.body = 'd' * 5 * 1024 * 1024 # MAXIMUM_CHUNK_SIZE is 4 * 1024 * 1024
-
-    http_exception = ->(*) { raise Azure::Core::Http::HTTPError.new(@mocked_response) }
-    @service.stub :create_page_blob, http_exception do
-      @service.stub :delete_blob, true do
-        assert_raises(Azure::Core::Http::HTTPError) do
-          @file.save(options)
-        end
-      end
-    end
-  end
-
-  def test_save_method_page_blob_invalid_size
-    options = { blob_type: 'PageBlob' }
-    @file.body = 'd' * 1025 # The page blob size must be aligned to a 512-byte boundary.
-
-    assert_raises(RuntimeError) do
-      @file.save(options)
-    end
-  end
-
-  def test_save_method_with_page_blob_fail_when_delete_blob_http_exception
-    options = { blob_type: 'PageBlob' }
-    @file.body = 'd' * 5 * 1024 * 1024 # MAXIMUM_CHUNK_SIZE is 4 * 1024 * 1024
-
-    http_exception = ->(*) { raise Azure::Core::Http::HTTPError.new(@mocked_response) }
-    @service.stub :create_page_blob, http_exception do
-      @service.stub :delete_blob, http_exception do
-        assert_raises(Azure::Core::Http::HTTPError) do
-          @file.save(options)
         end
       end
     end
@@ -356,159 +169,13 @@ class TestFile < Minitest::Test
     copy_id = @raw_cloud_blob.properties[:copy_id]
     copy_status = 'pending'
 
-    i = 0
-    multiple_values = lambda do |*|
-      i += 1
-      if i == 1
-        @raw_cloud_blob.properties[:copy_status] = copy_status
-        @raw_cloud_blob.properties[:copy_progress] = '0/1024'
-        @raw_cloud_blob.properties[:copy_status_description] = 'in progress'
-        return @raw_cloud_blob
-      end
-
-      if i == 2
-        @raw_cloud_blob.properties[:copy_status] = copy_status
-        @raw_cloud_blob.properties[:copy_progress] = '2/1024'
-        @raw_cloud_blob.properties[:copy_status_description] = 'in progress'
-        return @raw_cloud_blob
-      end
-
-      if i == 3
-        @raw_cloud_blob.properties[:copy_status] = copy_status
-        @raw_cloud_blob.properties[:copy_progress] = '1023/1024'
-        @raw_cloud_blob.properties[:copy_status_description] = 'in progress'
-        return @raw_cloud_blob
-      end
-
-      @raw_cloud_blob.properties[:copy_status] = 'success'
-      @raw_cloud_blob.properties[:copy_progress] = '1024/1024'
-      @raw_cloud_blob.properties[:copy_status_description] = 'finish'
-      @raw_cloud_blob
-    end
-
-    @service.stub :get_blob_properties, multiple_values do
-      @service.stub :copy_blob, [copy_id, copy_status] do
-        target_file = @file.copy('target_container', 'target_blob')
-        assert_instance_of Fog::Storage::AzureRM::File, target_file
-      end
-    end
-  end
-
-  def test_copy_method_with_copy_return_success
-    copy_id = nil
-    copy_status = 'success'
-
     @service.stub :get_blob_properties, @raw_cloud_blob do
       @service.stub :copy_blob, [copy_id, copy_status] do
-        target_file = @file.copy('target_container', 'target_blob')
-        assert_instance_of Fog::Storage::AzureRM::File, target_file
-      end
-    end
-  end
-
-  def test_copy_method_with_copy_id_is_nil
-    copy_id = nil
-    copy_status = 'pending'
-
-    @service.stub :get_blob_properties, @raw_cloud_blob do
-      @service.stub :copy_blob, [copy_id, copy_status] do
-        target_file = @file.copy('target_container', 'target_blob')
-        assert_instance_of Fog::Storage::AzureRM::File, target_file
-      end
-    end
-  end
-
-  def test_copy_method_with_copy_id_not_match_exception
-    copy_id = 'copy_id'
-    copy_status = 'pending'
-
-    @service.stub :get_blob_properties, @raw_cloud_blob do
-      @service.stub :copy_blob, [copy_id, copy_status] do
-        @service.stub :delete_blob, true do
-          assert_raises(RuntimeError) do
-            @file.copy('target_container', 'target_blob')
-          end
+        @service.stub :wait_blob_copy_operation_to_finish, true do
+          target_file = @file.copy('target_container', 'target_blob')
+          assert_instance_of Fog::Storage::AzureRM::File, target_file
         end
       end
-    end
-  end
-
-  def test_copy_method_with_timeout_exception
-    copy_id = @raw_cloud_blob.properties[:copy_id]
-    copy_status = 'pending'
-
-    i = 0
-    multiple_values = lambda do |*|
-      i += 1
-      if i == 1
-        @raw_cloud_blob.properties[:copy_status] = copy_status
-        @raw_cloud_blob.properties[:copy_progress] = '0/1024'
-        @raw_cloud_blob.properties[:copy_status_description] = 'in progress'
-        return @raw_cloud_blob
-      end
-
-      @raw_cloud_blob.properties[:copy_status] = copy_status
-      @raw_cloud_blob.properties[:copy_progress] = '0/1024'
-      @raw_cloud_blob.properties[:copy_status_description] = 'in progress'
-      @raw_cloud_blob
-    end
-    options = { timeout: 2 }
-
-    @service.stub :get_blob_properties, multiple_values do
-      @service.stub :copy_blob, [copy_id, copy_status] do
-        @service.stub :delete_blob, true do
-          assert_raises(TimeoutError) do
-            @file.copy('target_container', 'target_blob', options)
-          end
-        end
-      end
-    end
-  end
-
-  def test_copy_method_with_fail_exception
-    copy_id = @raw_cloud_blob.properties[:copy_id]
-    copy_status = 'pending'
-
-    @raw_cloud_blob.properties[:copy_status] = 'failed'
-    @service.stub :get_blob_properties, @raw_cloud_blob do
-      @service.stub :copy_blob, [copy_id, copy_status] do
-        @service.stub :delete_blob, true do
-          assert_raises(RuntimeError) do
-            @file.copy('target_container', 'target_blob')
-          end
-        end
-      end
-    end
-  end
-
-  def test_copy_method_with_fail_when_delete_blob_http_exception
-    copy_id = @raw_cloud_blob.properties[:copy_id]
-    copy_status = 'pending'
-
-    @raw_cloud_blob.properties[:copy_status] = 'failed'
-    http_exception = ->(*) { raise Azure::Core::Http::HTTPError.new(@mocked_response) }
-    @service.stub :get_blob_properties, @raw_cloud_blob do
-      @service.stub :copy_blob, [copy_id, copy_status] do
-        @service.stub :delete_blob, http_exception do
-          assert_raises(RuntimeError) do
-            @file.copy('target_container', 'target_blob')
-          end
-        end
-      end
-    end
-  end
-
-  def test_copy_method_without_directory_exception
-    assert_raises(ArgumentError) do
-      @file.attributes.delete(:directory)
-      @file.copy('test_container', 'test_blob')
-    end
-  end
-
-  def test_copy_method_without_key_exception
-    assert_raises(ArgumentError) do
-      @file.attributes.delete(:key)
-      @file.copy('test_container', 'test_blob')
     end
   end
 
@@ -516,140 +183,10 @@ class TestFile < Minitest::Test
     copy_id = @raw_cloud_blob.properties[:copy_id]
     copy_status = 'pending'
 
-    i = 0
-    multiple_values = lambda do |*|
-      i += 1
-      if i == 1
-        @raw_cloud_blob.properties[:copy_status] = copy_status
-        @raw_cloud_blob.properties[:copy_progress] = '0/1024'
-        @raw_cloud_blob.properties[:copy_status_description] = 'in progress'
-        return @raw_cloud_blob
-      end
-
-      if i == 2
-        @raw_cloud_blob.properties[:copy_status] = copy_status
-        @raw_cloud_blob.properties[:copy_progress] = '2/1024'
-        @raw_cloud_blob.properties[:copy_status_description] = 'in progress'
-        return @raw_cloud_blob
-      end
-
-      if i == 3
-        @raw_cloud_blob.properties[:copy_status] = copy_status
-        @raw_cloud_blob.properties[:copy_progress] = '1023/1024'
-        @raw_cloud_blob.properties[:copy_status_description] = 'in progress'
-        return @raw_cloud_blob
-      end
-
-      @raw_cloud_blob.properties[:copy_status] = 'success'
-      @raw_cloud_blob.properties[:copy_progress] = '1024/1024'
-      @raw_cloud_blob.properties[:copy_status_description] = 'finish'
-      @raw_cloud_blob
-    end
-
-    @service.stub :get_blob_properties, multiple_values do
-      @service.stub :copy_blob_from_uri, [copy_id, copy_status] do
-        assert @file.copy_from_uri('source_uri')
-      end
-    end
-  end
-
-  def test_copy_from_uri_method_with_copy_blob_from_uri_return_success
-    copy_id = nil
-    copy_status = 'success'
-
     @service.stub :get_blob_properties, @raw_cloud_blob do
       @service.stub :copy_blob_from_uri, [copy_id, copy_status] do
-        assert @file.copy_from_uri('source_uri')
-      end
-    end
-  end
-
-  def test_copy_from_uri_method_with_copy_id_is_nil
-    copy_id = nil
-    copy_status = 'pending'
-
-    @service.stub :get_blob_properties, @raw_cloud_blob do
-      @service.stub :copy_blob_from_uri, [copy_id, copy_status] do
-        assert @file.copy_from_uri('source_uri')
-      end
-    end
-  end
-
-  def test_copy_from_uri_method_with_copy_id_not_match_exception
-    copy_id = 'copy_id'
-    copy_status = 'pending'
-
-    @service.stub :get_blob_properties, @raw_cloud_blob do
-      @service.stub :copy_blob_from_uri, [copy_id, copy_status] do
-        @service.stub :delete_blob, true do
-          assert_raises(RuntimeError) do
-            @file.copy_from_uri('source_uri')
-          end
-        end
-      end
-    end
-  end
-
-  def test_copy_from_uri_method_with_timeout_exception
-    copy_id = @raw_cloud_blob.properties[:copy_id]
-    copy_status = 'pending'
-
-    i = 0
-    multiple_values = lambda do |*|
-      i += 1
-      if i == 1
-        @raw_cloud_blob.properties[:copy_status] = copy_status
-        @raw_cloud_blob.properties[:copy_progress] = '0/1024'
-        @raw_cloud_blob.properties[:copy_status_description] = 'in progress'
-        return @raw_cloud_blob
-      end
-
-      @raw_cloud_blob.properties[:copy_status] = copy_status
-      @raw_cloud_blob.properties[:copy_progress] = '0/1024'
-      @raw_cloud_blob.properties[:copy_status_description] = 'in progress'
-      @raw_cloud_blob
-    end
-    options = { timeout: 2 }
-
-    @service.stub :get_blob_properties, multiple_values do
-      @service.stub :copy_blob_from_uri, [copy_id, copy_status] do
-        @service.stub :delete_blob, true do
-          assert_raises(TimeoutError) do
-            assert @file.copy_from_uri('source_uri', options)
-          end
-        end
-      end
-    end
-  end
-
-  def test_copy_from_uri_method_with_fail_exception
-    copy_id = @raw_cloud_blob.properties[:copy_id]
-    copy_status = 'pending'
-
-    @raw_cloud_blob.properties[:copy_status] = 'failed'
-    @service.stub :get_blob_properties, @raw_cloud_blob do
-      @service.stub :copy_blob_from_uri, [copy_id, copy_status] do
-        @service.stub :delete_blob, true do
-          assert_raises(RuntimeError) do
-            @file.copy_from_uri('source_uri')
-          end
-        end
-      end
-    end
-  end
-
-  def test_copy_from_uri_method_with_fail_when_delete_blob_http_exception
-    copy_id = @raw_cloud_blob.properties[:copy_id]
-    copy_status = 'pending'
-
-    @raw_cloud_blob.properties[:copy_status] = 'failed'
-    http_exception = ->(*) { raise Azure::Core::Http::HTTPError.new(@mocked_response) }
-    @service.stub :get_blob_properties, @raw_cloud_blob do
-      @service.stub :copy_blob_from_uri, [copy_id, copy_status] do
-        @service.stub :delete_blob, http_exception do
-          assert_raises(RuntimeError) do
-            @file.copy_from_uri('source_uri')
-          end
+        @service.stub :wait_blob_copy_operation_to_finish, true do
+          assert @file.copy_from_uri('source_uri')
         end
       end
     end

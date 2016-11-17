@@ -180,7 +180,7 @@ def premium_check_for_invalid_replications(service)
   )
 end
 
-def mock_storage_directory(service)
+def directory(service)
   Fog::Storage::AzureRM::Directory.new(
     key: 'test_container',
     acl: 'container',
@@ -198,10 +198,10 @@ def mock_storage_directory(service)
   )
 end
 
-def mock_storage_file(service)
+def file(service)
   Fog::Storage::AzureRM::File.new(
     key: 'test_blob',
-    directory: mock_storage_directory(service),
+    directory: directory(service),
     last_modified: Time.parse('Tue, 04 Aug 2015 06:01:08 GMT'),
     etag: '0x8D29C92176C8352',
     metadata: {
@@ -228,11 +228,11 @@ def mock_storage_file(service)
     copy_status_description: nil,
     accept_ranges: 0,
     service: service,
-    collection: Fog::Storage::AzureRM::Files.new(service: @service, directory: mock_storage_directory(service))
+    collection: Fog::Storage::AzureRM::Files.new(service: @service, directory: directory(service))
   )
 end
 
-def mock_storage_blob
+def storage_blob
   mock_blob = MockBlob.new
   mock_blob.name = 'test_blob'
   mock_blob.properties = {

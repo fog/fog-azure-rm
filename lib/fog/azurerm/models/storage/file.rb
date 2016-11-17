@@ -31,17 +31,6 @@ module Fog
         attribute :blob_type,               aliases: %w(Blob-Type BlobType)
         attribute :metadata
 
-        # https://msdn.microsoft.com/en-us/library/azure/dd179451.aspx
-        # The maximum size for a block blob created via Put Blob is 64 MB. But for better performance, this size should be 32 MB.
-        # If your blob is larger than 32 MB, you must upload it as a set of blocks.
-        SINGLE_BLOB_PUT_THRESHOLD = 32 * 1024 * 1024
-        # Block blob: https://msdn.microsoft.com/en-us/library/azure/dd135726.aspx
-        # Page blob: https://msdn.microsoft.com/en-us/library/azure/ee691975.aspx
-        # Each block/page can be a different size, up to a maximum of 4 MB
-        MAXIMUM_CHUNK_SIZE = 4 * 1024 * 1024
-        # The hash value of 4MB empty content
-        HASH_OF_4MB_EMPTY_CONTENT = 'b5cfa9d6c8febd618f91ac2843d50a1c'.freeze
-
         # Save the file to the directory in Azure storage.
         # TODO: Support snapshots.
         #
@@ -51,10 +40,15 @@ module Fog
         # @param options  [Hash]
         # @option options [Boolean] update_body        Sets whether to upload the body of the file. Default is true.
         #                                              Will update metadata and properties when update_body is set to false.
+        # @option options [Integer] worker_thread_num  Sets how many worker threads to upload the body. Default is 16.
         # @option options [String] blob_type or
         #                          Blob-Type           Sets blob type for the file. Options: 'BlockBlob' or 'PageBlob'. Default is 'BlockBlob'.
         # @option options [String] content_type or
         #                          Content-Type        Sets content type for the file. For example, 'text/plain'.
+        # @option options [String] content_md5 or
+        #                          Content-MD5         Sets content MD5 hash for the file. Only for store.
+        #                                              When a block file whose size <= 32 MB, Azure will verify the integrity of the blob during transport.
+        #                                              Please reference this issue: https://github.com/Azure/azure-storage-ruby/issues/64
         # @option options [String] content_encoding or
         #                          Content-Encoding    Sets content encoding for the file. For example, 'x-gzip'.
         # @option options [String] content_language or
@@ -77,6 +71,7 @@ module Fog
             options,
             'Blob-Type'           => :blob_type,
             'Content-Type'        => :content_type,
+            'Content-MD5'         => :content_md5,
             'Content-Encoding'    => :content_encoding,
             'Content-Language'    => :content_language,
             'Cache-Control'       => :cache_control,
@@ -85,13 +80,14 @@ module Fog
           options = {
             blob_type: blob_type,
             content_type: content_type,
+            content_md5: content_md5,
             content_encoding: content_encoding,
             content_language: content_language,
             cache_control: cache_control,
             content_disposition: content_disposition,
             metadata: metadata
           }.merge!(options)
-          options = options.reject { |key, value| key == 'content_md5' || value.nil? || value.to_s.empty? }
+          options = options.reject { |_key, value| value.nil? || value.to_s.empty? }
 
           if update_body
             blob = save_blob(options)
@@ -156,7 +152,7 @@ module Fog
 
           timeout = options.delete(:timeout)
           copy_id, copy_status = service.copy_blob(target_directory_key, target_file_key, directory.key, key, options)
-          wait_copy_operation_to_finish(target_directory_key, target_file_key, copy_id, copy_status, timeout)
+          service.wait_blob_copy_operation_to_finish(target_directory_key, target_file_key, copy_id, copy_status, timeout)
 
           target_directory = service.directories.new(key: target_directory_key)
           target_directory.files.head(target_file_key)
@@ -177,7 +173,7 @@ module Fog
 
           timeout = options.delete(:timeout)
           copy_id, copy_status = service.copy_blob_from_uri(directory.key, key, source_uri, options)
-          wait_copy_operation_to_finish(directory.key, key, copy_id, copy_status, timeout)
+          service.wait_blob_copy_operation_to_finish(directory.key, key, copy_id, copy_status, timeout)
 
           blob = service.get_blob_properties(directory.key, key)
           data = parse_storage_object(blob)
@@ -247,149 +243,19 @@ module Fog
 
         private
 
-        # Wait the copy operation to finish
-        def wait_copy_operation_to_finish(target_directory_key, target_file_key, copy_id, copy_status, timeout)
-          start_time = Time.new
-          while copy_status == COPY_STATUS[:PENDING]
-            blob = service.get_blob_properties(target_directory_key, target_file_key)
-            blob_props = blob.properties
-            if !copy_id.nil? && blob_props[:copy_id] != copy_id
-              raise "The progress of copying to #{target_directory_key}/#{target_file_key} was interrupted by other copy operations."
-            end
-
-            copy_status_description = blob_props[:copy_status_description]
-            copy_status = blob_props[:copy_status]
-            break if copy_status != COPY_STATUS[:PENDING]
-
-            elapse_time = Time.new - start_time
-            raise TimeoutError.new("The copy operation cannot be finished in #{timeout} seconds") if !timeout.nil? && elapse_time >= timeout
-
-            copied_bytes, total_bytes = blob_props[:copy_progress].split('/').map(&:to_i)
-            interval = copied_bytes.zero? ? 5 : (total_bytes - copied_bytes).to_f / copied_bytes * elapse_time
-            interval = 30 if interval > 30
-            interval = 1 if interval < 1
-            sleep(interval)
-          end
-
-          if copy_status != COPY_STATUS[:SUCCESS]
-            raise "Failed to copy to #{target_directory_key}/#{target_file_key}: \n\tcopy status: #{copy_status}\n\tcopy description: #{copy_status_description}"
-          end
-        rescue => e
-          # Abort the copy & reraise
-          begin
-            service.delete_blob(target_directory_key, target_file_key)
-          rescue
-            nil
-          end
-          raise e
-        end
-
         # Upload blob
         def save_blob(options)
           if options[:blob_type].nil? || options[:blob_type] == 'BlockBlob'
             if Fog::Storage.get_body_size(body) <= SINGLE_BLOB_PUT_THRESHOLD
               service.create_block_blob(directory.key, key, body, options)
             else
-              multipart_save_block_blob(options)
+              service.multipart_save_block_blob(directory.key, key, body, options)
               service.get_blob_properties(directory.key, key)
             end
           else
-            blob_size = Fog::Storage.get_body_size(body)
-            raise "The page blob size must be aligned to a 512-byte boundary. But the file size is #{blob_size}." if (blob_size % 512).nonzero?
-
-            save_page_blob(blob_size, options)
+            service.save_page_blob(directory.key, key, body, options)
             service.get_blob_properties(directory.key, key)
           end
-        end
-
-        # Upload a large block blob
-        def multipart_save_block_blob(options)
-          # Initiate the upload
-          service.create_block_blob(directory.key, key, nil, options)
-
-          # Store block id of upload parts
-          blocks = []
-
-          # Uploading parts
-          # TODO: Upload chunks in parallel using threads
-          if body.respond_to?(:read)
-            if body.respond_to?(:rewind)
-              begin
-                body.rewind
-              rescue
-                nil
-              end
-            end
-
-            loop do
-              data = body.read(MAXIMUM_CHUNK_SIZE)
-              break if data.nil?
-              block_id = Base64.strict_encode64(random_string(32))
-              service.put_blob_block(directory.key, key, block_id, data, options)
-              blocks << [block_id]
-            end
-          else
-            body.bytes.each_slice(MAXIMUM_CHUNK_SIZE) do |chunk|
-              block_id = Base64.strict_encode64(random_string(32))
-              service.put_blob_block(directory.key, key, block_id, chunk.pack('C*'), options)
-              blocks << [block_id]
-            end
-          end
-
-          # Complete the upload
-          service.commit_blob_blocks(directory.key, key, blocks, options)
-        rescue
-          # Abort the upload & reraise
-          begin
-            service.delete_blob(directory.key, key)
-          rescue
-            nil
-          end
-          raise
-        end
-
-        # Upload a page blob
-        def save_page_blob(blob_size, options)
-          # Initiate the upload
-          service.create_page_blob(directory.key, key, blob_size, options)
-
-          # Uploading content
-          # TODO: Upload content in parallel using threads
-          if body.respond_to?(:read)
-            if body.respond_to?(:rewind)
-              begin
-                body.rewind
-              rescue => e
-                Fog::Logger.debug "body responds to :rewind but throws an exception when calling :rewind: #{e.inspect}"
-                nil
-              end
-            end
-
-            start_range = 0
-            loop do
-              data = body.read(MAXIMUM_CHUNK_SIZE)
-              break if data.nil?
-              chunk_size = [MAXIMUM_CHUNK_SIZE, Fog::Storage.get_body_size(data)].min
-              service.put_blob_pages(directory.key, key, start_range, start_range + chunk_size - 1, data, options) if Digest::MD5.hexdigest(data) != HASH_OF_4MB_EMPTY_CONTENT
-              start_range += MAXIMUM_CHUNK_SIZE
-            end
-          else
-            start_range = 0
-            body.bytes.each_slice(MAXIMUM_CHUNK_SIZE) do |chunk|
-              data = chunk.pack('C*')
-              chunk_size = [MAXIMUM_CHUNK_SIZE, Fog::Storage.get_body_size(data)].min
-              service.put_blob_pages(directory.key, key, start_range, start_range + chunk_size - 1, data, options) if Digest::MD5.hexdigest(data) != HASH_OF_4MB_EMPTY_CONTENT
-              start_range += MAXIMUM_CHUNK_SIZE
-            end
-          end
-        rescue
-          # Abort the upload & reraise
-          begin
-            service.delete_blob(directory.key, key)
-          rescue
-            nil
-          end
-          raise
         end
       end
     end

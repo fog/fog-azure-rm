@@ -4,7 +4,7 @@ require File.expand_path '../../test_helper', __dir__
 class TestDirectory < Minitest::Test
   def setup
     @service = Fog::Storage::AzureRM.new(storage_account_credentials)
-    @directory = mock_storage_directory(@service)
+    @directory = directory(@service)
 
     @container = ApiStub::Models::Storage::Directory.container
     @container_acl = ApiStub::Models::Storage::Directory.container_acl

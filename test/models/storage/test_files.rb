@@ -4,7 +4,7 @@ require File.expand_path '../../test_helper', __dir__
 class TestFiles < Minitest::Test
   def setup
     @service = Fog::Storage::AzureRM.new(storage_account_credentials)
-    @directory = mock_storage_directory(@service)
+    @directory = directory(@service)
     @files = @directory.files
 
     @mocked_response = mocked_storage_http_error

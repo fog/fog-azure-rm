@@ -13,7 +13,7 @@ class TestPutBlobBlock < Minitest::Test
     @blob_client = @service.instance_variable_get(:@blob_client)
   end
 
-  def test_put_blob_block_with_service_success
+  def test_put_blob_block_success
     @blob_client.stub :put_blob_block, true do
       assert @service.put_blob_block('test_container', 'test_blob', 'id', 'data')
     end

@@ -15,7 +15,7 @@ class TestGetBlobProperties < Minitest::Test
     @blob = ApiStub::Requests::Storage::File.blob
   end
 
-  def test_get_blob_properties_with_service_success
+  def test_get_blob_properties_success
     @blob_client.stub :get_blob_properties, @blob do
       assert_equal @blob, @service.get_blob_properties('test_container', 'test_blob')
     end

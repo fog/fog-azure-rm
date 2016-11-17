@@ -7,7 +7,7 @@ module Fog
           msg = 'Getting list of Zones.'
           Fog::Logger.debug msg
           begin
-            zones = @dns_client.zones.list_in_subscription
+            zones = @dns_client.zones.list
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
@@ -20,7 +20,7 @@ module Fog
           msg = "Getting list of Zones in Resource Group #{resource_group}."
           Fog::Logger.debug msg
           begin
-            zones = @dns_client.zones.list_in_resource_group(resource_group)
+            zones = @dns_client.zones.list_by_resource_group(resource_group)
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end

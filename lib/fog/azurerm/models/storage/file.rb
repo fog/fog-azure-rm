@@ -40,7 +40,7 @@ module Fog
         # @param options  [Hash]
         # @option options [Boolean] update_body        Sets whether to upload the body of the file. Default is true.
         #                                              Will update metadata and properties when update_body is set to false.
-        # @option options [Integer] worker_thread_num  Sets how many worker threads to upload the body. Default is 16.
+        # @option options [Integer] worker_thread_num  Sets how many threads will be used to upload the body. Default is 8.
         # @option options [String] blob_type or
         #                          Blob-Type           Sets blob type for the file. Options: 'BlockBlob' or 'PageBlob'. Default is 'BlockBlob'.
         # @option options [String] content_type or

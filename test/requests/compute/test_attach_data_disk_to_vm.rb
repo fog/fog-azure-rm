@@ -14,11 +14,15 @@ class TestAttachDataDiskToVM < Minitest::Test
   end
 
   def test_attach_data_disk_to_vm_success
-    @virtual_machines.stub :get, @get_vm_response do
-      @storage_accounts.stub :list_keys, @storage_access_keys_response do
-        @virtual_machines.stub :create_or_update, @update_vm_response do
-          @service.stub :check_blob_exist, true do
-            assert_equal @service.attach_data_disk_to_vm('fog-test-rg', 'fog-test-vm', 'disk1', 1, 'mystorage1'), @update_vm_response
+    blob_service = Minitest::Mock.new
+    blob_service.expect :get_blob_properties, 'blob_props' do
+      Azure::Storage::Blob::BlobService.stub :new, blob_service do
+        @virtual_machines.stub :get, @get_vm_response do
+          @storage_accounts.stub :list_keys, @storage_access_keys_response do
+            @virtual_machines.stub :create_or_update, @update_vm_response do
+              assert_equal @service.attach_data_disk_to_vm('fog-test-rg', 'fog-test-vm', 'disk1', 1, 'mystorage1'), @update_vm_response
+              blob_service.verify
+            end
           end
         end
       end
@@ -30,10 +34,8 @@ class TestAttachDataDiskToVM < Minitest::Test
     @virtual_machines.stub :get, get_vm_response do
       @storage_accounts.stub :list_keys, @storage_access_keys_response do
         @virtual_machines.stub :create_or_update, @update_vm_response do
-          @service.stub :check_blob_exist, true do
-            assert_raises RuntimeError do
-              @service.attach_data_disk_to_vm('fog-test-rg', 'fog-test-vm', 'disk1', 1, 'mystorage1')
-            end
+          assert_raises RuntimeError do
+            @service.attach_data_disk_to_vm('fog-test-rg', 'fog-test-vm', 'disk1', 1, 'mystorage1')
           end
         end
       end
@@ -45,10 +47,8 @@ class TestAttachDataDiskToVM < Minitest::Test
     @virtual_machines.stub :get, @get_vm_response do
       @storage_accounts.stub :list_keys, @storage_access_keys_response do
         @virtual_machines.stub :create_or_update, update_vm_response do
-          @service.stub :check_blob_exist, true do
-            assert_raises RuntimeError do
-              @service.attach_data_disk_to_vm('fog-test-rg', 'fog-test-vm', 'disk1', 1, 'mystorage1')
-            end
+          assert_raises RuntimeError do
+            @service.attach_data_disk_to_vm('fog-test-rg', 'fog-test-vm', 'disk1', 1, 'mystorage1')
           end
         end
       end
@@ -60,10 +60,8 @@ class TestAttachDataDiskToVM < Minitest::Test
     @virtual_machines.stub :get, @get_vm_response do
       @storage_accounts.stub :list_keys, @storage_access_keys_response do
         @virtual_machines.stub :create_or_update, update_vm_response do
-          @service.stub :check_blob_exist, false do
-            assert_raises RuntimeError do
-              @service.attach_data_disk_to_vm('fog-test-rg', 'fog-test-vm', 'disk1', 1, 'mystorage1')
-            end
+          assert_raises RuntimeError do
+            @service.attach_data_disk_to_vm('fog-test-rg', 'fog-test-vm', 'disk1', 1, 'mystorage1')
           end
         end
       end

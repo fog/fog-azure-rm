@@ -14,8 +14,8 @@ module Fog
             storage_account = @storage_mgmt_client.storage_accounts.create(storage_account_hash[:resource_group],
                                                                            storage_account_hash[:name],
                                                                            storage_account_params)
-          rescue MsRestAzure::AzureOperationError => e
-            raise_azure_exception(e, msg)
+          rescue MsRestAzure::AzureOperationError => ex
+            raise_azure_exception(ex, msg)
           end
           Fog::Logger.debug 'Storage Account created successfully.'
           storage_account

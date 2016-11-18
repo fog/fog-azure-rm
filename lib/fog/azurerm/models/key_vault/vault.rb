@@ -17,7 +17,6 @@ module Fog
         attribute :enabled_for_template_deployment
 
         def self.parse(vault)
-          puts vault
           vault_hash = get_hash_from_object(vault)
           vault_properties = vault.properties
 
@@ -31,9 +30,11 @@ module Fog
             end
 
             vault_hash['access_policies'] = []
-            vault_properties.access_policies.each do |access_policy|
-              access_policy_entry = AccessPolicyEntry.new
-              vault_hash['access_policies'] << access_policy_entry.merge_attributes(AccessPolicyEntry.parse(access_policy))
+            unless vault_properties.access_policies.nil?
+              vault_properties.access_policies.each do |access_policy|
+                access_policy_entry = AccessPolicyEntry.new
+                vault_hash['access_policies'] << access_policy_entry.merge_attributes(AccessPolicyEntry.parse(access_policy))
+              end
             end
 
             vault_hash['enabled_for_deployment'] = vault_properties.enabled_for_deployment

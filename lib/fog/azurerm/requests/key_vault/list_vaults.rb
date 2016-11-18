@@ -48,7 +48,7 @@ module Fog
             }
           ]
           vaults_mapper = Azure::ARM::KeyVault::Models::VaultListResult.mapper
-          @kay_vault_client.deserialize(vaults_mapper, vaults, 'result.body')
+          @key_vault_client.deserialize(vaults_mapper, vaults, 'result.body')
         end
       end
     end

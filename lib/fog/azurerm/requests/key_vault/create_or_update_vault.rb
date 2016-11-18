@@ -84,12 +84,12 @@ module Fog
               'tenantId' => '<AZURE_TENANT_ID>',
               'accessPolicies' => [
                 {
-                   'tenantId' => '<AZURE_TENANT_ID>',
-                   'objectId' => '<AZURE_OBJECT_ID>',
-                   'permissions' => {
-                     'keys' => ['all'],
-                     'secrets' => ['all']
-                   }
+                  'tenantId' => '<AZURE_TENANT_ID>',
+                  'objectId' => '<AZURE_OBJECT_ID>',
+                  'permissions' => {
+                    'keys' => ['all'],
+                    'secrets' => ['all']
+                  }
                 }
               ],
               'enabledForDeployment' => false,

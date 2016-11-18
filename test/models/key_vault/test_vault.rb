@@ -29,8 +29,8 @@ class TestVault < Minitest::Test
 
   def test_model_methods
     methods = [
-        :save,
-        :destroy
+      :save,
+      :destroy
     ]
     methods.each do |method|
       assert_respond_to @vault, method

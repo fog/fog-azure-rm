@@ -11,8 +11,8 @@ class TestVaults < Minitest::Test
 
   def test_collection_methods
     methods = [
-        :all,
-        :get
+      :all,
+      :get
     ]
     methods.each do |method|
       assert_respond_to @vaults, method

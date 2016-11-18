@@ -80,7 +80,7 @@ class TestSavePageBlob < Minitest::Test
     @service.stub :create_page_blob, http_exception do
       @service.stub :delete_blob, true do
         assert_raises(Azure::Core::Http::HTTPError) do
-          assert @service.save_page_blob('test_container', 'test_blob', body, {})
+          @service.save_page_blob('test_container', 'test_blob', body, {})
         end
       end
     end

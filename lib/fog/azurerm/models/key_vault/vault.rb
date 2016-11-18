@@ -59,12 +59,6 @@ module Fog
 
         private
 
-        def validate_input(attr_hash)
-          # invalid_attr = [:resource_group, :name, :relative_name, :id]
-          # result = invalid_attr & attr_hash.keys
-          # raise 'Cannot modify the given attribute' unless result.empty?
-        end
-
         def vault_hash
           {
             resource_group: resource_group,

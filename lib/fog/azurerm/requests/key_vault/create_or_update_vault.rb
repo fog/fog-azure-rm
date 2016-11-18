@@ -42,8 +42,10 @@ module Fog
 
         def get_access_policies_object(access_policies_hash)
           access_policies_arr = []
-          access_policies_hash.each do |access_policy_hash|
-            access_policies_arr.push(get_access_policy_entry_object(access_policy_hash))
+          unless access_policies_hash.nil?
+            access_policies_hash.each do |access_policy_hash|
+              access_policies_arr.push(get_access_policy_entry_object(access_policy_hash))
+            end
           end
           access_policies_arr
         end

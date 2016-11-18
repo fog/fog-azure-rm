@@ -7,7 +7,7 @@ module Fog
           msg = "Listing Vaults in Resource Group: #{resource_group}."
           Fog::Logger.debug msg
           begin
-            vaults = @key_vault_client.vaults.list_by_resource_group(resource_group)
+            vaults = @key_vault_client.vaults.list_by_resource_group_as_lazy(resource_group)
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
@@ -48,7 +48,7 @@ module Fog
             }
           ]
           vaults_mapper = Azure::ARM::KeyVault::Models::VaultListResult.mapper
-          @key_vault_client.deserialize(vaults_mapper, vaults, 'result.body')
+          @key_vault_client.deserialize(vaults_mapper, vaults, 'result.body').value
         end
       end
     end

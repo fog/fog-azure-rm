@@ -108,6 +108,7 @@ module Fog
             require 'azure_mgmt_storage'
             require 'azure/storage'
             require 'securerandom'
+            require 'vhd'
             @debug = ENV['DEBUG'] || options[:debug]
             require 'azure/core/http/debug_filter' if @debug
           rescue LoadError => e

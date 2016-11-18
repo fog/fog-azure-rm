@@ -3,10 +3,22 @@ module Fog
     class AzureRM
       # This class provides the actual implementation for service calls.
       class Real
-        def delete_disk(disk_name)
-          msg = "Deleting Disk: #{disk_name}."
+        # Delete a disk in Azure storage.
+        #
+        # @param disk_name [String] Name of disk
+        # @param options  [Hash]
+        # @option options [String] container_name Sets name of the container which contains the disk. Default is 'vhds'.
+        #
+        # @return [Boolean]
+        #
+        def delete_disk(disk_name, options = {})
+          msg = "Deleting disk(#{disk_name}). options: #{options}"
           Fog::Logger.debug msg
-          delete_blob('vhds', "#{disk_name}.vhd")
+
+          container_name = options.delete(:container_name)
+          container_name = 'vhds' if container_name.nil?
+          delete_blob(container_name, "#{disk_name}.vhd")
+
           Fog::Logger.debug "Successfully deleted Disk: #{disk_name}."
           true
         end

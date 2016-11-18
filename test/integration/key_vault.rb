@@ -62,7 +62,7 @@ key_vault.vaults.create(
 
 vaults = key_vault.vaults(resource_group: 'TestRG-KV')
 vaults.each do |vault|
-  puts "#{vault.name}"
+  puts vault.name.to_s
 end
 
 ########################################################################################################################

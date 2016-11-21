@@ -23,60 +23,66 @@ storage = Fog::Storage::AzureRM.new(
 )
 
 ########################################################################################################################
+######################                               Resource names                                #####################
+########################################################################################################################
+
+time = current_time
+resource_group_name = "Blob-RG-#{time}"
+storage_account_name = "sa#{time}"
+container_name = 'vhds'
+test_container_name = 'disks'
+
+########################################################################################################################
 ######################                                 Prerequisites                              ######################
 ########################################################################################################################
 
 begin
   resource_group = rs.resource_groups.create(
-    name: 'TestRG-DD',
+    name: resource_group_name,
     location: LOCATION
   )
 
   storage_account = storage.storage_accounts.create(
-    name: 'fogstorageac',
+    name: storage_account_name,
     location: LOCATION,
-    resource_group: 'TestRG-DD',
-    account_type: 'Standard',
-    replication: 'LRS'
+    resource_group: resource_group_name
   )
 
-  access_key = storage_account.get_access_keys[0].value
-  Fog::Logger.debug access_key.inspect
   storage_data = Fog::Storage.new(
     provider: 'AzureRM',
     azure_storage_account_name: storage_account.name,
-    azure_storage_access_key: access_key
+    azure_storage_access_key: storage_account.get_access_keys[0].value
   )
   storage_data.directories.create(
-    key: 'vhds'
+    key: container_name,
+    public: false
+  )
+  storage_data.directories.create(
+    key: test_container_name,
+    public: false
   )
 
   ########################################################################################################################
   ######################                               Create Disk                                  ######################
   ########################################################################################################################
 
-  data_disk = storage_data.create_disk('datadisk1', options = {})
-  puts "Created data disk: #{data_disk.name}"
+  storage_data.create_disk('datadisk1', 10)
+  puts 'Created a disk in default container vhds'
+
+  storage_data.create_disk('datadisk2', 10, container_name: test_container_name)
+  puts 'Created a disk in non-default container'
 
   ########################################################################################################################
   ######################                                Delete Data Disk                            ######################
   ########################################################################################################################
 
-  puts "Deleted data disk: #{storage_data.delete_disk('datadisk1')}"
+  storage_data.delete_disk('datadisk1')
+  puts 'Deleted a disk in default container vhds'
 
-  ########################################################################################################################
-  ######################                                   CleanUp                                  ######################
-  ########################################################################################################################
-
-  container = storage_data.directories.get('vhds')
-  container.destroy
-
-  storage = storage.storage_accounts.get('TestRG-DD', 'fogstorageac')
-  storage.destroy
-
-  resource_group = rs.resource_groups.get('TestRG-DD')
-  resource_group.destroy
+  storage_data.delete_disk('datadisk2', container_name: test_container_name)
+  puts 'Deleted a disk in non-default container'
 rescue
   puts 'Integration Test for data disk is failing'
+ensure
   resource_group.destroy unless resource_group.nil?
 end

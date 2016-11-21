@@ -25,7 +25,7 @@ class TestGetBlobProperties < Minitest::Test
     exception = ->(*) { raise StandardError.new('Not found(404). Not exist') }
     @blob_client.stub :get_blob_properties, exception do
       assert_raises('NotFound') do
-        assert @service.get_blob_properties('test_container', 'test_blob')
+        @service.get_blob_properties('test_container', 'test_blob')
       end
     end
   end

@@ -1,8 +1,8 @@
-## Upcoming Version
+## 0.1.1
 
 **Added:**
 - Storage Service - Multi-thread support for uploading blobs
-- Updated integration scripts to support all Azure locations(Global, China, Gov, Germany)
+- Added support for all Azure locations(Global, China, Gov and Germany) 
 
 **Changed:**
 * Updated fog-azure-rm runtime gem dependencies to latest:
@@ -13,7 +13,10 @@
   * azure_mgmt_dns 0.7.0
   * azure_mgmt_traffic_manager 0.7.0
   * azure-storage 0.11.3.preview'
-
+* Provided same storage interfaces as other providers (PR: 204)
+* Updated Data Disk operations (PR: 220)
+* Updated namespaces
+* Updated integration scripts
 
 ## 0.1.0
 

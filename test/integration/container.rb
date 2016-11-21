@@ -70,8 +70,8 @@ begin
 
   containers = storage_data.directories.all
   puts 'List containers:'
-  containers.each do |container|
-    puts container.name
+  containers.each do |a_container|
+    puts a_container.name
   end
 
   ########################################################################################################################
@@ -89,7 +89,7 @@ begin
   container.acl = 'container'
   container.metadata = { 'owner' => 'azure' }
   container.save(is_create: false)
-  puts "Updated container"
+  puts 'Updated container'
 
   ########################################################################################################################
   ######################                      Get container acl                                     ######################

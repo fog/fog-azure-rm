@@ -26,51 +26,57 @@ storage = Fog::Storage::AzureRM.new(
 ######################                                 Prerequisites                              ######################
 ########################################################################################################################
 
-rs.resource_groups.create(
-  name: 'TestRG-DD',
-  location: LOCATION
-)
+begin
+  resource_group = rs.resource_groups.create(
+    name: 'TestRG-DD',
+    location: LOCATION
+  )
 
-storage_account = storage.storage_accounts.create(
-  name: 'fogstorageac',
-  location: LOCATION,
-  resource_group: 'TestRG-DD',
-  account_type: 'Standard',
-  replication: 'LRS'
-)
+  storage_account = storage.storage_accounts.create(
+    name: 'fogstorageac',
+    location: LOCATION,
+    resource_group: 'TestRG-DD',
+    account_type: 'Standard',
+    replication: 'LRS'
+  )
 
-access_key = storage_account.get_access_keys[0].value
-Fog::Logger.debug access_key.inspect
-storage_data = Fog::Storage.new(
-  provider: 'AzureRM',
-  azure_storage_account_name: storage_account.name,
-  azure_storage_access_key: access_key
-)
-storage_data.directories.create(
-  key: 'vhds'
-)
+  access_key = storage_account.get_access_keys[0].value
+  Fog::Logger.debug access_key.inspect
+  storage_data = Fog::Storage.new(
+    provider: 'AzureRM',
+    azure_storage_account_name: storage_account.name,
+    azure_storage_access_key: access_key
+  )
+  storage_data.directories.create(
+    key: 'vhds'
+  )
 
-########################################################################################################################
-######################                               Create Disk                                  ######################
-########################################################################################################################
+  ########################################################################################################################
+  ######################                               Create Disk                                  ######################
+  ########################################################################################################################
 
-storage_data.create_disk('datadisk1', options = {})
+  data_disk = storage_data.create_disk('datadisk1', options = {})
+  puts "Created data disk: #{data_disk.name}"
 
-########################################################################################################################
-######################                                Delete Data Disk                            ######################
-########################################################################################################################
+  ########################################################################################################################
+  ######################                                Delete Data Disk                            ######################
+  ########################################################################################################################
 
-storage_data.delete_disk('datadisk1')
+  puts "Deleted data disk: #{storage_data.delete_disk('datadisk1')}"
 
-########################################################################################################################
-######################                                   CleanUp                                  ######################
-########################################################################################################################
+  ########################################################################################################################
+  ######################                                   CleanUp                                  ######################
+  ########################################################################################################################
 
-container = storage_data.directories.get('vhds')
-container.destroy
+  container = storage_data.directories.get('vhds')
+  container.destroy
 
-storage = storage.storage_accounts.get('TestRG-DD', 'fogstorageac')
-storage.destroy
+  storage = storage.storage_accounts.get('TestRG-DD', 'fogstorageac')
+  storage.destroy
 
-resource_group = rs.resource_groups.get('TestRG-DD')
-resource_group.destroy
+  resource_group = rs.resource_groups.get('TestRG-DD')
+  resource_group.destroy
+rescue
+  puts 'Integration Test for data disk is failing'
+  resource_group.destroy unless resource_group.nil?
+end

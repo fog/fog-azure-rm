@@ -19,45 +19,53 @@ resources = Fog::Resources::AzureRM.new(
 ######################                                 Prerequisites                              ######################
 ########################################################################################################################
 
-resource_group = resources.resource_groups.create(
-  name: 'TestRG-ZN',
-  location: LOCATION
-)
+begin
+  resource_group = resources.resource_groups.create(
+    name: 'TestRG-ZN',
+    location: LOCATION
+  )
 
-########################################################################################################################
-######################                                Create Deployment                     ############################
-########################################################################################################################
+  ########################################################################################################################
+  ######################                                Create Deployment                     ############################
+  ########################################################################################################################
 
-resources.deployments.create(
-  name:            'testdeployment',
-  resource_group:  resource_group.name,
-  template_link:   'https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-azure-dns-new-zone/azuredeploy.json',
-  parameters_link: 'https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-azure-dns-new-zone/azuredeploy.parameters.json'
-)
+  deployment = resources.deployments.create(
+    name:            'testdeployment',
+    resource_group:  resource_group.name,
+    template_link:   'https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-azure-dns-new-zone/azuredeploy.json',
+    parameters_link: 'https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-azure-dns-new-zone/azuredeploy.parameters.json'
+  )
+  puts "Created deployment: #{deployment.name}"
 
-########################################################################################################################
-######################                               List Deployments                             ######################
-########################################################################################################################
+  ########################################################################################################################
+  ######################                               List Deployments                             ######################
+  ########################################################################################################################
 
-deployments = resources.deployments(resource_group: resource_group.name)
-deployments.each do |deployment|
-  Fog::Logger.debug deployment.name
+  deployments = resources.deployments(resource_group: resource_group.name)
+  puts 'List deployments:'
+  deployments.each do |a_deployment|
+    puts a_deployment.name
+  end
+
+  ########################################################################################################################
+  ######################                             Get Deployment                              #########################
+  ########################################################################################################################
+
+  deployment = resources.deployments.get(resource_group.name, 'testdeployment')
+  puts "Get deployment: #{deployment.name}"
+
+  ########################################################################################################################
+  ######################               Destroy Deployment                                  ###############################
+  ########################################################################################################################
+
+  puts "Deleted deployment: #{deployment.destroy}"
+
+  ########################################################################################################################
+  ######################                                   CleanUp                                  ######################
+  ########################################################################################################################
+
+  resource_group.destroy
+rescue
+  puts 'Integration Test for deployment is failing'
+  resource_group.destroy unless resource_group.nil?
 end
-
-########################################################################################################################
-######################                    List and Get Deployment                              #########################
-########################################################################################################################
-
-deployment = resources.deployments.get(resource_group.name, 'testdeployment')
-
-########################################################################################################################
-######################               Destroy Deployment                                  ###############################
-########################################################################################################################
-
-deployment.destroy
-
-########################################################################################################################
-######################                                   CleanUp                                  ######################
-########################################################################################################################
-
-resource_group.destroy

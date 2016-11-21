@@ -26,77 +26,89 @@ traffic_manager = Fog::TrafficManager::AzureRM.new(
 ######################                                 Prerequisites                              ######################
 ########################################################################################################################
 
-resources.resource_groups.create(
-  name: 'TestRG-TM',
-  location: LOCATION
-)
+begin
+  resource_group = resources.resource_groups.create(
+    name: 'TestRG-TM',
+    location: LOCATION
+  )
 
-########################################################################################################################
-######################                         Create Traffic Manager Profile                     ######################
-########################################################################################################################
+  ########################################################################################################################
+  ######################                         Create Traffic Manager Profile                     ######################
+  ########################################################################################################################
 
-traffic_manager.traffic_manager_profiles.create(
-  name: 'test-tmp',
-  resource_group: 'TestRG-TM',
-  traffic_routing_method: 'Performance',
-  relative_name: 'testapplication',
-  ttl: '30',
-  protocol: 'http',
-  port: '80',
-  path: '/monitorpage.aspx'
-)
+  traffic_manager_profile = traffic_manager.traffic_manager_profiles.create(
+    name: 'test-tmp',
+    resource_group: 'TestRG-TM',
+    traffic_routing_method: 'Performance',
+    relative_name: 'testapplication',
+    ttl: '30',
+    protocol: 'http',
+    port: '80',
+    path: '/monitorpage.aspx'
+  )
+  puts "Created traffic manager profile: #{traffic_manager_profile.name}"
 
-########################################################################################################################
-######################                        Create Traffic Manager Endpoint                    ######################
-########################################################################################################################
+  ########################################################################################################################
+  ######################                        Create Traffic Manager Endpoint                    ######################
+  ########################################################################################################################
 
-traffic_manager.traffic_manager_end_points.create(
-  name: 'myendpoint',
-  traffic_manager_profile_name: 'test-tmp',
-  resource_group: 'TestRG-TM',
-  type: 'externalEndpoints',
-  target: 'test-app.com',
-  endpoint_location: 'eastus'
-)
-########################################################################################################################
-######################                   Get and Update Traffic Manager Endpoint                ######################
-########################################################################################################################
+  traffic_manager_end_point = traffic_manager.traffic_manager_end_points.create(
+    name: 'myendpoint',
+    traffic_manager_profile_name: 'test-tmp',
+    resource_group: 'TestRG-TM',
+    type: 'externalEndpoints',
+    target: 'test-app.com',
+    endpoint_location: 'eastus'
+  )
+  puts "Created traffic manager endpoint: #{traffic_manager_end_point.name}"
 
-end_point = traffic_manager.traffic_manager_end_points.get('TestRG-TM', 'test-tmp', 'myendpoint', 'externalEndpoints')
-end_point.update(
-  type: 'externalEndpoints',
-  target: 'test-app1.com',
-  endpoint_location: 'centralus'
-)
+  ########################################################################################################################
+  ######################                   Get and Update Traffic Manager Endpoint                ######################
+  ########################################################################################################################
 
-########################################################################################################################
-######################                   Get and Destroy Traffic Manager Endpoint                ######################
-########################################################################################################################
+  end_point = traffic_manager.traffic_manager_end_points.get('TestRG-TM', 'test-tmp', 'myendpoint', 'externalEndpoints')
+  puts "Get traffic manager endpoint: #{end_point.name}"
+  end_point.update(
+    type: 'externalEndpoints',
+    target: 'test-app1.com',
+    endpoint_location: 'centralus'
+  )
+  puts 'Updated traffic manager endpoint'
 
-end_point = traffic_manager.traffic_manager_end_points.get('TestRG-TM', 'test-tmp', 'myendpoint', 'externalEndpoints')
-end_point.destroy
+  ########################################################################################################################
+  ######################                   Get and Destroy Traffic Manager Endpoint                ######################
+  ########################################################################################################################
 
-########################################################################################################################
-######################                    Get and Update Traffic Manager Profile                 ######################
-########################################################################################################################
+  end_point = traffic_manager.traffic_manager_end_points.get('TestRG-TM', 'test-tmp', 'myendpoint', 'externalEndpoints')
+  puts "Deleted traffic manager endpoint: #{end_point.destroy}"
 
-traffic_manager_profile = traffic_manager.traffic_manager_profiles.get('TestRG-TM', 'test-tmp')
-traffic_manager_profile.update(traffic_routing_method: 'Weighted',
-                               ttl: '35',
-                               protocol: 'https',
-                               port: '90',
-                               path: '/monitorpage1.aspx')
+  ########################################################################################################################
+  ######################                    Get and Update Traffic Manager Profile                 ######################
+  ########################################################################################################################
 
-########################################################################################################################
-######################                    Get and Destroy Traffic Manager Profile                 ######################
-########################################################################################################################
+  traffic_manager_profile = traffic_manager.traffic_manager_profiles.get('TestRG-TM', 'test-tmp')
+  puts "Get traffic manager profile: #{traffic_manager_profile.name}"
+  traffic_manager_profile.update(traffic_routing_method: 'Weighted',
+                                 ttl: '35',
+                                 protocol: 'https',
+                                 port: '90',
+                                 path: '/monitorpage1.aspx')
+  puts 'Updated traffic manager profile'
 
-traffic_manager_profile = traffic_manager.traffic_manager_profiles.get('TestRG-TM', 'test-tmp')
-traffic_manager_profile.destroy
+  ########################################################################################################################
+  ######################                    Get and Destroy Traffic Manager Profile                 ######################
+  ########################################################################################################################
 
-########################################################################################################################
-######################                                   CleanUp                                  ######################
-########################################################################################################################
+  traffic_manager_profile = traffic_manager.traffic_manager_profiles.get('TestRG-TM', 'test-tmp')
+  puts "Deleted traffic manager profile: #{traffic_manager_profile.destroy}"
 
-resource_group = resources.resource_groups.get('TestRG-TM')
-resource_group.destroy
+  ########################################################################################################################
+  ######################                                   CleanUp                                  ######################
+  ########################################################################################################################
+
+  resource_group = resources.resource_groups.get('TestRG-TM')
+  resource_group.destroy
+rescue
+  puts 'Integration Test for traffic manager is failing'
+  resource_group.destroy unless resource_group.nil?
+end

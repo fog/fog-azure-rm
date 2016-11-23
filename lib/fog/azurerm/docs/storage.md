@@ -145,18 +145,20 @@ storage_acc.destroy
 
 ## Create a Disk
 
-Create a Disk in storage account.
+Create a Disk in storage account. disk_size_in_gb must be an integer and the range is [1, 1023].
+By default the disk will be created in the container 'vhds'. You can specify other container by set options[:container_name].
 
 ```ruby
-azure_storage_service.create_disk('<Data Disk Name>', options = {})
+azure_storage_service.create_disk('<Data Disk Name>', disk_size_in_gb, options = {})
 ```
 
 ## Delete a Disk
 
 Delete a Disk from a storage account. Disk must be in unlocked state i.e detached from server(virtual machine) to successfully perform this action.
+By default the disk will be deleted from the container 'vhds'. You can specify other container by set options[:container_name].
 
 ```ruby
-azure_storage_service.delete_disk('<Data Disk Name>')
+azure_storage_service.delete_disk('<Data Disk Name>', options = {})
 ```
 
 ## Create a storage container

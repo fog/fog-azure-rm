@@ -29,8 +29,32 @@ class TestCredentials < Minitest::Test
     refute_equal cred_obj_one.object_id, cred_obj_two.object_id
   end
 
-  def test_get_token_method
+  def test_get_token_method_with_default_environment
     Fog::Credentials::AzureRM.get_credentials(@creds[:tenant_id], @creds[:client_id], @creds[:client_secret])
+    token_provider = Fog::Credentials::AzureRM.instance_variable_get(:@token_provider)
+    token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
+      assert_equal Fog::Credentials::AzureRM.get_token(@creds[:tenant_id], @creds[:client_id], @creds[:client_secret]), 'Bearer <some-token>'
+    end
+  end
+
+  def test_get_token_method_with_china_environment
+    Fog::Credentials::AzureRM.get_credentials(@creds[:tenant_id], @creds[:client_id], @creds[:client_secret], ENVIRONMENT_AZURE_CHINA_CLOUD)
+    token_provider = Fog::Credentials::AzureRM.instance_variable_get(:@token_provider)
+    token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
+      assert_equal Fog::Credentials::AzureRM.get_token(@creds[:tenant_id], @creds[:client_id], @creds[:client_secret]), 'Bearer <some-token>'
+    end
+  end
+
+  def test_get_token_method_with_us_government_environment
+    Fog::Credentials::AzureRM.get_credentials(@creds[:tenant_id], @creds[:client_id], @creds[:client_secret], ENVIRONMENT_AZURE_US_GOVERNMENT)
+    token_provider = Fog::Credentials::AzureRM.instance_variable_get(:@token_provider)
+    token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
+      assert_equal Fog::Credentials::AzureRM.get_token(@creds[:tenant_id], @creds[:client_id], @creds[:client_secret]), 'Bearer <some-token>'
+    end
+  end
+
+  def test_get_token_method_with_german_environment
+    Fog::Credentials::AzureRM.get_credentials(@creds[:tenant_id], @creds[:client_id], @creds[:client_secret], ENVIRONMENT_AZURE_GERMAN_CLOUD)
     token_provider = Fog::Credentials::AzureRM.instance_variable_get(:@token_provider)
     token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
       assert_equal Fog::Credentials::AzureRM.get_token(@creds[:tenant_id], @creds[:client_id], @creds[:client_secret]), 'Bearer <some-token>'

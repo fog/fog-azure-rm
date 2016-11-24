@@ -294,36 +294,8 @@ begin
 
   blob = container.files.head(large_blob_name)
   puts "Deleted blob: #{blob.destroy}"
-
-  ########################################################################################################################
-  ######################                            Lease Container                                 ######################
-  ########################################################################################################################
-
-  lease_id_container = storage_data.acquire_container_lease(container_name)
-  Fog::Logger.debug lease_id_container
-  puts 'Leased Container'
-
-  ########################################################################################################################
-  ######################                            Release Leased Container                        ######################
-  ########################################################################################################################
-
-  storage_data.release_container_lease(container_name, lease_id_container)
-  puts 'Release Leased Container'
-
-  ########################################################################################################################
-  ######################                            Delete Container                                ######################
-  ########################################################################################################################
-
-  puts "Deleted container: #{container.destroy}"
-
-  ########################################################################################################################
-  ######################                                   CleanUp                                  ######################
-  ########################################################################################################################
-
-  storage_account.destroy
-
-  resource_group.destroy
-rescue
-  puts 'Integration Test for blob is failing'
+rescue => ex
+  puts "Integration Test for blob is failing: #{ex.inspect}\n#{ex.backtrace.join("\n")}"
+ensure
   resource_group.destroy unless resource_group.nil?
 end

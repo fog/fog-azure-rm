@@ -8,7 +8,7 @@ require 'yaml'
 
 azure_credentials = YAML.load_file('credentials/azure.yml')
 
-resource = Fog::Resources::AzureRM.new(
+rs = Fog::Resources::AzureRM.new(
   tenant_id: azure_credentials['tenant_id'],
   client_id: azure_credentials['client_id'],
   client_secret: azure_credentials['client_secret'],
@@ -23,21 +23,29 @@ storage = Fog::Storage::AzureRM.new(
 )
 
 ########################################################################################################################
+######################                               Resource names                                #####################
+########################################################################################################################
+
+time = current_time
+resource_group_name = "Blob-RG-#{time}"
+storage_account_name = "sa#{time}"
+container_name = "con#{time}"
+test_container_name = "tcon#{time}"
+
+########################################################################################################################
 ######################                                 Prerequisites                              ######################
 ########################################################################################################################
 
 begin
-  resource_group = resource.resource_groups.create(
-    name: 'TestRG-Con',
+  resource_group = rs.resource_groups.create(
+    name: resource_group_name,
     location: LOCATION
   )
-
-  storage_account_name = "fog#{get_time}storageac"
 
   storage_account = storage.storage_accounts.create(
     name: storage_account_name,
     location: LOCATION,
-    resource_group: 'TestRG-Con'
+    resource_group: resource_group_name
   )
 
   keys = storage_account.get_access_keys
@@ -54,12 +62,12 @@ begin
   ########################################################################################################################
 
   container = storage_data.directories.create(
-    key: 'fogcontainer'
+    key: container_name
   )
   puts "Created container: #{container.key}"
 
   storage_data.directories.create(
-    key: 'fogcontainer2',
+    key: test_container_name,
     public: true
   )
   puts "Created second container: #{container.key}"
@@ -71,14 +79,14 @@ begin
   containers = storage_data.directories.all
   puts 'List containers:'
   containers.each do |a_container|
-    puts a_container.name
+    puts a_container.key
   end
 
   ########################################################################################################################
   ######################                      Get container acl                                     ######################
   ########################################################################################################################
 
-  container = storage_data.directories.get('fogcontainer', max_results: 1)
+  container = storage_data.directories.get(container_name, max_results: 1)
   puts "Get container: #{container.key}"
   puts "Get container access control list: #{container.acl}"
 
@@ -116,19 +124,27 @@ begin
   puts "Get container public url having scheme http: #{container.public_url(scheme: 'http')}"
 
   ########################################################################################################################
+  ######################                            Lease Container                                 ######################
+  ########################################################################################################################
+
+  lease_id_container = storage_data.acquire_container_lease(container_name)
+  Fog::Logger.debug lease_id_container
+  puts 'Leased Container'
+
+  ########################################################################################################################
+  ######################                            Release Leased Container                        ######################
+  ########################################################################################################################
+
+  storage_data.release_container_lease(container_name, lease_id_container)
+  puts 'Release Leased Container'
+
+  ########################################################################################################################
   ######################                                Deleted Container                           ######################
   ########################################################################################################################
 
   puts "Deleted container: #{container.destroy}"
-
-  ########################################################################################################################
-  ######################                                   CleanUp                                  ######################
-  ########################################################################################################################
-
-  storage_account.destroy
-
-  resource_group.destroy
-rescue
-  puts 'Integration Test for container is failing'
+rescue => ex
+  puts "Integration Test for container is failing: #{ex.inspect}\n#{ex.backtrace.join("\n")}"
+ensure
   resource_group.destroy unless resource_group.nil?
 end

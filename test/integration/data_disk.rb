@@ -81,8 +81,8 @@ begin
 
   storage_data.delete_disk('datadisk2', container_name: test_container_name)
   puts 'Deleted a disk in non-default container'
-rescue
-  puts 'Integration Test for data disk is failing'
+rescue => ex
+  puts "Integration Test for data disk is failing: #{ex.inspect}\n#{ex.backtrace.join("\n")}"
 ensure
   resource_group.destroy unless resource_group.nil?
 end

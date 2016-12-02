@@ -19,7 +19,8 @@ storage = Fog::Storage::AzureRM.new(
   tenant_id: azure_credentials['tenant_id'],
   client_id: azure_credentials['client_id'],
   client_secret: azure_credentials['client_secret'],
-  subscription_id: azure_credentials['subscription_id']
+  subscription_id: azure_credentials['subscription_id'],
+  environment: azure_credentials['environment']
 )
 
 ########################################################################################################################

@@ -42,7 +42,7 @@ module Fog
               end
             end
           else
-              raise 'Object is not a hash. Parsing SQL Database object failed.'
+            raise 'Object is not a hash. Parsing SQL Database object failed.'
           end
 
           data

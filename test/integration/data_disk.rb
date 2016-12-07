@@ -19,7 +19,8 @@ storage = Fog::Storage::AzureRM.new(
   tenant_id: azure_credentials['tenant_id'],
   client_id: azure_credentials['client_id'],
   client_secret: azure_credentials['client_secret'],
-  subscription_id: azure_credentials['subscription_id']
+  subscription_id: azure_credentials['subscription_id'],
+  environment: azure_credentials['environment']
 )
 
 ########################################################################################################################
@@ -51,7 +52,8 @@ begin
   storage_data = Fog::Storage.new(
     provider: 'AzureRM',
     azure_storage_account_name: storage_account.name,
-    azure_storage_access_key: storage_account.get_access_keys[0].value
+    azure_storage_access_key: storage_account.get_access_keys[0].value,
+    environment: azure_credentials['environment']
   )
   storage_data.directories.create(
     key: container_name,
@@ -81,8 +83,8 @@ begin
 
   storage_data.delete_disk('datadisk2', container_name: test_container_name)
   puts 'Deleted a disk in non-default container'
-rescue
-  puts 'Integration Test for data disk is failing'
+rescue => ex
+  puts "Integration Test for data disk is failing: #{ex.inspect}\n#{ex.backtrace.join("\n")}"
 ensure
   resource_group.destroy unless resource_group.nil?
 end

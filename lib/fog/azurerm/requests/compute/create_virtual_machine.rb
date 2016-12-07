@@ -80,7 +80,7 @@ module Fog
           os_disk = Azure::ARM::Compute::Models::OSDisk.new
           vhd = Azure::ARM::Compute::Models::VirtualHardDisk.new
 
-          vhd.uri = get_blob_link(storage_account_name) + "/vhds/#{vm_name}_os_disk.vhd"
+          vhd.uri = get_blob_endpoint(storage_account_name) + "/vhds/#{vm_name}_os_disk.vhd"
 
           if vhd_path.nil?
             storage_profile.image_reference = image_reference(publisher, offer, sku, version)
@@ -103,7 +103,7 @@ module Fog
                 Fog::Logger.debug 'Waiting disk to ready'
                 sleep(10)
               end
-              new_vhd_path = get_blob_link(storage_account_name) + "/#{container_name}/#{blob_name}"
+              new_vhd_path = get_blob_endpoint(storage_account_name) + "/#{container_name}/#{blob_name}"
               Fog::Logger.debug "Path:#{new_vhd_path}. | Copy done"
             else
               new_vhd_path = vhd_path

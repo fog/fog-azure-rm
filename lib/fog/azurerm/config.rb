@@ -23,13 +23,10 @@ GLOBAL = 'global'.freeze
 UPLOAD_BLOB_WORKER_THREAD_COUNT = 8
 VM_NAME_POSITION = 8
 
-# Set a CLOUD value from 'Azure', 'AzureChina', 'AzureGermanCloud' and 'AzureUSGovernment'
-CLOUD = 'Azure'.freeze
-
-AZURE_GLOBAL_RM_ENDPOINT_URL = 'https://management.azure.com/'.freeze
-AZURE_CHINA_RM_ENDPOINT_URL = 'https://management.chinacloudapi.cn'.freeze
-GERMAN_CLOUD_RM_ENDPOINT_URL = 'https://management.microsoftazure.de'.freeze
-US_GOVERNMENT_RM_ENDPOINT_URL = 'https://management.usgovcloudapi.net'.freeze
+ENVIRONMENT_AZURE_CLOUD = 'AzureCloud'.freeze
+ENVIRONMENT_AZURE_CHINA_CLOUD = 'AzureChinaCloud'.freeze
+ENVIRONMENT_AZURE_US_GOVERNMENT = 'AzureUSGovernment'.freeze
+ENVIRONMENT_AZURE_GERMAN_CLOUD = 'AzureGermanCloud'.freeze
 
 LOCATION = 'eastus'.freeze
 

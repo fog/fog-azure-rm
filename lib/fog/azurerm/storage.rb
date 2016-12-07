@@ -7,11 +7,11 @@ module Fog
       recognizes :client_id
       recognizes :client_secret
       recognizes :subscription_id
+      recognizes :environment
 
       # Recognizes when creating data client
       recognizes :azure_storage_account_name
       recognizes :azure_storage_access_key
-      recognizes :azure_storage_connection_string
       recognizes :debug
 
       request_path 'fog/azurerm/requests/storage'
@@ -116,28 +116,34 @@ module Fog
             raise e.message
           end
 
+          options[:environment] = 'AzureCloud' if options[:environment].nil?
+
           @tenant_id = options[:tenant_id]
           @client_id = options[:client_id]
           @client_secret = options[:client_secret]
           @subscription_id = options[:subscription_id]
+          @environment = options[:environment]
 
-          credentials = Fog::Credentials::AzureRM.get_credentials(options[:tenant_id], options[:client_id], options[:client_secret])
+          credentials = Fog::Credentials::AzureRM.get_credentials(@tenant_id, @client_id, @client_secret, @environment)
           unless credentials.nil?
-            @storage_mgmt_client = ::Azure::ARM::Storage::StorageManagementClient.new(credentials, resource_manager_endpoint_url)
-            @storage_mgmt_client.subscription_id = options[:subscription_id]
+            @storage_mgmt_client = ::Azure::ARM::Storage::StorageManagementClient.new(credentials, resource_manager_endpoint_url(@environment))
+            @storage_mgmt_client.subscription_id = @subscription_id
           end
 
-          return unless Fog::Credentials::AzureRM.new_account_credential?(options)
+          return unless @azure_storage_account_name != options[:azure_storage_account_name] ||
+                        @azure_storage_access_key != options[:azure_storage_access_key]
 
-          Azure::Storage.setup(storage_account_name: options[:azure_storage_account_name],
-                               storage_access_key: options[:azure_storage_access_key],
-                               storage_connection_string: options[:azure_storage_connection_string])
+          @azure_storage_account_name = options[:azure_storage_account_name]
+          @azure_storage_access_key = options[:azure_storage_access_key]
 
-          @blob_client = Azure::Storage::Blob::BlobService.new
+          azure_client = Azure::Storage::Client.create(storage_account_name: @azure_storage_account_name,
+                                                       storage_access_key: @azure_storage_access_key)
+          azure_client.storage_blob_host = get_blob_endpoint(@azure_storage_account_name, true, @environment)
+          @blob_client = azure_client.blob_client
           @blob_client.with_filter(Azure::Storage::Core::Filter::ExponentialRetryPolicyFilter.new)
           @blob_client.with_filter(Azure::Core::Http::DebugFilter.new) if @debug
-          @signature_client = Azure::Storage::Core::Auth::SharedAccessSignature.new(options[:azure_storage_account_name],
-                                                                                    options[:azure_storage_access_key])
+          @signature_client = Azure::Storage::Core::Auth::SharedAccessSignature.new(@azure_storage_account_name,
+                                                                                    @azure_storage_access_key)
         end
       end
     end

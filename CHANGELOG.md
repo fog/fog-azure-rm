@@ -1,5 +1,9 @@
 ## 0.1.2
 
+**Added:**
+- Storage Service - Added support for multiple environments
+
+
 **Changed:**
 * Updated fog-azure-rm runtime gem dependencies to latest:
   * azure_mgmt_compute 0.8.0

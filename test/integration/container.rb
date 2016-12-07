@@ -43,6 +43,8 @@ begin
     location: LOCATION
   )
 
+  storage_account_name = "sa#{current_time}"
+
   storage_account = storage.storage_accounts.create(
     name: storage_account_name,
     location: LOCATION,
@@ -52,8 +54,7 @@ begin
   keys = storage_account.get_access_keys
   access_key = keys.first.value
 
-  storage_data = Fog::Storage.new(
-    provider: 'AzureRM',
+  storage_data = Fog::Storage::AzureRM.new(
     azure_storage_account_name: storage_account.name,
     azure_storage_access_key: access_key,
     environment: azure_credentials['environment']

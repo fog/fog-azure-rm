@@ -26,13 +26,13 @@ module Fog
         attribute :source_database_id, aliases: %w(sourceDatabaseId)
         attribute :source_database_deletion_date, aliases: %w(sourceDatabaseDeletionDate)
 
-        def self.parse(database_obj)
+        def self.parse(database)
           data = {}
-          data['resource_group'] = get_resource_group_from_id(database_obj['id'])
-          data['server_name'] = get_resource_from_resource_id(database_obj['id'], 8)
+          data['resource_group'] = get_resource_group_from_id(database['id'])
+          data['server_name'] = get_resource_from_resource_id(database['id'], 8)
 
-          if database_obj.is_a? Hash
-            database_obj.each do |k, v|
+          if database.is_a? Hash
+            database.each do |k, v|
               if k == 'properties'
                 v.each do |j, l|
                   data[j] = l
@@ -42,9 +42,8 @@ module Fog
               end
             end
           else
-            puts 'Object is not a hash. Parsing SQL Server object failed.'
+              raise 'Object is not a hash. Parsing SQL Database object failed.'
           end
-
 
           data
         end

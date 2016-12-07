@@ -14,11 +14,11 @@ module Fog
         attribute :administrator_login_password, aliases: %w(administratorLoginPassword)
         attribute :fully_qualified_domain_name, aliases: %w(fullyQualifiedDomainName)
 
-        def self.parse(server_obj)
+        def self.parse(server)
           data = {}
-          data['resource_group'] = get_resource_group_from_id(server_obj['id'])
-          if server_obj.is_a? Hash
-            server_obj.each do |k, v|
+          data['resource_group'] = get_resource_group_from_id(server['id'])
+          if server.is_a? Hash
+            server.each do |k, v|
               if k == 'properties'
                 v.each do |j, l|
                   data[j] = l
@@ -28,7 +28,7 @@ module Fog
               end
             end
           else
-            puts 'Object is not a hash. Parsing SQL Server object failed.'
+            raise 'Object is not a hash. Parsing SQL Server object failed.'
           end
 
           data

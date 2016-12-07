@@ -26,48 +26,59 @@ network = Fog::Network::AzureRM.new(
 ######################                                 Prerequisites                              ######################
 ########################################################################################################################
 
-resource_group = resources.resource_groups.create(
-  name: 'TestRG-RT',
-  location: LOCATION
-)
+begin
+  resource_group = resources.resource_groups.create(
+    name: 'TestRG-RT',
+    location: LOCATION
+  )
 
-resource_id = network.public_ips.create(
-  name: 'mypubip',
-  resource_group: 'TestRG-RT',
-  location: LOCATION,
-  public_ip_allocation_method: 'Static'
-).id
+  resource_id = network.public_ips.create(
+    name: 'mypubip',
+    resource_group: 'TestRG-RT',
+    location: LOCATION,
+    public_ip_allocation_method: 'Static'
+  ).id
 
-########################################################################################################################
-######################                                Tag Resource                          ############################
-########################################################################################################################
+  ########################################################################################################################
+  ######################                                Tag Resource                          ############################
+  ########################################################################################################################
 
-resources.tag_resource(
-  resource_id,
-  'test-key',
-  'test-value'
-)
+  tag_resource = resources.tag_resource(
+    resource_id,
+    'test-key',
+    'test-value'
+  )
+  puts "Tagged resource: #{tag_resource}"
 
-########################################################################################################################
-######################                    List Resources in a Tag                       #########################
-########################################################################################################################
+  ########################################################################################################################
+  ######################                    List Resources in a Tag                       #########################
+  ########################################################################################################################
 
-resources.azure_resources(tag_name: 'test-key', tag_value: 'test-value')
+  resources = resources.azure_resources(tag_name: 'test-key', tag_value: 'test-value')
+  puts 'List resources in a tag:'
+  resources.each do |resource|
+    puts resource.name
+  end
 
-resources.azure_resources(tag_name: 'test-key').get(resource_id)
+  resource = resources.azure_resources(tag_name: 'test-key').get(resource_id)
+  puts "Get resource in a tag: #{resource.name}"
 
-########################################################################################################################
-######################               Remove Tag from a Resource                   ###############################
-########################################################################################################################
+  ########################################################################################################################
+  ######################               Remove Tag from a Resource                   ###############################
+  ########################################################################################################################
 
-resources.delete_resource_tag(
-  resource_id,
-  'test-key',
-  'test-value'
-)
+  resource = resources.delete_resource_tag(
+    resource_id,
+    'test-key',
+    'test-value'
+  )
+  puts "Removed tag from a resource: #{resource}"
+  ########################################################################################################################
+  ######################                                   CleanUp                                  ######################
+  ########################################################################################################################
 
-########################################################################################################################
-######################                                   CleanUp                                  ######################
-########################################################################################################################
-
-resource_group.destroy
+  resource_group.destroy
+rescue
+  puts 'Integration Test for tagging a resource is failing'
+  resource_group.destroy unless resource_group.nil?
+end

@@ -80,7 +80,7 @@ class TestMultipartSaveBlockBlob < Minitest::Test
     @service.stub :create_block_blob, http_exception do
       @service.stub :delete_blob, true do
         assert_raises(Azure::Core::Http::HTTPError) do
-          assert @service.multipart_save_block_blob('test_container', 'test_blob', body, {})
+          @service.multipart_save_block_blob('test_container', 'test_blob', body, {})
         end
       end
     end

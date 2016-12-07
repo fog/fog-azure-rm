@@ -26,104 +26,112 @@ network = Fog::Network::AzureRM.new(
 ######################                                 Prerequisites                              ######################
 ########################################################################################################################
 
-rs.resource_groups.create(
-  name: 'TestRG-LB',
-  location: LOCATION
-)
+begin
+  resource_group = rs.resource_groups.create(
+    name: 'TestRG-LB',
+    location: LOCATION
+  )
 
-network.virtual_networks.create(
-  name: 'testVnet',
-  location: LOCATION,
-  resource_group: 'TestRG-LB',
-  dns_servers: %w(10.1.0.0 10.2.0.0),
-  address_prefixes: %w(10.1.0.0/16 10.2.0.0/16)
-)
+  network.virtual_networks.create(
+    name: 'testVnet',
+    location: LOCATION,
+    resource_group: 'TestRG-LB',
+    dns_servers: %w(10.1.0.0 10.2.0.0),
+    address_prefixes: %w(10.1.0.0/16 10.2.0.0/16)
+  )
 
-network.subnets.create(
-  name: 'mysubnet',
-  resource_group: 'TestRG-LB',
-  virtual_network_name: 'testVnet',
-  address_prefix: '10.1.0.0/24'
-)
+  network.subnets.create(
+    name: 'mysubnet',
+    resource_group: 'TestRG-LB',
+    virtual_network_name: 'testVnet',
+    address_prefix: '10.1.0.0/24'
+  )
 
-pip = network.public_ips.create(
-  name: 'mypubip',
-  resource_group: 'TestRG-LB',
-  location: LOCATION,
-  public_ip_allocation_method: 'Dynamic'
-)
+  pip = network.public_ips.create(
+    name: 'mypubip',
+    resource_group: 'TestRG-LB',
+    location: LOCATION,
+    public_ip_allocation_method: 'Dynamic'
+  )
 
-########################################################################################################################
-######################                             Create Load Balancer                           ######################
-########################################################################################################################
+  ########################################################################################################################
+  ######################                             Create Load Balancer                           ######################
+  ########################################################################################################################
 
-network.load_balancers.create(
-  name: 'lb',
-  resource_group: 'TestRG-LB',
-  location: LOCATION,
-  frontend_ip_configurations:
-  [
-    {
-      name: 'fic',
-      private_ipallocation_method: 'Dynamic',
-      public_ipaddress_id: pip.id
-    }
-  ],
-  backend_address_pool_names:
-  [
-    'pool1'
-  ],
-  load_balancing_rules:
-  [
-    {
-      name: 'lb_rule_1',
-      frontend_ip_configuration_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-LB/providers/Microsoft.Network/loadBalancers/lb/frontendIPConfigurations/fic",
-      backend_address_pool_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-LB/providers/Microsoft.Network/loadBalancers/lb/backendAddressPools/pool1",
-      protocol: 'Tcp',
-      frontend_port: '80',
-      backend_port: '8080',
-      enable_floating_ip: false,
-      idle_timeout_in_minutes: 4,
-      load_distribution: 'Default'
-    }
-  ],
-  inbound_nat_rules:
-  [
-    {
-      name: 'RDP-Traffic',
-      frontend_ip_configuration_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-LB/providers/Microsoft.Network/loadBalancers/lb/frontendIPConfigurations/fic",
-      protocol: 'Tcp',
-      frontend_port: 3389,
-      backend_port: 3389
-    }
-  ]
-)
+  load_balancer = network.load_balancers.create(
+    name: 'lb',
+    resource_group: 'TestRG-LB',
+    location: LOCATION,
+    frontend_ip_configurations:
+    [
+      {
+        name: 'fic',
+        private_ipallocation_method: 'Dynamic',
+        public_ipaddress_id: pip.id
+      }
+    ],
+    backend_address_pool_names:
+    [
+      'pool1'
+    ],
+    load_balancing_rules:
+    [
+      {
+        name: 'lb_rule_1',
+        frontend_ip_configuration_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-LB/providers/Microsoft.Network/loadBalancers/lb/frontendIPConfigurations/fic",
+        backend_address_pool_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-LB/providers/Microsoft.Network/loadBalancers/lb/backendAddressPools/pool1",
+        protocol: 'Tcp',
+        frontend_port: '80',
+        backend_port: '8080',
+        enable_floating_ip: false,
+        idle_timeout_in_minutes: 4,
+        load_distribution: 'Default'
+      }
+    ],
+    inbound_nat_rules:
+    [
+      {
+        name: 'RDP-Traffic',
+        frontend_ip_configuration_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-LB/providers/Microsoft.Network/loadBalancers/lb/frontendIPConfigurations/fic",
+        protocol: 'Tcp',
+        frontend_port: 3389,
+        backend_port: 3389
+      }
+    ]
+  )
+  puts "Created external load balancer: #{load_balancer.name}"
 
-########################################################################################################################
-######################                      List External Load Balancers                          ######################
-########################################################################################################################
+  ########################################################################################################################
+  ######################                      List External Load Balancers                          ######################
+  ########################################################################################################################
 
-load_balancers = network.load_balancers(resource_group: 'TestRG-LB')
-load_balancers.each do |load_balancer|
-  Fog::Logger.debug load_balancer.name
+  load_balancers = network.load_balancers(resource_group: 'TestRG-LB')
+  puts 'List external load balancers:'
+  load_balancers.each do |a_load_balancer|
+    puts a_load_balancer.name
+  end
+
+  ########################################################################################################################
+  ######################                        Get and Destroy Load Balancer                       ######################
+  ########################################################################################################################
+
+  load_balancer = network.load_balancers.get('TestRG-LB', 'lb')
+  puts "Get external load balancer: #{load_balancer.name}"
+  puts "Deleted external load balancer: #{load_balancer.destroy}"
+
+  ########################################################################################################################
+  ######################                                   CleanUp                                  ######################
+  ########################################################################################################################
+
+  pubip = network.public_ips.get('TestRG-LB', 'mypubip')
+  pubip.destroy
+
+  vnet = network.virtual_networks.get('TestRG-LB', 'testVnet')
+  vnet.destroy
+
+  resource_group = rs.resource_groups.get('TestRG-LB')
+  resource_group.destroy
+rescue
+  puts 'Integration Test for external load balancer is failing'
+  resource_group.destroy unless resource_group.nil?
 end
-
-########################################################################################################################
-######################                        Get and Destroy Load Balancer                       ######################
-########################################################################################################################
-
-load_balancer = network.load_balancers.get('TestRG-LB', 'lb')
-load_balancer.destroy
-
-########################################################################################################################
-######################                                   CleanUp                                  ######################
-########################################################################################################################
-
-pubip = network.public_ips.get('TestRG-LB', 'mypubip')
-pubip.destroy
-
-vnet = network.virtual_networks.get('TestRG-LB', 'testVnet')
-vnet.destroy
-
-resource_group = rs.resource_groups.get('TestRG-LB')
-resource_group.destroy

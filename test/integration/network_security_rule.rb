@@ -26,61 +26,69 @@ network = Fog::Network::AzureRM.new(
 ######################                                 Prerequisites                              ######################
 ########################################################################################################################
 
-rs.resource_groups.create(
-  name: 'TestRG-NSR',
-  location: LOCATION
-)
+begin
+  resource_group = rs.resource_groups.create(
+    name: 'TestRG-NSR',
+    location: LOCATION
+  )
 
-########################################################################################################################
-######################                          Create Network Security Group                     ######################
-########################################################################################################################
+  ########################################################################################################################
+  ######################                          Create Network Security Group                     ######################
+  ########################################################################################################################
 
-network.network_security_groups.create(
-  name: 'testGroup',
-  resource_group: 'TestRG-NSR',
-  location: LOCATION
-)
+  network.network_security_groups.create(
+    name: 'testGroup',
+    resource_group: 'TestRG-NSR',
+    location: LOCATION
+  )
 
-########################################################################################################################
-######################                          Create Network Security Rule                      ######################
-########################################################################################################################
+  ########################################################################################################################
+  ######################                          Create Network Security Rule                      ######################
+  ########################################################################################################################
 
-network.network_security_rules.create(
-  name: 'testRule',
-  resource_group: 'TestRG-NSR',
-  protocol: 'tcp',
-  network_security_group_name: 'testGroup',
-  source_port_range: '22',
-  destination_port_range: '22',
-  source_address_prefix: '0.0.0.0/0',
-  destination_address_prefix: '0.0.0.0/0',
-  access: 'Allow',
-  priority: '100',
-  direction: 'Inbound'
-)
+  network_security_rule = network.network_security_rules.create(
+    name: 'testRule',
+    resource_group: 'TestRG-NSR',
+    protocol: 'tcp',
+    network_security_group_name: 'testGroup',
+    source_port_range: '22',
+    destination_port_range: '22',
+    source_address_prefix: '0.0.0.0/0',
+    destination_address_prefix: '0.0.0.0/0',
+    access: 'Allow',
+    priority: '100',
+    direction: 'Inbound'
+  )
+  puts "Created network security rule: #{network_security_rule.name}"
 
-########################################################################################################################
-######################                        List Network Security Rules                         ######################
-########################################################################################################################
+  ########################################################################################################################
+  ######################                        List Network Security Rules                         ######################
+  ########################################################################################################################
 
-network_security_rules = network.network_security_rules(resource_group: 'TestRG-NSR',
-                                                        network_security_group_name: 'testGroup')
-network_security_rules.each do |network_security_rule|
-  Fog::Logger.debug network_security_rule.name
+  network_security_rules = network.network_security_rules(resource_group: 'TestRG-NSR',
+                                                          network_security_group_name: 'testGroup')
+  puts 'List network security rules:'
+  network_security_rules.each do |a_network_security_rule|
+    puts a_network_security_rule.name
+  end
+
+  ########################################################################################################################
+  ######################                          Get Network Security Rule                         ######################
+  ########################################################################################################################
+
+  nsr = network.network_security_rules.get('TestRG-NSR', 'testGroup', 'testRule')
+  puts "Get network_security_rule: #{nsr.name}"
+
+  ########################################################################################################################
+  ######################                                   CleanUp                                  ######################
+  ########################################################################################################################
+
+  puts "Deleted network_security_rule: #{nsr.destroy}"
+  nsg = network.network_security_groups.get('TestRG-NSR', 'testGroup')
+  nsg.destroy
+  rg = rs.resource_groups.get('TestRG-NSR')
+  rg.destroy
+rescue
+  puts 'Integration Test for network_security_rule is failing'
+  resource_group.destroy unless resource_group.nil?
 end
-
-########################################################################################################################
-######################                          Get Network Security Rule                         ######################
-########################################################################################################################
-
-nsr = network.network_security_rules.get('TestRG-NSR', 'testGroup', 'testRule')
-
-########################################################################################################################
-######################                                   CleanUp                                  ######################
-########################################################################################################################
-
-nsr.destroy
-nsg = network.network_security_groups.get('TestRG-NSR', 'testGroup')
-nsg.destroy
-rg = rs.resource_groups.get('TestRG-NSR')
-rg.destroy

@@ -14,11 +14,17 @@ class TestDeleteDisk < Minitest::Test
 
   def test_delete_disk_success
     @service.stub :delete_blob, true do
-      assert @service.delete_disk('test_blob')
+      assert @service.delete_disk('test_disk')
+    end
+  end
+
+  def test_delete_disk_in_another_container_success
+    @service.stub :delete_blob, true do
+      assert @service.delete_disk('test_disk', container_name: 'test_container')
     end
   end
 
   def test_delete_disk_mock
-    assert @mock_service.delete_disk('test_blob')
+    assert @mock_service.delete_disk('test_disk')
   end
 end

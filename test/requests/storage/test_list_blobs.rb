@@ -47,7 +47,7 @@ class TestListBlobs < Minitest::Test
     exception = ->(*) { raise StandardError.new('Not found(404). Not exist') }
     @blob_client.stub :list_blobs, exception do
       assert_raises('NotFound') do
-        assert @service.list_blobs('test_container')
+        @service.list_blobs('test_container')
       end
     end
   end

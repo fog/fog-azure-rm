@@ -1,3 +1,5 @@
+SUBSCRIPTION_ID = '########-####-####-####-############'.freeze
+
 if ENV['COVERAGE']
   require 'simplecov'
   SimpleCov.start do

@@ -83,8 +83,7 @@ begin
   ######################                   Get and Destroy Sql Database                             ######################
   ########################################################################################################################
 
-  database = azure_sql_service.sql_databases.get('TestRG-SQL', server_name, database_name)
-  puts "Deleted sql database: #{database.destroy}"
+  database.destroy
 
   ########################################################################################################################
   ######################                        Create Sql Firewall Rule                            ######################
@@ -117,18 +116,17 @@ begin
   end
 
   ########################################################################################################################
-  ######################                   Get and Destroy Sql Firewall Rule                        ######################
+  ######################                   Destroy Sql Firewall Rule                        ######################
   ########################################################################################################################
 
-  firewall_rule = azure_sql_service.firewall_rules.get('TestRG-SQL', server_name, 'test-rule-name')
-  puts "Deleted firewall rule: #{firewall_rule.destroy}"
+  firewall_rule.destroy
 
   ########################################################################################################################
   ######################                       Get Sql Server                                       ######################
   ########################################################################################################################
 
-  server = azure_sql_service.sql_servers.get('TestRG-SQL', server_name)
-  puts "Get sql server: #{server.name}"
+  sql_server = azure_sql_service.sql_servers.get('TestRG-SQL', server_name)
+  puts "Get sql server: #{sql_server.name}"
 
   ########################################################################################################################
   ######################                             List Sql Servers                               ######################
@@ -141,17 +139,15 @@ begin
   end
 
   ########################################################################################################################
-  ######################                    Get and Destroy Sql Servers                             ######################
+  ######################                    Destroy Sql Servers                             ######################
   ########################################################################################################################
 
-  server = azure_sql_service.sql_servers.get('TestRG-SQL', server_name)
-  puts "Deleted sql server: #{server.destroy}"
+  sql_server.destroy
 
   ########################################################################################################################
   ######################                                   CleanUp                                  ######################
   ########################################################################################################################
 
-  resource_group = resources.resource_groups.get('TestRG-SQL')
   resource_group.destroy
 rescue
   puts 'Integration Test for sql server is failing'

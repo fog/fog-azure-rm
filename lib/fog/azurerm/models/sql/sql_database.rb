@@ -9,57 +9,49 @@ module Fog
         attribute :server_name
         attribute :type
         attribute :collation
-        attribute :create_mode
-        attribute :creation_date
-        attribute :current_service_level_objective_id
-        attribute :database_id
-        attribute :default_secondary_location
         attribute :edition
-        attribute :earliest_restore_date
-        attribute :elastic_pool_name
         attribute :location
-        attribute :max_size_bytes
-        attribute :requested_service_objective_id
-        attribute :requested_service_objective_name
-        attribute :restore_point_in_time
-        attribute :service_level_objective
-        attribute :source_database_id
-        attribute :source_database_deletion_date
+        attribute :create_mode, aliases: %w(createMode)
+        attribute :creation_date, aliases: %w(creationDate)
+        attribute :current_service_level_objective_id, aliases: %w(currentServiceLevelObjectiveId)
+        attribute :database_id, aliases: %w(databaseId)
+        attribute :default_secondary_location, aliases: %w(defaultSecondaryLocation)
+        attribute :earliest_restore_date, aliases: %w(earliestRestoreDate)
+        attribute :elastic_pool_name, aliases: %w(elasticPoolName)
+        attribute :max_size_bytes, aliases: %w(maxSizeBytes)
+        attribute :requested_service_objective_id, aliases: %w(requestedServiceObjectiveId)
+        attribute :requested_service_objective_name, aliases: %w(requestedServiceObjectiveName)
+        attribute :restore_point_in_time, aliases: %w(restorePointInTime)
+        attribute :service_level_objective, aliases: %w(serviceLevelObjective)
+        attribute :source_database_id, aliases: %w(sourceDatabaseId)
+        attribute :source_database_deletion_date, aliases: %w(sourceDatabaseDeletionDate)
 
-        def self.parse(database)
-          sql_database = {}
-          sql_database['id'] = database['id'] unless database['id'].nil?
-          sql_database['type'] = database['type'] unless database['type'].nil?
-          sql_database['name'] = database['name'] unless database['name'].nil?
-          sql_database['location'] = database['location'] unless database['location'].nil?
-          sql_database['elastic_pool_name'] = database['elasticPoolName'] unless database['elasticPoolName'].nil?
-          unless database['id'].nil?
-            sql_database['server_name'] = get_server_name_from_id(database['id'])
-            sql_database['resource_group'] = get_resource_group_from_id(database['id'])
+        def self.parse(database_obj)
+          data = {}
+          data['resource_group'] = get_resource_group_from_id(database_obj['id'])
+          data['server_name'] = get_resource_from_resource_id(database_obj['id'], 8)
+
+          if database_obj.is_a? Hash
+            database_obj.each do |k, v|
+              if k == 'properties'
+                v.each do |j, l|
+                  data[j] = l
+                end
+              else
+                data[k] = v
+              end
+            end
+          else
+            puts 'Object is not a hash. Parsing SQL Server object failed.'
           end
-          unless database['properties'].nil?
-            sql_database['edition'] = database['properties']['edition']
-            sql_database['collation'] = database['properties']['collation']
-            sql_database['create_mode'] = database['properties']['createMode']
-            sql_database['database_id'] = database['properties']['databaseId']
-            sql_database['creation_date'] = database['properties']['creationDate']
-            sql_database['max_size_bytes'] = database['properties']['maxSizeBytes']
-            sql_database['source_database_id'] = database['properties']['sourceDatabaseId']
-            sql_database['restore_point_in_time'] = database['properties']['restorePointInTime']
-            sql_database['earliest_restore_date'] = database['properties']['earliestRestoreDate']
-            sql_database['service_level_objective'] = database['properties']['serviceLevelObjective']
-            sql_database['default_secondary_location'] = database['properties']['defaultSecondaryLocation']
-            sql_database['source_database_deletion_date'] = database['properties']['sourceDatabaseDeletionDate']
-            sql_database['requested_service_objective_id'] = database['properties']['requestedServiceObjectiveId']
-            sql_database['requested_service_objective_name'] = database['properties']['requestedServiceObjectiveName']
-            sql_database['current_service_level_objective_id'] = database['properties']['currentServiceLevelObjectiveId']
-          end
-          sql_database
+
+
+          data
         end
 
         def save
           requires :resource_group, :server_name, :name, :location
-          sql_database = service.create_or_update_database(database_params)
+          sql_database = service.create_or_update_database(format_database_params)
           merge_attributes(Fog::Sql::AzureRM::SqlDatabase.parse(sql_database))
         end
 
@@ -69,7 +61,7 @@ module Fog
 
         private
 
-        def database_params
+        def format_database_params
           {
             resource_group: resource_group,
             server_name: server_name,

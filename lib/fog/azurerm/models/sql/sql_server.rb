@@ -10,28 +10,33 @@ module Fog
         attribute :location
         attribute :version
         attribute :state
-        attribute :administrator_login
-        attribute :administrator_login_password
-        attribute :fully_qualified_domain_name
+        attribute :administrator_login, aliases: %w(administratorLogin)
+        attribute :administrator_login_password, aliases: %w(administratorLoginPassword)
+        attribute :fully_qualified_domain_name, aliases: %w(fullyQualifiedDomainName)
 
-        def self.parse(server)
-          {
-            id: server['id'],
-            type: server['type'],
-            name: server['name'],
-            location: server['location'],
-            state: server['properties']['state'],
-            version: server['properties']['version'],
-            resource_group: get_resource_group_from_id(server['id']),
-            administrator_login: server['properties']['administratorLogin'],
-            administrator_login_password: server['properties']['administratorLoginPassword'],
-            fully_qualified_domain_name: server['properties']['fullyQualifiedDomainName']
-          }
+        def self.parse(server_obj)
+          data = {}
+          data['resource_group'] = get_resource_group_from_id(server_obj['id'])
+          if server_obj.is_a? Hash
+            server_obj.each do |k, v|
+              if k == 'properties'
+                v.each do |j, l|
+                  data[j] = l
+                end
+              else
+                data[k] = v
+              end
+            end
+          else
+            puts 'Object is not a hash. Parsing SQL Server object failed.'
+          end
+
+          data
         end
 
         def save
           requires :name, :resource_group, :location, :version, :administrator_login, :administrator_login_password
-          sql_server = service.create_or_update_sql_server(database_params)
+          sql_server = service.create_or_update_sql_server(format_sql_server_params)
           merge_attributes(Fog::Sql::AzureRM::SqlServer.parse(sql_server))
         end
 
@@ -41,7 +46,7 @@ module Fog
 
         private
 
-        def database_params
+        def format_sql_server_params
           {
             resource_group: resource_group,
             name: name,

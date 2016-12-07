@@ -6,7 +6,7 @@ module ApiStub
         # This class contain two mocks, for collection and for model
         def self.create_sql_server
           {
-            'id' => '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/vm_custom_image/providers/Microsoft.Sql/servers/test-sql-server-confiz123',
+            'id' => "/subscriptions/#{SUBSCRIPTION_ID}/resourceGroups/{resource-group-name}/providers/Microsoft.Sql/servers/{server-name}",
             'name' => 'server-name',
             'location' => '{server-location}',
             'properties' => {

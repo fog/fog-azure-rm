@@ -107,6 +107,9 @@ begin
   pubip = network.public_ips.get('TestRG-VNG', 'mypubip')
   pubip.destroy
 
+  vnet = network.virtual_networks.get('TestRG-VNG', 'testVnet')
+  vnet.destroy
+
   rg = resource.resource_groups.get('TestRG-VNG')
   rg.destroy
 rescue

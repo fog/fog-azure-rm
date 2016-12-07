@@ -46,7 +46,7 @@ begin
     location: LOCATION
   )
 
-  storage_account_name = "fog#{get_time}storageac"
+  storage_account_name = "sa#{current_time}"
   storage.storage_accounts.create(
     name: storage_account_name,
     location: LOCATION,

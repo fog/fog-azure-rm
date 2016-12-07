@@ -54,9 +54,9 @@ begin
   ######################                    List Resources in a Tag                       #########################
   ########################################################################################################################
 
-  resources = resources.azure_resources(tag_name: 'test-key', tag_value: 'test-value')
+  a_resources = resources.azure_resources(tag_name: 'test-key', tag_value: 'test-value')
   puts 'List resources in a tag:'
-  resources.each do |resource|
+  a_resources.each do |resource|
     puts resource.name
   end
 

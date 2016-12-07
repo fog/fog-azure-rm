@@ -28,7 +28,7 @@ compute = Fog::Compute::AzureRM.new(
 
 time = current_time
 resource_group_name = "AS-RG-#{time}"
-availability_set_name = "AS#{time}@%%$%$#"
+availability_set_name = "AS#{time}asetunique"
 
 ########################################################################################################################
 ######################                                 Prerequisites                              ######################

@@ -91,7 +91,7 @@ module Fog
               storage_account = @storage_service.storage_accounts.get(resource_group, storage_account_name)
               access_key = storage_account.get_access_keys.first.value
               storage_data = Fog::Storage::AzureRM.new(provider: 'AzureRM', azure_storage_account_name: storage_account_name, azure_storage_access_key: access_key)
-              new_time = get_time
+              new_time = current_time
               container_name = "customvhd#{new_time}"
               blob_name = "vhd_image#{new_time}.vhd"
               storage_data.directories.create(

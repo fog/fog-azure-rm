@@ -15,8 +15,7 @@ resource = Fog::Resources::AzureRM.new(
   subscription_id: azure_credentials['subscription_id']
 )
 
-dns = Fog::DNS.new(
-  provider: 'AzureRM',
+dns = Fog::DNS::AzureRM.new(
   tenant_id: azure_credentials['tenant_id'],
   client_id: azure_credentials['client_id'],
   client_secret: azure_credentials['client_secret'],
@@ -101,7 +100,7 @@ begin
   ########################################################################################################################
 
   record_set.remove_a_type_record('1.2.3.8')
-  put 'Removed A type record in record set'
+  puts 'Removed A type record in record set'
 
   ########################################################################################################################
   ######################                                   CleanUp                                  ######################

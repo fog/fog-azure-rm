@@ -6,6 +6,7 @@ module Fog
       requires :client_id
       requires :client_secret
       requires :subscription_id
+      recognizes :environment
 
       request_path 'fog/azurerm/requests/sql'
       request :create_or_update_sql_server
@@ -44,7 +45,8 @@ module Fog
             tenant_id: options[:tenant_id],
             client_id: options[:client_id],
             client_secret: options[:client_secret],
-            subscription_id: options[:subscription_id]
+            subscription_id: options[:subscription_id],
+            environment: options[:environment]
           )
         end
       end

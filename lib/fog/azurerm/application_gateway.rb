@@ -6,6 +6,7 @@ module Fog
       requires :client_id
       requires :client_secret
       requires :subscription_id
+      recognizes :environment
 
       request_path 'fog/azurerm/requests/application_gateway'
       request :create_or_update_application_gateway
@@ -53,13 +54,16 @@ module Fog
             raise e.message
           end
 
-          credentials = Fog::Credentials::AzureRM.get_credentials(options[:tenant_id], options[:client_id], options[:client_secret])
-          @network_client = ::Azure::ARM::Network::NetworkManagementClient.new(credentials)
+          options[:environment] = 'AzureCloud' if options[:environment].nil?
+
+          credentials = Fog::Credentials::AzureRM.get_credentials(options[:tenant_id], options[:client_id], options[:client_secret], options[:environment])
+          @network_client = ::Azure::ARM::Network::NetworkManagementClient.new(credentials, resource_manager_endpoint_url(options[:environment]))
           @network_client.subscription_id = options[:subscription_id]
           @tenant_id = options[:tenant_id]
           @client_id = options[:client_id]
           @client_secret = options[:client_secret]
           @subscription_id = options[:subscription_id]
+          @environment = options[:environment]
         end
       end
     end

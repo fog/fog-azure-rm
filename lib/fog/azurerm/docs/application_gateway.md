@@ -15,10 +15,11 @@ Next, create a connection to the Application Gateway Service:
 
 ```ruby
     azure_application_gateway_service = Fog::ApplicationGateway::AzureRM.new(
-        tenant_id: '<Tenantid>',                  # Tenant id of Azure Active Directory Application
-        client_id:    '<Clientid>',               # Client id of Azure Active Directory Application
-        client_secret: '<ClientSecret>',          # Client Secret of Azure Active Directory Application
-        subscription_id: '<Subscriptionid>'       # Subscription id of an Azure Account
+    tenant_id: '<Tenantid>',                                                              # Tenant id of Azure Active Directory Application
+        client_id:    '<Clientid>',                                                       # Client id of Azure Active Directory Application
+        client_secret: '<ClientSecret>',                                                  # Client Secret of Azure Active Directory Application
+        subscription_id: '<Subscriptionid>',                                              # Subscription id of an Azure Account
+        :environment => '<AzureCloud/AzureChinaCloud/AzureUSGovernment/AzureGermanCloud>' # Azure cloud environment. Default is AzureCloud.
 )
 ```
 

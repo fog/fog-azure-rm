@@ -6,6 +6,7 @@ module Fog
       requires :client_id
       requires :client_secret
       requires :subscription_id
+      recognizes :environment
 
       request_path 'fog/azurerm/requests/traffic_manager'
       request :create_or_update_traffic_manager_profile
@@ -34,8 +35,10 @@ module Fog
             raise e.message
           end
 
-          credentials = Fog::Credentials::AzureRM.get_credentials(options[:tenant_id], options[:client_id], options[:client_secret])
-          @traffic_mgmt_client = ::Azure::ARM::TrafficManager::TrafficManagerManagementClient.new(credentials, resource_manager_endpoint_url)
+          options[:environment] = 'AzureCloud' if options[:environment].nil?
+
+          credentials = Fog::Credentials::AzureRM.get_credentials(options[:tenant_id], options[:client_id], options[:client_secret], options[:environment])
+          @traffic_mgmt_client = ::Azure::ARM::TrafficManager::TrafficManagerManagementClient.new(credentials, resource_manager_endpoint_url(options[:environment]))
           @traffic_mgmt_client.subscription_id = options[:subscription_id]
         end
       end

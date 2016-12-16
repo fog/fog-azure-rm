@@ -2,6 +2,7 @@ require 'ms_rest_azure'
 require 'rest_client'
 require 'erb'
 require 'fog/azurerm/config'
+require 'fog/azurerm/constants'
 require 'fog/azurerm/utilities/general'
 require 'fog/azurerm/version'
 require 'fog/core'
@@ -53,6 +54,11 @@ module Fog
     autoload :AzureRM, File.expand_path('azurerm/sql', __dir__)
   end
 
+  # Autoload Module for KeyVault
+  module KeyVault
+    autoload :AzureRM, File.expand_path('azurerm/key_vault', __dir__)
+  end
+
   # Main AzureRM fog Provider Module
   module AzureRM
     extend Fog::Provider
@@ -64,5 +70,6 @@ module Fog
     service(:application_gateway, 'ApplicationGateway')
     service(:traffic_manager, 'TrafficManager')
     service(:sql, 'Sql')
+    service(:key_vault, 'KeyVault')
   end
 end

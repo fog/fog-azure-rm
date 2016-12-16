@@ -62,13 +62,17 @@ module Fog
             raise e.message
           end
 
+
           options[:environment] = 'AzureCloud' if options[:environment].nil?
 
+          telemetry = "fog-azure-rm/#{Fog::AzureRM::VERSION}"
           credentials = Fog::Credentials::AzureRM.get_credentials(options[:tenant_id], options[:client_id], options[:client_secret], options[:environment])
           @compute_mgmt_client = ::Azure::ARM::Compute::ComputeManagementClient.new(credentials, resource_manager_endpoint_url(options[:environment]))
           @compute_mgmt_client.subscription_id = options[:subscription_id]
+          @compute_mgmt_client.add_user_agent_information(telemetry)
           @storage_mgmt_client = ::Azure::ARM::Storage::StorageManagementClient.new(credentials, resource_manager_endpoint_url(options[:environment]))
           @storage_mgmt_client.subscription_id = options[:subscription_id]
+          @storage_mgmt_client.add_user_agent_information(telemetry)
           @storage_service = Fog::Storage::AzureRM.new(tenant_id: options[:tenant_id], client_id: options[:client_id], client_secret: options[:client_secret], subscription_id: options[:subscription_id], environment: options[:environment])
         end
       end

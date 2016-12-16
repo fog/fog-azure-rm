@@ -7,7 +7,7 @@ module Fog
           msg = 'Getting list of Record sets.'
           Fog::Logger.debug msg
           begin
-            zones = @dns_client.record_sets.list_all_in_resource_group(resource_group, zone_name)
+            zones = @dns_client.record_sets.list_by_dns_zone(resource_group, zone_name)
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end

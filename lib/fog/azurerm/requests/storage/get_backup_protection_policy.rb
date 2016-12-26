@@ -7,7 +7,7 @@ module Fog
           msg = "Get backup protection policy from Resource Group #{resource_group}"
           Fog::Logger.debug msg
 
-          resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription_id}/resourceGroups/#{resource_group}/providers/Microsoft.RecoveryServices/vaults/#{name}/backupPolicies?api-version=2016-05-01&$filter=backupManagementType eq 'AzureIaasVM'"
+          resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription_id}/resourceGroups/#{resource_group}/providers/Microsoft.RecoveryServices/vaults/#{name}/backupPolicies?api-version=#{REST_CLIENT_API_VERSION[1]}&$filter=backupManagementType eq 'AzureIaasVM'"
           begin
             token = Fog::Credentials::AzureRM.get_token(@tenant_id, @client_id, @client_secret)
             response = RestClient.get(

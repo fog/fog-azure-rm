@@ -7,7 +7,7 @@ module Fog
           msg = "Creating/Updating Recovery Vault #{name} in Resource Group #{resource_group}"
           Fog::Logger.debug msg
 
-          resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription_id}/resourceGroups/#{resource_group}/providers/Microsoft.RecoveryServices/vaults/#{name}?api-version=2016-05-01"
+          resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription_id}/resourceGroups/#{resource_group}/providers/Microsoft.RecoveryServices/vaults/#{name}?api-version=#{REST_CLIENT_API_VERSION[1]}"
           body = {
             location: location,
             tags: {},

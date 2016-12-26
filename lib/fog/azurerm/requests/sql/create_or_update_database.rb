@@ -6,7 +6,7 @@ module Fog
         def create_or_update_database(database_hash)
           msg = "Creating SQL Database: #{database_hash[:name]}."
           Fog::Logger.debug msg
-          resource_url = "#{resource_manager_endpoint_url}/subscriptions/#{@subscription_id}/resourceGroups/#{database_hash[:resource_group]}/providers/Microsoft.Sql/servers/#{database_hash[:server_name]}/databases/#{database_hash[:name]}?api-version=2014-04-01-preview"
+          resource_url = "#{resource_manager_endpoint_url}/subscriptions/#{@subscription_id}/resourceGroups/#{database_hash[:resource_group]}/providers/Microsoft.Sql/servers/#{database_hash[:server_name]}/databases/#{database_hash[:name]}?api-version=#{REST_CLIENT_API_VERSION[0]}"
           request_parameters = format_database_parameters(database_hash[:location], database_hash[:create_mode], database_hash[:edition], database_hash[:source_database_id], database_hash[:collation], database_hash[:max_size_bytes], database_hash[:requested_service_objective_name], database_hash[:restore_point_in_time], database_hash[:source_database_deletion_date], database_hash[:elastic_pool_name], database_hash[:requested_service_objective_id])
           begin
             token = Fog::Credentials::AzureRM.get_token(@tenant_id, @client_id, @client_secret)

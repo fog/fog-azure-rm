@@ -7,7 +7,7 @@ module Fog
           msg = "Getting backup item from Recovery Vault #{rv_name}"
           Fog::Logger.debug msg
 
-          resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription_id}/resourceGroups/#{resource_group}/providers/Microsoft.RecoveryServices/vaults/#{rv_name}/backupProtectedItems?api-version=2016-05-01&$filter=backupManagementType eq 'AzureIaasVM' and itemType eq 'VM'"
+          resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription_id}/resourceGroups/#{resource_group}/providers/Microsoft.RecoveryServices/vaults/#{rv_name}/backupProtectedItems?api-version=#{REST_CLIENT_API_VERSION[1]}&$filter=backupManagementType eq 'AzureIaasVM' and itemType eq 'VM'"
           begin
             token = Fog::Credentials::AzureRM.get_token(@tenant_id, @client_id, @client_secret)
             response = RestClient.get(

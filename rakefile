@@ -11,8 +11,7 @@ desc 'Generates a coverage report for minitest-cases using simple-cov'
 task :coverage do
   ENV['CODECLIMATE_REPO_TOKEN'] = nil
   ENV['COVERAGE'] = 'true'
-  Dir.glob('test/models/**/test_*.rb').each { |file| require File.expand_path file, __dir__ }
-  Dir.glob('test/requests/**/test_*.rb').each { |file| require File.expand_path file, __dir__ }
+  sh 'codeclimate-test-reporter'
 end
 
 desc 'Generates a coverage report for minitest-cases using code-climate'

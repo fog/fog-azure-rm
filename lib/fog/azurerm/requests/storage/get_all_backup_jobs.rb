@@ -7,7 +7,7 @@ module Fog
           msg = "Getting all backup jobs for Recovery Vault #{rv_name}"
           Fog::Logger.debug msg
 
-          resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription_id}/resourceGroups/#{rv_resource_group}/providers/Microsoft.RecoveryServices/vaults/#{rv_name}/backupJobs?api-version=2016-05-01&$filter=status eq 'InProgress'"
+          resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription_id}/resourceGroups/#{rv_resource_group}/providers/Microsoft.RecoveryServices/vaults/#{rv_name}/backupJobs?api-version=#{REST_CLIENT_API_VERSION[1]}&$filter=status eq 'InProgress'"
           begin
             token = Fog::Credentials::AzureRM.get_token(@tenant_id, @client_id, @client_secret)
             response = RestClient.get(

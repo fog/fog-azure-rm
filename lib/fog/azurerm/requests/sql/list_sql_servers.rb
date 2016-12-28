@@ -6,7 +6,7 @@ module Fog
         def list_sql_servers(resource_group)
           msg = "Listing Sql Servers in Resource Group: #{resource_group}."
           Fog::Logger.debug msg
-          resource_url = "#{resource_manager_endpoint_url}/subscriptions/#{@subscription_id}/resourceGroups/#{resource_group}/providers/Microsoft.Sql/servers?api-version=2014-04-01-preview"
+          resource_url = "#{resource_manager_endpoint_url}/subscriptions/#{@subscription_id}/resourceGroups/#{resource_group}/providers/Microsoft.Sql/servers?api-version=#{REST_CLIENT_API_VERSION[0]}"
           begin
             token = Fog::Credentials::AzureRM.get_token(@tenant_id, @client_id, @client_secret)
             response = RestClient.get(

@@ -55,7 +55,7 @@ module ApiStub
 
         def self.get_connection_shared_key_response(network_client)
           shared_key = '{ "value": "hello" }'
-          shared_key_mapper = Azure::ARM::Network::Models::ConnectionSharedKeyResult.mapper
+          shared_key_mapper = Azure::ARM::Network::Models::ConnectionSharedKey.mapper
           network_client.deserialize(shared_key_mapper, Fog::JSON.decode(shared_key), 'result.body')
         end
 

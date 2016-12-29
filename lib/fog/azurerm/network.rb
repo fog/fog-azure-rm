@@ -6,6 +6,7 @@ module Fog
       requires :client_id
       requires :client_secret
       requires :subscription_id
+      recognizes :environment
 
       request_path 'fog/azurerm/requests/network'
       request :create_or_update_virtual_network
@@ -144,13 +145,18 @@ module Fog
             raise e.message
           end
 
-          credentials = Fog::Credentials::AzureRM.get_credentials(options[:tenant_id], options[:client_id], options[:client_secret])
-          @network_client = ::Azure::ARM::Network::NetworkManagementClient.new(credentials, resource_manager_endpoint_url)
+          options[:environment] = 'AzureCloud' if options[:environment].nil?
+
+          credentials = Fog::Credentials::AzureRM.get_credentials(options[:tenant_id], options[:client_id], options[:client_secret], options[:environment])
+          telemetry = "fog-azure-rm/#{Fog::AzureRM::VERSION}"
+          @network_client = ::Azure::ARM::Network::NetworkManagementClient.new(credentials, resource_manager_endpoint_url(options[:environment]))
           @network_client.subscription_id = options[:subscription_id]
+          @network_client.add_user_agent_information(telemetry)
           @tenant_id = options[:tenant_id]
           @client_id = options[:client_id]
           @client_secret = options[:client_secret]
           @subscription_id = options[:subscription_id]
+          @environment = options[:environment]
           current_directory = File.dirname(__FILE__)
           @logger_messages = YAML.load_file("#{current_directory}/utilities/logger_messages.yml")
         end

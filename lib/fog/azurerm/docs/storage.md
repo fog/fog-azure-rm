@@ -17,13 +17,13 @@ Next, create a connection to the Storage Service:
 ```ruby
 azure_storage_service = Fog::Storage.new(
   :provider => 'AzureRM',
-  :tenant_id => '<Tenantid>',                                     # Tenant id of Azure Active Directory Application
-  :client_id =>    '<Clientid>',                                  # Client id of Azure Active Directory Application
-  :client_secret => '<ClientSecret>',                             # Client Secret of Azure Active Directory Application
-  :subscription_id => '<Subscriptionid>'                          # Subscription id of an Azure Account
-  :azure_storage_account_name => '<StorageAccountName>'           # Name of an Azure Storage Account
-  :azure_storage_access_key => '<StorageAccountKey>'              # Key of an Azure Storage Account
-  :azure_storage_connection_string => '<StorageConnectionString>' # Connection String of an Azure Storage Account
+  :tenant_id => '<Tenantid>',                                                       # Tenant id of Azure Active Directory Application
+  :client_id =>    '<Clientid>',                                                    # Client id of Azure Active Directory Application
+  :client_secret => '<ClientSecret>',                                               # Client Secret of Azure Active Directory Application
+  :subscription_id => '<Subscriptionid>',                                           # Subscription id of an Azure Account
+  :azure_storage_account_name => '<StorageAccountName>',                            # Name of an Azure Storage Account
+  :azure_storage_access_key => '<StorageAccountKey>',                               # Key of an Azure Storage Account
+  :environment => '<AzureCloud/AzureChinaCloud/AzureUSGovernment/AzureGermanCloud>' # Azure cloud environment. Default is AzureCloud.
 )
 ```
 
@@ -32,10 +32,11 @@ If you only want to manage the storage accounts, you can create the connection w
 ```ruby
 azure_storage_service = Fog::Storage.new(
   :provider => 'AzureRM',
-  :tenant_id => '<Tenantid>',                                     # Tenant id of Azure Active Directory Application
-  :client_id =>    '<Clientid>',                                  # Client id of Azure Active Directory Application
-  :client_secret => '<ClientSecret>',                             # Client Secret of Azure Active Directory Application
-  :subscription_id => '<Subscriptionid>'                          # Subscription id of an Azure Account
+  :tenant_id => '<Tenantid>',                                                       # Tenant id of Azure Active Directory Application
+  :client_id =>    '<Clientid>',                                                    # Client id of Azure Active Directory Application
+  :client_secret => '<ClientSecret>',                                               # Client Secret of Azure Active Directory Application
+  :subscription_id => '<Subscriptionid>',                                           # Subscription id of an Azure Account
+  :environment => '<AzureCloud/AzureChinaCloud/AzureUSGovernment/AzureGermanCloud>' # Azure cloud environment. Default is AzureCloud.
 )
 ```
 
@@ -44,9 +45,9 @@ If you only want to manage the storage data, you can create the connection witho
 ```ruby
 azure_storage_service = Fog::Storage.new(
   :provider => 'AzureRM',
-  :azure_storage_account_name => '<StorageAccountName>'           # Name of an Azure Storage Account
-  :azure_storage_access_key => '<StorageAccountKey>'              # Key of an Azure Storage Account
-  :azure_storage_connection_string => '<StorageConnectionString>' # Connection String of an Azure Storage Account (optional)
+  :azure_storage_account_name => '<StorageAccountName>',                            # Name of an Azure Storage Account
+  :azure_storage_access_key => '<StorageAccountKey>',                               # Key of an Azure Storage Account
+  :environment => '<AzureCloud/AzureChinaCloud/AzureUSGovernment/AzureGermanCloud>' # Azure cloud environment. Default is AzureCloud.
 )
 ```
 
@@ -73,7 +74,7 @@ azure_storage_service.storage_accounts.create(
   :name => '<Storage Account name>',
   :location => 'West US',
   :resource_group => '<Resource Group name>',
-  :account_type => '<Standard/Premium>'                # Optional. Default value 'Standard'. Allowed values can only be Standard or Premium
+  :account_type => '<Standard/Premium>',               # Optional. Default value 'Standard'. Allowed values can only be Standard or Premium
   :replication => 'LRS',                               # Optional. Default value 'LRS'
   :encryption => true                                  # Optional. If you want to enable encryption. Default value is 'false'
 )
@@ -144,18 +145,20 @@ storage_acc.destroy
 
 ## Create a Disk
 
-Create a Disk in storage account.
+Create a Disk in storage account. disk_size_in_gb must be an integer and the range is [1, 1023].
+By default the disk will be created in the container 'vhds'. You can specify other container by set options[:container_name].
 
 ```ruby
-azure_storage_service.create_disk('<Data Disk Name>', options = {})
+azure_storage_service.create_disk('<Data Disk Name>', disk_size_in_gb, options = {})
 ```
 
 ## Delete a Disk
 
 Delete a Disk from a storage account. Disk must be in unlocked state i.e detached from server(virtual machine) to successfully perform this action.
+By default the disk will be deleted from the container 'vhds'. You can specify other container by set options[:container_name].
 
 ```ruby
-azure_storage_service.delete_disk('<Data Disk Name>')
+azure_storage_service.delete_disk('<Data Disk Name>', options = {})
 ```
 
 ## Create a storage container
@@ -185,7 +188,7 @@ end
 Get the permissions for the specified container. The permissions indicate whether container data may be accessed publicly.
 
 ```ruby
-directory = azure_storage_service.directories.get('<Container Name>', max_results: 1)
+directory = azure_storage_service.directories.get('<Container Name>', max_keys: 1)
 puts directory.acl
 ```
 
@@ -206,7 +209,7 @@ Set the permissions for the specified container. The permissions indicate whethe
     No public read access. Container and blob data can be read by the account owner only.
 
 ```ruby
-directory = azure_storage_service.directories.get('<Container Name>', max_results: 1)
+directory = azure_storage_service.directories.get('<Container Name>', max_keys: 1)
 directory.acl = 'container'
 directory.save(is_create: false)
 ```
@@ -216,13 +219,13 @@ directory.save(is_create: false)
 Mark the specified container for deletion. The container and any blobs contained within it are later deleted during garbage collection.
 
 ```ruby
-directory = azure_storage_service.directories.get('<Container Name>', max_results: 1)
+directory = azure_storage_service.directories.get('<Container Name>', max_keys: 1)
 puts directory.destroy
 ```
 
 ## Upload data as a block blob
 ```ruby
-directory = azure_storage_service.directories.get('<Container Name>', max_results: 1)
+directory = azure_storage_service.directories.get('<Container Name>', max_keys: 1)
 options = {
   key: '<Blob Name>',
   body: '<Blob Content>'
@@ -233,7 +236,7 @@ puts new_block_blob.inspect
 
 ## Upload a local file as a block blob
 ```ruby
-directory = azure_storage_service.directories.get('<Container Name>', max_results: 1)
+directory = azure_storage_service.directories.get('<Container Name>', max_keys: 1)
 File.open('<File Path>') do |file|
   options = {
     key: '<Blob Name>',
@@ -246,7 +249,7 @@ end
 
 ## Upload VHD data as a page blob
 ```ruby
-directory = azure_storage_service.directories.get('<Container Name>', max_results: 1)
+directory = azure_storage_service.directories.get('<Container Name>', max_keys: 1)
 options = {
   key: '<Blob Name>',
   body: '<Blob Content>',
@@ -258,7 +261,7 @@ puts new_page_blob.inspect
 
 ## Upload a local VHD as a page blob
 ```ruby
-directory = azure_storage_service.directories.get('<Container Name>', max_results: 1)
+directory = azure_storage_service.directories.get('<Container Name>', max_keys: 1)
 File.open('<File Path>') do |file|
   options = {
     key: '<Blob Name>',
@@ -272,14 +275,14 @@ end
 
 ## Copy Blob from one container to another
 ```ruby
-directory = azure_storage_service.directories.get('<Source Container Name>', max_results: 1)
+directory = azure_storage_service.directories.get('<Source Container Name>', max_keys: 1)
 copied_blob = directory.files.head('<Source Blob Name>').copy('<Destination Container Name>', '<Destination Blob Name>')
 puts copied_blob.inspect
 ```
 
 ## Copy Blob from one uri to self
 ```ruby
-directory = azure_storage_service.directories.get('<Destination Container Name>', max_results: 1)
+directory = azure_storage_service.directories.get('<Destination Container Name>', max_keys: 1)
 copied_blob = directory.files.new(key: '<Destination Blob Name>')
 copied_blob.copy_from_uri('<Source Blob Uri>')
 puts copied_blob.inspect
@@ -287,7 +290,7 @@ puts copied_blob.inspect
 
 ## Download a small blob to a local file
 ```ruby
-directory = azure_storage_service.directories.get('<Container Name>', max_results: 1)
+directory = azure_storage_service.directories.get('<Container Name>', max_keys: 1)
 blob = directory.files.get('<Blob Name>')
 File.open('<File Path>', 'wb') do |file|
   file.write(blob.body)
@@ -297,7 +300,7 @@ puts "File Size: #{::File.size <File Path>}"
 
 ## Download a large blob to a local file
 ```ruby
-directory = azure_storage_service.directories.get('<Container Name>', max_results: 1)
+directory = azure_storage_service.directories.get('<Container Name>', max_keys: 1)
 File.open('<File Path>', 'wb') do |file|
   directory.files.get('<Blob Name>') do |chunk, remaining_bytes, total_bytes|
     puts "remaining_bytes: #{remaining_bytes}, total_bytes: #{total_bytes}"
@@ -312,7 +315,7 @@ puts "File Size: #{::File.size <File Path>}"
 Mark the specified blob for deletion. The blob is later deleted during garbage collection.
 
 ```ruby
-directory = azure_storage_service.directories.get('<Container Name>', max_results: 1)
+directory = azure_storage_service.directories.get('<Container Name>', max_keys: 1)
 blob = directory.files.head('<Blob Name>')
 puts blob.destroy
 ```
@@ -322,7 +325,7 @@ puts blob.destroy
 Set the storage blob properties.
 
 ```ruby
-directory = azure_storage_service.directories.get('<Container Name>', max_results: 1)
+directory = azure_storage_service.directories.get('<Container Name>', max_keys: 1)
 blob = directory.files.head('<Blob Name>')
 blob.content_language = "English"
 blob.content_disposition = "attachment"
@@ -336,7 +339,7 @@ Metadata allows us to provide descriptive information about specific containers 
 ### Get Blob Metadata
 
 ```ruby
-directory = azure_storage_service.directories.get('<Container Name>', max_results: 1)
+directory = azure_storage_service.directories.get('<Container Name>', max_keys: 1)
 blob = directory.files.head('<Blob Name>')
 puts blob.metadata
 ```
@@ -344,7 +347,7 @@ puts blob.metadata
 ### Set Blob Metadata
 
 ```ruby
-directory = azure_storage_service.directories.get('<Container Name>', max_results: 1)
+directory = azure_storage_service.directories.get('<Container Name>', max_keys: 1)
 blob = directory.files.head('<Blob Name>')
 blob.metadata = {
   "Category" => "Images",
@@ -356,14 +359,14 @@ blob.save(update_body: false)
 ### Get Container Metadata
 
 ```ruby
-directory = azure_storage_service.directories.get('<Container Name>', max_results: 1)
+directory = azure_storage_service.directories.get('<Container Name>', max_keys: 1)
 puts directory.metadata
 ```
 
 ### Set Container Metadata
 
 ```ruby
-directory = azure_storage_service.directories.get('<Container Name>', max_results: 1)
+directory = azure_storage_service.directories.get('<Container Name>', max_keys: 1)
 directory.metadata = {
   "CreatedBy" => "User",
   "SourceMachine" => "Mymachine",

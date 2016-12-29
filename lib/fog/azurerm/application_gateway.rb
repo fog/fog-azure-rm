@@ -6,6 +6,7 @@ module Fog
       requires :client_id
       requires :client_secret
       requires :subscription_id
+      recognizes :environment
 
       request_path 'fog/azurerm/requests/application_gateway'
       request :create_or_update_application_gateway
@@ -52,14 +53,20 @@ module Fog
             retry if require('rubygems')
             raise e.message
           end
+          
+          telemetry = "fog-azure-rm/#{Fog::AzureRM::VERSION}"
 
-          credentials = Fog::Credentials::AzureRM.get_credentials(options[:tenant_id], options[:client_id], options[:client_secret])
-          @network_client = ::Azure::ARM::Network::NetworkManagementClient.new(credentials)
+          options[:environment] = 'AzureCloud' if options[:environment].nil?
+
+          credentials = Fog::Credentials::AzureRM.get_credentials(options[:tenant_id], options[:client_id], options[:client_secret], options[:environment])
+          @network_client = ::Azure::ARM::Network::NetworkManagementClient.new(credentials, resource_manager_endpoint_url(options[:environment]))
           @network_client.subscription_id = options[:subscription_id]
+          @network_client.add_user_agent_information(telemetry)
           @tenant_id = options[:tenant_id]
           @client_id = options[:client_id]
           @client_secret = options[:client_secret]
           @subscription_id = options[:subscription_id]
+          @environment = options[:environment]
         end
       end
     end

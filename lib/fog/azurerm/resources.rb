@@ -6,6 +6,7 @@ module Fog
       requires :client_id
       requires :client_secret
       requires :subscription_id
+      recognizes :environment
 
       request_path 'fog/azurerm/requests/resources'
       request :create_resource_group
@@ -53,9 +54,13 @@ module Fog
             raise e.message
           end
 
-          credentials = Fog::Credentials::AzureRM.get_credentials(options[:tenant_id], options[:client_id], options[:client_secret])
-          @rmc = ::Azure::ARM::Resources::ResourceManagementClient.new(credentials, resource_manager_endpoint_url)
+          options[:environment] = 'AzureCloud' if options[:environment].nil?
+
+          credentials = Fog::Credentials::AzureRM.get_credentials(options[:tenant_id], options[:client_id], options[:client_secret], options[:environment])
+          telemetry = "fog-azure-rm/#{Fog::AzureRM::VERSION}"
+          @rmc = ::Azure::ARM::Resources::ResourceManagementClient.new(credentials, resource_manager_endpoint_url(options[:environment]))
           @rmc.subscription_id = options[:subscription_id]
+          @rmc.add_user_agent_information(telemetry)
         end
       end
     end

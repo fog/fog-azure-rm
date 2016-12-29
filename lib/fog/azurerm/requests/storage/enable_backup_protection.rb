@@ -14,7 +14,7 @@ module Fog
           policy = backup_protection_policy.select { |item| item['name'].eql? 'DefaultPolicy' }[0]
           vm_id = get_virtual_machine_id(vm_resource_group, vm_name)
 
-          resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription_id}/resourceGroups/#{rv_resource_group}/providers/Microsoft.RecoveryServices/vaults/#{rv_name}/backupFabrics/Azure/protectionContainers/iaasvmcontainer;iaasvmcontainerv2;#{vm_resource_group.downcase};#{vm_name.downcase}/protectedItems/vm;iaasvmcontainerv2;#{vm_resource_group.downcase};#{vm_name.downcase}?api-version=2016-05-01"
+          resource_url = "#{AZURE_RESOURCE}/subscriptions/#{@subscription_id}/resourceGroups/#{rv_resource_group}/providers/Microsoft.RecoveryServices/vaults/#{rv_name}/backupFabrics/Azure/protectionContainers/iaasvmcontainer;iaasvmcontainerv2;#{vm_resource_group.downcase};#{vm_name.downcase}/protectedItems/vm;iaasvmcontainerv2;#{vm_resource_group.downcase};#{vm_name.downcase}?api-version=#{REST_CLIENT_API_VERSION[1]}"
           body = {
             properties: {
               protectedItemType: 'Microsoft.Compute/virtualMachines',

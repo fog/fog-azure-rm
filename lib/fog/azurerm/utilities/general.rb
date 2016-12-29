@@ -37,11 +37,6 @@ def get_traffic_manager_profile_name_from_endpoint_id(endpoint_id)
   endpoint_id.split('/')[8]
 end
 
-# Get server name from ID (String)
-def get_server_name_from_id(database_id)
-  database_id.split('/')[8]
-end
-
 # Pick Express Route Circuit name from Id(String)
 def get_circuit_name_from_id(circuit_id)
   circuit_id.split('/')[8]
@@ -82,34 +77,54 @@ def random_string(length)
   (0...length).map { ('a'..'z').to_a[rand(26)] }.join
 end
 
-def get_blob_link(storage_account_name)
-  "http://#{storage_account_name}.blob.core.windows.net"
-end
-
-def active_directory_service_settings
-  case CLOUD
-  when 'AzureChina'
+def active_directory_service_settings(environment = ENVIRONMENT_AZURE_CLOUD)
+  case environment
+  when ENVIRONMENT_AZURE_CHINA_CLOUD
     MsRestAzure::ActiveDirectoryServiceSettings.get_azure_china_settings
-  when 'AzureGermanCloud'
-    MsRestAzure::ActiveDirectoryServiceSettings.get_azure_german_settings
-  when 'AzureUSGovernment'
+  when ENVIRONMENT_AZURE_US_GOVERNMENT
     MsRestAzure::ActiveDirectoryServiceSettings.get_azure_us_government_settings
+  when ENVIRONMENT_AZURE_GERMAN_CLOUD
+    MsRestAzure::ActiveDirectoryServiceSettings.get_azure_german_settings
   else
     MsRestAzure::ActiveDirectoryServiceSettings.get_azure_settings
   end
 end
 
-def resource_manager_endpoint_url
-  case CLOUD
-  when 'AzureChina'
-    AZURE_CHINA_RM_ENDPOINT_URL
-  when 'AzureGermanCloud'
-    GERMAN_CLOUD_RM_ENDPOINT_URL
-  when 'AzureUSGovernment'
-    US_GOVERNMENT_RM_ENDPOINT_URL
+def resource_manager_endpoint_url(environment = ENVIRONMENT_AZURE_CLOUD)
+  case environment
+  when ENVIRONMENT_AZURE_CHINA_CLOUD
+    MsRestAzure::AzureEnvironments::AzureChina.resource_manager_endpoint_url
+  when ENVIRONMENT_AZURE_US_GOVERNMENT
+    MsRestAzure::AzureEnvironments::AzureUSGovernment.resource_manager_endpoint_url
+  when ENVIRONMENT_AZURE_GERMAN_CLOUD
+    MsRestAzure::AzureEnvironments::AzureGermanCloud.resource_manager_endpoint_url
   else
-    AZURE_GLOBAL_RM_ENDPOINT_URL
+    MsRestAzure::AzureEnvironments::Azure.resource_manager_endpoint_url
   end
+end
+
+# storage_endpoint_suffix is nil in ms_rest_azure 0.6.2
+# Reference the issue: https://github.com/Azure/azure-sdk-for-ruby/issues/603
+def storage_endpoint_suffix(environment = ENVIRONMENT_AZURE_CLOUD)
+  case environment
+  when ENVIRONMENT_AZURE_CHINA_CLOUD
+    # MsRestAzure::AzureEnvironments::AzureChina.storage_endpoint_suffix
+    '.core.chinacloudapi.cn'
+  when ENVIRONMENT_AZURE_US_GOVERNMENT
+    # MsRestAzure::AzureEnvironments::AzureUSGovernment.storage_endpoint_suffix
+    '.core.usgovcloudapi.net'
+  when ENVIRONMENT_AZURE_GERMAN_CLOUD
+    # MsRestAzure::AzureEnvironments::AzureGermanCloud.storage_endpoint_suffix
+    '.core.cloudapi.de'
+  else
+    # MsRestAzure::AzureEnvironments::Azure.storage_endpoint_suffix
+    '.core.windows.net'
+  end
+end
+
+def get_blob_endpoint(storage_account_name, enable_https = false, environment = ENVIRONMENT_AZURE_CLOUD)
+  protocol = enable_https ? 'https' : 'http'
+  "#{protocol}://#{storage_account_name}.blob#{storage_endpoint_suffix(environment)}"
 end
 
 def current_time

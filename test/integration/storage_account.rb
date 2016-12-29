@@ -19,7 +19,8 @@ storage = Fog::Storage::AzureRM.new(
   tenant_id: azure_credentials['tenant_id'],
   client_id: azure_credentials['client_id'],
   client_secret: azure_credentials['client_secret'],
-  subscription_id: azure_credentials['subscription_id']
+  subscription_id: azure_credentials['subscription_id'],
+  environment: azure_credentials['environment']
 )
 
 ########################################################################################################################
@@ -44,8 +45,10 @@ begin
   ###############  Create A Standard Storage Account of Replication: LRS (Locally-redundant storage)       ###############
   ########################################################################################################################
 
+  lrs_storage_account = "lrs#{current_time}"
+
   storage_account = storage.storage_accounts.create(
-    name: 'fogstandardsalrs',
+    name: lrs_storage_account,
     location: LOCATION,
     resource_group: 'TestRG-SA'
   )
@@ -55,8 +58,10 @@ begin
   ###############      Create A Standard Storage Account of Replication: GRS (Geo-redundant storage)     #################
   ########################################################################################################################
 
+  grs_storage_account = "grs#{current_time}"
+
   storage_account = storage.storage_accounts.create(
-    name: 'fogstandardsagrs',
+    name: grs_storage_account,
     location: LOCATION,
     resource_group: 'TestRG-SA',
     sku_name: 'Standard',
@@ -69,8 +74,10 @@ begin
   ###########   Create A Premium(SSD) Storage Account of its only Replication: LRS (Locally-redundant storage)  ##########
   ########################################################################################################################
 
+  premium_storage_acc = "premsa#{current_time}"
+
   storage_account = storage.storage_accounts.create(
-    name: 'fogpremiumsa',
+    name: premium_storage_acc,
     location: LOCATION,
     resource_group: 'TestRG-SA',
     sku_name: 'Premium',
@@ -82,7 +89,7 @@ begin
   ######################                         Get and Update Storage Account                     ######################
   ########################################################################################################################
 
-  premium_storage_account = storage.storage_accounts.get('TestRG-SA', 'fogpremiumsa')
+  premium_storage_account = storage.storage_accounts.get('TestRG-SA', premium_storage_acc)
   puts "Get storage account: #{premium_storage_account.name}"
   premium_storage_account.update(encryption: true)
   puts 'Updated encrytion of storage account'
@@ -91,11 +98,11 @@ begin
   ######################                         Get and Delete Storage Account                     ######################
   ########################################################################################################################
 
-  standard_storage_account = storage.storage_accounts.get('TestRG-SA', 'fogstandardsalrs')
+  standard_storage_account = storage.storage_accounts.get('TestRG-SA', lrs_storage_account)
   puts "Deleted storage account for standard lrs replication: #{standard_storage_account.destroy}"
-  standard_storage_account = storage.storage_accounts.get('TestRG-SA', 'fogstandardsagrs')
+  standard_storage_account = storage.storage_accounts.get('TestRG-SA', grs_storage_account)
   puts "Deleted storage account for standard grs replication: #{standard_storage_account.destroy}"
-  premium_storage_account = storage.storage_accounts.get('TestRG-SA', 'fogpremiumsa')
+  premium_storage_account = storage.storage_accounts.get('TestRG-SA', premium_storage_acc)
   puts "Deleted storage account for premium lrs replication: #{premium_storage_account.destroy}"
 
   ########################################################################################################################

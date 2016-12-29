@@ -6,7 +6,7 @@ module ApiStub
         # This class contain two mocks, for collection and for model
         def self.create_database
           {
-            'id' => '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/vm_custom_image/providers/Microsoft.Sql/servers/test-sql-server-confiz123/databases/confiztestdatab98',
+            'id' => '/subscriptions/########-####-####-####-############/resourceGroups/{resource-group-name}/providers/Microsoft.Sql/servers/{test-sql-server-name}/databases/{database-name}',
             'location' => '{database-location}',
             'properties' => {
               'createMode' => '{creation-mode}',

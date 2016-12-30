@@ -23,6 +23,13 @@ Next, create a connection to the Resources Service:
         :environment => '<AzureCloud/AzureChinaCloud/AzureUSGovernment/AzureGermanCloud>' # Azure cloud environment. Default is AzureCloud.
 )
 ```
+
+## Check Resource Group Existence
+
+```ruby
+ azure_resources_service.resource_groups.check_resource_group_exists?(<Resource Group name>)
+```
+
 ## Create Resource Group
 
 Create a new resource group
@@ -109,6 +116,18 @@ Remove tag from a resource as following:
         '<Tag-Key>',
         '<Tag-Value>'
         )
+```
+
+## Check Resource Existence
+
+```ruby
+ azure_resources_service.azure_resources.check_azure_resource_exists?(<Resource-ID>, <API-Version>)
+```
+
+## Check Deployment Existence
+
+```ruby
+ azure_resources_service.deployments.check_deployment_exists?(<Resource Group Name>, <Deployment name>)
 ```
 
 ## Create Deployment

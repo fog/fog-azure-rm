@@ -43,6 +43,14 @@ begin
   )
 
   ########################################################################################################################
+  ######################                  Check Network Security Rule Exists?                       ######################
+  ########################################################################################################################
+
+  if !network.network_security_rules.check_net_sec_rule_exists?('TestRG-NSR', 'testGroup', 'testRule')
+    puts "Network Security Rule doesn't exist."
+  end
+
+  ########################################################################################################################
   ######################                          Create Network Security Rule                      ######################
   ########################################################################################################################
 
@@ -88,6 +96,7 @@ begin
   nsg.destroy
   rg = rs.resource_groups.get('TestRG-NSR')
   rg.destroy
+  puts 'Integration Test for network_security_rule ran successfully'
 rescue
   puts 'Integration Test for network_security_rule is failing'
   resource_group.destroy unless resource_group.nil?

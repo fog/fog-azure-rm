@@ -13,6 +13,7 @@ module Fog
       request :delete_availability_set
       request :list_availability_sets
       request :get_availability_set
+      request :check_availability_set_exists?
       request :create_virtual_machine
       request :delete_virtual_machine
       request :get_virtual_machine
@@ -25,11 +26,13 @@ module Fog
       request :restart_virtual_machine
       request :start_virtual_machine
       request :check_vm_status
+      request :check_vm_exists?
       request :attach_data_disk_to_vm
       request :detach_data_disk_from_vm
       request :create_or_update_vm_extension
       request :delete_vm_extension
       request :get_vm_extension
+      request :check_vm_extension_exists?
 
       model_path 'fog/azurerm/models/compute'
       model :availability_set

@@ -23,6 +23,12 @@ Next, create a connection to the Traffic Manager Service:
 )
 ```
 
+## Check Traffic Manager Profile Existence
+
+```ruby
+azure_traffic_manager_service.traffic_manager_profiles.check_traffic_manager_profile_exists?(<Resource Group Name>, <Profile Name>)
+```
+
 ## Create Traffic Manager Profile
 
 Create a new Traffic Manager Profile. The parameter 'traffic_routing_method' can be 'Performance', 'Weighted' or 'Priority'.
@@ -82,6 +88,17 @@ Get a Traffic Manager Profile object from the get method and then destroy that T
 
 ```ruby
      profile.destroy
+```
+
+## Check Traffic Manager Endpoint Existence
+
+```ruby
+ azure_network_service.traffic_manager_end_points.check_traffic_manager_endpoint_exists?(
+   <Resource Group Name>,
+   <Profile Name>,
+   <Endpoint Name>,
+   <Type(externalEndpoints)>
+   )
 ```
 
 ## Create Traffic Manager Endpoint

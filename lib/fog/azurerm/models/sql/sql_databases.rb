@@ -22,6 +22,10 @@ module Fog
           database_fog = Fog::Sql::AzureRM::SqlDatabase.new(service: service)
           database_fog.merge_attributes(Fog::Sql::AzureRM::SqlDatabase.parse(database))
         end
+
+        def check_database_exists?(resource_group, server_name, name)
+          service.check_database_exists?(resource_group, server_name, name)
+        end
       end
     end
   end

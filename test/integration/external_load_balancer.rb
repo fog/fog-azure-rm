@@ -55,6 +55,14 @@ begin
   )
 
   ########################################################################################################################
+  ######################                      Check Load Balancer Exists?                           ######################
+  ########################################################################################################################
+
+  if !network.load_balancers.check_load_balancer_exists?('TestRG-LB', 'lb')
+    puts "Load Balancer doesn't exist."
+  end
+
+  ########################################################################################################################
   ######################                             Create Load Balancer                           ######################
   ########################################################################################################################
 
@@ -131,6 +139,7 @@ begin
 
   resource_group = rs.resource_groups.get('TestRG-LB')
   resource_group.destroy
+  puts 'Integration Test for external load balancer ran successfully'
 rescue
   puts 'Integration Test for external load balancer is failing'
   resource_group.destroy unless resource_group.nil?

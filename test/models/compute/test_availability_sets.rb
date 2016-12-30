@@ -13,7 +13,8 @@ class TestAvailabilitySets < Minitest::Test
   def test_collection_methods
     methods = [
       :all,
-      :get
+      :get,
+      :check_availability_set_exists?
     ]
     methods.each do |method|
       assert_respond_to @availability_sets, method
@@ -37,6 +38,18 @@ class TestAvailabilitySets < Minitest::Test
   def test_get_method_response
     @service.stub :get_availability_set, @availability_set do
       assert_instance_of Fog::Compute::AzureRM::AvailabilitySet, @availability_sets.get('fog-test-rg', 'fog-test-availability-set')
+    end
+  end
+
+  def test_check_availability_set_exists_true_case
+    @service.stub :check_availability_set_exists?, true do
+      assert @availability_sets.check_availability_set_exists?('fog-test-rg', 'fog-test-availability-set')
+    end
+  end
+
+  def test_check_availability_set_exists_false_case
+    @service.stub :check_availability_set_exists?, false do
+      assert !@availability_sets.check_availability_set_exists?('fog-test-rg', 'fog-test-availability-set')
     end
   end
 end

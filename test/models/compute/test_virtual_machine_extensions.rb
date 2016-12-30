@@ -11,7 +11,8 @@ class TestVirtualMachineExtensions < Minitest::Test
   def test_collection_methods
     methods = [
       :all,
-      :get
+      :get,
+      :check_vm_extension_exists?
     ]
     methods.each do |method|
       assert_respond_to @vm_extensions, method
@@ -31,6 +32,18 @@ class TestVirtualMachineExtensions < Minitest::Test
   def test_get_method_response
     @service.stub :get_vm_extension, @response do
       assert_instance_of Fog::Compute::AzureRM::VirtualMachineExtension, @vm_extensions.get('fog-test-rg', 'fog-test-server', 'fog-test-extension')
+    end
+  end
+
+  def test_check_vm_extension_exists_true_case
+    @service.stub :check_vm_extension_exists?, true do
+      assert @vm_extensions.check_vm_extension_exists?('fog-test-rg', 'fog-test-server', 'fog-test-extension')
+    end
+  end
+
+  def test_check_vm_extension_exists_false_case
+    @service.stub :check_vm_extension_exists?, false do
+      assert !@vm_extensions.check_vm_extension_exists?('fog-test-rg', 'fog-test-server', 'fog-test-extension')
     end
   end
 end

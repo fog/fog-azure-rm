@@ -96,6 +96,14 @@ begin
   )
 
   ########################################################################################################################
+  ######################                  Check Virtual Machine Extension Exists?                   ######################
+  ########################################################################################################################
+
+  if !compute.virtual_machine_extensions.check_vm_extension_exists?('TestRG-VME', 'TestVM', 'IaasAntimalware')
+    puts "Virtual machine extension doesn't exist."
+  end
+
+  ########################################################################################################################
   ######################                         Attach Extension To Server                         ######################
   ########################################################################################################################
 
@@ -151,6 +159,7 @@ begin
 
   resource_group = rs.resource_groups.get('TestRG-VME')
   resource_group.destroy
+  puts 'Integration Test for virtual machine extension ran successfully'
 rescue
   puts 'Integration Test for vm extension is failing'
   resource_group.destroy unless resource_group.nil?

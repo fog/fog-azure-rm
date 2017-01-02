@@ -7,7 +7,12 @@ module Fog
           msg = "Creating SQL Server: #{server_hash[:name]}."
           Fog::Logger.debug msg
           begin
-            sql_server = @sql_mgmt_client.servers.create_or_update(server_hash[:resource_group], server_hash[:name], format_server_parameters(server_hash[:location], server_hash[:version], server_hash[:admin_login], server_hash[:admin_password]))
+            sql_server = @sql_mgmt_client.servers.create_or_update(server_hash[:resource_group],
+                                                                   server_hash[:name],
+                                                                   format_server_parameters(server_hash[:location],
+                                                                                            server_hash[:version],
+                                                                                            server_hash[:administrator_login],
+                                                                                            server_hash[:administrator_login_password]))
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end

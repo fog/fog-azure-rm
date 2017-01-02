@@ -15,11 +15,6 @@ module Fog
         def self.parse(firewall)
           firewall_hash = get_hash_from_object(firewall)
 
-          firewall_hash['id'] = firewall.id
-          firewall_hash['name'] = firewall.name
-          firewall_hash['location'] = firewall.location
-          firewall_hash['end_ip'] = firewall.end_ip_address
-          firewall_hash['start_ip'] = firewall.start_ip_address
           firewall_hash['resource_group'] = get_resource_group_from_id(firewall.id)
           firewall_hash['server_name'] = get_resource_from_resource_id(firewall.id, 8)
 

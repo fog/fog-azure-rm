@@ -17,12 +17,6 @@ module Fog
         def self.parse(server)
           sql_server_hash = get_hash_from_object(server)
           sql_server_hash['resource_group'] = get_resource_group_from_id(server.id)
-          sql_server_hash['id'] = server.id
-          sql_server_hash['name'] = server.name
-          sql_server_hash['version'] = server.version
-          sql_server_hash['administrator_login'] = server.administrator_login
-          sql_server_hash['administrator_login_password'] = server.administrator_login_password
-          sql_server_hash['location'] = server.location
 
           sql_server_hash
         end

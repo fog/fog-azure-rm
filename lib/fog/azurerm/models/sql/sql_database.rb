@@ -26,17 +26,9 @@ module Fog
 
         def self.parse(database)
           database_hash = get_hash_from_object(database)
-          database_hash['edition'] = database.edition
-          database_hash['location'] = database.location
-          database_hash['collation'] = database.collation
-          database_hash['create_mode'] = database.create_mode
-          database_hash['max_size_bytes'] = database.max_size_bytes
-          database_hash['elastic_pool_name'] = database.elastic_pool_name
-          database_hash['source_database_id'] = database.source_database_id
+
           database_hash['resource_group'] = get_resource_group_from_id(database.id)
           database_hash['server_name'] = get_resource_from_resource_id(database.id, 8)
-          database_hash['requested_service_objective_id'] = database.requested_service_objective_id
-          database_hash['requested_service_objective_name'] = database.requested_service_objective_name
 
           database_hash
         end

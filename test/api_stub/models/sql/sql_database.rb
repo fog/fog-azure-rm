@@ -5,7 +5,7 @@ module ApiStub
       class SqlDatabase
         # This class contain two mocks, for collection and for model
         def self.create_database(sql_manager_client)
-          database  = '{
+          database = '{
             "id" : "/subscriptions/########-####-####-####-############/resourceGroups/{resource-group-name}/providers/Microsoft.Sql/servers/{test-sql-server-name}/databases/{database-name}",
             "location" : "{database-location}",
             "properties" : {

@@ -37,17 +37,20 @@ module Fog
       # This class provides the actual implementation for service calls.
       class Real
         def initialize(options)
-          @tenant_id = options[:tenant_id]
-          @client_id = options[:client_id]
-          @client_secret = options[:client_secret]
-          @subscription_id = options[:subscription_id]
-          @resources = Fog::Resources::AzureRM.new(
-            tenant_id: options[:tenant_id],
-            client_id: options[:client_id],
-            client_secret: options[:client_secret],
-            subscription_id: options[:subscription_id],
-            environment: options[:environment]
-          )
+          begin
+            require 'azure_mgmt_sql'
+          rescue LoadError => e
+            retry if require('rubygems')
+            raise e.message
+          end
+
+          options[:environment] = 'AzureCloud' if options[:environment].nil?
+
+          credentials = Fog::Credentials::AzureRM.get_credentials(options[:tenant_id], options[:client_id], options[:client_secret], options[:environment])
+          @sql_mgmt_client = ::Azure::ARM::SQL::SqlManagementClient.new(credentials, resource_manager_endpoint_url(options[:environment]))
+          @sql_mgmt_client.subscription_id = options[:subscription_id]
+          telemetry = "fog-azure-rm/#{Fog::AzureRM::VERSION}"
+          @sql_mgmt_client.add_user_agent_information(telemetry)
         end
       end
       # This class provides the mock implementation for unit tests.

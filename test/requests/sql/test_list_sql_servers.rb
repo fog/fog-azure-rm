@@ -4,32 +4,21 @@ require File.expand_path '../../test_helper', __dir__
 class TestListSqlServers < Minitest::Test
   def setup
     @service = Fog::Sql::AzureRM.new(credentials)
-    @token_provider = Fog::Credentials::AzureRM.instance_variable_get(:@token_provider)
+    @sql_manager_client = @service.instance_variable_get(:@sql_mgmt_client)
+    @server = @sql_manager_client.servers
   end
 
   def test_list_sql_servers_success
-    list_response = ApiStub::Requests::Sql::SqlServer.list_sql_server_response
-    @token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
-      RestClient.stub :get, list_response do
-        assert_equal @service.list_sql_servers('fog-test-rg'), JSON.parse(list_response)['value']
-      end
+    list_response = ApiStub::Requests::Sql::SqlServer.list_sql_server_response(@sql_manager_client)
+    @server.stub :list_by_resource_group, list_response do
+      assert_equal @service.list_sql_servers('fog-test-rg'), list_response
     end
   end
 
   def test_list_sql_servers_failure
-    @token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
-      assert_raises ArgumentError do
-        @service.list_sql_servers('fog-test-rg', 'server-name')
-      end
-    end
-  end
-
-  def test_list_sql_servers_exception
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
-    @token_provider.stub :get_authentication_header, response do
-      assert_raises Exception do
-        @service.list_sql_servers('fog-test-rg')
-      end
+    @server.stub :list_by_resource_group, response do
+      assert_raises(RuntimeError) { @service.list_sql_servers('fog-test-rg') }
     end
   end
 end

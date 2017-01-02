@@ -720,9 +720,19 @@ end
 def database(service)
   Fog::Sql::AzureRM::SqlDatabase.new(
     name: 'fog-test-zone.com',
-    id: '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/vm_custom_image/providers/Microsoft.Sql/servers/test-sql-server-confiz123/databases/confiztestdatab98',
+    id: '/subscriptions/########-####-####-####-############/resourceGroups/vm_custom_image/providers/Microsoft.Sql/servers/test-sql-server-confiz123/databases/confiztestdatab98',
     resource_group: 'fog-test-rg',
     server_name: 'fog-test-server-name',
+    location: 'eastus',
+    service: service
+  )
+end
+
+def databases(service)
+  Fog::Sql::AzureRM::SqlDatabases.new(
+    resource_group: 'fog-test-rg',
+    server_name: 'fog-test-server-name',
+    name: 'database-name',
     location: 'eastus',
     service: service
   )
@@ -731,7 +741,20 @@ end
 def sql_server(service)
   Fog::Sql::AzureRM::SqlServer.new(
     name: 'fog-test-zone.com',
-    id: '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/vm_custom_image/providers/Microsoft.Sql/servers/test-sql-server-confiz123',
+    id: '/subscriptions/########-####-####-####-############/resourceGroups/vm_custom_image/providers/Microsoft.Sql/servers/test-sql-server-confiz123',
+    resource_group: 'fog-test-rg',
+    location: 'eastus',
+    version: '2.0',
+    administrator_login: 'test-admin@3',
+    administrator_login_password: 'pass@swe',
+    service: service
+  )
+end
+
+def sql_servers(service)
+  Fog::Sql::AzureRM::SqlServers.new(
+    name: 'fog-test-zone.com',
+    id: '/subscriptions/########-####-####-####-############/resourceGroups/vm_custom_image/providers/Microsoft.Sql/servers/test-sql-server-confiz123',
     resource_group: 'fog-test-rg',
     location: 'eastus',
     version: '2.0',
@@ -744,7 +767,19 @@ end
 def sql_server_firewall_rule(service)
   Fog::Sql::AzureRM::FirewallRule.new(
     name: 'fog-test-firewall-rule-name',
-    id: '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/vm_custom_image/providers/Microsoft.Sql/servers/test-sql-server-confiz123/firewallRules/rule-name',
+    id: '/subscriptions/########-####-####-####-############/resourceGroups/vm_custom_image/providers/Microsoft.Sql/servers/test-sql-server-confiz123/firewallRules/rule-name',
+    resource_group: 'fog-test-rg',
+    server_name: 'server-name',
+    start_ip: '10.10.10.10',
+    end_ip: '10.10.10.10',
+    service: service
+  )
+end
+
+def sql_server_firewall_rules(service)
+  Fog::Sql::AzureRM::FirewallRules.new(
+    name: 'fog-test-firewall-rule-name',
+    id: '/subscriptions/########-####-####-####-############/resourceGroups/vm_custom_image/providers/Microsoft.Sql/servers/test-sql-server-confiz123/firewallRules/rule-name',
     resource_group: 'fog-test-rg',
     server_name: 'server-name',
     start_ip: '10.10.10.10',
@@ -756,7 +791,7 @@ end
 def recovery_vault(service)
   Fog::Storage::AzureRM::RecoveryVault.new(
     name: 'fog-test-vault',
-    id: '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/fog-test-rg/providers/Microsoft.RecoveryServices/vaults/fog-test-vault',
+    id: '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.RecoveryServices/vaults/fog-test-vault',
     resource_group: 'fog-test-rg',
     location: 'westus',
     type: 'Microsoft.RecoveryServices/vaults',

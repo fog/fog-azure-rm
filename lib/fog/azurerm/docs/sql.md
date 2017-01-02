@@ -90,8 +90,6 @@ If parameter {edition} is set to DataWarehouse, the acceptable values for parame
         collation: '<Collation>',                     # Conditional. Specifies the name of the collation. If createMode is set to Default, then this value must be specified. 
         max_size_bytes: '<Size>',                     # Conditional. Specifies the maximum size to which the database may grow. If createMode is set to Default, then this value must be specified.
         requested_service_objective_name: '<Name>' ,  # Conditional. Specifies the requested service level of the database. If requestedServiceObjectiveId is specified, then this value must not be specified. The acceptable value are: [Basic, S0, S1, S2, S3, P1, P2, P4, P6, P11, ElasticPool]
-        restore_point_in_time: '<String>',            # Conditional. Specifies the point in time for the restore. If createMode is set to PointInTimeRestore, then this value must be specified. 
-        source_database_deletion_date: '<Date>',      # Conditional. Specifies the deletion date of the source database. If createMode is set to Restore, then this value must be specified
         elastic_pool_name: '<Pool Name>',             # Conditional. Specifies the name of the elastic database pool. If requestedServiceObjectiveId or requestedServiceObjectiveName is set to ElasticPool, then this value must be specified.
         requested_service_objective_id: '<GUID>'      # Conditional. Specifies the identifier of the requested service level. If requestedServiceObjectiveName is specified, then this value must not be specified.   
     )

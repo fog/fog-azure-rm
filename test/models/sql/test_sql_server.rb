@@ -5,6 +5,7 @@ class TestSqlServer < Minitest::Test
   def setup
     @service = Fog::Sql::AzureRM.new(credentials)
     @sql_server = sql_server(@service)
+    @sql_server_client = @service.instance_variable_get(:@sql_mgmt_client)
   end
 
   def test_model_methods
@@ -36,7 +37,7 @@ class TestSqlServer < Minitest::Test
   end
 
   def test_save_method_response
-    create_response = ApiStub::Models::Sql::SqlServer.create_sql_server
+    create_response = ApiStub::Models::Sql::SqlServer.create_sql_server(@sql_server_client)
     @service.stub :create_or_update_sql_server, create_response do
       assert_instance_of Fog::Sql::AzureRM::SqlServer, @sql_server.save
     end

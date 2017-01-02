@@ -4,31 +4,20 @@ require File.expand_path '../../test_helper', __dir__
 class TestDeleteFirewallRule < Minitest::Test
   def setup
     @service = Fog::Sql::AzureRM.new(credentials)
-    @token_provider = Fog::Credentials::AzureRM.instance_variable_get(:@token_provider)
+    @sql_manager_client = @service.instance_variable_get(:@sql_mgmt_client)
+    @firewall_rules = @sql_manager_client.servers
   end
 
   def test_delete_sql_server_firewall_rule_success
-    @token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
-      RestClient.stub :delete, true do
-        assert @service.delete_firewall_rule('fog-test-rg', 'fog-test-server-name', 'rule-name')
-      end
+    @firewall_rules.stub :delete_firewall_rule, true do
+      assert @service.delete_firewall_rule('fog-test-rg', 'fog-test-server-name', 'rule-name')
     end
   end
 
   def test_delete_sql_server_firewall_rule_failure
-    @token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
-      assert_raises ArgumentError do
-        @service.delete_firewall_rule('fog-test-name')
-      end
-    end
-  end
-
-  def test_delete_sql_server_firewall_rule_exception
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
-    @token_provider.stub :get_authentication_header, response do
-      assert_raises Exception do
-        assert @service.delete_firewall_rule('fog-test-rg', 'fog-test-server-name', 'rule-name')
-      end
+    @firewall_rules.stub :delete_firewall_rule, response do
+      assert_raises(RuntimeError) { @service.delete_firewall_rule('fog-test-rg', 'fog-test-server-name', 'rule-name') }
     end
   end
 end

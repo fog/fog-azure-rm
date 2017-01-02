@@ -6,20 +6,14 @@ module Fog
         def list_firewall_rules(resource_group, server_name)
           msg = "Listing Sql Server Firewall rules on server: #{server_name} in Resource Group: #{resource_group}."
           Fog::Logger.debug msg
-          resource_url = "#{resource_manager_endpoint_url}/subscriptions/#{@subscription_id}/resourceGroups/#{resource_group}/providers/Microsoft.Sql/servers/#{server_name}/firewallRules/?api-version=#{REST_CLIENT_API_VERSION[0]}"
+
           begin
-            token = Fog::Credentials::AzureRM.get_token(@tenant_id, @client_id, @client_secret)
-            response = RestClient.get(
-              resource_url,
-              accept: :json,
-              content_type: :json,
-              authorization: token
-            )
-          rescue RestClient::Exception => e
+            firewall_rules = @sql_mgmt_client.servers.list_firewall_rules(resource_group, server_name)
+          rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
           Fog::Logger.debug "Sql Server Firewall Rules listed successfully on server: #{server_name} in Resource Group: #{resource_group}"
-          Fog::JSON.decode(response)['value']
+          firewall_rules
         end
       end
 

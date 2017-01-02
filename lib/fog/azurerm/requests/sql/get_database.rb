@@ -6,20 +6,14 @@ module Fog
         def get_database(resource_group, server_name, name)
           msg = "Getting Sql Database: #{name} in Resource Group: #{resource_group}."
           Fog::Logger.debug msg
-          resource_url = "#{resource_manager_endpoint_url}/subscriptions/#{@subscription_id}/resourceGroups/#{resource_group}/providers/Microsoft.Sql/servers/#{server_name}/databases/#{name}?api-version=#{REST_CLIENT_API_VERSION[0]}"
+
           begin
-            token = Fog::Credentials::AzureRM.get_token(@tenant_id, @client_id, @client_secret)
-            response = RestClient.get(
-              resource_url,
-              accept: :json,
-              content_type: :json,
-              authorization: token
-            )
-          rescue RestClient::Exception => e
+            database = @sql_mgmt_client.databases.get(resource_group, server_name, name)
+          rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
           Fog::Logger.debug "Sql Database fetched successfully in Resource Group: #{resource_group}"
-          Fog::JSON.decode(response)
+          database
         end
       end
 

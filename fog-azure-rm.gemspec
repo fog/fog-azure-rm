@@ -32,7 +32,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'azure_mgmt_dns', '~> 0.8.0'
   spec.add_dependency 'azure_mgmt_traffic_manager', '~> 0.8.0'
   spec.add_dependency 'azure_mgmt_key_vault', '~> 0.8.0'
-  spec.add_dependency 'azure-storage', '~> 0.11.4.preview'
+  spec.add_dependency 'azure-storage', '~> 0.11.5.preview'
   spec.add_dependency 'vhd', '0.0.4'
   spec.add_dependency 'nokogiri', '~> 1.6.0'
 end

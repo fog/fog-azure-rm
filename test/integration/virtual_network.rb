@@ -33,12 +33,12 @@ begin
   )
 
   ########################################################################################################################
-  ######################                   Check Virtual Network name Availability                  ######################
+  ######################                          Check Virtual Network Exists                      ######################
   ########################################################################################################################
 
-  virtual_network = network.virtual_networks.check_if_exists('testVnet', 'TestRG-VN')
-  puts 'Virtual network exists' if virtual_network
-  puts 'Virtual network does not exists' unless virtual_network
+  if !network.virtual_networks.check_virtual_network_exists?('TestRG-VN', 'testVnet')
+    puts "Virtual Network doesn't exist."
+  end
 
   ########################################################################################################################
   ######################            Create Virtual Network with complete parameters list            ######################

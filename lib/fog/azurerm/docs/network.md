@@ -22,6 +22,13 @@ Next, create a connection to the Network Service:
         :environment => '<AzureCloud/AzureChinaCloud/AzureUSGovernment/AzureGermanCloud>' # Azure cloud environment. Default is AzureCloud.
 )
 ```
+
+## Check Virtual Network Existence
+
+```ruby
+ azure_network_service.virtual_networks.check_virtual_network_exists?(<Resource Group name>, <Virtual Network Name>)
+```
+
 ## Create Virtual Network
 
 Create a new virtual network
@@ -43,14 +50,6 @@ Optional parameters for Subnet: network_security_group_id, route_table_id & addr
       dns_servers:       ['10.1.0.0','10.2.0.0'],
       address_prefixes:  ['10.1.0.0/16','10.2.0.0/16']
     )
-```
-
-## Check for Virtual Network
-
-Checks if the Virtual Network already exists or not.
-
-```ruby
-    azure_network_service.virtual_networks.check_if_exists('<Virtual Network name>', '<Resource Group name>')
 ```
 
 ## List Virtual Networks
@@ -125,6 +124,12 @@ Get virtual network object from the get method and then destroy that virtual net
 
 ```ruby
     vnet.destroy
+```
+
+## Check Subnet Existence
+
+```ruby
+ azure_network_service.subnets.check_subnet_exists?(<Resource Group name>, <Virtual Network Name>, <Subnet Name>)
 ```
 
 ## Create Subnet
@@ -218,6 +223,12 @@ Get a subnet object from the get method and then destroy that subnet.
     subnet.destroy
 ```
 
+## Check Network Interface Card Existence
+
+```ruby
+ azure_network_service.network_interfaces.check_network_interface_exists?(<Resource Group name>, <Network Interface name>)
+```
+
 ## Create Network Interface Card
 
 Create a new network interface. Skip public_ip_address_id parameter to create network interface without PublicIP. The parameter, private_ip_allocation_method can be Dynamic or Static.
@@ -295,6 +306,12 @@ Get a network interface object from the get method and then destroy that network
      nic.destroy
 ```
 
+## Check Public IP Existence
+
+```ruby
+ azure_network_service.public_ips.check_public_ip_exists?(<Resource Group name>, <Public IP name>>)
+```
+
 ## Create Public IP
 
 Create a new public IP. The parameter, type can be Dynamic or Static.
@@ -356,6 +373,12 @@ Get a Public IP object from the get method and then destroy that public IP.
 
 ```ruby
     pubip.destroy
+```
+
+## Check Network Security Group Existence
+
+```ruby
+ azure_network_service.network_security_groups.check_net_sec_group_exists?(<Resource Group name>, <Network Security Group name>)
 ```
 
 ## Create Network Security Group
@@ -463,6 +486,12 @@ Get a network security group object from the get method and then destroy that ne
     nsg.destroy
 ```
 
+## Check Network Security Rule Existence
+
+```ruby
+ azure_network_service.network_security_rules.check_net_sec_rule_exists?(<Resource Group name>, <Network Security Group name>, <Security Rule name>)
+```
+
 ## Create Network Security Rule
 
 Network security rule requires a resource group and network security group to create. 
@@ -512,6 +541,12 @@ Get a network security rule object from the get method and then destroy that net
 
 ```ruby
     network_security_rule.destroy
+```
+
+## Check External Load Balancer Existence
+
+```ruby
+ azure_network_service.load_balancers.check_load_balancer_exists?(<Resource Group name>, <Load Balancer name>)
 ```
 
 ## Create External Load Balancer
@@ -657,6 +692,12 @@ Get a load balancer object from the get method and then destroy that load balanc
     lb.destroy
 ```
 
+## Check Virtual Network Gateway Existence
+
+```ruby
+ azure_network_service.virtual_network_gateways.check_vnet_gateway_exists?(<Resource Group name>, <Virtual Network Gateway Name>)
+```
+
 ## Create Virtual Network Gateway
 
 Create a new Virtual Network Gateway.
@@ -738,6 +779,12 @@ Get a virtual network gateway object from the get method and then destroy that v
 	network_gateway.destroy
 ```
 
+## Check Local Network Gateway Existence
+
+```ruby
+ azure_network_service.local_network_gateways.check_local_net_gateway_exists?(<Resource Group name>, <Local Network Gateway Name>)
+```
+
 ## Create Local Network Gateway
 
 Create a new Local Network Gateway.
@@ -795,6 +842,12 @@ For more details about express route [click here](https://azure.microsoft.com/en
 # Express Route Circuit
 
 The Circuit represents the entity created by customer to register with an express route service provider with intent to connect to Microsoft.
+
+## Check Express Route Circuit Existence
+
+```ruby
+ azure_network_service.express_route_circuits.check_express_route_circuit_exists?(<Resource Group name>, <Circuit Name>)
+```
 
 ## Create an Express Route Circuit
 
@@ -858,6 +911,12 @@ Get an express route circuit object from the get method and then destroy that ex
 # Express Route Authorization
 
 Authorization is part of Express Route circuit.
+
+## Check Express Route Circuit Authorization Existence
+
+```ruby
+ azure_network_service.express_route_circuit_authorizations.check_express_route_cir_auth_exists?(<Resource Group name>, <Circuit Name>, <Authorization-Name>)
+```
 
 ## Create an Express Route Circuit Authorization
 
@@ -962,6 +1021,12 @@ List all express route service providers
 ```ruby
     service_providers = network.express_route_service_providers
 	puts service_providers
+```
+
+## Check Virtual Network Gateway Connection Existence
+
+```ruby
+ azure_network_service.virtual_network_gateway_connections.check_vnet_gateway_connection_exists?(<Resource Group name>, <Virtual Network Gateway Connection Name>)
 ```
 
 ## Create Virtual Network Gateway Connection

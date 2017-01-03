@@ -88,6 +88,14 @@ begin
   )
 
   ########################################################################################################################
+  ######################                      Check Network Interface Exists?                       ######################
+  ########################################################################################################################
+
+  if !network.network_interfaces.check_network_interface_exists?('TestRG-NI', 'NetInt')
+    puts "Network Interface doesn't exist."
+  end
+
+  ########################################################################################################################
   ######################                           Create Network Interface                         ######################
   ########################################################################################################################
 
@@ -141,6 +149,7 @@ begin
 
   rg = rs.resource_groups.get('TestRG-NI')
   rg.destroy
+  puts 'Integration Test for network interface ran successfully'
 rescue
   puts 'Integration Test for network interface is failing'
   resource_group.destroy unless resource_group.nil?

@@ -24,6 +24,7 @@ module Fog
       request :list_storage_account_for_rg
       request :check_storage_account_name_availability
       request :get_storage_access_keys
+      request :check_storage_account_exists?
       # Azure Storage Disk requests
       request :delete_disk
       request :create_disk
@@ -38,6 +39,7 @@ module Fog
       request :get_container_acl
       request :put_container_acl
       request :get_container_url
+      request :check_container_exists?
       # Azure Storage Blob requests
       request :list_blobs
       request :put_blob_metadata

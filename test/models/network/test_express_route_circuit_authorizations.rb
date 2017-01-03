@@ -11,7 +11,8 @@ class TestExpressRouteCircuitAuthorizations < Minitest::Test
   def test_collection_methods
     methods = [
       :all,
-      :get
+      :get,
+      :check_express_route_cir_auth_exists?
     ]
     methods.each do |method|
       assert_respond_to @circuit_authorizations, method
@@ -38,6 +39,18 @@ class TestExpressRouteCircuitAuthorizations < Minitest::Test
     response = ApiStub::Models::Network::ExpressRouteCircuitAuthorization.create_express_route_circuit_authorization_response(@network_client)
     @service.stub :get_express_route_circuit_authorization, response do
       assert_instance_of Fog::Network::AzureRM::ExpressRouteCircuitAuthorization, @circuit_authorizations.get('HaiderRG', 'testCircuit', 'auth-name')
+    end
+  end
+
+  def test_check_express_route_cir_auth_exists_true_response
+    @service.stub :check_express_route_cir_auth_exists?, true do
+      assert @circuit_authorizations.check_express_route_cir_auth_exists?('HaiderRG', 'testCircuit', 'auth-name')
+    end
+  end
+
+  def test_check_express_route_cir_auth_exists_false_response
+    @service.stub :check_express_route_cir_auth_exists?, false do
+      assert !@circuit_authorizations.check_express_route_cir_auth_exists?('HaiderRG', 'testCircuit', 'auth-name')
     end
   end
 end

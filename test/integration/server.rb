@@ -80,6 +80,14 @@ begin
   )
 
   ########################################################################################################################
+  ######################                            Check for Virtual Machine                       ######################
+  ########################################################################################################################
+
+  if !compute.servers.check_vm_exists?('TestRG-VM', 'TestVM')
+    puts "Virtual Machine doesn't exist."
+  end
+
+  ########################################################################################################################
   ######################                                Create Server                               ######################
   ########################################################################################################################
 
@@ -213,6 +221,7 @@ begin
 
   resource_group = rs.resource_groups.get('TestRG-VM')
   resource_group.destroy
+  puts 'Integration Test for virtual machine ran successfully'
 rescue
   puts 'Integration Test for virtual machine is failing'
   resource_group.destroy unless resource_group.nil?

@@ -21,6 +21,10 @@ module Fog
           network_security_rule_fog = Fog::Network::AzureRM::NetworkSecurityRule.new(service: service)
           network_security_rule_fog.merge_attributes(Fog::Network::AzureRM::NetworkSecurityRule.parse(network_security_rule))
         end
+
+        def check_net_sec_rule_exists?(resource_group, network_security_group_name, name)
+          service.check_net_sec_rule_exists?(resource_group, network_security_group_name, name)
+        end
       end
     end
   end

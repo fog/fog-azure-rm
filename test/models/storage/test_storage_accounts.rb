@@ -12,7 +12,8 @@ class TestStorageAccounts < Minitest::Test
   def test_collection_methods
     methods = [
       :all,
-      :get
+      :get,
+      :check_storage_account_exists?
     ]
     methods.each do |method|
       assert_respond_to @storage_accounts, method
@@ -60,6 +61,18 @@ class TestStorageAccounts < Minitest::Test
   def test_check_name_availability_false_case
     @service.stub :check_storage_account_name_availability, false do
       assert !@storage_accounts.check_name_availability('fog-test-storage-account')
+    end
+  end
+
+  def test_check_storage_account_exists_true_response
+    @service.stub :check_storage_account_exists?, true do
+      assert @storage_accounts.check_storage_account_exists?('fog-test-rg', 'fog-test-storage-account')
+    end
+  end
+
+  def test_check_storage_account_exists_false_response
+    @service.stub :check_storage_account_exists?, false do
+      assert !@storage_accounts.check_storage_account_exists?('fog-test-rg', 'fog-test-storage-account')
     end
   end
 end

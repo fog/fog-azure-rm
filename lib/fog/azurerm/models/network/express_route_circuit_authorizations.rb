@@ -18,6 +18,10 @@ module Fog
           express_route_circuit_authorization = Fog::Network::AzureRM::ExpressRouteCircuitAuthorization.new(service: service)
           express_route_circuit_authorization.merge_attributes(Fog::Network::AzureRM::ExpressRouteCircuitAuthorization.parse(circuit_authorization))
         end
+
+        def check_express_route_cir_auth_exists?(resource_group_name, circuit_name, authorization_name)
+          service.check_express_route_cir_auth_exists?(resource_group_name, circuit_name, authorization_name)
+        end
       end
     end
   end

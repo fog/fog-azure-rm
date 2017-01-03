@@ -4,8 +4,9 @@ require File.expand_path '../../test_helper', __dir__
 class TestSqlServers < Minitest::Test
   def setup
     @service = Fog::Sql::AzureRM.new(credentials)
-    @sql_servers = Fog::Sql::AzureRM::SqlServers.new(resource_group: 'fog-test-rg', name: 'database-name', location: 'eastus', version: '2.0', administrator_login: 'test-admin', administrator_login_password: 'test-apase2', service: @service)
-    @list_sql_server_response = [ApiStub::Models::Sql::SqlServer.create_sql_server]
+    @sql_servers = sql_servers(@service)
+    @sql_server_client = @service.instance_variable_get(:@sql_mgmt_client)
+    @sql_server_response = ApiStub::Models::Sql::SqlServer.create_sql_server(@sql_server_client)
   end
 
   def test_collection_methods
@@ -23,7 +24,7 @@ class TestSqlServers < Minitest::Test
   end
 
   def test_all_method_response
-    @service.stub :list_sql_servers, @list_sql_server_response do
+    @service.stub :list_sql_servers, [@sql_server_response] do
       assert_instance_of Fog::Sql::AzureRM::SqlServers, @sql_servers.all
       assert @sql_servers.all.size >= 1
       @sql_servers.all.each do |s|
@@ -33,8 +34,7 @@ class TestSqlServers < Minitest::Test
   end
 
   def test_get_method_response
-    response = ApiStub::Models::Sql::SqlServer.create_sql_server
-    @service.stub :get_sql_server, response do
+    @service.stub :get_sql_server, @sql_server_response do
       assert_instance_of Fog::Sql::AzureRM::SqlServer, @sql_servers.get('fog-test-rg', 'fog-test-server-name')
     end
   end

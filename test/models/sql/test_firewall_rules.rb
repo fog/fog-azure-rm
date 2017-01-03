@@ -4,8 +4,9 @@ require File.expand_path '../../test_helper', __dir__
 class TestFirewallRules < Minitest::Test
   def setup
     @service = Fog::Sql::AzureRM.new(credentials)
-    @firewall_rules = Fog::Sql::AzureRM::FirewallRules.new(resource_group: 'fog-test-rg', server_name: 'server-name', name: 'rule-name', start_ip: '10.10.10.10', end_ip: '10.10.10.11', service: @service)
-    @create_firewall_rule_response = ApiStub::Models::Sql::SqlFirewallRule.create_firewall_rule
+    @firewall_rules = sql_server_firewall_rules(@service)
+    @firewall_client = @service.instance_variable_get(:@sql_mgmt_client)
+    @create_firewall_rule_response = ApiStub::Models::Sql::SqlFirewallRule.create_firewall_rule(@firewall_client)
   end
 
   def test_collection_methods

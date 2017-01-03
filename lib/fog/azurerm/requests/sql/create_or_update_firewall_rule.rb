@@ -7,36 +7,22 @@ module Fog
           msg = "Creating SQL Firewall Rule : #{firewall_hash[:name]}."
           Fog::Logger.debug msg
 
-          resource_url = "#{resource_manager_endpoint_url}/subscriptions/#{@subscription_id}/resourceGroups/#{firewall_hash[:resource_group]}/providers/Microsoft.Sql/servers/#{firewall_hash[:server_name]}/firewallRules/#{firewall_hash[:name]}?api-version=#{REST_CLIENT_API_VERSION[0]}"
-          request_parameters = get_server_firewall_parameters(firewall_hash[:start_ip], firewall_hash[:end_ip])
           begin
-            token = Fog::Credentials::AzureRM.get_token(@tenant_id, @client_id, @client_secret)
-            response = RestClient.put(
-              resource_url,
-              request_parameters.to_json,
-              accept: :json,
-              content_type: :json,
-              authorization: token
-            )
-          rescue RestClient::Exception => e
+            server_firewall_rule = @sql_mgmt_client.servers.create_or_update_firewall_rule(firewall_hash[:resource_group], firewall_hash[:server_name], firewall_hash[:name], format_server_firewall_parameters(firewall_hash[:start_ip], firewall_hash[:end_ip]))
+          rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
           Fog::Logger.debug "SQL Firewall Rule : #{firewall_hash[:name]} created successfully."
-          Fog::JSON.decode(response)
+          server_firewall_rule
         end
 
         private
 
-        def get_server_firewall_parameters(start_ip, end_ip)
-          parameters = {}
-          properties = {}
-
-          properties['startIpAddress'] = start_ip
-          properties['endIpAddress'] = end_ip
-
-          parameters['properties'] = properties
-
-          parameters
+        def format_server_firewall_parameters(start_ip, end_ip)
+          firewall_rule = Azure::ARM::SQL::Models::ServerFirewallRule.new
+          firewall_rule.start_ip_address = start_ip
+          firewall_rule.end_ip_address = end_ip
+          firewall_rule
         end
       end
 

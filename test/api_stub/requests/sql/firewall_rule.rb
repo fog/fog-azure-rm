@@ -3,8 +3,8 @@ module ApiStub
     module Sql
       # Mock class for Firewall Rule
       class FirewallRule
-        def self.create_firewall_rule_response
-          '{
+        def self.create_firewall_rule_response(sql_manager_client)
+          body = '{
             "id": "{uri-of-firewall-rule}",
             "name": "{rule-name}",
             "type": "{rule-type}",
@@ -14,10 +14,12 @@ module ApiStub
               "endIpAddress": "{end-ip-address}"
             }
           }'
+          firewall_mapper = Azure::ARM::SQL::Models::ServerFirewallRule.mapper
+          sql_manager_client.deserialize(firewall_mapper, Fog::JSON.decode(body), 'result.body')
         end
 
-        def self.list_firewall_rule_response
-          '{
+        def self.list_firewall_rule_response(sql_manager_client)
+          body = '{
             "value": [{
               "id": "{uri-of-firewall-rule}",
               "name": "{rule-name}",
@@ -29,6 +31,8 @@ module ApiStub
               }
             }]
           }'
+          firewall_mapper = Azure::ARM::SQL::Models::ServerFirewallRuleListResult.mapper
+          sql_manager_client.deserialize(firewall_mapper, Fog::JSON.decode(body), 'result.body')
         end
 
         def self.firewall_rule_hash

@@ -3,8 +3,8 @@ module ApiStub
     module Sql
       # Mock class for Database
       class SqlDatabase
-        def self.create_database_response
-          '{
+        def self.create_database_response(sql_manager_client)
+          body = '{
             "name" : "{database-name}",
             "server_name" : "{server-name}",
             "location" : "{database-location}",
@@ -21,10 +21,12 @@ module ApiStub
               "elasticPoolName" : "{elastic-pool-name}"
             }
           }'
+          database_mapper = Azure::ARM::SQL::Models::Database.mapper
+          sql_manager_client.deserialize(database_mapper, Fog::JSON.decode(body), 'result.body')
         end
 
-        def self.list_database_response
-          '{
+        def self.list_database_response(sql_manager_client)
+          body = '{
             "value": [{
               "name" : "{database-name}",
               "server_name" : "{server-name}",
@@ -43,6 +45,8 @@ module ApiStub
               }
             }]
           }'
+          database_mapper = Azure::ARM::SQL::Models::DatabaseListResult.mapper
+          sql_manager_client.deserialize(database_mapper, Fog::JSON.decode(body), 'result.body')
         end
 
         def self.database_hash
@@ -57,8 +61,6 @@ module ApiStub
             collation: 'collation',
             max_size_bytes: 'max_size_bytes',
             requested_service_objective_name: 'requested_service_objective_name',
-            restore_point_in_time: 'restore_point_in_time',
-            source_database_deletion_date: 'source_database_deletion_date',
             elastic_pool_name: 'elastic_pool_name',
             requested_service_objective_id: 'requested_service_objective_id'
           }

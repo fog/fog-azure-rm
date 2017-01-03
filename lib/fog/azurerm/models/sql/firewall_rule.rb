@@ -13,24 +13,12 @@ module Fog
         attribute :server_name
 
         def self.parse(firewall)
-          data = {}
-          if firewall.is_a? Hash
-            firewall.each do |k, v|
-              if k == 'properties'
-                v.each do |j, l|
-                  data[j] = l
-                end
-              else
-                data[k] = v
-              end
-            end
-            data['resource_group'] = get_resource_group_from_id(firewall['id'])
-            data['server_name'] = get_resource_from_resource_id(firewall['id'], 8)
-          else
-            raise 'Object is not a hash. Parsing SQL Server firewall object failed.'
-          end
+          firewall_hash = get_hash_from_object(firewall)
 
-          data
+          firewall_hash['resource_group'] = get_resource_group_from_id(firewall.id)
+          firewall_hash['server_name'] = get_resource_from_resource_id(firewall.id, 8)
+
+          firewall_hash
         end
 
         def save

@@ -4,8 +4,9 @@ require File.expand_path '../../test_helper', __dir__
 class TestDatabases < Minitest::Test
   def setup
     @service = Fog::Sql::AzureRM.new(credentials)
-    @databases = Fog::Sql::AzureRM::SqlDatabases.new(resource_group: 'fog-test-rg', server_name: 'fog-test-server-name', name: 'database-name', location: 'eastus', service: @service)
-    @list_database_response = [ApiStub::Models::Sql::SqlDatabase.create_database]
+    @databases = databases(@service)
+    @database_client = @service.instance_variable_get(:@sql_mgmt_client)
+    @database_response = ApiStub::Models::Sql::SqlDatabase.create_database(@database_client)
   end
 
   def test_collection_methods
@@ -24,7 +25,7 @@ class TestDatabases < Minitest::Test
   end
 
   def test_all_method_response
-    @service.stub :list_databases, @list_database_response do
+    @service.stub :list_databases, [@database_response] do
       assert_instance_of Fog::Sql::AzureRM::SqlDatabases, @databases.all
       assert @databases.all.size >= 1
       @databases.all.each do |s|
@@ -34,8 +35,7 @@ class TestDatabases < Minitest::Test
   end
 
   def test_get_method_response
-    response = ApiStub::Models::Sql::SqlDatabase.create_database
-    @service.stub :get_database, response do
+    @service.stub :get_database, @database_response do
       assert_instance_of Fog::Sql::AzureRM::SqlDatabase, @databases.get('fog-test-rg', 'fog-test-server-name', 'fog-test-database-name')
     end
   end

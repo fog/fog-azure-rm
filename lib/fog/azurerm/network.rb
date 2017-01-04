@@ -47,6 +47,7 @@ module Fog
       request :list_load_balancers
       request :get_load_balancer
       request :check_load_balancer_exists?
+      request :list_load_balancers_in_subscription
       request :create_or_update_network_security_group
       request :delete_network_security_group
       request :list_network_security_groups

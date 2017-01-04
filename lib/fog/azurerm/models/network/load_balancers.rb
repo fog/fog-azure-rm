@@ -7,9 +7,15 @@ module Fog
         attribute :resource_group
 
         def all
-          requires :resource_group
           load_balancers = []
-          service.list_load_balancers(resource_group).each do |load_balancer|
+          if !resource_group.nil?
+            requires :resource_group
+            l_balancers = service.list_load_balancers(resource_group)
+          else
+            l_balancers = service.list_load_balancers_in_subscription
+          end
+
+          l_balancers.each do |load_balancer|
             load_balancers << Fog::Network::AzureRM::LoadBalancer.parse(load_balancer)
           end
           load(load_balancers)

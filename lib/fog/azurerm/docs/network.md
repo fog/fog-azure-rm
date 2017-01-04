@@ -673,6 +673,17 @@ List all load balancers in a resource group
     end
 ```
 
+## List Load Balancers in subscription
+
+List all load balancers in a subscription
+
+```ruby
+    lbs = azure_network_service.load_balancers
+    lbs.each do |lb|
+      puts "#{lb.name}"
+    end
+```
+
 ## Retrieve a single Load Balancer
 
 Get a single record of Load Balancer

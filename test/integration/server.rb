@@ -83,9 +83,8 @@ begin
   ######################                            Check for Virtual Machine                       ######################
   ########################################################################################################################
 
-  if !compute.servers.check_vm_exists('TestRG-VM', 'TestVM')
-    puts "Virtual Machine doesn't exist."
-  end
+  flag = compute.servers.check_vm_exists('TestRG-VM', 'TestVM')
+  puts "Virtual Machine doesn't exist." unless flag
 
   ########################################################################################################################
   ######################                                Create Server                               ######################

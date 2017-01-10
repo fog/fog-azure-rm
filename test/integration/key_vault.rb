@@ -36,9 +36,8 @@ begin
   ######################                      Check Key Vault Exists?                               ######################
   ########################################################################################################################
 
-  if !key_vault.vaults.check_vault_exists('TestRG-KV', 'test-tmp')
-    puts "Key vault doesn't exist."
-  end
+  flag = key_vault.vaults.check_vault_exists('TestRG-KV', 'test-tmp')
+  puts "Key vault doesn't exist." unless flag
 
   ########################################################################################################################
   ######################                         Create Vault                                       ######################

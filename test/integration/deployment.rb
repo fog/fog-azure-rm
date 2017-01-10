@@ -29,9 +29,8 @@ begin
   ######################                            Check Deployment Exists                         ######################
   ########################################################################################################################
 
-  if !resources.deployments.check_deployment_exists('TestRG-ZN', 'testdeployment')
-    puts "Deployment doesn't exist."
-  end
+  flag = resources.deployments.check_deployment_exists('TestRG-ZN', 'testdeployment')
+  puts "Deployment doesn't exist." unless flag
 
   ########################################################################################################################
   ######################                                Create Deployment                     ############################

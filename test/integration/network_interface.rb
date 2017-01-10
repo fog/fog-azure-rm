@@ -91,9 +91,8 @@ begin
   ######################                      Check Network Interface Exists?                       ######################
   ########################################################################################################################
 
-  if !network.network_interfaces.check_network_interface_exists('TestRG-NI', 'NetInt')
-    puts "Network Interface doesn't exist."
-  end
+  flag = network.network_interfaces.check_network_interface_exists('TestRG-NI', 'NetInt')
+  puts "Network Interface doesn't exist." unless flag
 
   ########################################################################################################################
   ######################                           Create Network Interface                         ######################

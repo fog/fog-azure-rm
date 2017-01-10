@@ -36,9 +36,8 @@ begin
   ######################                  Check Network Security Group Exists?                      ######################
   ########################################################################################################################
 
-  if !network.network_security_groups.check_net_sec_group_exists('TestRG-NSG', 'testGroup')
-    puts "Network Security Group doesn't exist."
-  end
+  flag = network.network_security_groups.check_net_sec_group_exists('TestRG-NSG', 'testGroup')
+  puts "Network Security Group doesn't exist." unless flag
 
   ########################################################################################################################
   ######################                          Create Network Security Group                     ######################

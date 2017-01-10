@@ -46,9 +46,8 @@ begin
   ######################                  Check Network Security Rule Exists?                       ######################
   ########################################################################################################################
 
-  if !network.network_security_rules.check_net_sec_rule_exists('TestRG-NSR', 'testGroup', 'testRule')
-    puts "Network Security Rule doesn't exist."
-  end
+  flag = network.network_security_rules.check_net_sec_rule_exists('TestRG-NSR', 'testGroup', 'testRule')
+  puts "Network Security Rule doesn't exist." unless flag
 
   ########################################################################################################################
   ######################                          Create Network Security Rule                      ######################

@@ -10,6 +10,8 @@ module Fog
             zone = @dns_client.zones.get(resource_group, name)
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
+          rescue => e
+            Fog::Logger.debug e[:error][:code]
           end
           !zone.nil?
         end

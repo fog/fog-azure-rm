@@ -52,12 +52,24 @@ Optional parameters for Subnet: network_security_group_id, route_table_id & addr
     )
 ```
 
-## List Virtual Networks
+## List Virtual Networks in Resource Group
+
+List all virtual networks in a resource group
+
+```ruby
+    vnets  = azure_network_service.virtual_networks(resource_group: '<Resource Group Name>')
+    vnets.each do |vnet|
+      puts "#{vnet.name}"
+      puts "#{vnet.location}"
+    end
+```
+
+## List Virtual Networks in Subscription
 
 List all virtual networks in a subscription
 
 ```ruby
-    vnets  = azure_network_service.virtual_networks(resource_group: '<Resource Group Name>')
+    vnets  = azure_network_service.virtual_networks
     vnets.each do |vnet|
       puts "#{vnet.name}"
       puts "#{vnet.location}"

@@ -19,6 +19,7 @@ module Fog
       request :add_subnets_in_virtual_network
       request :delete_virtual_network
       request :list_virtual_networks
+      request :list_virtual_networks_in_subscription
       request :check_virtual_network_exists?
       request :create_or_update_public_ip
       request :delete_public_ip

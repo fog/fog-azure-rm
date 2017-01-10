@@ -23,12 +23,24 @@ class TestVirtualNetworks < Minitest::Test
     assert_respond_to @virtual_networks, :resource_group
   end
 
-  def test_all_method_response
+  def test_all_method_response_for_rg
     response = [ApiStub::Models::Network::VirtualNetwork.create_virtual_network_response(@network_client)]
     @service.stub :list_virtual_networks, response do
       assert_instance_of Fog::Network::AzureRM::VirtualNetworks, @virtual_networks.all
       assert @virtual_networks.all.size >= 1
       @virtual_networks.all.each do |nic|
+        assert_instance_of Fog::Network::AzureRM::VirtualNetwork, nic
+      end
+    end
+  end
+
+  def test_all_method_response
+    virtual_networks = Fog::Network::AzureRM::VirtualNetworks.new(service: @service)
+    response = [ApiStub::Models::Network::VirtualNetwork.create_virtual_network_response(@network_client)]
+    @service.stub :list_virtual_networks_in_subscription, response do
+      assert_instance_of Fog::Network::AzureRM::VirtualNetworks, virtual_networks.all
+      assert virtual_networks.all.size >= 1
+      virtual_networks.all.each do |nic|
         assert_instance_of Fog::Network::AzureRM::VirtualNetwork, nic
       end
     end

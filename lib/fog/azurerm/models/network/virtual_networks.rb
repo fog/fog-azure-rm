@@ -8,9 +8,14 @@ module Fog
         attribute :resource_group
 
         def all
-          requires :resource_group
           virtual_networks = []
-          service.list_virtual_networks(resource_group).each do |vnet|
+          if !resource_group.nil?
+            requires :resource_group
+            vnets = service.list_virtual_networks(resource_group)
+          else
+            vnets = service.list_virtual_networks_in_subscription
+          end
+          vnets.each do |vnet|
             virtual_networks << Fog::Network::AzureRM::VirtualNetwork.parse(vnet)
           end
           load(virtual_networks)

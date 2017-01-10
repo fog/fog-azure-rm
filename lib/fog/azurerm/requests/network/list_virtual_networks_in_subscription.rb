@@ -4,7 +4,7 @@ module Fog
       # This class provides the actual implementation for service calls.
       class Real
         def list_virtual_networks_in_subscription
-          msg = "Listing Virtual Networks in a subscription"
+          msg = 'Listing Virtual Networks in a subscription'
           Fog::Logger.debug msg
           begin
             virtual_networks = @network_client.virtual_networks.list_all
@@ -21,7 +21,7 @@ module Fog
           virtual_network = {
             'value' => [
               {
-                'id' => "/subscriptions/########-####-####-####-############/resourceGroups/TestRG/providers/Microsoft.Network/virtualNetworks/testVnet",
+                'id' => '/subscriptions/########-####-####-####-############/resourceGroups/TestRG/providers/Microsoft.Network/virtualNetworks/testVnet',
                 'name' => 'testVnet',
                 'type' => 'Microsoft.Network/virtualNetworks',
                 'location' => 'westus',
@@ -35,7 +35,7 @@ module Fog
                     'subnets' =>
                       [
                         {
-                          'id' => "/subscriptions/########-####-####-####-############/resourceGroups/TestRG/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/subnet_0_testVnet",
+                          'id' => '/subscriptions/########-####-####-####-############/resourceGroups/TestRG/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/subnet_0_testVnet',
                           'properties' =>
                             {
                               'addressPrefix' => '10.1.0.0/24',
@@ -44,14 +44,14 @@ module Fog
                           'name' => 'subnet_0_testVnet'
                         },
                         {
-                          'id' => "/subscriptions/########-####-####-####-############/resourceGroups/TestRG/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/fog-test-subnet",
+                          'id' => '/subscriptions/########-####-####-####-############/resourceGroups/TestRG/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/fog-test-subnet',
                           'properties' =>
                             {
                               'addressPrefix' => '10.2.0.0/16',
                               'ipConfigurations' =>
                                 [
                                   {
-                                    'id' => "/subscriptions/########-####-####-####-############/resourceGroups/TestRG/providers/Microsoft.Network/networkInterfaces/test-NIC/ipConfigurations/ipconfig1"
+                                    'id' => '/subscriptions/########-####-####-####-############/resourceGroups/TestRG/providers/Microsoft.Network/networkInterfaces/test-NIC/ipConfigurations/ipconfig1'
                                   }
                                 ],
                               'provisioningState' => 'Succeeded'

@@ -12,7 +12,7 @@ class TestExpressRouteCircuitAuthorizations < Minitest::Test
     methods = [
       :all,
       :get,
-      :check_express_route_cir_auth_exists?
+      :check_express_route_cir_auth_exists
     ]
     methods.each do |method|
       assert_respond_to @circuit_authorizations, method
@@ -43,14 +43,14 @@ class TestExpressRouteCircuitAuthorizations < Minitest::Test
   end
 
   def test_check_express_route_cir_auth_exists_true_response
-    @service.stub :check_express_route_cir_auth_exists?, true do
-      assert @circuit_authorizations.check_express_route_cir_auth_exists?('HaiderRG', 'testCircuit', 'auth-name')
+    @service.stub :check_express_route_cir_auth_exists, true do
+      assert @circuit_authorizations.check_express_route_cir_auth_exists('HaiderRG', 'testCircuit', 'auth-name')
     end
   end
 
   def test_check_express_route_cir_auth_exists_false_response
-    @service.stub :check_express_route_cir_auth_exists?, false do
-      assert !@circuit_authorizations.check_express_route_cir_auth_exists?('HaiderRG', 'testCircuit', 'auth-name')
+    @service.stub :check_express_route_cir_auth_exists, false do
+      assert !@circuit_authorizations.check_express_route_cir_auth_exists('HaiderRG', 'testCircuit', 'auth-name')
     end
   end
 end

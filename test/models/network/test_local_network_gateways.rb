@@ -13,7 +13,7 @@ class TestLocalNetworkGateways < Minitest::Test
     methods = [
       :all,
       :get,
-      :check_local_net_gateway_exists?
+      :check_local_net_gateway_exists
     ]
     methods.each do |method|
       assert_respond_to @local_network_gateways, method
@@ -42,14 +42,14 @@ class TestLocalNetworkGateways < Minitest::Test
   end
 
   def test_check_local_net_gateway_exists_true_response
-    @service.stub :check_local_net_gateway_exists?, true do
-      assert @local_network_gateways.check_local_net_gateway_exists?('fog-rg', 'mylocalgateway1')
+    @service.stub :check_local_net_gateway_exists, true do
+      assert @local_network_gateways.check_local_net_gateway_exists('fog-rg', 'mylocalgateway1')
     end
   end
 
   def test_check_local_net_gateway_exists_false_response
-    @service.stub :check_local_net_gateway_exists?, false do
-      assert !@local_network_gateways.check_local_net_gateway_exists?('fog-rg', 'mylocalgateway1')
+    @service.stub :check_local_net_gateway_exists, false do
+      assert !@local_network_gateways.check_local_net_gateway_exists('fog-rg', 'mylocalgateway1')
     end
   end
 end

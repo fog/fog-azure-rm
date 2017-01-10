@@ -3,7 +3,7 @@ module Fog
     class AzureRM
       # This class provides the actual implementation for service calls.
       class Real
-        def check_container_exists?(name)
+        def check_container_exists(name)
           msg = "Checking container #{name}."
           Fog::Logger.debug msg
           begin
@@ -21,7 +21,7 @@ module Fog
 
       # This class provides the mock implementation for unit tests.
       class Mock
-        def check_container_exists?(*)
+        def check_container_exists(*)
           true
         end
       end

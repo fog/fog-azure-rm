@@ -13,7 +13,7 @@ class TestDeployments < Minitest::Test
     methods = [
       :all,
       :get,
-      :check_deployment_exists?
+      :check_deployment_exists
     ]
     methods.each do |method|
       assert_respond_to @deployments, method
@@ -38,14 +38,14 @@ class TestDeployments < Minitest::Test
   end
 
   def test_check_deployment_exists_true_response
-    @service.stub :check_deployment_exists?, true do
-      assert @deployments.check_deployment_exists?('fog-test-rg', 'fog-test-deployment')
+    @service.stub :check_deployment_exists, true do
+      assert @deployments.check_deployment_exists('fog-test-rg', 'fog-test-deployment')
     end
   end
 
   def test_check_deployment_exists_false_response
-    @service.stub :check_deployment_exists?, false do
-      assert !@deployments.check_deployment_exists?('fog-test-rg', 'fog-test-deployment')
+    @service.stub :check_deployment_exists, false do
+      assert !@deployments.check_deployment_exists('fog-test-rg', 'fog-test-deployment')
     end
   end
 end

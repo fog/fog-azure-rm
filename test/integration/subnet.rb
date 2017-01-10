@@ -50,9 +50,8 @@ begin
   ######################                         Check Subnet Exists?                               ######################
   ########################################################################################################################
 
-  if !network.subnets.check_subnet_exists?('TestRG-SN', 'testVnet', 'mysubnet')
-    puts "Subnet doesn't exist."
-  end
+  flag = network.subnets.check_subnet_exists('TestRG-SN', 'testVnet', 'mysubnet')
+  puts "Subnet doesn't exist." unless flag
 
   ########################################################################################################################
   ######################                                Create Subnet                               ######################

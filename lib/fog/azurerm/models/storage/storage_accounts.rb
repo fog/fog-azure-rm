@@ -34,8 +34,8 @@ module Fog
           service.check_storage_account_name_availability(params)
         end
 
-        def check_storage_account_exists?(resource_group_name, storage_account_name)
-          service.check_storage_account_exists?(resource_group_name, storage_account_name)
+        def check_storage_account_exists(resource_group_name, storage_account_name)
+          service.check_storage_account_exists(resource_group_name, storage_account_name)
         end
       end
     end

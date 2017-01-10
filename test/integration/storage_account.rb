@@ -47,9 +47,8 @@ begin
 
   lrs_storage_account = "lrs#{current_time}"
 
-  if !storage.storage_accounts.check_storage_account_exists?('TestRG-SA', lrs_storage_account)
-    puts "Storage Account doesn't exist."
-  end
+  flag = storage.storage_accounts.check_storage_account_exists('TestRG-SA', lrs_storage_account)
+  puts "Storage Account doesn't exist." unless flag
 
   ########################################################################################################################
   ###############  Create A Standard Storage Account of Replication: LRS (Locally-redundant storage)       ###############

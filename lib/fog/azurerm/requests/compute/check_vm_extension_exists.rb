@@ -3,16 +3,16 @@ module Fog
     class AzureRM
       # This class provides the actual implementation for service calls.
       class Real
-        def check_availability_set_exists?(resource_group, name)
-          msg = "Checking Availability set: #{name}"
+        def check_vm_extension_exists(resource_group_name, virtual_machine_name, vm_extension_name)
+          msg = "Checking Virtual Machine Extension #{vm_extension_name}"
           Fog::Logger.debug msg
           begin
-            @compute_mgmt_client.availability_sets.get(resource_group, name)
-            Fog::Logger.debug "Availability set #{name} exists."
+            @compute_mgmt_client.virtual_machine_extensions.get(resource_group_name, virtual_machine_name, vm_extension_name)
+            Fog::Logger.debug "Virtual Machine Extension #{vm_extension_name} exists."
             true
           rescue MsRestAzure::AzureOperationError => e
             if e.body['error']['code'] == 'ResourceNotFound'
-              Fog::Logger.debug "Availability set #{name} doesn't exist."
+              Fog::Logger.debug "Virtual machine #{vm_extension_name} doesn't exist."
               false
             else
               raise_azure_exception(e, msg)
@@ -22,7 +22,7 @@ module Fog
       end
       # This class provides the mock implementation for unit tests.
       class Mock
-        def check_availability_set_exists?(_resource_group, _name)
+        def check_vm_extension_exists(*)
           true
         end
       end

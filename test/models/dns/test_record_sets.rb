@@ -13,7 +13,7 @@ class TestRecordSets < Minitest::Test
     methods = [
       :all,
       :get,
-      :check_record_set_exists?
+      :check_record_set_exists
     ]
     methods.each do |method|
       assert_respond_to @record_sets, method
@@ -53,14 +53,14 @@ class TestRecordSets < Minitest::Test
   end
 
   def test_check_record_set_exists_true_case
-    @service.stub :check_record_set_exists?, true do
-      assert @record_sets.check_record_set_exists?('fog-test-rg', 'fog-test-record-set', 'fog-test-zone', 'A')
+    @service.stub :check_record_set_exists, true do
+      assert @record_sets.check_record_set_exists('fog-test-rg', 'fog-test-record-set', 'fog-test-zone', 'A')
     end
   end
 
   def test_check_record_set_exists_false_case
-    @service.stub :check_record_set_exists?, false do
-      assert !@record_sets.check_record_set_exists?('fog-test-rg', 'fog-test-record-set', 'fog-test-zone', 'A')
+    @service.stub :check_record_set_exists, false do
+      assert !@record_sets.check_record_set_exists('fog-test-rg', 'fog-test-record-set', 'fog-test-zone', 'A')
     end
   end
 end

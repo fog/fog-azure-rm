@@ -13,7 +13,7 @@ class TestNetworkSecurityGroups < Minitest::Test
     methods = [
       :all,
       :get,
-      :check_net_sec_group_exists?
+      :check_net_sec_group_exists
     ]
     methods.each do |method|
       assert_respond_to @network_security_groups, method
@@ -41,14 +41,14 @@ class TestNetworkSecurityGroups < Minitest::Test
   end
 
   def test_check_net_sec_group_exists_true_response
-    @service.stub :check_net_sec_group_exists?, true do
-      assert @network_security_groups.check_net_sec_group_exists?('fog-test-rg', 'fog-test-nsg')
+    @service.stub :check_net_sec_group_exists, true do
+      assert @network_security_groups.check_net_sec_group_exists('fog-test-rg', 'fog-test-nsg')
     end
   end
 
   def test_check_net_sec_group_exists_false_response
-    @service.stub :check_net_sec_group_exists?, false do
-      assert !@network_security_groups.check_net_sec_group_exists?('fog-test-rg', 'fog-test-nsg')
+    @service.stub :check_net_sec_group_exists, false do
+      assert !@network_security_groups.check_net_sec_group_exists('fog-test-rg', 'fog-test-nsg')
     end
   end
 end

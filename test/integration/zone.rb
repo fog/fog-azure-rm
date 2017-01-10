@@ -37,9 +37,8 @@ begin
   ######################                            Check Zone Exists?                              ######################
   ########################################################################################################################
 
-  if !dns.zones.check_zone_exists?('TestRG-ZN', 'test-zone.com')
-    puts "Zone doesn't exist."
-  end
+  flag = dns.zones.check_zone_exists('TestRG-ZN', 'test-zone.com')
+  puts "Zone doesn't exist." unless flag
 
   ########################################################################################################################
   ######################                                Create Zone                                 ######################

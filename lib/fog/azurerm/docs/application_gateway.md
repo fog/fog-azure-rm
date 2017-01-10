@@ -26,7 +26,7 @@ Next, create a connection to the Application Gateway Service:
 ## Check Application Gateway Existence
 
 ```ruby
-azure_application_gateway_service.gateways.check_application_gateway_exists?(<Resource Group name>, <Gateway Name>)
+azure_application_gateway_service.gateways.check_application_gateway_exists(<Resource Group name>, <Gateway Name>)
 ```
 
 ## Create Application Gateway

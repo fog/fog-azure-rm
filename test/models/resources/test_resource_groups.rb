@@ -13,7 +13,7 @@ class TestResourceGroups < Minitest::Test
     methods = [
       :all,
       :get,
-      :check_resource_group_exists?
+      :check_resource_group_exists
     ]
     methods.each do |method|
       assert_respond_to @resource_groups, method
@@ -38,14 +38,14 @@ class TestResourceGroups < Minitest::Test
   end
 
   def test_check_resource_group_exists_true_response
-    @service.stub :check_resource_group_exists?, true do
-      assert @resource_groups.check_resource_group_exists?('fog-test-rg')
+    @service.stub :check_resource_group_exists, true do
+      assert @resource_groups.check_resource_group_exists('fog-test-rg')
     end
   end
 
   def test_check_resource_group_exists_false_response
-    @service.stub :check_resource_group_exists?, false do
-      assert !@resource_groups.check_resource_group_exists?('fog-test-rg')
+    @service.stub :check_resource_group_exists, false do
+      assert !@resource_groups.check_resource_group_exists('fog-test-rg')
     end
   end
 end

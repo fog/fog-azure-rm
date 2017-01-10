@@ -3,7 +3,7 @@ module Fog
     class AzureRM
       # This class provides the actual implementation for service calls.
       class Real
-        def check_resource_group_exists?(resource_group_name)
+        def check_resource_group_exists(resource_group_name)
           msg = "Checking Resource Group #{resource_group_name}"
           Fog::Logger.debug msg
           begin
@@ -21,7 +21,7 @@ module Fog
       end
       # This class provides the mock implementation for unit tests.
       class Mock
-        def check_resource_group_exists?(*)
+        def check_resource_group_exists(*)
           true
         end
       end

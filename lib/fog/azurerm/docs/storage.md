@@ -62,7 +62,7 @@ azure_storage_service.storage_accounts.check_name_availability('<Storage Account
 ## Check Storage Account Existence
 
 ```ruby
-azure_storage_service.storage_accounts.check_storage_account_exists?(<Resource Group name>, <StorageAccountName>)
+azure_storage_service.storage_accounts.check_storage_account_exists(<Resource Group name>, <StorageAccountName>)
 ```
 
 ## Create Storage Account
@@ -170,7 +170,7 @@ azure_storage_service.delete_disk('<Data Disk Name>', options = {})
 ## Check Storage Container Existence
 
 ```ruby
-azure_storage_service.directories.check_container_exists?(<container name>)
+azure_storage_service.directories.check_container_exists(<container name>)
 ```
 
 ## Create a storage container

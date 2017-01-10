@@ -11,7 +11,7 @@ module Fog
       request_path 'fog/azurerm/requests/dns'
       request :create_or_update_zone
       request :delete_zone
-      request :check_zone_exists?
+      request :check_zone_exists
       request :list_zones
       request :get_zone
       request :create_or_update_record_set
@@ -19,7 +19,7 @@ module Fog
       request :list_record_sets
       request :get_records_from_record_set
       request :get_record_set
-      request :check_record_set_exists?
+      request :check_record_set_exists
 
       model_path 'fog/azurerm/models/dns'
       model :zone

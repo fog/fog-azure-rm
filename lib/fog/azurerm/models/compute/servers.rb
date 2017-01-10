@@ -22,8 +22,8 @@ module Fog
           virtual_machine_fog.merge_attributes(Fog::Compute::AzureRM::Server.parse(virtual_machine))
         end
 
-        def check_vm_exists?(resource_group, name)
-          service.check_vm_exists?(resource_group, name)
+        def check_vm_exists(resource_group, name)
+          service.check_vm_exists(resource_group, name)
         end
       end
     end

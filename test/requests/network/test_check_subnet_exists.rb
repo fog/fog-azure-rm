@@ -11,21 +11,21 @@ class TestCheckSubnetExists < Minitest::Test
   def test_check_subnet_exists_success
     mocked_response = ApiStub::Requests::Network::Subnet.create_subnet_response(@network_client)
     @subnets.stub :get, mocked_response do
-      assert @service.check_subnet_exists?('fog-test-rg', 'fog-test-virtual-network', 'fog-test-subnet')
+      assert @service.check_subnet_exists('fog-test-rg', 'fog-test-virtual-network', 'fog-test-subnet')
     end
   end
 
   def test_check_subnet_exists_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceNotFound' }) }
     @subnets.stub :get, response do
-      assert !@service.check_subnet_exists?('fog-test-rg', 'fog-test-virtual-network', 'fog-test-subnet')
+      assert !@service.check_subnet_exists('fog-test-rg', 'fog-test-virtual-network', 'fog-test-subnet')
     end
   end
 
   def test_check_subnet_exists_exception
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceGroupNotFound' }) }
     @subnets.stub :get, response do
-      assert_raises(RuntimeError) { @service.check_subnet_exists?('fog-test-rg', 'fog-test-virtual-network', 'fog-test-subnet') }
+      assert_raises(RuntimeError) { @service.check_subnet_exists('fog-test-rg', 'fog-test-virtual-network', 'fog-test-subnet') }
     end
   end
 end

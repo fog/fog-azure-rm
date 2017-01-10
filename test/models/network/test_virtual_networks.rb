@@ -12,7 +12,7 @@ class TestVirtualNetworks < Minitest::Test
     methods = [
       :all,
       :get,
-      :check_virtual_network_exists?
+      :check_virtual_network_exists
     ]
     methods.each do |method|
       assert_respond_to @virtual_networks, method
@@ -54,14 +54,14 @@ class TestVirtualNetworks < Minitest::Test
   end
 
   def test_check_virtual_network_exists_method_success
-    @service.stub :check_virtual_network_exists?, true do
-      assert @virtual_networks.check_virtual_network_exists?('fog-rg', 'fog-test-virtual-network')
+    @service.stub :check_virtual_network_exists, true do
+      assert @virtual_networks.check_virtual_network_exists('fog-rg', 'fog-test-virtual-network')
     end
   end
 
   def test_check_virtual_network_exists_method_failure
-    @service.stub :check_virtual_network_exists?, false do
-      assert !@virtual_networks.check_virtual_network_exists?('fog-rg', 'fog-test-virtual-network')
+    @service.stub :check_virtual_network_exists, false do
+      assert !@virtual_networks.check_virtual_network_exists('fog-rg', 'fog-test-virtual-network')
     end
   end
 end

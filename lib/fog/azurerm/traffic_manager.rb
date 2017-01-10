@@ -13,12 +13,12 @@ module Fog
       request :delete_traffic_manager_profile
       request :get_traffic_manager_profile
       request :list_traffic_manager_profiles
-      request :check_traffic_manager_profile_exists?
+      request :check_traffic_manager_profile_exists
 
       request :create_or_update_traffic_manager_endpoint
       request :delete_traffic_manager_endpoint
       request :get_traffic_manager_endpoint
-      request :check_traffic_manager_endpoint_exists?
+      request :check_traffic_manager_endpoint_exists
 
       model_path 'fog/azurerm/models/traffic_manager'
       model :traffic_manager_profile

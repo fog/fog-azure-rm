@@ -61,8 +61,8 @@ module Fog
           raise error
         end
 
-        def check_container_exists?(name)
-          service.check_container_exists?(name)
+        def check_container_exists(name)
+          service.check_container_exists(name)
         end
       end
     end

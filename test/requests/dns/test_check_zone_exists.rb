@@ -11,7 +11,7 @@ class TestCheckZoneExists < Minitest::Test
   def test_check_zone_exists_success
     mocked_response = ApiStub::Requests::DNS::Zone.zone_response(@dns_client)
     @zones.stub :get, mocked_response do
-      assert_equal @service.check_zone_exists?('fog-test-rg', 'zone_name'), true
+      assert_equal @service.check_zone_exists('fog-test-rg', 'zone_name'), true
     end
   end
 
@@ -19,7 +19,7 @@ class TestCheckZoneExists < Minitest::Test
     response = ApiStub::Requests::DNS::RecordSet.list_record_sets_response(@dns_client)
     @zones.stub :get, response do
       assert_raises ArgumentError do
-        @service.check_zone_exists?('fog-test-rg')
+        @service.check_zone_exists('fog-test-rg')
       end
     end
   end
@@ -28,7 +28,7 @@ class TestCheckZoneExists < Minitest::Test
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @zones.stub :get, response do
       assert_raises RuntimeError do
-        @service.check_zone_exists?('fog-test-rg', 'zone_name')
+        @service.check_zone_exists('fog-test-rg', 'zone_name')
       end
     end
   end

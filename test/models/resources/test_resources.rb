@@ -14,7 +14,7 @@ class TestResources < Minitest::Test
     methods = [
       :all,
       :get,
-      :check_azure_resource_exists?
+      :check_azure_resource_exists
     ]
     methods.each do |method|
       assert_respond_to @resources, method
@@ -39,14 +39,14 @@ class TestResources < Minitest::Test
   end
 
   def test_check_azure_resource_exists_true_response
-    @service.stub :check_azure_resource_exists?, true do
-      assert @resources.check_azure_resource_exists?(@resource_id, '2016-09-01')
+    @service.stub :check_azure_resource_exists, true do
+      assert @resources.check_azure_resource_exists(@resource_id, '2016-09-01')
     end
   end
 
   def test_check_azure_resource_exists_false_response
-    @service.stub :check_azure_resource_exists?, false do
-      assert !@resources.check_azure_resource_exists?(@resource_id, '2016-09-01')
+    @service.stub :check_azure_resource_exists, false do
+      assert !@resources.check_azure_resource_exists(@resource_id, '2016-09-01')
     end
   end
 end

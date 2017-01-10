@@ -64,9 +64,8 @@ begin
   ######################                             Check Container Exists                         ######################
   ########################################################################################################################
 
-  if !storage_data.directories.check_container_exists?(container_name)
-    puts "Container doesn't exist."
-  end
+  flag = storage_data.directories.check_container_exists(container_name)
+  puts "Container doesn't exist." unless flag
 
   ########################################################################################################################
   ######################                                Create Container                            ######################

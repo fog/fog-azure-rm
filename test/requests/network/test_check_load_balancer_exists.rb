@@ -11,21 +11,21 @@ class TestCheckLoadBalancerExists < Minitest::Test
   def test_check_load_balancer_exists_success
     mocked_response = ApiStub::Requests::Network::LoadBalancer.create_load_balancer_response(@network_client)
     @load_balancers.stub :get, mocked_response do
-      assert @service.check_load_balancer_exists?('fog-test-rg', 'mylb1')
+      assert @service.check_load_balancer_exists('fog-test-rg', 'mylb1')
     end
   end
 
   def test_check_load_balancer_exists_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceNotFound' }) }
     @load_balancers.stub :get, response do
-      assert !@service.check_load_balancer_exists?('fog-test-rg', 'mylb1')
+      assert !@service.check_load_balancer_exists('fog-test-rg', 'mylb1')
     end
   end
 
   def test_check_load_balancer_exists_exception
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceGroupNotFound' }) }
     @load_balancers.stub :get, response do
-      assert_raises(RuntimeError) { @service.check_load_balancer_exists?('fog-test-rg', 'mylb1') }
+      assert_raises(RuntimeError) { @service.check_load_balancer_exists('fog-test-rg', 'mylb1') }
     end
   end
 end

@@ -3,16 +3,16 @@ module Fog
     class AzureRM
       # This class provides the actual implementation for service calls.
       class Real
-        def check_local_net_gateway_exists?(resource_group_name, local_network_gateway_name)
-          msg = "Checking Local Network Gateway #{local_network_gateway_name}"
+        def check_express_route_cir_auth_exists(resource_group_name, circuit_name, authorization_name)
+          msg = "Checking Express Route Circuit Authorization #{authorization_name}"
           Fog::Logger.debug msg
           begin
-            @network_client.local_network_gateways.get(resource_group_name, local_network_gateway_name)
-            Fog::Logger.debug "Local Network Gateway #{local_network_gateway_name} exists."
+            @network_client.express_route_circuit_authorizations.get(resource_group_name, circuit_name, authorization_name)
+            Fog::Logger.debug "Express Route Circuit Authorization #{authorization_name} exists."
             true
           rescue MsRestAzure::AzureOperationError => e
             if e.body['error']['code'] == 'ResourceNotFound'
-              Fog::Logger.debug "Local Network Gateway #{local_network_gateway_name} doesn't exist."
+              Fog::Logger.debug "Express Route Circuit Authorization #{authorization_name} doesn't exist."
               false
             else
               raise_azure_exception(e, msg)
@@ -22,7 +22,7 @@ module Fog
       end
       # This class provides the mock implementation for unit tests.
       class Mock
-        def check_local_net_gateway_exists?(*)
+        def check_express_route_cir_auth_exists(*)
           true
         end
       end

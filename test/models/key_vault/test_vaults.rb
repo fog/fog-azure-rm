@@ -13,7 +13,7 @@ class TestVaults < Minitest::Test
     methods = [
       :all,
       :get,
-      :check_vault_exists?
+      :check_vault_exists
     ]
     methods.each do |method|
       assert_respond_to @vaults, method
@@ -42,14 +42,14 @@ class TestVaults < Minitest::Test
   end
 
   def test_check_vault_exists_true_response
-    @service.stub :check_vault_exists?, true do
-      assert @vaults.check_vault_exists?('fog-test-rg', 'fog-test-kv')
+    @service.stub :check_vault_exists, true do
+      assert @vaults.check_vault_exists('fog-test-rg', 'fog-test-kv')
     end
   end
 
   def test_check_vault_exists_false_response
-    @service.stub :check_vault_exists?, false do
-      assert !@vaults.check_vault_exists?('fog-test-rg', 'fog-test-kv')
+    @service.stub :check_vault_exists, false do
+      assert !@vaults.check_vault_exists('fog-test-rg', 'fog-test-kv')
     end
   end
 end

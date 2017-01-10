@@ -37,9 +37,8 @@ begin
   ########################################################################################################################
   server_name = rand(0...999_99)
 
-  if !azure_sql_service.sql_servers.check_sql_server_exists?('TestRG-SQL', server_name)
-    puts "SQL Server doesn't exist."
-  end
+  flag = azure_sql_service.sql_servers.check_sql_server_exists('TestRG-SQL', server_name)
+  puts "SQL Server doesn't exist." unless flag
 
   ########################################################################################################################
   ######################                         Create Sql Server                                  ######################
@@ -60,9 +59,8 @@ begin
   ########################################################################################################################
   database_name = rand(0...999_99)
 
-  if !azure_sql_service.sql_databases.check_database_exists?('TestRG-SQL', server_name, database_name)
-    puts "SQL Database doesn't exist."
-  end
+  flag = azure_sql_service.sql_databases.check_database_exists('TestRG-SQL', server_name, database_name)
+  puts "SQL Database doesn't exist." unless flag
 
   ########################################################################################################################
   ######################                        Create Sql Database                                 ######################
@@ -104,9 +102,8 @@ begin
   ######################                   Check Firewall Rule Exists?                              ######################
   ########################################################################################################################
 
-  if !azure_sql_service.firewall_rules.check_firewall_rule_exists?('TestRG-SQL', server_name, 'test-rule-name')
-    puts "Firewall Rule doesn't exist."
-  end
+  flag = azure_sql_service.firewall_rules.check_firewall_rule_exists('TestRG-SQL', server_name, 'test-rule-name')
+  puts "Firewall Rule doesn't exist." unless flag
 
   ########################################################################################################################
   ######################                        Create Sql Firewall Rule                            ######################

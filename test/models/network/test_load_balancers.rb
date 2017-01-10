@@ -13,7 +13,7 @@ class TestLoadBalancers < Minitest::Test
     methods = [
       :all,
       :get,
-      :check_load_balancer_exists?
+      :check_load_balancer_exists
     ]
     methods.each do |method|
       assert_respond_to @load_balancers, method
@@ -42,14 +42,14 @@ class TestLoadBalancers < Minitest::Test
   end
 
   def test_check_load_balancer_exists_true_response
-    @service.stub :check_load_balancer_exists?, true do
-      assert @load_balancers.check_load_balancer_exists?('fog-test-rg', 'mylb1')
+    @service.stub :check_load_balancer_exists, true do
+      assert @load_balancers.check_load_balancer_exists('fog-test-rg', 'mylb1')
     end
   end
 
   def test_check_load_balancer_exists_false_response
-    @service.stub :check_load_balancer_exists?, false do
-      assert !@load_balancers.check_load_balancer_exists?('fog-test-rg', 'mylb1')
+    @service.stub :check_load_balancer_exists, false do
+      assert !@load_balancers.check_load_balancer_exists('fog-test-rg', 'mylb1')
     end
   end
 end

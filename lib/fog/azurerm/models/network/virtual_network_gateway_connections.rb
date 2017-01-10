@@ -18,8 +18,8 @@ module Fog
           gateway_connection.merge_attributes(Fog::Network::AzureRM::VirtualNetworkGatewayConnection.parse(connection))
         end
 
-        def check_vnet_gateway_connection_exists?(resource_group_name, name)
-          service.check_vnet_gateway_connection_exists?(resource_group_name, name)
+        def check_vnet_gateway_connection_exists(resource_group_name, name)
+          service.check_vnet_gateway_connection_exists(resource_group_name, name)
         end
       end
     end

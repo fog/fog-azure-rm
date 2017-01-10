@@ -27,8 +27,8 @@ module Fog
           virtual_network_fog.merge_attributes(Fog::Network::AzureRM::VirtualNetwork.parse(virtual_network))
         end
 
-        def check_virtual_network_exists?(resource_group, name)
-          service.check_virtual_network_exists?(resource_group, name)
+        def check_virtual_network_exists(resource_group, name)
+          service.check_virtual_network_exists(resource_group, name)
         end
       end
     end

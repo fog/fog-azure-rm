@@ -14,7 +14,7 @@ class TestTrafficManagerProfiles < Minitest::Test
     methods = [
       :all,
       :get,
-      :check_traffic_manager_profile_exists?
+      :check_traffic_manager_profile_exists
     ]
     methods.each do |method|
       assert_respond_to @traffic_manager_profiles, method
@@ -42,14 +42,14 @@ class TestTrafficManagerProfiles < Minitest::Test
   end
 
   def test_check_traffic_manager_profile_exists_true_response
-    @service.stub :check_traffic_manager_profile_exists?, true do
-      assert @traffic_manager_profiles.check_traffic_manager_profile_exists?('resource-group-name', 'fog-test-profile-name')
+    @service.stub :check_traffic_manager_profile_exists, true do
+      assert @traffic_manager_profiles.check_traffic_manager_profile_exists('resource-group-name', 'fog-test-profile-name')
     end
   end
 
   def test_check_traffic_manager_profile_exists_false_response
-    @service.stub :check_traffic_manager_profile_exists?, false do
-      assert !@traffic_manager_profiles.check_traffic_manager_profile_exists?('resource-group-name', 'fog-test-profile-name')
+    @service.stub :check_traffic_manager_profile_exists, false do
+      assert !@traffic_manager_profiles.check_traffic_manager_profile_exists('resource-group-name', 'fog-test-profile-name')
     end
   end
 end

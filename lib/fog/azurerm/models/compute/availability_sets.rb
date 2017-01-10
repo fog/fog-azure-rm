@@ -26,8 +26,8 @@ module Fog
           availability_set_fog.merge_attributes(Fog::Compute::AzureRM::AvailabilitySet.parse(availability_set))
         end
 
-        def check_availability_set_exists?(resource_group, name)
-          service.check_availability_set_exists?(resource_group, name)
+        def check_availability_set_exists(resource_group, name)
+          service.check_availability_set_exists(resource_group, name)
         end
       end
     end

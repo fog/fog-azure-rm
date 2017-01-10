@@ -21,8 +21,8 @@ module Fog
           express_route_circuit.merge_attributes(Fog::Network::AzureRM::ExpressRouteCircuit.parse(circuit))
         end
 
-        def check_express_route_circuit_exists?(resource_group_name, name)
-          service.check_express_route_circuit_exists?(resource_group_name, name)
+        def check_express_route_circuit_exists(resource_group_name, name)
+          service.check_express_route_circuit_exists(resource_group_name, name)
         end
       end
     end

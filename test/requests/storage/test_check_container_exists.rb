@@ -12,7 +12,7 @@ class TestCheckContainerExists < Minitest::Test
 
   def test_check_container_exists_success
     @blob_client.stub :get_container_properties, @container do
-      assert_equal @service.check_container_exists?('test_container'), true
+      assert_equal @service.check_container_exists('test_container'), true
     end
   end
 end

@@ -42,9 +42,8 @@ begin
   ######################                      Check Record Set Exists?                              ######################
   ########################################################################################################################
 
-  if !dns.record_sets.check_record_set_exists?('TestRG-RS', 'TestRS1', 'test-zone.com', 'CNAME')
-    puts "Record set doesn't exist."
-  end
+  flag = dns.record_sets.check_record_set_exists('TestRG-RS', 'TestRS1', 'test-zone.com', 'CNAME')
+  puts "Record set doesn't exist." unless flag
 
   ########################################################################################################################
   ######################                      Create CNAME Type Record Set in a Zone                 ######################

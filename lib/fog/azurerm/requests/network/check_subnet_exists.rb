@@ -3,16 +3,16 @@ module Fog
     class AzureRM
       # Mock class for Network Request
       class Real
-        def check_virtual_network_exists?(resource_group, name)
-          msg = "Checking Virtual Network #{name}"
+        def check_subnet_exists(resource_group, virtual_network_name, subnet_name)
+          msg = "Checking Subnet #{subnet_name}"
           Fog::Logger.debug msg
           begin
-            @network_client.virtual_networks.get(resource_group, name)
-            Fog::Logger.debug "Virtual Network #{name} exists."
+            @network_client.subnets.get(resource_group, virtual_network_name, subnet_name)
+            Fog::Logger.debug "Subnet #{subnet_name} exists."
             true
           rescue MsRestAzure::AzureOperationError => e
             if e.body['error']['code'] == 'ResourceNotFound'
-              Fog::Logger.debug "Virtual Network #{name} doesn't exist."
+              Fog::Logger.debug "Subnet #{subnet_name} doesn't exist."
               false
             else
               raise_azure_exception(e, msg)
@@ -23,8 +23,7 @@ module Fog
 
       # Mock class for Network Request
       class Mock
-        def check_virtual_network_exists?(resource_group, name)
-          Fog::Logger.debug "Virtual Network #{name} from Resource group #{resource_group} is available."
+        def check_subnet_exists(*)
           true
         end
       end

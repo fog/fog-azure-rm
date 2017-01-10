@@ -20,12 +20,12 @@ module Fog
       request :delete_virtual_network
       request :list_virtual_networks
       request :list_virtual_networks_in_subscription
-      request :check_virtual_network_exists?
+      request :check_virtual_network_exists
       request :create_or_update_public_ip
       request :delete_public_ip
       request :get_public_ip
       request :list_public_ips
-      request :check_public_ip_exists?
+      request :check_public_ip_exists
       request :create_subnet
       request :attach_network_security_group_to_subnet
       request :detach_network_security_group_from_subnet
@@ -35,37 +35,37 @@ module Fog
       request :get_subnet
       request :get_available_ipaddresses_count
       request :delete_subnet
-      request :check_subnet_exists?
+      request :check_subnet_exists
       request :create_or_update_network_interface
       request :delete_network_interface
       request :list_network_interfaces
       request :get_network_interface
-      request :check_network_interface_exists?
+      request :check_network_interface_exists
       request :attach_resource_to_nic
       request :detach_resource_from_nic
       request :create_load_balancer
       request :delete_load_balancer
       request :list_load_balancers
       request :get_load_balancer
-      request :check_load_balancer_exists?
+      request :check_load_balancer_exists
       request :list_load_balancers_in_subscription
       request :create_or_update_network_security_group
       request :delete_network_security_group
       request :list_network_security_groups
       request :get_network_security_group
-      request :check_net_sec_group_exists?
+      request :check_net_sec_group_exists
       request :add_security_rules
       request :remove_security_rule
       request :delete_virtual_network_gateway
       request :create_or_update_virtual_network_gateway
       request :list_virtual_network_gateways
       request :get_virtual_network_gateway
-      request :check_vnet_gateway_exists?
+      request :check_vnet_gateway_exists
       request :create_or_update_express_route_circuit
       request :delete_express_route_circuit
       request :get_express_route_circuit
       request :list_express_route_circuits
-      request :check_express_route_circuit_exists?
+      request :check_express_route_circuit_exists
       request :create_or_update_express_route_circuit_peering
       request :delete_express_route_circuit_peering
       request :get_express_route_circuit_peering
@@ -74,18 +74,18 @@ module Fog
       request :delete_express_route_circuit_authorization
       request :get_express_route_circuit_authorization
       request :list_express_route_circuit_authorizations
-      request :check_express_route_cir_auth_exists?
+      request :check_express_route_cir_auth_exists
       request :list_express_route_service_providers
       request :create_or_update_local_network_gateway
       request :delete_local_network_gateway
       request :get_local_network_gateway
       request :list_local_network_gateways
-      request :check_local_net_gateway_exists?
+      request :check_local_net_gateway_exists
       request :create_or_update_virtual_network_gateway_connection
       request :delete_virtual_network_gateway_connection
       request :get_virtual_network_gateway_connection
       request :list_virtual_network_gateway_connections
-      request :check_vnet_gateway_connection_exists?
+      request :check_vnet_gateway_connection_exists
       request :get_connection_shared_key
       request :reset_connection_shared_key
       request :set_connection_shared_key
@@ -93,7 +93,7 @@ module Fog
       request :delete_network_security_rule
       request :get_network_security_rule
       request :list_network_security_rules
-      request :check_net_sec_rule_exists?
+      request :check_net_sec_rule_exists
 
       model_path 'fog/azurerm/models/network'
       model :virtual_network

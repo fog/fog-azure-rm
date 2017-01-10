@@ -12,7 +12,7 @@ class TestNetworkInterfaces < Minitest::Test
     methods = [
       :all,
       :get,
-      :check_network_interface_exists?
+      :check_network_interface_exists
     ]
     methods.each do |method|
       assert_respond_to @network_interfaces, method
@@ -42,14 +42,14 @@ class TestNetworkInterfaces < Minitest::Test
   end
 
   def test_check_network_interface_exists_true_response
-    @service.stub :check_network_interface_exists?, true do
-      assert @network_interfaces.check_network_interface_exists?('fog-test-rg', 'fog-test-network-interface')
+    @service.stub :check_network_interface_exists, true do
+      assert @network_interfaces.check_network_interface_exists('fog-test-rg', 'fog-test-network-interface')
     end
   end
 
   def test_check_network_interface_exists_false_response
-    @service.stub :check_network_interface_exists?, false do
-      assert !@network_interfaces.check_network_interface_exists?('fog-test-rg', 'fog-test-network-interface')
+    @service.stub :check_network_interface_exists, false do
+      assert !@network_interfaces.check_network_interface_exists('fog-test-rg', 'fog-test-network-interface')
     end
   end
 end

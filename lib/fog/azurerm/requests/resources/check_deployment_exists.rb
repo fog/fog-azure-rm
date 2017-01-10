@@ -3,7 +3,7 @@ module Fog
     class AzureRM
       # This class provides the actual implementation for service calls.
       class Real
-        def check_deployment_exists?(resource_group_name, deployment_name)
+        def check_deployment_exists(resource_group_name, deployment_name)
           msg = "Checking Deployment #{deployment_name}"
           Fog::Logger.debug msg
           begin
@@ -21,7 +21,7 @@ module Fog
       end
       # This class provides the mock implementation for unit tests.
       class Mock
-        def check_deployment_exists?(*)
+        def check_deployment_exists(*)
           true
         end
       end

@@ -23,8 +23,8 @@ module Fog
           all.find { |f| f.id == resource_id }
         end
 
-        def check_azure_resource_exists?(resource_id, api_version)
-          service.check_azure_resource_exists?(resource_id, api_version)
+        def check_azure_resource_exists(resource_id, api_version)
+          service.check_azure_resource_exists(resource_id, api_version)
         end
       end
     end

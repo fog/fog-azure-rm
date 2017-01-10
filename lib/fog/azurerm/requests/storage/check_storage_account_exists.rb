@@ -3,7 +3,7 @@ module Fog
     class AzureRM
       # This class provides the actual implementation for service calls.
       class Real
-        def check_storage_account_exists?(resource_group_name, storage_account_name)
+        def check_storage_account_exists(resource_group_name, storage_account_name)
           msg = "Checking Storage Account: #{storage_account_name}."
           Fog::Logger.debug msg
           begin
@@ -22,7 +22,7 @@ module Fog
       end
       # This class provides the mock implementation.
       class Mock
-        def check_storage_account_exists?(*)
+        def check_storage_account_exists(*)
           true
         end
       end

@@ -12,7 +12,7 @@ module Fog
       request :list_vaults
       request :create_or_update_vault
       request :delete_vault
-      request :check_vault_exists?
+      request :check_vault_exists
 
       model_path 'fog/azurerm/models/key_vault'
       model :vault

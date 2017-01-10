@@ -11,21 +11,21 @@ class TestCheckExpressRouteCircuitExists < Minitest::Test
   def test_check_express_route_circuit_exists_success
     mocked_response = ApiStub::Requests::Network::ExpressRouteCircuit.create_express_route_circuit_response(@network_client)
     @circuit.stub :get, mocked_response do
-      assert @service.check_express_route_circuit_exists?('fog-test-rg', 'testCircuit')
+      assert @service.check_express_route_circuit_exists('fog-test-rg', 'testCircuit')
     end
   end
 
   def test_check_express_route_circuit_exists_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceNotFound' }) }
     @circuit.stub :get, response do
-      assert !@service.check_express_route_circuit_exists?('fog-test-rg', 'testCircuit')
+      assert !@service.check_express_route_circuit_exists('fog-test-rg', 'testCircuit')
     end
   end
 
   def test_check_express_route_circuit_exists_exception
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceGroupNotFound' }) }
     @circuit.stub :get, response do
-      assert_raises(RuntimeError) { @service.check_express_route_circuit_exists?('fog-test-rg', 'testCircuit') }
+      assert_raises(RuntimeError) { @service.check_express_route_circuit_exists('fog-test-rg', 'testCircuit') }
     end
   end
 end

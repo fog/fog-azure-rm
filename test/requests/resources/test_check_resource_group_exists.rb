@@ -10,20 +10,20 @@ class TestGetResourceGroup < Minitest::Test
 
   def test_check_resource_group_exists_success
     @resource_groups.stub :check_existence, true do
-      assert @service.check_resource_group_exists?('fog-test-rg')
+      assert @service.check_resource_group_exists('fog-test-rg')
     end
   end
 
   def test_check_resource_group_exists_failure
     @resource_groups.stub :check_existence, false do
-      assert !@service.check_resource_group_exists?('fog-test-rg')
+      assert !@service.check_resource_group_exists('fog-test-rg')
     end
   end
 
   def test_check_resource_group_exists_exception
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @resource_groups.stub :check_existence, response do
-      assert_raises(RuntimeError) { @service.check_resource_group_exists?('fog-test-rg') }
+      assert_raises(RuntimeError) { @service.check_resource_group_exists('fog-test-rg') }
     end
   end
 end

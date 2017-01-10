@@ -22,8 +22,8 @@ module Fog
           server_fog.merge_attributes(Fog::Sql::AzureRM::SqlServer.parse(server))
         end
 
-        def check_sql_server_exists?(resource_group, server_name)
-          service.check_sql_server_exists?(resource_group, server_name)
+        def check_sql_server_exists(resource_group, server_name)
+          service.check_sql_server_exists(resource_group, server_name)
         end
       end
     end

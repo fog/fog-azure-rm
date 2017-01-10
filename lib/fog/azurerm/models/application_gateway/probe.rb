@@ -4,6 +4,7 @@ module Fog
       # Probe model class for Application Gateway Service
       class Probe < Fog::Model
         identity :name
+        attribute :id
         attribute :protocol
         attribute :host
         attribute :path
@@ -13,6 +14,7 @@ module Fog
 
         def self.parse(probe)
           hash = {}
+          hash['id'] = probe.id
           hash['name'] = probe.name
           hash['protocol'] = probe.protocol
           hash['host'] = probe.host

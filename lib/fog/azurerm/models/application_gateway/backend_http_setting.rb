@@ -4,6 +4,7 @@ module Fog
       # Backend Http Settings model class for Application Gateway Service
       class BackendHttpSetting < Fog::Model
         identity :name
+        attribute :id
         attribute :port
         attribute :protocol
         attribute :cookie_based_affinity
@@ -12,6 +13,7 @@ module Fog
 
         def self.parse(backend_http_setting)
           hash = {}
+          hash['id'] = backend_http_setting.id
           hash['name'] = backend_http_setting.name
           hash['port'] = backend_http_setting.port
           hash['protocol'] = backend_http_setting.protocol

@@ -4,12 +4,14 @@ module Fog
       # URL Path Map model class for Application Gateway Service
       class UrlPathMap < Fog::Model
         identity :name
+        attribute :id
         attribute :default_backend_address_pool_id
         attribute :default_backend_http_settings_id
         attribute :path_rules
 
         def self.parse(url_path_map)
           hash = {}
+          hash['id'] = url_path_map.id
           hash['name'] = url_path_map.name
           hash['default_backend_address_pool_id'] = url_path_map.default_backend_address_pool.id unless url_path_map.default_backend_address_pool.nil?
           hash['default_backend_http_settings_id'] = url_path_map.default_backend_http_settings.id unless url_path_map.default_backend_http_settings.nil?

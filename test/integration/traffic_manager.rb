@@ -36,7 +36,7 @@ begin
   ######################                   Check Traffic Manager Profile Exists?                    ######################
   ########################################################################################################################
 
-  if !traffic_manager.traffic_manager_profiles.check_traffic_manager_profile_exists?('TestRG-TM', 'test-tmp')
+  if !traffic_manager.traffic_manager_profiles.check_traffic_manager_profile_exists('TestRG-TM', 'test-tmp')
     puts "Traffic Manager Profile doesn't exist."
   end
 
@@ -60,7 +60,7 @@ begin
   ######################                   Check Traffic Manager Endpoint Exists?                   ######################
   ########################################################################################################################
 
-  if !traffic_manager.traffic_manager_end_points.check_traffic_manager_endpoint_exists?('TestRG-TM', 'test-tmp', 'myendpoint', 'externalEndpoints')
+  if !traffic_manager.traffic_manager_end_points.check_traffic_manager_endpoint_exists('TestRG-TM', 'test-tmp', 'myendpoint', 'externalEndpoints')
     puts "Traffic Manager Endpoint doesn't exist."
   end
 

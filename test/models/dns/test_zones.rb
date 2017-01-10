@@ -13,7 +13,7 @@ class TestZones < Minitest::Test
     methods = [
       :all,
       :get,
-      :check_zone_exists?
+      :check_zone_exists
     ]
     methods.each do |method|
       assert_respond_to @zones, method
@@ -38,14 +38,14 @@ class TestZones < Minitest::Test
   end
 
   def test_check_zone_exists_true_response
-    @service.stub :check_zone_exists?, true do
-      assert @zones.check_zone_exists?('fog-test-rg', 'fog-test-zone.com')
+    @service.stub :check_zone_exists, true do
+      assert @zones.check_zone_exists('fog-test-rg', 'fog-test-zone.com')
     end
   end
 
   def test_check_zone_exists_false_response
-    @service.stub :check_zone_exists?, true do
-      assert @zones.check_zone_exists?('fog-test-rg', 'fog-test-zone.com')
+    @service.stub :check_zone_exists, true do
+      assert @zones.check_zone_exists('fog-test-rg', 'fog-test-zone.com')
     end
   end
 end

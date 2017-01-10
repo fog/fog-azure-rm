@@ -3,7 +3,7 @@ module Fog
     class AzureRM
       # Real class for DNS Request
       class Real
-        def check_zone_exists?(resource_group, name)
+        def check_zone_exists(resource_group, name)
           msg = "Getting Zone #{name} from Resource Group #{resource_group}."
           Fog::Logger.debug msg
           begin
@@ -17,7 +17,7 @@ module Fog
 
       # Mock class for DNS Request
       class Mock
-        def check_zone_exists?(*)
+        def check_zone_exists(*)
           Fog::Logger.debug 'Zone name name is available.'
           true
         end

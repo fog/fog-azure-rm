@@ -27,7 +27,7 @@ Next, create a connection to the DNS Service:
 ## Check Zone Existence
 
 ```ruby
-azure_dns_service.zones.check_zone_exists?(<Resource Group name>, <Zone name>)
+azure_dns_service.zones.check_zone_exists(<Resource Group name>, <Zone name>)
 ```
 
 ## Create Zone
@@ -71,7 +71,7 @@ Get Zone object from the get method(described above) and then destroy that Zone.
 ## Check Record Set Existence
 
 ```ruby
-azure_dns_service.record_sets.check_record_set_exists?(<Resource Group name>, <Record Set name>, <Zone name>, <Record Type(A/CNAME)>)
+azure_dns_service.record_sets.check_record_set_exists(<Resource Group name>, <Record Set name>, <Zone name>, <Record Type(A/CNAME)>)
 ```
 
 ## Create Record Set

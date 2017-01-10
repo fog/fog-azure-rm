@@ -21,8 +21,8 @@ module Fog
           public_ip_fog.merge_attributes(Fog::Network::AzureRM::PublicIp.parse(public_ip))
         end
 
-        def check_public_ip_exists?(resource_group, name)
-          service.check_public_ip_exists?(resource_group, name)
+        def check_public_ip_exists(resource_group, name)
+          service.check_public_ip_exists(resource_group, name)
         end
       end
     end

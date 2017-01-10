@@ -36,7 +36,7 @@ begin
   ######################                   Check Local Network Gateway Exists?                      ######################
   ########################################################################################################################
 
-  if !network.local_network_gateways.check_local_net_gateway_exists?('TestRG-LNG', 'testlocalnetworkgateway')
+  if !network.local_network_gateways.check_local_net_gateway_exists('TestRG-LNG', 'testlocalnetworkgateway')
     puts "Local Network Gateway doesn't exist."
   end
 

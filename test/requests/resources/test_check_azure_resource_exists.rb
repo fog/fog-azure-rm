@@ -11,12 +11,12 @@ class TestCheckAzureResourceExists < Minitest::Test
   def test_tag_resource_success
     @resources.stub :check_existence, true do
         resource_id = '/subscriptions/########-####-####-####-############/resourceGroups/{RESOURCE-GROUP}/providers/Microsoft.Network/{PROVIDER-NAME}/{RESOURCE-NAME}'
-        assert_equal @service.check_azure_resource_exists?(resource_id, '2016-09-01'), true
+        assert_equal @service.check_azure_resource_exists(resource_id, '2016-09-01'), true
     end
   end
 
   def test_invalid_resource_id_exeception
     resource_id = 'Invalid-Resource-ID'
-    assert_raises(RuntimeError) { @service.check_azure_resource_exists?(resource_id, '2016-09-01') }
+    assert_raises(RuntimeError) { @service.check_azure_resource_exists(resource_id, '2016-09-01') }
   end
 end

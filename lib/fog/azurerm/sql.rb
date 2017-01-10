@@ -13,19 +13,19 @@ module Fog
       request :delete_sql_server
       request :get_sql_server
       request :list_sql_servers
-      request :check_sql_server_exists?
+      request :check_sql_server_exists
 
       request :create_or_update_database
       request :delete_database
       request :get_database
       request :list_databases
-      request :check_database_exists?
+      request :check_database_exists
 
       request :create_or_update_firewall_rule
       request :delete_firewall_rule
       request :get_firewall_rule
       request :list_firewall_rules
-      request :check_firewall_rule_exists?
+      request :check_firewall_rule_exists
 
       model_path 'fog/azurerm/models/sql'
       model :sql_server

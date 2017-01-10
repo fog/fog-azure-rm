@@ -21,8 +21,8 @@ module Fog
           network_security_group_fog.merge_attributes(Fog::Network::AzureRM::NetworkSecurityGroup.parse(network_security_group))
         end
 
-        def check_net_sec_group_exists?(resource_group, name)
-          service.check_net_sec_group_exists?(resource_group, name)
+        def check_net_sec_group_exists(resource_group, name)
+          service.check_net_sec_group_exists(resource_group, name)
         end
       end
     end

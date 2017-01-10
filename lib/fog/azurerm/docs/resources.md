@@ -27,7 +27,7 @@ Next, create a connection to the Resources Service:
 ## Check Resource Group Existence
 
 ```ruby
- azure_resources_service.resource_groups.check_resource_group_exists?(<Resource Group name>)
+ azure_resources_service.resource_groups.check_resource_group_exists(<Resource Group name>)
 ```
 
 ## Create Resource Group
@@ -121,13 +121,13 @@ Remove tag from a resource as following:
 ## Check Resource Existence
 
 ```ruby
- azure_resources_service.azure_resources.check_azure_resource_exists?(<Resource-ID>, <API-Version>)
+ azure_resources_service.azure_resources.check_azure_resource_exists(<Resource-ID>, <API-Version>)
 ```
 
 ## Check Deployment Existence
 
 ```ruby
- azure_resources_service.deployments.check_deployment_exists?(<Resource Group Name>, <Deployment name>)
+ azure_resources_service.deployments.check_deployment_exists(<Resource Group Name>, <Deployment name>)
 ```
 
 ## Create Deployment

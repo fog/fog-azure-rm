@@ -11,21 +11,21 @@ class TestCheckNetworkInterfaceExists < Minitest::Test
   def test_check_network_interface_exists_success
     mocked_response = ApiStub::Requests::Network::NetworkInterface.create_network_interface_response(@network_client)
     @network_interfaces.stub :get, mocked_response do
-      assert @service.check_network_interface_exists?('fog-test-rg', 'fog-test-network-interface')
+      assert @service.check_network_interface_exists('fog-test-rg', 'fog-test-network-interface')
     end
   end
 
   def test_check_network_interface_exists_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceNotFound' }) }
     @network_interfaces.stub :get, response do
-      assert !@service.check_network_interface_exists?('fog-test-rg', 'fog-test-network-interface')
+      assert !@service.check_network_interface_exists('fog-test-rg', 'fog-test-network-interface')
     end
   end
 
   def test_check_network_interface_exists_exception
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceGroupNotFound' }) }
     @network_interfaces.stub :get, response do
-      assert_raises(RuntimeError) { @service.check_network_interface_exists?('fog-test-rg', 'fog-test-network-interface') }
+      assert_raises(RuntimeError) { @service.check_network_interface_exists('fog-test-rg', 'fog-test-network-interface') }
     end
   end
 end

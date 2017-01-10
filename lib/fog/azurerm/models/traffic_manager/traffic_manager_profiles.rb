@@ -18,8 +18,8 @@ module Fog
           profile_fog.merge_attributes(Fog::TrafficManager::AzureRM::TrafficManagerProfile.parse(profile))
         end
 
-        def check_traffic_manager_profile_exists?(resource_group, traffic_manager_profile_name)
-          service.check_traffic_manager_profile_exists?(resource_group, traffic_manager_profile_name)
+        def check_traffic_manager_profile_exists(resource_group, traffic_manager_profile_name)
+          service.check_traffic_manager_profile_exists(resource_group, traffic_manager_profile_name)
         end
       end
     end

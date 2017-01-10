@@ -26,7 +26,7 @@ Next, create a connection to the Network Service:
 ## Check Virtual Network Existence
 
 ```ruby
- azure_network_service.virtual_networks.check_virtual_network_exists?(<Resource Group name>, <Virtual Network Name>)
+ azure_network_service.virtual_networks.check_virtual_network_exists(<Resource Group name>, <Virtual Network Name>)
 ```
 
 ## Create Virtual Network
@@ -141,7 +141,7 @@ Get virtual network object from the get method and then destroy that virtual net
 ## Check Subnet Existence
 
 ```ruby
- azure_network_service.subnets.check_subnet_exists?(<Resource Group name>, <Virtual Network Name>, <Subnet Name>)
+ azure_network_service.subnets.check_subnet_exists(<Resource Group name>, <Virtual Network Name>, <Subnet Name>)
 ```
 
 ## Create Subnet
@@ -238,7 +238,7 @@ Get a subnet object from the get method and then destroy that subnet.
 ## Check Network Interface Card Existence
 
 ```ruby
- azure_network_service.network_interfaces.check_network_interface_exists?(<Resource Group name>, <Network Interface name>)
+ azure_network_service.network_interfaces.check_network_interface_exists(<Resource Group name>, <Network Interface name>)
 ```
 
 ## Create Network Interface Card
@@ -321,7 +321,7 @@ Get a network interface object from the get method and then destroy that network
 ## Check Public IP Existence
 
 ```ruby
- azure_network_service.public_ips.check_public_ip_exists?(<Resource Group name>, <Public IP name>>)
+ azure_network_service.public_ips.check_public_ip_exists(<Resource Group name>, <Public IP name>>)
 ```
 
 ## Create Public IP
@@ -390,7 +390,7 @@ Get a Public IP object from the get method and then destroy that public IP.
 ## Check Network Security Group Existence
 
 ```ruby
- azure_network_service.network_security_groups.check_net_sec_group_exists?(<Resource Group name>, <Network Security Group name>)
+ azure_network_service.network_security_groups.check_net_sec_group_exists(<Resource Group name>, <Network Security Group name>)
 ```
 
 ## Create Network Security Group
@@ -501,7 +501,7 @@ Get a network security group object from the get method and then destroy that ne
 ## Check Network Security Rule Existence
 
 ```ruby
- azure_network_service.network_security_rules.check_net_sec_rule_exists?(<Resource Group name>, <Network Security Group name>, <Security Rule name>)
+ azure_network_service.network_security_rules.check_net_sec_rule_exists(<Resource Group name>, <Network Security Group name>, <Security Rule name>)
 ```
 
 ## Create Network Security Rule
@@ -558,7 +558,7 @@ Get a network security rule object from the get method and then destroy that net
 ## Check External Load Balancer Existence
 
 ```ruby
- azure_network_service.load_balancers.check_load_balancer_exists?(<Resource Group name>, <Load Balancer name>)
+ azure_network_service.load_balancers.check_load_balancer_exists(<Resource Group name>, <Load Balancer name>)
 ```
 
 ## Create External Load Balancer
@@ -718,7 +718,7 @@ Get a load balancer object from the get method and then destroy that load balanc
 ## Check Virtual Network Gateway Existence
 
 ```ruby
- azure_network_service.virtual_network_gateways.check_vnet_gateway_exists?(<Resource Group name>, <Virtual Network Gateway Name>)
+ azure_network_service.virtual_network_gateways.check_vnet_gateway_exists(<Resource Group name>, <Virtual Network Gateway Name>)
 ```
 
 ## Create Virtual Network Gateway
@@ -805,7 +805,7 @@ Get a virtual network gateway object from the get method and then destroy that v
 ## Check Local Network Gateway Existence
 
 ```ruby
- azure_network_service.local_network_gateways.check_local_net_gateway_exists?(<Resource Group name>, <Local Network Gateway Name>)
+ azure_network_service.local_network_gateways.check_local_net_gateway_exists(<Resource Group name>, <Local Network Gateway Name>)
 ```
 
 ## Create Local Network Gateway
@@ -869,7 +869,7 @@ The Circuit represents the entity created by customer to register with an expres
 ## Check Express Route Circuit Existence
 
 ```ruby
- azure_network_service.express_route_circuits.check_express_route_circuit_exists?(<Resource Group name>, <Circuit Name>)
+ azure_network_service.express_route_circuits.check_express_route_circuit_exists(<Resource Group name>, <Circuit Name>)
 ```
 
 ## Create an Express Route Circuit
@@ -938,7 +938,7 @@ Authorization is part of Express Route circuit.
 ## Check Express Route Circuit Authorization Existence
 
 ```ruby
- azure_network_service.express_route_circuit_authorizations.check_express_route_cir_auth_exists?(<Resource Group name>, <Circuit Name>, <Authorization-Name>)
+ azure_network_service.express_route_circuit_authorizations.check_express_route_cir_auth_exists(<Resource Group name>, <Circuit Name>, <Authorization-Name>)
 ```
 
 ## Create an Express Route Circuit Authorization
@@ -1049,7 +1049,7 @@ List all express route service providers
 ## Check Virtual Network Gateway Connection Existence
 
 ```ruby
- azure_network_service.virtual_network_gateway_connections.check_vnet_gateway_connection_exists?(<Resource Group name>, <Virtual Network Gateway Connection Name>)
+ azure_network_service.virtual_network_gateway_connections.check_vnet_gateway_connection_exists(<Resource Group name>, <Virtual Network Gateway Connection Name>)
 ```
 
 ## Create Virtual Network Gateway Connection

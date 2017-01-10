@@ -36,7 +36,7 @@ begin
   ######################                               Check PublicIP exists                        ######################
   ########################################################################################################################
 
-  if !network.public_ips.check_public_ip_exists?('TestRG-PB', 'mypubip')
+  if !network.public_ips.check_public_ip_exists('TestRG-PB', 'mypubip')
     puts "Public IP doesn't exist."
   end
 

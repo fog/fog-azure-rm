@@ -13,7 +13,7 @@ class TestServers < Minitest::Test
     methods = [
       :all,
       :get,
-      :check_vm_exists?
+      :check_vm_exists
     ]
     methods.each do |method|
       assert_respond_to @servers, method
@@ -42,14 +42,14 @@ class TestServers < Minitest::Test
   end
 
   def test_check_vm_exists_true_case
-    @service.stub :check_vm_exists?, true do
-      assert @servers.check_vm_exists?('fog-test-rg', 'fog-test-server')
+    @service.stub :check_vm_exists, true do
+      assert @servers.check_vm_exists('fog-test-rg', 'fog-test-server')
     end
   end
 
   def test_check_vm_exists_false_case
-    @service.stub :check_vm_exists?, false do
-      assert !@servers.check_vm_exists?('fog-test-rg', 'fog-test-server')
+    @service.stub :check_vm_exists, false do
+      assert !@servers.check_vm_exists('fog-test-rg', 'fog-test-server')
     end
   end
 end

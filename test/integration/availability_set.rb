@@ -47,7 +47,7 @@ begin
   ######################                            Check for Availability set                       ######################
   ########################################################################################################################
 
-  if !compute.availability_sets.check_availability_set_exists?(resource_group_name, availability_set_name)
+  if !compute.availability_sets.check_availability_set_exists(resource_group_name, availability_set_name)
     puts "Availability set doesn't exist."
   end
 

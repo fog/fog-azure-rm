@@ -21,8 +21,8 @@ module Fog
           endpoint_fog.merge_attributes(Fog::TrafficManager::AzureRM::TrafficManagerEndPoint.parse(endpoint))
         end
 
-        def check_traffic_manager_endpoint_exists?(resource_group, traffic_manager_profile_name, end_point_name, type)
-          service.check_traffic_manager_endpoint_exists?(resource_group, traffic_manager_profile_name, end_point_name, type)
+        def check_traffic_manager_endpoint_exists(resource_group, traffic_manager_profile_name, end_point_name, type)
+          service.check_traffic_manager_endpoint_exists(resource_group, traffic_manager_profile_name, end_point_name, type)
         end
       end
     end

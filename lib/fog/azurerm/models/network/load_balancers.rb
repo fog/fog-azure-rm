@@ -27,8 +27,8 @@ module Fog
           load_balancer_fog.merge_attributes(Fog::Network::AzureRM::LoadBalancer.parse(load_balancer))
         end
 
-        def check_load_balancer_exists?(resource_group_name, load_balancer_name)
-          service.check_load_balancer_exists?(resource_group_name, load_balancer_name)
+        def check_load_balancer_exists(resource_group_name, load_balancer_name)
+          service.check_load_balancer_exists(resource_group_name, load_balancer_name)
         end
       end
     end

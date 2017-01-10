@@ -43,7 +43,7 @@ begin
   ######################                   Check Azure Resource Exists?                             ######################
   ########################################################################################################################
 
-  if !resources.azure_resources.check_azure_resource_exists?(resource_id, '2016-09-01')
+  if !resources.azure_resources.check_azure_resource_exists(resource_id, '2016-09-01')
     puts "Azure Resource doesn't exist."
   end
 

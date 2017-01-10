@@ -15,7 +15,7 @@ class TestDirectories < Minitest::Test
     methods = [
       :all,
       :get,
-      :check_container_exists?
+      :check_container_exists
     ]
     methods.each do |method|
       assert_respond_to @directories, method
@@ -61,14 +61,14 @@ class TestDirectories < Minitest::Test
   end
 
   def test_check_container_exists_true_response
-    @service.stub :check_container_exists?, true do
-      assert @directories.check_container_exists?('test_container')
+    @service.stub :check_container_exists, true do
+      assert @directories.check_container_exists('test_container')
     end
   end
 
   def test_check_container_exists_false_response
-    @service.stub :check_container_exists?, false do
-      assert !@directories.check_container_exists?('test_container')
+    @service.stub :check_container_exists, false do
+      assert !@directories.check_container_exists('test_container')
     end
   end
 end

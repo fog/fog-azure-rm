@@ -13,7 +13,7 @@ class TestNetworkSecurityRules < Minitest::Test
     methods = [
       :all,
       :get,
-      :check_net_sec_rule_exists?
+      :check_net_sec_rule_exists
     ]
     methods.each do |method|
       assert_respond_to @network_security_rules, method
@@ -42,14 +42,14 @@ class TestNetworkSecurityRules < Minitest::Test
   end
 
   def test_check_net_sec_rule_exists_true_response
-    @service.stub :check_net_sec_rule_exists?, true do
-      assert @network_security_rules.check_net_sec_rule_exists?('fog-test-rg', 'fog-test-nsg', 'fog-test-nsr')
+    @service.stub :check_net_sec_rule_exists, true do
+      assert @network_security_rules.check_net_sec_rule_exists('fog-test-rg', 'fog-test-nsg', 'fog-test-nsr')
     end
   end
 
   def test_check_net_sec_rule_exists_false_response
-    @service.stub :check_net_sec_rule_exists?, false do
-      assert !@network_security_rules.check_net_sec_rule_exists?('fog-test-rg', 'fog-test-nsg', 'fog-test-nsr')
+    @service.stub :check_net_sec_rule_exists, false do
+      assert !@network_security_rules.check_net_sec_rule_exists('fog-test-rg', 'fog-test-nsg', 'fog-test-nsr')
     end
   end
 end

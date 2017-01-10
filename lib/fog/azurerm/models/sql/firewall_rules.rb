@@ -23,8 +23,8 @@ module Fog
           firewall_rule_fog.merge_attributes(Fog::Sql::AzureRM::FirewallRule.parse(firewall_rule))
         end
 
-        def check_firewall_rule_exists?(resource_group, server_name, rule_name)
-          service.check_firewall_rule_exists?(resource_group, server_name, rule_name)
+        def check_firewall_rule_exists(resource_group, server_name, rule_name)
+          service.check_firewall_rule_exists(resource_group, server_name, rule_name)
         end
       end
     end

@@ -29,7 +29,7 @@ begin
   ######################                            Check Deployment Exists                         ######################
   ########################################################################################################################
 
-  if !resources.deployments.check_deployment_exists?('TestRG-ZN', 'testdeployment')
+  if !resources.deployments.check_deployment_exists('TestRG-ZN', 'testdeployment')
     puts "Deployment doesn't exist."
   end
 

@@ -21,8 +21,8 @@ module Fog
           network_interface_card_fog.merge_attributes(Fog::Network::AzureRM::NetworkInterface.parse(network_interface_card))
         end
 
-        def check_network_interface_exists?(resource_group_name, name)
-          service.check_network_interface_exists?(resource_group_name, name)
+        def check_network_interface_exists(resource_group_name, name)
+          service.check_network_interface_exists(resource_group_name, name)
         end
       end
     end

@@ -1,18 +1,18 @@
 module Fog
-  module DNS
+  module Compute
     class AzureRM
       # This class provides the actual implementation for service calls.
       class Real
-        def check_record_set_exists?(resource_group, name, zone_name, record_type)
-          msg = "Checking Record set #{name}"
+        def check_availability_set_exists(resource_group, name)
+          msg = "Checking Availability set: #{name}"
           Fog::Logger.debug msg
           begin
-            @dns_client.record_sets.get(resource_group, zone_name, name, record_type)
-            Fog::Logger.debug "Record set #{name} exists."
+            @compute_mgmt_client.availability_sets.get(resource_group, name)
+            Fog::Logger.debug "Availability set #{name} exists."
             true
           rescue MsRestAzure::AzureOperationError => e
-            if e.body['code'] == 'NotFound'
-              Fog::Logger.debug "Record set #{name} doesn't exist."
+            if e.body['error']['code'] == 'ResourceNotFound'
+              Fog::Logger.debug "Availability set #{name} doesn't exist."
               false
             else
               raise_azure_exception(e, msg)
@@ -22,7 +22,7 @@ module Fog
       end
       # This class provides the mock implementation for unit tests.
       class Mock
-        def check_record_set_exists?(_resource_group, _name)
+        def check_availability_set_exists(_resource_group, _name)
           true
         end
       end

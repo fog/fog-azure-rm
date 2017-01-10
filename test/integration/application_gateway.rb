@@ -75,7 +75,7 @@ begin
   ######################                            Check for Application Gateway                   ######################
   ########################################################################################################################
 
-  if !application_gateway.gateways.check_application_gateway_exists?(resource_group_name, app_gateway_name)
+  if !application_gateway.gateways.check_application_gateway_exists(resource_group_name, app_gateway_name)
     puts "Application Gateway doesn't exist."
   end
 

@@ -99,7 +99,7 @@ begin
   ######################                  Check Virtual Machine Extension Exists?                   ######################
   ########################################################################################################################
 
-  if !compute.virtual_machine_extensions.check_vm_extension_exists?('TestRG-VME', 'TestVM', 'IaasAntimalware')
+  if !compute.virtual_machine_extensions.check_vm_extension_exists('TestRG-VME', 'TestVM', 'IaasAntimalware')
     puts "Virtual machine extension doesn't exist."
   end
 

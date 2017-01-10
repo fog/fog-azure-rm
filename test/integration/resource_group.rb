@@ -22,7 +22,7 @@ begin
   ######################                   Check Resource Group Exists?                             ######################
   ########################################################################################################################
 
-  if !resource.resource_groups.check_resource_group_exists?(resource_group_name)
+  if !resource.resource_groups.check_resource_group_exists(resource_group_name)
     puts "Resource Group doesn't exist."
   end
 

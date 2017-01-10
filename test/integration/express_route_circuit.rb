@@ -37,7 +37,7 @@ begin
   ######################                  Check Express Route Circuit Exists?                       ######################
   ########################################################################################################################
 
-  if !network.express_route_circuits.check_express_route_circuit_exists?('TestRG-ER', 'testERCircuit')
+  if !network.express_route_circuits.check_express_route_circuit_exists('TestRG-ER', 'testERCircuit')
     puts "Express Route Circuit doesn't exist."
   end
 
@@ -86,7 +86,7 @@ begin
   ######################             Check Express Route Circuit Authorization Exists?              ######################
   ########################################################################################################################
 
-  if !network.express_route_circuit_authorizations.check_express_route_cir_auth_exists?('TestRG-ER', 'testERCircuit', 'Test-Auth')
+  if !network.express_route_circuit_authorizations.check_express_route_cir_auth_exists('TestRG-ER', 'testERCircuit', 'Test-Auth')
     puts "Express Route Circuit Authorization doesn't exist."
   end
 

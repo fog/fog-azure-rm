@@ -14,7 +14,7 @@ class TestTrafficManagerEndPoints < Minitest::Test
     methods = [
       :all,
       :get,
-      :check_traffic_manager_endpoint_exists?
+      :check_traffic_manager_endpoint_exists
     ]
     methods.each do |method|
       assert_respond_to @traffic_manager_end_points, method
@@ -43,14 +43,14 @@ class TestTrafficManagerEndPoints < Minitest::Test
   end
 
   def test_check_traffic_manager_endpoint_exists_true_response
-    @service.stub :check_traffic_manager_endpoint_exists?, true do
-      assert @traffic_manager_end_points.check_traffic_manager_endpoint_exists?('resource-group-name', 'profile-name', 'endpoint-name1', 'endpoint-type')
+    @service.stub :check_traffic_manager_endpoint_exists, true do
+      assert @traffic_manager_end_points.check_traffic_manager_endpoint_exists('resource-group-name', 'profile-name', 'endpoint-name1', 'endpoint-type')
     end
   end
 
   def test_check_traffic_manager_endpoint_exists_false_response
-    @service.stub :check_traffic_manager_endpoint_exists?, false do
-      assert !@traffic_manager_end_points.check_traffic_manager_endpoint_exists?('resource-group-name', 'profile-name', 'endpoint-name1', 'endpoint-type')
+    @service.stub :check_traffic_manager_endpoint_exists, false do
+      assert !@traffic_manager_end_points.check_traffic_manager_endpoint_exists('resource-group-name', 'profile-name', 'endpoint-name1', 'endpoint-type')
     end
   end
 end

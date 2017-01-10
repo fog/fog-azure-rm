@@ -13,7 +13,7 @@ class TestPublicIps < Minitest::Test
     methods = [
       :all,
       :get,
-      :check_public_ip_exists?
+      :check_public_ip_exists
     ]
     methods.each do |method|
       assert_respond_to @public_ips, method
@@ -42,14 +42,14 @@ class TestPublicIps < Minitest::Test
   end
 
   def test_check_public_ip_exists_method_success
-    @service.stub :check_public_ip_exists?, true do
-      assert @public_ips.check_public_ip_exists?('fog-test-rg', 'fog-test-public-ip')
+    @service.stub :check_public_ip_exists, true do
+      assert @public_ips.check_public_ip_exists('fog-test-rg', 'fog-test-public-ip')
     end
   end
 
   def test_check_if_exists_method_failure
-    @service.stub :check_public_ip_exists?, false do
-      assert !@public_ips.check_public_ip_exists?('fog-test-rg', 'fog-test-public-ip')
+    @service.stub :check_public_ip_exists, false do
+      assert !@public_ips.check_public_ip_exists('fog-test-rg', 'fog-test-public-ip')
     end
   end
 end

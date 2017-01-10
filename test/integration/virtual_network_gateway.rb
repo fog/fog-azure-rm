@@ -57,7 +57,7 @@ begin
   ######################                    Check Virtual Network Gateway Exists                    ######################
   ########################################################################################################################
 
-  if !network.virtual_network_gateways.check_vnet_gateway_exists?('TestRG-VNG', 'testnetworkgateway')
+  if !network.virtual_network_gateways.check_vnet_gateway_exists('TestRG-VNG', 'testnetworkgateway')
     puts "Virtual Network Gateway doesn't exist."
   end
 

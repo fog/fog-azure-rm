@@ -155,7 +155,7 @@ begin
   ######################            Check Virtual Network Gateway Connection Exists                 ######################
   ########################################################################################################################
 
-  if !network.virtual_network_gateway_connections.check_vnet_gateway_connection_exists?('TestRG-GC', 'testnetworkgateway2-to-testnetworkgateway')
+  if !network.virtual_network_gateway_connections.check_vnet_gateway_connection_exists('TestRG-GC', 'testnetworkgateway2-to-testnetworkgateway')
     puts "Virtual Network Gateway Connection doesn't exist."
   end
 

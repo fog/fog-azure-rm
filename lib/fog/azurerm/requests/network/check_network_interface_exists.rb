@@ -3,7 +3,7 @@ module Fog
     class AzureRM
       # This class provides the actual implementation for service calls.
       class Real
-        def check_network_interface_exists?(resource_group_name, nic_name)
+        def check_network_interface_exists(resource_group_name, nic_name)
           msg = "Checking Network Interface #{nic_name}"
           Fog::Logger.debug msg
           begin
@@ -22,7 +22,7 @@ module Fog
       end
       # This class provides the mock implementation for unit tests.
       class Mock
-        def check_network_interface_exists?(*)
+        def check_network_interface_exists(*)
           true
         end
       end

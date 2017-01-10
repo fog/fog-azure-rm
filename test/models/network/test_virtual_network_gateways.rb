@@ -12,7 +12,7 @@ class TestVirtualNetworkGateways < Minitest::Test
     methods = [
       :all,
       :get,
-      :check_vnet_gateway_exists?
+      :check_vnet_gateway_exists
     ]
     methods.each do |method|
       assert_respond_to @network_gateways, method
@@ -42,14 +42,14 @@ class TestVirtualNetworkGateways < Minitest::Test
   end
 
   def test_check_vnet_gateway_exists_true_response
-    @service.stub :check_vnet_gateway_exists?, true do
-      assert @network_gateways.check_vnet_gateway_exists?('fog-rg', 'myvirtualgateway1')
+    @service.stub :check_vnet_gateway_exists, true do
+      assert @network_gateways.check_vnet_gateway_exists('fog-rg', 'myvirtualgateway1')
     end
   end
 
   def test_check_vnet_gateway_exists_false_response
-    @service.stub :check_vnet_gateway_exists?, false do
-      assert !@network_gateways.check_vnet_gateway_exists?('fog-rg', 'myvirtualgateway1')
+    @service.stub :check_vnet_gateway_exists, false do
+      assert !@network_gateways.check_vnet_gateway_exists('fog-rg', 'myvirtualgateway1')
     end
   end
 end

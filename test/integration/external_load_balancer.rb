@@ -58,7 +58,7 @@ begin
   ######################                      Check Load Balancer Exists?                           ######################
   ########################################################################################################################
 
-  if !network.load_balancers.check_load_balancer_exists?('TestRG-LB', 'lb')
+  if !network.load_balancers.check_load_balancer_exists('TestRG-LB', 'lb')
     puts "Load Balancer doesn't exist."
   end
 

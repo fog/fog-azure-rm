@@ -39,6 +39,7 @@ class TestGateway < Minitest::Test
   def test_model_attributes
     attributes = [
       :name,
+      :id,
       :location,
       :resource_group,
       :sku_name,

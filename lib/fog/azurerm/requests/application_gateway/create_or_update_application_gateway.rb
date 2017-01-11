@@ -82,6 +82,12 @@ module Fog
             frontend_ip_configuration.private_ipaddress = fic[:private_ip_address]
             frontend_ip_configuration.private_ipallocation_method = fic[:private_ip_allocation_method]
 
+            if fic[:subnet_id]
+              subnet = Azure::ARM::Network::Models::Subnet.new
+              subnet.id = fic[:subnet_id]
+              frontend_ip_configuration.subnet = subnet
+            end
+
             unless fic[:public_ip_address_id].nil?
               pip = Azure::ARM::Network::Models::PublicIPAddress.new
               pip.id = fic[:public_ip_address_id]

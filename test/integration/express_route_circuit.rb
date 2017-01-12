@@ -32,6 +32,14 @@ begin
     location: LOCATION
   )
   Fog::Logger.debug 'Resource Group created!'
+
+  ########################################################################################################################
+  ######################                  Check Express Route Circuit Exists?                       ######################
+  ########################################################################################################################
+
+  flag = network.express_route_circuits.check_express_route_circuit_exists('TestRG-ER', 'testERCircuit')
+  puts "Express Route Circuit doesn't exist." unless flag
+
   ########################################################################################################################
   ################                               Create Express Route Circuit                            #################
   ########################################################################################################################
@@ -72,6 +80,13 @@ begin
   circuits.each do |circuit|
     puts circuit.name
   end
+
+  ########################################################################################################################
+  ######################             Check Express Route Circuit Authorization Exists?              ######################
+  ########################################################################################################################
+
+  flag = network.express_route_circuit_authorizations.check_express_route_cir_auth_exists('TestRG-ER', 'testERCircuit', 'Test-Auth')
+  puts "Express Route Circuit Authorization doesn't exist." unless flag
 
   ########################################################################################################################
   ######################                Create Express Route Circuit Authorizations                   ####################
@@ -117,6 +132,7 @@ begin
   ########################################################################################################################
   resource_group = resources.resource_groups.get('TestRG-ER')
   resource_group.destroy
+  puts 'Integration Test for express route circuit ran successfully'
 rescue
   puts 'Integration Test for express route circuit is failing'
   resource_group.destroy unless resource_group.nil?

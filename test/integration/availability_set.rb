@@ -42,6 +42,14 @@ begin
     location: LOCATION
   )
 
+
+  ########################################################################################################################
+  ######################                            Check for Availability set                       ######################
+  ########################################################################################################################
+
+  flag = compute.availability_sets.check_availability_set_exists(resource_group_name, availability_set_name)
+  puts "Availability set doesn't exist." unless flag
+
   ########################################################################################################################
   ######################                             Create Availability Set                        ######################
   ########################################################################################################################
@@ -75,6 +83,7 @@ begin
 
   rg = rs.resource_groups.get(resource_group_name)
   rg.destroy
+  puts 'Integration Test for availability set ran successfully'
 rescue
   puts 'Integration Test for availability set is failing'
   resource_group.destroy unless resource_group.nil?

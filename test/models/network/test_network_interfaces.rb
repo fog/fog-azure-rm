@@ -11,7 +11,8 @@ class TestNetworkInterfaces < Minitest::Test
   def test_collection_methods
     methods = [
       :all,
-      :get
+      :get,
+      :check_network_interface_exists
     ]
     methods.each do |method|
       assert_respond_to @network_interfaces, method
@@ -37,6 +38,18 @@ class TestNetworkInterfaces < Minitest::Test
     response = ApiStub::Models::Network::NetworkInterface.create_network_interface_response(@network_client)
     @service.stub :get_network_interface, response do
       assert_instance_of Fog::Network::AzureRM::NetworkInterface, @network_interfaces.get('fog-test-rg', 'fog-test-network-interface')
+    end
+  end
+
+  def test_check_network_interface_exists_true_response
+    @service.stub :check_network_interface_exists, true do
+      assert @network_interfaces.check_network_interface_exists('fog-test-rg', 'fog-test-network-interface')
+    end
+  end
+
+  def test_check_network_interface_exists_false_response
+    @service.stub :check_network_interface_exists, false do
+      assert !@network_interfaces.check_network_interface_exists('fog-test-rg', 'fog-test-network-interface')
     end
   end
 end

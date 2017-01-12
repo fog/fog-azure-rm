@@ -15,11 +15,20 @@ resource = Fog::Resources::AzureRM.new(
   subscription_id: azure_credentials['subscription_id']
 )
 resource_group_name = "RG-#{current_time}"
-########################################################################################################################
-######################                    Create Resource Group                                   ######################
-########################################################################################################################
 
 begin
+
+  ########################################################################################################################
+  ######################                   Check Resource Group Exists?                             ######################
+  ########################################################################################################################
+
+  flag = resource.resource_groups.check_resource_group_exists(resource_group_name)
+  puts "Resource Group doesn't exist." unless flag
+
+  ########################################################################################################################
+  ######################                    Create Resource Group                                   ######################
+  ########################################################################################################################
+
   resource_group = resource.resource_groups.create(
     name: resource_group_name,
     location: 'eastus'
@@ -44,7 +53,6 @@ begin
   ########################################################################################################################
 
   puts "Deleted resource group: #{resource_group.destroy}"
-
 rescue
   puts 'Integration Test for resource group is failing'
   resource_group.destroy unless resource_group.nil?

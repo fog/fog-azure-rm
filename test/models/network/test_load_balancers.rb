@@ -12,7 +12,8 @@ class TestLoadBalancers < Minitest::Test
   def test_collection_methods
     methods = [
       :all,
-      :get
+      :get,
+      :check_load_balancer_exists
     ]
     methods.each do |method|
       assert_respond_to @load_balancers, method
@@ -37,6 +38,18 @@ class TestLoadBalancers < Minitest::Test
   def test_get_method_response
     @service.stub :get_load_balancer, @response do
       assert_instance_of Fog::Network::AzureRM::LoadBalancer, @load_balancers.get('fog-test-rg', 'mylb1')
+    end
+  end
+
+  def test_check_load_balancer_exists_true_response
+    @service.stub :check_load_balancer_exists, true do
+      assert @load_balancers.check_load_balancer_exists('fog-test-rg', 'mylb1')
+    end
+  end
+
+  def test_check_load_balancer_exists_false_response
+    @service.stub :check_load_balancer_exists, false do
+      assert !@load_balancers.check_load_balancer_exists('fog-test-rg', 'mylb1')
     end
   end
 end

@@ -21,6 +21,10 @@ module Fog
           subnet_fog = Fog::Network::AzureRM::Subnet.new(service: service)
           subnet_fog.merge_attributes(Fog::Network::AzureRM::Subnet.parse(subnet))
         end
+
+        def check_subnet_exists(resource_group, virtual_network_name, subnet_name)
+          service.check_subnet_exists(resource_group, virtual_network_name, subnet_name)
+        end
       end
     end
   end

@@ -12,7 +12,8 @@ class TestRecordSets < Minitest::Test
   def test_collection_methods
     methods = [
       :all,
-      :get
+      :get,
+      :check_record_set_exists
     ]
     methods.each do |method|
       assert_respond_to @record_sets, method
@@ -48,6 +49,18 @@ class TestRecordSets < Minitest::Test
     response = ApiStub::Models::DNS::RecordSet.create_record_set_obj(@dns_client1)
     @service.stub :get_record_set, response do
       assert_instance_of Fog::DNS::AzureRM::RecordSet, @record_sets.get('fog-test-rg', 'fog-test-record-set', 'fog-test-zone', 'A')
+    end
+  end
+
+  def test_check_record_set_exists_true_case
+    @service.stub :check_record_set_exists, true do
+      assert @record_sets.check_record_set_exists('fog-test-rg', 'fog-test-record-set', 'fog-test-zone', 'A')
+    end
+  end
+
+  def test_check_record_set_exists_false_case
+    @service.stub :check_record_set_exists, false do
+      assert !@record_sets.check_record_set_exists('fog-test-rg', 'fog-test-record-set', 'fog-test-zone', 'A')
     end
   end
 end

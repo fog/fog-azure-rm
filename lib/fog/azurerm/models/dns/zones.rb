@@ -20,8 +20,8 @@ module Fog
           zone_fog.merge_attributes(Fog::DNS::AzureRM::Zone.parse(zone))
         end
 
-        def check_for_zone(resource_group, name)
-          service.check_for_zone(resource_group, name)
+        def check_zone_exists(resource_group, name)
+          service.check_zone_exists(resource_group, name)
         end
       end
     end

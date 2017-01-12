@@ -12,7 +12,7 @@ class TestVirtualNetworks < Minitest::Test
     methods = [
       :all,
       :get,
-      :check_if_exists
+      :check_virtual_network_exists
     ]
     methods.each do |method|
       assert_respond_to @virtual_networks, method
@@ -23,12 +23,24 @@ class TestVirtualNetworks < Minitest::Test
     assert_respond_to @virtual_networks, :resource_group
   end
 
-  def test_all_method_response
+  def test_all_method_response_for_rg
     response = [ApiStub::Models::Network::VirtualNetwork.create_virtual_network_response(@network_client)]
     @service.stub :list_virtual_networks, response do
       assert_instance_of Fog::Network::AzureRM::VirtualNetworks, @virtual_networks.all
       assert @virtual_networks.all.size >= 1
       @virtual_networks.all.each do |nic|
+        assert_instance_of Fog::Network::AzureRM::VirtualNetwork, nic
+      end
+    end
+  end
+
+  def test_all_method_response
+    virtual_networks = Fog::Network::AzureRM::VirtualNetworks.new(service: @service)
+    response = [ApiStub::Models::Network::VirtualNetwork.create_virtual_network_response(@network_client)]
+    @service.stub :list_virtual_networks_in_subscription, response do
+      assert_instance_of Fog::Network::AzureRM::VirtualNetworks, virtual_networks.all
+      assert virtual_networks.all.size >= 1
+      virtual_networks.all.each do |nic|
         assert_instance_of Fog::Network::AzureRM::VirtualNetwork, nic
       end
     end
@@ -41,15 +53,15 @@ class TestVirtualNetworks < Minitest::Test
     end
   end
 
-  def test_check_if_exists_method_success
-    @service.stub :check_for_virtual_network, true do
-      assert @virtual_networks.check_if_exists('fog-test-rg', 'fog-test-virtual-network')
+  def test_check_virtual_network_exists_method_success
+    @service.stub :check_virtual_network_exists, true do
+      assert @virtual_networks.check_virtual_network_exists('fog-rg', 'fog-test-virtual-network')
     end
   end
 
-  def test_check_if_exists_method_failure
-    @service.stub :check_for_virtual_network, false do
-      assert !@virtual_networks.check_if_exists('fog-test-rg', 'fog-test-virtual-network')
+  def test_check_virtual_network_exists_method_failure
+    @service.stub :check_virtual_network_exists, false do
+      assert !@virtual_networks.check_virtual_network_exists('fog-rg', 'fog-test-virtual-network')
     end
   end
 end

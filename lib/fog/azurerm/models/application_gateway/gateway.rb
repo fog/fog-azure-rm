@@ -221,10 +221,7 @@ module Fog
 
         def validate_frontend_ip_configuration_params(frontend_ip_configuration)
           required_params = [
-            :name,
-            :public_ip_address_id,
-            :private_ip_allocation_method,
-            :private_ip_address
+            :name
           ]
           missing = required_params.select { |p| p unless frontend_ip_configuration.key?(p) }
           if missing.length == 1
@@ -355,8 +352,7 @@ module Fog
             :name,
             :port,
             :protocol,
-            :cookie_based_affinity,
-            :request_timeout
+            :cookie_based_affinity
           ]
           missing = required_params.select { |p| p unless backend_http_settings.key?(p) }
           if missing.length == 1

@@ -19,6 +19,10 @@ module Fog
           resource_group_fog = Fog::Resources::AzureRM::ResourceGroup.new(service: service)
           resource_group_fog.merge_attributes(Fog::Resources::AzureRM::ResourceGroup.parse(resource_group))
         end
+
+        def check_resource_group_exists(resource_group_name)
+          service.check_resource_group_exists(resource_group_name)
+        end
       end
     end
   end

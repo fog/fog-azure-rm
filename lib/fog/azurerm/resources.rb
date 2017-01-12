@@ -13,13 +13,16 @@ module Fog
       request :list_resource_groups
       request :delete_resource_group
       request :get_resource_group
+      request :check_resource_group_exists
       request :create_deployment
       request :delete_deployment
       request :list_deployments
       request :get_deployment
+      request :check_deployment_exists
       request :delete_resource_tag
       request :list_tagged_resources
       request :tag_resource
+      request :check_azure_resource_exists
 
       model_path 'fog/azurerm/models/resources'
       model :resource_group

@@ -33,6 +33,13 @@ begin
   )
 
   ########################################################################################################################
+  ######################                   Check Local Network Gateway Exists?                      ######################
+  ########################################################################################################################
+
+  flag = network.local_network_gateways.check_local_net_gateway_exists('TestRG-LNG', 'testlocalnetworkgateway')
+  puts "Local Network Gateway doesn't exist." unless flag
+
+  ########################################################################################################################
   ######################                           Create Local Network Gateway                   ######################
   ########################################################################################################################
 
@@ -77,6 +84,7 @@ begin
 
   resource_group = resource.resource_groups.get('TestRG-LNG')
   resource_group.destroy
+  puts 'Integration Test for local network gateway ran successfully'
 rescue
   puts 'Integration Test for local network gateway is failing'
   resource_group.destroy unless resource_group.nil?

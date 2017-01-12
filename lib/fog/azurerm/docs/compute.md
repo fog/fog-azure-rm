@@ -25,6 +25,12 @@ Next, create a connection to the Compute Service:
 )
 ```
 
+## Check Server Existence
+
+```ruby
+azure_compute_service.servers.check_vm_exists(<Resource Group name>, <VM Name>)
+```
+
 ## Create Server
 
 Create a new linux server
@@ -134,6 +140,12 @@ Get a server object from the get method(described above) and then destroy that s
       server.destroy
 ```
 
+## Check Availability Set Existence
+
+```ruby
+azure_compute_service.availability_sets.check_availability_set_exists(<Resource Group name>, <Availability Set name>)
+```
+
 ## Create Availability Set
 
 Create a new availability set
@@ -174,6 +186,12 @@ Get an availability set object from the get method and then destroy that availab
 
 ```ruby
       availability_set.destroy
+```
+
+## Check Virtual Machine Extension Existence
+
+```ruby
+azure_compute_service.virtual_machine_extensions.check_vm_extension_exists(<Resource Group name>, <Virtual Machine Name>, <Extension Name>)
 ```
 
 ## Create Virtual Machine Extension

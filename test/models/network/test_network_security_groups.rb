@@ -12,7 +12,8 @@ class TestNetworkSecurityGroups < Minitest::Test
   def test_collection_methods
     methods = [
       :all,
-      :get
+      :get,
+      :check_net_sec_group_exists
     ]
     methods.each do |method|
       assert_respond_to @network_security_groups, method
@@ -36,6 +37,18 @@ class TestNetworkSecurityGroups < Minitest::Test
   def test_get_method_response
     @service.stub :get_network_security_group, @response[0] do
       assert_instance_of Fog::Network::AzureRM::NetworkSecurityGroup, @network_security_groups.get('fog-test-rg', 'fog-test-nsg')
+    end
+  end
+
+  def test_check_net_sec_group_exists_true_response
+    @service.stub :check_net_sec_group_exists, true do
+      assert @network_security_groups.check_net_sec_group_exists('fog-test-rg', 'fog-test-nsg')
+    end
+  end
+
+  def test_check_net_sec_group_exists_false_response
+    @service.stub :check_net_sec_group_exists, false do
+      assert !@network_security_groups.check_net_sec_group_exists('fog-test-rg', 'fog-test-nsg')
     end
   end
 end

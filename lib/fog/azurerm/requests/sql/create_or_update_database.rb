@@ -6,46 +6,40 @@ module Fog
         def create_or_update_database(database_hash)
           msg = "Creating SQL Database: #{database_hash[:name]}."
           Fog::Logger.debug msg
-          resource_url = "#{resource_manager_endpoint_url}/subscriptions/#{@subscription_id}/resourceGroups/#{database_hash[:resource_group]}/providers/Microsoft.Sql/servers/#{database_hash[:server_name]}/databases/#{database_hash[:name]}?api-version=#{REST_CLIENT_API_VERSION[0]}"
-          request_parameters = format_database_parameters(database_hash[:location], database_hash[:create_mode], database_hash[:edition], database_hash[:source_database_id], database_hash[:collation], database_hash[:max_size_bytes], database_hash[:requested_service_objective_name], database_hash[:restore_point_in_time], database_hash[:source_database_deletion_date], database_hash[:elastic_pool_name], database_hash[:requested_service_objective_id])
           begin
-            token = Fog::Credentials::AzureRM.get_token(@tenant_id, @client_id, @client_secret)
-            response = RestClient.put(
-              resource_url,
-              request_parameters.to_json,
-              accept: :json,
-              content_type: :json,
-              authorization: token
-            )
-          rescue RestClient::Exception => e
+            sql_database = @sql_mgmt_client.databases.create_or_update(database_hash[:resource_group],
+                                                                       database_hash[:server_name],
+                                                                       database_hash[:name],
+                                                                       format_database_parameters(database_hash[:location],
+                                                                                                  database_hash[:create_mode],
+                                                                                                  database_hash[:edition],
+                                                                                                  database_hash[:source_database_id],
+                                                                                                  database_hash[:collation],
+                                                                                                  database_hash[:max_size_bytes],
+                                                                                                  database_hash[:requested_service_objective_name],
+                                                                                                  database_hash[:elastic_pool_name],
+                                                                                                  database_hash[:requested_service_objective_id]))
+          rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
           Fog::Logger.debug "SQL Database: #{database_hash[:name]} created successfully."
-          Fog::JSON.decode(response)
+          sql_database
         end
 
         private
 
-        def format_database_parameters(location, create_mode, edition, source_database_id, collation, max_size_bytes, requested_service_objective_name, restore_point_in_time, source_database_deletion_date, elastic_pool_name, requested_service_objective_id)
-          parameters = {}
-          properties = {}
-
-          properties['edition'] = edition unless edition.nil?
-          properties['collation'] = collation unless collation.nil?
-          properties['createMode'] = create_mode unless create_mode.nil?
-          properties['maxSizeBytes'] = max_size_bytes unless max_size_bytes.nil?
-          properties['elasticPoolName'] = elastic_pool_name unless elastic_pool_name.nil?
-          properties['sourceDatabaseId'] = source_database_id unless source_database_id.nil?
-          properties['restorePointInTime'] = restore_point_in_time unless restore_point_in_time.nil?
-          properties['sourceDatabaseDeletionDate'] = source_database_deletion_date unless source_database_deletion_date.nil?
-          properties['requestedServiceObjectiveId'] = requested_service_objective_id unless requested_service_objective_id.nil?
-          properties['requestedServiceObjectiveName'] = requested_service_objective_name unless requested_service_objective_name.nil?
-
-          parameters['tags'] = {}
-          parameters['location'] = location
-          parameters['properties'] = properties
-
-          parameters
+        def format_database_parameters(location, create_mode, edition, source_database_id, collation, max_size_bytes, requested_service_objective_name, elastic_pool_name, requested_service_objective_id)
+          database = Azure::ARM::SQL::Models::Database.new
+          database.location = location
+          database.edition = edition unless edition.nil?
+          database.collation = collation unless collation.nil?
+          database.create_mode = create_mode unless create_mode.nil?
+          database.max_size_bytes = max_size_bytes unless max_size_bytes.nil?
+          database.elastic_pool_name = elastic_pool_name unless elastic_pool_name.nil?
+          database.source_database_id = source_database_id unless source_database_id.nil?
+          database.requested_service_objective_id = requested_service_objective_id unless requested_service_objective_id.nil?
+          database.requested_service_objective_name = requested_service_objective_name unless requested_service_objective_name.nil?
+          database
         end
       end
 

@@ -21,6 +21,10 @@ module Fog
           vm_extension_fog = Fog::Compute::AzureRM::VirtualMachineExtension.new(service: service)
           vm_extension_fog.merge_attributes(Fog::Compute::AzureRM::VirtualMachineExtension.parse(vm_extension))
         end
+
+        def check_vm_extension_exists(resource_group_name, virtual_machine_name, vm_extension_name)
+          service.check_vm_extension_exists(resource_group_name, virtual_machine_name, vm_extension_name)
+        end
       end
     end
   end

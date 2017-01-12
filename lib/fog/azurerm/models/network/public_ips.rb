@@ -21,15 +21,8 @@ module Fog
           public_ip_fog.merge_attributes(Fog::Network::AzureRM::PublicIp.parse(public_ip))
         end
 
-        def check_if_exists(resource_group, name)
-          Fog::Logger.debug "Checkng if PublicIP #{name} exists."
-          if service.check_for_public_ip(resource_group, name)
-            Fog::Logger.debug "PublicIP #{name} exists."
-            true
-          else
-            Fog::Logger.debug "PublicIP #{name} doesn't exists."
-            false
-          end
+        def check_public_ip_exists(resource_group, name)
+          service.check_public_ip_exists(resource_group, name)
         end
       end
     end

@@ -152,6 +152,13 @@ begin
   )
 
   ########################################################################################################################
+  ######################            Check Virtual Network Gateway Connection Exists                 ######################
+  ########################################################################################################################
+
+  flag = network.virtual_network_gateway_connections.check_vnet_gateway_connection_exists('TestRG-GC', 'testnetworkgateway2-to-testnetworkgateway')
+  puts "Virtual Network Gateway Connection doesn't exist." unless flag
+
+  ########################################################################################################################
   ######################                           Create Virtual Network Gateway Connection                   ###########
   ########################################################################################################################
 

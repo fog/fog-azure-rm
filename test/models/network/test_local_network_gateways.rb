@@ -12,7 +12,8 @@ class TestLocalNetworkGateways < Minitest::Test
   def test_collection_methods
     methods = [
       :all,
-      :get
+      :get,
+      :check_local_net_gateway_exists
     ]
     methods.each do |method|
       assert_respond_to @local_network_gateways, method
@@ -37,6 +38,18 @@ class TestLocalNetworkGateways < Minitest::Test
   def test_get_method_response
     @service.stub :get_local_network_gateway, @response do
       assert_instance_of Fog::Network::AzureRM::LocalNetworkGateway, @local_network_gateways.get('fog-rg', 'mylocalgateway1')
+    end
+  end
+
+  def test_check_local_net_gateway_exists_true_response
+    @service.stub :check_local_net_gateway_exists, true do
+      assert @local_network_gateways.check_local_net_gateway_exists('fog-rg', 'mylocalgateway1')
+    end
+  end
+
+  def test_check_local_net_gateway_exists_false_response
+    @service.stub :check_local_net_gateway_exists, false do
+      assert !@local_network_gateways.check_local_net_gateway_exists('fog-rg', 'mylocalgateway1')
     end
   end
 end

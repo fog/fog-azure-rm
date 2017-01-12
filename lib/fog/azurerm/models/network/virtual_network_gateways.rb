@@ -20,6 +20,10 @@ module Fog
           virtual_network_gateway = Fog::Network::AzureRM::VirtualNetworkGateway.new(service: service)
           virtual_network_gateway.merge_attributes(Fog::Network::AzureRM::VirtualNetworkGateway.parse(network_gateway))
         end
+
+        def check_vnet_gateway_exists(resource_group_name, name)
+          service.check_vnet_gateway_exists(resource_group_name, name)
+        end
       end
     end
   end

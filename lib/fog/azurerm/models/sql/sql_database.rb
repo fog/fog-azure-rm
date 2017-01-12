@@ -21,31 +21,16 @@ module Fog
         attribute :max_size_bytes, aliases: %w(maxSizeBytes)
         attribute :requested_service_objective_id, aliases: %w(requestedServiceObjectiveId)
         attribute :requested_service_objective_name, aliases: %w(requestedServiceObjectiveName)
-        attribute :restore_point_in_time, aliases: %w(restorePointInTime)
         attribute :service_level_objective, aliases: %w(serviceLevelObjective)
         attribute :source_database_id, aliases: %w(sourceDatabaseId)
-        attribute :source_database_deletion_date, aliases: %w(sourceDatabaseDeletionDate)
 
         def self.parse(database)
-          data = {}
-          data['resource_group'] = get_resource_group_from_id(database['id'])
-          data['server_name'] = get_resource_from_resource_id(database['id'], 8)
+          database_hash = get_hash_from_object(database)
 
-          if database.is_a? Hash
-            database.each do |k, v|
-              if k == 'properties'
-                v.each do |j, l|
-                  data[j] = l
-                end
-              else
-                data[k] = v
-              end
-            end
-          else
-            raise 'Object is not a hash. Parsing SQL Database object failed.'
-          end
+          database_hash['resource_group'] = get_resource_group_from_id(database.id)
+          database_hash['server_name'] = get_resource_from_resource_id(database.id, 8)
 
-          data
+          database_hash
         end
 
         def save
@@ -72,8 +57,6 @@ module Fog
             collation: collation,
             max_size_bytes: max_size_bytes,
             requested_service_objective_name: requested_service_objective_name,
-            restore_point_in_time: restore_point_in_time,
-            source_database_deletion_date: source_database_deletion_date,
             elastic_pool_name: elastic_pool_name,
             requested_service_objective_id: requested_service_objective_id
           }

@@ -60,6 +60,10 @@ module Fog
           return nil if error.message == 'NotFound'
           raise error
         end
+
+        def check_container_exists(name)
+          service.check_container_exists(name)
+        end
       end
     end
   end

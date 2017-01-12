@@ -39,6 +39,13 @@ begin
   )
 
   ########################################################################################################################
+  ######################                      Check Record Set Exists?                              ######################
+  ########################################################################################################################
+
+  flag = dns.record_sets.check_record_set_exists('TestRG-RS', 'TestRS1', 'test-zone.com', 'CNAME')
+  puts "Record set doesn't exist." unless flag
+
+  ########################################################################################################################
   ######################                      Create CNAME Type Record Set in a Zone                 ######################
   ########################################################################################################################
 
@@ -112,6 +119,7 @@ begin
 
   rg = resource.resource_groups.get('TestRG-RS')
   rg.destroy
+  puts 'Integration Test for record set ran successfully'
 rescue
   puts 'Integration Test for record set is failing'
   resource_group.destroy unless resource_group.nil?

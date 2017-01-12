@@ -4,31 +4,20 @@ require File.expand_path '../../test_helper', __dir__
 class TestDeleteSqlServer < Minitest::Test
   def setup
     @service = Fog::Sql::AzureRM.new(credentials)
-    @token_provider = Fog::Credentials::AzureRM.instance_variable_get(:@token_provider)
+    @sql_manager_client = @service.instance_variable_get(:@sql_mgmt_client)
+    @servers = @sql_manager_client.servers
   end
 
   def test_delete_sql_server_success
-    @token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
-      RestClient.stub :delete, true do
-        assert @service.delete_sql_server('fog-test-rg', 'fog-test-server-name')
-      end
+    @servers.stub :delete, true do
+      assert @service.delete_sql_server('fog-test-rg', 'fog-test-server-name')
     end
   end
 
   def test_delete_sql_server_failure
-    @token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
-      assert_raises ArgumentError do
-        @service.delete_sql_server('fog-test-zone')
-      end
-    end
-  end
-
-  def test_delete_sql_server_exception
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
-    @token_provider.stub :get_authentication_header, response do
-      assert_raises Exception do
-        assert @service.delete_sql_server('fog-test-rg', 'fog-test-server-name')
-      end
+    @servers.stub :delete, response do
+      assert_raises(RuntimeError) { @service.delete_sql_server('fog-test-rg', 'fog-test-server-name') }
     end
   end
 end

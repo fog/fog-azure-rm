@@ -4,25 +4,22 @@ require File.expand_path '../../test_helper', __dir__
 class TestCreateOrUpdateDatabase < Minitest::Test
   def setup
     @service = Fog::Sql::AzureRM.new(credentials)
-    @databases = @service.sql_databases
-    @token_provider = Fog::Credentials::AzureRM.instance_variable_get(:@token_provider)
+    @sql_manager_client = @service.instance_variable_get(:@sql_mgmt_client)
+    @databases = @sql_manager_client.databases
+    @database_hash = ApiStub::Requests::Sql::SqlDatabase.database_hash
   end
 
   def test_create_or_update_database_success
-    database_response = ApiStub::Requests::Sql::SqlDatabase.create_database_response
-    data_hash = ApiStub::Requests::Sql::SqlDatabase.database_hash
-    @token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
-      RestClient.stub :put, database_response do
-        assert_equal @service.create_or_update_database(data_hash), JSON.parse(database_response)
-      end
+    database_response = ApiStub::Requests::Sql::SqlDatabase.create_database_response(@sql_manager_client)
+    @databases.stub :create_or_update, database_response do
+      assert_equal @service.create_or_update_database(@database_hash), database_response
     end
   end
 
   def test_create_or_update_database_failure
-    @token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
-      assert_raises ArgumentError do
-        @service.create_or_update_database('test-resource-group', 'test-server-name')
-      end
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
+    @databases.stub :create_or_update, response do
+      assert_raises(RuntimeError) { @service.create_or_update_database(@database_hash) }
     end
   end
 end

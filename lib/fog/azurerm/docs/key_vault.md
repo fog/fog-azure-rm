@@ -22,6 +22,12 @@ Next, create a connection to the Key Vault Service:
 )
 ```
 
+## Check Vault Existence
+
+```ruby
+ azure_key_vault_service.vaults.check_vault_exists(<Resource Group name>, <Vault Name>)
+```
+
 ## Create Vault
 
 Create a new Vault.

@@ -33,12 +33,11 @@ begin
   )
 
   ########################################################################################################################
-  ######################                   Check Virtual Network name Availability                  ######################
+  ######################                          Check Virtual Network Exists                      ######################
   ########################################################################################################################
 
-  virtual_network = network.virtual_networks.check_if_exists('testVnet', 'TestRG-VN')
-  puts 'Virtual network exists' if virtual_network
-  puts 'Virtual network does not exists' unless virtual_network
+  flag = network.virtual_networks.check_virtual_network_exists('TestRG-VN', 'testVnet')
+  puts "Virtual Network doesn't exist." unless flag
 
   ########################################################################################################################
   ######################            Create Virtual Network with complete parameters list            ######################
@@ -56,6 +55,16 @@ begin
     address_prefixes:  %w(10.1.0.0/16 10.2.0.0/16)
   )
   puts "Created virtual network: #{virtual_network.name}"
+
+  ########################################################################################################################
+  ######################          List Virtual Network in a subscription                 #################################
+  ########################################################################################################################
+
+  virtual_networks = network.virtual_networks
+  puts 'List virtual_networks in subscription:'
+  virtual_networks.each do |a_virtual_network|
+    puts a_virtual_network.name
+  end
 
   ########################################################################################################################
   ######################                      List Virtual Network                       #################################

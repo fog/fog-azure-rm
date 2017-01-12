@@ -10,28 +10,15 @@ module Fog
         attribute :location
         attribute :version
         attribute :state
-        attribute :administrator_login, aliases: %w(administratorLogin)
-        attribute :administrator_login_password, aliases: %w(administratorLoginPassword)
+        attribute :administrator_login
+        attribute :administrator_login_password
         attribute :fully_qualified_domain_name, aliases: %w(fullyQualifiedDomainName)
 
         def self.parse(server)
-          data = {}
-          data['resource_group'] = get_resource_group_from_id(server['id'])
-          if server.is_a? Hash
-            server.each do |k, v|
-              if k == 'properties'
-                v.each do |j, l|
-                  data[j] = l
-                end
-              else
-                data[k] = v
-              end
-            end
-          else
-            raise 'Object is not a hash. Parsing SQL Server object failed.'
-          end
+          sql_server_hash = get_hash_from_object(server)
+          sql_server_hash['resource_group'] = get_resource_group_from_id(server.id)
 
-          data
+          sql_server_hash
         end
 
         def save

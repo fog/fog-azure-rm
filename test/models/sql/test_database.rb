@@ -5,6 +5,7 @@ class TestDatabase < Minitest::Test
   def setup
     @service = Fog::Sql::AzureRM.new(credentials)
     @database = database(@service)
+    @database_client = @service.instance_variable_get(:@sql_mgmt_client)
   end
 
   def test_model_methods
@@ -37,10 +38,8 @@ class TestDatabase < Minitest::Test
       :max_size_bytes,
       :requested_service_objective_id,
       :requested_service_objective_name,
-      :restore_point_in_time,
       :service_level_objective,
-      :source_database_id,
-      :source_database_deletion_date
+      :source_database_id
     ]
     attributes.each do |attribute|
       assert_respond_to @database, attribute
@@ -48,7 +47,7 @@ class TestDatabase < Minitest::Test
   end
 
   def test_save_method_response
-    create_response = ApiStub::Models::Sql::SqlDatabase.create_database
+    create_response = ApiStub::Models::Sql::SqlDatabase.create_database(@database_client)
     @service.stub :create_or_update_database, create_response do
       assert_instance_of Fog::Sql::AzureRM::SqlDatabase, @database.save
     end

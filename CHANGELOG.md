@@ -1,3 +1,12 @@
+## 0.1.3
+
+**Changed:**
+- Azure SQL Service - Updated Azure SQL Support to use azure_mgmt_sql gem.
+ 
+ 
+ 
+ 
+
 ## 0.1.2
 
 **Added:**

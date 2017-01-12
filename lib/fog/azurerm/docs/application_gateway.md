@@ -23,6 +23,12 @@ Next, create a connection to the Application Gateway Service:
 )
 ```
 
+## Check Application Gateway Existence
+
+```ruby
+azure_application_gateway_service.gateways.check_application_gateway_exists(<Resource Group name>, <Gateway Name>)
+```
+
 ## Create Application Gateway
 
 Create a new Application Gateway.
@@ -105,6 +111,33 @@ Create a new Application Gateway.
 
     )
 ```
+
+There can be two ways of giving `frontend_ip_configurations` while creating application gateway
+
+1. When giving public ip, then we need to provide `public_ip_address_id` as follows
+
+`frontend_ip_configurations:
+    [
+        {
+            name: 'frontendIpConfig',
+            private_ip_allocation_method: 'Dynamic',
+            public_ip_address_id: '/subscriptions/<Subscription_id>/resourcegroups/<Resource Group name>/providers/Microsoft.Network/publicIPAddresses/<Public IP Address Name>',
+            private_ip_address: '10.0.1.5'
+        }
+]`
+
+2. When giving subnet id, then we need to provide `subnet_id` as follows
+
+`frontend_ip_configurations:
+    [
+        {
+            name: 'frontendIpConfig',
+            private_ip_allocation_method: 'Dynamic',
+            subnet_id: '<Subnet ID',
+            private_ip_address: '10.0.1.5'
+        }
+]`
+
 
 ## List Application Gateways
 

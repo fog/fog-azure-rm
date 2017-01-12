@@ -4,12 +4,14 @@ module Fog
       # SSL Certificate model class for Application Gateway Service
       class SslCertificate < Fog::Model
         identity :name
+        attribute :id
         attribute :data
         attribute :password
         attribute :public_cert_data
 
         def self.parse(ssl_certificate)
           hash = {}
+          hash['id'] = ssl_certificate.id
           hash['name'] = ssl_certificate.name
           hash['data'] = ssl_certificate.data
           hash['password'] = ssl_certificate.password

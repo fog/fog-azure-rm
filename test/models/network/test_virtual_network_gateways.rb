@@ -11,7 +11,8 @@ class TestVirtualNetworkGateways < Minitest::Test
   def test_collection_methods
     methods = [
       :all,
-      :get
+      :get,
+      :check_vnet_gateway_exists
     ]
     methods.each do |method|
       assert_respond_to @network_gateways, method
@@ -37,6 +38,18 @@ class TestVirtualNetworkGateways < Minitest::Test
     response = ApiStub::Models::Network::VirtualNetworkGateway.create_virtual_network_gateway_response(@network_client)
     @service.stub :get_virtual_network_gateway, response do
       assert_instance_of Fog::Network::AzureRM::VirtualNetworkGateway, @network_gateways.get('fog-rg', 'myvirtualgateway1')
+    end
+  end
+
+  def test_check_vnet_gateway_exists_true_response
+    @service.stub :check_vnet_gateway_exists, true do
+      assert @network_gateways.check_vnet_gateway_exists('fog-rg', 'myvirtualgateway1')
+    end
+  end
+
+  def test_check_vnet_gateway_exists_false_response
+    @service.stub :check_vnet_gateway_exists, false do
+      assert !@network_gateways.check_vnet_gateway_exists('fog-rg', 'myvirtualgateway1')
     end
   end
 end

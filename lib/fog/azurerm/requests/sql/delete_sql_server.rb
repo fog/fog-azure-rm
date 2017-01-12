@@ -6,16 +6,10 @@ module Fog
         def delete_sql_server(resource_group, name)
           msg = "Deleting SQL Server: #{name}."
           Fog::Logger.debug msg
-          resource_url = "#{resource_manager_endpoint_url}/subscriptions/#{@subscription_id}/resourceGroups/#{resource_group}/providers/Microsoft.Sql/servers/#{name}?api-version=#{REST_CLIENT_API_VERSION[0]}"
+
           begin
-            token = Fog::Credentials::AzureRM.get_token(@tenant_id, @client_id, @client_secret)
-            RestClient.delete(
-              resource_url,
-              accept: :json,
-              content_type: :json,
-              authorization: token
-            )
-          rescue RestClient::Exception => e
+            @sql_mgmt_client.servers.delete(resource_group, name)
+          rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
           Fog::Logger.debug "SQL Server: #{name} deleted successfully."

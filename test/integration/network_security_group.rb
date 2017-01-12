@@ -33,6 +33,13 @@ begin
   )
 
   ########################################################################################################################
+  ######################                  Check Network Security Group Exists?                      ######################
+  ########################################################################################################################
+
+  flag = network.network_security_groups.check_net_sec_group_exists('TestRG-NSG', 'testGroup')
+  puts "Network Security Group doesn't exist." unless flag
+
+  ########################################################################################################################
   ######################                          Create Network Security Group                     ######################
   ########################################################################################################################
 
@@ -119,6 +126,7 @@ begin
   puts "Deleted network security group: #{nsg.destroy}"
   rg = rs.resource_groups.get('TestRG-NSG')
   rg.destroy
+  puts 'Integration Test for network security group ran successfully'
 rescue
   puts 'Integration Test for network security group is failing'
   resource_group.destroy unless resource_group.nil?

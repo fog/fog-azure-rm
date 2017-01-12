@@ -55,6 +55,13 @@ begin
   )
 
   ########################################################################################################################
+  ######################                      Check Load Balancer Exists?                           ######################
+  ########################################################################################################################
+
+  flag = network.load_balancers.check_load_balancer_exists('TestRG-LB', 'lb')
+  puts "Load Balancer doesn't exist." unless flag
+
+  ########################################################################################################################
   ######################                             Create Load Balancer                           ######################
   ########################################################################################################################
 
@@ -112,6 +119,16 @@ begin
   end
 
   ########################################################################################################################
+  ######################                List External Load Balancers in Subscription                ######################
+  ########################################################################################################################
+
+  load_balancers = network.load_balancers
+  puts 'List external load balancers in subscription:'
+  load_balancers.each do |a_load_balancer|
+    puts a_load_balancer.name
+  end
+
+  ########################################################################################################################
   ######################                        Get and Destroy Load Balancer                       ######################
   ########################################################################################################################
 
@@ -131,6 +148,7 @@ begin
 
   resource_group = rs.resource_groups.get('TestRG-LB')
   resource_group.destroy
+  puts 'Integration Test for external load balancer ran successfully'
 rescue
   puts 'Integration Test for external load balancer is failing'
   resource_group.destroy unless resource_group.nil?

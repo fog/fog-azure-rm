@@ -71,6 +71,13 @@ begin
     public_ip_allocation_method: 'Dynamic'
   )
 
+  ########################################################################################################################
+  ######################                            Check for Application Gateway                   ######################
+  ########################################################################################################################
+
+  flag = application_gateway.gateways.check_application_gateway_exists(resource_group_name, app_gateway_name)
+  puts "Application Gateway doesn't exist." unless flag
+
   #######################################################################################################################
   #####################                          Create Application Gateway                        ######################
   #######################################################################################################################
@@ -239,6 +246,7 @@ begin
 
   resource_group = resource.resource_groups.get(resource_group_name)
   resource_group.destroy
+  puts 'Integration Test for application gateway ran successfully'
 rescue
   puts 'Integration Test for application gateway is failing'
   resource_group.destroy unless resource_group.nil?

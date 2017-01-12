@@ -12,7 +12,8 @@ class TestNetworkSecurityRules < Minitest::Test
   def test_collection_methods
     methods = [
       :all,
-      :get
+      :get,
+      :check_net_sec_rule_exists
     ]
     methods.each do |method|
       assert_respond_to @network_security_rules, method
@@ -37,6 +38,18 @@ class TestNetworkSecurityRules < Minitest::Test
   def test_get_method_response
     @service.stub :get_network_security_rule, @response[0] do
       assert_instance_of Fog::Network::AzureRM::NetworkSecurityRule, @network_security_rules.get('fog-test-rg', 'fog-test-nsg', 'fog-test-nsr')
+    end
+  end
+
+  def test_check_net_sec_rule_exists_true_response
+    @service.stub :check_net_sec_rule_exists, true do
+      assert @network_security_rules.check_net_sec_rule_exists('fog-test-rg', 'fog-test-nsg', 'fog-test-nsr')
+    end
+  end
+
+  def test_check_net_sec_rule_exists_false_response
+    @service.stub :check_net_sec_rule_exists, false do
+      assert !@network_security_rules.check_net_sec_rule_exists('fog-test-rg', 'fog-test-nsg', 'fog-test-nsr')
     end
   end
 end

@@ -24,6 +24,10 @@ module Fog
           record_set_fog = Fog::DNS::AzureRM::RecordSet.new(service: service)
           record_set_fog.merge_attributes(Fog::DNS::AzureRM::RecordSet.parse(record_set))
         end
+
+        def check_record_set_exists(resource_group, name, zone_name, record_type)
+          service.check_record_set_exists(resource_group, name, zone_name, record_type)
+        end
       end
     end
   end

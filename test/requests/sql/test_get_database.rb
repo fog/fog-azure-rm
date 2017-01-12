@@ -4,32 +4,21 @@ require File.expand_path '../../test_helper', __dir__
 class TestGetDatabase < Minitest::Test
   def setup
     @service = Fog::Sql::AzureRM.new(credentials)
-    @token_provider = Fog::Credentials::AzureRM.instance_variable_get(:@token_provider)
+    @sql_manager_client = @service.instance_variable_get(:@sql_mgmt_client)
+    @databases = @sql_manager_client.databases
   end
 
   def test_get_database_success
-    create_response = ApiStub::Requests::Sql::SqlDatabase.create_database_response
-    @token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
-      RestClient.stub :get, create_response do
-        assert_equal @service.get_database('fog-test-rg', 'fog-test-server-name', 'fog-test-database-name'), JSON.parse(create_response)
-      end
+    create_response = ApiStub::Requests::Sql::SqlDatabase.create_database_response(@sql_manager_client)
+    @databases.stub :get, create_response do
+      assert_equal @service.get_database('fog-test-rg', 'fog-test-server-name', 'fog-test-database-name'), create_response
     end
   end
 
   def test_get_database_failure
-    @token_provider.stub :get_authentication_header, 'Bearer <some-token>' do
-      assert_raises ArgumentError do
-        @service.get_database('fog-test-rg')
-      end
-    end
-  end
-
-  def test_get_database_exception
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
-    @token_provider.stub :get_authentication_header, response do
-      assert_raises Exception do
-        @service.get_database('fog-test-rg', 'fog-test-server-name', 'fog-test-database-name')
-      end
+    @databases.stub :get, response do
+      assert_raises(RuntimeError) { @service.get_database('fog-test-rg', 'fog-test-server-name', 'fog-test-database-name') }
     end
   end
 end

@@ -12,7 +12,8 @@ class TestGateways < Minitest::Test
   def test_collection_methods
     methods = [
       :all,
-      :get
+      :get,
+      :check_application_gateway_exists
     ]
     methods.each do |method|
       assert_respond_to @gateways, method
@@ -37,6 +38,18 @@ class TestGateways < Minitest::Test
   def test_get_method_response
     @service.stub :get_application_gateway, @response do
       assert_instance_of Fog::ApplicationGateway::AzureRM::Gateway, @gateways.get('fog-test-rg', 'gateway')
+    end
+  end
+
+  def test_check_application_gateway_exists_true_case
+    @service.stub :check_ag_exists, true do
+      assert @gateways.check_application_gateway_exists('fog-test-rg', 'gateway')
+    end
+  end
+
+  def test_check_application_gateway_exists_false_case
+    @service.stub :check_ag_exists, false do
+      assert !@gateways.check_application_gateway_exists('fog-test-rg', 'gateway')
     end
   end
 end

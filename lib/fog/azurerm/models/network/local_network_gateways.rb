@@ -17,6 +17,10 @@ module Fog
           local_network_gateway_fog = Fog::Network::AzureRM::LocalNetworkGateway.new(service: service)
           local_network_gateway_fog.merge_attributes(Fog::Network::AzureRM::LocalNetworkGateway.parse(local_network_gateway))
         end
+
+        def check_local_net_gateway_exists(resource_group_name, name)
+          service.check_local_net_gateway_exists(resource_group_name, name)
+        end
       end
     end
   end

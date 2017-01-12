@@ -5,6 +5,7 @@ class TestFirewallRule < Minitest::Test
   def setup
     @service = Fog::Sql::AzureRM.new(credentials)
     @firewall_rule = sql_server_firewall_rule(@service)
+    @firewall_client = @service.instance_variable_get(:@sql_mgmt_client)
   end
 
   def test_model_methods
@@ -34,7 +35,7 @@ class TestFirewallRule < Minitest::Test
   end
 
   def test_save_method_response
-    create_response = ApiStub::Models::Sql::SqlFirewallRule.create_firewall_rule
+    create_response = ApiStub::Models::Sql::SqlFirewallRule.create_firewall_rule(@firewall_client)
     @service.stub :create_or_update_firewall_rule, create_response do
       assert_instance_of Fog::Sql::AzureRM::FirewallRule, @firewall_rule.save
     end

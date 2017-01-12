@@ -11,7 +11,8 @@ class TestSubnets < Minitest::Test
   def test_collection_methods
     methods = [
       :all,
-      :get
+      :get,
+      :check_subnet_exists
     ]
     methods.each do |method|
       assert_respond_to @subnets, method
@@ -38,6 +39,18 @@ class TestSubnets < Minitest::Test
     response = ApiStub::Models::Network::Subnet.create_subnet_response(@network_client)
     @service.stub :get_subnet, response do
       assert_instance_of Fog::Network::AzureRM::Subnet, @subnets.get('fog-test-rg', 'fog-test-vnet', 'fog-test-subnet')
+    end
+  end
+
+  def test_check_subnet_exists_true_response
+    @service.stub :check_subnet_exists, true do
+      assert @subnets.check_subnet_exists('fog-test-rg', 'fog-test-vnet', 'fog-test-subnet')
+    end
+  end
+
+  def test_check_subnet_exists_false_response
+    @service.stub :check_subnet_exists, false do
+      assert !@subnets.check_subnet_exists('fog-test-rg', 'fog-test-vnet', 'fog-test-subnet')
     end
   end
 end

@@ -59,6 +59,12 @@ Check Storage Account Name Availability.This operation checks that account name 
 azure_storage_service.storage_accounts.check_name_availability('<Storage Account name>')
 ```
 
+## Check Storage Account Existence
+
+```ruby
+azure_storage_service.storage_accounts.check_storage_account_exists(<Resource Group name>, <StorageAccountName>)
+```
+
 ## Create Storage Account
 
 Create a new storage account. Replication attribute for Standard and Premium account types are as follows 
@@ -159,6 +165,12 @@ By default the disk will be deleted from the container 'vhds'. You can specify o
 
 ```ruby
 azure_storage_service.delete_disk('<Data Disk Name>', options = {})
+```
+
+## Check Storage Container Existence
+
+```ruby
+azure_storage_service.directories.check_container_exists(<container name>)
 ```
 
 ## Create a storage container

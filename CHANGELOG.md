@@ -1,10 +1,11 @@
-## 0.1.3
+## 0.2.0
+
+**Added:**
+- Added support to check for resource existence
 
 **Changed:**
 - Azure SQL Service - Updated Azure SQL Support to use azure_mgmt_sql gem.
- 
- 
- 
+- Azure Network Service - Added list all request in Load Balancer and Virtual Network
  
 
 ## 0.1.2

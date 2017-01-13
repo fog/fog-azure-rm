@@ -37,9 +37,8 @@ begin
   ######################                    Check Storage Account name Availability                 ######################
   ########################################################################################################################
 
-  storage_account_avail = storage.storage_accounts.check_name_availability('test-storage')
-  puts 'Storage account available' if storage_account_avail
-  puts 'Storage account unavailale' unless storage_account_avail
+  storage_account_avail = storage.storage_accounts.check_name_availability('teststorage123')
+  puts storage_account_avail ? 'Storage Account name available' : 'Storage Account name unavailable'
 
   ########################################################################################################################
   ######################                         Check Subnet Exists?                               ######################

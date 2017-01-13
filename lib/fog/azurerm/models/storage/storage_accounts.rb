@@ -27,11 +27,8 @@ module Fog
           storage_account_fog.merge_attributes(Fog::Storage::AzureRM::StorageAccount.parse(storage_account))
         end
 
-        def check_name_availability(name)
-          params = Azure::ARM::Storage::Models::StorageAccountCheckNameAvailabilityParameters.new
-          params.name = name
-          params.type = 'Microsoft.Storage/storageAccounts'
-          service.check_storage_account_name_availability(params)
+        def check_name_availability(name, type = 'Microsoft.Storage/storageAccounts')
+          service.check_storage_account_name_availability(name, type)
         end
 
         def check_storage_account_exists(resource_group_name, storage_account_name)

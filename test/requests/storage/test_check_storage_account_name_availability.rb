@@ -10,35 +10,26 @@ class TestCheckStorageAccountNameAvailability < Minitest::Test
   end
 
   def test_check_storage_account_name_availability_success
-    params = Azure::ARM::Storage::Models::StorageAccountCheckNameAvailabilityParameters.new
-    params.name = 'teststorageaccount'
-    params.type = 'Microsoft.Storage/storageAccounts'
     true_case_response = ApiStub::Requests::Storage::StorageAccount.true_case_for_check_name_availability(@storage_mgmt_client)
     @storage_accounts.stub :check_name_availability, true_case_response do
-      assert_equal @azure_credentials.check_storage_account_name_availability(params), true
+      assert_equal @azure_credentials.check_storage_account_name_availability('teststorageaccount', 'Microsoft.Storage/storageAccounts'), true
     end
   end
 
   def test_check_storage_account_name_availability_failure
-    params = Azure::ARM::Storage::Models::StorageAccountCheckNameAvailabilityParameters.new
-    params.name = 'teststorageaccount'
-    params.type = 'Microsoft.Storage/storageAccounts'
     false_case_response = ApiStub::Requests::Storage::StorageAccount.false_case_for_check_name_availability(@storage_mgmt_client)
     @storage_accounts.stub :check_name_availability, false_case_response do
-      assert_equal @azure_credentials.check_storage_account_name_availability(params), false
+      assert_equal @azure_credentials.check_storage_account_name_availability('testname', 'Microsoft.Storage/storageAccounts'), false
       assert_raises ArgumentError do
-        @azure_credentials.check_storage_account_name_availability(params, 'wrong arg')
+        @azure_credentials.check_storage_account_name_availability
       end
     end
   end
 
   def test_check_storage_account_name_availability_exception
-    params = Azure::ARM::Storage::Models::StorageAccountCheckNameAvailabilityParameters.new
-    params.name = 'teststorageaccount'
-    params.type = 'Microsoft.Storage/storageAccounts'
     raise_exception = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceGroupNotFound' }) }
     @storage_accounts.stub :check_name_availability, raise_exception do
-      assert_raises(RuntimeError) { @azure_credentials.check_storage_account_name_availability(params) }
+      assert_raises(RuntimeError) { @azure_credentials.check_storage_account_name_availability('teststorageaccount', 'Microsoft.Storage/storageAccounts') }
     end
   end
 end

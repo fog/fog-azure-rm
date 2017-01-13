@@ -54,9 +54,10 @@ azure_storage_service = Fog::Storage.new(
 ## Check Name Availability 
 
 Check Storage Account Name Availability.This operation checks that account name is valid and is not already in use.
+_Storage Account Type_ is an optional parameter
 
 ```ruby
-azure_storage_service.storage_accounts.check_name_availability('<Storage Account name>')
+azure_storage_service.storage_accounts.check_name_availability(<Storage Account name>, <Storage Account Type>)
 ```
 
 ## Check Storage Account Existence

@@ -105,7 +105,8 @@ begin
     sku: '14.04.2-LTS',
     version: 'latest',
     platform: 'linux',
-    custom_data: 'echo customData'
+    custom_data: 'echo customData',
+    os_disk_caching: 'None'
   )
   puts "Created virtual machine: #{virtual_machine.name}"
 

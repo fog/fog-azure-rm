@@ -1,3 +1,8 @@
+## 0.2.1
+
+**Changed:**
+- Compute Service - Added new parameter to create virtual machine request
+
 ## 0.2.0
 
 **Added:**

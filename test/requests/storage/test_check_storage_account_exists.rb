@@ -11,13 +11,15 @@ class TestCheckStorageAccountExists < Minitest::Test
 
   def test_check_storage_account_exists_success
     response_body = ApiStub::Requests::Storage::StorageAccount.storage_account_request(@storage_mgmt_client)
+    response_body.provisioning_state = 'Succeeded'
     @storage_accounts.stub :get_properties, response_body do
-      assert @service.check_storage_account_exists('fog_test_rg', 'fogtestsasecond')
+      assert_equal @service.check_storage_account_exists('fog_test_rg', 'fog-test-storage-account'), true
     end
   end
 
   def test_check_storage_account_exists_failure
-    response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceNotFound' }) }
+    response = ApiStub::Requests::Storage::StorageAccount.storage_account_request(@storage_mgmt_client)
+    response.provisioning_state = 'Failed'
     @storage_accounts.stub :get_properties, response do
       assert !@service.check_storage_account_exists('fog_test_rg', 'fogtestsasecond')
     end

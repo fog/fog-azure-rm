@@ -12,6 +12,7 @@ module Fog
         attribute :storage_account_name
         attribute :os_disk_name
         attribute :os_disk_vhd_uri
+        attribute :os_disk_caching
         attribute :publisher
         attribute :offer
         attribute :sku
@@ -40,6 +41,7 @@ module Fog
           unless vm.storage_profile.nil?
             hash['os_disk_name'] = vm.storage_profile.os_disk.name
             hash['os_disk_vhd_uri'] = vm.storage_profile.os_disk.vhd.uri
+            hash['os_disk_caching'] = vm.storage_profile.os_disk.caching
             unless vm.storage_profile.image_reference.nil?
               hash['publisher'] = vm.storage_profile.image_reference.publisher
               hash['offer'] = vm.storage_profile.image_reference.offer
@@ -148,7 +150,8 @@ module Fog
             provision_vm_agent: provision_vm_agent,
             enable_automatic_updates: enable_automatic_updates,
             custom_data: custom_data,
-            vhd_path: vhd_path
+            vhd_path: vhd_path,
+            os_disk_caching: os_disk_caching
           }
         end
       end

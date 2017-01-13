@@ -37,6 +37,7 @@ class TestServer < Minitest::Test
       :storage_account_name,
       :os_disk_name,
       :os_disk_vhd_uri,
+      :os_disk_caching,
       :publisher,
       :offer,
       :sku,

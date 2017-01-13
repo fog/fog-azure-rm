@@ -28,6 +28,7 @@ module Fog
                                                                    vm_hash[:sku],
                                                                    vm_hash[:version],
                                                                    vm_hash[:vhd_path],
+                                                                   vm_hash[:os_disk_caching],
                                                                    vm_hash[:platform],
                                                                    vm_hash[:resource_group])
 
@@ -75,7 +76,7 @@ module Fog
           image_reference
         end
 
-        def define_storage_profile(vm_name, storage_account_name, publisher, offer, sku, version, vhd_path, platform, resource_group)
+        def define_storage_profile(vm_name, storage_account_name, publisher, offer, sku, version, vhd_path, os_disk_caching, platform, resource_group)
           storage_profile = Azure::ARM::Compute::Models::StorageProfile.new
           os_disk = Azure::ARM::Compute::Models::OSDisk.new
           vhd = Azure::ARM::Compute::Models::VirtualHardDisk.new
@@ -118,6 +119,14 @@ module Fog
           os_disk.name = "#{vm_name}_os_disk"
           os_disk.vhd = vhd
           os_disk.create_option = Azure::ARM::Compute::Models::DiskCreateOptionTypes::FromImage
+          os_disk.caching = case os_disk_caching
+                              when 'None'
+                                Azure::ARM::Compute::Models::CachingTypes::None
+                              when 'ReadOnly'
+                                Azure::ARM::Compute::Models::CachingTypes::ReadOnly
+                              when 'ReadWrite'
+                                Azure::ARM::Compute::Models::CachingTypes::ReadWrite
+                            end unless os_disk_caching.nil?
           storage_profile.os_disk = os_disk
           storage_profile
         end

@@ -5,7 +5,7 @@ module ApiStub
       class StorageAccount
         def self.storage_account_request(storage_mgmt_client)
           storage_account_hash = {
-            'id' => '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/fog_test_rg/providers/Microsoft.Storage/storageAccounts/fogtestsasecond',
+            'id' => '/subscriptions/########-####-####-####-############/resourceGroups/fog_test_rg/providers/Microsoft.Storage/storageAccounts/fog-test-storage-account',
             'name' => 'fog-test-storage-account',
             'location' => 'west us',
             'sku' =>

@@ -4,10 +4,10 @@ module Fog
     class AzureRM
       # Real class for Network Request
       class Real
-        def create_or_update_network_interface(resource_group_name, name, location, subnet_id, public_ip_address_id, ip_config_name, private_ip_allocation_method, private_ip_address)
+        def create_or_update_network_interface(resource_group_name, name, location, subnet_id, public_ip_address_id, ip_config_name, private_ip_allocation_method, private_ip_address, load_balancer_backend_address_pools_ids, load_balancer_inbound_nat_rules_ids)
           msg = "Creating/Updating Network Interface Card: #{name}"
           Fog::Logger.debug msg
-          network_interface = get_network_interface_object(name, location, subnet_id, public_ip_address_id, ip_config_name, private_ip_allocation_method, private_ip_address)
+          network_interface = get_network_interface_object(name, location, subnet_id, public_ip_address_id, ip_config_name, private_ip_allocation_method, private_ip_address, load_balancer_backend_address_pools_ids, load_balancer_inbound_nat_rules_ids)
           begin
             network_interface_obj = @network_client.network_interfaces.create_or_update(resource_group_name, name, network_interface)
           rescue MsRestAzure::AzureOperationError => e
@@ -19,7 +19,7 @@ module Fog
 
         private
 
-        def get_network_interface_object(name, location, subnet_id, public_ip_address_id, ip_config_name, private_ip_allocation_method, private_ip_address)
+        def get_network_interface_object(name, location, subnet_id, public_ip_address_id, ip_config_name, private_ip_allocation_method, private_ip_address, load_balancer_backend_address_pools_ids, load_balancer_inbound_nat_rules_ids)
           subnet = Azure::ARM::Network::Models::Subnet.new
           subnet.id = subnet_id
 
@@ -34,6 +34,25 @@ module Fog
           ip_configs.private_ipaddress = private_ip_address
           ip_configs.public_ipaddress = public_ipaddress unless public_ip_address_id.nil?
           ip_configs.subnet = subnet
+
+
+          if load_balancer_backend_address_pools_ids
+            ip_configs.load_balancer_backend_address_pools = []
+          load_balancer_backend_address_pools_ids.each do |load_balancer_backend_address_pools_id|
+              backend_pool = Azure::ARM::Network::Models::BackendAddressPool.new
+              backend_pool.id = load_balancer_backend_address_pools_id
+              ip_configs.load_balancer_backend_address_pools.push(backend_pool)
+          end
+          end
+
+          if load_balancer_inbound_nat_rules_ids
+            ip_configs.load_balancer_inbound_nat_rules = []
+            load_balancer_inbound_nat_rules_ids.each do |load_balancer_inbound_nat_rules_id|
+              inbound_nat_rule = Azure::ARM::Network::Models::InboundNatRule.new
+              inbound_nat_rule.id = load_balancer_inbound_nat_rules_id
+              ip_configs.load_balancer_inbound_nat_rules.push(inbound_nat_rule)
+            end
+          end
 
           network_interface = Azure::ARM::Network::Models::NetworkInterface.new
           network_interface.name = name

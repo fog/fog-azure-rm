@@ -13,11 +13,12 @@ module Fog
 
         def self.parse(frontend_ip_configuration)
           hash = {}
+          hash['id'] = frontend_ip_configuration.id
           hash['name'] = frontend_ip_configuration.name
           hash['subnet_id'] = frontend_ip_configuration.subnet.id unless frontend_ip_configuration.subnet.nil?
           hash['private_ipaddress'] = frontend_ip_configuration.private_ipaddress if frontend_ip_configuration.respond_to?(:private_ipaddress)
           hash['private_ipallocation_method'] = frontend_ip_configuration.private_ipallocation_method unless frontend_ip_configuration.private_ipallocation_method.nil?
-          hash['public_ip_address_id'] = frontend_ip_configuration.public_ipaddress unless frontend_ip_configuration.public_ipaddress.nil?
+          hash['public_ipaddress_id'] = frontend_ip_configuration.public_ipaddress.id unless frontend_ip_configuration.public_ipaddress.nil?
           hash
         end
       end

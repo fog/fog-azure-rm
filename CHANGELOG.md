@@ -1,3 +1,8 @@
+## 0.2.2
+
+**Changed:**
+- Network Service - Updated NIC for load balancer attributes
+
 ## 0.2.1
 
 **Changed:**

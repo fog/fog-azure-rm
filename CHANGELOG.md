@@ -1,3 +1,8 @@
+## Upcoming
+
+**Changed**
+- Compute Service - Made 'password' attribute as optional to create linux virtual machine
+
 ## 0.2.2
 
 **Changed:**

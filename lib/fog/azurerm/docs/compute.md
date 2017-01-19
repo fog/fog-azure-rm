@@ -43,7 +43,7 @@ Create a new linux server
         vm_size: 'Basic_A0',
         storage_account_name: '<Storage Account Name>',
         username: '<Username for VM>',
-        password: '<Password for VM>',
+        password: '<Password for VM>',             # Optional, if 'platform' partameter is 'Linux'.
         disable_password_authentication: false,
         network_interface_card_id: '/subscriptions/{Subscription-Id}/resourceGroups/{Resource-Group-Name}/providers/Microsoft.Network/networkInterfaces/{Network-Interface-Id}',
         publisher: 'Canonical',                    # Not required if custom image is being used 

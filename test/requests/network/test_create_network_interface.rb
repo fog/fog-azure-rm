@@ -11,14 +11,14 @@ class TestCreateNetworkInterface < Minitest::Test
   def test_create_network_interface_success
     mocked_response = ApiStub::Requests::Network::NetworkInterface.create_network_interface_response(@network_client)
     @network_interfaces.stub :create_or_update, mocked_response do
-      assert_equal @service.create_or_update_network_interface('fog-test-rg', 'fog-test-network-interface', 'West US', 'fog-test-subnet-id', 'fog-test-ip-address-id', 'fog-test-ip-configuration', 'Dynamic', '10.0.0.8'), mocked_response
+      assert_equal @service.create_or_update_network_interface('fog-test-rg', 'fog-test-network-interface', 'West US', 'fog-test-subnet-id', 'fog-test-ip-address-id', 'fog-test-ip-configuration', 'Dynamic', '10.0.0.8', ['id-1', 'id-2'], ['id-1', 'id-2']), mocked_response
     end
   end
 
   def test_create_network_interface_without_public_ip_success
     mocked_response = ApiStub::Requests::Network::NetworkInterface.create_network_interface_response(@network_client)
     @network_interfaces.stub :create_or_update, mocked_response do
-      assert_equal @service.create_or_update_network_interface('fog-test-rg', 'fog-test-network-interface', 'West US', 'fog-test-subnet-id', nil, 'fog-test-ip-configuration', 'Dynamic', '10.0.0.8'), mocked_response
+      assert_equal @service.create_or_update_network_interface('fog-test-rg', 'fog-test-network-interface', 'West US', 'fog-test-subnet-id', nil, 'fog-test-ip-configuration', 'Dynamic', '10.0.0.8', ['id-1', 'id-2'], ['id-1', 'id-2']), mocked_response
     end
   end
 
@@ -26,7 +26,7 @@ class TestCreateNetworkInterface < Minitest::Test
     response = ApiStub::Requests::Network::NetworkInterface.create_network_interface_response(@network_client)
     @network_interfaces.stub :create_or_update, response do
       assert_raises ArgumentError do
-        @service.create_or_update_network_interface('fog-test-rg', 'fog-test-network-interface', 'West US', 'fog-test-subnet-id', 'fog-test-ip-address-id', 'fog-test-ip-configuration')
+        @service.create_or_update_network_interface('fog-test-rg', 'fog-test-network-interface', 'West US', 'fog-test-subnet-id', 'fog-test-ip-address-id', 'fog-test-ip-configuration', ['id-1', 'id-2'], ['id-1', 'id-2'])
       end
     end
   end
@@ -35,7 +35,7 @@ class TestCreateNetworkInterface < Minitest::Test
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @network_interfaces.stub :create_or_update, response do
       assert_raises RuntimeError do
-        @service.create_or_update_network_interface('fog-test-rg', 'fog-test-network-interface', 'West US', 'fog-test-subnet-id', 'fog-test-ip-address-id', 'fog-test-ip-configuration', 'Dynamic', '10.0.0.8')
+        @service.create_or_update_network_interface('fog-test-rg', 'fog-test-network-interface', 'West US', 'fog-test-subnet-id', 'fog-test-ip-address-id', 'fog-test-ip-configuration', 'Dynamic', '10.0.0.8', ['id-1', 'id-2'], ['id-1', 'id-2'])
       end
     end
   end

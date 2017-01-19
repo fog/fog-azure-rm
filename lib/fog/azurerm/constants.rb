@@ -7,8 +7,8 @@ STANDARD_STORAGE = 'Standard'.freeze
 PREMIUM_STORAGE = 'Premium'.freeze
 ALLOWED_STANDARD_REPLICATION = %w(LRS ZRS GRS RAGRS).freeze
 API_VERSION = '2016-06-01'.freeze
-FAULT_DOMAIN_COUNT = 3.freeze
-UPDATE_DOMAIN_COUNT = 5.freeze
+FAULT_DOMAIN_COUNT = 3
+UPDATE_DOMAIN_COUNT = 5
 WINDOWS = 'windows'.freeze
 VPN = 'Vpn'.freeze
 MICROSOFT_PEERING = 'MicrosoftPeering'.freeze
@@ -28,13 +28,16 @@ ENVIRONMENT_AZURE_CHINA_CLOUD = 'AzureChinaCloud'.freeze
 ENVIRONMENT_AZURE_US_GOVERNMENT = 'AzureUSGovernment'.freeze
 ENVIRONMENT_AZURE_GERMAN_CLOUD = 'AzureGermanCloud'.freeze
 
+PLATFORM_LINUX = 'linux'.freeze
+
 # State of the copy operation
-COPY_STATUS = {
+COPY_STATUS =
+  {
     # The copy completed successfully.
     SUCCESS: 'success',
     # The copy is in progress
     PENDING: 'pending'
-}.freeze
+  }.freeze
 
 # https://msdn.microsoft.com/en-us/library/azure/dd179451.aspx
 # The maximum size for a block blob created via Put Blob is 64 MB. But for better performance, this size should be 32 MB.

@@ -50,7 +50,7 @@ begin
     name: 'mypubip',
     resource_group: 'TestRG-GCE',
     location: LOCATION,
-    public_ip_allocation_method: 'Dynamic'
+    public_ip_allocation_method: Fog::Network::AzureRM::IPAllocationMethod::Dynamic
   )
 
   network.virtual_network_gateways.create(

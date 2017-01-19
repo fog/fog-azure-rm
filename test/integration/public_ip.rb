@@ -47,7 +47,7 @@ begin
     name: 'mypubip',
     resource_group: 'TestRG-PB',
     location: LOCATION,
-    public_ip_allocation_method: 'Static'
+    public_ip_allocation_method: Fog::Network::AzureRM::IPAllocationMethod::Dynamic
   )
   puts "Created public ip: #{public_ip.name}"
 
@@ -57,7 +57,11 @@ begin
 
   pubip = network.public_ips.get('TestRG-PB', 'mypubip')
   puts "Get public ip: #{pubip.name}"
-  pubip.update(public_ip_allocation_method: 'Dynamic', idle_timeout_in_minutes: '10', domain_name_label: 'newdomainlabel')
+  pubip.update(
+      public_ip_allocation_method: Fog::Network::AzureRM::IPAllocationMethod::Dynamic,
+      idle_timeout_in_minutes: '10',
+      domain_name_label: 'newdomainlabel'
+  )
   puts 'Updated public ip'
 
   ########################################################################################################################

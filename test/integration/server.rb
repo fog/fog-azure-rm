@@ -76,7 +76,7 @@ begin
     location: LOCATION,
     subnet_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-VM/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/mysubnet",
     ip_configuration_name: 'testIpConfiguration',
-    private_ip_allocation_method: 'Dynamic'
+    private_ip_allocation_method: Fog::Network::AzureRM::IPAllocationMethod::Dynamic
   )
 
   ########################################################################################################################
@@ -106,7 +106,7 @@ begin
     version: 'latest',
     platform: 'linux',
     custom_data: 'echo customData',
-    os_disk_caching: 'None'
+    os_disk_caching: Fog::Compute::AzureRM::CachingTypes::None
   )
   puts "Created virtual machine: #{virtual_machine.name}"
 

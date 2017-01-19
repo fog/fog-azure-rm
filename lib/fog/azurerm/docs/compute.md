@@ -53,7 +53,7 @@ Create a new linux server
         platform: 'Linux',
         vhd_path: '<Path of VHD>',                 # Optional, if you want to create the VM from a custom image.
         custom_data: 'echo customData',            # Optional, if you want to add custom data in this VM.
-        os_disk_caching: 'None/ReadOnly/ReadWrite' # Optional, can be one of None, ReadOnly, ReadWrite
+        os_disk_caching: Fog::Compute::AzureRM::CachingTypes::None # Optional, can be one of None, ReadOnly, ReadWrite
     )
 ```
 

@@ -64,14 +64,14 @@ begin
     name: 'mypubip',
     resource_group: 'TestRG-GC',
     location: LOCATION,
-    public_ip_allocation_method: 'Dynamic'
+    public_ip_allocation_method: Fog::Network::AzureRM::IPAllocationMethod::Dynamic
   )
 
   network.public_ips.create(
     name: 'mypubip2',
     resource_group: 'TestRG-GC',
     location: LOCATION,
-    public_ip_allocation_method: 'Dynamic'
+    public_ip_allocation_method: Fog::Network::AzureRM::IPAllocationMethod::Dynamic
   )
 
   network.local_network_gateways.create(

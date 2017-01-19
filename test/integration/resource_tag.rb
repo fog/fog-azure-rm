@@ -36,7 +36,7 @@ begin
     name: 'mypubip',
     resource_group: 'TestRG-RT',
     location: LOCATION,
-    public_ip_allocation_method: 'Static'
+    public_ip_allocation_method: Fog::Network::AzureRM::IPAllocationMethod::Static
   ).id
 
   ########################################################################################################################

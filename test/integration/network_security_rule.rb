@@ -56,15 +56,15 @@ begin
   network_security_rule = network.network_security_rules.create(
     name: 'testRule',
     resource_group: 'TestRG-NSR',
-    protocol: 'tcp',
+    protocol: Fog::Network::AzureRM::SecurityRuleProtocol::Tcp,
     network_security_group_name: 'testGroup',
     source_port_range: '22',
     destination_port_range: '22',
     source_address_prefix: '0.0.0.0/0',
     destination_address_prefix: '0.0.0.0/0',
-    access: 'Allow',
+    access: Fog::Network::AzureRM::SecurityRuleAccess::Allow,
     priority: '100',
-    direction: 'Inbound'
+    direction: Fog::Network::AzureRM::SecurityRuleDirection::Inbound
   )
   puts "Created network security rule: #{network_security_rule.name}"
 

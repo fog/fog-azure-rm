@@ -53,10 +53,12 @@ module Fog
           hash['custom_data'] = vm.os_profile.custom_data
           hash['data_disks'] = []
 
-          vm.storage_profile.data_disks.each do |disk|
-            data_disk = Fog::Storage::AzureRM::DataDisk.new
-            hash['data_disks'] << data_disk.merge_attributes(Fog::Storage::AzureRM::DataDisk.parse(disk))
-          end unless vm.storage_profile.data_disks.nil?
+          unless vm.storage_profile.data_disks.nil?
+            vm.storage_profile.data_disks.each do |disk|
+              data_disk = Fog::Storage::AzureRM::DataDisk.new
+              hash['data_disks'] << data_disk.merge_attributes(Fog::Storage::AzureRM::DataDisk.parse(disk))
+            end
+          end
 
           hash['disable_password_authentication'] = false
           hash['disable_password_authentication'] = vm.os_profile.linux_configuration.disable_password_authentication unless vm.os_profile.linux_configuration.nil?
@@ -72,9 +74,15 @@ module Fog
 
         def save
           requires :name, :location, :resource_group, :vm_size, :storage_account_name,
-                   :username, :password, :network_interface_card_id
-          requires :disable_password_authentication if platform.casecmp('linux').zero?
+                   :username, :network_interface_card_id
           requires :publisher, :offer, :sku, :version if vhd_path.nil?
+
+          if platform_is_linux?(platform)
+            requires :disable_password_authentication
+          else
+            requires :password
+          end
+
           ssh_key_path = "/home/#{username}/.ssh/authorized_keys" unless ssh_key_data.nil?
           vm = service.create_virtual_machine(virtual_machine_params(ssh_key_path))
           merge_attributes(Server.parse(vm))
@@ -127,6 +135,10 @@ module Fog
         end
 
         private
+
+        def platform_is_linux?(platform)
+          platform.strip.casecmp(PLATFORM_LINUX).zero?
+        end
 
         def virtual_machine_params(ssh_key_path)
           {

@@ -52,7 +52,7 @@ Create a new Application Gateway.
             [
                 {
                     name: 'frontendIpConfig',
-                    private_ip_allocation_method: Fog::Network::AzureRM::IPAllocationMethod::Dynamic,
+                    private_ip_allocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Dynamic,
                     public_ip_address_id: '/subscriptions/<Subscription_id>/resourcegroups/<Resource Group name>/providers/Microsoft.Network/publicIPAddresses/<Public IP Address Name>',
                     private_ip_address: '10.0.1.5'
                 }
@@ -120,7 +120,7 @@ There can be two ways of giving `frontend_ip_configurations` while creating appl
     [
         {
             name: 'frontendIpConfig',
-            private_ip_allocation_method: Fog::Network::AzureRM::IPAllocationMethod::Dynamic,
+            private_ip_allocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Dynamic,
             public_ip_address_id: '/subscriptions/<Subscription_id>/resourcegroups/<Resource Group name>/providers/Microsoft.Network/publicIPAddresses/<Public IP Address Name>',
             private_ip_address: '10.0.1.5'
         }
@@ -132,7 +132,7 @@ There can be two ways of giving `frontend_ip_configurations` while creating appl
     [
         {
             name: 'frontendIpConfig',
-            private_ip_allocation_method: Fog::Network::AzureRM::IPAllocationMethod::Dynamic,
+            private_ip_allocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Dynamic,
             subnet_id: '<Subnet ID',
             private_ip_address: '10.0.1.5'
         }

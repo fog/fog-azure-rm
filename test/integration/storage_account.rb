@@ -70,7 +70,7 @@ begin
     name: grs_storage_account,
     location: LOCATION,
     resource_group: 'TestRG-SA',
-    sku_name: Fog::Storage::AzureRM::SkuTier::Standard,
+    sku_name: Fog::ARM::Storage::Models::SkuTier::Standard,
     replication: 'GRS',
     encryption: true
   )
@@ -86,7 +86,7 @@ begin
     name: premium_storage_acc,
     location: LOCATION,
     resource_group: 'TestRG-SA',
-    sku_name: Fog::Storage::AzureRM::SkuTier::Premium,
+    sku_name: Fog::ARM::Storage::Models::SkuTier::Premium,
     replication: 'LRS'
   )
   puts "Created storage account for premium lrs replication: #{storage_account.name}"

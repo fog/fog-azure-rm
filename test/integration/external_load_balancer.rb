@@ -51,7 +51,7 @@ begin
     name: 'mypubip',
     resource_group: 'TestRG-LB',
     location: LOCATION,
-    public_ip_allocation_method: Fog::Network::AzureRM::IPAllocationMethod::Dynamic
+    public_ip_allocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Dynamic
   )
 
   ########################################################################################################################
@@ -73,7 +73,7 @@ begin
     [
       {
         name: 'fic',
-        private_ipallocation_method: Fog::Network::AzureRM::IPAllocationMethod::Dynamic,
+        private_ipallocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Dynamic,
         public_ipaddress_id: pip.id
       }
     ],

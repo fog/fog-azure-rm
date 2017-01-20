@@ -68,7 +68,7 @@ begin
     name: public_ip_name,
     resource_group: resource_group_name,
     location: LOCATION,
-    public_ip_allocation_method: Fog::Network::AzureRM::IPAllocationMethod::Dynamic
+    public_ip_allocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Dynamic
   )
 
   ########################################################################################################################
@@ -98,7 +98,7 @@ begin
     frontend_ip_configurations: [
       {
         name: 'frontendIpConfig',
-        private_ip_allocation_method: Fog::Network::AzureRM::IPAllocationMethod::Dynamic,
+        private_ip_allocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Dynamic,
         public_ip_address_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourcegroups/#{resource_group_name}/providers/Microsoft.Network/publicIPAddresses/#{public_ip_name}",
         private_ip_address: '10.0.1.5'
       }

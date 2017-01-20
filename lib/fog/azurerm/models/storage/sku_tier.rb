@@ -1,9 +1,11 @@
 module Fog
-  module Storage
-    class AzureRM
-      module SkuTier
-        Standard = 'Standard'.freeze
-        Premium = 'Premium'.freeze
+  module ARM
+    module Compute
+      module Models
+        module SkuTier
+          Standard = 'Standard'.freeze
+          Premium = 'Premium'.freeze
+        end
       end
     end
   end

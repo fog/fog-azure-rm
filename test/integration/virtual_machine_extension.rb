@@ -75,7 +75,7 @@ begin
     location: LOCATION,
     subnet_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-VME/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/mysubnet",
     ip_configuration_name: 'testIpConfiguration',
-    private_ip_allocation_method: Fog::Network::AzureRM::IPAllocationMethod::Dynamic
+    private_ip_allocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Dynamic
   )
 
   compute.servers.create(

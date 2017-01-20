@@ -59,7 +59,7 @@ begin
       [
         {
           name: 'LB-Frontend',
-          private_ipallocation_method: Fog::Network::AzureRM::IPAllocationMethod::Static,
+          private_ipallocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Static,
           private_ipaddress: '10.1.2.5',
           subnet_id: subnet.id
         }

@@ -50,7 +50,7 @@ begin
     name: 'mypubip',
     resource_group: 'TestRG-VNG',
     location: LOCATION,
-    public_ip_allocation_method: Fog::Network::AzureRM::IPAllocationMethod::Dynamic
+    public_ip_allocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Dynamic
   )
 
   ########################################################################################################################

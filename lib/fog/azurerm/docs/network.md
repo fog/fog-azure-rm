@@ -253,7 +253,7 @@ Create a new network interface. Skip public_ip_address_id parameter to create ne
       subnet_id: '/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/virtualNetworks/<Virtual Network name>/subnets/<Subnet name>',
       public_ip_address_id: '/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/publicIPAddresses/<Public IP name>',
       ip_configuration_name: '<Ip Configuration Name>',
-      private_ip_allocation_method: Fog::Network::AzureRM::IPAllocationMethod::Dynamic
+      private_ip_allocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Dynamic
  )
 ```
 
@@ -333,7 +333,7 @@ Create a new public IP. The parameter, type can be Dynamic or Static.
      name: '<Public IP name>',
      resource_group: '<Resource Group name>',
      location: 'westus',
-     public_ip_allocation_method: Fog::Network::AzureRM::IPAllocationMethod::Static
+     public_ip_allocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Static
    )
 ```
 
@@ -404,14 +404,14 @@ Network security group requires a resource group to create.
        location: 'eastus',
        security_rules: [{
          name: '<Security Rule name>',
-         protocol: Fog::Network::AzureRM::SecurityRuleProtocol::Tcp,
+         protocol: Fog::ARM::Network::Models::SecurityRuleProtocol::Tcp,
          source_port_range: '22',
          destination_port_range: '22',
          source_address_prefix: '0.0.0.0/0',
          destination_address_prefix: '0.0.0.0/0',
-         access: Fog::Network::AzureRM::SecurityRuleAccess::Allow,
+         access: Fog::ARM::Network::Models::SecurityRuleAccess::Allow,
          priority: '100',
-         direction: Fog::Network::AzureRM::SecurityRuleDirection::Inbound
+         direction: Fog::ARM::Network::Models::SecurityRuleDirection::Inbound
        }]
      )
 ```
@@ -448,14 +448,14 @@ You can update security rules by passing the modified attributes in the form of 
             [
                 {
                     name: '<Security Rule name>',
-                    protocol: Fog::Network::AzureRM::SecurityRuleProtocol::Tcp,
+                    protocol: Fog::ARM::Network::Models::SecurityRuleProtocol::Tcp,
                     source_port_range: '*',
                     destination_port_range: '*',
                     source_address_prefix: '0.0.0.0/0',
                     destination_address_prefix: '0.0.0.0/0',
-                    access: Fog::Network::AzureRM::SecurityRuleAccess::Allow,
+                    access: Fog::ARM::Network::Models::SecurityRuleAccess::Allow,
                     priority: '100',
-                    direction: Fog::Network::AzureRM::SecurityRuleDirection::Inbound
+                    direction: Fog::ARM::Network::Models::SecurityRuleDirection::Inbound
                 }
             ]
       )
@@ -471,14 +471,14 @@ Add array of security rules in the form of hash.
             [
                 {
                     name: '<Security Rule name>',
-                    protocol: Fog::Network::AzureRM::SecurityRuleProtocol::Tcp,
+                    protocol: Fog::ARM::Network::Models::SecurityRuleProtocol::Tcp,
                     source_port_range: '3389',
                     destination_port_range: '3389',
                     source_address_prefix: '0.0.0.0/0',
                     destination_address_prefix: '0.0.0.0/0',
-                    access: Fog::Network::AzureRM::SecurityRuleAccess::Allow,
+                    access: Fog::ARM::Network::Models::SecurityRuleAccess::Allow,
                     priority: '102',
-                    direction: Fog::Network::AzureRM::SecurityRuleDirection::Inbound
+                    direction: Fog::ARM::Network::Models::SecurityRuleDirection::Inbound
                 }
             ]
       )
@@ -512,15 +512,15 @@ Network security rule requires a resource group and network security group to cr
      azure_network_service.network_security_rules.create(
        name: '<Security Rule name>',
        resource_group: '<Resource Group name>',
-       protocol: Fog::Network::AzureRM::SecurityRuleProtocol::Tcp,
+       protocol: Fog::ARM::Network::Models::SecurityRuleProtocol::Tcp,
        network_security_group_name: '<Network Security Group name>',
        source_port_range: '22',
        destination_port_range: '22',
        source_address_prefix: '0.0.0.0/0',
        destination_address_prefix: '0.0.0.0/0',
-       access: Fog::Network::AzureRM::SecurityRuleAccess::Allow,
+       access: Fog::ARM::Network::Models::SecurityRuleAccess::Allow,
        priority: '100',
-       direction: Fog::Network::AzureRM::SecurityRuleDirection::Inbound
+       direction: Fog::ARM::Network::Models::SecurityRuleDirection::Inbound
      )
 ```
 
@@ -575,7 +575,7 @@ Create a new load balancer.
                                 [
                                     {                                         
                                          name: 'fic',
-                                         private_ipallocation_method: Fog::Network::AzureRM::IPAllocationMethod::Dynamic,
+                                         private_ipallocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Dynamic,
                                          public_ipaddress_id: '/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/publicIPAddresses/<Public-IP-Name>'                                         
                                     }
                                 ],
@@ -622,7 +622,7 @@ Create a new load balancer.
         [
         {
             name: 'LB-Frontend',
-            private_ipallocation_method: Fog::Network::AzureRM::IPAllocationMethod::Static,
+            private_ipallocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Static,
             private_ipaddress: '10.1.2.5',
             subnet_id: subnet.id
         }
@@ -736,7 +736,7 @@ Create a new Virtual Network Gateway.
       ip_configurations: [
         {
           name: 'default',
-          private_ipallocation_method: Fog::Network::AzureRM::IPAllocationMethod::Dynamic,
+          private_ipallocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Dynamic,
           public_ipaddress_id: '/subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/Microsoft.Network/publicIPAddresses/{public_ip_name}',
           subnet_id: '/subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/Microsoft.Network/virtualNetworks/{virtual_network_name}/subnets/{subnet_name}',
           private_ipaddress: nil

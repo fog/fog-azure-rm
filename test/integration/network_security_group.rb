@@ -49,14 +49,14 @@ begin
     location: LOCATION,
     security_rules: [{
       name: 'testRule',
-      protocol: Fog::Network::AzureRM::SecurityRuleProtocol::Tcp,
+      protocol: Fog::ARM::Network::Models::SecurityRuleProtocol::Tcp,
       source_port_range: '22',
       destination_port_range: '22',
       source_address_prefix: '0.0.0.0/0',
       destination_address_prefix: '0.0.0.0/0',
-      access: Fog::Network::AzureRM::SecurityRuleAccess::Allow,
+      access: Fog::ARM::Network::Models::SecurityRuleAccess::Allow,
       priority: '100',
-      direction: Fog::Network::AzureRM::SecurityRuleDirection::Inbound
+      direction: Fog::ARM::Network::Models::SecurityRuleDirection::Inbound
     }]
   )
   puts "Created network security group: #{network_security_group.name}"
@@ -72,14 +72,14 @@ begin
       [
         {
           name: 'testRule',
-          protocol: Fog::Network::AzureRM::SecurityRuleProtocol::Tcp,
+          protocol: Fog::ARM::Network::Models::SecurityRuleProtocol::Tcp,
           source_port_range: '*',
           destination_port_range: '22',
           source_address_prefix: '0.0.0.0/0',
           destination_address_prefix: '0.0.0.0/0',
-          access: Fog::Network::AzureRM::SecurityRuleAccess::Allow,
+          access: Fog::ARM::Network::Models::SecurityRuleAccess::Allow,
           priority: '100',
-          direction: Fog::Network::AzureRM::SecurityRuleDirection::Inbound
+          direction: Fog::ARM::Network::Models::SecurityRuleDirection::Inbound
         }
       ]
   )
@@ -103,14 +103,14 @@ begin
     [
       {
         name: 'testRule2',
-        protocol: Fog::Network::AzureRM::SecurityRuleProtocol::Tcp,
+        protocol: Fog::ARM::Network::Models::SecurityRuleProtocol::Tcp,
         source_port_range: '22',
         destination_port_range: '22',
         source_address_prefix: '0.0.0.0/0',
         destination_address_prefix: '0.0.0.0/0',
-        access: Fog::Network::AzureRM::SecurityRuleAccess::Allow,
+        access: Fog::ARM::Network::Models::SecurityRuleAccess::Allow,
         priority: '102',
-        direction: Fog::Network::AzureRM::SecurityRuleDirection::Inbound
+        direction: Fog::ARM::Network::Models::SecurityRuleDirection::Inbound
       }
     ]
   )

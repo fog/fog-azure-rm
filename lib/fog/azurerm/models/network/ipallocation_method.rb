@@ -1,9 +1,11 @@
 module Fog
-  module Network
-    class AzureRM
-      module IPAllocationMethod
-        Static = 'Static'.freeze
-        Dynamic = 'Dynamic'.freeze
+  module ARM
+    module Compute
+      module Models
+        module IPAllocationMethod
+          Static = 'Static'.freeze
+          Dynamic = 'Dynamic'.freeze
+        end
       end
     end
   end

@@ -1,3 +1,8 @@
+## 0.2.5
+
+**Fixed:**
+- Fog Model enums proper namespacing
+
 ## 0.2.4
 
 **Changed:**

@@ -1,6 +1,6 @@
 module Fog
   module ARM
-    module Compute
+    module Storage
       module Models
         module Kind
           Storage = 'Storage'.freeze

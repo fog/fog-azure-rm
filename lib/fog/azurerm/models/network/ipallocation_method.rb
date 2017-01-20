@@ -1,6 +1,6 @@
 module Fog
   module ARM
-    module Compute
+    module Network
       module Models
         module IPAllocationMethod
           Static = 'Static'.freeze

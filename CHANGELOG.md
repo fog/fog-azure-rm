@@ -1,4 +1,7 @@
-## Upcoming
+## 0.2.3
+
+**Added:**
+- Added Fog models for Azure SDK Enums
 
 **Changed**
 - Compute Service - Made 'password' attribute as optional to create linux virtual machine

@@ -67,7 +67,7 @@ begin
     public_ip_allocation_method: 'Dynamic'
   )
 
-  network.network_security_groups.create(
+  nsg = network.network_security_groups.create(
     name: 'test_nsg',
     resource_group: 'TestRG-NI',
     location: LOCATION,
@@ -102,6 +102,7 @@ begin
     name: 'NetInt',
     resource_group: 'TestRG-NI',
     location: LOCATION,
+    network_security_group_id: nsg.id,
     subnet_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-NI/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/mysubnet",
     public_ip_address_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-NI/providers/Microsoft.Network/publicIPAddresses/mypubip",
     ip_configuration_name: 'testIpConfiguration',

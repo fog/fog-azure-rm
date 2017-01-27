@@ -62,14 +62,14 @@ module Fog
           requires :subnet_id
           requires :ip_configuration_name
           requires :private_ip_allocation_method
-          nic = service.create_or_update_network_interface(resource_group, name, location, subnet_id, public_ip_address_id, ip_configuration_name, private_ip_allocation_method, private_ip_address, load_balancer_backend_address_pools_ids, load_balancer_inbound_nat_rules_ids)
+          nic = service.create_or_update_network_interface(resource_group, name, location, subnet_id, public_ip_address_id, network_security_group_id, ip_configuration_name, private_ip_allocation_method, private_ip_address, load_balancer_backend_address_pools_ids, load_balancer_inbound_nat_rules_ids)
           merge_attributes(Fog::Network::AzureRM::NetworkInterface.parse(nic))
         end
 
         def update(updated_attributes = {})
           validate_update_attributes!(updated_attributes)
           merge_attributes(updated_attributes)
-          nic = service.create_or_update_network_interface(resource_group, name, location, subnet_id, public_ip_address_id, ip_configuration_name, private_ip_allocation_method, private_ip_address)
+          nic = service.create_or_update_network_interface(resource_group, name, location, subnet_id, public_ip_address_id, network_security_group_id, ip_configuration_name, private_ip_allocation_method, private_ip_address)
           merge_attributes(Fog::Network::AzureRM::NetworkInterface.parse(nic))
         end
 

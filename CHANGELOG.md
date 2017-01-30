@@ -1,3 +1,12 @@
+## 0.2.6
+
+**Fixed:**
+- Compute Service - storage_account_name attribute issue in server model
+- Network Service - Attaching NSG issue while creating NIC
+
+**Removed:**
+- Dependency on nokogiri
+
 ## 0.2.5
 
 **Fixed:**

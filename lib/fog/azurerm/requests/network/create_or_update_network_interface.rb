@@ -20,9 +20,6 @@ module Fog
         private
 
         def get_network_interface_object(name, location, subnet_id, public_ip_address_id, network_security_group_id, ip_config_name, private_ip_allocation_method, private_ip_address, load_balancer_backend_address_pools_ids, load_balancer_inbound_nat_rules_ids)
-          subnet = Azure::ARM::Network::Models::Subnet.new
-          subnet.id = subnet_id
-
           if public_ip_address_id
             public_ipaddress = Azure::ARM::Network::Models::PublicIPAddress.new
             public_ipaddress.id = public_ip_address_id
@@ -33,10 +30,12 @@ module Fog
           ip_configs.private_ipallocation_method = private_ip_allocation_method
           ip_configs.private_ipaddress = private_ip_address
           ip_configs.public_ipaddress = public_ipaddress unless public_ip_address_id.nil?
-          ip_configs.subnet = subnet
 
-          network_security_group = Azure::ARM::Network::Models::NetworkSecurityGroup.new
-          network_security_group.id = network_security_group_id
+          if subnet_id
+            subnet = Azure::ARM::Network::Models::Subnet.new
+            subnet.id = subnet_id
+            ip_configs.subnet = subnet
+          end
 
           if load_balancer_backend_address_pools_ids
             ip_configs.load_balancer_backend_address_pools = []
@@ -60,7 +59,12 @@ module Fog
           network_interface.name = name
           network_interface.location = location
           network_interface.ip_configurations = [ip_configs]
-          network_interface.network_security_group = network_security_group
+
+          if network_security_group_id
+            network_security_group = Azure::ARM::Network::Models::NetworkSecurityGroup.new
+            network_security_group.id = network_security_group_id
+            network_interface.network_security_group = network_security_group
+          end
 
           network_interface
         end

@@ -41,6 +41,7 @@ module Fog
           unless vm.storage_profile.nil?
             hash['os_disk_name'] = vm.storage_profile.os_disk.name
             hash['os_disk_vhd_uri'] = vm.storage_profile.os_disk.vhd.uri
+            hash['storage_account_name'] = hash['os_disk_vhd_uri'].split('/')[2].split('.')[0]
             hash['os_disk_caching'] = vm.storage_profile.os_disk.caching
             unless vm.storage_profile.image_reference.nil?
               hash['publisher'] = vm.storage_profile.image_reference.publisher

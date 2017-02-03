@@ -18,10 +18,8 @@ class TestCheckVirtualNetworkExists < Minitest::Test
     faraday_response = Faraday::Response.new(nil)
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, faraday_response, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceNotFound' }) }
 
-    faraday_response.stub :status, '404' do
-      @virtual_networks.stub :get, response do
-        assert !@service.check_virtual_network_exists('fog-test-rg', 'fog-test-virtual-network')
-      end
+    @virtual_networks.stub :get, response do
+      assert !@service.check_virtual_network_exists('fog-test-rg', 'fog-test-virtual-network')
     end
   end
 
@@ -29,10 +27,8 @@ class TestCheckVirtualNetworkExists < Minitest::Test
     faraday_response = Faraday::Response.new(nil)
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, faraday_response, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceGroupNotFound' }) }
 
-    faraday_response.stub :status, '400' do
-      @virtual_networks.stub :get, response do
-        assert_raises(RuntimeError) { @service.check_virtual_network_exists('fog-test-rg', 'fog-test-virtual-network') }
-      end
+    @virtual_networks.stub :get, response do
+      assert_raises(RuntimeError) { @service.check_virtual_network_exists('fog-test-rg', 'fog-test-virtual-network') }
     end
   end
 end

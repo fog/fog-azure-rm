@@ -11,7 +11,7 @@ module Fog
             Fog::Logger.debug "Virtual Network #{name} exists."
             true
           rescue MsRestAzure::AzureOperationError => e
-            if e.response.status == '404'
+            if e.error_code == 'ResourceNotFound'
               Fog::Logger.debug "Virtual Network #{name} doesn't exist."
               false
             else

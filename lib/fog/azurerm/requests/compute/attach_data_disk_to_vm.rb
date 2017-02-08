@@ -15,7 +15,11 @@ module Fog
           begin
             virtual_machine = @compute_mgmt_client.virtual_machines.create_or_update(resource_group, vm_name, vm)
           rescue MsRestAzure::AzureOperationError => e
+            if e.body.to_s =~ /InvalidParameter/ && e.body.to_s =~ /already exists/
+              Fog::Logger.debug 'The disk is already attached'
+            else
             raise_azure_exception(e, msg)
+            end
           end
           Fog::Logger.debug "Data Disk #{disk_name} attached to Virtual Machine #{vm_name} successfully."
           virtual_machine
@@ -66,9 +70,9 @@ module Fog
           data_disk.lun = lun
           data_disk.disk_size_gb = disk_size.to_s
           data_disk.vhd = Azure::ARM::Compute::Models::VirtualHardDisk.new
-          data_disk.vhd.uri = "https://#{storage_account_name}.blob.core.windows.net/vhds/#{disk_name}.vhd"
+          data_disk.vhd.uri = "https://#{storage_account_name}.blob.core.windows.net/vhds/#{storage_account_name}-#{disk_name}.vhd"
           data_disk.caching = Azure::ARM::Compute::Models::CachingTypes::ReadWrite
-          blob_name = "#{disk_name}.vhd"
+          blob_name = "#{storage_account_name}-#{disk_name}.vhd"
           disk_exist = check_blob_exist(storage_account_name, blob_name, access_key)
           data_disk.create_option = Azure::ARM::Compute::Models::DiskCreateOptionTypes::Empty
           data_disk.create_option = Azure::ARM::Compute::Models::DiskCreateOptionTypes::Attach if disk_exist

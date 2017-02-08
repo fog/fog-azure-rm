@@ -1,3 +1,11 @@
+## 0.2.7
+
+**Changed:**
+- Traffic Manager Service - Updated Traffic Manager Profile create method to receive and create Endpoints with it.
+
+**Fixed:**
+- Network Service - Fixed issue in check_virtual_network_exists request
+
 ## 0.2.6
 
 **Fixed:**

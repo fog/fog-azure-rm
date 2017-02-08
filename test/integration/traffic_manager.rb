@@ -51,7 +51,16 @@ begin
     ttl: '30',
     protocol: 'http',
     port: '80',
-    path: '/monitorpage.aspx'
+    path: '/monitorpage.aspx',
+    endpoints: [{
+      name: 'endpoint1',
+      type: 'externalEndpoints',
+      target: 'test-app.com',
+      endpoint_location: 'eastus',
+      endpoint_status: 'Enabled',
+      priority: 5,
+      weight: 10
+    }]
   )
   puts "Created traffic manager profile: #{traffic_manager_profile.name}"
 

@@ -146,7 +146,18 @@ module ApiStub
             ttl: 'ttl',
             protocol: 'protocol',
             port: 'port',
-            path: 'path'
+            path: 'path',
+            endpoints: [{
+              name: 'endpoint2',
+              traffic_manager_profile_name: 'test-tmp',
+              resource_group: 'TestRG-TM',
+              type: 'externalEndpoints',
+              target: 'test-app.com',
+              endpoint_location: 'eastus',
+              endpoint_status: 'Enabled',
+              priority: 5,
+              weight: 10
+            }]
           }
         end
       end

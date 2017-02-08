@@ -77,7 +77,8 @@ module Fog
             ttl: ttl,
             protocol: protocol,
             port: port,
-            path: path
+            path: path,
+            endpoints: endpoints
           }
         end
       end

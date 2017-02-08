@@ -6,7 +6,7 @@ module Fog
         def create_or_update_traffic_manager_profile(profile_hash)
           msg = "Creating Traffic Manager Profile: #{profile_hash[:name]}."
           Fog::Logger.debug msg
-          profile_parameters = get_profile_object(profile_hash[:traffic_routing_method], profile_hash[:relative_name], profile_hash[:ttl], profile_hash[:protocol], profile_hash[:port], profile_hash[:path])
+          profile_parameters = get_profile_object(profile_hash[:traffic_routing_method], profile_hash[:relative_name], profile_hash[:ttl], profile_hash[:protocol], profile_hash[:port], profile_hash[:path], profile_hash[:endpoints])
           begin
             traffic_manager_profile = @traffic_mgmt_client.profiles.create_or_update(profile_hash[:resource_group], profile_hash[:name], profile_parameters)
           rescue MsRestAzure::AzureOperationError => e
@@ -18,14 +18,27 @@ module Fog
 
         private
 
-        def get_profile_object(traffic_routing_method, relative_name, ttl, protocol, port, path)
+        def get_profile_object(traffic_routing_method, relative_name, ttl, protocol, port, path, endpoints)
           traffic_manager_profile = Azure::ARM::TrafficManager::Models::Profile.new
           traffic_manager_profile.traffic_routing_method = traffic_routing_method
           traffic_manager_profile.location = GLOBAL
 
           traffic_manager_profile.dns_config = get_traffic_manager_dns_config(relative_name, ttl)
           traffic_manager_profile.monitor_config = get_traffic_manager_monitor_config(protocol, port, path)
+          traffic_manager_profile.endpoints = get_endpoints(endpoints) unless endpoints.nil?
           traffic_manager_profile
+        end
+
+        def get_endpoints(endpoints)
+          endpoint_objects = []
+
+          endpoints.each do |endpoint|
+            endpoint_object = get_endpoint_object(endpoint[:target_resource_id], endpoint[:target], endpoint[:weight], endpoint[:priority], endpoint[:endpoint_location], endpoint[:min_child_endpoints])
+            endpoint_object.name = endpoint[:name]
+            endpoint_object.type = "#{ENDPOINT_PREFIX}/#{endpoint[:type]}"
+            endpoint_objects.push(endpoint_object)
+          end
+          endpoint_objects
         end
 
         def get_traffic_manager_dns_config(relative_name, ttl)

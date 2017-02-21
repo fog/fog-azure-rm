@@ -8,7 +8,7 @@ module Fog
           Fog::Logger.debug msg
           begin
             @compute_mgmt_client.virtual_machines.delete(resource_group, name)
-          rescue  MsRestAzure::AzureOperationError => e
+          rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
           Fog::Logger.debug "Virtual Machine #{name} Deleted Successfully."

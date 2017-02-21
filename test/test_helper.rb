@@ -801,3 +801,17 @@ def recovery_vault(service)
     service: service
   )
 end
+
+def managed_disk(service)
+  Fog::Compute::AzureRM::ManagedDisk.new(
+    name: 'managed-disk',
+    location: 'East US',
+    resource_group_name: 'fog-test-rg',
+    account_type: 'Premium_LRS',
+    disk_size_gb: 1023,
+    creation_data: {
+        create_option: 'Empty'
+    },
+    service: service
+  )
+end

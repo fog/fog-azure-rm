@@ -1,3 +1,6 @@
+## Upcoming
+- Compute Service - Added support for Managed Disk
+
 ## 0.2.7
 
 **Changed:**

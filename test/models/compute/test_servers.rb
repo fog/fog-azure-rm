@@ -12,6 +12,7 @@ class TestServers < Minitest::Test
   def test_collection_methods
     methods = [
       :all,
+      :create_async,
       :get,
       :check_vm_exists
     ]

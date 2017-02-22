@@ -16,11 +16,21 @@ class TestCreateVirtualMachine < Minitest::Test
     @virtual_machines.stub :create_or_update, @response do
       assert_equal @service.create_virtual_machine(@linux_virtual_machine_hash), @response
     end
+
+    # Async
+    @virtual_machines.stub :create_or_update_async, @response do
+      assert_equal @service.create_virtual_machine(@linux_virtual_machine_hash, true), @response
+    end
   end
 
   def test_create_windows_virtual_machine_success
     @virtual_machines.stub :create_or_update, @response do
       assert_equal @service.create_virtual_machine(@windows_virtual_machine_hash), @response
+    end
+
+    # Async
+    @virtual_machines.stub :create_or_update_async, @response do
+      assert_equal @service.create_virtual_machine(@windows_virtual_machine_hash, true), @response
     end
   end
 
@@ -29,12 +39,22 @@ class TestCreateVirtualMachine < Minitest::Test
     @virtual_machines.stub :create_or_update, @response do
       assert_equal @service.create_virtual_machine(linux_virtual_machine_with_custom_image_hash), @response
     end
+
+    # Async
+    @virtual_machines.stub :create_or_update_async, @response do
+      assert_equal @service.create_virtual_machine(linux_virtual_machine_with_custom_image_hash, true), @response
+    end
   end
 
   def test_create_windows_virtual_machine_from_custom_image_success
     windows_virtual_machine_with_custom_image_hash = ApiStub::Requests::Compute::VirtualMachine.windows_virtual_machine_with_custom_image_params
     @virtual_machines.stub :create_or_update, @response do
       assert_equal @service.create_virtual_machine(windows_virtual_machine_with_custom_image_hash), @response
+    end
+
+    # Async
+    @virtual_machines.stub :create_or_update_async, @response do
+      assert_equal @service.create_virtual_machine(windows_virtual_machine_with_custom_image_hash, true), @response
     end
   end
 
@@ -57,6 +77,13 @@ class TestCreateVirtualMachine < Minitest::Test
     @virtual_machines.stub :create_or_update, response do
       assert_raises RuntimeError do
         @service.create_virtual_machine(@linux_virtual_machine_hash)
+      end
+    end
+
+    # Async
+    @virtual_machines.stub :create_or_update_async, response do
+      assert_raises RuntimeError do
+        @service.create_virtual_machine(@linux_virtual_machine_hash, true)
       end
     end
   end

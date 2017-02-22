@@ -73,7 +73,7 @@ module Fog
           hash
         end
 
-        def save
+        def save(async = false)
           requires :name, :location, :resource_group, :vm_size, :storage_account_name,
                    :username, :network_interface_card_id
           requires :publisher, :offer, :sku, :version if vhd_path.nil?
@@ -85,8 +85,13 @@ module Fog
           end
 
           ssh_key_path = "/home/#{username}/.ssh/authorized_keys" unless ssh_key_data.nil?
-          vm = service.create_virtual_machine(virtual_machine_params(ssh_key_path))
-          merge_attributes(Server.parse(vm))
+
+          if async
+            service.create_virtual_machine(virtual_machine_params(ssh_key_path), true)
+          else
+            vm = service.create_virtual_machine(virtual_machine_params(ssh_key_path))
+            merge_attributes(Server.parse(vm))
+          end
         end
 
         def destroy

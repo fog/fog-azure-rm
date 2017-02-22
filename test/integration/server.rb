@@ -111,6 +111,44 @@ begin
   puts "Created virtual machine: #{virtual_machine.name}"
 
   ########################################################################################################################
+  ######################                                Create Server Async                           ####################
+  ########################################################################################################################
+
+  async_response = compute.servers.create_async(
+    name: 'TestVM',
+    location: LOCATION,
+    resource_group: 'TestRG-VM',
+    vm_size: 'Basic_A0',
+    storage_account_name: storage_account_name,
+    username: 'testuser',
+    password: 'Confiz=123',
+    disable_password_authentication: false,
+    network_interface_card_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-VM/providers/Microsoft.Network/networkInterfaces/NetInt",
+    publisher: 'Canonical',
+    offer: 'UbuntuServer',
+    sku: '14.04.2-LTS',
+    version: 'latest',
+    platform: 'linux',
+    custom_data: 'echo customData',
+    os_disk_caching: Fog::ARM::Compute::Models::CachingTypes::None
+  )
+  loop do
+    puts async_response.state
+
+    sleep(2) if async_response.pending?
+
+    if async_response.fulfilled?
+      puts async_response.value.inspect
+      break
+    end
+
+    if async_response.rejected?
+      puts async_response.reason.inspect
+      break
+    end
+  end
+
+  ########################################################################################################################
   ######################                          Attach Data Disk to VM                            ######################
   ########################################################################################################################
 

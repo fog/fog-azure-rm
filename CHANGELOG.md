@@ -1,3 +1,8 @@
+## Upcoming
+
+**Added**
+- Compute Service - Added async method of creating server(virtual machine)
+
 ## 0.2.7
 
 **Changed:**

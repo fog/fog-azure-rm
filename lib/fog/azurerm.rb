@@ -68,6 +68,11 @@ module Fog
     autoload :AzureRM, File.expand_path('azurerm/key_vault', __dir__)
   end
 
+  # Autoload Module for Response::Asynchronous
+  module AzureRM
+    autoload :AsyncResponse, File.expand_path('azurerm/async_response', __dir__)
+  end
+
   # Main AzureRM fog Provider Module
   module AzureRM
     extend Fog::Provider

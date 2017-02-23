@@ -79,6 +79,61 @@ Create a new windows server
         custom_data: 'echo customData'                   # Optional, if you want to add custom data in this VM.
     )
 ```
+
+## Create Server Asynchronously
+
+Create a new linux server asynchronously
+
+```ruby
+    async_response = azure_compute_service.servers.create_async(
+        name: '<VM Name>',
+        location: 'West US',
+        resource_group: '<Resource Group Name>',
+        vm_size: 'Basic_A0',
+        storage_account_name: '<Storage Account Name>',
+        username: '<Username for VM>',
+        password: '<Password for VM>',             # Optional, if 'platform' partameter is 'Linux'.
+        disable_password_authentication: false,
+        network_interface_card_id: '/subscriptions/{Subscription-Id}/resourceGroups/{Resource-Group-Name}/providers/Microsoft.Network/networkInterfaces/{Network-Interface-Id}',
+        publisher: 'Canonical',                    # Not required if custom image is being used 
+        offer: 'UbuntuServer',                     # Not required if custom image is being used
+        sku: '14.04.2-LTS',                        # Not required if custom image is being used
+        version: 'latest',                         # Not required if custom image is being used
+        platform: 'Linux',
+        vhd_path: '<Path of VHD>',                 # Optional, if you want to create the VM from a custom image.
+        custom_data: 'echo customData',            # Optional, if you want to add custom data in this VM.
+        os_disk_caching: Fog::ARM::Compute::Models::CachingTypes::None # Optional, can be one of None, ReadOnly, ReadWrite
+    )
+```
+Following methods are available to handle async respoonse:
+- state
+- pending?
+- rejected?
+- reason
+- fulfilled?
+- value
+
+An example of handling async response is given below:
+
+```ruby
+while 1
+    puts async_response.state
+    
+    if async_response.pending?
+      sleep(2)
+    end
+
+    if async_response.fulfilled?
+      puts async_response.value.inspect
+      break
+    end
+
+    if async_response.rejected?
+      puts async_response.reason.inspect
+      break
+    end
+ end
+```
  
 For more information about custom_data; see link: https://msdn.microsoft.com/en-us/library/azure/mt163591.aspx
 

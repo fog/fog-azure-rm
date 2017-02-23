@@ -64,6 +64,12 @@ class TestServer < Minitest::Test
     @service.stub :create_virtual_machine, response do
       assert_instance_of Fog::Compute::AzureRM::Server, @server.save
     end
+
+    # Async
+    async_response = Concurrent::Promise.execute { 10 }
+    @service.stub :create_virtual_machine, async_response do
+      assert_instance_of Concurrent::Promise, @server.save(true)
+    end
   end
 
   def test_save_method_response_for_windows_vm

@@ -35,6 +35,9 @@ azure_compute_service.servers.check_vm_exists(<Resource Group name>, <VM Name>)
 
 Create a new linux server
 
+**Info:**
+Attribute **network_interface_card_ids** is an array of NICs ids. The NIC id at index zero will become primary NIC of this server(virtual machine) by default.
+
 ```ruby
     azure_compute_service.servers.create(
         name: '<VM Name>',
@@ -45,7 +48,7 @@ Create a new linux server
         username: '<Username for VM>',
         password: '<Password for VM>',             # Optional, if 'platform' partameter is 'Linux'.
         disable_password_authentication: false,
-        network_interface_card_id: '/subscriptions/{Subscription-Id}/resourceGroups/{Resource-Group-Name}/providers/Microsoft.Network/networkInterfaces/{Network-Interface-Id}',
+        network_interface_card_ids: ['/subscriptions/{Subscription-Id}/resourceGroups/{Resource-Group-Name}/providers/Microsoft.Network/networkInterfaces/{Network-Interface-Id}'],
         publisher: 'Canonical',                    # Not required if custom image is being used 
         offer: 'UbuntuServer',                     # Not required if custom image is being used
         sku: '14.04.2-LTS',                        # Not required if custom image is being used
@@ -69,7 +72,7 @@ Create a new windows server
         username: '<Username for VM>',
         password: '<Password for VM>',
         disable_password_authentication: false,
-        network_interface_card_id: '/subscriptions/{Subscription-Id}/resourceGroups/{Resource-Group-Name}/providers/Microsoft.Network/networkInterfaces/{Network-Interface-Id}',
+        network_interface_card_ids: ['/subscriptions/{Subscription-Id}/resourceGroups/{Resource-Group-Name}/providers/Microsoft.Network/networkInterfaces/{Network-Interface-Id}'],
         publisher: 'MicrosoftWindowsServerEssentials',   # Not required if custom image is being used
         offer: 'WindowsServerEssentials',                # Not required if custom image is being used  
         sku: 'WindowsServerEssentials',                  # Not required if custom image is being used
@@ -94,7 +97,7 @@ Create a new linux server asynchronously
         username: '<Username for VM>',
         password: '<Password for VM>',             # Optional, if 'platform' partameter is 'Linux'.
         disable_password_authentication: false,
-        network_interface_card_id: '/subscriptions/{Subscription-Id}/resourceGroups/{Resource-Group-Name}/providers/Microsoft.Network/networkInterfaces/{Network-Interface-Id}',
+        network_interface_card_ids: ['/subscriptions/{Subscription-Id}/resourceGroups/{Resource-Group-Name}/providers/Microsoft.Network/networkInterfaces/{Network-Interface-Id}'],
         publisher: 'Canonical',                    # Not required if custom image is being used 
         offer: 'UbuntuServer',                     # Not required if custom image is being used
         sku: '14.04.2-LTS',                        # Not required if custom image is being used

@@ -51,7 +51,7 @@ class TestServer < Minitest::Test
       :platform,
       :provision_vm_agent,
       :enable_automatic_updates,
-      :network_interface_card_id,
+      :network_interface_card_ids,
       :availability_set_id
     ]
     attributes.each do |attribute|

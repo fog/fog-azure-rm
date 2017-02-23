@@ -85,7 +85,7 @@ def server(service)
     username: 'shaffan',
     password: 'Confiz=123',
     disable_password_authentication: false,
-    network_interface_card_id: '/subscriptions/########-####-####-####-############/resourceGroups/shaffanRG/providers/Microsoft.Network/networkInterfaces/testNIC',
+    network_interface_card_ids: ['/subscriptions/########-####-####-####-############/resourceGroups/shaffanRG/providers/Microsoft.Network/networkInterfaces/testNIC'],
     publisher: 'Canonical',
     offer: 'UbuntuServer',
     sku: '14.04.2-LTS',

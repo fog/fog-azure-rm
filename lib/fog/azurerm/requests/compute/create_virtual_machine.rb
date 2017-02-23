@@ -48,7 +48,7 @@ module Fog
                                                                  vm_hash[:ssh_key_data],
                                                                  encoded_data)
                                        end
-          virtual_machine.network_profile = define_network_profile(vm_hash[:network_interface_card_id])
+          virtual_machine.network_profile = define_network_profile(vm_hash[:network_interface_card_ids])
           virtual_machine.location = vm_hash[:location]
           begin
             response = if async
@@ -174,11 +174,17 @@ module Fog
           os_profile
         end
 
-        def define_network_profile(network_interface_card_id)
+        def define_network_profile(network_interface_card_ids)
+          network_interface_cards = []
+          network_interface_card_ids.each_with_index do |id, index|
+            nic = Azure::ARM::Compute::Models::NetworkInterfaceReference .new
+            nic.id = id
+            nic.primary = index == PRIMARY_NIC_INDEX ? true : false
+            network_interface_cards << nic
+          end
+
           network_profile = Azure::ARM::Compute::Models::NetworkProfile.new
-          nic = Azure::ARM::Compute::Models::NetworkInterfaceReference .new
-          nic.id = network_interface_card_id
-          network_profile.network_interfaces = [nic]
+          network_profile.network_interfaces = network_interface_cards
           network_profile
         end
       end

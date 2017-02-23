@@ -90,7 +90,7 @@ module Fog
             service.create_virtual_machine(virtual_machine_params(ssh_key_path), true)
           else
             vm = service.create_virtual_machine(virtual_machine_params(ssh_key_path))
-            merge_attributes(Server.parse(vm))
+            merge_attributes(Fog::Compute::AzureRM::Server.parse(vm))
           end
         end
 

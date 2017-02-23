@@ -35,5 +35,4 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'azure_mgmt_key_vault', '~> 0.8.0'
   spec.add_dependency 'azure-storage', '~> 0.11.5.preview'
   spec.add_dependency 'vhd', '0.0.4'
-  spec.add_dependency 'concurrent', '~> 0.2.2'
 end

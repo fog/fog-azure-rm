@@ -1,5 +1,4 @@
 require 'ms_rest_azure'
-require 'concurrent'
 require 'rest_client'
 require 'erb'
 require 'fog/azurerm/config'

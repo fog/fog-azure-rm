@@ -30,6 +30,9 @@ ENVIRONMENT_AZURE_CHINA_CLOUD = 'AzureChinaCloud'.freeze
 ENVIRONMENT_AZURE_US_GOVERNMENT = 'AzureUSGovernment'.freeze
 ENVIRONMENT_AZURE_GERMAN_CLOUD = 'AzureGermanCloud'.freeze
 
+# MsRestAzure::AzureOperationError class Error Codes
+ERROR_CODE_RESOURCE_NOT_FOUND = 'ResourceNotFound'
+
 PLATFORM_LINUX = 'linux'.freeze
 
 # State of the copy operation

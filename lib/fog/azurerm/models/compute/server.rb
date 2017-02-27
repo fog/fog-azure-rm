@@ -26,7 +26,7 @@ module Fog
         attribute :platform
         attribute :provision_vm_agent
         attribute :enable_automatic_updates
-        attribute :network_interface_card_id
+        attribute :network_interface_card_ids
         attribute :availability_set_id
         attribute :custom_data
         attribute :vhd_path
@@ -67,15 +67,15 @@ module Fog
             hash['provision_vm_agent'] = vm.os_profile.windows_configuration.provision_vmagent
             hash['enable_automatic_updates'] = vm.os_profile.windows_configuration.enable_automatic_updates
           end
-          hash['network_interface_card_id'] = vm.network_profile.network_interfaces[0].id
+          hash['network_interface_card_ids'] = vm.network_profile.network_interfaces.map(&:id)
           hash['availability_set_id'] = vm.availability_set.id unless vm.availability_set.nil?
 
           hash
         end
 
-        def save
+        def save(async = false)
           requires :name, :location, :resource_group, :vm_size, :storage_account_name,
-                   :username, :network_interface_card_id
+                   :username, :network_interface_card_ids
           requires :publisher, :offer, :sku, :version if vhd_path.nil?
 
           if platform_is_linux?(platform)
@@ -85,8 +85,13 @@ module Fog
           end
 
           ssh_key_path = "/home/#{username}/.ssh/authorized_keys" unless ssh_key_data.nil?
-          vm = service.create_virtual_machine(virtual_machine_params(ssh_key_path))
-          merge_attributes(Server.parse(vm))
+
+          if async
+            service.create_virtual_machine(virtual_machine_params(ssh_key_path), true)
+          else
+            vm = service.create_virtual_machine(virtual_machine_params(ssh_key_path))
+            merge_attributes(Fog::Compute::AzureRM::Server.parse(vm))
+          end
         end
 
         def destroy
@@ -153,7 +158,7 @@ module Fog
             disable_password_authentication: disable_password_authentication,
             ssh_key_path: ssh_key_path,
             ssh_key_data: ssh_key_data,
-            network_interface_card_id: network_interface_card_id,
+            network_interface_card_ids: network_interface_card_ids,
             availability_set_id: availability_set_id,
             publisher: publisher,
             offer: offer,

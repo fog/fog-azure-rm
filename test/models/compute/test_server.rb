@@ -51,7 +51,7 @@ class TestServer < Minitest::Test
       :platform,
       :provision_vm_agent,
       :enable_automatic_updates,
-      :network_interface_card_id,
+      :network_interface_card_ids,
       :availability_set_id
     ]
     attributes.each do |attribute|
@@ -63,6 +63,12 @@ class TestServer < Minitest::Test
     response = ApiStub::Models::Compute::Server.create_linux_virtual_machine_response(@compute_client)
     @service.stub :create_virtual_machine, response do
       assert_instance_of Fog::Compute::AzureRM::Server, @server.save
+    end
+
+    # Async
+    async_response = Concurrent::Promise.execute { 10 }
+    @service.stub :create_virtual_machine, async_response do
+      assert_instance_of Concurrent::Promise, @server.save(true)
     end
   end
 

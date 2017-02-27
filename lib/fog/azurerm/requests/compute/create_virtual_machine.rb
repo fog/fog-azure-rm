@@ -6,7 +6,7 @@ module Fog
     class AzureRM
       # This class provides the actual implementation for service calls.
       class Real
-        def create_virtual_machine(vm_hash)
+        def create_virtual_machine(vm_hash, async = false)
           msg = "Creating Virtual Machine #{vm_hash[:name]} in Resource Group #{vm_hash[:resource_group]}."
           Fog::Logger.debug msg
           virtual_machine = Azure::ARM::Compute::Models::VirtualMachine.new
@@ -48,15 +48,19 @@ module Fog
                                                                  vm_hash[:ssh_key_data],
                                                                  encoded_data)
                                        end
-          virtual_machine.network_profile = define_network_profile(vm_hash[:network_interface_card_id])
+          virtual_machine.network_profile = define_network_profile(vm_hash[:network_interface_card_ids])
           virtual_machine.location = vm_hash[:location]
           begin
-            vm = @compute_mgmt_client.virtual_machines.create_or_update(vm_hash[:resource_group], vm_hash[:name], virtual_machine)
+            response = if async
+                         @compute_mgmt_client.virtual_machines.create_or_update_async(vm_hash[:resource_group], vm_hash[:name], virtual_machine)
+                       else
+                         @compute_mgmt_client.virtual_machines.create_or_update(vm_hash[:resource_group], vm_hash[:name], virtual_machine)
+                       end
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
-          Fog::Logger.debug "Virtual Machine #{vm_hash[:name]} Created Successfully."
-          vm
+          Fog::Logger.debug "Virtual Machine #{vm_hash[:name]} Created Successfully." unless async
+          response
         end
 
         private
@@ -119,14 +123,17 @@ module Fog
           os_disk.name = "#{vm_name}_os_disk"
           os_disk.vhd = vhd
           os_disk.create_option = Azure::ARM::Compute::Models::DiskCreateOptionTypes::FromImage
-          os_disk.caching = case os_disk_caching
+          os_disk.caching = unless os_disk_caching.nil?
+                              case os_disk_caching
                               when 'None'
                                 Azure::ARM::Compute::Models::CachingTypes::None
                               when 'ReadOnly'
                                 Azure::ARM::Compute::Models::CachingTypes::ReadOnly
                               when 'ReadWrite'
                                 Azure::ARM::Compute::Models::CachingTypes::ReadWrite
-                            end unless os_disk_caching.nil?
+                              end
+                            end
+
           storage_profile.os_disk = os_disk
           storage_profile
         end
@@ -167,11 +174,17 @@ module Fog
           os_profile
         end
 
-        def define_network_profile(network_interface_card_id)
+        def define_network_profile(network_interface_card_ids)
+          network_interface_cards = []
+          network_interface_card_ids.each_with_index do |id, index|
+            nic = Azure::ARM::Compute::Models::NetworkInterfaceReference .new
+            nic.id = id
+            nic.primary = index == PRIMARY_NIC_INDEX ? true : false
+            network_interface_cards << nic
+          end
+
           network_profile = Azure::ARM::Compute::Models::NetworkProfile.new
-          nic = Azure::ARM::Compute::Models::NetworkInterfaceReference .new
-          nic.id = network_interface_card_id
-          network_profile.network_interfaces = [nic]
+          network_profile.network_interfaces = network_interface_cards
           network_profile
         end
       end

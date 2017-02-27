@@ -16,6 +16,12 @@ module Fog
           load(virtual_machines)
         end
 
+        def create_async(attributes = {})
+          server = new(attributes)
+          async_response = server.save(true)
+          Fog::AzureRM::AsyncResponse.new(server, async_response)
+        end
+
         def get(resource_group_name, virtual_machine_name)
           virtual_machine = service.get_virtual_machine(resource_group_name, virtual_machine_name)
           virtual_machine_fog = Fog::Compute::AzureRM::Server.new(service: service)

@@ -1,5 +1,11 @@
 ## Upcoming
+
+**Added**
 - Compute Service - Added support for Managed Disk
+- Compute Service - Added async method of creating server(virtual machine)
+
+**Changed:**
+- Compute Service - Changed create server method to take multiple NICs instead of one
 
 ## 0.2.7
 

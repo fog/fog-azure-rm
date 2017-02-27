@@ -305,5 +305,90 @@ Destroy the given extension from the virtual machine
     vm_extension.destroy
 ```
 
+
+## Create Managed Disk
+
+Create a new Managed Disk
+
+```ruby
+    azure_compute_service.managed_disks.create(
+        name: 'disk_name',
+        location: 'east us',
+        resource_group_name: 'resource_group_name',
+        account_type: 'Premium_LRS',
+        disk_size_gb: 1023,
+        creation_data: {
+          create_option: 'Empty'
+        }
+    )
+```
+
+## List Managed Disks in a Resource Group
+
+List managed disks in a resource group
+
+```ruby
+    managed_disks  = azure_compute_service.managed_disks(resource_group: '<Resource Group name>')
+    mnaged_disks.each do |disk|
+        puts "#{disk.name}"
+        puts "#{disk.location}"
+    end
+```
+
+## List Managed Disks in a Subscription
+
+List managed disks in a subscription
+
+```ruby
+    azure_compute_service.managed_disks.each do |disk|
+        puts "#{disk.name}"
+        puts "#{disk.location}"
+    end
+```
+
+## Grant Access to a Managed Disk
+
+Grant access to a managed disk
+
+```ruby
+    access_sas = azure_compute_service.managed_disks.grant_access('<resource_group_name>', '<disk_name>', 'Read', 1000)
+    puts "Access SAS: #{access_sas}"
+```
+
+## Revoke Access from a Managed Disk
+
+Revoke access from a managed disk
+
+```ruby
+    response = azure_compute_service.managed_disks.revoke_access('<resource_group_name>', '<disk_name>')
+    puts "Revoke Access response status: #{response.status}"
+```
+
+## Check Managed Disk Existence
+
+```ruby
+    azure_compute_service.managed_disks.check_managed_disk_exists(<Resource Group name>, <Disk name>)
+```
+
+## Retrieve a single Managed Disk
+
+Get a single record of managed disks
+
+```ruby
+      managed_disk = azure_compute_service
+                          .managed_disks
+                          .get('<Resource Group name>','<Disk name>')
+      puts "#{managed_disk.name}"
+```
+
+## Destroy a single Managed Disk
+
+Get an managed disk object from the get method and then destroy that managed disk.
+
+```ruby
+      managed_disk.destroy
+```
+
+
 ## Support and Feedback
 Your feedback is appreciated! If you have specific issues with the fog ARM, you should file an issue via Github.

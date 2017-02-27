@@ -1,6 +1,7 @@
 ## Upcoming
 
 **Added**
+- Compute Service - Added support for Managed Disk
 - Compute Service - Added async method of creating server(virtual machine)
 
 **Changed:**

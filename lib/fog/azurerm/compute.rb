@@ -33,6 +33,14 @@ module Fog
       request :delete_vm_extension
       request :get_vm_extension
       request :check_vm_extension_exists
+      request :create_or_update_managed_disk
+      request :delete_managed_disk
+      request :get_managed_disk
+      request :check_managed_disk_exists
+      request :list_managed_disks_by_rg
+      request :list_managed_disks_in_subscription
+      request :revoke_access_to_managed_disk
+      request :grant_access_to_managed_disk
 
       model_path 'fog/azurerm/models/compute'
       model :availability_set
@@ -41,6 +49,13 @@ module Fog
       collection :servers
       model :virtual_machine_extension
       collection :virtual_machine_extensions
+      model :managed_disk
+      collection :managed_disks
+      model :creation_data
+      model :disk_create_option
+      model :encryption_settings
+      model :image_disk_reference
+      model :operation_status_response
 
       # This class provides the mock implementation for unit tests.
       class Mock
@@ -64,7 +79,6 @@ module Fog
             retry if require('rubygems')
             raise e.message
           end
-
 
           options[:environment] = 'AzureCloud' if options[:environment].nil?
 

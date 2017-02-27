@@ -17,6 +17,7 @@ RESOURCE_PROVIDER_NAMESPACE = 6
 RESOURCE_TYPE = 7
 RESOURCE_NAME = 8
 ENDPOINT_PREFIX = 'Microsoft.Network/trafficManagerProfiles'.freeze
+DISK_PREFIX = 'Microsoft.Compute/disks'
 AZURE_ENDPOINTS = 'azureEndpoints'.freeze
 EXTERNAL_ENDPOINTS = 'externalEndpoints'.freeze
 NESTED_ENDPOINTS = 'nestedEndpoints'.freeze

@@ -20,9 +20,9 @@ module Fog
       class Mock
         def revoke_access_to_managed_disk(*)
           response = {
-              'name' => 'revoke',
-              'status' => 200,
-              'error' => 'Error Details'
+            'name' => 'revoke',
+            'status' => 200,
+            'error' => 'Error Details'
           }
           response_mapper = Azure::ARM::Compute::Models::OperationStatusResponse.mapper
           @compute_mgmt_client.deserialize(response_mapper, response, 'result.body')

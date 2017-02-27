@@ -11,8 +11,8 @@ class TestManagedDisk < Minitest::Test
 
   def test_model_methods
     methods = [
-        :save,
-        :destroy
+      :save,
+      :destroy
     ]
     methods.each do |method|
       assert_respond_to @managed_disk, method
@@ -21,20 +21,20 @@ class TestManagedDisk < Minitest::Test
 
   def test_model_attributes
     attributes = [
-        :id,
-        :name,
-        :type,
-        :location,
-        :resource_group_name,
-        :account_type,
-        :time_created,
-        :os_type,
-        :disk_size_gb,
-        :owner_id,
-        :provisioning_state,
-        :tags,
-        :creation_data,
-        :encryption_settings
+      :id,
+      :name,
+      :type,
+      :location,
+      :resource_group_name,
+      :account_type,
+      :time_created,
+      :os_type,
+      :disk_size_gb,
+      :owner_id,
+      :provisioning_state,
+      :tags,
+      :creation_data,
+      :encryption_settings
     ]
     attributes.each do |attribute|
       assert_respond_to @managed_disk, attribute

@@ -7,7 +7,6 @@ module Fog
         model Fog::Compute::AzureRM::ManagedDisk
         attribute :resource_group
         def all
-          managed_disks = []
           if !resource_group.nil?
             requires :resource_group
             disks = service.list_managed_disks_by_rg(resource_group)

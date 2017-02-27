@@ -12,9 +12,9 @@ class TestManagedDisks < Minitest::Test
 
   def test_collection_methods
     methods = [
-        :all,
-        :get,
-        :check_managed_disk_exists
+      :all,
+      :get,
+      :check_managed_disk_exists
     ]
     methods.each do |method|
       assert_respond_to @managed_disks, method

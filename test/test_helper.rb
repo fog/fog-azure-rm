@@ -810,7 +810,7 @@ def managed_disk(service)
     account_type: 'Premium_LRS',
     disk_size_gb: 1023,
     creation_data: {
-        create_option: 'Empty'
+      create_option: 'Empty'
     },
     service: service
   )

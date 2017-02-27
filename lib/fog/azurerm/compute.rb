@@ -80,7 +80,6 @@ module Fog
             raise e.message
           end
 
-
           options[:environment] = 'AzureCloud' if options[:environment].nil?
 
           telemetry = "fog-azure-rm/#{Fog::AzureRM::VERSION}"

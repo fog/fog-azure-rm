@@ -79,8 +79,8 @@ begin
   ######################                       List Managed Disks                                   ######################
   ########################################################################################################################
   puts 'List managed disks:'
-  compute.managed_disks(resource_group: resource_group_name).each do |disk|
-    puts disk.name
+  compute.managed_disks(resource_group: resource_group_name).each do |managed_disk|
+    puts managed_disk.name
   end
 
   ########################################################################################################################
@@ -88,8 +88,8 @@ begin
   ########################################################################################################################
 
   puts 'List managed disks in Subscription:'
-  compute.managed_disks.each do |disk|
-    puts disk.name
+  compute.managed_disks.each do |m_disk|
+    puts m_disk.name
   end
 
   ########################################################################################################################

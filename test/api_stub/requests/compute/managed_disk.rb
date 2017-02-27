@@ -89,9 +89,9 @@ module ApiStub
 
         def self.operation_status_response(sdk_compute_client)
           response = {
-              'name'=> 'xxxx-xxxxx-xxxx',
-              'status'=> 'success',
-              'error'=> 'ERROR'
+            'name' => 'xxxx-xxxxx-xxxx',
+            'status' => 'success',
+            'error' => 'ERROR'
           }
           response_mapper = Azure::ARM::Compute::Models::OperationStatusResponse.mapper
           sdk_compute_client.deserialize(response_mapper, response, 'result.body')

@@ -7,14 +7,14 @@ class TestCreateManagedDisk < Minitest::Test
     @client = @service.instance_variable_get(:@compute_mgmt_client)
     @managed_disks = @client.disks
     @disk = {
-        name: 'my-managed-disk',
-        location: 'eastus',
-        resource_group_name: 'fog-test-rg',
-        account_type: 'Premium_LRS',
-        disk_size_gb: 1024,
-        creation_data: {
-          create_option: 'Empty'
-        }
+      name: 'my-managed-disk',
+      location: 'eastus',
+      resource_group_name: 'fog-test-rg',
+      account_type: 'Premium_LRS',
+      disk_size_gb: 1024,
+      creation_data: {
+        create_option: 'Empty'
+      }
     }
   end
 

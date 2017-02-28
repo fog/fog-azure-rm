@@ -212,12 +212,6 @@ begin
   pubip = network.public_ips.get('TestRG-GC', 'mypubip2')
   pubip.destroy
 
-  vnet = network.virtual_networks.get('TestRG-GC', 'testVnet')
-  vnet.destroy
-
-  vnet = network.virtual_networks.get('TestRG-GC', 'testVnet2')
-  vnet.destroy
-
   resource_group = resource.resource_groups.get('TestRG-GC')
   resource_group.destroy
 rescue

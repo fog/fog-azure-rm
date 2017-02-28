@@ -80,7 +80,7 @@ begin
     traffic_manager_profile_name: 'test-tmp',
     resource_group: 'TestRG-TM',
     type: 'externalEndpoints',
-    target: 'test-app.com',
+    target: 'test-app1.com',
     endpoint_location: 'eastus'
   )
   puts "Created traffic manager endpoint: #{traffic_manager_end_point.name}"
@@ -93,7 +93,7 @@ begin
   puts "Get traffic manager endpoint: #{end_point.name}"
   end_point.update(
     type: 'externalEndpoints',
-    target: 'test-app1.com',
+    target: 'test-app2.com',
     endpoint_location: 'centralus'
   )
   puts 'Updated traffic manager endpoint'

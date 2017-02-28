@@ -55,6 +55,7 @@ module Fog
 
         def update(profile_params)
           validate_input(profile_params)
+          profile_params[:endpoints] = endpoints.map { |endpoint| get_hash_from_object(endpoint)['attributes'] }
           merge_attributes(profile_params)
           profile = service.create_or_update_traffic_manager_profile(traffic_manager_profile_hash)
           merge_attributes(Fog::TrafficManager::AzureRM::TrafficManagerProfile.parse(profile))

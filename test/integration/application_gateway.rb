@@ -106,7 +106,7 @@ begin
     frontend_ports: [
       {
         name: 'frontendPort',
-        port: 65502
+        port: 65_502
       }
     ],
     backend_address_pools: [

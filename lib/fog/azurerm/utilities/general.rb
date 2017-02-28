@@ -58,7 +58,6 @@ def raise_azure_exception(exception, msg)
     "#{exception.inspect}\n#{exception.backtrace.join("\n")}"
   end
 
-
   Fog::Logger.debug exception.backtrace
   raise exception_message
 end
@@ -66,10 +65,7 @@ end
 # Make sure if input_params(Hash) contains all keys present in required_params(Array)
 def validate_params(required_params, input_params)
   missing_params = required_params.select { |param| param unless input_params.key?(param) }
-
-  if missing_params.any?
-    raise(ArgumentError, "Missing Parameters: #{missing_params.join(', ')} required for this operation")
-  end
+  raise(ArgumentError, "Missing Parameters: #{missing_params.join(', ')} required for this operation") if missing_params.any?
 end
 
 def get_resource_from_resource_id(resource_id, position)

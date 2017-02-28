@@ -31,8 +31,8 @@ ENVIRONMENT_AZURE_US_GOVERNMENT = 'AzureUSGovernment'.freeze
 ENVIRONMENT_AZURE_GERMAN_CLOUD = 'AzureGermanCloud'.freeze
 
 # MsRestAzure::AzureOperationError class Error Codes
-ERROR_CODE_RESOURCE_NOT_FOUND = 'ResourceNotFound'
-ERROR_CODE_NOT_FOUND = 'NotFound'
+ERROR_CODE_RESOURCE_NOT_FOUND = 'ResourceNotFound'.freeze
+ERROR_CODE_NOT_FOUND = 'NotFound'.freeze
 
 PLATFORM_LINUX = 'linux'.freeze
 

@@ -1,4 +1,4 @@
-## Upcoming
+## 0.3.0
 
 **Added**
 - Compute Service - Added support for Managed Disk
@@ -6,6 +6,10 @@
 
 **Changed:**
 - Compute Service - Changed create server method to take multiple NICs instead of one
+- Updated Azure SDK gems to v0.9.0
+
+**Fixed:**
+- Integration tests
 
 ## 0.2.7
 

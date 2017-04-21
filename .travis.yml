@@ -10,7 +10,6 @@ script: sh rake-script.sh
 matrix:
   fast_finish: true
   include:
-    - rvm: 2.0.0
     - rvm: 2.1.0
     - rvm: 2.1.1
     - rvm: 2.1.5

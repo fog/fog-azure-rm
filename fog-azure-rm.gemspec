@@ -16,7 +16,7 @@ Gem::Specification.new do |spec|
   spec.homepage = 'https://github.com/fog/fog-azure-rm'
   spec.rdoc_options = %w[--charset=UTF-8]
   spec.extra_rdoc_files = %w[README.md]
-  spec.required_ruby_version = '>= 2.1.0'
+  spec.required_ruby_version = '>= 2.0.0'
   spec.post_install_message = 'Thanks for installing!'
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'minitest', '~> 5.8.4'
@@ -33,6 +33,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'azure_mgmt_traffic_manager', '~> 0.9.0'
   spec.add_dependency 'azure_mgmt_sql', '~> 0.9.0'
   spec.add_dependency 'azure_mgmt_key_vault', '~> 0.9.0'
-  spec.add_dependency 'azure-storage', '~> 0.12.1.preview'
+  spec.add_dependency 'azure-storage', '>= 0.11.5.preview', '< 1.0'
   spec.add_dependency 'vhd', '0.0.4'
 end

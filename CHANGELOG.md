@@ -1,7 +1,7 @@
 ## 0.3.1
 
 **Changed:**
-- Updated azure storage gem dependency
+- Updated azure storage gem dependency to be flexible
 
 ## 0.3.0
 

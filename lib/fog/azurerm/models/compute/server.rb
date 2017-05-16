@@ -48,7 +48,7 @@ module Fog
               hash['os_disk_vhd_uri'] = vm.storage_profile.os_disk.vhd.uri
               hash['storage_account_name'] = hash['os_disk_vhd_uri'].split('/')[2].split('.')[0]
             end
-          
+
             hash['os_disk_caching'] = vm.storage_profile.os_disk.caching
             unless vm.storage_profile.image_reference.nil?
               hash['publisher'] = vm.storage_profile.image_reference.publisher
@@ -83,7 +83,7 @@ module Fog
         def save(async = false)
           requires :name, :location, :resource_group, :vm_size, :storage_account_name,
                    :username, :network_interface_card_ids
-          requires :publisher, :offer, :sku, :version if vhd_path.nil?
+          requires :publisher, :offer, :sku, :version if vhd_path.nil? && managed_disk_storage_type.nil?
 
           if platform_is_linux?(platform)
             requires :disable_password_authentication

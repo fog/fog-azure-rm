@@ -30,7 +30,8 @@ module Fog
                                                                    vm_hash[:vhd_path],
                                                                    vm_hash[:os_disk_caching],
                                                                    vm_hash[:platform],
-                                                                   vm_hash[:resource_group])
+                                                                   vm_hash[:resource_group],
+                                                                   vm_hash[:managed_disk_storage_type])
 
           virtual_machine.os_profile = if vm_hash[:platform].casecmp(WINDOWS).zero?
                                          define_windows_os_profile(vm_hash[:name],
@@ -80,48 +81,55 @@ module Fog
           image_reference
         end
 
-        def define_storage_profile(vm_name, storage_account_name, publisher, offer, sku, version, vhd_path, os_disk_caching, platform, resource_group)
+        def define_storage_profile(vm_name, storage_account_name, publisher, offer, sku, version, vhd_path, os_disk_caching, platform, resource_group, managed_disk_storage_type)
           storage_profile = Azure::ARM::Compute::Models::StorageProfile.new
+          storage_profile.image_reference = image_reference(publisher, offer, sku, version)
           os_disk = Azure::ARM::Compute::Models::OSDisk.new
-          vhd = Azure::ARM::Compute::Models::VirtualHardDisk.new
 
-          vhd.uri = get_blob_endpoint(storage_account_name) + "/vhds/#{vm_name}_os_disk.vhd"
+          if managed_disk_storage_type.nil?  
+            vhd = Azure::ARM::Compute::Models::VirtualHardDisk.new
+            vhd.uri = get_blob_endpoint(storage_account_name) + "/vhds/#{vm_name}_os_disk.vhd"
 
-          if vhd_path.nil?
-            storage_profile.image_reference = image_reference(publisher, offer, sku, version)
-          else
-            # Copy if VHD does not exist belongs to same storage account.
-            vhd_storage_account = (vhd_path.split('/')[2]).split('.')[0]
-            if storage_account_name != vhd_storage_account
-              storage_account = @storage_service.storage_accounts.get(resource_group, storage_account_name)
-              access_key = storage_account.get_access_keys.first.value
-              storage_data = Fog::Storage::AzureRM.new(provider: 'AzureRM', azure_storage_account_name: storage_account_name, azure_storage_access_key: access_key)
-              new_time = current_time
-              container_name = "customvhd#{new_time}"
-              blob_name = "vhd_image#{new_time}.vhd"
-              storage_data.directories.create(
-                key: container_name
-              )
+            unless vhd_path.nil?
+              # Copy if VHD does not exist belongs to same storage account.
+              vhd_storage_account = (vhd_path.split('/')[2]).split('.')[0]
+              if storage_account_name != vhd_storage_account
+                storage_account = @storage_service.storage_accounts.get(resource_group, storage_account_name)
+                access_key = storage_account.get_access_keys.first.value
+                storage_data = Fog::Storage::AzureRM.new(provider: 'AzureRM', azure_storage_account_name: storage_account_name, azure_storage_access_key: access_key)
+                new_time = current_time
+                container_name = "customvhd#{new_time}"
+                blob_name = "vhd_image#{new_time}.vhd"
+                storage_data.directories.create(
+                  key: container_name
+                )
 
-              storage_data.copy_blob_from_uri(container_name, blob_name, vhd_path)
-              until storage_data.get_blob_properties(container_name, blob_name).properties[:copy_status] == 'success'
-                Fog::Logger.debug 'Waiting disk to ready'
-                sleep(10)
+                storage_data.copy_blob_from_uri(container_name, blob_name, vhd_path)
+                until storage_data.get_blob_properties(container_name, blob_name).properties[:copy_status] == 'success'
+                  Fog::Logger.debug 'Waiting disk to ready'
+                  sleep(10)
+                end
+                new_vhd_path = get_blob_endpoint(storage_account_name) + "/#{container_name}/#{blob_name}"
+                Fog::Logger.debug "Path:#{new_vhd_path}. | Copy done"
+              else
+                new_vhd_path = vhd_path
               end
-              new_vhd_path = get_blob_endpoint(storage_account_name) + "/#{container_name}/#{blob_name}"
-              Fog::Logger.debug "Path:#{new_vhd_path}. | Copy done"
-            else
-              new_vhd_path = vhd_path
+
+              img_vhd = Azure::ARM::Compute::Models::VirtualHardDisk.new
+              img_vhd.uri = new_vhd_path
+              os_disk.image = img_vhd
             end
 
-            img_vhd = Azure::ARM::Compute::Models::VirtualHardDisk.new
-            img_vhd.uri = new_vhd_path
-            os_disk.image = img_vhd
-            os_disk.os_type = platform
+            os_disk.vhd = vhd
+          else
+            managed_disk = Azure::ARM::Compute::Models::ManagedDiskParameters.new
+            managed_disk.storage_account_type = managed_disk_storage_type
+            os_disk.managed_disk = managed_disk
           end
-
+        
           os_disk.name = "#{vm_name}_os_disk"
-          os_disk.vhd = vhd
+          os_disk.os_type = platform
+          
           os_disk.create_option = Azure::ARM::Compute::Models::DiskCreateOptionTypes::FromImage
           os_disk.caching = unless os_disk_caching.nil?
                               case os_disk_caching
@@ -133,7 +141,7 @@ module Fog
                                 Azure::ARM::Compute::Models::CachingTypes::ReadWrite
                               end
                             end
-
+          
           storage_profile.os_disk = os_disk
           storage_profile
         end

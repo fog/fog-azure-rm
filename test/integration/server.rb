@@ -260,7 +260,8 @@ begin
   resource_group = rs.resource_groups.get('TestRG-VM')
   resource_group.destroy
   puts 'Integration Test for virtual machine ran successfully'
-rescue
+rescue Exception => e
+  puts e.inspect
   puts 'Integration Test for virtual machine is failing'
   resource_group.destroy unless resource_group.nil?
 end

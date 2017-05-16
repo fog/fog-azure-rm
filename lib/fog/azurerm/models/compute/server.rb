@@ -30,6 +30,7 @@ module Fog
         attribute :availability_set_id
         attribute :custom_data
         attribute :vhd_path
+        attribute :managed_disk_storage_type
 
         def self.parse(vm)
           hash = {}
@@ -40,8 +41,14 @@ module Fog
           hash['vm_size'] = vm.hardware_profile.vm_size unless vm.hardware_profile.vm_size.nil?
           unless vm.storage_profile.nil?
             hash['os_disk_name'] = vm.storage_profile.os_disk.name
-            hash['os_disk_vhd_uri'] = vm.storage_profile.os_disk.vhd.uri
-            hash['storage_account_name'] = hash['os_disk_vhd_uri'].split('/')[2].split('.')[0]
+
+            if vm.storage_profile.os_disk.vhd.nil?
+              hash['managed_disk_storage_type'] = vm.storage_profile.os_disk.managed_disk.storage_account_type
+            else
+              hash['os_disk_vhd_uri'] = vm.storage_profile.os_disk.vhd.uri
+              hash['storage_account_name'] = hash['os_disk_vhd_uri'].split('/')[2].split('.')[0]
+            end
+          
             hash['os_disk_caching'] = vm.storage_profile.os_disk.caching
             unless vm.storage_profile.image_reference.nil?
               hash['publisher'] = vm.storage_profile.image_reference.publisher
@@ -169,7 +176,8 @@ module Fog
             enable_automatic_updates: enable_automatic_updates,
             custom_data: custom_data,
             vhd_path: vhd_path,
-            os_disk_caching: os_disk_caching
+            os_disk_caching: os_disk_caching,
+            managed_disk_storage_type: managed_disk_storage_type
           }
         end
       end

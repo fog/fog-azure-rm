@@ -38,6 +38,9 @@ Create a new linux server
 **Info:**
 Attribute **network_interface_card_ids** is an array of NICs ids. The NIC id at index zero will become primary NIC of this server(virtual machine) by default.
 
+**Info:**
+When using **managed_disk_storage_type** you should not pass the **vhd_path** as the managed disk will be used for the OS disk. Also, data disks cannot be attached to a VM which uses managed disks for the OS disk.
+
 ```ruby
     azure_compute_service.servers.create(
         name: '<VM Name>',
@@ -56,7 +59,8 @@ Attribute **network_interface_card_ids** is an array of NICs ids. The NIC id at 
         platform: 'Linux',
         vhd_path: '<Path of VHD>',                 # Optional, if you want to create the VM from a custom image.
         custom_data: 'echo customData',            # Optional, if you want to add custom data in this VM.
-        os_disk_caching: Fog::ARM::Compute::Models::CachingTypes::None # Optional, can be one of None, ReadOnly, ReadWrite
+        os_disk_caching: Fog::ARM::Compute::Models::CachingTypes::None, # Optional, can be one of None, ReadOnly, ReadWrite
+        managed_disk_storage_type: Azure::ARM::Compute::Models::StorageAccountTypes::StandardLRS # Optional, can be StandardLRS or PremiumLRS
     )
 ```
 
@@ -79,7 +83,8 @@ Create a new windows server
         version: 'latest',                               # Not required if custom image is being used
         platform: 'Windows',
         vhd_path: '<Path of VHD>',                       # Optional, if you want to create the VM from a custom image.
-        custom_data: 'echo customData'                   # Optional, if you want to add custom data in this VM.
+        custom_data: 'echo customData',                   # Optional, if you want to add custom data in this VM.
+        managed_disk_storage_type: Azure::ARM::Compute::Models::StorageAccountTypes::StandardLRS # Optional, can be StandardLRS or PremiumLRS
     )
 ```
 
@@ -105,7 +110,8 @@ Create a new linux server asynchronously
         platform: 'Linux',
         vhd_path: '<Path of VHD>',                 # Optional, if you want to create the VM from a custom image.
         custom_data: 'echo customData',            # Optional, if you want to add custom data in this VM.
-        os_disk_caching: Fog::ARM::Compute::Models::CachingTypes::None # Optional, can be one of None, ReadOnly, ReadWrite
+        os_disk_caching: Fog::ARM::Compute::Models::CachingTypes::None, # Optional, can be one of None, ReadOnly, ReadWrite
+        managed_disk_storage_type: Azure::ARM::Compute::Models::StorageAccountTypes::StandardLRS # Optional, can be StandardLRS or PremiumLRS
     )
 ```
 Following methods are available to handle async respoonse:

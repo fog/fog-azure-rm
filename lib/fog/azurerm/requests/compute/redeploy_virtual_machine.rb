@@ -3,16 +3,24 @@ module Fog
     class AzureRM
       # This class provides the actual implementation for service calls.
       class Real
-        def redeploy_virtual_machine(resource_group, name)
+        def redeploy_virtual_machine(resource_group, name, async)
           msg = "Redeploying Virtual Machine #{name} in Resource Group #{resource_group}."
           Fog::Logger.debug msg
           begin
-            @compute_mgmt_client.virtual_machines.redeploy(resource_group, name)
+            if async
+              response = @compute_mgmt_client.virtual_machines.redeploy_async(resource_group, name)
+            else
+              @compute_mgmt_client.virtual_machines.redeploy(resource_group, name)
+            end
           rescue  MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
-          Fog::Logger.debug "Virtual Machine #{name} Redeployed Successfully."
-          true
+          if async
+            response
+          else
+            Fog::Logger.debug "Virtual Machine #{name} Redeployed Successfully."
+            true
+          end
         end
       end
       # This class provides the mock implementation for unit tests.

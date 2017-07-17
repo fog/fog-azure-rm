@@ -3,7 +3,7 @@ module Fog
     class AzureRM
       # This class provides the actual implementation for service calls.
       class Real
-        def check_vm_status(resource_group, name)
+        def check_vm_status(resource_group, name, async)
           msg = "Checking Virtual Machine #{name} status"
           Fog::Logger.debug msg
           begin

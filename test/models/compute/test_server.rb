@@ -84,11 +84,21 @@ class TestServer < Minitest::Test
     @service.stub :delete_virtual_machine, true do
       assert @server.destroy
     end
+
+    async_response = Concurrent::Promise.execute { 10 }
+    @service.stub :delete_virtual_machine, async_response do
+      assert_instance_of Concurrent::Promise, @server.destroy(true)
+    end
   end
 
   def test_generalize_method_response
     @service.stub :generalize_virtual_machine, true do
       assert @server.generalize
+    end
+
+    async_response = Concurrent::Promise.execute { 10 }
+    @service.stub :generalize_virtual_machine, async_response do
+      assert_instance_of Concurrent::Promise, @server.generalize(true)
     end
   end
 
@@ -96,11 +106,21 @@ class TestServer < Minitest::Test
     @service.stub :power_off_virtual_machine, true do
       assert @server.power_off
     end
+
+    async_response = Concurrent::Promise.execute { 10 }
+    @service.stub :power_off_virtual_machine, async_response do
+      assert_instance_of Concurrent::Promise, @server.power_off(true)
+    end
   end
 
   def test_start_method_response
     @service.stub :start_virtual_machine, true do
       assert @server.start
+    end
+
+    async_response = Concurrent::Promise.execute { 10 }
+    @service.stub :start_virtual_machine, async_response do
+      assert_instance_of Concurrent::Promise, @server.start(true)
     end
   end
 
@@ -108,17 +128,32 @@ class TestServer < Minitest::Test
     @service.stub :restart_virtual_machine, true do
       assert @server.restart
     end
+
+    async_response = Concurrent::Promise.execute { 10 }
+    @service.stub :restart_virtual_machine, async_response do
+      assert_instance_of Concurrent::Promise, @server.restart(true)
+    end
   end
 
   def test_deallocate_method_response
     @service.stub :deallocate_virtual_machine, true do
       assert @server.deallocate
     end
+
+    async_response = Concurrent::Promise.execute { 10 }
+    @service.stub :deallocate_virtual_machine, async_response do
+      assert_instance_of Concurrent::Promise, @server.deallocate(true)
+    end
   end
 
   def test_redeploy_method_response
     @service.stub :redeploy_virtual_machine, true do
       assert @server.redeploy
+    end
+
+    async_response = Concurrent::Promise.execute { 10 }
+    @service.stub :redeploy_virtual_machine, async_response do
+      assert_instance_of Concurrent::Promise, @server.redeploy(true)
     end
   end
 
@@ -131,7 +166,12 @@ class TestServer < Minitest::Test
   def test_list_available_sizes_method_response
     response = ApiStub::Models::Compute::Server.list_available_sizes_for_virtual_machine_response(@compute_client)
     @service.stub :list_available_sizes_for_virtual_machine, response do
-      assert_instance_of Array, @server.list_available_sizes
+      assert_instance_of Array, @server.list_available_sizes(true)
+    end
+
+    async_response = Concurrent::Promise.execute { 10 }
+    @service.stub :list_available_sizes_for_virtual_machine, async_response do
+      assert_instance_of Concurrent::Promise, @server.list_available_sizes(true)
     end
   end
 
@@ -140,12 +180,22 @@ class TestServer < Minitest::Test
     @service.stub :attach_data_disk_to_vm, response do
       assert_instance_of Fog::Compute::AzureRM::Server, @server.attach_data_disk('disk1', '10', 'mystorage1')
     end
+
+    async_response = Concurrent::Promise.execute { 10 }
+    @service.stub :attach_data_disk_to_vm, async_response do
+      assert_instance_of Concurrent::Promise, @server.attach_data_disk('disk', '10', 'mystorage1', true)
+    end
   end
 
   def test_detach_data_disk_response
     response = ApiStub::Models::Compute::Server.create_linux_virtual_machine_response(@compute_client)
     @service.stub :detach_data_disk_from_vm, response do
       assert_instance_of Fog::Compute::AzureRM::Server, @server.detach_data_disk('disk1')
+    end
+
+    async_response = Concurrent::Promise.execute { 10 }
+    @service.stub :detach_data_disk_from_vm, async_response do
+      assert_instance_of Concurrent::Promise, @server.detach_data_disk('disk1', true)
     end
   end
 end

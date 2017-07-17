@@ -3,7 +3,7 @@ module Fog
     class AzureRM
       # This class provides the actual implementation for service calls.
       class Real
-        def attach_data_disk_to_vm(resource_group, vm_name, disk_name, disk_size, storage_account_name)
+        def attach_data_disk_to_vm(resource_group, vm_name, disk_name, disk_size, storage_account_name, async)
           msg = "Attaching Data Disk #{disk_name} to Virtual Machine #{vm_name} in Resource Group #{resource_group}"
           Fog::Logger.debug msg
           vm = get_virtual_machine_instance(resource_group, vm_name, @compute_mgmt_client)
@@ -13,7 +13,11 @@ module Fog
           vm.storage_profile.data_disks.push(data_disk)
           vm.resources = nil
           begin
-            virtual_machine = @compute_mgmt_client.virtual_machines.create_or_update(resource_group, vm_name, vm)
+            if async
+              response = @compute_mgmt_client.virtual_machines.create_or_update_async(resource_group, vm_name, vm)
+            else
+              virtual_machine = @compute_mgmt_client.virtual_machines.create_or_update(resource_group, vm_name, vm)
+            end
           rescue MsRestAzure::AzureOperationError => e
             if e.body.to_s =~ /InvalidParameter/ && e.body.to_s =~ /already exists/
               Fog::Logger.debug 'The disk is already attached'
@@ -21,8 +25,12 @@ module Fog
             raise_azure_exception(e, msg)
             end
           end
-          Fog::Logger.debug "Data Disk #{disk_name} attached to Virtual Machine #{vm_name} successfully."
-          virtual_machine
+          if async
+            response
+          else
+            Fog::Logger.debug "Data Disk #{disk_name} attached to Virtual Machine #{vm_name} successfully."
+            virtual_machine
+          end
         end
 
         private

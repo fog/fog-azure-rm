@@ -101,50 +101,58 @@ module Fog
           end
         end
 
-        def destroy
-          service.delete_virtual_machine(resource_group, name)
+        def destroy(async = false)
+          service.delete_virtual_machine(resource_group, name, async)
         end
 
-        def generalize
-          service.generalize_virtual_machine(resource_group, name)
+        def generalize(async = false)
+          service.generalize_virtual_machine(resource_group, name, async)
         end
 
-        def power_off
-          service.power_off_virtual_machine(resource_group, name)
+        def power_off(async = false)
+          service.power_off_virtual_machine(resource_group, name, async)
         end
 
-        def start
-          service.start_virtual_machine(resource_group, name)
+        def start(async = false)
+          service.start_virtual_machine(resource_group, name, async)
         end
 
-        def restart
-          service.restart_virtual_machine(resource_group, name)
+        def restart(async = false)
+          service.restart_virtual_machine(resource_group, name, async)
         end
 
-        def deallocate
-          service.deallocate_virtual_machine(resource_group, name)
+        def deallocate(async = false)
+          service.deallocate_virtual_machine(resource_group, name, async)
         end
 
-        def redeploy
-          service.redeploy_virtual_machine(resource_group, name)
+        def redeploy(async = false)
+          service.redeploy_virtual_machine(resource_group, name, async)
         end
 
-        def list_available_sizes
-          service.list_available_sizes_for_virtual_machine(resource_group, name)
+        def list_available_sizes(async = false)
+          service.list_available_sizes_for_virtual_machine(resource_group, name, async)
         end
 
-        def vm_status
-          service.check_vm_status(resource_group, name)
+        def vm_status(async = false)
+          service.check_vm_status(resource_group, name, async)
         end
 
-        def attach_data_disk(disk_name, disk_size, storage_account_name)
-          vm = service.attach_data_disk_to_vm(resource_group, name, disk_name, disk_size, storage_account_name)
-          merge_attributes(Fog::Compute::AzureRM::Server.parse(vm))
+        def attach_data_disk(disk_name, disk_size, storage_account_name, async = false)
+          vm_response = service.attach_data_disk_to_vm(resource_group, name, disk_name, disk_size, storage_account_name, async)
+          if async
+            vm_response
+          else
+            merge_attributes(Fog::Compute::AzureRM::Server.parse(vm_response))
+          end
         end
 
-        def detach_data_disk(disk_name)
-          vm = service.detach_data_disk_from_vm(resource_group, name, disk_name)
-          merge_attributes(Fog::Compute::AzureRM::Server.parse(vm))
+        def detach_data_disk(disk_name, async = false)
+          vm_response = service.detach_data_disk_from_vm(resource_group, name, disk_name, async)
+          if async
+            vm_response
+          else
+            merge_attributes(Fog::Compute::AzureRM::Server.parse(vm_response))
+          end
         end
 
         private

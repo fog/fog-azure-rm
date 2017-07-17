@@ -3,16 +3,24 @@ module Fog
     class AzureRM
       # This class provides the actual implementation for service calls.
       class Real
-        def power_off_virtual_machine(resource_group, name)
+        def power_off_virtual_machine(resource_group, name, async)
           msg = "Powering off Virtual Machine #{name} in Resource Group #{resource_group}"
           Fog::Logger.debug msg
           begin
-            @compute_mgmt_client.virtual_machines.power_off(resource_group, name)
+            if async 
+              response = @compute_mgmt_client.virtual_machines.power_off_async(resource_group, name)
+            else
+              @compute_mgmt_client.virtual_machines.power_off(resource_group, name)
+            end
           rescue  MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
-          Fog::Logger.debug "Virtual Machine #{name} Powered off Successfully."
-          true
+          if async
+            response
+          else
+            Fog::Logger.debug "Virtual Machine #{name} Powered off Successfully."
+            true
+          end
         end
       end
       # This class provides the mock implementation for unit tests.

@@ -3,16 +3,24 @@ module Fog
     class AzureRM
       # This class provides the actual implementation for service calls.
       class Real
-        def list_available_sizes_for_virtual_machine(resource_group, name)
+        def list_available_sizes_for_virtual_machine(resource_group, name, async)
           msg = "Listing sizes for Virtual Machine #{name} in Resource Group #{resource_group}"
           Fog::Logger.debug msg
           begin
-            vm_sizes = @compute_mgmt_client.virtual_machines.list_available_sizes(resource_group, name)
+            if async
+              response = @compute_mgmt_client.virtual_machines.list_available_sizes_async(resource_group, name)
+            else
+              vm_sizes = @compute_mgmt_client.virtual_machines.list_available_sizes(resource_group, name)
+            end
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
-          Fog::Logger.debug "Successfully listed sizes for Virtual Machine #{name} in Resource Group #{resource_group}"
-          vm_sizes.value
+          if async
+            response
+          else
+            Fog::Logger.debug "Successfully listed sizes for Virtual Machine #{name} in Resource Group #{resource_group}"
+            vm_sizes.value
+          end
         end
       end
       # This class provides the mock implementation for unit tests.

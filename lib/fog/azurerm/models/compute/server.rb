@@ -101,56 +101,69 @@ module Fog
           end
         end
 
-        def destroy
-          service.delete_virtual_machine(resource_group, name)
+        def destroy(async = false)
+          response = service.delete_virtual_machine(resource_group, name, async)
+          async ? create_fog_async_response(response) : response
         end
 
-        def generalize
-          service.generalize_virtual_machine(resource_group, name)
+        def generalize(async = false)
+          response = service.generalize_virtual_machine(resource_group, name, async)
+          async ? create_fog_async_response(response) : response
         end
 
-        def power_off
-          service.power_off_virtual_machine(resource_group, name)
+        def power_off(async = false)
+          response = service.power_off_virtual_machine(resource_group, name, async)
+          async ? create_fog_async_response(response) : response
         end
 
-        def start
-          service.start_virtual_machine(resource_group, name)
+        def start(async = false)
+          response = service.start_virtual_machine(resource_group, name, async)
+          async ? create_fog_async_response(response) : response
         end
 
-        def restart
-          service.restart_virtual_machine(resource_group, name)
+        def restart(async = false)
+          response = service.restart_virtual_machine(resource_group, name, async)
+          async ? create_fog_async_response(response) : response
         end
 
-        def deallocate
-          service.deallocate_virtual_machine(resource_group, name)
+        def deallocate(async = false)
+          response = service.deallocate_virtual_machine(resource_group, name, async)
+          async ? create_fog_async_response(response) : response
         end
 
-        def redeploy
-          service.redeploy_virtual_machine(resource_group, name)
+        def redeploy(async = false)
+          response = service.redeploy_virtual_machine(resource_group, name, async)
+          async ? create_fog_async_response(response) : response
         end
 
-        def list_available_sizes
-          service.list_available_sizes_for_virtual_machine(resource_group, name)
+        def list_available_sizes(async = false)
+          response = service.list_available_sizes_for_virtual_machine(resource_group, name, async)
+          async ? create_fog_async_response(response) : response
         end
 
-        def vm_status
-          service.check_vm_status(resource_group, name)
+        def vm_status(async = false)
+          service.check_vm_status(resource_group, name, async)
         end
 
-        def attach_data_disk(disk_name, disk_size, storage_account_name)
-          vm = service.attach_data_disk_to_vm(resource_group, name, disk_name, disk_size, storage_account_name)
-          merge_attributes(Fog::Compute::AzureRM::Server.parse(vm))
+        def attach_data_disk(disk_name, disk_size, storage_account_name, async = false)
+          response = service.attach_data_disk_to_vm(resource_group, name, disk_name, disk_size, storage_account_name, async)
+          async ? create_fog_async_response(response) : merge_attributes(Fog::Compute::AzureRM::Server.parse(response))
         end
 
-        def detach_data_disk(disk_name)
-          vm = service.detach_data_disk_from_vm(resource_group, name, disk_name)
-          merge_attributes(Fog::Compute::AzureRM::Server.parse(vm))
+        def detach_data_disk(disk_name, async = false)
+          response = service.detach_data_disk_from_vm(resource_group, name, disk_name, async)
+          async ? create_fog_async_response(response) : merge_attributes(Fog::Compute::AzureRM::Server.parse(response))
         end
 
         private
 
         def platform_is_linux?(platform)
           platform.strip.casecmp(PLATFORM_LINUX).zero?
+        end
+
+        def create_fog_async_response(response)
+          server = Fog::Compute::AzureRM::Server.new(service: service)
+          Fog::AzureRM::AsyncResponse.new(server, response)
         end
 
         def virtual_machine_params(ssh_key_path)

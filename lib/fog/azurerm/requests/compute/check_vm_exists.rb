@@ -3,20 +3,28 @@ module Fog
     class AzureRM
       # This class provides the actual implementation for service calls.
       class Real
-        def check_vm_exists(resource_group, name)
+        def check_vm_exists(resource_group, name, async)
           msg = "Checking Virtual Machine #{name}"
           Fog::Logger.debug msg
           begin
-            @compute_mgmt_client.virtual_machines.get(resource_group, name, 'instanceView')
-            Fog::Logger.debug "Virtual machine #{name} exists."
-            true
+            if async
+              response = @compute_mgmt_client.virtual_machines.get_async(resource_group, name, 'instanceView')
+            else
+              @compute_mgmt_client.virtual_machines.get(resource_group, name, 'instanceView')
+            end
           rescue MsRestAzure::AzureOperationError => e
             if e.body['error']['code'] == 'ResourceNotFound'
               Fog::Logger.debug "Virtual machine #{name} doesn't exist."
-              false
+              return false
             else
               raise_azure_exception(e, msg)
             end
+          end
+          if async
+            response
+          else
+            Fog::Logger.debug "Virtual machine #{name} exists."
+            true
           end
         end
       end

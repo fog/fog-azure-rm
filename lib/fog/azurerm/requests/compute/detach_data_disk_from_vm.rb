@@ -3,7 +3,7 @@ module Fog
     class AzureRM
       # This class provides the actual implementation for service calls.
       class Real
-        def detach_data_disk_from_vm(resource_group, vm_name, disk_name)
+        def detach_data_disk_from_vm(resource_group, vm_name, disk_name, async)
           msg = "Detaching Data Disk #{disk_name} from Virtual Machine #{vm_name} in Resource Group #{resource_group}."
           Fog::Logger.debug msg
           vm = get_virtual_machine_instance(resource_group, vm_name, @compute_mgmt_client)
@@ -14,12 +14,20 @@ module Fog
           end
           vm.resources = nil
           begin
-            virtual_machine = @compute_mgmt_client.virtual_machines.create_or_update(resource_group, vm_name, vm)
+            if async
+              response = @compute_mgmt_client.virtual_machines.create_or_update_async(resource_group, vm_name, vm)
+            else
+              virtual_machine = @compute_mgmt_client.virtual_machines.create_or_update(resource_group, vm_name, vm)
+            end
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
-          Fog::Logger.debug "Data Disk #{disk_name} detached from Virtual Machine #{vm_name} successfully."
-          virtual_machine
+          if async
+            response
+          else
+            Fog::Logger.debug "Data Disk #{disk_name} detached from Virtual Machine #{vm_name} successfully."
+            virtual_machine
+          end
         end
       end
       # This class provides the mock implementation for unit tests.

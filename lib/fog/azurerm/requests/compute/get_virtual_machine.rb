@@ -3,16 +3,20 @@ module Fog
     class AzureRM
       # This class provides the actual implementation for service calls.
       class Real
-        def get_virtual_machine(resource_group, name)
+        def get_virtual_machine(resource_group, name, async)
           msg = "Getting Virtual Machine #{name} from Resource Group '#{resource_group}'"
           Fog::Logger.debug msg
           begin
-            virtual_machine = @compute_mgmt_client.virtual_machines.get(resource_group, name)
+            if async
+              response = @compute_mgmt_client.virtual_machines.get_async(resource_group, name)
+            else
+              response = @compute_mgmt_client.virtual_machines.get(resource_group, name)
+            end
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
-          Fog::Logger.debug "Getting Virtual Machine #{name} from Resource Group '#{resource_group}' successful"
-          virtual_machine
+          Fog::Logger.debug "Getting Virtual Machine #{name} from Resource Group '#{resource_group}' successful" unless async
+          response
         end
       end
       # This class provides the mock implementation for unit tests.

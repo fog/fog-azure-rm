@@ -147,20 +147,12 @@ module Fog
 
         def attach_data_disk(disk_name, disk_size, storage_account_name, async = false)
           response = service.attach_data_disk_to_vm(resource_group, name, disk_name, disk_size, storage_account_name, async)
-          if async
-            create_fog_async_response(response)
-          else
-            merge_attributes(Fog::Compute::AzureRM::Server.parse(response))
-          end
+          async ? create_fog_async_response(response) : merge_attributes(Fog::Compute::AzureRM::Server.parse(response))
         end
 
         def detach_data_disk(disk_name, async = false)
           response = service.detach_data_disk_from_vm(resource_group, name, disk_name, async)
-          if async
-            create_fog_async_response(response)
-          else
-            merge_attributes(Fog::Compute::AzureRM::Server.parse(response))
-          end
+          async ? create_fog_async_response(response) : merge_attributes(Fog::Compute::AzureRM::Server.parse(response))
         end
 
         private

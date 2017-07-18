@@ -26,8 +26,8 @@ class TestRedeployVirtualMachine < Minitest::Test
     end
 
     async_response = Concurrent::Promise.execute { 10 }
-    @virtual_machines.stub :redeploy_async, async_response do
-      assert_raises RuntimeError { @service.redeploy_virtual_machine('fog-test-rg', 'fog-test-server', true) }
+    @virtual_machines.stub :redeploy_async, response do
+      assert_raises(RuntimeError) { @service.redeploy_virtual_machine('fog-test-rg', 'fog-test-server', true) }
     end
   end
 end

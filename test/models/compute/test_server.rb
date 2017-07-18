@@ -87,7 +87,7 @@ class TestServer < Minitest::Test
 
     async_response = Concurrent::Promise.execute { 10 }
     @service.stub :delete_virtual_machine, async_response do
-      assert_instance_of Concurrent::Promise, @server.destroy(true)
+      assert_instance_of Fog::AzureRM::AsyncResponse, @server.destroy(true)
     end
   end
 
@@ -98,7 +98,7 @@ class TestServer < Minitest::Test
 
     async_response = Concurrent::Promise.execute { 10 }
     @service.stub :generalize_virtual_machine, async_response do
-      assert_instance_of Concurrent::Promise, @server.generalize(true)
+      assert_instance_of Fog::AzureRM::AsyncResponse, @server.generalize(true)
     end
   end
 
@@ -109,7 +109,7 @@ class TestServer < Minitest::Test
 
     async_response = Concurrent::Promise.execute { 10 }
     @service.stub :power_off_virtual_machine, async_response do
-      assert_instance_of Concurrent::Promise, @server.power_off(true)
+      assert_instance_of Fog::AzureRM::AsyncResponse, @server.power_off(true)
     end
   end
 
@@ -120,7 +120,7 @@ class TestServer < Minitest::Test
 
     async_response = Concurrent::Promise.execute { 10 }
     @service.stub :start_virtual_machine, async_response do
-      assert_instance_of Concurrent::Promise, @server.start(true)
+      assert_instance_of Fog::AzureRM::AsyncResponse, @server.start(true)
     end
   end
 
@@ -131,7 +131,7 @@ class TestServer < Minitest::Test
 
     async_response = Concurrent::Promise.execute { 10 }
     @service.stub :restart_virtual_machine, async_response do
-      assert_instance_of Concurrent::Promise, @server.restart(true)
+      assert_instance_of Fog::AzureRM::AsyncResponse, @server.restart(true)
     end
   end
 
@@ -142,7 +142,7 @@ class TestServer < Minitest::Test
 
     async_response = Concurrent::Promise.execute { 10 }
     @service.stub :deallocate_virtual_machine, async_response do
-      assert_instance_of Concurrent::Promise, @server.deallocate(true)
+      assert_instance_of Fog::AzureRM::AsyncResponse, @server.deallocate(true)
     end
   end
 
@@ -153,7 +153,7 @@ class TestServer < Minitest::Test
 
     async_response = Concurrent::Promise.execute { 10 }
     @service.stub :redeploy_virtual_machine, async_response do
-      assert_instance_of Concurrent::Promise, @server.redeploy(true)
+      assert_instance_of Fog::AzureRM::AsyncResponse, @server.redeploy(true)
     end
   end
 
@@ -166,12 +166,12 @@ class TestServer < Minitest::Test
   def test_list_available_sizes_method_response
     response = ApiStub::Models::Compute::Server.list_available_sizes_for_virtual_machine_response(@compute_client)
     @service.stub :list_available_sizes_for_virtual_machine, response do
-      assert_instance_of Array, @server.list_available_sizes(true)
+      assert_instance_of Array, @server.list_available_sizes(false)
     end
 
     async_response = Concurrent::Promise.execute { 10 }
     @service.stub :list_available_sizes_for_virtual_machine, async_response do
-      assert_instance_of Concurrent::Promise, @server.list_available_sizes(true)
+      assert_instance_of Fog::AzureRM::AsyncResponse, @server.list_available_sizes(true)
     end
   end
 
@@ -183,7 +183,7 @@ class TestServer < Minitest::Test
 
     async_response = Concurrent::Promise.execute { 10 }
     @service.stub :attach_data_disk_to_vm, async_response do
-      assert_instance_of Concurrent::Promise, @server.attach_data_disk('disk', '10', 'mystorage1', true)
+      assert_instance_of Fog::AzureRM::AsyncResponse, @server.attach_data_disk('disk', '10', 'mystorage1', true)
     end
   end
 
@@ -195,7 +195,7 @@ class TestServer < Minitest::Test
 
     async_response = Concurrent::Promise.execute { 10 }
     @service.stub :detach_data_disk_from_vm, async_response do
-      assert_instance_of Concurrent::Promise, @server.detach_data_disk('disk1', true)
+      assert_instance_of Fog::AzureRM::AsyncResponse, @server.detach_data_disk('disk1', true)
     end
   end
 end

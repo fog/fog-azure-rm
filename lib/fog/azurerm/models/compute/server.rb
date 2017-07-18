@@ -102,35 +102,43 @@ module Fog
         end
 
         def destroy(async = false)
-          service.delete_virtual_machine(resource_group, name, async)
+          response = service.delete_virtual_machine(resource_group, name, async)
+          async ? create_fog_async_response(response) : response
         end
 
         def generalize(async = false)
-          service.generalize_virtual_machine(resource_group, name, async)
+          response = service.generalize_virtual_machine(resource_group, name, async)
+          async ? create_fog_async_response(response) : response
         end
 
         def power_off(async = false)
-          service.power_off_virtual_machine(resource_group, name, async)
+          response = service.power_off_virtual_machine(resource_group, name, async)
+          async ? create_fog_async_response(response) : response
         end
 
         def start(async = false)
-          service.start_virtual_machine(resource_group, name, async)
+          response = service.start_virtual_machine(resource_group, name, async)
+          async ? create_fog_async_response(response) : response
         end
 
         def restart(async = false)
-          service.restart_virtual_machine(resource_group, name, async)
+          response = service.restart_virtual_machine(resource_group, name, async)
+          async ? create_fog_async_response(response) : response
         end
 
         def deallocate(async = false)
-          service.deallocate_virtual_machine(resource_group, name, async)
+          response = service.deallocate_virtual_machine(resource_group, name, async)
+          async ? create_fog_async_response(response) : response
         end
 
         def redeploy(async = false)
-          service.redeploy_virtual_machine(resource_group, name, async)
+          response = service.redeploy_virtual_machine(resource_group, name, async)
+          async ? create_fog_async_response(response) : response
         end
 
         def list_available_sizes(async = false)
-          service.list_available_sizes_for_virtual_machine(resource_group, name, async)
+          response = service.list_available_sizes_for_virtual_machine(resource_group, name, async)
+          async ? create_fog_async_response(response) : response
         end
 
         def vm_status(async = false)
@@ -138,20 +146,20 @@ module Fog
         end
 
         def attach_data_disk(disk_name, disk_size, storage_account_name, async = false)
-          vm_response = service.attach_data_disk_to_vm(resource_group, name, disk_name, disk_size, storage_account_name, async)
+          response = service.attach_data_disk_to_vm(resource_group, name, disk_name, disk_size, storage_account_name, async)
           if async
-            vm_response
+            create_fog_async_response(response)
           else
-            merge_attributes(Fog::Compute::AzureRM::Server.parse(vm_response))
+            merge_attributes(Fog::Compute::AzureRM::Server.parse(response))
           end
         end
 
         def detach_data_disk(disk_name, async = false)
-          vm_response = service.detach_data_disk_from_vm(resource_group, name, disk_name, async)
+          response = service.detach_data_disk_from_vm(resource_group, name, disk_name, async)
           if async
-            vm_response
+            create_fog_async_response(response)
           else
-            merge_attributes(Fog::Compute::AzureRM::Server.parse(vm_response))
+            merge_attributes(Fog::Compute::AzureRM::Server.parse(response))
           end
         end
 
@@ -159,6 +167,11 @@ module Fog
 
         def platform_is_linux?(platform)
           platform.strip.casecmp(PLATFORM_LINUX).zero?
+        end
+
+        def create_fog_async_response(response)
+          server = Fog::Compute::AzureRM::Server.new(service: service)
+          Fog::AzureRM::AsyncResponse.new(server, response)
         end
 
         def virtual_machine_params(ssh_key_path)

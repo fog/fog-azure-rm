@@ -25,9 +25,8 @@ class TestStartVirtualMachine < Minitest::Test
       assert_raises(RuntimeError) { @service.start_virtual_machine('fog-test-rg', 'fog-test-server', false) }
     end
 
-    async_response = Concurrent::Promise.execute { 10 }
-    @virtual_machines.stub :start_async, async_response do
-      assert_raises RuntimeError { @service.start_virtual_machine('fog-test-rg', 'fog-test-server', true) }
+    @virtual_machines.stub :start_async, response do
+      assert_raises(RuntimeError) { @service.start_virtual_machine('fog-test-rg', 'fog-test-server', true) }
     end
   end
 end

@@ -14,7 +14,7 @@ class TestPowerOffVirtualMachine < Minitest::Test
     end
 
     async_response = Concurrent::Promise.execute { 10 }
-    @virtual_machines.stub :pwoer_off_async, async_response do
+    @virtual_machines.stub :power_off_async, async_response do
       assert @service.power_off_virtual_machine('fog-test-rg', 'fog-test-server', true), async_response
     end
   end
@@ -25,9 +25,8 @@ class TestPowerOffVirtualMachine < Minitest::Test
       assert_raises(RuntimeError) { @service.power_off_virtual_machine('fog-test-rg', 'fog-test-server', false) }
     end
 
-    async_response = Concurrent::Promise.execute { 10 }
-    @virtual_machines.stub :power_off_async, async_response do
-      assert_raises RuntimeError { @service.power_off_virtual_machine('fog-test-rg', 'fog-test-server', true) }
+    @virtual_machines.stub :power_off_async, response do
+      assert_raises(RuntimeError) { @service.power_off_virtual_machine('fog-test-rg', 'fog-test-server', true) }
     end
   end
 end

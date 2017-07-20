@@ -22,14 +22,24 @@ module Fog
           Fog::AzureRM::AsyncResponse.new(server, async_response)
         end
 
-        def get(resource_group_name, virtual_machine_name)
-          virtual_machine = service.get_virtual_machine(resource_group_name, virtual_machine_name)
-          virtual_machine_fog = Fog::Compute::AzureRM::Server.new(service: service)
-          virtual_machine_fog.merge_attributes(Fog::Compute::AzureRM::Server.parse(virtual_machine))
+        def get(resource_group_name, virtual_machine_name, async = false)
+          response = service.get_virtual_machine(resource_group_name, virtual_machine_name, async)
+          virtual_machine = Fog::Compute::AzureRM::Server.new(service: service)
+          if async
+            Fog::AzureRM::AsyncResponse.new(virtual_machine, response)
+          else
+            virtual_machine.merge_attributes(Fog::Compute::AzureRM::Server.parse(response))
+          end
         end
 
-        def check_vm_exists(resource_group, name)
-          service.check_vm_exists(resource_group, name)
+        def check_vm_exists(resource_group, name, async = false)
+          response = service.check_vm_exists(resource_group, name, async)
+          if async
+            server = Fog::Compute::AzureRM::Server.new(service: service)
+            Fog::AzureRM::AsyncResponse.new(server, response)
+          else
+            response
+          end
         end
       end
     end

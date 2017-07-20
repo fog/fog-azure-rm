@@ -10,14 +10,23 @@ class TestGeneralizeVirtualMachine < Minitest::Test
 
   def test_generalize_virtual_machine_success
     @virtual_machines.stub :generalize, true do
-      assert @service.generalize_virtual_machine('fog-test-rg', 'fog-test-server')
+      assert @service.generalize_virtual_machine('fog-test-rg', 'fog-test-server', false)
+    end
+
+    async_response = Concurrent::Promise.execute { 10 }
+    @virtual_machines.stub :generalize_async, async_response do
+      assert @service.generalize_virtual_machine('fog-test-rg', 'fog-test-server', true), async_response
     end
   end
 
   def test_generalize_virtual_machine_failure
     response = proc { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @virtual_machines.stub :generalize, response do
-      assert_raises(RuntimeError) { @service.generalize_virtual_machine('fog-test-rg', 'fog-test-server') }
+      assert_raises(RuntimeError) { @service.generalize_virtual_machine('fog-test-rg', 'fog-test-server', false) }
+    end
+
+    @virtual_machines.stub :generalize_async, response do
+      assert_raises(RuntimeError) { @service.generalize_virtual_machine('fog-test-rg', 'fog-test-server', true) }
     end
   end
 end

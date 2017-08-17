@@ -8,8 +8,7 @@ module Fog
         attribute :end_ip_address
 
         def self.parse(firewall_rule)
-          hash = get_hash_from_object(firewall_rule)
-          hash
+          get_hash_from_object(firewall_rule)
         end
       end
     end

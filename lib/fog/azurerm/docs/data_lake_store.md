@@ -37,14 +37,13 @@ Create a new Data Lake Store Account
 ```ruby
     azure_data_lake_store_service.data_lake_store_accounts.create(
         name: '<Store Account Name>',
-            location: '<Location>',
+            location: '<Location>', # (Possible values: Central US, East US 2, North Europe)
             resource_group: '<Resource Group name>',
-            type: 'Microsoft.DataLakeStore/accounts',
-            encryption_state: '<Encryption State>',
-            firewall_state: '<Firewall State>',
-            firewall_allow_azure_ips:'<Allow Azure Ips>',
-            new_tier: '<Next Month Package>',
-            current_tier: '<This Month Package>',
+            encryption_state: '<Encryption State>', # Optional Parameter (Possible values: Enabled,Disabled)
+            firewall_state: '<Firewall State>', # Optional Parameter (Possible values: Enabled,Disabled)
+            firewall_allow_azure_ips:'<Allow Azure Ips>', # Optional Parameter (Possible values: Enabled,Disabled)
+            new_tier: '<Next Month Package>', # Optional Parameter
+            current_tier: '<This Month Package>', # Optional Parameter
             firewall_rules: [
                 {
                     name: 'Rule One',
@@ -56,7 +55,7 @@ Create a new Data Lake Store Account
                     start_ip_address: 'x.x.x.x',
                     end_ip_address: 'x.x.x.x'
                 }
-            ]
+            ] # Optional Parameter
  )
 ```
 
@@ -86,9 +85,9 @@ Get Data Lake Store Account object from the get method(described above) and then
 
 ```ruby
     account.update(
-        firewall_state: '<Firewall State>',
-        firewall_allow_azure_ips:'<Allow Azure Ips>',
-        new_tier: '<Next Month Package>'
+        firewall_state: '<Firewall State>', # Optional Parameter (Possible values: Enabled,Disabled)
+        firewall_allow_azure_ips:'<Allow Azure Ips>', # Optional Parameter (Possible values: Enabled,Disabled)
+        new_tier: '<Next Month Package>' # Optional Parameter
  )
 ```
 

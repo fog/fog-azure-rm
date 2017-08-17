@@ -25,10 +25,7 @@ module Fog
               'etag' => '00000002-0000-0000-76c2-f7ad90b5d101',
               'location' => 'East US 2',
               'tags' => {},
-              'properties' =>
-                  {
-                      'encryption_state' => 'Enabled'
-                  },
+              'encryption_state' => 'Enabled',
               'resource_group' => 'resource_group'
           }
         end

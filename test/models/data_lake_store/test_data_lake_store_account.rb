@@ -12,6 +12,7 @@ class TestDataLakeStoreAccount < Minitest::Test
   def test_model_methods
     methods = [
         :save,
+        :update,
         :destroy
     ]
     methods.each do |method|
@@ -33,6 +34,12 @@ class TestDataLakeStoreAccount < Minitest::Test
   def test_save_method_response
     @service.stub :create_data_lake_store_account, @response do
       assert_instance_of Fog::DataLakeStore::AzureRM::DataLakeStoreAccount, @account.save
+    end
+  end
+
+  def test_update_method_response
+    @service.stub :update_data_lake_store_account, @response do
+      assert_instance_of Fog::DataLakeStore::AzureRM::DataLakeStoreAccountUpdateParameters, @account.update
     end
   end
 

@@ -12,10 +12,7 @@ module ApiStub
                         "etag":"00000011-0000-0000-19f2-3a6c32b0d101",
                         "location":"East US 2",
                         "tags":{},
-                        "properties":
-                                    {
-                                        "encryption_state":"Enabled"
-                                    },
+                        "encryption_state":"Enabled",
                         "resource_group":"fog-test-rg"
                         }]
             }'
@@ -31,10 +28,7 @@ module ApiStub
             "etag": "00000003-0000-0000-bd66-02b337a4d101",
             "location": "East US 2",
             "tags": {},
-            "properties":
-              {
-                "encryption_state": "Enabled"
-              },
+            "encryption_state": "Enabled",
             "resource_group": "fog-test-rg"
           }'
           account_mapper = Azure::ARM::DataLakeStore::Models::DataLakeStoreAccount.mapper

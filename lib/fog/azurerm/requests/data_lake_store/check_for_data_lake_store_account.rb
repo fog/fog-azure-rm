@@ -4,7 +4,7 @@ module Fog
       # Real class for Data Lake Store Account
       class Real
         def check_for_data_lake_store_account(resource_group, name)
-          msg = "Getting Data Lake Store Account #{name} from Resource Group #{resource_group}."
+          msg = "Checking if Data Lake Store Account #{name} exists in Resource Group #{resource_group}."
           Fog::Logger.debug msg
           begin
             account = @data_lake_store_account_client.account.get(resource_group, name)

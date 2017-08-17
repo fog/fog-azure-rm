@@ -8,11 +8,7 @@ module Fog
         attribute :encryption_key_version
 
         def self.parse(key_vault_meta_info)
-          hash = {}
-          hash['key_vault_resource_id'] = key_vault_meta_info.key_vault_resource_id
-          hash['encryption_key_name'] = key_vault_meta_info.encryption_key_name
-          hash['encryption_key_version'] = key_vault_meta_info.encryption_key_version
-          hash
+          get_hash_from_object(key_vault_meta_info)
         end
       end
     end

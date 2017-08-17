@@ -22,7 +22,7 @@ module Fog
           account = Azure::ARM::DataLakeStore::Models::DataLakeStoreAccount.new
           account.name = data_lake_store_account_params[:name]
           account.location = data_lake_store_account_params[:location]
-          account.type = data_lake_store_account_params[:type] unless data_lake_store_account_params[:type].nil?
+          account.type = 'Microsoft.DataLakeStore/accounts'
           account.firewall_state = data_lake_store_account_params[:firewall_state] unless data_lake_store_account_params[:firewall_state].nil?
           account.firewall_allow_azure_ips = data_lake_store_account_params[:firewall_allow_azure_ips] unless data_lake_store_account_params[:firewall_allow_azure_ips].nil?
           account.firewall_rules = define_firewall_rules_create(data_lake_store_account_params[:firewall_rules]) unless data_lake_store_account_params[:firewall_rules].nil?
@@ -71,10 +71,7 @@ module Fog
               'etag' => '00000002-0000-0000-76c2-f7ad90b5d101',
               'location' => 'East US 2',
               'tags' => {},
-              'properties' =>
-                  {
-                      'encryption_state' => 'Enabled'
-                  }
+              'encryption_state' => 'Enabled'
           }
         end
       end

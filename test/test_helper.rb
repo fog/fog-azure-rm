@@ -7,16 +7,11 @@ if ENV['COVERAGE']
 end
 
 if ENV['CODECLIMATE_REPO_TOKEN']
-  require 'simplecov'
-  SimpleCov.start do
-    add_filter 'test'
-    command_name 'Minitest'
-  end
+  require 'codeclimate-test-reporter'
+  CodeClimate::TestReporter.start
 end
 
 require 'minitest/autorun'
-require 'azure/core/http/http_error'
-require 'azure/core/http/http_response'
 $LOAD_PATH.unshift(File.expand_path '../lib', __dir__)
 require File.expand_path '../lib/fog/azurerm', __dir__
 require File.expand_path './api_stub', __dir__
@@ -70,11 +65,6 @@ def mocked_storage_http_error
   Azure::Core::Http::HttpResponse.new mocked_net_response, 'mocked_uri'
 end
 
-def mocked_storage_http_not_found_error
-  mocked_net_response = MockResponse.new '404', 'mocked_body', a: 'a', b: 'b'
-  Azure::Core::Http::HttpResponse.new mocked_net_response, 'mocked_uri'
-end
-
 def server(service)
   Fog::Compute::AzureRM::Server.new(
     name: 'fog-test-server',
@@ -85,7 +75,7 @@ def server(service)
     username: 'shaffan',
     password: 'Confiz=123',
     disable_password_authentication: false,
-    network_interface_card_ids: ['/subscriptions/########-####-####-####-############/resourceGroups/shaffanRG/providers/Microsoft.Network/networkInterfaces/testNIC'],
+    network_interface_card_id: '/subscriptions/########-####-####-####-############/resourceGroups/shaffanRG/providers/Microsoft.Network/networkInterfaces/testNIC',
     publisher: 'Canonical',
     offer: 'UbuntuServer',
     sku: '14.04.2-LTS',
@@ -180,29 +170,28 @@ def premium_check_for_invalid_replications(service)
   )
 end
 
-def directory(service)
+def storage_container(service)
   Fog::Storage::AzureRM::Directory.new(
-    key: 'test_container',
-    acl: 'container',
+    key: 'storage-test-container',
+    last_modified: 'Tue, 04 Aug 2015 06:01:08 GMT',
     etag: '0x8D29C92176C8352',
-    last_modified: Time.parse('Tue, 04 Aug 2015 06:01:08 GMT'),
-    lease_duration: nil,
-    lease_state: 'available',
     lease_status: 'unlocked',
+    lease_state: 'available',
+    lease_duration: nil,
     metadata: {
       'key1' => 'value1',
       'key2' => 'value2'
     },
-    service: service,
-    collection: Fog::Storage::AzureRM::Directories.new(service: @service)
+    public_access_level: nil,
+    service: service
   )
 end
 
-def file(service)
+def storage_blob(service)
   Fog::Storage::AzureRM::File.new(
-    key: 'test_blob',
-    directory: directory(service),
-    last_modified: Time.parse('Tue, 04 Aug 2015 06:01:08 GMT'),
+    key: 'storage-test-blob',
+    directory: 'storage-test-container',
+    last_modified: 'Tue, 04 Aug 2015 06:01:08 GMT',
     etag: '0x8D29C92176C8352',
     metadata: {
       'key1' => 'value1',
@@ -219,7 +208,7 @@ def file(service)
     content_md5: 'tXAohIyxuu/t94Lp/ujeRw==',
     cache_control: nil,
     sequence_number: 0,
-    blob_type: 'BlockBlob',
+    blob_type: 'PageBlob',
     copy_id: '095adc3b-e277-4c3d-97e0-0abca881f60c',
     copy_status: 'success',
     copy_source: 'https://testaccount.blob.core.windows.net/testblob/4m?snapshot=2016-02-04T08%3A35%3A50.3157696Z',
@@ -227,14 +216,14 @@ def file(service)
     copy_completion_time: 'Thu, 04 Feb 2016 08:35:52 GMT',
     copy_status_description: nil,
     accept_ranges: 0,
-    service: service,
-    collection: Fog::Storage::AzureRM::Files.new(service: @service, directory: directory(service))
+    service: service
   )
 end
 
-def storage_blob
+def storage_cloud_blob
   mock_blob = MockBlob.new
-  mock_blob.name = 'test_blob'
+  mock_blob.name = 'storage-test-blob'
+  mock_blob.snapshot = nil
   mock_blob.properties = {
     lease_status: 'unlocked',
     lease_state: 'available',
@@ -250,13 +239,11 @@ def storage_blob
     blob_type: 'PageBlob',
     copy_id: '095adc3b-e277-4c3d-97e0-0abca881f60c',
     copy_status: 'success',
-    copy_source: 'https://sa.blob.core.windows.net/test_container/test_blob?snapshot=2016-02-04T08%3A35%3A50.3157696Z',
+    copy_source: 'https://testaccount.blob.core.windows.net/testblob/4m?snapshot=2016-02-04T08%3A35%3A50.3157696Z',
     copy_progress: '4194304/4194304',
     copy_completion_time: 'Thu, 04 Feb 2016 08:35:52 GMT',
     copy_status_description: nil,
-    accept_ranges: 0,
-    last_modified: 'Tue, 04 Aug 2015 06:01:08 GMT',
-    etag: '"0x8D29C92176C8352"'
+    accept_ranges: 0
   }
   mock_blob.metadata = {
     'key1' => 'value1',
@@ -554,7 +541,7 @@ def gateway(service)
               backend_address_pool_id: '/subscriptions/########-####-####-####-############/resourceGroups/fogRM-rg/providers/Microsoft.Network/applicationGateways/gateway/backendAddressPools/AG-BackEndAddressPool',
               backend_http_settings_id: '/subscriptions/########-####-####-####-############/resourceGroups/fogRM-rg/providers/Microsoft.Network/applicationGateways/gateway/backendHttpSettingsCollection/gateway_settings',
               paths: [
-                %w(/usr /etc)
+                %w('/usr', '/etc')
               ]
             }
           ]
@@ -720,19 +707,9 @@ end
 def database(service)
   Fog::Sql::AzureRM::SqlDatabase.new(
     name: 'fog-test-zone.com',
-    id: '/subscriptions/########-####-####-####-############/resourceGroups/vm_custom_image/providers/Microsoft.Sql/servers/test-sql-server-confiz123/databases/confiztestdatab98',
+    id: '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/vm_custom_image/providers/Microsoft.Sql/servers/test-sql-server-confiz123/databases/confiztestdatab98',
     resource_group: 'fog-test-rg',
     server_name: 'fog-test-server-name',
-    location: 'eastus',
-    service: service
-  )
-end
-
-def databases(service)
-  Fog::Sql::AzureRM::SqlDatabases.new(
-    resource_group: 'fog-test-rg',
-    server_name: 'fog-test-server-name',
-    name: 'database-name',
     location: 'eastus',
     service: service
   )
@@ -741,20 +718,7 @@ end
 def sql_server(service)
   Fog::Sql::AzureRM::SqlServer.new(
     name: 'fog-test-zone.com',
-    id: '/subscriptions/########-####-####-####-############/resourceGroups/vm_custom_image/providers/Microsoft.Sql/servers/test-sql-server-confiz123',
-    resource_group: 'fog-test-rg',
-    location: 'eastus',
-    version: '2.0',
-    administrator_login: 'test-admin@3',
-    administrator_login_password: 'pass@swe',
-    service: service
-  )
-end
-
-def sql_servers(service)
-  Fog::Sql::AzureRM::SqlServers.new(
-    name: 'fog-test-zone.com',
-    id: '/subscriptions/########-####-####-####-############/resourceGroups/vm_custom_image/providers/Microsoft.Sql/servers/test-sql-server-confiz123',
+    id: '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/vm_custom_image/providers/Microsoft.Sql/servers/test-sql-server-confiz123',
     resource_group: 'fog-test-rg',
     location: 'eastus',
     version: '2.0',
@@ -767,7 +731,7 @@ end
 def sql_server_firewall_rule(service)
   Fog::Sql::AzureRM::FirewallRule.new(
     name: 'fog-test-firewall-rule-name',
-    id: '/subscriptions/########-####-####-####-############/resourceGroups/vm_custom_image/providers/Microsoft.Sql/servers/test-sql-server-confiz123/firewallRules/rule-name',
+    id: '/subscriptions/67f2116d-4ea2-4c6c-b20a-f92183dbe3cb/resourceGroups/vm_custom_image/providers/Microsoft.Sql/servers/test-sql-server-confiz123/firewallRules/rule-name',
     resource_group: 'fog-test-rg',
     server_name: 'server-name',
     start_ip: '10.10.10.10',
@@ -776,42 +740,12 @@ def sql_server_firewall_rule(service)
   )
 end
 
-def sql_server_firewall_rules(service)
-  Fog::Sql::AzureRM::FirewallRules.new(
-    name: 'fog-test-firewall-rule-name',
-    id: '/subscriptions/########-####-####-####-############/resourceGroups/vm_custom_image/providers/Microsoft.Sql/servers/test-sql-server-confiz123/firewallRules/rule-name',
-    resource_group: 'fog-test-rg',
-    server_name: 'server-name',
-    start_ip: '10.10.10.10',
-    end_ip: '10.10.10.10',
-    service: service
-  )
-end
-
-def recovery_vault(service)
-  Fog::Storage::AzureRM::RecoveryVault.new(
-    name: 'fog-test-vault',
-    id: '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.RecoveryServices/vaults/fog-test-vault',
-    resource_group: 'fog-test-rg',
-    location: 'westus',
-    type: 'Microsoft.RecoveryServices/vaults',
-    sku: {
-      name: 'standard'
-    },
-    service: service
-  )
-end
-
-def managed_disk(service)
-  Fog::Compute::AzureRM::ManagedDisk.new(
-    name: 'managed-disk',
-    location: 'East US',
-    resource_group_name: 'fog-test-rg',
-    account_type: 'Premium_LRS',
-    disk_size_gb: 1023,
-    creation_data: {
-      create_option: 'Empty'
-    },
-    service: service
+def data_lake_store_account(service)
+  Fog::DataLakeStore::AzureRM::DataLakeStoreAccount.new(
+      name: 'fogtestdlsconfiz',
+      location: 'East US 2',
+      id: '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.DataLakeStore/accounts/fogtestdlsconfiz',
+      resource_group: 'fog-test-rg',
+      service: service
   )
 end

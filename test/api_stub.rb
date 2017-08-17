@@ -5,7 +5,6 @@ module ApiStub
       autoload :Server, File.expand_path('api_stub/models/compute/server', __dir__)
       autoload :AvailabilitySet, File.expand_path('api_stub/models/compute/availability_set', __dir__)
       autoload :VirtualMachineExtension, File.expand_path('api_stub/models/compute/virtual_machine_extension', __dir__)
-      autoload :ManagedDisk, File.expand_path('api_stub/models/compute/managed_disk', __dir__)
     end
 
     module Resources
@@ -18,7 +17,6 @@ module ApiStub
       autoload :StorageAccount, File.expand_path('api_stub/models/storage/storageaccount', __dir__)
       autoload :File, ::File.expand_path('api_stub/models/storage/file', __dir__)
       autoload :Directory, ::File.expand_path('api_stub/models/storage/directory', __dir__)
-      autoload :RecoveryVault, ::File.expand_path('api_stub/models/storage/recovery_vault', __dir__)
     end
 
     module Network
@@ -58,8 +56,8 @@ module ApiStub
       autoload :SqlFirewallRule, File.expand_path('api_stub/models/sql/sql_firewall_rule', __dir__)
     end
 
-    module KeyVault
-      autoload :Vault, File.expand_path('api_stub/models/key_vault/vault', __dir__)
+    module DataLakeStore
+      autoload :DataLakeStoreAccount, File.expand_path('api_stub/models/data_lake_store/data_lake_store_account', __dir__)
     end
   end
 
@@ -68,7 +66,6 @@ module ApiStub
       autoload :AvailabilitySet, File.expand_path('api_stub/requests/compute/availability_set', __dir__)
       autoload :VirtualMachine, File.expand_path('api_stub/requests/compute/virtual_machine', __dir__)
       autoload :VirtualMachineExtension, File.expand_path('api_stub/requests/compute/virtual_machine_extension', __dir__)
-      autoload :ManagedDisk, File.expand_path('api_stub/requests/compute/managed_disk', __dir__)
     end
 
     module Resources
@@ -81,7 +78,6 @@ module ApiStub
       autoload :StorageAccount, File.expand_path('api_stub/requests/storage/storageaccount', __dir__)
       autoload :File, ::File.expand_path('api_stub/requests/storage/file', __dir__)
       autoload :Directory, ::File.expand_path('api_stub/requests/storage/directory', __dir__)
-      autoload :RecoveryVault, ::File.expand_path('api_stub/requests/storage/recovery_vault', __dir__)
     end
 
     module Network
@@ -121,8 +117,8 @@ module ApiStub
       autoload :FirewallRule, File.expand_path('api_stub/requests/sql/firewall_rule', __dir__)
     end
 
-    module KeyVault
-      autoload :Vault, File.expand_path('api_stub/requests/key_vault/vault', __dir__)
+    module DataLakeStore
+      autoload :DataLakeStoreAccount, File.expand_path('api_stub/requests/data_lake_store/data_lake_store_account', __dir__)
     end
   end
 end

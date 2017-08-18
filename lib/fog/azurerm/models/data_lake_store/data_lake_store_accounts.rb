@@ -2,7 +2,7 @@ module Fog
   module DataLakeStore
     class AzureRM
       # This class is giving implementation of
-      # all/get for Zones.
+      # all/get for Data Lake Store Account.
       class DataLakeStoreAccounts < Fog::Collection
         model DataLakeStoreAccount
 

@@ -24,7 +24,17 @@ class TestDataLakeStoreAccount < Minitest::Test
     attributes = [
         :name,
         :id,
-        :resource_group
+        :resource_group,
+        :location,
+        :type,
+        :tags,
+        :firewall_state,
+        :firewall_allow_azure_ips,
+        :firewall_rules,
+        :encryption_state,
+        :encryption_config,
+        :new_tier,
+        :current_tier
     ]
     attributes.each do |attribute|
       assert_respond_to @account, attribute

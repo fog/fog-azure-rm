@@ -47,19 +47,21 @@ def get_record_type(type)
 end
 
 def raise_azure_exception(exception, msg)
-  if exception.respond_to? 'body'
-    message = if exception.body['error'].nil?
-                exception.body['message']
-              else
-                exception.body['error']['message']
-              end
-    exception_message = "Exception in #{msg} #{message} Type: #{exception.class}\n#{exception.backtrace.join("\n")}"
-  else
-    "#{exception.inspect}\n#{exception.backtrace.join("\n")}"
-  end
+  # if exception.respond_to? 'body'
+  #   message = if exception.body['error'].nil?
+  #               exception.body['message']
+  #             else
+  #               exception.body['error']['message']
+  #             end
+  #   exception_message = "Exception in #{msg} #{message} Type: #{exception.class}\n#{exception.backtrace.join("\n")}"
+  # else
+  #   "#{exception.inspect}\n#{exception.backtrace.join("\n")}"
+  # end
+  #
+  # Fog::Logger.debug exception.backtrace
+  # raise exception_message
 
-  Fog::Logger.debug exception.backtrace
-  raise exception_message
+  raise exception
 end
 
 # Make sure if input_params(Hash) contains all keys present in required_params(Array)

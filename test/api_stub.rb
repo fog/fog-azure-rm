@@ -61,6 +61,10 @@ module ApiStub
     module KeyVault
       autoload :Vault, File.expand_path('api_stub/models/key_vault/vault', __dir__)
     end
+
+    module DataLakeStore
+      autoload :DataLakeStoreAccount, File.expand_path('api_stub/models/data_lake_store/data_lake_store_account', __dir__)
+    end
   end
 
   module Requests
@@ -123,6 +127,10 @@ module ApiStub
 
     module KeyVault
       autoload :Vault, File.expand_path('api_stub/requests/key_vault/vault', __dir__)
+    end
+
+    module DataLakeStore
+      autoload :DataLakeStoreAccount, File.expand_path('api_stub/requests/data_lake_store/data_lake_store_account', __dir__)
     end
   end
 end

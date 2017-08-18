@@ -73,6 +73,11 @@ module Fog
     autoload :AsyncResponse, File.expand_path('azurerm/async_response', __dir__)
   end
 
+  #Autoload Module for Data Lake Store
+  module DataLakeStore
+    autoload :AzureRM, File.expand_path('azurerm/data_lake_store', __dir__)
+  end
+
   # Main AzureRM fog Provider Module
   module AzureRM
     extend Fog::Provider
@@ -85,5 +90,6 @@ module Fog
     service(:traffic_manager, 'TrafficManager')
     service(:sql, 'Sql')
     service(:key_vault, 'KeyVault')
+    service(:data_lake_store, 'DataLakeStore')
   end
 end

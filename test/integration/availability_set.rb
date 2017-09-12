@@ -29,8 +29,8 @@ compute = Fog::Compute::AzureRM.new(
 ########################################################################################################################
 
 time = current_time
-resource_group_name = "AS-RG-#{time}"
-availability_set_name = "AS#{time}asetunique"
+resource_group_name = "TestRG-AS"
+availability_set_name = "TestAS"
 
 ########################################################################################################################
 ######################                                 Prerequisites                              ######################
@@ -41,7 +41,6 @@ begin
     name: resource_group_name,
     location: LOCATION
   )
-
 
   ########################################################################################################################
   ######################                            Check for Availability set                       ######################

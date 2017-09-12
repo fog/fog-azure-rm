@@ -27,7 +27,8 @@ class TestAvailabilitySet < Minitest::Test
       :location,
       :resource_group,
       :platform_update_domain_count,
-      :platform_fault_domain_count
+      :platform_fault_domain_count,
+      :sku_name
     ]
     attributes.each do |attribute|
       assert_respond_to @availability_set, attribute

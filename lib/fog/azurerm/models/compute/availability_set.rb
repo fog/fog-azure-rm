@@ -11,6 +11,7 @@ module Fog
         attribute :resource_group
         attribute :platform_update_domain_count
         attribute :platform_fault_domain_count
+        attribute :sku_name
 
         def self.parse(availability_set)
           hash = {}
@@ -21,6 +22,7 @@ module Fog
           hash['resource_group'] = get_resource_group_from_id(availability_set.id)
           hash['platform_update_domain_count'] = availability_set.platform_update_domain_count
           hash['platform_fault_domain_count'] = availability_set.platform_fault_domain_count
+          hash['sku_name'] = availability_set.sku.name unless availability_set.sku.nil?
           hash
         end
 
@@ -29,7 +31,7 @@ module Fog
           requires :location
           requires :resource_group
           # need to create the availability set
-          as = service.create_availability_set(resource_group, name, location)
+          as = service.create_availability_set(resource_group, name, location, sku_name)
           hash = Fog::Compute::AzureRM::AvailabilitySet.parse(as)
           merge_attributes(hash)
         end

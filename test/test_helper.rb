@@ -116,6 +116,8 @@ def availability_set(service)
     name: 'availability-set',
     location: 'West US',
     resource_group: 'fog-test-rg',
+    is_managed: false,
+    sku_name: 'Classic',
     service: service
   )
 end

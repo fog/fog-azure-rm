@@ -218,15 +218,12 @@ azure_compute_service.availability_sets.check_availability_set_exists(<Resource 
 
 Create a new availability set
 
-**Note:**
-To create a managed availability set, use **Aligned** for the **sku_name**
-
 ```ruby
-    azure_compute_service.availability_sets.create(
-         name: '<Availability Set name>',
-         location: 'West US',
-         resource_group: '<Resource Group name>',
-         sku_name: 'Aligned' # Optional, Possible values 'Aligned' & 'Classic'
+azure_compute_service.availability_sets.create(
+  name: '<Availability Set name>',
+  location: '<Location>',
+  resource_group: '<Resource Group name>',
+  is_managed: true # Optional, Possible values true or false
 )
 ```
 ## List Availability Sets 

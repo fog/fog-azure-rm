@@ -6,7 +6,7 @@ class TestAvailabilitySet < Minitest::Test
     @service = Fog::Compute::AzureRM.new(credentials)
     @availability_set = availability_set(@service)
     compute_client = @service.instance_variable_get(:@compute_mgmt_client)
-    @response = ApiStub::Models::Compute::AvailabilitySet.create_availability_set_response(compute_client)
+    @response = ApiStub::Models::Compute::AvailabilitySet.create_unmanaged_availability_set_response(compute_client)
   end
 
   def test_model_methods
@@ -28,6 +28,7 @@ class TestAvailabilitySet < Minitest::Test
       :resource_group,
       :platform_update_domain_count,
       :platform_fault_domain_count,
+      :is_managed,
       :sku_name
     ]
     attributes.each do |attribute|

@@ -30,7 +30,8 @@ compute = Fog::Compute::AzureRM.new(
 
 time = current_time
 resource_group_name = "AS-RG-#{time}"
-availability_set_name = "AS#{time}asetunique"
+classic_availability_set_name = "AS#{time}asetunique-Classic"
+aligned_availability_set_name = "AS#{time}asetunique-Aligned"
 
 ########################################################################################################################
 ######################                                 Prerequisites                              ######################
@@ -46,19 +47,32 @@ begin
   ######################                            Check for Availability set                       ######################
   ########################################################################################################################
 
-  flag = compute.availability_sets.check_availability_set_exists(resource_group_name, availability_set_name)
+  flag = compute.availability_sets.check_availability_set_exists(resource_group_name, classic_availability_set_name)
   puts "Availability set doesn't exist." unless flag
 
   ########################################################################################################################
-  ######################                             Create Availability Set                        ######################
+  ######################                        Create Un-Managed Availability Set                  ######################
   ########################################################################################################################
 
-  avail_set = compute.availability_sets.create(
-    name: availability_set_name,
+  classic_avail_set = compute.availability_sets.create(
+    name: classic_availability_set_name,
     location: LOCATION,
-    resource_group: resource_group_name
+    resource_group: resource_group_name,
+    is_managed: false
   )
-  puts "Created availability set: #{avail_set.name}"
+  puts "Created un-managed availability set: #{classic_avail_set.name}"
+
+  ########################################################################################################################
+  ######################                         Create Managed Availability Set                    ######################
+  ########################################################################################################################
+
+  aligned_avail_set = compute.availability_sets.create(
+    name: aligned_availability_set_name,
+    location: LOCATION,
+    resource_group: resource_group_name,
+    is_managed: true
+  )
+  puts "Created managed availability set: #{aligned_avail_set.name}"
 
   ########################################################################################################################
   ######################                       List Availability Sets                               ######################
@@ -72,7 +86,11 @@ begin
   ######################                       Get and Delete Availability Set                      ######################
   ########################################################################################################################
 
-  avail_set = compute.availability_sets.get(resource_group_name, availability_set_name)
+  avail_set = compute.availability_sets.get(resource_group_name, classic_availability_set_name)
+  puts "Get availability set: #{avail_set.name}"
+  puts "Deleted availability set: #{avail_set.destroy}"
+
+  avail_set = compute.availability_sets.get(resource_group_name, aligned_availability_set_name)
   puts "Get availability set: #{avail_set.name}"
   puts "Deleted availability set: #{avail_set.destroy}"
 

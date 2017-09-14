@@ -3,10 +3,10 @@ module Fog
     class AzureRM
       # This class provides the actual implementation for service calls.
       class Real
-        def create_availability_set(resource_group, name, location, sku_name)
+        def create_availability_set(resource_group, name, location, is_managed = false)
           msg = "Creating Availability Set '#{name}' in #{location} region."
           Fog::Logger.debug msg
-          avail_set_params = get_availability_set_properties(location, sku_name)
+          avail_set_params = get_availability_set_properties(location, is_managed)
           begin
             availability_set = @compute_mgmt_client.availability_sets.create_or_update(resource_group, name, avail_set_params)
           rescue MsRestAzure::AzureOperationError => e
@@ -17,21 +17,20 @@ module Fog
         end
 
         # create the properties object for creating availability sets
-        def get_availability_set_properties(location, sku_name)
+        def get_availability_set_properties(location, is_managed)
           avail_set = Azure::ARM::Compute::Models::AvailabilitySet.new
           avail_set.platform_fault_domain_count = FAULT_DOMAIN_COUNT
           avail_set.platform_update_domain_count = UPDATE_DOMAIN_COUNT
           avail_set.virtual_machines = []
           avail_set.statuses = []
           avail_set.location = location
-          avail_set.sku = create_availability_set_sku(sku_name)
+          avail_set.sku = create_availability_set_sku(is_managed)
           avail_set
         end
 
-        def create_availability_set_sku(sku_name)
-          sku_name = SKU_CLASSIC if sku_name.nil?
+        def create_availability_set_sku(is_managed)
           sku = Azure::ARM::Compute::Models::Sku.new
-          sku.name = sku_name
+          sku.name = is_managed ? AS_SKU_ALIGNED : AS_SKU_CLASSIC
           sku
         end
       end

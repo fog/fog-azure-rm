@@ -18,6 +18,21 @@ module ApiStub
           compute_client.deserialize(availability_set_mapper, Fog::JSON.decode(body), 'result.body')
         end
 
+        def self.create_custom_availability_set_response(compute_client)
+          body = '{
+                    "id":"/subscriptions/{subscription-id}/resourceGroups/myrg1/providers/Microsoft.Compute/availabilitySets/avset1",
+                    "name":"myavset1",
+                    "type":"Microsoft.Compute/availabilitySets",
+                    "location":"westus",
+                    "tags": {},
+                    "platformUpdateDomainCount": 10,
+                    "platformFaultDomainCount": 3,
+                    "virtualMachines":[]
+                  }'
+          availability_set_mapper = Azure::ARM::Compute::Models::AvailabilitySet.mapper
+          compute_client.deserialize(availability_set_mapper, Fog::JSON.decode(body), 'result.body')
+        end
+
         def self.list_availability_set_response(sdk_compute_client)
           body = '{
              "value": [ {

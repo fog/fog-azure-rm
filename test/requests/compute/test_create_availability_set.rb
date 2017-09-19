@@ -10,18 +10,50 @@ class TestCreateAvailabilitySet < Minitest::Test
 
   def test_create_availability_set_success
     mocked_response = ApiStub::Requests::Compute::AvailabilitySet.create_availability_set_response(@client)
+    avail_set_params =
+      {
+        name: 'myavset1',
+        location: 'west us',
+        resource_group: 'fog-test-rg'
+      }
+
     @availability_sets.stub :validate_params, true do
       @availability_sets.stub :create_or_update, mocked_response do
-        assert_equal @service.create_availability_set('fog-test-rg', 'myavset1', 'west us'), mocked_response
+        assert_equal @service.create_availability_set(avail_set_params), mocked_response
+      end
+    end
+  end
+
+  def test_create_custom_availability_set_success
+    mocked_response = ApiStub::Requests::Compute::AvailabilitySet.create_custom_availability_set_response(@client)
+    avail_set_params =
+      {
+        name: 'myavset1',
+        location: 'west us',
+        resource_group: 'fog-test-rg',
+        platform_fault_domain_count: 3,
+        platform_update_domain_count: 10
+      }
+
+    @availability_sets.stub :validate_params, true do
+      @availability_sets.stub :create_or_update, mocked_response do
+        assert_equal @service.create_availability_set(avail_set_params), mocked_response
       end
     end
   end
 
   def test_create_availability_set_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
+    avail_set_params =
+      {
+        name: 'myavset1',
+        location: 'west us',
+        resource_group: 'fog-test-rg'
+      }
+
     @availability_sets.stub :validate_params, true do
       @availability_sets.stub :create_or_update, response do
-        assert_raises(RuntimeError) { @service.create_availability_set('fog-test-rg', 'fog-test-as', 'west us') }
+        assert_raises(RuntimeError) { @service.create_availability_set(avail_set_params) }
       end
     end
   end

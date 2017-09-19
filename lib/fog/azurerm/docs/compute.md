@@ -216,10 +216,12 @@ azure_compute_service.availability_sets.check_availability_set_exists(<Resource 
 Create a new availability set
 
 ```ruby
-    azure_compute_service.availability_sets.create(
-         name: '<Availability Set name>',
-         location: 'West US',
-         resource_group: '<Resource Group name>'
+azure_compute_service.availability_sets.create(
+    name: '<Availability Set name>',
+    location: 'West US',
+    resource_group: '<Resource Group name>'
+    platform_fault_domain_count: <No of Fault Domains>,     # [Optional] Default = 3
+    platform_update_domain_count: <No of Update Domains>    # [Optional] Default = 5
 )
 ```
 ## List Availability Sets 

@@ -30,40 +30,69 @@ compute = Fog::Compute::AzureRM.new(
 
 time = current_time
 resource_group_name = "AS-RG-#{time}"
-availability_set_name = "AS#{time}asetunique"
+default_avail_set_name = "AS#{time}asetdefault"
+custom_avail_set_name = "AS#{time}asetcustom"
 
 ########################################################################################################################
 ######################                                 Prerequisites                              ######################
 ########################################################################################################################
 
 begin
+  puts 'Running integration test for availability set...'
+
+  puts "Create resource group (#{resource_group_name}):"
   resource_group = rs.resource_groups.create(
     name: resource_group_name,
     location: LOCATION
   )
-
-
-  ########################################################################################################################
-  ######################                            Check for Availability set                       ######################
-  ########################################################################################################################
-
-  flag = compute.availability_sets.check_availability_set_exists(resource_group_name, availability_set_name)
-  puts "Availability set doesn't exist." unless flag
+  puts "Created resource group! [#{resource_group.name}]"
 
   ########################################################################################################################
-  ######################                             Create Availability Set                        ######################
+  ######################                            Check for Availability set                      ######################
   ########################################################################################################################
 
+  flag = compute.availability_sets.check_availability_set_exists(resource_group_name, default_avail_set_name)
+  puts "Availability set (#{default_avail_set_name}) doesn't exist." unless flag
+
+  flag = compute.availability_sets.check_availability_set_exists(resource_group_name, custom_avail_set_name)
+  puts "Availability set (#{custom_avail_set_name}) doesn't exist." unless flag
+
+  ########################################################################################################################
+  ######################                         Create Availability Set (Default)                  ######################
+  ########################################################################################################################
+
+  puts "Create availability set (#{default_avail_set_name}):"
   avail_set = compute.availability_sets.create(
-    name: availability_set_name,
+    name: default_avail_set_name,
     location: LOCATION,
     resource_group: resource_group_name
   )
-  puts "Created availability set: #{avail_set.name}"
+  name = avail_set.name
+  fault_domains = avail_set.platform_fault_domain_count
+  update_domains = avail_set.platform_update_domain_count
+  puts "Created availability set! [ name: '#{name}' => { fd: #{fault_domains}, ud: #{update_domains} } ]"
+
+  ########################################################################################################################
+  ######################                         Create Availability Set (Custom)                   ######################
+  ########################################################################################################################
+
+  puts "Create availability set (#{custom_avail_set_name}):"
+  avail_set = compute.availability_sets.create(
+    name: custom_avail_set_name,
+    location: LOCATION,
+    resource_group: resource_group_name,
+    platform_fault_domain_count: 3,
+    platform_update_domain_count: 10
+  )
+  name = avail_set.name
+  fault_domains = avail_set.platform_fault_domain_count
+  update_domains = avail_set.platform_update_domain_count
+  puts "Created availability set! [ name: '#{name}' => { fd: #{fault_domains}, ud: #{update_domains} } ]"
 
   ########################################################################################################################
   ######################                       List Availability Sets                               ######################
   ########################################################################################################################
+
   puts 'List availability sets:'
   compute.availability_sets(resource_group: resource_group_name).each do |availability_set|
     puts availability_set.name
@@ -73,7 +102,13 @@ begin
   ######################                       Get and Delete Availability Set                      ######################
   ########################################################################################################################
 
-  avail_set = compute.availability_sets.get(resource_group_name, availability_set_name)
+  puts "Get and delete availability sets ('#{default_avail_set_name}' and '#{custom_avail_set_name}'):"
+
+  avail_set = compute.availability_sets.get(resource_group_name, default_avail_set_name)
+  puts "Get availability set: #{avail_set.name}"
+  puts "Deleted availability set: #{avail_set.destroy}"
+
+  avail_set = compute.availability_sets.get(resource_group_name, custom_avail_set_name)
   puts "Get availability set: #{avail_set.name}"
   puts "Deleted availability set: #{avail_set.destroy}"
 
@@ -83,8 +118,8 @@ begin
 
   rg = rs.resource_groups.get(resource_group_name)
   rg.destroy
-  puts 'Integration Test for availability set ran successfully'
+  puts 'Integration test for availability set ran successfully!'
 rescue
-  puts 'Integration Test for availability set is failing'
+  puts 'Integration Test for availability set is failing!!!'
   resource_group.destroy unless resource_group.nil?
 end

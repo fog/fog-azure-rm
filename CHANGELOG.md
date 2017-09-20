@@ -1,3 +1,16 @@
+## 0.3.3
+
+**Added:**
+- Compute Service - Added support to create Managed Availability Set
+
+**Changed:**
+- Compute Service - Updated default values for fault and update domains
+
+## 0.3.2
+
+**Added:**
+- Compute Service - Made remaining server(virtual machine) methods async
+
 ## 0.3.1
 
 **Changed:**

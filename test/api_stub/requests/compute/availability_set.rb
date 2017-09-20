@@ -3,7 +3,7 @@ module ApiStub
     module Compute
       # Mock class for Availability Set Requests
       class AvailabilitySet
-        def self.create_availability_set_response(compute_client)
+        def self.create_unmanaged_availability_set_response(compute_client)
           body = '{
                     "id":"/subscriptions/{subscription-id}/resourceGroups/myrg1/providers/Microsoft.Compute/availabilitySets/avset1",
                     "name":"myavset1",
@@ -12,6 +12,42 @@ module ApiStub
                     "tags": {},
                     "platformUpdateDomainCount": 5,
                     "platformFaultDomainCount":3,
+                    "virtualMachines":[],
+                    "sku":{
+                      "name":"Classic"
+                    }
+                  }'
+          availability_set_mapper = Azure::ARM::Compute::Models::AvailabilitySet.mapper
+          compute_client.deserialize(availability_set_mapper, Fog::JSON.decode(body), 'result.body')
+        end
+
+        def self.create_managed_availability_set_response(compute_client)
+          body = '{
+                    "id":"/subscriptions/{subscription-id}/resourceGroups/myrg1/providers/Microsoft.Compute/availabilitySets/avset1",
+                    "name":"myavset1",
+                    "type":"Microsoft.Compute/availabilitySets",
+                    "location":"westus",
+                    "tags": {},
+                    "platformUpdateDomainCount": 5,
+                    "platformFaultDomainCount": 2,
+                    "virtualMachines":[],
+                    "sku":{
+                      "name":"Aligned"
+                    }
+                  }'
+          availability_set_mapper = Azure::ARM::Compute::Models::AvailabilitySet.mapper
+          compute_client.deserialize(availability_set_mapper, Fog::JSON.decode(body), 'result.body')
+        end
+
+        def self.create_availability_set_response(compute_client)
+          body = '{
+                    "id":"/subscriptions/{subscription-id}/resourceGroups/myrg1/providers/Microsoft.Compute/availabilitySets/avset1",
+                    "name":"myavset1",
+                    "type":"Microsoft.Compute/availabilitySets",
+                    "location":"westus",
+                    "tags": {},
+                    "platformUpdateDomainCount": 5,
+                    "platformFaultDomainCount": 3,
                     "virtualMachines":[]
                   }'
           availability_set_mapper = Azure::ARM::Compute::Models::AvailabilitySet.mapper
@@ -43,7 +79,10 @@ module ApiStub
                     "tags": {},
                     "platformUpdateDomainCount":5,
                     "platformFaultDomainCount":3,
-                    "virtualMachines":[]
+                    "virtualMachines":[],
+                    "sku":{
+                      "name":"Classic"
+                    }
               } ]
           }'
           availability_set_mapper = Azure::ARM::Compute::Models::AvailabilitySetListResult.mapper
@@ -60,7 +99,10 @@ module ApiStub
                     "tags": {},
                     "platformUpdateDomainCount":5,
                     "platformFaultDomainCount":3,
-                    "virtualMachines":[]
+                    "virtualMachines":[],
+                    "sku":{
+                      "name":"Classic"
+                    }
               } ]
           }'
           availability_set_mapper = Azure::ARM::Compute::Models::AvailabilitySet.mapper

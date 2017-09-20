@@ -52,6 +52,7 @@ When using **managed_disk_storage_type** you should not pass the **vhd_path** as
         password: '<Password for VM>',             # Optional, if 'platform' partameter is 'Linux'.
         disable_password_authentication: false,
         network_interface_card_ids: ['/subscriptions/{Subscription-Id}/resourceGroups/{Resource-Group-Name}/providers/Microsoft.Network/networkInterfaces/{Network-Interface-Id}'],
+        availability_set_id: '<availability_set_id>', # Optional
         publisher: 'Canonical',                    # Not required if custom image is being used 
         offer: 'UbuntuServer',                     # Not required if custom image is being used
         sku: '14.04.2-LTS',                        # Not required if custom image is being used
@@ -77,6 +78,7 @@ Create a new windows server
         password: '<Password for VM>',
         disable_password_authentication: false,
         network_interface_card_ids: ['/subscriptions/{Subscription-Id}/resourceGroups/{Resource-Group-Name}/providers/Microsoft.Network/networkInterfaces/{Network-Interface-Id}'],
+        availability_set_id: '<availability_set_id>', # Optional
         publisher: 'MicrosoftWindowsServerEssentials',   # Not required if custom image is being used
         offer: 'WindowsServerEssentials',                # Not required if custom image is being used  
         sku: 'WindowsServerEssentials',                  # Not required if custom image is being used
@@ -103,6 +105,7 @@ Create a new linux server asynchronously
         password: '<Password for VM>',             # Optional, if 'platform' partameter is 'Linux'.
         disable_password_authentication: false,
         network_interface_card_ids: ['/subscriptions/{Subscription-Id}/resourceGroups/{Resource-Group-Name}/providers/Microsoft.Network/networkInterfaces/{Network-Interface-Id}'],
+        availability_set_id: '<availability_set_id>', # Optional
         publisher: 'Canonical',                    # Not required if custom image is being used 
         offer: 'UbuntuServer',                     # Not required if custom image is being used
         sku: '14.04.2-LTS',                        # Not required if custom image is being used
@@ -220,8 +223,9 @@ azure_compute_service.availability_sets.create(
     name: '<Availability Set name>',
     location: 'West US',
     resource_group: '<Resource Group name>'
-    platform_fault_domain_count: <No of Fault Domains>,     # [Optional] Default = 3
-    platform_update_domain_count: <No of Update Domains>    # [Optional] Default = 5
+    platform_fault_domain_count: <No of Fault Domains>,     # [Optional] Default => { Managed: 2, Unmanaged: 3 }
+    platform_update_domain_count: <No of Update Domains>,   # [Optional] Default => { Managed: 5, Unmanaged: 5 }
+    is_managed: true                                        # [Optional] Possible values true or false
 )
 ```
 ## List Availability Sets 

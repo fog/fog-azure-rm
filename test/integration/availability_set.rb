@@ -32,6 +32,7 @@ time = current_time
 resource_group_name = "AS-RG-#{time}"
 default_avail_set_name = "AS#{time}asetdefault"
 custom_avail_set_name = "AS#{time}asetcustom"
+aligned_availability_set_name = "AS#{time}asetunique-Aligned"
 
 ########################################################################################################################
 ######################                                 Prerequisites                              ######################
@@ -56,6 +57,9 @@ begin
 
   flag = compute.availability_sets.check_availability_set_exists(resource_group_name, custom_avail_set_name)
   puts "Availability set (#{custom_avail_set_name}) doesn't exist." unless flag
+
+  flag = compute.availability_sets.check_availability_set_exists(resource_group_name, aligned_availability_set_name)
+  puts "Availability set doesn't exist." unless flag
 
   ########################################################################################################################
   ######################                         Create Availability Set (Default)                  ######################
@@ -90,6 +94,18 @@ begin
   puts "Created availability set! [ name: '#{name}' => { fd: #{fault_domains}, ud: #{update_domains} } ]"
 
   ########################################################################################################################
+  ######################                         Create Managed Availability Set                    ######################
+  ########################################################################################################################
+
+  aligned_avail_set = compute.availability_sets.create(
+    name: aligned_availability_set_name,
+    location: LOCATION,
+    resource_group: resource_group_name,
+    is_managed: true
+  )
+  puts "Created managed availability set! [#{aligned_avail_set.name}]"
+
+  ########################################################################################################################
   ######################                       List Availability Sets                               ######################
   ########################################################################################################################
 
@@ -109,6 +125,10 @@ begin
   puts "Deleted availability set: #{avail_set.destroy}"
 
   avail_set = compute.availability_sets.get(resource_group_name, custom_avail_set_name)
+  puts "Get availability set: #{avail_set.name}"
+  puts "Deleted availability set: #{avail_set.destroy}"
+
+  avail_set = compute.availability_sets.get(resource_group_name, aligned_availability_set_name)
   puts "Get availability set: #{avail_set.name}"
   puts "Deleted availability set: #{avail_set.destroy}"
 

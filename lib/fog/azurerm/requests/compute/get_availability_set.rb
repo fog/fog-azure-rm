@@ -21,8 +21,8 @@ module Fog
             'name' => 'name',
             'type' => 'Microsoft.Compute/virtualMachines',
             'location' => 'westus',
-            '@platform_update_domain_count' => UPDATE_DOMAIN_COUNT,
-            '@platform_fault_domain_count' => FAULT_DOMAIN_COUNT,
+            '@platform_update_domain_count' => UNMANAGED_UPDATE_DOMAIN_COUNT,
+            '@platform_fault_domain_count' => UNMANAGED_FAULT_DOMAIN_COUNT,
             '@virtual_machines' => []
           }
         end

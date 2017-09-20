@@ -214,7 +214,8 @@ begin
 
   resource_group = resource.resource_groups.get('TestRG-GC')
   resource_group.destroy
-rescue
+rescue Exception => e
+  raise e
   puts 'Integration Test for virtual network gateway connection is failing'
   resource_group.destroy unless resource_group.nil?
 end

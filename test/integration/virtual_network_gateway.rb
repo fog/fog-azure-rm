@@ -81,8 +81,8 @@ begin
       }
     ],
     resource_group: 'TestRG-VNG',
-    sku_name: 'Basic',
-    sku_tier: 'Basic',
+    sku_name: 'Standard',
+    sku_tier: 'Standard',
     sku_capacity: 2,
     gateway_type: 'ExpressRoute',
     enable_bgp: false,
@@ -110,12 +110,6 @@ begin
   puts "Get virtual network gateway: #{network_gateway.name}"
 
   puts "Deleted virtual network gateway: #{network_gateway.destroy}"
-
-  pubip = network.public_ips.get('TestRG-VNG', 'mypubip')
-  pubip.destroy
-
-  vnet = network.virtual_networks.get('TestRG-VNG', 'testVnet')
-  vnet.destroy
 
   rg = resource.resource_groups.get('TestRG-VNG')
   rg.destroy

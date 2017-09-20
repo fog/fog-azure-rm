@@ -29,10 +29,11 @@ compute = Fog::Compute::AzureRM.new(
 ########################################################################################################################
 
 time = current_time
-resource_group_name = "AS-RG-#{time}"
-default_avail_set_name = "ASDefault#{time}"
-custom_avail_set_name = "ASCustom#{time}"
-managed_avail_set_name = "ASManaged#{time}"
+resource_group_name       = "AS-RG-#{time}"
+unmanaged_as_name_default = "ASUnmanagedDefault#{time}"
+unmanaged_as_name_custom  = "ASUnmanagedCustom#{time}"
+managed_as_name_default   = "ASManagedDefault#{time}"
+managed_as_name_custom    = "ASManagedCustom#{time}"
 
 ########################################################################################################################
 ######################                                 Prerequisites                              ######################
@@ -52,37 +53,42 @@ begin
   ######################                            Check for Availability set                      ######################
   ########################################################################################################################
 
-  flag = compute.availability_sets.check_availability_set_exists(resource_group_name, default_avail_set_name)
-  puts "Availability set (#{default_avail_set_name}) doesn't exist." unless flag
+  puts 'Check for existing availability sets:'
 
-  flag = compute.availability_sets.check_availability_set_exists(resource_group_name, custom_avail_set_name)
-  puts "Availability set (#{custom_avail_set_name}) doesn't exist." unless flag
+  is_exists = compute.availability_sets.check_availability_set_exists(resource_group_name, unmanaged_as_name_default)
+  puts "Availability set does NOT exist! [#{unmanaged_as_name_default}] " unless is_exists
 
-  flag = compute.availability_sets.check_availability_set_exists(resource_group_name, managed_avail_set_name)
-  puts "Availability set doesn't exist." unless flag
+  is_exists = compute.availability_sets.check_availability_set_exists(resource_group_name, unmanaged_as_name_custom)
+  puts "Availability set does NOT exist! [#{unmanaged_as_name_custom}] " unless is_exists
+
+  is_exists = compute.availability_sets.check_availability_set_exists(resource_group_name, managed_as_name_default)
+  puts "Availability set does NOT exist! [#{managed_as_name_default}] " unless is_exists
+
+  is_exists = compute.availability_sets.check_availability_set_exists(resource_group_name, managed_as_name_custom)
+  puts "Availability set does NOT exist! [#{managed_as_name_default}] " unless is_exists
 
   ########################################################################################################################
-  ######################                         Create Availability Set (Default)                  ######################
+  ######################                    Create Unmanaged Availability Set (Default)             ######################
   ########################################################################################################################
 
-  puts "Create availability set (#{default_avail_set_name}):"
+  puts "Create unmanaged default availability set (#{unmanaged_as_name_default}):"
   avail_set = compute.availability_sets.create(
-    name: default_avail_set_name,
+    name: unmanaged_as_name_default,
     location: LOCATION,
     resource_group: resource_group_name
   )
   name = avail_set.name
   fault_domains = avail_set.platform_fault_domain_count
   update_domains = avail_set.platform_update_domain_count
-  puts "Created availability set! [ name: '#{name}' => { fd: #{fault_domains}, ud: #{update_domains} } ]"
+  puts "Created availability set! [#{name}] => { fd: #{fault_domains}, ud: #{update_domains} }"
 
   ########################################################################################################################
-  ######################                         Create Availability Set (Custom)                   ######################
+  ######################                    Create Unmanaged Availability Set (Custom)              ######################
   ########################################################################################################################
 
-  puts "Create availability set (#{custom_avail_set_name}):"
+  puts "Create unmanaged custom availability set (#{unmanaged_as_name_custom}):"
   avail_set = compute.availability_sets.create(
-    name: custom_avail_set_name,
+    name: unmanaged_as_name_custom,
     location: LOCATION,
     resource_group: resource_group_name,
     platform_fault_domain_count: 3,
@@ -91,19 +97,41 @@ begin
   name = avail_set.name
   fault_domains = avail_set.platform_fault_domain_count
   update_domains = avail_set.platform_update_domain_count
-  puts "Created availability set! [ name: '#{name}' => { fd: #{fault_domains}, ud: #{update_domains} } ]"
+  puts "Created availability set! [#{name}] => { fd: #{fault_domains}, ud: #{update_domains} }"
 
   ########################################################################################################################
-  ######################                         Create Managed Availability Set                    ######################
+  ######################                    Create Managed Availability Set (Default)               ######################
   ########################################################################################################################
 
-  managed_avail_set = compute.availability_sets.create(
-    name: managed_avail_set_name,
+  puts "Create managed default availability set (#{managed_as_name_default}):"
+  avail_set = compute.availability_sets.create(
+    name: managed_as_name_default,
     location: LOCATION,
     resource_group: resource_group_name,
     is_managed: true
   )
-  puts "Created managed availability set! [#{managed_avail_set.name}]"
+  name = avail_set.name
+  fault_domains = avail_set.platform_fault_domain_count
+  update_domains = avail_set.platform_update_domain_count
+  puts "Created availability set! [#{name}] => { fd: #{fault_domains}, ud: #{update_domains} }"
+
+  ########################################################################################################################
+  ######################                     Create Managed Availability Set (Custom)               ######################
+  ########################################################################################################################
+
+  puts "Create managed custom availability set (#{managed_as_name_custom}):"
+  avail_set = compute.availability_sets.create(
+    name: managed_as_name_custom,
+    location: LOCATION,
+    resource_group: resource_group_name,
+    platform_fault_domain_count: 2,
+    platform_update_domain_count: 10,
+    is_managed: true
+  )
+  name = avail_set.name
+  fault_domains = avail_set.platform_fault_domain_count
+  update_domains = avail_set.platform_update_domain_count
+  puts "Created availability set! [#{name}] => { fd: #{fault_domains}, ud: #{update_domains} }"
 
   ########################################################################################################################
   ######################                       List Availability Sets                               ######################
@@ -118,22 +146,26 @@ begin
   ######################                       Get and Delete Availability Set                      ######################
   ########################################################################################################################
 
-  puts "Get and delete availability sets ('#{default_avail_set_name}' and '#{custom_avail_set_name}'):"
+  puts 'Get and delete availability sets:'
 
-  avail_set = compute.availability_sets.get(resource_group_name, default_avail_set_name)
-  puts "Get availability set: #{avail_set.name}"
-  puts "Deleted availability set: #{avail_set.destroy}"
+  avail_set = compute.availability_sets.get(resource_group_name, unmanaged_as_name_default)
+  puts "Get availability set     : #{avail_set.name}"
+  puts "Deleted availability set : #{avail_set.destroy}"
 
-  avail_set = compute.availability_sets.get(resource_group_name, custom_avail_set_name)
-  puts "Get availability set: #{avail_set.name}"
-  puts "Deleted availability set: #{avail_set.destroy}"
+  avail_set = compute.availability_sets.get(resource_group_name, unmanaged_as_name_custom)
+  puts "Get availability set     : #{avail_set.name}"
+  puts "Deleted availability set : #{avail_set.destroy}"
 
-  avail_set = compute.availability_sets.get(resource_group_name, managed_avail_set_name)
-  puts "Get availability set: #{avail_set.name}"
-  puts "Deleted availability set: #{avail_set.destroy}"
+  avail_set = compute.availability_sets.get(resource_group_name, managed_as_name_default)
+  puts "Get availability set     : #{avail_set.name}"
+  puts "Deleted availability set : #{avail_set.destroy}"
+
+  avail_set = compute.availability_sets.get(resource_group_name, managed_as_name_custom)
+  puts "Get availability set     : #{avail_set.name}"
+  puts "Deleted availability set : #{avail_set.destroy}"
 
   ########################################################################################################################
-  ######################                                   CleanUp                                  ######################
+  ######################                                   Clean Up                                 ######################
   ########################################################################################################################
 
   rg = rs.resource_groups.get(resource_group_name)

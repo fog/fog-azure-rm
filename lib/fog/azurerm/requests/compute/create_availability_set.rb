@@ -27,6 +27,8 @@ module Fog
         # create the properties object for creating availability sets
         def get_availability_set_properties(location, fault_domain_count, update_domain_count, is_managed)
           avail_set = Azure::ARM::Compute::Models::AvailabilitySet.new
+          avail_set.location = location
+          avail_set.sku = create_availability_set_sku(is_managed)
 
           if is_managed
             avail_set.platform_fault_domain_count = fault_domain_count.nil? ? MANAGED_FAULT_DOMAIN_COUNT : fault_domain_count
@@ -36,10 +38,6 @@ module Fog
             avail_set.platform_update_domain_count = update_domain_count.nil? ? UNMANAGED_UPDATE_DOMAIN_COUNT : update_domain_count
           end
 
-          avail_set.virtual_machines = []
-          avail_set.statuses = []
-          avail_set.location = location
-          avail_set.sku = create_availability_set_sku(is_managed)
           avail_set
         end
 
@@ -52,11 +50,11 @@ module Fog
 
       # This class provides the mock implementation for unit tests.
       class Mock
-        def create_availability_set(resource_group, name, location)
+        def create_availability_set(availability_set_params)
           {
-            'location' => location,
-            'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{resource_group}/providers/Microsoft.Compute/availabilitySets/#{name}",
-            'name' => name,
+            'location' => availability_set_params[:location],
+            'id' => "/subscriptions/########-####-####-####-############/resourceGroups/#{availability_set_params[:resource_group]}/providers/Microsoft.Compute/availabilitySets/#{availability_set_params[:name]}",
+            'name' => availability_set_params[:name],
             'type' => 'Microsoft.Compute/availabilitySets',
             'properties' =>
             {

@@ -37,7 +37,7 @@ module Fog
           requires :location
           requires :resource_group
           # need to create the availability set
-          as = service.create_availability_set(availability_set_params(platform_fault_domain_count, platform_update_domain_count, is_managed))
+          as = service.create_availability_set(avail_set_params(platform_fault_domain_count, platform_update_domain_count, is_managed))
           hash = Fog::Compute::AzureRM::AvailabilitySet.parse(as)
           merge_attributes(hash)
         end
@@ -48,7 +48,7 @@ module Fog
 
         private
 
-        def availability_set_params(platform_fault_domain_count, platform_update_domain_count, is_managed)
+        def avail_set_params(platform_fault_domain_count, platform_update_domain_count, is_managed)
           {
             name: name,
             location: location,

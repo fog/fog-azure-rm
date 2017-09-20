@@ -11,7 +11,7 @@ module ApiStub
                     "location":"westus",
                     "tags": {},
                     "platformUpdateDomainCount": 5,
-                    "platformFaultDomainCount":3,
+                    "platformFaultDomainCount": 3,
                     "virtualMachines":[],
                     "sku":{
                       "name":"Classic"

@@ -92,7 +92,7 @@ begin
     username: 'testuser',
     password: 'Confiz=123',
     disable_password_authentication: false,
-    network_interface_card_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-CustomVM/providers/Microsoft.Network/networkInterfaces/NetInt",
+    network_interface_card_ids: ["/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-CustomVM/providers/Microsoft.Network/networkInterfaces/NetInt"],
     platform: 'linux',
     vhd_path: 'https://custimagestorage.blob.core.windows.net/newcustomvhd/trusty-server-cloudimg-amd64-disk1-zeeshan.vhd'
   )

@@ -87,7 +87,7 @@ begin
     username: 'testuser',
     password: 'Confiz=123',
     disable_password_authentication: false,
-    network_interface_card_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-VME/providers/Microsoft.Network/networkInterfaces/NetInt",
+    network_interface_card_ids: ["/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-VME/providers/Microsoft.Network/networkInterfaces/NetInt"],
     publisher: 'MicrosoftWindowsServer',
     offer: 'WindowsServer',
     sku: '2008-R2-SP1',

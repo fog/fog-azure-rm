@@ -70,8 +70,8 @@ begin
       }
     ],
     resource_group: 'TestRG-GCE',
-    sku_name: 'Basic',
-    sku_tier: 'Basic',
+    sku_name: 'Standard',
+    sku_tier: 'Standard',
     sku_capacity: 2,
     gateway_type: 'ExpressRoute',
     enable_bgp: false,

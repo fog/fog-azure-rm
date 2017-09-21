@@ -5,7 +5,7 @@ require 'fog/azurerm/version'
 Gem::Specification.new do |spec|
   spec.name          = 'fog-azure-rm'
   spec.version       = Fog::AzureRM::VERSION
-  spec.authors       = ['Shaffan Chaudhry', 'Samawia Moin', 'Adnan Khalil', 'Zeeshan Arshad', 'Haider Ali', 'Waqar Haider', 'Bilal Naeem', 'Muhammad Asad', 'Azeem Sajid', 'Maham Nazir']
+  spec.authors       = ['Shaffan Chaudhry', 'Samawia Moin', 'Adnan Khalil', 'Zeeshan Arshad', 'Haider Ali', 'Waqar Haider', 'Bilal Naeem', 'Muhammad Asad', 'Azeem Sajid', 'Maham Nazir', 'Abbas Sheikh']
   spec.summary       = "Module for the 'fog' gem to support Azure Resource Manager cloud services."
   spec.description   = "This library can be used as a module for 'fog' or as standalone provider
                         to use the Azure Resource Manager cloud services in applications.."

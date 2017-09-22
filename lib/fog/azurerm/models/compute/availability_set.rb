@@ -11,7 +11,7 @@ module Fog
         attribute :resource_group
         attribute :platform_update_domain_count
         attribute :platform_fault_domain_count
-        attribute :is_managed
+        attribute :use_managed_disk
         attribute :sku_name
 
         def self.parse(availability_set)
@@ -26,7 +26,7 @@ module Fog
 
           unless availability_set.sku.nil?
             hash['sku_name'] = availability_set.sku.name
-            hash['is_managed'] = availability_set.sku.name.eql?(AS_SKU_ALIGNED)
+            hash['use_managed_disk'] = availability_set.sku.name.eql?(AS_SKU_ALIGNED)
           end
 
           hash
@@ -37,7 +37,7 @@ module Fog
           requires :location
           requires :resource_group
           # need to create the availability set
-          as = service.create_availability_set(avail_set_params(platform_fault_domain_count, platform_update_domain_count, is_managed))
+          as = service.create_availability_set(avail_set_params(platform_fault_domain_count, platform_update_domain_count, use_managed_disk))
           hash = Fog::Compute::AzureRM::AvailabilitySet.parse(as)
           merge_attributes(hash)
         end
@@ -48,14 +48,14 @@ module Fog
 
         private
 
-        def avail_set_params(platform_fault_domain_count, platform_update_domain_count, is_managed)
+        def avail_set_params(platform_fault_domain_count, platform_update_domain_count, use_managed_disk)
           {
             name: name,
             location: location,
             resource_group: resource_group,
             platform_fault_domain_count: platform_fault_domain_count,
             platform_update_domain_count: platform_update_domain_count,
-            is_managed: is_managed
+            use_managed_disk: use_managed_disk
           }
         end
       end

@@ -108,7 +108,7 @@ begin
     name: managed_as_name_default,
     location: LOCATION,
     resource_group: resource_group_name,
-    is_managed: true
+    use_managed_disk: true
   )
   name = avail_set.name
   fault_domains = avail_set.platform_fault_domain_count
@@ -126,7 +126,7 @@ begin
     resource_group: resource_group_name,
     platform_fault_domain_count: 2,
     platform_update_domain_count: 10,
-    is_managed: true
+    use_managed_disk: true
   )
   name = avail_set.name
   fault_domains = avail_set.platform_fault_domain_count

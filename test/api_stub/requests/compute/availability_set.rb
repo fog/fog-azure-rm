@@ -11,7 +11,7 @@ module ApiStub
                     "location":"westus",
                     "tags": {},
                     "platformUpdateDomainCount": 5,
-                    "platformFaultDomainCount": 3,
+                    "platformFaultDomainCount": 2,
                     "virtualMachines":[],
                     "sku":{
                       "name":"Classic"
@@ -47,7 +47,7 @@ module ApiStub
                     "location":"westus",
                     "tags": {},
                     "platformUpdateDomainCount": 5,
-                    "platformFaultDomainCount": 3,
+                    "platformFaultDomainCount": 2,
                     "virtualMachines":[]
                   }'
           availability_set_mapper = Azure::ARM::Compute::Models::AvailabilitySet.mapper
@@ -78,7 +78,7 @@ module ApiStub
                     "location":"westus",
                     "tags": {},
                     "platformUpdateDomainCount":5,
-                    "platformFaultDomainCount":3,
+                    "platformFaultDomainCount":2,
                     "virtualMachines":[],
                     "sku":{
                       "name":"Classic"
@@ -98,7 +98,7 @@ module ApiStub
                     "location":"westus",
                     "tags": {},
                     "platformUpdateDomainCount":5,
-                    "platformFaultDomainCount":3,
+                    "platformFaultDomainCount":2,
                     "virtualMachines":[],
                     "sku":{
                       "name":"Classic"

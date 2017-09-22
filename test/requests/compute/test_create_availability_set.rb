@@ -49,7 +49,7 @@ class TestCreateAvailabilitySet < Minitest::Test
         name: 'myavset1',
         location: 'west us',
         resource_group: 'fog-test-rg',
-        is_managed: false
+        use_managed_disk: false
       }
 
     @availability_sets.stub :validate_params, true do
@@ -66,7 +66,7 @@ class TestCreateAvailabilitySet < Minitest::Test
         name: 'myavset1',
         location: 'west us',
         resource_group: 'fog-test-rg',
-        is_managed: false
+        use_managed_disk: false
       }
 
     @availability_sets.stub :validate_params, true do
@@ -83,7 +83,7 @@ class TestCreateAvailabilitySet < Minitest::Test
         name: 'myavset1',
         location: 'west us',
         resource_group: 'fog-test-rg',
-        is_managed: true
+        use_managed_disk: true
       }
 
     @availability_sets.stub :validate_params, true do
@@ -100,7 +100,7 @@ class TestCreateAvailabilitySet < Minitest::Test
         name: 'myavset1',
         location: 'west us',
         resource_group: 'fog-test-rg',
-        is_managed: true
+        use_managed_disk: true
       }
 
     @availability_sets.stub :validate_params, true do

@@ -13,7 +13,7 @@ class TestDetachDataDiskFromVM < Minitest::Test
     update_vm_response = ApiStub::Requests::Compute::VirtualMachine.detach_data_disk_from_vm_response(@compute_client)
     @virtual_machines.stub :get, get_vm_response do
       @virtual_machines.stub :create_or_update, update_vm_response do
-        assert_equal @service.detach_data_disk_from_vm('fog-test-rg', 'fog-test-vm', 'mydatadisk1'), update_vm_response
+        assert_equal @service.detach_data_disk_from_vm('fog-test-rg', 'fog-test-vm', 'mydatadisk1', false), update_vm_response
       end
     end
   end
@@ -24,7 +24,7 @@ class TestDetachDataDiskFromVM < Minitest::Test
     @virtual_machines.stub :get, get_vm_response do
       @virtual_machines.stub :create_or_update, update_vm_response do
         assert_raises RuntimeError do
-          @service.detach_data_disk_from_vm('fog-test-rg', 'fog-test-vm', 'mydatadisk1')
+          @service.detach_data_disk_from_vm('fog-test-rg', 'fog-test-vm', 'mydatadisk1', false)
         end
       end
     end

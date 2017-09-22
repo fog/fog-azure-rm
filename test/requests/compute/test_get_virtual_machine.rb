@@ -11,14 +11,14 @@ class TestGetVirtualMachine < Minitest::Test
   def test_get_virtual_machine_success
     response = ApiStub::Requests::Compute::VirtualMachine.create_virtual_machine_response(@compute_client)
     @virtual_machines.stub :get, response do
-      assert_equal @service.get_virtual_machine('fog-test-rg', 'fog-test-server'), response
+      assert_equal @service.get_virtual_machine('fog-test-rg', 'fog-test-server', false), response
     end
   end
 
   def test_get_virtual_machine_failure
     response = proc { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @virtual_machines.stub :get, response do
-      assert_raises(RuntimeError) { @service.get_virtual_machine('fog-test-rg', 'fog-test-server') }
+      assert_raises(RuntimeError) { @service.get_virtual_machine('fog-test-rg', 'fog-test-server', false) }
     end
   end
 end

@@ -1,11 +1,15 @@
 ## 0.3.3
 
 **Added:**
-- Compute Service - Added support to create Managed Availability Set
+- Compute Service - Added support to create availability set with managed disk support
 
 **Changed:**
-- Compute Service - Updated default values for fault and update domains
-- Compute Service - Provided option to configure fault and update domains with reasonable default values
+- Compute Service - Provided option to configure fault and update domain values
+- Removed dependency on Rest Client
+- azure-storage dependency fixed to 0.11.5.preview (to enable use with ruby 2.0.0)
+
+**Fixed:**
+- Unit tests - Storage and Compute
 
 ## 0.3.2
 

@@ -28,7 +28,7 @@ class TestAvailabilitySet < Minitest::Test
       :resource_group,
       :platform_update_domain_count,
       :platform_fault_domain_count,
-      :is_managed,
+      :use_managed_disk,
       :sku_name
     ]
     attributes.each do |attribute|

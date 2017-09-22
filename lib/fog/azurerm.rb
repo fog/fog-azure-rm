@@ -1,5 +1,4 @@
 require 'ms_rest_azure'
-require 'rest_client'
 require 'erb'
 require 'fog/azurerm/config'
 require 'fog/azurerm/constants'

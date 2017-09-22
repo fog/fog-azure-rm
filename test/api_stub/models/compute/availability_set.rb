@@ -9,8 +9,8 @@ module ApiStub
             'name' => 'fog-test-availability-set',
             'type' => 'Microsoft.Compute/availabilitySets',
             'location' => 'westus',
-            'platformUpdateDomainCount' => UNMANAGED_UPDATE_DOMAIN_COUNT,
-            'platformFaultDomainCount' => UNMANAGED_FAULT_DOMAIN_COUNT,
+            'platformUpdateDomainCount' => UPDATE_DOMAIN_COUNT,
+            'platformFaultDomainCount' => FAULT_DOMAIN_COUNT,
             'sku' => {
               'name' => 'Classic'
             }
@@ -25,8 +25,8 @@ module ApiStub
             'name' => 'fog-test-availability-set',
             'type' => 'Microsoft.Compute/availabilitySets',
             'location' => 'westus',
-            'platformUpdateDomainCount' => MANAGED_UPDATE_DOMAIN_COUNT,
-            'platformFaultDomainCount' => MANAGED_FAULT_DOMAIN_COUNT,
+            'platformUpdateDomainCount' => UPDATE_DOMAIN_COUNT,
+            'platformFaultDomainCount' => FAULT_DOMAIN_COUNT,
             'sku' => {
               'name' => 'Aligned'
             }
@@ -41,8 +41,8 @@ module ApiStub
               'name' => 'fog-test-availability-set',
               'type' => 'Microsoft.Compute/availabilitySets',
               'location' => 'westus',
-              'platformUpdateDomainCount' => UNMANAGED_UPDATE_DOMAIN_COUNT,
-              'platformFaultDomainCount' => UNMANAGED_FAULT_DOMAIN_COUNT
+              'platformUpdateDomainCount' => UPDATE_DOMAIN_COUNT,
+              'platformFaultDomainCount' => FAULT_DOMAIN_COUNT
           }
           result_mapper = Azure::ARM::Compute::Models::AvailabilitySet.mapper
           sdk_compute_client.deserialize(result_mapper, avail_set, 'result.body')
@@ -54,8 +54,8 @@ module ApiStub
               'name' => 'fog-test-availability-set',
               'type' => 'Microsoft.Compute/availabilitySets',
               'location' => 'westus',
-              'platformUpdateDomainCount' => UNMANAGED_UPDATE_DOMAIN_COUNT,
-              'platformFaultDomainCount' => UNMANAGED_FAULT_DOMAIN_COUNT,
+              'platformUpdateDomainCount' => UPDATE_DOMAIN_COUNT,
+              'platformFaultDomainCount' => FAULT_DOMAIN_COUNT,
               'sku' => {
                 'name' => 'Classic'
               }

@@ -29,15 +29,8 @@ module Fog
           avail_set = Azure::ARM::Compute::Models::AvailabilitySet.new
           avail_set.location = location
           avail_set.sku = create_availability_set_sku(is_managed)
-
-          if is_managed
-            avail_set.platform_fault_domain_count = fault_domain_count.nil? ? MANAGED_FAULT_DOMAIN_COUNT : fault_domain_count
-            avail_set.platform_update_domain_count = update_domain_count.nil? ? MANAGED_UPDATE_DOMAIN_COUNT : update_domain_count
-          else
-            avail_set.platform_fault_domain_count = fault_domain_count.nil? ? UNMANAGED_FAULT_DOMAIN_COUNT : fault_domain_count
-            avail_set.platform_update_domain_count = update_domain_count.nil? ? UNMANAGED_UPDATE_DOMAIN_COUNT : update_domain_count
-          end
-
+          avail_set.platform_fault_domain_count = fault_domain_count.nil? ? FAULT_DOMAIN_COUNT : fault_domain_count
+          avail_set.platform_update_domain_count = update_domain_count.nil? ? UPDATE_DOMAIN_COUNT : update_domain_count
           avail_set
         end
 
@@ -58,8 +51,8 @@ module Fog
             'type' => 'Microsoft.Compute/availabilitySets',
             'properties' =>
             {
-              'platformUpdateDomainCount' => UNMANAGED_FAULT_DOMAIN_COUNT,
-              'platformFaultDomainCount' => UNMANAGED_FAULT_DOMAIN_COUNT
+              'platformUpdateDomainCount' => FAULT_DOMAIN_COUNT,
+              'platformFaultDomainCount' => FAULT_DOMAIN_COUNT
             }
           }
         end

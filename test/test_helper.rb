@@ -817,3 +817,24 @@ def managed_disk(service)
     service: service
   )
 end
+
+def key_vault(service)
+  Fog::KeyVault::AzureRM::Vault.new(
+    name: 'key-vault',
+    location: 'East US',
+    resource_group_name: 'fog-test-rg',
+    sku_family: 'A',
+    sku_name: 'Standard',
+    access_policies: [
+      {
+        tenant_id: 'XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX',
+        object_id: 'XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX',
+        permissions: {
+          keys: ['all'],
+          secrets: ['all']
+        }
+      }
+    ],
+    service: service
+  )
+end

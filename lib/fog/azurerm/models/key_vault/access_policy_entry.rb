@@ -21,10 +21,6 @@ module Fog
 
           access_policy_entry_hash
         end
-
-        def save
-          requires :object_id, :tenant_id, :keys, :secrets
-        end
       end
     end
   end

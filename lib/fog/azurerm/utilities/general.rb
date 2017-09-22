@@ -55,7 +55,7 @@ def raise_azure_exception(exception, msg)
               end
     exception_message = "Exception in #{msg} #{message} Type: #{exception.class}\n#{exception.backtrace.join("\n")}"
   else
-    "#{exception.inspect}\n#{exception.backtrace.join("\n")}"
+    exception_message = "#{exception.inspect}\n#{exception.backtrace.join("\n")}"
   end
 
   Fog::Logger.debug exception.backtrace

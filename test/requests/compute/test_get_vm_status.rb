@@ -12,14 +12,14 @@ class TestGetVirtualMachineStatus < Minitest::Test
     response = ApiStub::Requests::Compute::VirtualMachine.virtual_machine_instance_view_response(@compute_client)
     compare_result = ApiStub::Requests::Compute::VirtualMachine.vm_status_response
     @virtual_machines.stub :get, response do
-      assert_equal @service.check_vm_status('fog-test-rg', 'fog-test-server'), compare_result
+      assert_equal @service.check_vm_status('fog-test-rg', 'fog-test-server', false), compare_result
     end
   end
 
   def test_vm_status_failure
     response = proc { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @virtual_machines.stub :get, response do
-      assert_raises(RuntimeError) { @service.check_vm_status('fog-test-rg', 'fog-test-server') }
+      assert_raises(RuntimeError) { @service.check_vm_status('fog-test-rg', 'fog-test-server', false) }
     end
   end
 end

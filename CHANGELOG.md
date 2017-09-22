@@ -3,6 +3,10 @@
 **Added:**
 - Compute Service - Added support to create Managed Availability Set
 
+**Changed:**
+- Compute Service - Updated default values for fault and update domains
+- Compute Service - Provided option to configure fault and update domains with reasonable default values
+
 ## 0.3.2
 
 **Added:**

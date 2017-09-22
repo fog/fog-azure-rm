@@ -220,10 +220,12 @@ Create a new availability set
 
 ```ruby
 azure_compute_service.availability_sets.create(
-  name: '<Availability Set name>',
-  location: '<Location>',
-  resource_group: '<Resource Group name>',
-  is_managed: true # Optional, Possible values true or false
+    name: '<Availability Set name>',
+    location: '<Location>',
+    resource_group: '<Resource Group name>'
+    platform_fault_domain_count: <No of Fault Domains>,     # [Optional] Default => { Managed: 2, Unmanaged: 3 }
+    platform_update_domain_count: <No of Update Domains>,   # [Optional] Default => { Managed: 5, Unmanaged: 5 }
+    is_managed: true                                        # [Optional] Possible values true or false
 )
 ```
 ## List Availability Sets 

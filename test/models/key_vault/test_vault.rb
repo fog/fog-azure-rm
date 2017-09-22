@@ -4,7 +4,7 @@ require File.expand_path '../../test_helper', __dir__
 class TestVault < Minitest::Test
   def setup
     @service = Fog::KeyVault::AzureRM.new(credentials)
-    @vault = Fog::KeyVault::AzureRM::Vault.new
+    @vault = key_vault(@service)
   end
 
   def test_model_attributes

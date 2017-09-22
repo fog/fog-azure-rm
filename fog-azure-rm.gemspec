@@ -5,7 +5,7 @@ require 'fog/azurerm/version'
 Gem::Specification.new do |spec|
   spec.name          = 'fog-azure-rm'
   spec.version       = Fog::AzureRM::VERSION
-  spec.authors       = ['Shaffan Chaudhry', 'Samawia Moin', 'Adnan Khalil', 'Zeeshan Arshad', 'Haider Ali', 'Waqar Haider', 'Bilal Naeem', 'Muhammad Asad', 'Azeem Sajid', 'Maham Nazir']
+  spec.authors       = ['Shaffan Chaudhry', 'Samawia Moin', 'Adnan Khalil', 'Zeeshan Arshad', 'Haider Ali', 'Waqar Haider', 'Bilal Naeem', 'Muhammad Asad', 'Azeem Sajid', 'Maham Nazir', 'Abbas Sheikh']
   spec.summary       = "Module for the 'fog' gem to support Azure Resource Manager cloud services."
   spec.description   = "This library can be used as a module for 'fog' or as standalone provider
                         to use the Azure Resource Manager cloud services in applications.."
@@ -24,7 +24,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'codeclimate-test-reporter' , '~> 1.0.0'
   spec.add_dependency 'fog-core', '~> 1.43.0'
   spec.add_dependency 'fog-json', '~> 1.0'
-  spec.add_dependency 'rest-client', '~> 2.0.0'
   spec.add_dependency 'azure_mgmt_compute', '~> 0.9.0'
   spec.add_dependency 'azure_mgmt_resources', '~> 0.9.0'
   spec.add_dependency 'azure_mgmt_storage', '~> 0.9.0'
@@ -33,6 +32,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'azure_mgmt_traffic_manager', '~> 0.9.0'
   spec.add_dependency 'azure_mgmt_sql', '~> 0.9.0'
   spec.add_dependency 'azure_mgmt_key_vault', '~> 0.9.0'
-  spec.add_dependency 'azure-storage', '>= 0.11.5.preview', '< 1.0'
+  spec.add_dependency 'azure-storage', '>= 0.11.5.preview'
   spec.add_dependency 'vhd', '0.0.4'
 end

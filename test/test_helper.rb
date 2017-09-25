@@ -788,21 +788,6 @@ def sql_server_firewall_rules(service)
     end_ip: '10.10.10.10',
     service: service
   )
-end
-
-def recovery_vault(service)
-  Fog::Storage::AzureRM::RecoveryVault.new(
-    name: 'fog-test-vault',
-    id: '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.RecoveryServices/vaults/fog-test-vault',
-    resource_group: 'fog-test-rg',
-    location: 'westus',
-    type: 'Microsoft.RecoveryServices/vaults',
-    sku: {
-      name: 'standard'
-    },
-    service: service
-  )
-end
 
 def managed_disk(service)
   Fog::Compute::AzureRM::ManagedDisk.new(

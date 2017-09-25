@@ -1,3 +1,8 @@
+## 0.3.4 (Upcoming)
+
+**Removed:**
+- Recovery Vault Support
+
 ## 0.3.3
 
 **Added:**

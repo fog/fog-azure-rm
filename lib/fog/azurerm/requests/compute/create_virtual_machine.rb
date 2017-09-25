@@ -31,7 +31,8 @@ module Fog
                                                                    vm_hash[:os_disk_caching],
                                                                    vm_hash[:platform],
                                                                    vm_hash[:resource_group],
-                                                                   vm_hash[:managed_disk_storage_type])
+                                                                   vm_hash[:managed_disk_storage_type],
+                                                                   vm_hash[:os_disk_size])
 
           virtual_machine.os_profile = if vm_hash[:platform].casecmp(WINDOWS).zero?
                                          define_windows_os_profile(vm_hash[:name],
@@ -81,7 +82,7 @@ module Fog
           image_reference
         end
 
-        def define_storage_profile(vm_name, storage_account_name, publisher, offer, sku, version, vhd_path, os_disk_caching, platform, resource_group, managed_disk_storage_type)
+        def define_storage_profile(vm_name, storage_account_name, publisher, offer, sku, version, vhd_path, os_disk_caching, platform, resource_group, managed_disk_storage_type, os_disk_size)
           storage_profile = Azure::ARM::Compute::Models::StorageProfile.new
           storage_profile.image_reference = image_reference(publisher, offer, sku, version)
           os_disk = Azure::ARM::Compute::Models::OSDisk.new
@@ -129,7 +130,7 @@ module Fog
         
           os_disk.name = "#{vm_name}_os_disk"
           os_disk.os_type = platform
-          
+          os_disk.disk_size_gb = os_disk_size unless os_disk_size.nil?
           os_disk.create_option = Azure::ARM::Compute::Models::DiskCreateOptionTypes::FromImage
           os_disk.caching = unless os_disk_caching.nil?
                               case os_disk_caching

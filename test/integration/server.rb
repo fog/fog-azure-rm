@@ -106,7 +106,9 @@ begin
     version: 'latest',
     platform: 'linux',
     custom_data: 'echo customData',
-    os_disk_caching: Fog::ARM::Compute::Models::CachingTypes::None
+    os_disk_caching: Fog::ARM::Compute::Models::CachingTypes::None,
+    managed_disk_storage_type: 'Standard_LRS',
+    os_disk_size: 50
   )
   puts "Created virtual machine: #{virtual_machine.name}"
 

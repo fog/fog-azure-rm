@@ -52,7 +52,9 @@ class TestServer < Minitest::Test
       :provision_vm_agent,
       :enable_automatic_updates,
       :network_interface_card_ids,
-      :availability_set_id
+      :availability_set_id,
+      :managed_disk_storage_type,
+      :os_disk_size
     ]
     attributes.each do |attribute|
       assert_respond_to @server, attribute

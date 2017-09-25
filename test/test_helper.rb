@@ -788,6 +788,7 @@ def sql_server_firewall_rules(service)
     end_ip: '10.10.10.10',
     service: service
   )
+end
 
 def managed_disk(service)
   Fog::Compute::AzureRM::ManagedDisk.new(

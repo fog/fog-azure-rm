@@ -61,7 +61,8 @@ When using **managed_disk_storage_type** you should not pass the **vhd_path** as
         vhd_path: '<Path of VHD>',                 # Optional, if you want to create the VM from a custom image.
         custom_data: 'echo customData',            # Optional, if you want to add custom data in this VM.
         os_disk_caching: Fog::ARM::Compute::Models::CachingTypes::None, # Optional, can be one of None, ReadOnly, ReadWrite
-        managed_disk_storage_type: Azure::ARM::Compute::Models::StorageAccountTypes::StandardLRS # Optional, can be StandardLRS or PremiumLRS
+        managed_disk_storage_type: Azure::ARM::Compute::Models::StorageAccountTypes::StandardLRS, # Optional, can be StandardLRS or PremiumLRS
+        os_disk_size: <Disk Size>                  # Optional, size of the os disk in GB (upto 1023)
     )
 ```
 
@@ -85,8 +86,9 @@ Create a new windows server
         version: 'latest',                               # Not required if custom image is being used
         platform: 'Windows',
         vhd_path: '<Path of VHD>',                       # Optional, if you want to create the VM from a custom image.
-        custom_data: 'echo customData',                   # Optional, if you want to add custom data in this VM.
-        managed_disk_storage_type: Azure::ARM::Compute::Models::StorageAccountTypes::StandardLRS # Optional, can be StandardLRS or PremiumLRS
+        custom_data: 'echo customData',                  # Optional, if you want to add custom data in this VM.
+        managed_disk_storage_type: Azure::ARM::Compute::Models::StorageAccountTypes::StandardLRS, # Optional, can be StandardLRS or PremiumLRS
+        os_disk_size: <Disk Size>                        # Optional, size of the os disk in GB (upto 1023)
     )
 ```
 
@@ -114,7 +116,8 @@ Create a new linux server asynchronously
         vhd_path: '<Path of VHD>',                 # Optional, if you want to create the VM from a custom image.
         custom_data: 'echo customData',            # Optional, if you want to add custom data in this VM.
         os_disk_caching: Fog::ARM::Compute::Models::CachingTypes::None, # Optional, can be one of None, ReadOnly, ReadWrite
-        managed_disk_storage_type: Azure::ARM::Compute::Models::StorageAccountTypes::StandardLRS # Optional, can be StandardLRS or PremiumLRS
+        managed_disk_storage_type: Azure::ARM::Compute::Models::StorageAccountTypes::StandardLRS, # Optional, can be StandardLRS or PremiumLRS
+        os_disk_size: <Disk Size>                  # Optional, size of the os disk in GB (upto 1023)
     )
 ```
 Following methods are available to handle async respoonse:

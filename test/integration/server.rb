@@ -106,7 +106,7 @@ begin
     version: 'latest',
     platform: 'linux',
     custom_data: 'echo customData',
-    os_disk_caching: Fog::ARM::Compute::Models::CachingTypes::None
+    os_disk_caching: Fog::ARM::Compute::Models::CachingTypes::None,
   )
   puts "Created virtual machine: #{virtual_machine.name}"
 

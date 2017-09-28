@@ -193,7 +193,7 @@ Get the server object and detach a Data Disk from it.
 Get the server object and attach a Data Disk to it.
 
 ```ruby
-      server.attach_managed_disk('<Disk Name>', <Disk Resource Group Name>)
+      server.attach_managed_disk('<Disk Name>', '<Disk Resource Group Name>')
 ```
 
 ## Detach a Managed Data Disk from Server

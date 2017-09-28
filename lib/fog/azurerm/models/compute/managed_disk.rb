@@ -6,17 +6,18 @@ module Fog
       class ManagedDisk < Fog::Model
         attribute :id
         identity  :name
-        attribute :resource_group_name
         attribute :type
         attribute :location
+        attribute :resource_group_name
         attribute :account_type
-        attribute :time_created
-        attribute :os_type
         attribute :disk_size_gb
         attribute :owner_id
         attribute :provisioning_state
         attribute :tags
+        attribute :time_created
         attribute :creation_data
+        
+        attribute :os_type
         attribute :encryption_settings
 
         def self.parse(managed_disk)
@@ -39,7 +40,7 @@ module Fog
 
         def save
           requires :name, :location, :resource_group_name, :creation_data
-          requires :disk_size_gb if creation_data[:create_option] == 'Empty'
+          requires :disk_size_gb, :account_type
           validate_creation_data_params(creation_data)
 
           disk = service.create_or_update_managed_disk(managed_disk_params)

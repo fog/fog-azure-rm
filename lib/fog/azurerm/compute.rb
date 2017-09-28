@@ -42,6 +42,7 @@ module Fog
       request :revoke_access_to_managed_disk
       request :grant_access_to_managed_disk
 
+
       model_path 'fog/azurerm/models/compute'
       model :availability_set
       collection :availability_sets
@@ -51,6 +52,7 @@ module Fog
       collection :virtual_machine_extensions
       model :managed_disk
       collection :managed_disks
+      model :data_disk
       model :creation_data
       model :disk_create_option
       model :encryption_settings

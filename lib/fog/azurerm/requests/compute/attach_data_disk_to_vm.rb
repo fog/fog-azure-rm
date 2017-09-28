@@ -3,20 +3,35 @@ module Fog
     class AzureRM
       # This class provides the actual implementation for service calls.
       class Real
-        def attach_data_disk_to_vm(resource_group, vm_name, disk_name, disk_size, storage_account_name, async)
-          msg = "Attaching Data Disk #{disk_name} to Virtual Machine #{vm_name} in Resource Group #{resource_group}"
+        def attach_data_disk_to_vm(disk_params, async)
+          # Variable un-packing for easy access
+          vm_name = disk_params[:vm_name]
+          vm_resource_group = disk_params[:vm_resource_group]
+          disk_name = disk_params[:disk_name]
+          disk_resource_group = disk_params[:disk_resource_group]
+          disk_size = disk_params[:disk_size_gb]
+          storage_account_name = disk_params[:storage_account_name]
+
+          msg = "Attaching Data Disk #{disk_name} to Virtual Machine #{vm_name} in Resource Group #{vm_resource_group}"
           Fog::Logger.debug msg
-          vm = get_virtual_machine_instance(resource_group, vm_name, @compute_mgmt_client)
+          vm = get_virtual_machine_instance(vm_resource_group, vm_name)
           lun = get_logical_unit_number(vm.storage_profile.data_disks)
-          access_key = get_storage_access_key(resource_group, storage_account_name, @storage_mgmt_client)
-          data_disk = get_data_disk_object(disk_name, disk_size, lun, storage_account_name, access_key)
+
+          # Attach data disk to VM
+          if storage_account_name
+            # Un-managed data disk
+            access_key = get_storage_access_key(vm_resource_group, storage_account_name)
+            data_disk = get_unmanaged_disk_object(disk_name, disk_size, lun, storage_account_name, access_key)
+          elsif disk_resource_group
+            # Managed data disk
+            data_disk = get_data_disk_object(disk_resource_group, disk_name, lun)
+          end
           vm.storage_profile.data_disks.push(data_disk)
-          vm.resources = nil
           begin
             if async
-              response = @compute_mgmt_client.virtual_machines.create_or_update_async(resource_group, vm_name, vm)
+              response = @compute_mgmt_client.virtual_machines.create_or_update_async(vm_resource_group, vm_name, vm)
             else
-              virtual_machine = @compute_mgmt_client.virtual_machines.create_or_update(resource_group, vm_name, vm)
+              virtual_machine = @compute_mgmt_client.virtual_machines.create_or_update(vm_resource_group, vm_name, vm)
             end
           rescue MsRestAzure::AzureOperationError => e
             if e.body.to_s =~ /InvalidParameter/ && e.body.to_s =~ /already exists/
@@ -35,11 +50,11 @@ module Fog
 
         private
 
-        def get_virtual_machine_instance(resource_group, vm_name, client)
+        def get_virtual_machine_instance(resource_group, vm_name)
           msg = "Getting Virtual Machine #{vm_name} from Resource Group #{resource_group}"
           Fog::Logger.debug msg
           begin
-            virtual_machine = client.virtual_machines.get(resource_group, vm_name)
+            virtual_machine = @compute_mgmt_client.virtual_machines.get(resource_group, vm_name)
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
@@ -60,11 +75,32 @@ module Fog
           lun_range_list[0]
         end
 
-        def get_storage_access_key(resource_group, storage_account_name, storage_client)
+        def get_data_disk_object(disk_resource_group, disk_name, lun)
+          msg = "Getting Managed Disk #{disk_name} from Resource Group #{disk_resource_group}"
+          begin
+            disk = @compute_mgmt_client.disks.get(disk_resource_group, disk_name)
+          rescue MsRestAzure::AzureOperationError => e
+            Fog::Logger.debug msg
+            raise_azure_exception(e, msg)
+          end
+          managed_disk = Azure::ARM::Compute::Models::DataDisk.new
+          managed_disk.name = disk_name
+          managed_disk.lun = lun
+          managed_disk.create_option = Azure::ARM::Compute::Models::DiskCreateOptionTypes::Attach
+          
+          # Managed disk parameter
+          managed_disk_params = Azure::ARM::Compute::Models::ManagedDiskParameters.new
+          managed_disk_params.id = disk.id
+          managed_disk.managed_disk = managed_disk_params
+          
+          managed_disk
+        end
+
+        def get_storage_access_key(resource_group, storage_account_name)
           msg = "Getting Storage Access Keys from Resource Group #{resource_group}"
           Fog::Logger.debug msg
           begin
-            storage_account_keys = storage_client.storage_accounts.list_keys(resource_group, storage_account_name)
+            storage_account_keys = @storage_mgmt_client.storage_accounts.list_keys(resource_group, storage_account_name)
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
@@ -72,7 +108,7 @@ module Fog
           storage_account_keys.keys[0].value
         end
 
-        def get_data_disk_object(disk_name, disk_size, lun, storage_account_name, access_key)
+        def get_unmanaged_disk_object(disk_name, disk_size, lun, storage_account_name, access_key)
           data_disk = Azure::ARM::Compute::Models::DataDisk.new
           data_disk.name = disk_name
           data_disk.lun = lun

@@ -3,7 +3,7 @@ module Fog
     class AzureRM
       # This class provides the actual implementation for service calls.
       class Real
-        def delete_resource_tag(resource_id, tag_name, tag_value , api_version = API_VERSION)
+        def delete_resource_tag(resource_id, tag_name, tag_value, api_version = API_VERSION)
           split_resource = resource_id.split('/') unless resource_id.nil?
           if split_resource.count != 9
             raise 'Invalid Resource Id'
@@ -34,7 +34,7 @@ module Fog
 
       # This class provides the mock implementation for unit tests.
       class Mock
-        def delete_resource_tag(_resource_id, tag_name, _tag_value , api_version)
+        def delete_resource_tag(_resource_id, tag_name, _tag_value, _api_version)
           Fog::Logger.debug "Tag #{tag_name} deleted successfully from Resource your-resource-name"
           true
         end

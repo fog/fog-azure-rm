@@ -3,7 +3,7 @@ module Fog
     class AzureRM
       # This class provides the actual implementation for service calls.
       class Real
-        def tag_resource(resource_id, tag_name, tag_value , api_version = API_VERSION)
+        def tag_resource(resource_id, tag_name, tag_value, api_version = API_VERSION)
           split_resource = resource_id.split('/') unless resource_id.nil?
           if split_resource.count != 9
             raise 'Invalid Resource Id'
@@ -33,7 +33,7 @@ module Fog
 
       # This class provides the mock implementation for unit tests.
       class Mock
-        def tag_resource(_resource_id, tag_name, _tag_value , api_version)
+        def tag_resource(_resource_id, tag_name, _tag_value, _api_version)
           Fog::Logger.debug "Tag #{tag_name} created successfully for Resource 'resource_name'"
           true
         end

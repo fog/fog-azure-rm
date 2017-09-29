@@ -1,0 +1,8 @@
+{
+  "linters": {
+    "ruby": {
+      "type": "rubocop",
+      "include": "/\\.(rb|rake)$/"
+    }
+  }
+}

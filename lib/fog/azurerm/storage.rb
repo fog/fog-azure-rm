@@ -64,22 +64,6 @@ module Fog
       request :save_page_blob
       request :multipart_save_block_blob
 
-      # Azure Recovery Vault requests
-      request :create_or_update_recovery_vault
-      request :get_recovery_vault
-      request :list_recovery_vaults
-      request :delete_recovery_vault
-      request :enable_backup_protection
-      request :set_recovery_vault_context
-      request :get_backup_protection_policy
-      request :start_backup
-      request :get_backup_item
-      request :get_backup_container
-      request :disable_backup_protection
-      request :get_all_backup_jobs
-      request :get_all_backup_jobs
-      request :get_backup_job_for_vm
-
       model_path 'fog/azurerm/models/storage'
       model :storage_account
       collection :storage_accounts
@@ -87,8 +71,6 @@ module Fog
       collection :directories
       model :file
       collection :files
-      model :recovery_vault
-      collection :recovery_vaults
 
       # This class provides the mock implementation for unit tests.
       class Mock

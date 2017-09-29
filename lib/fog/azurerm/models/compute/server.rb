@@ -31,6 +31,7 @@ module Fog
         attribute :custom_data
         attribute :vhd_path
         attribute :managed_disk_storage_type
+        attribute :os_disk_size
 
         def self.parse(vm)
           hash = {}
@@ -41,7 +42,7 @@ module Fog
           hash['vm_size'] = vm.hardware_profile.vm_size unless vm.hardware_profile.vm_size.nil?
           unless vm.storage_profile.nil?
             hash['os_disk_name'] = vm.storage_profile.os_disk.name
-
+            hash['os_disk_size'] = vm.storage_profile.os_disk.disk_size_gb
             if vm.storage_profile.os_disk.vhd.nil?
               hash['managed_disk_storage_type'] = vm.storage_profile.os_disk.managed_disk.storage_account_type
             else
@@ -200,7 +201,8 @@ module Fog
             custom_data: custom_data,
             vhd_path: vhd_path,
             os_disk_caching: os_disk_caching,
-            managed_disk_storage_type: managed_disk_storage_type
+            managed_disk_storage_type: managed_disk_storage_type,
+            os_disk_size: os_disk_size
           }
         end
 

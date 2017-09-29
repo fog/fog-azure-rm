@@ -3,7 +3,7 @@ module Fog
     class AzureRM
       # This class provides the actual implementation for service calls.
       class Real
-        def check_azure_resource_exists(resource_id, api_version)
+        def check_azure_resource_exists(resource_id, api_version = API_VERSION)
           split_resource = resource_id.split('/') unless resource_id.nil?
           raise 'Invalid Resource Id' if split_resource.count != 9
 

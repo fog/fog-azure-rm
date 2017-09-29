@@ -53,7 +53,8 @@ begin
   tag_resource = resources.tag_resource(
     resource_id,
     'test-key',
-    'test-value'
+    'test-value',
+    '2016-06-01'
   )
   puts "Tagged resource: #{tag_resource}"
 
@@ -77,7 +78,8 @@ begin
   resource = resources.delete_resource_tag(
     resource_id,
     'test-key',
-    'test-value'
+    'test-value',
+    '2016-06-01'
   )
   puts "Removed tag from a resource: #{resource}"
   ########################################################################################################################

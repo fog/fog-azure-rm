@@ -42,7 +42,6 @@ module Fog
       request :revoke_access_to_managed_disk
       request :grant_access_to_managed_disk
 
-
       model_path 'fog/azurerm/models/compute'
       model :availability_set
       collection :availability_sets

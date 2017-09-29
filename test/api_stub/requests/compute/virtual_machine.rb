@@ -142,77 +142,78 @@ module ApiStub
             vhd_path: 'https://fogstrg.blob.core.windows.net/customvhd/windows-image.vhd'
           }
         end
-        
+
         def self.get_managed_disk_response(compute_client)
           body = {
-            'id'=> '/subscriptions/{subscription_id}/resourceGroups/ManagedRG/providers/Microsoft.Compute/disks/ManagedDataDisk1', 
-            'name'=> 'ManagedDataDisk1', 
-            'type'=> 'Microsoft.Compute/disks', 
-            'location'=> 'eastus', 
-            'account_type'=> 'Premium_LRS', 
-            
-            'time_created'=> {
-              'datetime'=> '((2458025j,52461s,709327300n),+0s,2299161j)'
+            'id' => '/subscriptions/{subscription_id}/resourceGroups/ManagedRG/providers/Microsoft.Compute/disks/ManagedDataDisk1',
+            'name' => 'ManagedDataDisk1',
+            'type' => 'Microsoft.Compute/disks',
+            'location' => 'eastus',
+            'account_type' => 'Premium_LRS',
+
+            'time_created' => {
+              'datetime' => '((2458025j,52461s,709327300n),+0s,2299161j)'
             },
-            
-            'creation_data'=> {
-              'create_option'=> 'Empty'
-            }, 
-            
-            'disk_size_gb'=> 100, 
-            'provisioning_state'=> 'Succeeded'
+
+            'creation_data' => {
+              'create_option' => 'Empty'
+            },
+
+            'disk_size_gb' => 100,
+            'provisioning_state' => 'Succeeded'
           }
           vm_mapper = Azure::ARM::Compute::Models::Disk.mapper
           compute_client.deserialize(vm_mapper, body, 'result.body')
         end
-        
+
         def self.get_vm_with_managed_disk_response(compute_client)
-          body = { 
-            'id' => '/subscriptions/{subscription_id}/resourceGroups/ManagedRG/providers/Microsoft.Compute/virtualMachines/ManagedVM', 
-            'name' => 'ManagedVM', 
-            'type' => 'Microsoft.Compute/virtualMachines', 
-            'location' => 'eastus', 
+          body = {
+            'id' => '/subscriptions/{subscription_id}/resourceGroups/ManagedRG/providers/Microsoft.Compute/virtualMachines/ManagedVM',
+            'name' => 'ManagedVM',
+            'type' => 'Microsoft.Compute/virtualMachines',
+            'location' => 'eastus',
             'hardware_profile' =>
-              {'vm_size' => 'Standard_D2s_v3'}, 
-            'storage_profile'=> 
+              { 'vm_size' => 'Standard_D2s_v3' },
+            'storage_profile' =>
               {
-              'image_reference'=>
-                { 'publisher' => 'Canonical', 
-                  'offer' => 'UbuntuServer', 
-                  'sku' => '16.04-LTS', 
-                  'version' => 'latest'
-                 }, 
-              'os_disk'=>
+              'image_reference' =>
                 { 
-                  'os_type' => 'Linux', 
-                  'name' => 'ManagedVM_OsDisk_1_d00cc277b8904c79ae5a777aa3fa5ac3', 
-                  'caching' => 'ReadWrite', 
-                  'create_option' => 'FromImage', 
-                  'disk_size_gb' =>30, 
+                  'publisher' => 'Canonical',
+                  'offer' => 'UbuntuServer',
+                  'sku' => '16.04-LTS',
+                  'version' => 'latest' 
+                },
+              'os_disk' =>
+                { 
+                  'os_type' => 'Linux',
+                  'name' => 'ManagedVM_OsDisk_1_d00cc277b8904c79ae5a777aa3fa5ac3',
+                  'caching' => 'ReadWrite',
+                  'create_option' => 'FromImage',
+                  'disk_size_gb' =>30,
                   'managed_disk' => { 
                     'id' => '/subscriptions/{subscription_id}/resourceGroups/ManagedRG/providers/Microsoft.Compute/disks/ManagedVM_OsDisk_1_d00cc277b8904c79ae5a777aa3fa5ac3', 
                     'storage_account_type' => 'Premium_LRS'
-                  }
+                }
               },
-              'data_disks' => [
-                { 'lun'=> 0, 
-                  'name' => 'ManagedDataDisk1', 
-                  'caching' => 'None', 
-                  'create_option' => 'Attach', 
-                  'disk_size_gb' =>100, 
-                  'managed_disk' => { 
-                    'id' => '/subscriptions/{subscription_id}/resourceGroups/MANAGEDRG/providers/Microsoft.Compute/disks/ManagedDataDisk1', 
+              'data_disks' => [ {
+                  'lun' => 0,
+                  'name' => 'ManagedDataDisk1',
+                  'caching' => 'None',
+                  'create_option' => 'Attach',
+                  'disk_size_gb' => 100,
+                  'managed_disk' => {
+                    'id' => '/subscriptions/{subscription_id}/resourceGroups/MANAGEDRG/providers/Microsoft.Compute/disks/ManagedDataDisk1',
                     'storage_account_type' => 'Premium_LRS'
                   }
                 }]
-            }, 
-            'network_profile' => { 
+              },
+            'network_profile' => {
               'network_interfaces' => [
                 { 
                   'id' => '/subscriptions/{subscription_id}/resourceGroups/ManagedRG/providers/Microsoft.Network/networkInterfaces/managedvm992'
                 }
               ]
-            },  
+            },
             'provisioning_state' => 'Succeeded', 
             'vm_id' => '73f38ae6-4767-4325-bd78-9ba4e74337d9'
           }

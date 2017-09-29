@@ -155,12 +155,12 @@ module Fog
           async ? create_fog_async_response(response) : merge_attributes(Fog::Compute::AzureRM::Server.parse(response))
         end
 
-        def attach_managed_disk(disk_name, disk_resource_group, async=false)
+        def attach_managed_disk(disk_name, disk_resource_group, async = false)
           response = service.attach_data_disk_to_vm(data_disk_params(disk_name, nil, nil, disk_resource_group), async)
           async ? create_fog_async_response(response) : merge_attributes(Fog::Compute::AzureRM::Server.parse(response))
         end
 
-        def detach_managed_disk(disk_name, async=false)
+        def detach_managed_disk(disk_name, async = false)
           response = service.detach_data_disk_from_vm(resource_group, name, disk_name, async)
           async ? create_fog_async_response(response) : merge_attributes(Fog::Compute::AzureRM::Server.parse(response))
         end
@@ -203,8 +203,8 @@ module Fog
             managed_disk_storage_type: managed_disk_storage_type
           }
         end
-        
-        def data_disk_params(disk_name, disk_size=nil, storage_account=nil, disk_resource_group=nil)
+
+        def data_disk_params(disk_name, disk_size = nil, storage_account = nil, disk_resource_group = nil)
           {
             vm_name: name,
             vm_resource_group: resource_group,
@@ -214,6 +214,7 @@ module Fog
             disk_resource_group: disk_resource_group
           }
         end
+
       end
     end
   end

@@ -87,12 +87,12 @@ module Fog
           managed_disk.name = disk_name
           managed_disk.lun = lun
           managed_disk.create_option = Azure::ARM::Compute::Models::DiskCreateOptionTypes::Attach
-          
+
           # Managed disk parameter
           managed_disk_params = Azure::ARM::Compute::Models::ManagedDiskParameters.new
           managed_disk_params.id = disk.id
           managed_disk.managed_disk = managed_disk_params
-          
+
           managed_disk
         end
 

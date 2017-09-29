@@ -16,7 +16,6 @@ module Fog
         attribute :tags
         attribute :time_created
         attribute :creation_data
-        
         attribute :os_type
         attribute :encryption_settings
 

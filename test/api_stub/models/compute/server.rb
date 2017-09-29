@@ -157,12 +157,12 @@ module ApiStub
                   },
                   {
                     'lun' => 1, # add new managed datadisk
-                    'name' => "datadisk2",
-                    'managedDisk'=> {
-                      'id'=> '/subscriptions/{subscription-id}/resourceGroups/myresourcegroup1/providers/Microsoft.Compute/disks/myDisk2',
-                      'storageAccountType'=> 'Standard_LRS'
+                    'name' => 'datadisk2',
+                    'managedDisk' => {
+                      'id' => '/subscriptions/{subscription-id}/resourceGroups/myresourcegroup1/providers/Microsoft.Compute/disks/myDisk2',
+                      'storageAccountType' => 'Standard_LRS'
                     },
-                    'createOption'=> 'attach'
+                    'createOption' => 'attach'
                   }
                 ]
               },

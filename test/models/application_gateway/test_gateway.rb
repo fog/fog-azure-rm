@@ -54,7 +54,8 @@ class TestGateway < Minitest::Test
       :backend_http_settings_list,
       :http_listeners,
       :url_path_maps,
-      :request_routing_rules
+      :request_routing_rules,
+      :tags
     ]
     attributes.each do |attribute|
       assert_respond_to @gateway, attribute

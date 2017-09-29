@@ -15,11 +15,11 @@ Next, create a connection to the Traffic Manager Service:
 
 ```ruby
     azure_traffic_manager_service = Fog::TrafficManager::AzureRM.new(
-        tenant_id: '<Tenantid>',                                                            # Tenant id of Azure Active Directory Application
-        client_id:    '<Clientid>',                                                         # Client id of Azure Active Directory Application
-        client_secret: '<ClientSecret>',                                                    # Client Secret of Azure Active Directory Application
-        subscription_id: '<Subscriptionid>',                                                # Subscription id of an Azure Account
-        :environment => '<AzureCloud/AzureChinaCloud/AzureUSGovernment/AzureGermanCloud>'   # Azure cloud environment. Default is AzureCloud.
+      tenant_id:        '<Tenantid>',                                                       # Tenant id of Azure Active Directory Application
+      client_id:        '<Clientid>',                                                       # Client id of Azure Active Directory Application
+      client_secret:    '<ClientSecret>',                                                   # Client Secret of Azure Active Directory Application
+      subscription_id:  '<Subscriptionid>',                                                 # Subscription id of an Azure Account
+      environment:      '<AzureCloud/AzureChinaCloud/AzureUSGovernment/AzureGermanCloud>'   # Azure cloud environment. Default is AzureCloud.
 )
 ```
 
@@ -42,7 +42,8 @@ Create a new Traffic Manager Profile. The parameter 'traffic_routing_method' can
         ttl: '30',
         protocol: 'http',
         port: '80',
-        path: '/monitorpage.aspx'
+        path: '/monitorpage.aspx',
+        tags: { key1: "value1", key2: "value2", keyN: "valueN" }                          # [Optional]
       )
 ```
 

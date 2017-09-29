@@ -33,6 +33,7 @@ module Fog
           application_gateway.http_listeners = define_http_listeners(gateway_params[:http_listeners]) if gateway_params[:http_listeners]
           application_gateway.url_path_maps = define_url_path_maps(gateway_params[:url_path_maps]) if gateway_params[:url_path_maps]
           application_gateway.request_routing_rules = define_request_routing_rules(gateway_params[:request_routing_rules]) if gateway_params[:request_routing_rules]
+          application_gateway.tags = gateway_params[:tags]
 
           gateway_sku = Azure::ARM::Network::Models::ApplicationGatewaySku.new
           gateway_sku.name = gateway_params[:sku_name]

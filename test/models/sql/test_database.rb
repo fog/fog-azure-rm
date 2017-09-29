@@ -39,7 +39,8 @@ class TestDatabase < Minitest::Test
       :requested_service_objective_id,
       :requested_service_objective_name,
       :service_level_objective,
-      :source_database_id
+      :source_database_id,
+      :tags
     ]
     attributes.each do |attribute|
       assert_respond_to @database, attribute

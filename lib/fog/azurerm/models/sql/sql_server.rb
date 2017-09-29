@@ -13,11 +13,12 @@ module Fog
         attribute :administrator_login
         attribute :administrator_login_password
         attribute :fully_qualified_domain_name, aliases: %w(fullyQualifiedDomainName)
+        attribute :tags
 
         def self.parse(server)
           sql_server_hash = get_hash_from_object(server)
           sql_server_hash['resource_group'] = get_resource_group_from_id(server.id)
-
+          sql_server_hash['tags'] = server.tags
           sql_server_hash
         end
 
@@ -40,7 +41,8 @@ module Fog
             version: version,
             location: location,
             administrator_login: administrator_login,
-            administrator_login_password: administrator_login_password
+            administrator_login_password: administrator_login_password,
+            tags: tags
           }
         end
       end

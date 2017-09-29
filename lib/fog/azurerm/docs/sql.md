@@ -16,11 +16,11 @@ Next, create a connection to the SQL Service:
 
 ```ruby
     azure_sql_service = Fog::Sql::AzureRM.new(
-        tenant_id:       '<Tenantid>',                                                      # Tenant id of Azure Active Directory Application
-        client_id:       '<Clientid>',                                                      # Client id of Azure Active Directory Application
-        client_secret:   '<ClientSecret>',                                                  # Client Secret of Azure Active Directory Application
-        subscription_id: '<Subscriptionid>',                                                # Subscription id of an Azure Account
-        :environment => '<AzureCloud/AzureChinaCloud/AzureUSGovernment/AzureGermanCloud>'   # Azure cloud environment. Default is AzureCloud.
+      tenant_id:        '<Tenantid>',                                                      # Tenant id of Azure Active Directory Application
+      client_id:        '<Clientid>',                                                      # Client id of Azure Active Directory Application
+      client_secret:    '<ClientSecret>',                                                  # Client Secret of Azure Active Directory Application
+      subscription_id:  '<Subscriptionid>',                                                # Subscription id of an Azure Account
+      environment:      '<AzureCloud/AzureChinaCloud/AzureUSGovernment/AzureGermanCloud>'  # Azure cloud environment. Default is AzureCloud.
     )
 ```
 
@@ -36,9 +36,10 @@ Create a new Server
         name: '<Unique Server Name>',
         resource_group: '<Resource Group Name>',
         location: 'East US',
-        version: '2.0',                                # Specifies the version of the Azure server. The acceptable value are: '2.0' or '12.0'
-        administrator_login: 'testserveradmin',        # Specifies the name of the SQL administrator.
-        administrator_login_password: 'svr@admin123'   # Specifies the password of the SQL administrator.
+        version: '2.0',                                                                     # Specifies the version of the Azure server. The acceptable value are: '2.0' or '12.0'
+        administrator_login: 'testserveradmin',                                             # Specifies the name of the SQL administrator.
+        administrator_login_password: 'svr@admin123',                                       # Specifies the password of the SQL administrator.
+        tags: { key1: "value1", key2: "value2", keyN: "valueN" }                            # [Optional]
     )
 ```
 For more information, see link: https://msdn.microsoft.com/en-us/library/azure/mt297738.aspx
@@ -84,14 +85,15 @@ If parameter {edition} is set to DataWarehouse, the acceptable values for parame
         location: 'East US',
         server_name: '<Server Name>',
         name: '<Database Name>',
-        create_mode: '<Create Mode>',           # Optional. Specifies the type of database to create. The default value is Default. The acceptable values are: [Copy, Default, NonReadableSecondary, OnlineSecondary, PointInTimeRestore, PointInTimeRestore, Restore]
-        edition: '<Edition>',                   # Conditional. Specifies the edition of the database. If createMode is set to Default, then this value must be specified. The acceptable value are: [Basic, Standard, Premium, DataWarehouse]
-        source_database_id: '<URI>',                  # Conditional. Specifies the URI of the source database. If createMode is not set to Default, then this value must be specified.
-        collation: '<Collation>',                     # Conditional. Specifies the name of the collation. If createMode is set to Default, then this value must be specified. 
-        max_size_bytes: '<Size>',                     # Conditional. Specifies the maximum size to which the database may grow. If createMode is set to Default, then this value must be specified.
-        requested_service_objective_name: '<Name>' ,  # Conditional. Specifies the requested service level of the database. If requestedServiceObjectiveId is specified, then this value must not be specified. The acceptable value are: [Basic, S0, S1, S2, S3, P1, P2, P4, P6, P11, ElasticPool]
-        elastic_pool_name: '<Pool Name>',             # Conditional. Specifies the name of the elastic database pool. If requestedServiceObjectiveId or requestedServiceObjectiveName is set to ElasticPool, then this value must be specified.
-        requested_service_objective_id: '<GUID>'      # Conditional. Specifies the identifier of the requested service level. If requestedServiceObjectiveName is specified, then this value must not be specified.   
+        create_mode: '<Create Mode>',                                                       # Optional. Specifies the type of database to create. The default value is Default. The acceptable values are: [Copy, Default, NonReadableSecondary, OnlineSecondary, PointInTimeRestore, PointInTimeRestore, Restore]
+        edition: '<Edition>',                                                               # Conditional. Specifies the edition of the database. If createMode is set to Default, then this value must be specified. The acceptable value are: [Basic, Standard, Premium, DataWarehouse]
+        source_database_id: '<URI>',                                                        # Conditional. Specifies the URI of the source database. If createMode is not set to Default, then this value must be specified.
+        collation: '<Collation>',                                                           # Conditional. Specifies the name of the collation. If createMode is set to Default, then this value must be specified. 
+        max_size_bytes: '<Size>',                                                           # Conditional. Specifies the maximum size to which the database may grow. If createMode is set to Default, then this value must be specified.
+        requested_service_objective_name: '<Name>',                                         # Conditional. Specifies the requested service level of the database. If requestedServiceObjectiveId is specified, then this value must not be specified. The acceptable value are: [Basic, S0, S1, S2, S3, P1, P2, P4, P6, P11, ElasticPool]
+        elastic_pool_name: '<Pool Name>',                                                   # Conditional. Specifies the name of the elastic database pool. If requestedServiceObjectiveId or requestedServiceObjectiveName is set to ElasticPool, then this value must be specified.
+        requested_service_objective_id: '<GUID>',                                           # Conditional. Specifies the identifier of the requested service level. If requestedServiceObjectiveName is specified, then this value must not be specified.
+        tags: { key1: "value1", key2: "value2", keyN: "valueN" }                            # [Optional]
     )
 ```
 For more information see link: https://msdn.microsoft.com/en-us/library/azure/mt163685.aspx  

@@ -20,7 +20,8 @@ class TestVault < Minitest::Test
       :access_policies,
       :enabled_for_deployment,
       :enabled_for_disk_encryption,
-      :enabled_for_template_deployment
+      :enabled_for_template_deployment,
+      :tags
     ]
     attributes.each do |attribute|
       assert_respond_to @vault, attribute

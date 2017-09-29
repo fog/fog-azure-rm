@@ -15,6 +15,7 @@ module Fog
         attribute :bgp_peering_address
         attribute :peer_weight
         attribute :provisioning_state
+        attribute :tags
 
         def self.parse(local_network_gateway)
           local_network_gateway_hash = get_hash_from_object(local_network_gateway)
@@ -51,7 +52,8 @@ module Fog
             gateway_ip_address: gateway_ip_address,
             asn: asn,
             bgp_peering_address: bgp_peering_address,
-            peer_weight: peer_weight
+            peer_weight: peer_weight,
+            tags: tags
           }
         end
       end

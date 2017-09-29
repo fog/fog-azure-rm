@@ -11,6 +11,7 @@ module Fog
         attribute :subnets_ids
         attribute :security_rules
         attribute :default_security_rules
+        attribute :tags
 
         def self.parse(nsg)
           hash = {}
@@ -22,6 +23,7 @@ module Fog
           hash['subnets_ids'] = nsg.subnets.map(&:id) unless nsg.subnets.nil?
           hash['security_rules'] = []
           hash['default_security_rules'] = []
+          hash['tags'] = nsg.tags
 
           nsg.security_rules.each do |sr|
             security_rule = Fog::Network::AzureRM::NetworkSecurityRule.new
@@ -40,7 +42,7 @@ module Fog
           requires :name, :location, :resource_group
 
           validate_security_rules(security_rules) unless security_rules.nil?
-          nsg = service.create_or_update_network_security_group(resource_group, name, location, security_rules)
+          nsg = service.create_or_update_network_security_group(resource_group, name, location, security_rules, tags)
           merge_attributes(Fog::Network::AzureRM::NetworkSecurityGroup.parse(nsg))
         end
 
@@ -54,7 +56,7 @@ module Fog
           if !security_rule_hash[:security_rules].nil? && security_rule_hash.length == 1
             validate_security_rules(security_rule_hash[:security_rules])
             merge_attributes(security_rule_hash)
-            nsg = service.create_or_update_network_security_group(resource_group, name, location, security_rules)
+            nsg = service.create_or_update_network_security_group(resource_group, name, location, security_rules, tags)
             return merge_attributes(Fog::Network::AzureRM::NetworkSecurityGroup.parse(nsg))
           end
           raise 'Invalid hash key.'

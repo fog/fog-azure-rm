@@ -11,6 +11,7 @@ module Fog
         attribute :dns_servers
         attribute :subnets
         attribute :address_prefixes
+        attribute :tags
 
         def self.parse(vnet)
           hash = {}
@@ -20,6 +21,7 @@ module Fog
           hash['location'] = vnet.location
           hash['dns_servers'] = vnet.dhcp_options.dns_servers unless vnet.dhcp_options.nil?
           hash['address_prefixes'] = vnet.address_space.address_prefixes unless vnet.address_space.address_prefixes.nil?
+          hash['tags'] = vnet.tags
 
           subnets = []
           vnet.subnets.each do |subnet|
@@ -36,7 +38,7 @@ module Fog
           requires :resource_group
           validate_subnets!(subnets) unless subnets.nil?
 
-          virtual_network = service.create_or_update_virtual_network(resource_group, name, location, dns_servers, subnets, address_prefixes)
+          virtual_network = service.create_or_update_virtual_network(resource_group, name, location, dns_servers, subnets, address_prefixes, tags)
           merge_attributes(Fog::Network::AzureRM::VirtualNetwork.parse(virtual_network))
         end
 
@@ -75,7 +77,7 @@ module Fog
           raise('Provided hash can not be empty.') if vnet_hash.empty? || vnet_hash.nil?
           validate_update_attributes!(vnet_hash)
           merge_attributes(vnet_hash)
-          virtual_network = service.create_or_update_virtual_network(resource_group, name, location, dns_servers, subnets, address_prefixes)
+          virtual_network = service.create_or_update_virtual_network(resource_group, name, location, dns_servers, subnets, address_prefixes, tags)
           merge_attributes(Fog::Network::AzureRM::VirtualNetwork.parse(virtual_network))
         end
 

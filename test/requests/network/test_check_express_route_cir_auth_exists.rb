@@ -16,7 +16,7 @@ class TestCheckExpressRouteCirAuthExists < Minitest::Test
   end
 
   def test_check_express_route_cir_auth_exists_failure
-    response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceNotFound' }) }
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception', 'code' => 'NotFound' }) }
     @circuit_authorization.stub :get, response do
       assert !@service.check_express_route_cir_auth_exists('Fog-rg', 'testCircuit', 'auth-name')
     end

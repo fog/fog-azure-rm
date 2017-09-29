@@ -31,7 +31,8 @@ class TestNetworkSecurityGroup < Minitest::Test
       :network_interfaces_ids,
       :subnets_ids,
       :security_rules,
-      :default_security_rules
+      :default_security_rules,
+      :tags
     ]
     attributes.each do |attribute|
       assert_respond_to @network_security_group, attribute

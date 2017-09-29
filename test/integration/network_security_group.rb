@@ -57,7 +57,8 @@ begin
       access: Fog::ARM::Network::Models::SecurityRuleAccess::Allow,
       priority: '100',
       direction: Fog::ARM::Network::Models::SecurityRuleDirection::Inbound
-    }]
+    }],
+    tags: { key: 'value' }
   )
   puts "Created network security group: #{network_security_group.name}"
 

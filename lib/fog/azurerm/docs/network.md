@@ -48,7 +48,8 @@ Optional parameters for Subnet: network_security_group_id, route_table_id & addr
         route_table_id: '/subscriptions/<Subscription Id>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/routeTables/<Route Table Name>'
       }],
       dns_servers:       ['10.1.0.0','10.2.0.0'],
-      address_prefixes:  ['10.1.0.0/16','10.2.0.0/16']
+      address_prefixes:  ['10.1.0.0/16','10.2.0.0/16'],
+      tags: { key: 'value' }            # Optional
     )
 ```
 
@@ -253,7 +254,8 @@ Create a new network interface. Skip public_ip_address_id parameter to create ne
       subnet_id: '/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/virtualNetworks/<Virtual Network name>/subnets/<Subnet name>',
       public_ip_address_id: '/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/publicIPAddresses/<Public IP name>',
       ip_configuration_name: '<Ip Configuration Name>',
-      private_ip_allocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Dynamic
+      private_ip_allocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Dynamic,
+      tags: { key: 'value' }                    # Optional
  )
 ```
 
@@ -333,7 +335,8 @@ Create a new public IP. The parameter, type can be Dynamic or Static.
      name: '<Public IP name>',
      resource_group: '<Resource Group name>',
      location: 'westus',
-     public_ip_allocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Static
+     public_ip_allocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Static,
+     tags: { key: 'value' }                 # Optional
    )
 ```
 
@@ -412,7 +415,8 @@ Network security group requires a resource group to create.
          access: Fog::ARM::Network::Models::SecurityRuleAccess::Allow,
          priority: '100',
          direction: Fog::ARM::Network::Models::SecurityRuleDirection::Inbound
-       }]
+       }],
+       tags: { key: 'value' }                   # Optional
      )
 ```
 
@@ -606,15 +610,15 @@ Create a new load balancer.
                                         frontend_port: 3389,
                                         backend_port: 3389
                                     }
-                                ]
+                                ],
+    tags: { key: 'value' }                  # Optional
 )
 ```
 
 ## Create Internal Load Balancer
 
 ```ruby
-
-    lb = azure_network_service.load_balancers.create(
+lb = azure_network_service.load_balancers.create(
     name: '<Load Balancer name>',
     resource_group: '<Resource Group name>',
     location: 'westus',
@@ -670,8 +674,9 @@ Create a new load balancer.
             interval_in_seconds: 15,
             number_of_probes: 2
         }
-        ]
-    )
+        ],
+    tags: { key: 'value' }                  # Optional
+)
 ```
 
 ## List Load Balancers
@@ -729,7 +734,7 @@ Create a new Virtual Network Gateway.
     network_gateway = network.virtual_network_gateways.create(
       name: '<Virtual Network Gateway Name>',
       location: 'eastus',
-      tags: {
+      tags: {                   # Optional
         key1: 'value1',
         key2: 'value2'
       },
@@ -816,7 +821,7 @@ Create a new Local Network Gateway.
     local_network_gateway = network.local_network_gateways.create(
         name: "<Local Network Gateway Name>",
         location: "eastus",
-        tags: {
+        tags: {                 # Optional
           key1: "value1",
           key2: "value2"
         },
@@ -881,7 +886,7 @@ Create a new Express Route Circuit.
     	"name": "<Circuit Name>",
     	"location": "eastus",
     	"resource_group": "<Resource Group Name>",
-    	"tags": {
+    	"tags": {                   # Optional
     		"key1": 'value1',
     		"key2": 'value2'
   		},
@@ -1060,7 +1065,7 @@ Create a new Virtual Network Gateway Connection.
     gateway_connection = network.virtual_network_gateway_connections.create(
       name: '<Virtual Network Gateway Connection Name>',
       location: 'eastus',
-      tags: {
+      tags: {                       # Optional
         key1: 'value1',
         key2: 'value2'
       },

@@ -40,7 +40,6 @@ module Fog
             end_point = Fog::TrafficManager::AzureRM::TrafficManagerEndPoint.new
             traffic_manager_profile['endpoints'] << end_point.merge_attributes(Fog::TrafficManager::AzureRM::TrafficManagerEndPoint.parse(endpoint))
           end
-          traffic_manager_profile['tags'] = profile.tags
           traffic_manager_profile
         end
 

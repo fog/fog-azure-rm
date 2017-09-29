@@ -18,7 +18,6 @@ module Fog
         def self.parse(server)
           sql_server_hash = get_hash_from_object(server)
           sql_server_hash['resource_group'] = get_resource_group_from_id(server.id)
-          sql_server_hash['tags'] = server.tags
           sql_server_hash
         end
 

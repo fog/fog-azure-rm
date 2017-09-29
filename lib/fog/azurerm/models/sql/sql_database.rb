@@ -27,11 +27,8 @@ module Fog
 
         def self.parse(database)
           database_hash = get_hash_from_object(database)
-
           database_hash['resource_group'] = get_resource_group_from_id(database.id)
           database_hash['server_name'] = get_resource_from_resource_id(database.id, 8)
-          database_hash['tags'] = database.tags
-
           database_hash
         end
 

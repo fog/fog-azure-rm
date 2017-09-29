@@ -28,12 +28,13 @@ network = Fog::Network::AzureRM.new(
   client_secret: azure_credentials['client_secret'],
   subscription_id: azure_credentials['subscription_id']
 )
+
 ########################################################################################################################
 ######################                               Resource names                                #####################
 ########################################################################################################################
 
 time = current_time
-resource_group_name = "AG-RG-#{time}"
+resource_group_name = "TestRG-AG-#{time}"
 virtual_network_name = "Vnet#{time}"
 subnet_name = "Sub#{time}"
 public_ip_name = "Pip#{time}"
@@ -82,10 +83,13 @@ begin
   #####################                          Create Application Gateway                        ######################
   #######################################################################################################################
 
+  tags = { key1: "value1", key2: "value2" }
+
   app_gateway = application_gateway.gateways.create(
     name: app_gateway_name,
     location: LOCATION,
     resource_group: resource_group_name,
+    tags: tags,
     sku_name: 'Standard_Medium',
     sku_tier: 'Standard',
     sku_capacity: '2',
@@ -151,6 +155,7 @@ begin
     ]
   )
   puts "Created application gateway #{app_gateway.name}"
+
   ########################################################################################################################
   ######################                      Get Application Gateway                   ######################
   ########################################################################################################################
@@ -217,6 +222,7 @@ begin
     unhealthy_threshold: 5
   )
   puts 'Added probe in application gateway'
+
   app_gateway.remove_probe(
     name: 'Probe1',
     protocol: 'http',
@@ -246,6 +252,7 @@ begin
 
   resource_group = resource.resource_groups.get(resource_group_name)
   resource_group.destroy
+
   puts 'Integration Test for application gateway ran successfully'
 rescue
   puts 'Integration Test for application gateway is failing'

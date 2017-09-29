@@ -3,11 +3,12 @@ module Fog
     class AzureRM
       # This class provides the actual implementation for service calls.
       class Real
-        def create_resource_group(name, location)
+        def create_resource_group(name, location, tags)
           msg = "Creating Resource Group: #{name}."
           Fog::Logger.debug msg
           resource_group = Azure::ARM::Resources::Models::ResourceGroup.new
           resource_group.location = location
+          resource_group.tags = tags
           begin
             resource_group = @rmc.resource_groups.create_or_update(name, resource_group)
           rescue  MsRestAzure::AzureOperationError => e

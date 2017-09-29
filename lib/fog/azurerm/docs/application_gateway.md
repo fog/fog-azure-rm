@@ -15,11 +15,11 @@ Next, create a connection to the Application Gateway Service:
 
 ```ruby
     azure_application_gateway_service = Fog::ApplicationGateway::AzureRM.new(
-    tenant_id: '<Tenantid>',                                                              # Tenant id of Azure Active Directory Application
-        client_id:    '<Clientid>',                                                       # Client id of Azure Active Directory Application
-        client_secret: '<ClientSecret>',                                                  # Client Secret of Azure Active Directory Application
-        subscription_id: '<Subscriptionid>',                                              # Subscription id of an Azure Account
-        :environment => '<AzureCloud/AzureChinaCloud/AzureUSGovernment/AzureGermanCloud>' # Azure cloud environment. Default is AzureCloud.
+      tenant_id:        '<TenantId>',                                                     # Tenant id of Azure Active Directory Application
+      client_id:        '<ClientId>',                                                     # Client id of Azure Active Directory Application
+      client_secret:    '<ClientSecret>',                                                 # Client Secret of Azure Active Directory Application
+      subscription_id:  '<SubscriptionId>',                                               # Subscription id of an Azure Account
+      environment:      '<AzureCloud/AzureChinaCloud/AzureUSGovernment/AzureGermanCloud>' # Azure cloud environment. Default is AzureCloud.
 )
 ```
 
@@ -38,6 +38,7 @@ Create a new Application Gateway.
         name: '<Gateway Name>',
         location: 'eastus',
         resource_group: '<Resource Group name>',
+        tags: { key1: "value1", key2: "value2", keyN: "valueN" },                         # [Optional]
         sku_name: 'Standard_Medium',
         sku_tier: 'Standard',
         sku_capacity: '2',
@@ -107,8 +108,6 @@ Create a new Application Gateway.
                     url_path_map: ''
                 }
             ]
-
-
     )
 ```
 

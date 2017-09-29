@@ -6,9 +6,18 @@ module Fog
         def create_or_update_traffic_manager_profile(profile_hash)
           msg = "Creating Traffic Manager Profile: #{profile_hash[:name]}."
           Fog::Logger.debug msg
-          profile_parameters = get_profile_object(profile_hash[:traffic_routing_method], profile_hash[:relative_name], profile_hash[:ttl], profile_hash[:protocol], profile_hash[:port], profile_hash[:path], profile_hash[:endpoints])
+          profile_parameters = get_profile_object(profile_hash[:traffic_routing_method],
+                                                  profile_hash[:relative_name],
+                                                  profile_hash[:ttl],
+                                                  profile_hash[:protocol],
+                                                  profile_hash[:port],
+                                                  profile_hash[:path],
+                                                  profile_hash[:endpoints],
+                                                  profile_hash[:tags])
           begin
-            traffic_manager_profile = @traffic_mgmt_client.profiles.create_or_update(profile_hash[:resource_group], profile_hash[:name], profile_parameters)
+            traffic_manager_profile = @traffic_mgmt_client.profiles.create_or_update(profile_hash[:resource_group],
+                                                                                     profile_hash[:name],
+                                                                                     profile_parameters)
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
@@ -18,7 +27,7 @@ module Fog
 
         private
 
-        def get_profile_object(traffic_routing_method, relative_name, ttl, protocol, port, path, endpoints)
+        def get_profile_object(traffic_routing_method, relative_name, ttl, protocol, port, path, endpoints, tags)
           traffic_manager_profile = Azure::ARM::TrafficManager::Models::Profile.new
           traffic_manager_profile.traffic_routing_method = traffic_routing_method
           traffic_manager_profile.location = GLOBAL
@@ -26,6 +35,7 @@ module Fog
           traffic_manager_profile.dns_config = get_traffic_manager_dns_config(relative_name, ttl)
           traffic_manager_profile.monitor_config = get_traffic_manager_monitor_config(protocol, port, path)
           traffic_manager_profile.endpoints = get_endpoints(endpoints) unless endpoints.nil?
+          traffic_manager_profile.tags = tags
           traffic_manager_profile
         end
 

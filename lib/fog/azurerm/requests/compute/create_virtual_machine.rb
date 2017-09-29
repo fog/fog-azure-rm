@@ -52,6 +52,7 @@ module Fog
                                        end
           virtual_machine.network_profile = define_network_profile(vm_config[:network_interface_card_ids])
           virtual_machine.location = vm_config[:location]
+          virtual_machine.tags = vm_config[:tags]
           begin
             response = if async
                          @compute_mgmt_client.virtual_machines.create_or_update_async(vm_config[:resource_group], vm_config[:name], virtual_machine)

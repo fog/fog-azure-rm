@@ -54,7 +54,8 @@ class TestServer < Minitest::Test
       :network_interface_card_ids,
       :availability_set_id,
       :managed_disk_storage_type,
-      :os_disk_size
+      :os_disk_size,
+      :tags
     ]
     attributes.each do |attribute|
       assert_respond_to @server, attribute

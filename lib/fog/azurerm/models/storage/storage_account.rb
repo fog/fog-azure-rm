@@ -11,6 +11,7 @@ module Fog
         attribute :sku_name
         attribute :replication
         attribute :encryption
+        attribute :tags
 
         def self.parse(storage_account)
           hash = {}
@@ -21,6 +22,7 @@ module Fog
           hash['sku_name'] = storage_account.sku.name.split('_').first
           hash['replication'] = storage_account.sku.name.split('_').last
           hash['encryption'] = storage_account.encryption.services.blob.enabled unless storage_account.encryption.nil?
+          hash['tags'] = storage_account.tags
           hash
         end
 
@@ -43,7 +45,8 @@ module Fog
             sku_name: sku_name,
             location: location,
             replication: replication,
-            encryption: encryption
+            encryption: encryption,
+            tags: tags
           }
         end
 

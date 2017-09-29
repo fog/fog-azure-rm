@@ -34,7 +34,8 @@ class TestManagedDisk < Minitest::Test
       :provisioning_state,
       :tags,
       :creation_data,
-      :encryption_settings
+      :encryption_settings,
+      :tags
     ]
     attributes.each do |attribute|
       assert_respond_to @managed_disk, attribute

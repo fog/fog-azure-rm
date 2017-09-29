@@ -62,7 +62,7 @@ begin
   ###############  Create A Standard Storage Account of Replication: LRS (Locally-redundant storage)       ###############
   ########################################################################################################################
 
-  tags = { key1: "value1", key2: "value2" }
+  tags = { key1: 'value1', key2: 'value2' }
 
   storage_account = storage.storage_accounts.create(
     name: lrs_storage_account,

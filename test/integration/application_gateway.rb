@@ -83,7 +83,7 @@ begin
   #####################                          Create Application Gateway                        ######################
   #######################################################################################################################
 
-  tags = { key1: "value1", key2: "value2" }
+  tags = { key1: 'value1', key2: 'value2' }
 
   app_gateway = application_gateway.gateways.create(
     name: app_gateway_name,

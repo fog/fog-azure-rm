@@ -53,7 +53,7 @@ begin
   ######################                             Create Managed Disk                            ######################
   ########################################################################################################################
 
-  tags = { key1: "value1", key2: "value2" }
+  tags = { key1: 'value1', key2: 'value2' }
 
   disk = compute.managed_disks.create(
     name: disk_name,

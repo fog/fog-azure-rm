@@ -44,7 +44,7 @@ begin
   ######################                         Create Sql Server                                  ######################
   ########################################################################################################################
 
-  tags = { key1: "value1", key2: "value2" }
+  tags = { key1: 'value1', key2: 'value2' }
 
   sql_server = azure_sql_service.sql_servers.create(
     name: server_name,

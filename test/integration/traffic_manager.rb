@@ -43,7 +43,7 @@ begin
   ######################                         Create Traffic Manager Profile                     ######################
   ########################################################################################################################
 
-  tags = { key1: "value1", key2: "value2" }
+  tags = { key1: 'value1', key2: 'value2' }
 
   traffic_manager_profile = traffic_manager.traffic_manager_profiles.create(
     name: 'test-tmp',

@@ -29,7 +29,7 @@ begin
   ######################                    Create Resource Group                                   ######################
   ########################################################################################################################
 
-  tags = { key1: "value1", key2: "value2" }
+  tags = { key1: 'value1', key2: 'value2' }
 
   resource_group = resource.resource_groups.create(
     name: resource_group_name,

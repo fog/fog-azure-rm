@@ -90,7 +90,7 @@ begin
   ######################                                Create Server                               ######################
   ########################################################################################################################
 
-  tags = { key1: "value1", key2: "value2" }
+  tags = { key1: 'value1', key2: 'value2' }
 
   virtual_machine = compute.servers.create(
     name: 'TestVM',

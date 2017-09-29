@@ -71,7 +71,7 @@ begin
   ######################                    Create Unmanaged Availability Set (Default)             ######################
   ########################################################################################################################
 
-  tags = { key1: "value1", key2: "value2" }
+  tags = { key1: 'value1', key2: 'value2' }
 
   puts "Create unmanaged default availability set (#{unmanaged_as_name_default}):"
   avail_set = compute.availability_sets.create(

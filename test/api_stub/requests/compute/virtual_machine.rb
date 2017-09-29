@@ -177,10 +177,10 @@ module ApiStub
             },
             'storage_profile' => {
               'image_reference' => {
-                  'publisher' => 'Canonical',
-                  'offer' => 'UbuntuServer',
-                  'sku' => '16.04-LTS',
-                  'version' => 'latest'
+                'publisher' => 'Canonical',
+                'offer' => 'UbuntuServer',
+                'sku' => '16.04-LTS',
+                'version' => 'latest'
               },
               'os_disk' => {
                 'os_type' => 'Linux',
@@ -194,20 +194,20 @@ module ApiStub
                 }
               },
               'data_disks' => [{
-                  'lun' => 0,
-                  'name' => 'ManagedDataDisk1',
-                  'caching' => 'None',
-                  'create_option' => 'Attach',
-                  'disk_size_gb' => 100,
-                  'managed_disk' => {
-                    'id' => '/subscriptions/{subscription_id}/resourceGroups/MANAGEDRG/providers/Microsoft.Compute/disks/ManagedDataDisk1',
-                    'storage_account_type' => 'Premium_LRS'
-                  }
+                'lun' => 0,
+                'name' => 'ManagedDataDisk1',
+                'caching' => 'None',
+                'create_option' => 'Attach',
+                'disk_size_gb' => 100,
+                'managed_disk' => {
+                  'id' => '/subscriptions/{subscription_id}/resourceGroups/MANAGEDRG/providers/Microsoft.Compute/disks/ManagedDataDisk1',
+                  'storage_account_type' => 'Premium_LRS'
+                }
               }]
             },
             'network_profile' => {
-              'network_interfaces' => [{ 
-                  'id' => '/subscriptions/{subscription_id}/resourceGroups/ManagedRG/providers/Microsoft.Network/networkInterfaces/managedvm992'
+              'network_interfaces' => [{
+                'id' => '/subscriptions/{subscription_id}/resourceGroups/ManagedRG/providers/Microsoft.Network/networkInterfaces/managedvm992'
               }]
             },
             'provisioning_state' => 'Succeeded',

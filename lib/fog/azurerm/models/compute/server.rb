@@ -216,7 +216,6 @@ module Fog
             disk_resource_group: disk_resource_group
           }
         end
-
       end
     end
   end

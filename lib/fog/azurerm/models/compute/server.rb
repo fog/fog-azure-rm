@@ -64,8 +64,8 @@ module Fog
 
           unless vm.storage_profile.data_disks.nil?
             vm.storage_profile.data_disks.each do |disk|
-              data_disk = Fog::Storage::AzureRM::DataDisk.new
-              hash['data_disks'] << data_disk.merge_attributes(Fog::Storage::AzureRM::DataDisk.parse(disk))
+              data_disk = Fog::Compute::AzureRM::DataDisk.new
+              hash['data_disks'] << data_disk.merge_attributes(Fog::Compute::AzureRM::DataDisk.parse(disk))
             end
           end
 
@@ -147,11 +147,21 @@ module Fog
         end
 
         def attach_data_disk(disk_name, disk_size, storage_account_name, async = false)
-          response = service.attach_data_disk_to_vm(resource_group, name, disk_name, disk_size, storage_account_name, async)
+          response = service.attach_data_disk_to_vm(data_disk_params(disk_name, disk_size, storage_account_name), async)
           async ? create_fog_async_response(response) : merge_attributes(Fog::Compute::AzureRM::Server.parse(response))
         end
 
         def detach_data_disk(disk_name, async = false)
+          response = service.detach_data_disk_from_vm(resource_group, name, disk_name, async)
+          async ? create_fog_async_response(response) : merge_attributes(Fog::Compute::AzureRM::Server.parse(response))
+        end
+
+        def attach_managed_disk(disk_name, disk_resource_group, async = false)
+          response = service.attach_data_disk_to_vm(data_disk_params(disk_name, nil, nil, disk_resource_group), async)
+          async ? create_fog_async_response(response) : merge_attributes(Fog::Compute::AzureRM::Server.parse(response))
+        end
+
+        def detach_managed_disk(disk_name, async = false)
           response = service.detach_data_disk_from_vm(resource_group, name, disk_name, async)
           async ? create_fog_async_response(response) : merge_attributes(Fog::Compute::AzureRM::Server.parse(response))
         end
@@ -193,6 +203,17 @@ module Fog
             os_disk_caching: os_disk_caching,
             managed_disk_storage_type: managed_disk_storage_type,
             os_disk_size: os_disk_size
+          }
+        end
+
+        def data_disk_params(disk_name, disk_size = nil, storage_account = nil, disk_resource_group = nil)
+          {
+            vm_name: name,
+            vm_resource_group: resource_group,
+            disk_name: disk_name,
+            disk_size_gb: disk_size,
+            storage_account_name: storage_account,
+            disk_resource_group: disk_resource_group
           }
         end
       end

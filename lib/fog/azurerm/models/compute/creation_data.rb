@@ -11,8 +11,10 @@ module Fog
 
         def self.parse(creation_data)
           data = get_hash_from_object(creation_data)
-          image_reference = Fog::Compute::AzureRM::ImageDiskReference.new
-          data['image_reference'] = image_reference.merge_attributes(Fog::Compute::AzureRM::ImageDiskReference.parse(creation_data.image_reference))
+          unless creation_data.image_reference.nil?
+            image_reference = Fog::Compute::AzureRM::ImageDiskReference.new
+            data['image_reference'] = image_reference.merge_attributes(Fog::Compute::AzureRM::ImageDiskReference.parse(creation_data.image_reference))
+          end
           data
         end
       end

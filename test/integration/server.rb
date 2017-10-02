@@ -79,6 +79,16 @@ begin
     private_ip_allocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Dynamic
   )
 
+  # TODO: Create new NIC for managed VM
+  network.network_interfaces.create(
+    name: 'NetInt2',
+    resource_group: 'TestRG-VM',
+    location: LOCATION,
+    subnet_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-VM/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/mysubnet",
+    ip_configuration_name: 'testIpConfiguration',
+    private_ip_allocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Dynamic
+  )
+
   ########################################################################################################################
   ######################                            Check for Virtual Machine                       ######################
   ########################################################################################################################
@@ -87,9 +97,8 @@ begin
   puts "Virtual Machine doesn't exist." unless flag
 
   ########################################################################################################################
-  ######################                                Create Server                               ######################
+  ######################                                  Create Server                             ######################
   ########################################################################################################################
-
   virtual_machine = compute.servers.create(
     name: 'TestVM',
     location: LOCATION,
@@ -108,7 +117,31 @@ begin
     custom_data: 'echo customData',
     os_disk_caching: Fog::ARM::Compute::Models::CachingTypes::None
   )
-  puts "Created virtual machine: #{virtual_machine.name}"
+  puts "Created un-managed virtual machine: #{virtual_machine.name}"
+
+  ########################################################################################################################
+  ######################                            Create Managed Server                           ######################
+  ########################################################################################################################
+  managed_vm = compute.servers.create(
+    name: 'TestVM-Managed',
+    location: LOCATION,
+    resource_group: 'TestRG-VM',
+    vm_size: 'Basic_A0',
+    storage_account_name: nil,
+    username: 'testuser',
+    password: 'Confiz=123',
+    disable_password_authentication: false,
+    network_interface_card_ids: ["/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-VM/providers/Microsoft.Network/networkInterfaces/NetInt2"],
+    publisher: 'Canonical',
+    offer: 'UbuntuServer',
+    sku: '14.04.2-LTS',
+    version: 'latest',
+    platform: 'linux',
+    custom_data: 'echo customData',
+    os_disk_caching: Fog::ARM::Compute::Models::CachingTypes::None,
+    managed_disk_storage_type: Azure::ARM::Compute::Models::StorageAccountTypes::StandardLRS
+  )
+  puts "Created managed virtual machine: #{managed_vm.name}"
 
   ########################################################################################################################
   ######################                                Create Server Async                           ####################
@@ -157,7 +190,7 @@ begin
   puts 'Attached Data Disk to VM'
 
   ########################################################################################################################
-  ######################                          Detach Data Disk from VM                            ######################
+  ######################                          Detach Data Disk from VM                          ######################
   ########################################################################################################################
 
   virtual_machine = compute.servers.get('TestRG-VM', 'TestVM')
@@ -175,6 +208,40 @@ begin
     azure_storage_access_key: access_key
   )
   puts "Deleted data disk: #{storage_data.delete_disk('datadisk1')}"
+
+  ########################################################################################################################
+  ######################                       Create a Managed Data Disk                           ######################
+  ########################################################################################################################
+  managed_disk = compute.managed_disks.create(
+    name: 'ManagedDataDisk',
+    location: LOCATION,
+    resource_group_name: 'TestRG-VM',
+    account_type: 'Standard_LRS',
+    disk_size_gb: 100,
+    creation_data: {
+      create_option: 'Empty'
+    }
+  )
+  puts "Created Managed Disk: #{managed_disk.name}"
+
+  ########################################################################################################################
+  ######################                          Attach Managed Data Disk to VM                    ######################
+  ########################################################################################################################
+  managed_vm.attach_managed_disk('ManagedDataDisk', 'TestRG-VM')
+  puts 'Attached Managed Data Disk to VM'
+
+  ########################################################################################################################
+  ######################                          Detach Data Disk from VM                          ######################
+  ########################################################################################################################
+
+  managed_vm.detach_managed_disk('ManagedDataDisk')
+  puts 'Detached Managed Data Disk from VM'
+
+  ########################################################################################################################
+  ######################                         Delete Managed Data Disk                           ######################
+  ########################################################################################################################
+  managed_disk.destroy
+  puts 'Deleted managed data disk'
 
   ########################################################################################################################
   ######################                      List VM in a resource group                           ######################
@@ -249,6 +316,9 @@ begin
   ########################################################################################################################
 
   nic = network.network_interfaces.get('TestRG-VM', 'NetInt')
+  nic.destroy
+
+  nic = network.network_interfaces.get('TestRG-VM', 'NetInt2')
   nic.destroy
 
   vnet = network.virtual_networks.get('TestRG-VM', 'testVnet')

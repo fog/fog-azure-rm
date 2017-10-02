@@ -67,7 +67,6 @@ module Fog
       model_path 'fog/azurerm/models/storage'
       model :storage_account
       collection :storage_accounts
-      model :data_disk
       model :directory
       collection :directories
       model :file

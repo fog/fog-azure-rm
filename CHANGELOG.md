@@ -1,7 +1,8 @@
-## 0.3.4 (Upcoming)
+## 0.3.4
 
 **Added:**
 - Compute Service - Added support for custom OS disk size during VM creation
+- Added resource tagging support on creation
 
 **Removed:**
 - Recovery Vault Support

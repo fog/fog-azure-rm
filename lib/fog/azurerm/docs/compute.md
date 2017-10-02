@@ -191,6 +191,22 @@ Get the server object and detach a Data Disk from it.
       server.detach_data_disk('<Disk Name>')
 ```
 
+## Attach a Managed Data Disk to Server
+
+Get the server object and attach a Data Disk to it.
+
+```ruby
+      server.attach_managed_disk('<Disk Name>', '<Disk Resource Group Name>')
+```
+
+## Detach a Managed Data Disk from Server
+
+Get the server object and detach a Data Disk from it.
+
+```ruby
+      server.detach_managed_disk('<Disk Name>')
+```
+
 ## Get a Server's status
 
 Check the status of a Server
@@ -323,7 +339,7 @@ Destroy the given extension from the virtual machine
 
 ## Create Managed Disk
 
-Create a new Managed Disk
+Create a new Premium Managed Disk
 
 ```ruby
     azure_compute_service.managed_disks.create(
@@ -331,6 +347,21 @@ Create a new Managed Disk
         location: 'east us',
         resource_group_name: 'resource_group_name',
         account_type: 'Premium_LRS',
+        disk_size_gb: 1023,
+        creation_data: {
+          create_option: 'Empty'
+        }
+    )
+```
+
+Create a new Standard Managed Disk
+
+```ruby
+    azure_compute_service.managed_disks.create(
+        name: 'disk_name',
+        location: 'east us',
+        resource_group_name: 'resource_group_name',
+        account_type: 'Standard_LRS',
         disk_size_gb: 1023,
         creation_data: {
           create_option: 'Empty'

@@ -11,6 +11,10 @@ class TestAttachDataDiskToVM < Minitest::Test
     @get_vm_response = ApiStub::Requests::Compute::VirtualMachine.create_virtual_machine_response(@compute_client)
     @update_vm_response = ApiStub::Requests::Compute::VirtualMachine.update_virtual_machine_response(@compute_client)
     @storage_access_keys_response = ApiStub::Requests::Storage::StorageAccount.list_keys_response
+    @disks = @compute_client.disks
+    @get_managed_disk_response = ApiStub::Requests::Compute::VirtualMachine.get_managed_disk_response(@compute_client)
+    @get_vm_managed_disk_response = ApiStub::Requests::Compute::VirtualMachine.get_vm_with_managed_disk_response(@compute_client)
+    @input_params = { vm_name: 'fog-test-vm', vm_resource_group: 'fog-test-rg', disk_name: 'disk1', disk_size_gb: 1, storage_account_name: 'mystorage1' }
   end
 
   def test_attach_data_disk_to_vm_success
@@ -20,10 +24,21 @@ class TestAttachDataDiskToVM < Minitest::Test
         @virtual_machines.stub :get, @get_vm_response do
           @storage_accounts.stub :list_keys, @storage_access_keys_response do
             @virtual_machines.stub :create_or_update, @update_vm_response do
-              assert_equal @service.attach_data_disk_to_vm('fog-test-rg', 'fog-test-vm', 'disk1', 1, 'mystorage1', false), @update_vm_response
+              assert_equal @service.attach_data_disk_to_vm(@input_params, false), @update_vm_response
               blob_service.verify
             end
           end
+        end
+      end
+    end
+  end
+
+  def test_attach_managed_disk_to_vm_success
+    @virtual_machines.stub :get, @get_vm_response do
+      @disks.stub :get, @get_managed_disk_response do
+        @virtual_machines.stub :create_or_update, @get_vm_managed_disk_response do
+          input_params = { vm_name: 'ManagedVM', vm_resource_group: 'ManagedRG', disk_name: 'ManagedDataDisk1', disk_size_gb: 100, disk_resource_group: 'ManagedRG' }
+          assert_equal @service.attach_data_disk_to_vm(input_params, false), @get_vm_managed_disk_response
         end
       end
     end
@@ -35,7 +50,7 @@ class TestAttachDataDiskToVM < Minitest::Test
       @storage_accounts.stub :list_keys, @storage_access_keys_response do
         @virtual_machines.stub :create_or_update, @update_vm_response do
           assert_raises RuntimeError do
-            @service.attach_data_disk_to_vm('fog-test-rg', 'fog-test-vm', 'disk1', 1, 'mystorage1', false)
+            @service.attach_data_disk_to_vm(@input_params, false)
           end
         end
       end
@@ -48,7 +63,7 @@ class TestAttachDataDiskToVM < Minitest::Test
       @storage_accounts.stub :list_keys, @storage_access_keys_response do
         @virtual_machines.stub :create_or_update, update_vm_response do
           assert_raises RuntimeError do
-            @service.attach_data_disk_to_vm('fog-test-rg', 'fog-test-vm', 'disk1', 1, 'mystorage1', false)
+            @service.attach_data_disk_to_vm(@input_params, false)
           end
         end
       end
@@ -61,7 +76,7 @@ class TestAttachDataDiskToVM < Minitest::Test
       @storage_accounts.stub :list_keys, @storage_access_keys_response do
         @virtual_machines.stub :create_or_update, update_vm_response do
           assert_raises RuntimeError do
-            @service.attach_data_disk_to_vm('fog-test-rg', 'fog-test-vm', 'disk1', 1, 'mystorage1', false)
+            @service.attach_data_disk_to_vm(@input_params, false)
           end
         end
       end
@@ -72,7 +87,7 @@ class TestAttachDataDiskToVM < Minitest::Test
     get_vm_response = proc { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @virtual_machines.stub :get, get_vm_response do
       assert_raises RuntimeError do
-        @service.attach_data_disk_to_vm('fog-test-rg', 'fog-test-vm', 'disk1', 1, 'mystorage1', false)
+        @service.attach_data_disk_to_vm(@input_params, false)
       end
     end
   end
@@ -82,7 +97,7 @@ class TestAttachDataDiskToVM < Minitest::Test
     @virtual_machines.stub :get, @get_vm_response do
       @storage_accounts.stub :list_keys, storage_access_keys_response do
         assert_raises RuntimeError do
-          @service.attach_data_disk_to_vm('fog-test-rg', 'fog-test-vm', 'disk1', 1, 'mystorage1', false)
+          @service.attach_data_disk_to_vm(@input_params, false)
         end
       end
     end

@@ -76,7 +76,8 @@ You can tag a Resource as following:
     azure_resources_service.tag_resource(
         '<Resource-ID>',
         '<Tag-Key>',
-        '<Tag-Value>'
+        '<Tag-Value>',
+        '<API-Version>'
     )
 ```
 
@@ -115,7 +116,8 @@ Remove tag from a resource as following:
     azure_resources_service.delete_resource_tag(
         '<Resource-ID>',
         '<Tag-Key>',
-        '<Tag-Value>'
+        '<Tag-Value>',
+        '<API-Version>'
         )
 ```
 

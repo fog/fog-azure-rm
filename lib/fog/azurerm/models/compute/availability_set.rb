@@ -13,6 +13,7 @@ module Fog
         attribute :platform_fault_domain_count
         attribute :use_managed_disk
         attribute :sku_name
+        attribute :tags
 
         def self.parse(availability_set)
           hash = {}
@@ -29,6 +30,7 @@ module Fog
             hash['use_managed_disk'] = availability_set.sku.name.eql?(AS_SKU_ALIGNED)
           end
 
+          hash['tags'] = availability_set.tags
           hash
         end
 
@@ -55,7 +57,8 @@ module Fog
             resource_group: resource_group,
             platform_fault_domain_count: platform_fault_domain_count,
             platform_update_domain_count: platform_update_domain_count,
-            use_managed_disk: use_managed_disk
+            use_managed_disk: use_managed_disk,
+            tags: tags
           }
         end
       end

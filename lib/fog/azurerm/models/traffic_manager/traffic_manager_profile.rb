@@ -17,6 +17,7 @@ module Fog
         attribute :port
         attribute :path
         attribute :endpoints
+        attribute :tags
 
         def self.parse(profile)
           traffic_manager_profile = get_hash_from_object(profile)
@@ -79,7 +80,8 @@ module Fog
             protocol: protocol,
             port: port,
             path: path,
-            endpoints: endpoints
+            endpoints: endpoints,
+            tags: tags
           }
         end
       end

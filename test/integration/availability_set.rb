@@ -29,7 +29,7 @@ compute = Fog::Compute::AzureRM.new(
 ########################################################################################################################
 
 time = current_time
-resource_group_name       = "AS-RG-#{time}"
+resource_group_name       = "TestRG-AS-#{time}"
 unmanaged_as_name_default = "ASUnmanagedDefault#{time}"
 unmanaged_as_name_custom  = "ASUnmanagedCustom#{time}"
 managed_as_name_default   = "ASManagedDefault#{time}"
@@ -71,11 +71,14 @@ begin
   ######################                    Create Unmanaged Availability Set (Default)             ######################
   ########################################################################################################################
 
+  tags = { key1: 'value1', key2: 'value2' }
+
   puts "Create unmanaged default availability set (#{unmanaged_as_name_default}):"
   avail_set = compute.availability_sets.create(
     name: unmanaged_as_name_default,
     location: LOCATION,
-    resource_group: resource_group_name
+    resource_group: resource_group_name,
+    tags: tags
   )
   name = avail_set.name
   fault_domains = avail_set.platform_fault_domain_count
@@ -91,6 +94,7 @@ begin
     name: unmanaged_as_name_custom,
     location: LOCATION,
     resource_group: resource_group_name,
+    tags: tags,
     platform_fault_domain_count: 3,
     platform_update_domain_count: 10
   )
@@ -108,6 +112,7 @@ begin
     name: managed_as_name_default,
     location: LOCATION,
     resource_group: resource_group_name,
+    tags: tags,
     use_managed_disk: true
   )
   name = avail_set.name
@@ -124,6 +129,7 @@ begin
     name: managed_as_name_custom,
     location: LOCATION,
     resource_group: resource_group_name,
+    tags: tags,
     platform_fault_domain_count: 2,
     platform_update_domain_count: 10,
     use_managed_disk: true
@@ -170,6 +176,7 @@ begin
 
   rg = rs.resource_groups.get(resource_group_name)
   rg.destroy
+
   puts 'Integration test for availability set ran successfully!'
 rescue
   puts 'Integration Test for availability set is failing!!!'

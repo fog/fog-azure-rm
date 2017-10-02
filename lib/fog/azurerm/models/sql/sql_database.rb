@@ -23,13 +23,12 @@ module Fog
         attribute :requested_service_objective_name, aliases: %w(requestedServiceObjectiveName)
         attribute :service_level_objective, aliases: %w(serviceLevelObjective)
         attribute :source_database_id, aliases: %w(sourceDatabaseId)
+        attribute :tags
 
         def self.parse(database)
           database_hash = get_hash_from_object(database)
-
           database_hash['resource_group'] = get_resource_group_from_id(database.id)
           database_hash['server_name'] = get_resource_from_resource_id(database.id, 8)
-
           database_hash
         end
 
@@ -58,7 +57,8 @@ module Fog
             max_size_bytes: max_size_bytes,
             requested_service_objective_name: requested_service_objective_name,
             elastic_pool_name: elastic_pool_name,
-            requested_service_objective_id: requested_service_objective_id
+            requested_service_objective_id: requested_service_objective_id,
+            tags: tags
           }
         end
       end

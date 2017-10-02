@@ -7,19 +7,21 @@ module Fog
         identity :name
         attribute :id
         attribute :location
+        attribute :tags
 
         def self.parse(resource_group)
           hash = {}
           hash['id'] = resource_group.id
           hash['name'] = resource_group.name
           hash['location'] = resource_group.location
+          hash['tags'] = resource_group.tags
           hash
         end
 
         def save
           requires :name
           requires :location
-          resource_group = service.create_resource_group(name, location)
+          resource_group = service.create_resource_group(name, location, tags)
           merge_attributes(Fog::Resources::AzureRM::ResourceGroup.parse(resource_group))
         end
 

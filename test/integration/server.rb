@@ -90,10 +90,13 @@ begin
   ######################                                Create Server                               ######################
   ########################################################################################################################
 
+  tags = { key1: 'value1', key2: 'value2' }
+
   virtual_machine = compute.servers.create(
     name: 'TestVM',
     location: LOCATION,
     resource_group: 'TestRG-VM',
+    tags: tags,
     vm_size: 'Basic_A0',
     storage_account_name: storage_account_name,
     username: 'testuser',
@@ -118,6 +121,7 @@ begin
     name: 'TestVM',
     location: LOCATION,
     resource_group: 'TestRG-VM',
+    tags: tags,
     vm_size: 'Basic_A0',
     storage_account_name: storage_account_name,
     username: 'testuser',
@@ -132,6 +136,7 @@ begin
     custom_data: 'echo customData',
     os_disk_caching: Fog::ARM::Compute::Models::CachingTypes::None
   )
+
   loop do
     puts async_response.state
 
@@ -259,6 +264,7 @@ begin
 
   resource_group = rs.resource_groups.get('TestRG-VM')
   resource_group.destroy
+
   puts 'Integration Test for virtual machine ran successfully'
 rescue
   puts 'Integration Test for virtual machine is failing'

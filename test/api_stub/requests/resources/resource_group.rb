@@ -9,7 +9,7 @@ module ApiStub
             "name": "fog-test-rg",
             "location": "westus",
             "tags": {
-              "tagname1": "tagvalue1"
+              "tagkey1": "tagvalue1"
             },
             "properties": {
               "provisioning_state": "Succeeded"

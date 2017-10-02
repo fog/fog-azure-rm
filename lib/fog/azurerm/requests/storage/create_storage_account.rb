@@ -9,7 +9,8 @@ module Fog
           storage_account_params = get_storage_account_params(storage_account_hash[:sku_name],
                                                               storage_account_hash[:location],
                                                               storage_account_hash[:replication],
-                                                              storage_account_hash[:encryption])
+                                                              storage_account_hash[:encryption],
+                                                              storage_account_hash[:tags])
           begin
             storage_account = @storage_mgmt_client.storage_accounts.create(storage_account_hash[:resource_group],
                                                                            storage_account_hash[:name],
@@ -23,7 +24,7 @@ module Fog
 
         private
 
-        def get_storage_account_params(sku_name, location, replication, encryption_enabled)
+        def get_storage_account_params(sku_name, location, replication, encryption_enabled, tags)
           params = Azure::ARM::Storage::Models::StorageAccountCreateParameters.new
           sku = Azure::ARM::Storage::Models::Sku.new
           sku.name = "#{sku_name}_#{replication}"
@@ -40,6 +41,7 @@ module Fog
             encryption.services = encryption_services
             params.encryption = encryption
           end
+          params.tags = tags
           params
         end
       end

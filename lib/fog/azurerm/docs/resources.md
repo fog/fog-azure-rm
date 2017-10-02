@@ -16,11 +16,11 @@ Next, create a connection to the Resources Service:
 
 ```ruby
     azure_resources_service = Fog::Resources::AzureRM.new(
-        tenant_id:       '<Tenantid>',                                                    # Tenant id of Azure Active Directory Application
-        client_id:       '<Clientid>',                                                    # Client id of Azure Active Directory Application
-        client_secret:   '<ClientSecret>',                                                # Client Secret of Azure Active Directory Application
-        subscription_id: '<Subscriptionid>',                                              # Subscription id of an Azure Account
-        :environment => '<AzureCloud/AzureChinaCloud/AzureUSGovernment/AzureGermanCloud>' # Azure cloud environment. Default is AzureCloud.
+      tenant_id:        '<Tenantid>',                                                      # Tenant id of Azure Active Directory Application
+      client_id:        '<Clientid>',                                                      # Client id of Azure Active Directory Application
+      client_secret:    '<ClientSecret>',                                                  # Client Secret of Azure Active Directory Application
+      subscription_id:  '<Subscriptionid>',                                                # Subscription id of an Azure Account
+      environment:      '<AzureCloud/AzureChinaCloud/AzureUSGovernment/AzureGermanCloud>'  # Azure cloud environment. Default is AzureCloud.
 )
 ```
 
@@ -37,7 +37,8 @@ Create a new resource group
 ```ruby
     azure_resources_service.resource_groups.create(
         name:     '<Resource Group name>',
-        location: 'West US'
+        location: '<Location>',
+        tags: { key1: "value1", key2: "value2", keyN: "valueN" }                        # [Optional]
  )
 ```
 ## List Resource Groups

@@ -25,13 +25,12 @@ module Fog
           local_network_gateway.local_network_address_space = get_local_network_address_space_object(local_network_gateway_params[:local_network_address_space_prefixes]) if local_network_gateway_params[:local_network_address_space_prefixes]
           local_network_gateway.gateway_ip_address = local_network_gateway_params[:gateway_ip_address] if local_network_gateway_params[:gateway_ip_address]
           local_network_gateway.bgp_settings = get_bgp_settings_object(local_network_gateway_params)
-
           local_network_gateway.name = local_network_gateway_params[:name]
           local_network_gateway.type = local_network_gateway_params[:type]
           local_network_gateway.location = local_network_gateway_params[:location]
           local_network_gateway.tags = local_network_gateway_params[:tags] if local_network_gateway.tags.nil?
           local_network_gateway.provisioning_state = local_network_gateway_params[:provisioning_state]
-
+          local_network_gateway.tags = local_network_gateway_params[:tags]
           local_network_gateway
         end
 

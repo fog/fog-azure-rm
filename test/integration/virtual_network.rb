@@ -52,7 +52,8 @@ begin
       address_prefix: '10.1.0.0/24'
     }],
     dns_servers:       %w(10.1.0.0 10.2.0.0),
-    address_prefixes:  %w(10.1.0.0/16 10.2.0.0/16)
+    address_prefixes:  %w(10.1.0.0/16 10.2.0.0/16),
+    tags: { key: 'value' }
   )
   puts "Created virtual network: #{virtual_network.name}"
 

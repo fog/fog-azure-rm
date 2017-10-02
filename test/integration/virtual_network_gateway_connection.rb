@@ -174,7 +174,8 @@ begin
       name: 'testnetworkgateway',
       resource_group: 'TestRG-GC'
     },
-    connection_type: 'Vnet2Vnet'
+    connection_type: 'Vnet2Vnet',
+    tags: { key: 'value' }
   )
   puts "Created virtual network gateway connection: #{virtual_network_gateway_connection.name}"
 
@@ -214,8 +215,7 @@ begin
 
   resource_group = resource.resource_groups.get('TestRG-GC')
   resource_group.destroy
-rescue Exception => e
-  raise e
+rescue
   puts 'Integration Test for virtual network gateway connection is failing'
   resource_group.destroy unless resource_group.nil?
 end

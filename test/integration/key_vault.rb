@@ -61,7 +61,8 @@ begin
     tenant_id: azure_credentials['tenant_id'],
     sku_family: 'A',
     sku_name: 'standard',
-    access_policies: access_policies_arr
+    access_policies: access_policies_arr,
+    tags: { key: 'value' }
   )
 
   ########################################################################################################################

@@ -22,6 +22,7 @@ module Fog
         attribute :applied_dns_servers
         attribute :internal_dns_name_label
         attribute :internal_fqd
+        attribute :tags
 
         def self.parse(nic)
           hash = {}
@@ -33,6 +34,7 @@ module Fog
           hash['mac_address'] = nic.mac_address unless nic.mac_address.nil?
           hash['network_security_group_id'] = nil
           hash['network_security_group_id'] = nic.network_security_group.id unless nic.network_security_group.nil?
+          hash['tags'] = nic.tags
           ip_configuration = nic.ip_configurations[0] unless nic.ip_configurations.nil?
           unless ip_configuration.nil?
             hash['ip_configuration_name'] = ip_configuration.name
@@ -62,7 +64,7 @@ module Fog
           requires :subnet_id
           requires :ip_configuration_name
           requires :private_ip_allocation_method
-          nic = service.create_or_update_network_interface(resource_group, name, location, subnet_id, public_ip_address_id, network_security_group_id, ip_configuration_name, private_ip_allocation_method, private_ip_address, load_balancer_backend_address_pools_ids, load_balancer_inbound_nat_rules_ids)
+          nic = service.create_or_update_network_interface(resource_group, name, location, subnet_id, public_ip_address_id, network_security_group_id, ip_configuration_name, private_ip_allocation_method, private_ip_address, load_balancer_backend_address_pools_ids, load_balancer_inbound_nat_rules_ids, tags)
           merge_attributes(Fog::Network::AzureRM::NetworkInterface.parse(nic))
         end
 

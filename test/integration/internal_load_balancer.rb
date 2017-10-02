@@ -107,7 +107,8 @@ begin
           interval_in_seconds: 15,
           number_of_probes: 2
         }
-      ]
+      ],
+    tags: { key: 'value' }
   )
   puts "Created internal load balancer: #{load_balancer.name}"
 

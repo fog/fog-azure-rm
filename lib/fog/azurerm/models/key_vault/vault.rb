@@ -15,6 +15,7 @@ module Fog
         attribute :enabled_for_deployment
         attribute :enabled_for_disk_encryption
         attribute :enabled_for_template_deployment
+        attribute :tags
 
         def self.parse(vault)
           vault_hash = get_hash_from_object(vault)
@@ -67,7 +68,8 @@ module Fog
             tenant_id: tenant_id,
             sku_family: sku_family,
             sku_name: sku_name,
-            access_policies: access_policies
+            access_policies: access_policies,
+            tags: tags
           }
         end
       end

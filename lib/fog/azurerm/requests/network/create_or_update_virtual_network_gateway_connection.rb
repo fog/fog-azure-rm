@@ -26,7 +26,7 @@ module Fog
 
           gateway_connection.name = gateway_connection_params[:name]
           gateway_connection.location = gateway_connection_params[:location]
-          gateway_connection.tags = gateway_connection_params[:tags] if gateway_connection.tags.nil?
+          gateway_connection.tags = gateway_connection_params[:tags]
 
           if gateway_connection_params[:virtual_network_gateway1]
             gateway_connection.virtual_network_gateway1 = get_virtual_network_gateway(gateway_connection_params[:virtual_network_gateway1][:resource_group], gateway_connection_params[:virtual_network_gateway1][:name])

@@ -4,10 +4,10 @@ module Fog
     class AzureRM
       # Real class for Network Request
       class Real
-        def create_or_update_network_interface(resource_group_name, name, location, subnet_id, public_ip_address_id, network_security_group_id, ip_config_name, private_ip_allocation_method, private_ip_address, load_balancer_backend_address_pools_ids, load_balancer_inbound_nat_rules_ids)
+        def create_or_update_network_interface(resource_group_name, name, location, subnet_id, public_ip_address_id, network_security_group_id, ip_config_name, private_ip_allocation_method, private_ip_address, load_balancer_backend_address_pools_ids, load_balancer_inbound_nat_rules_ids, tags)
           msg = "Creating/Updating Network Interface Card: #{name}"
           Fog::Logger.debug msg
-          network_interface = get_network_interface_object(name, location, subnet_id, public_ip_address_id, network_security_group_id, ip_config_name, private_ip_allocation_method, private_ip_address, load_balancer_backend_address_pools_ids, load_balancer_inbound_nat_rules_ids)
+          network_interface = get_network_interface_object(name, location, subnet_id, public_ip_address_id, network_security_group_id, ip_config_name, private_ip_allocation_method, private_ip_address, load_balancer_backend_address_pools_ids, load_balancer_inbound_nat_rules_ids, tags)
           begin
             network_interface_obj = @network_client.network_interfaces.create_or_update(resource_group_name, name, network_interface)
           rescue MsRestAzure::AzureOperationError => e
@@ -19,7 +19,7 @@ module Fog
 
         private
 
-        def get_network_interface_object(name, location, subnet_id, public_ip_address_id, network_security_group_id, ip_config_name, private_ip_allocation_method, private_ip_address, load_balancer_backend_address_pools_ids, load_balancer_inbound_nat_rules_ids)
+        def get_network_interface_object(name, location, subnet_id, public_ip_address_id, network_security_group_id, ip_config_name, private_ip_allocation_method, private_ip_address, load_balancer_backend_address_pools_ids, load_balancer_inbound_nat_rules_ids, tags)
           if public_ip_address_id
             public_ipaddress = Azure::ARM::Network::Models::PublicIPAddress.new
             public_ipaddress.id = public_ip_address_id
@@ -59,6 +59,7 @@ module Fog
           network_interface.name = name
           network_interface.location = location
           network_interface.ip_configurations = [ip_configs]
+          network_interface.tags = tags
 
           if network_security_group_id
             network_security_group = Azure::ARM::Network::Models::NetworkSecurityGroup.new

@@ -3,8 +3,8 @@ module Fog
     class AzureRM
       # Real class for Network Request
       class Real
-        def create_or_update_virtual_network(resource_group_name, virtual_network_name, location, dns_servers, subnets, address_prefixes)
-          virtual_network = define_vnet_object(location, address_prefixes, dns_servers, subnets)
+        def create_or_update_virtual_network(resource_group_name, virtual_network_name, location, dns_servers, subnets, address_prefixes, tags)
+          virtual_network = define_vnet_object(location, address_prefixes, dns_servers, subnets, tags)
           create_or_update_vnet(resource_group_name, virtual_network_name, virtual_network)
         end
 
@@ -22,9 +22,10 @@ module Fog
           virtual_network
         end
 
-        def define_vnet_object(location, address_prefixes, dns_servers, subnets)
+        def define_vnet_object(location, address_prefixes, dns_servers, subnets, tags)
           virtual_network = Azure::ARM::Network::Models::VirtualNetwork.new
           virtual_network.location = location
+          virtual_network.tags = tags
 
           if address_prefixes.nil? || !address_prefixes.any?
             address_space = Azure::ARM::Network::Models::AddressSpace.new

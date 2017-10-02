@@ -13,6 +13,7 @@ module Fog
         attribute :probes
         attribute :inbound_nat_rules
         attribute :inbound_nat_pools
+        attribute :tags
 
         # @param [Object] load_balancer
         def self.parse(load_balancer)
@@ -22,6 +23,7 @@ module Fog
           hash['location'] = load_balancer.location
           hash['resource_group'] = get_resource_group_from_id(load_balancer.id)
           hash['backend_address_pool_names'] = load_balancer.backend_address_pools.map(&:id) unless load_balancer.backend_address_pools.nil?
+          hash['tags'] = load_balancer.tags
 
           hash['frontend_ip_configurations'] = []
           load_balancer.frontend_ipconfigurations.each do |fic|
@@ -65,7 +67,7 @@ module Fog
           validate_inbound_nat_rules(inbound_nat_rules) unless inbound_nat_rules.nil?
           validate_inbound_nat_pools(inbound_nat_pools) unless inbound_nat_pools.nil?
 
-          load_balancer = service.create_load_balancer(name, location, resource_group, frontend_ip_configurations, backend_address_pool_names, load_balancing_rules, probes, inbound_nat_rules, inbound_nat_pools)
+          load_balancer = service.create_load_balancer(name, location, resource_group, frontend_ip_configurations, backend_address_pool_names, load_balancing_rules, probes, inbound_nat_rules, inbound_nat_pools, tags)
 
           merge_attributes(Fog::Network::AzureRM::LoadBalancer.parse(load_balancer))
         end

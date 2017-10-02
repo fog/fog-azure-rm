@@ -47,7 +47,8 @@ begin
     name: 'mypubip',
     resource_group: 'TestRG-PB',
     location: LOCATION,
-    public_ip_allocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Dynamic
+    public_ip_allocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Dynamic,
+    tags: { key: 'value' }
   )
   puts "Created public ip: #{public_ip.name}"
 

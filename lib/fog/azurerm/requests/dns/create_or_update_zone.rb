@@ -25,9 +25,8 @@ module Fog
           zone.type = zone_params[:type]
           zone.number_of_record_sets = zone_params[:number_of_record_sets]
           zone.max_number_of_record_sets = zone_params[:max_number_of_record_sets]
-          zone.tags = zone_params[:tags] if zone.tags.nil?
+          zone.tags = zone_params[:tags]
           zone.etag = zone_params[:etag]
-
           zone
         end
       end

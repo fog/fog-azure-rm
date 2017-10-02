@@ -15,13 +15,15 @@ class TestCreateOrUpdatevirtualNetwork < Minitest::Test
       network_security_group_id: 'nsg-id',
       route_table_id: 'nsg-id'
     }]
+
+    @tags = { key: 'value' }
   end
 
   def test_create_or_update_virtual_network_success
     mocked_response = ApiStub::Requests::Network::VirtualNetwork.create_virtual_network_response(@network_client)
 
     @virtual_networks.stub :create_or_update, mocked_response do
-      assert_equal @service.create_or_update_virtual_network('fog-test-rg', 'fog-test-virtual-network', 'westus', ['10.1.0.5', '10.1.0.6'], @subnets, ['10.1.0.0/16', '10.2.0.0/16']), mocked_response
+      assert_equal @service.create_or_update_virtual_network('fog-test-rg', 'fog-test-virtual-network', 'westus', ['10.1.0.5', '10.1.0.6'], @subnets, ['10.1.0.0/16', '10.2.0.0/16'], @tags), mocked_response
     end
   end
 
@@ -29,7 +31,7 @@ class TestCreateOrUpdatevirtualNetwork < Minitest::Test
     mocked_response = ApiStub::Requests::Network::VirtualNetwork.create_virtual_network_response(@network_client)
 
     @virtual_networks.stub :create_or_update, mocked_response do
-      assert_equal @service.create_or_update_virtual_network('fog-test-rg', 'fog-test-virtual-network', 'westus', ['10.1.0.5', '10.1.0.6'], @subnets, nil), mocked_response
+      assert_equal @service.create_or_update_virtual_network('fog-test-rg', 'fog-test-virtual-network', 'westus', ['10.1.0.5', '10.1.0.6'], @subnets, nil, @tags), mocked_response
     end
   end
 
@@ -48,7 +50,7 @@ class TestCreateOrUpdatevirtualNetwork < Minitest::Test
 
     @virtual_networks.stub :create_or_update, response do
       assert_raises RuntimeError do
-        @service.create_or_update_virtual_network('fog-test-rg', 'fog-test-virtual-network', 'westus', ['10.1.0.5', '10.1.0.6'], @subnets, ['10.1.0.0/16', '10.2.0.0/16'])
+        @service.create_or_update_virtual_network('fog-test-rg', 'fog-test-virtual-network', 'westus', ['10.1.0.5', '10.1.0.6'], @subnets, ['10.1.0.0/16', '10.2.0.0/16'], @tags)
       end
     end
   end

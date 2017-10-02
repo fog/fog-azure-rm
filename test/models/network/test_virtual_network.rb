@@ -34,7 +34,8 @@ class TestVirtualNetwork < Minitest::Test
       :dns_servers,
       :subnets,
       :address_prefixes,
-      :resource_group
+      :resource_group,
+      :tags
     ]
     attributes.each do |attribute|
       assert_respond_to @virtual_network, attribute

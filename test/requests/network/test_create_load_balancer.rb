@@ -6,6 +6,7 @@ class TestCreateLoadBalancer < Minitest::Test
     @service = Fog::Network::AzureRM.new(credentials)
     @network_client = @service.instance_variable_get(:@network_client)
     @load_balancers = @network_client.load_balancers
+    @tags = { key: 'value' }
   end
 
   def test_create_load_balancer_success
@@ -18,7 +19,7 @@ class TestCreateLoadBalancer < Minitest::Test
     inbound_nat_rule = ApiStub::Requests::Network::LoadBalancer.inbound_nat_rule
     inbound_nat_pool = ApiStub::Requests::Network::LoadBalancer.inbound_nat_pool
     @load_balancers.stub :create_or_update, mocked_response do
-      assert_equal @service.create_load_balancer('mylb1', 'North US', 'testRG', frontend_ip_config, backend_address_pool, load_balancing_rule, probe, inbound_nat_rule, inbound_nat_pool), mocked_response
+      assert_equal @service.create_load_balancer('mylb1', 'North US', 'testRG', frontend_ip_config, backend_address_pool, load_balancing_rule, probe, inbound_nat_rule, inbound_nat_pool, @tags), mocked_response
     end
   end
 
@@ -42,7 +43,7 @@ class TestCreateLoadBalancer < Minitest::Test
     inbound_nat_pool = ApiStub::Requests::Network::LoadBalancer.inbound_nat_pool
     @load_balancers.stub :create_or_update, response do
       assert_raises RuntimeError do
-        @service.create_load_balancer('mylb1', 'North US', 'testRG', frontend_ip_config, backend_address_pool, load_balancing_rule, probe, inbound_nat_rule, inbound_nat_pool)
+        @service.create_load_balancer('mylb1', 'North US', 'testRG', frontend_ip_config, backend_address_pool, load_balancing_rule, probe, inbound_nat_rule, inbound_nat_pool, @tags)
       end
     end
   end

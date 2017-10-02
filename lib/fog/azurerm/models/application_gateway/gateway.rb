@@ -22,6 +22,7 @@ module Fog
         attribute :http_listeners
         attribute :url_path_maps
         attribute :request_routing_rules
+        attribute :tags
 
         def self.parse(gateway)
           hash = {}
@@ -96,6 +97,8 @@ module Fog
             request_routing_rule = Fog::ApplicationGateway::AzureRM::RequestRoutingRule.new
             hash['request_routing_rules'] << request_routing_rule.merge_attributes(Fog::ApplicationGateway::AzureRM::RequestRoutingRule.parse(rule))
           end unless gateway.request_routing_rules.nil?
+
+          hash['tags'] = gateway.tags
           hash
         end
 
@@ -133,7 +136,8 @@ module Fog
             backend_http_settings_list: backend_http_settings_list,
             http_listeners: http_listeners,
             url_path_maps: url_path_maps,
-            request_routing_rules: request_routing_rules
+            request_routing_rules: request_routing_rules,
+            tags: tags
           }
         end
 

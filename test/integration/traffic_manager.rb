@@ -43,9 +43,12 @@ begin
   ######################                         Create Traffic Manager Profile                     ######################
   ########################################################################################################################
 
+  tags = { key1: 'value1', key2: 'value2' }
+
   traffic_manager_profile = traffic_manager.traffic_manager_profiles.create(
     name: 'test-tmp',
     resource_group: 'TestRG-TM',
+    tags: tags,
     traffic_routing_method: 'Performance',
     relative_name: 'testapplication',
     ttl: '30',
@@ -77,8 +80,8 @@ begin
 
   traffic_manager_end_point = traffic_manager.traffic_manager_end_points.create(
     name: 'myendpoint',
-    traffic_manager_profile_name: 'test-tmp',
     resource_group: 'TestRG-TM',
+    traffic_manager_profile_name: 'test-tmp',
     type: 'externalEndpoints',
     target: 'test-app1.com',
     endpoint_location: 'eastus'
@@ -131,6 +134,8 @@ begin
 
   resource_group = resources.resource_groups.get('TestRG-TM')
   resource_group.destroy
+
+  puts 'Integration test for Traffic Manager ran successfully!'
 rescue
   puts 'Integration Test for traffic manager is failing'
   resource_group.destroy unless resource_group.nil?

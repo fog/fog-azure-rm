@@ -31,12 +31,12 @@ If you only want to manage the storage accounts, you can create the connection w
 
 ```ruby
 azure_storage_service = Fog::Storage.new(
-  :provider => 'AzureRM',
-  :tenant_id => '<Tenantid>',                                                       # Tenant id of Azure Active Directory Application
-  :client_id =>    '<Clientid>',                                                    # Client id of Azure Active Directory Application
-  :client_secret => '<ClientSecret>',                                               # Client Secret of Azure Active Directory Application
-  :subscription_id => '<Subscriptionid>',                                           # Subscription id of an Azure Account
-  :environment => '<AzureCloud/AzureChinaCloud/AzureUSGovernment/AzureGermanCloud>' # Azure cloud environment. Default is AzureCloud.
+  provider:         'AzureRM',
+  tenant_id:        '<Tenantid>',                                                      # Tenant id of Azure Active Directory Application
+  client_id:        '<Clientid>',                                                      # Client id of Azure Active Directory Application
+  client_secret:    '<ClientSecret>',                                                  # Client Secret of Azure Active Directory Application
+  subscription_id:  '<Subscriptionid>',                                                # Subscription id of an Azure Account
+  environment:      '<AzureCloud/AzureChinaCloud/AzureUSGovernment/AzureGermanCloud>'  # Azure cloud environment. Default is AzureCloud.
 )
 ```
 
@@ -78,12 +78,13 @@ Premium:  LRS (Premium Locally-redundant storage)
 
 ```ruby
 azure_storage_service.storage_accounts.create(
-  :name => '<Storage Account name>',
-  :location => 'West US',
-  :resource_group => '<Resource Group name>',
-  :account_type => '<Standard/Premium>',               # Optional. Default value 'Standard'. Allowed values can only be Standard or Premium
-  :replication => 'LRS',                               # Optional. Default value 'LRS'
-  :encryption => true                                  # Optional. If you want to enable encryption. Default value is 'false'
+  name:           '<Storage Account name>',
+  location:       '<Location>',
+  resource_group: '<Resource Group name>',
+  account_type:   '<Standard/Premium>',                                   # [Optional] Default value 'Standard'. Allowed values can only be Standard or Premium
+  replication:    'LRS',                                                  # [Optional] Default value 'LRS'
+  encryption:     true,                                                   # [Optional] Enables encryption. Default is false.
+  tags:           { key1: "value1", key2: "value2", keyN: "valueN" }      # [Optional]
 )
 ```
 Premium Storage account store data on solid state drives (SSDs). For more details on standard and premium storage accounts, see [Introduction to Microsoft Azure Storage](https://azure.microsoft.com/en-us/documentation/articles/storage-introduction/) and [Premium Storage: High-Performance Storage for Azure Virtual Machine Workloads](https://azure.microsoft.com/en-us/documentation/articles/storage-premium-storage/).

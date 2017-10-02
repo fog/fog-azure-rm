@@ -6,13 +6,15 @@ module Fog
         def create_or_update_sql_server(server_hash)
           msg = "Creating SQL Server: #{server_hash[:name]}."
           Fog::Logger.debug msg
+          formatted_server_params = format_server_parameters(server_hash[:location],
+                                                             server_hash[:version],
+                                                             server_hash[:administrator_login],
+                                                             server_hash[:administrator_login_password],
+                                                             server_hash[:tags])
           begin
             sql_server = @sql_mgmt_client.servers.create_or_update(server_hash[:resource_group],
                                                                    server_hash[:name],
-                                                                   format_server_parameters(server_hash[:location],
-                                                                                            server_hash[:version],
-                                                                                            server_hash[:administrator_login],
-                                                                                            server_hash[:administrator_login_password]))
+                                                                   formatted_server_params)
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
@@ -22,12 +24,13 @@ module Fog
 
         private
 
-        def format_server_parameters(location, version, admin_login, admin_password)
+        def format_server_parameters(location, version, admin_login, admin_password, tags)
           server = Azure::ARM::SQL::Models::Server.new
           server.version = version
           server.location = location
           server.administrator_login = admin_login
           server.administrator_login_password = admin_password
+          server.tags = tags
           server
         end
       end

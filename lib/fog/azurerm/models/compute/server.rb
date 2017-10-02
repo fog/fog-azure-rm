@@ -32,6 +32,7 @@ module Fog
         attribute :vhd_path
         attribute :managed_disk_storage_type
         attribute :os_disk_size
+        attribute :tags
 
         def self.parse(vm)
           hash = {}
@@ -77,6 +78,7 @@ module Fog
           end
           hash['network_interface_card_ids'] = vm.network_profile.network_interfaces.map(&:id)
           hash['availability_set_id'] = vm.availability_set.id unless vm.availability_set.nil?
+          hash['tags'] = vm.tags
 
           hash
         end
@@ -202,7 +204,8 @@ module Fog
             vhd_path: vhd_path,
             os_disk_caching: os_disk_caching,
             managed_disk_storage_type: managed_disk_storage_type,
-            os_disk_size: os_disk_size
+            os_disk_size: os_disk_size,
+            tags: tags
           }
         end
 

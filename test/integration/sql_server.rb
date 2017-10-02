@@ -44,10 +44,13 @@ begin
   ######################                         Create Sql Server                                  ######################
   ########################################################################################################################
 
+  tags = { key1: 'value1', key2: 'value2' }
+
   sql_server = azure_sql_service.sql_servers.create(
     name: server_name,
     resource_group: 'TestRG-SQL',
     location: LOCATION,
+    tags: tags,
     version: '2.0',
     administrator_login: 'testserveradmin',
     administrator_login_password: 'db@admin=123'
@@ -67,10 +70,11 @@ begin
   ########################################################################################################################
 
   sql_database = azure_sql_service.sql_databases.create(
+    name: database_name,
     resource_group: 'TestRG-SQL',
     location: LOCATION,
-    server_name: server_name,
-    name: database_name
+    tags: tags,
+    server_name: server_name
   )
   puts "Created sql database: #{sql_database.name}"
 
@@ -112,6 +116,7 @@ begin
   firewall_rule = azure_sql_service.firewall_rules.create(
     resource_group: 'TestRG-SQL',
     server_name: server_name,
+    tags: tags,
     name: 'test-rule-name',
     start_ip: '10.10.10.10',
     end_ip: '10.10.10.11'
@@ -167,8 +172,11 @@ begin
   ########################################################################################################################
   ######################                                   CleanUp                                  ######################
   ########################################################################################################################
+
   resource_group = resources.resource_groups.get('TestRG-SQL')
   resource_group.destroy
+
+  puts 'Integration test for SQL ran successfully!'
 rescue
   puts 'Integration Test for sql server is failing'
   resource_group.destroy unless resource_group.nil?

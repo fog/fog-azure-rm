@@ -14,6 +14,7 @@ module Fog
         attribute :domain_name_label
         attribute :fqdn
         attribute :reverse_fqdn
+        attribute :tags
 
         def self.parse(public_ip)
           hash = {}
@@ -25,6 +26,7 @@ module Fog
           hash['ip_address'] = public_ip.ip_address
           hash['idle_timeout_in_minutes'] = public_ip.idle_timeout_in_minutes
           hash['ip_configuration_id'] = public_ip.ip_configuration.id unless public_ip.ip_configuration.nil?
+          hash['tags'] = public_ip.tags
 
           unless public_ip.dns_settings.nil?
             hash['domain_name_label'] = public_ip.dns_settings.domain_name_label
@@ -40,7 +42,7 @@ module Fog
           requires :public_ip_allocation_method
           requires :location
           requires :resource_group
-          public_ip = service.create_or_update_public_ip(resource_group, name, location, public_ip_allocation_method, idle_timeout_in_minutes, domain_name_label)
+          public_ip = service.create_or_update_public_ip(resource_group, name, location, public_ip_allocation_method, idle_timeout_in_minutes, domain_name_label, tags)
           merge_attributes(Fog::Network::AzureRM::PublicIp.parse(public_ip))
         end
 
@@ -51,7 +53,7 @@ module Fog
         def update(input_hash)
           validate_input(input_hash)
           merge_attributes(input_hash)
-          pip = service.create_or_update_public_ip(resource_group, name, location, public_ip_allocation_method, idle_timeout_in_minutes, domain_name_label)
+          pip = service.create_or_update_public_ip(resource_group, name, location, public_ip_allocation_method, idle_timeout_in_minutes, domain_name_label, tags)
           merge_attributes(Fog::Network::AzureRM::PublicIp.parse(pip))
         end
 

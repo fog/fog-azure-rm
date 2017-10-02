@@ -30,7 +30,8 @@ class TestLoadBalancer < Minitest::Test
       :load_balancing_rules,
       :probes,
       :inbound_nat_rules,
-      :inbound_nat_pools
+      :inbound_nat_pools,
+      :tags
     ]
     attributes.each do |attribute|
       assert_respond_to @load_balancer, attribute

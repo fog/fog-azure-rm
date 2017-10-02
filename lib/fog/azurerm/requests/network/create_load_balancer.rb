@@ -3,10 +3,10 @@ module Fog
     class AzureRM
       # Real class for Load-Balancer Request
       class Real
-        def create_load_balancer(name, location, resource_group, frontend_ip_configurations, backend_address_pool_names, load_balancing_rules, probes, inbound_nat_rules, inbound_nat_pools)
+        def create_load_balancer(name, location, resource_group, frontend_ip_configurations, backend_address_pool_names, load_balancing_rules, probes, inbound_nat_rules, inbound_nat_pools, tags)
           msg = "Creating Load-Balancer: #{name}"
           Fog::Logger.debug msg
-          load_balancer = define_load_balancer(name, location, frontend_ip_configurations, backend_address_pool_names, load_balancing_rules, probes, inbound_nat_rules, inbound_nat_pools)
+          load_balancer = define_load_balancer(name, location, frontend_ip_configurations, backend_address_pool_names, load_balancing_rules, probes, inbound_nat_rules, inbound_nat_pools, tags)
           begin
             load_balancer = @network_client.load_balancers.create_or_update(resource_group, name, load_balancer)
           rescue MsRestAzure::AzureOperationError => e
@@ -18,11 +18,11 @@ module Fog
 
         private
 
-        def define_load_balancer(name, location, frontend_ip_configurations, backend_address_pool_names, load_balancing_rules, probes, inbound_nat_rules, inbound_nat_pools)
+        def define_load_balancer(name, location, frontend_ip_configurations, backend_address_pool_names, load_balancing_rules, probes, inbound_nat_rules, inbound_nat_pools, tags)
           load_balancer = Azure::ARM::Network::Models::LoadBalancer.new
           load_balancer.name = name
           load_balancer.location = location
-
+          load_balancer.tags = tags
           if frontend_ip_configurations
             frontend_ip_configuration_arr = define_lb_frontend_ip_configurations(frontend_ip_configurations)
             load_balancer.frontend_ipconfigurations = frontend_ip_configuration_arr

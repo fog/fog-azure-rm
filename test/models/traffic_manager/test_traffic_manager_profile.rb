@@ -35,7 +35,8 @@ class TestTrafficManagerProfile < Minitest::Test
       :protocol,
       :port,
       :path,
-      :endpoints
+      :endpoints,
+      :tags
     ]
     attributes.each do |attribute|
       assert_respond_to @traffic_manager_profile, attribute

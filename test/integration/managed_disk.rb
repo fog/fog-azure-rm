@@ -28,9 +28,9 @@ compute = Fog::Compute::AzureRM.new(
 ######################                               Resource names                                #####################
 ########################################################################################################################
 
-time = current_time
-resource_group_name = "MD-RG-#{time}"
-disk_name = "MD#{time}diskunique"
+time                = current_time
+resource_group_name = "TestRG-MD-#{time}"
+disk_name           = "MD#{time}"
 
 ########################################################################################################################
 ######################                                 Prerequisites                              ######################
@@ -53,10 +53,13 @@ begin
   ######################                             Create Managed Disk                            ######################
   ########################################################################################################################
 
+  tags = { key1: 'value1', key2: 'value2' }
+
   disk = compute.managed_disks.create(
     name: disk_name,
     location: LOCATION,
     resource_group_name: resource_group_name,
+    tags: tags,
     account_type: 'Premium_LRS',
     disk_size_gb: 1023,
     creation_data: {
@@ -78,6 +81,7 @@ begin
   ########################################################################################################################
   ######################                       List Managed Disks                                   ######################
   ########################################################################################################################
+
   puts 'List managed disks:'
   compute.managed_disks(resource_group: resource_group_name).each do |managed_disk|
     puts managed_disk.name
@@ -106,8 +110,9 @@ begin
 
   rg = rs.resource_groups.get(resource_group_name)
   rg.destroy
-  puts 'Integration Test for managed disk ran successfully'
+
+  puts 'Integration Test for managed disk ran successfully!'
 rescue
-  puts 'Integration Test for managed disk is failing'
+  puts 'Integration Test for managed disk is failing!'
   resource_group.destroy unless resource_group.nil?
 end

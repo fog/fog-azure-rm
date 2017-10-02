@@ -3,11 +3,11 @@ module Fog
     class AzureRM
       # Real class for Network Request
       class Real
-        def create_or_update_network_security_group(resource_group_name, security_group_name, location, security_rules)
+        def create_or_update_network_security_group(resource_group_name, security_group_name, location, security_rules, tags)
           msg = "Creating/Updating Network Security Group #{security_group_name} in Resource Group #{resource_group_name}."
           Fog::Logger.debug msg
 
-          security_group = get_security_group_object(security_rules, location)
+          security_group = get_security_group_object(security_rules, location, tags)
 
           begin
             security_group = @network_client.network_security_groups.begin_create_or_update(resource_group_name, security_group_name, security_group)
@@ -21,10 +21,11 @@ module Fog
 
         private
 
-        def get_security_group_object(security_rules, location)
+        def get_security_group_object(security_rules, location, tags)
           security_group = Azure::ARM::Network::Models::NetworkSecurityGroup.new
           security_group.security_rules = get_security_rule_objects(security_rules)
           security_group.location = location
+          security_group.tags = tags
           security_group
         end
 

@@ -31,7 +31,8 @@ class TestPublicIp < Minitest::Test
       :ip_configuration_id,
       :domain_name_label,
       :fqdn,
-      :reverse_fqdn
+      :reverse_fqdn,
+      :tags
     ]
     attributes.each do |attribute|
       assert_respond_to @public_ip, attribute

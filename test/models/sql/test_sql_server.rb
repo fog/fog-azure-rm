@@ -29,7 +29,8 @@ class TestSqlServer < Minitest::Test
       :state,
       :administrator_login,
       :administrator_login_password,
-      :fully_qualified_domain_name
+      :fully_qualified_domain_name,
+      :tags
     ]
     attributes.each do |attribute|
       assert_respond_to @sql_server, attribute

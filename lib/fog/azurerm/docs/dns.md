@@ -37,7 +37,10 @@ Create a new Zone
 ```ruby
     azure_dns_service.zones.create(
         name:           '<Zone name>',
-        resource_group: '<Resource Group name>'
+        resource_group: '<Resource Group name>',
+        tags: {
+            key: 'value'
+        }               'Optional'
  )
 ```
 ## List Zones

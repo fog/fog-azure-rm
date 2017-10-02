@@ -40,6 +40,9 @@ Create a new Vault.
         tenant_id: <Tenantid>,
         sku_family: 'A',
         sku_name: 'standard',
+        tags: {
+            key: 'value'
+        }                       'Optional'
         access_policies: [
                            {
                              tenant_id: <Tenantid>,

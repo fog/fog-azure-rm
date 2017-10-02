@@ -104,7 +104,8 @@ begin
         frontend_port: 3389,
         backend_port: 3389
       }
-    ]
+    ],
+    tags: { key: 'value' }
   )
   puts "Created external load balancer: #{load_balancer.name}"
 

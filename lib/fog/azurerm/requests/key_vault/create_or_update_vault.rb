@@ -21,6 +21,7 @@ module Fog
         def get_vault_param_object(vault_hash)
           vault_param = Azure::ARM::KeyVault::Models::VaultCreateOrUpdateParameters.new
           vault_param.location = vault_hash[:location]
+          vault_param.tags = vault_hash[:tags]
           vault_param.properties = get_vault_properties_object(vault_hash)
           vault_param
         end

@@ -47,7 +47,7 @@ module Fog
           express_route_circuit.name = circuit_name
           express_route_circuit.location = location
           express_route_circuit.sku = sku
-          express_route_circuit.tags = tags if express_route_circuit.tags.nil?
+          express_route_circuit.tags = tags
           express_route_circuit
         end
 

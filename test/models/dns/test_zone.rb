@@ -23,7 +23,8 @@ class TestZone < Minitest::Test
     attributes = [
       :name,
       :id,
-      :resource_group
+      :resource_group,
+      :tags
     ]
     attributes.each do |attribute|
       assert_respond_to @zone, attribute

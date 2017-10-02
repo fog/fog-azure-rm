@@ -6,6 +6,7 @@ class TestCreateOrUpdateNetworkSecurityGroup < Minitest::Test
     @service = Fog::Network::AzureRM.new(credentials)
     @client = @service.instance_variable_get(:@network_client)
     @network_security_groups = @client.network_security_groups
+    @tags = { key: 'value' }
   end
 
   def test_create_or_update_network_security_group_success
@@ -23,7 +24,7 @@ class TestCreateOrUpdateNetworkSecurityGroup < Minitest::Test
       description: 'This is a test rule'
     }
     @network_security_groups.stub :begin_create_or_update, mocked_response do
-      assert_equal @service.create_or_update_network_security_group('fog-test-rg', 'fog-test-nsg', 'West US', [security_rule]), mocked_response
+      assert_equal @service.create_or_update_network_security_group('fog-test-rg', 'fog-test-nsg', 'West US', [security_rule], @tags), mocked_response
     end
   end
 
@@ -31,7 +32,7 @@ class TestCreateOrUpdateNetworkSecurityGroup < Minitest::Test
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @network_security_groups.stub :begin_create_or_update, response do
       assert_raises RuntimeError do
-        @service.create_or_update_network_security_group('fog-test-rg', 'fog-test-nsg', 'West US', [])
+        @service.create_or_update_network_security_group('fog-test-rg', 'fog-test-nsg', 'West US', [], @tags)
       end
     end
   end

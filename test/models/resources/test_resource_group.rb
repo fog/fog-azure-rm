@@ -23,7 +23,8 @@ class TestResourceGroup < Minitest::Test
     attributes = [
       :id,
       :name,
-      :location
+      :location,
+      :tags
     ]
     attributes.each do |attribute|
       assert_respond_to @resource_group, attribute

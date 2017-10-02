@@ -2,6 +2,7 @@
 
 **Added:**
 - Compute Service - Added support for custom OS disk size during VM creation
+- Compute Service - Added support to attach Managed Disk to VM
 - Added resource tagging support on creation
 
 **Removed:**

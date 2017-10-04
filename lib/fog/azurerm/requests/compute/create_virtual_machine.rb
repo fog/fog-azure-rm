@@ -85,7 +85,7 @@ module Fog
 
         def define_storage_profile(vm_name, storage_account_name, publisher, offer, sku, version, vhd_path, os_disk_caching, platform, resource_group, managed_disk_storage_type, os_disk_size)
           storage_profile = Azure::ARM::Compute::Models::StorageProfile.new
-          storage_profile.image_reference = image_reference(publisher, offer, sku, version)
+          storage_profile.image_reference = image_reference(publisher, offer, sku, version) if vhd_path.nil?
           os_disk = Azure::ARM::Compute::Models::OSDisk.new
 
           if managed_disk_storage_type.nil?  

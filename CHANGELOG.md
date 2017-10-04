@@ -1,3 +1,8 @@
+## 0.3.5 (Upcoming)
+
+**Fixed**
+- Compute Service - Fixed issue with creating VM with custom image
+
 ## 0.3.4
 
 **Added:**

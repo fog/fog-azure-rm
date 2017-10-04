@@ -94,7 +94,7 @@ begin
     disable_password_authentication: false,
     network_interface_card_ids: ["/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-CustomVM/providers/Microsoft.Network/networkInterfaces/NetInt"],
     platform: 'linux',
-    vhd_path: 'https://custimagestorage.blob.core.windows.net/newcustomvhd/trusty-server-cloudimg-amd64-disk1-zeeshan.vhd'
+    vhd_path: 'https://imagergdisks511.blob.core.windows.net/vhds/test20171003100743.vhd'
   )
   puts "Created custom image virtual machine: #{custom_image_virtual_machine.name}"
 

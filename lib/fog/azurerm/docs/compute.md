@@ -38,8 +38,6 @@ Create a new linux server
 **Info:**
 Attribute **network_interface_card_ids** is an array of NICs ids. The NIC id at index zero will become primary NIC of this server(virtual machine) by default.
 
-**Info:**
-When using **managed_disk_storage_type** you should not pass the **vhd_path** as the managed disk will be used for the OS disk. Also, data disks cannot be attached to a VM which uses managed disks for the OS disk.
 
 ```ruby
     azure_compute_service.servers.create(

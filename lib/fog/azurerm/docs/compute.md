@@ -33,19 +33,12 @@ azure_compute_service.servers.check_vm_exists(<Resource Group name>, <VM Name>)
 
 ## Create Server
 
-Create a new linux server
-
 **Info:**
 
-Attribute **network_interface_card_ids** is an array of NICs ids. The NIC id at index zero will become primary NIC of this server(virtual machine) by default.
+- Attribute **network_interface_card_ids** is an array of NICs ids. The NIC id at index zero will become primary NIC of this server(virtual machine) by default.
+- To create VM with managed OS disk, use the _managed_disk_storage_type_ argument
+- To create VM with unmanaged OS disk, use the _storage_account_name_ argument
 
-**Info:**
-
-To create VM with managed OS disk, use the _managed_disk_storage_type_ argument
-
-To create VM with unmanaged OS disk, use the _storage_account_name_ argument
-
-Either _managed_disk_storage_type_ or _storage_account_name_ is required
 
 ### Virtual Machine (Managed OS Disk)
 

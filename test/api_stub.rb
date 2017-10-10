@@ -1,6 +1,7 @@
 # Module for API Stub
 module ApiStub
   module Models
+    # Load test Compute models
     module Compute
       autoload :Server, File.expand_path('api_stub/models/compute/server', __dir__)
       autoload :AvailabilitySet, File.expand_path('api_stub/models/compute/availability_set', __dir__)
@@ -8,18 +9,21 @@ module ApiStub
       autoload :ManagedDisk, File.expand_path('api_stub/models/compute/managed_disk', __dir__)
     end
 
+    # Load test Resources models
     module Resources
       autoload :ResourceGroup, File.expand_path('api_stub/models/resources/resource_group', __dir__)
       autoload :Deployment, File.expand_path('api_stub/models/resources/deployment', __dir__)
       autoload :Resource, File.expand_path('api_stub/models/resources/resource', __dir__)
     end
 
+    # Load test Storage models
     module Storage
       autoload :StorageAccount, File.expand_path('api_stub/models/storage/storageaccount', __dir__)
       autoload :File, ::File.expand_path('api_stub/models/storage/file', __dir__)
       autoload :Directory, ::File.expand_path('api_stub/models/storage/directory', __dir__)
     end
 
+    # Load test Network models
     module Network
       autoload :PublicIp, File.expand_path('api_stub/models/network/public_ip', __dir__)
       autoload :Subnet, File.expand_path('api_stub/models/network/subnet', __dir__)
@@ -37,51 +41,61 @@ module ApiStub
       autoload :LocalNetworkGateway, File.expand_path('api_stub/models/network/local_network_gateway', __dir__)
     end
 
+    # Load test ApplicationGateway models
     module ApplicationGateway
       autoload :Gateway, File.expand_path('api_stub/models/application_gateway/gateway', __dir__)
     end
 
+    # Load test TrafficManager models
     module TrafficManager
       autoload :TrafficManagerEndPoint, File.expand_path('api_stub/models/traffic_manager/traffic_manager_end_point', __dir__)
       autoload :TrafficManagerProfile, File.expand_path('api_stub/models/traffic_manager/traffic_manager_profile', __dir__)
     end
 
+    # Load test DNS models
     module DNS
       autoload :Zone, File.expand_path('api_stub/models/dns/zone', __dir__)
       autoload :RecordSet, File.expand_path('api_stub/models/dns/record_set', __dir__)
     end
 
+    # Load test Sql models
     module Sql
       autoload :SqlServer, File.expand_path('api_stub/models/sql/sql_server', __dir__)
       autoload :SqlDatabase, File.expand_path('api_stub/models/sql/sql_database', __dir__)
       autoload :SqlFirewallRule, File.expand_path('api_stub/models/sql/sql_firewall_rule', __dir__)
     end
 
+    # Load test KeyVault models
     module KeyVault
       autoload :Vault, File.expand_path('api_stub/models/key_vault/vault', __dir__)
     end
   end
 
   module Requests
+    # Load test Compute requests
     module Compute
       autoload :AvailabilitySet, File.expand_path('api_stub/requests/compute/availability_set', __dir__)
       autoload :VirtualMachine, File.expand_path('api_stub/requests/compute/virtual_machine', __dir__)
       autoload :VirtualMachineExtension, File.expand_path('api_stub/requests/compute/virtual_machine_extension', __dir__)
       autoload :ManagedDisk, File.expand_path('api_stub/requests/compute/managed_disk', __dir__)
+      autoload :GeneralizedImage, File.expand_path('api_stub/requests/compute/generalized_image', __dir__)
     end
 
+    # Load test Resources requests
     module Resources
       autoload :ResourceGroup, File.expand_path('api_stub/requests/resources/resource_group', __dir__)
       autoload :Deployment, File.expand_path('api_stub/requests/resources/deployment', __dir__)
       autoload :AzureResource, File.expand_path('api_stub/requests/resources/resource', __dir__)
     end
 
+    # Load test Storage requests
     module Storage
       autoload :StorageAccount, File.expand_path('api_stub/requests/storage/storageaccount', __dir__)
       autoload :File, ::File.expand_path('api_stub/requests/storage/file', __dir__)
       autoload :Directory, ::File.expand_path('api_stub/requests/storage/directory', __dir__)
     end
 
+    # Load test Network requests
     module Network
       autoload :PublicIp, File.expand_path('api_stub/requests/network/public_ip', __dir__)
       autoload :Subnet, File.expand_path('api_stub/requests/network/subnet', __dir__)
@@ -99,26 +113,31 @@ module ApiStub
       autoload :LocalNetworkGateway, File.expand_path('api_stub/requests/network/local_network_gateway', __dir__)
     end
 
+    # Load test ApplicationGateway requests
     module ApplicationGateway
       autoload :Gateway, File.expand_path('api_stub/requests/application_gateway/gateway', __dir__)
     end
 
+    # Load test TrafficManager requests
     module TrafficManager
       autoload :TrafficManagerEndPoint, File.expand_path('api_stub/requests/traffic_manager/traffic_manager_endpoint', __dir__)
       autoload :TrafficManagerProfile, File.expand_path('api_stub/requests/traffic_manager/traffic_manager_profile', __dir__)
     end
 
+    # Load test DNS requests
     module DNS
       autoload :Zone, File.expand_path('api_stub/requests/dns/zone', __dir__)
       autoload :RecordSet, File.expand_path('api_stub/requests/dns/record_set', __dir__)
     end
 
+    # Load test Sql requests
     module Sql
       autoload :SqlServer, File.expand_path('api_stub/requests/sql/sql_server', __dir__)
       autoload :SqlDatabase, File.expand_path('api_stub/requests/sql/database', __dir__)
       autoload :FirewallRule, File.expand_path('api_stub/requests/sql/firewall_rule', __dir__)
     end
 
+    # Load test KeyVault requests
     module KeyVault
       autoload :Vault, File.expand_path('api_stub/requests/key_vault/vault', __dir__)
     end

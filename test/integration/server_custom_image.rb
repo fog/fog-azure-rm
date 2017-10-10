@@ -80,12 +80,12 @@ begin
   )
 
   network.network_interfaces.create(
-      name: 'NetInt2',
-      resource_group: 'TestRG-CustomVM',
-      location: LOCATION,
-      subnet_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-CustomVM/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/mysubnet",
-      ip_configuration_name: 'testIpConfiguration',
-      private_ip_allocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Dynamic
+    name: 'NetInt2',
+    resource_group: 'TestRG-CustomVM',
+    location: LOCATION,
+    subnet_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-CustomVM/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/mysubnet",
+    ip_configuration_name: 'testIpConfiguration',
+    private_ip_allocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Dynamic
   )
 
   ########################################################################################################################
@@ -103,7 +103,7 @@ begin
     disable_password_authentication: false,
     network_interface_card_ids: ["/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-CustomVM/providers/Microsoft.Network/networkInterfaces/NetInt"],
     platform: 'linux',
-    vhd_path: 'https://imagergdisks695.blob.core.windows.net/vhds/test-vm20171004153054.vhd?sv=2017-04-17&ss=b&srt=sco&sp=rwdlac&se=2017-10-31T00:11:36Z&st=2017-10-01T16:11:36Z&sip=0.0.0.0-255.255.255.255&spr=https,http&sig=l%2Bxd%2FQmAm6a7rGLMgdcnVXmNXAczYdaB4LqBsPH3xHI%3D',
+    vhd_path: 'https://imagergdisks695.blob.core.windows.net/vhds/test-vm20171004153054.vhd'
   )
   puts "Created custom image un-managed virtual machine: #{custom_image_virtual_machine.name}"
 
@@ -112,20 +112,20 @@ begin
   ########################################################################################################################
 
   custom_image_virtual_machine_managed = compute.servers.create(
-      name: 'TestVM-Managed',
-      location: LOCATION,
-      resource_group: 'TestRG-CustomVM',
-      vm_size: 'Basic_A0',
-      storage_account_name: storage_account_name,
-      username: 'testuser',
-      password: 'Confiz=123',
-      disable_password_authentication: false,
-      network_interface_card_ids: ["/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-CustomVM/providers/Microsoft.Network/networkInterfaces/NetInt2"],
-      platform: 'linux',
-      vhd_path: 'https://imagergdisks695.blob.core.windows.net/vhds/test-vm20171004153054.vhd?sv=2017-04-17&ss=b&srt=sco&sp=rwdlac&se=2017-10-31T00:11:36Z&st=2017-10-01T16:11:36Z&sip=0.0.0.0-255.255.255.255&spr=https,http&sig=l%2Bxd%2FQmAm6a7rGLMgdcnVXmNXAczYdaB4LqBsPH3xHI%3D',
-      managed_disk_storage_type: Azure::ARM::Compute::Models::StorageAccountTypes::StandardLRS
+    name: 'TestVM-Managed',
+    location: LOCATION,
+    resource_group: 'TestRG-CustomVM',
+    vm_size: 'Basic_A0',
+    storage_account_name: storage_account_name,
+    username: 'testuser',
+    password: 'Confiz=123',
+    disable_password_authentication: false,
+    network_interface_card_ids: ["/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-CustomVM/providers/Microsoft.Network/networkInterfaces/NetInt2"],
+    platform: 'linux',
+    vhd_path: 'https://imagergdisks695.blob.core.windows.net/vhds/test-vm20171004153054.vhd',
+    managed_disk_storage_type: Azure::ARM::Compute::Models::StorageAccountTypes::StandardLRS
   )
-  puts "Created custom image managed virtual machine: #{custom_image_virtual_machine.name}"
+  puts "Created custom image managed virtual machine: #{custom_image_virtual_machine_managed.name}"
 
   ########################################################################################################################
   ######################                            Get and Delete Server                           ######################
@@ -157,8 +157,7 @@ begin
 
   resource_group = rs.resource_groups.get('TestRG-CustomVM')
   resource_group.destroy
-rescue  Exception => e
-  raise(e)
+rescue
   puts 'Integration Test for custom image virtual machine is failing'
   resource_group.destroy unless resource_group.nil?
 end

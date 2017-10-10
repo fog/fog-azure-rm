@@ -63,7 +63,7 @@ module Fog
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
-          delete_generalized_image(vm_config[:resource_group],vm_config[:name])
+          delete_generalized_image(vm_config[:resource_group], vm_config[:name])
           Fog::Logger.debug "Virtual Machine #{vm_config[:name]} Created Successfully." unless async
           response
         end
@@ -85,12 +85,12 @@ module Fog
           image_reference
         end
 
-        def define_storage_profile(vm_name, storage_account_name, publisher, offer, sku, version, vhd_path, os_disk_caching, platform, resource_group, managed_disk_storage_type, os_disk_size,location)
+        def define_storage_profile(vm_name, storage_account_name, publisher, offer, sku, version, vhd_path, os_disk_caching, platform, resource_group, managed_disk_storage_type, os_disk_size, location)
           storage_profile = Azure::ARM::Compute::Models::StorageProfile.new
           storage_profile.image_reference = image_reference(publisher, offer, sku, version) if vhd_path.nil?
           os_disk = Azure::ARM::Compute::Models::OSDisk.new
 
-          if managed_disk_storage_type.nil?  
+          if managed_disk_storage_type.nil?
             vhd = Azure::ARM::Compute::Models::VirtualHardDisk.new
             vhd.uri = get_blob_endpoint(storage_account_name) + "/vhds/#{vm_name}_os_disk.vhd"
 
@@ -133,12 +133,12 @@ module Fog
           os_disk.create_option = Azure::ARM::Compute::Models::DiskCreateOptionTypes::FromImage
           os_disk.caching = unless os_disk_caching.nil?
                               case os_disk_caching
-                                when 'None'
-                                  Azure::ARM::Compute::Models::CachingTypes::None
-                                when 'ReadOnly'
-                                  Azure::ARM::Compute::Models::CachingTypes::ReadOnly
-                                when 'ReadWrite'
-                                  Azure::ARM::Compute::Models::CachingTypes::ReadWrite
+                              when 'None'
+                                Azure::ARM::Compute::Models::CachingTypes::None
+                              when 'ReadOnly'
+                                Azure::ARM::Compute::Models::CachingTypes::ReadOnly
+                              when 'ReadWrite'
+                                Azure::ARM::Compute::Models::CachingTypes::ReadWrite
                               end
                             end
           os_disk
@@ -154,10 +154,7 @@ module Fog
             new_time = current_time
             container_name = "customvhd#{new_time}"
             blob_name = "vhd_image#{new_time}.vhd"
-            storage_data.directories.create(
-                key: container_name
-            )
-
+            storage_data.directories.create(key: container_name)
             storage_data.copy_blob_from_uri(container_name, blob_name, vhd_path)
             until storage_data.get_blob_properties(container_name, blob_name).properties[:copy_status] == 'success'
               Fog::Logger.debug 'Waiting disk to ready'
@@ -212,7 +209,7 @@ module Fog
           network_interface_card_ids.each_with_index do |id, index|
             nic = Azure::ARM::Compute::Models::NetworkInterfaceReference .new
             nic.id = id
-            nic.primary = index == PRIMARY_NIC_INDEX ? true : false
+            nic.primary = index == PRIMARY_NIC_INDEX
             network_interface_cards << nic
           end
 

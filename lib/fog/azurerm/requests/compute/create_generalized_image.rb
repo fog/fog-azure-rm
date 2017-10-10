@@ -17,18 +17,24 @@ module Fog
           image_obj
         end
 
+        private
+
         def setup_image_params(image_config)
+          storage_profile_image = Azure::ARM::Compute::Models::ImageStorageProfile.new
+          storage_profile_image.os_disk = create_os_disk_image(image_config)
+          image = Azure::ARM::Compute::Models::Image.new
+          image.storage_profile = storage_profile_image
+          image.location = image_config[:location]
+          image
+        end
+
+        def create_os_disk_image(image_config)
           os_disk_image = Azure::ARM::Compute::Models::ImageOSDisk.new
           os_disk_image.os_type = image_config[:platform]
           os_disk_image.os_state = 'Generalized'
           os_disk_image.blob_uri = image_config[:new_vhd_path]
           os_disk_image.caching = Azure::ARM::Compute::Models::CachingTypes::ReadWrite
-          storage_profile_image = Azure::ARM::Compute::Models::ImageStorageProfile.new
-          storage_profile_image.os_disk = os_disk_image
-          image = Azure::ARM::Compute::Models::Image.new
-          image.storage_profile = storage_profile_image
-          image.location = image_config[:location]
-          image
+          os_disk_image
         end
       end
       # This class provides the mock implementation for unit tests.

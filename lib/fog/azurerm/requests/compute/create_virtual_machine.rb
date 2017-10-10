@@ -63,7 +63,9 @@ module Fog
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
-          delete_generalized_image(vm_config[:resource_group], vm_config[:name])
+
+          is_managed_custom_vm = !vm_config[:vhd_path].nil? && !vm_config[:managed_disk_storage_type].nil?
+          delete_generalized_image(vm_config[:resource_group], vm_config[:name]) if is_managed_custom_vm
           Fog::Logger.debug "Virtual Machine #{vm_config[:name]} Created Successfully." unless async
           response
         end
@@ -90,12 +92,13 @@ module Fog
           storage_profile.image_reference = image_reference(publisher, offer, sku, version) if vhd_path.nil?
           os_disk = Azure::ARM::Compute::Models::OSDisk.new
 
+          new_vhd_path = copy_vhd_to_storage_account(resource_group, storage_account_name, vhd_path) unless vhd_path.nil?
+
           if managed_disk_storage_type.nil?
             vhd = Azure::ARM::Compute::Models::VirtualHardDisk.new
             vhd.uri = get_blob_endpoint(storage_account_name) + "/vhds/#{vm_name}_os_disk.vhd"
 
             unless vhd_path.nil?
-              new_vhd_path = copy_vhd_to_storage_account(resource_group, storage_account_name, vhd_path)
               img_vhd = Azure::ARM::Compute::Models::VirtualHardDisk.new
               img_vhd.uri = new_vhd_path
               os_disk.image = img_vhd
@@ -103,16 +106,8 @@ module Fog
 
             os_disk.vhd = vhd
           else
-
             unless vhd_path.nil?
-              new_vhd_path = copy_vhd_to_storage_account(resource_group, storage_account_name, vhd_path)
-              image_config = {}
-              image_config[:location] = location
-              image_config[:new_vhd_path] = new_vhd_path
-              image_config[:platform] = platform
-              image_config[:resource_group] = resource_group
-              image_config[:vm_name] = vm_name
-              image_obj = create_generalized_image(image_config)
+              image_obj = create_generalized_image(image_config_params(location, new_vhd_path, platform, resource_group, vm_name))
               storage_profile.image_reference = Azure::ARM::Compute::Models::ImageReference.new
               storage_profile.image_reference.id = image_obj.id
             end
@@ -124,6 +119,17 @@ module Fog
 
           storage_profile.os_disk = configure_os_disk_object(os_disk, os_disk_caching, os_disk_size, platform, vm_name)
           storage_profile
+        end
+
+        def image_config_params(location, new_vhd_path, platform, resource_group, vm_name)
+          image_config = {
+            location: location,
+            new_vhd_path: new_vhd_path,
+            platform: platform,
+            resource_group: resource_group,
+            vm_name: vm_name
+          }
+          image_config
         end
 
         def configure_os_disk_object(os_disk, os_disk_caching, os_disk_size, platform, vm_name)
@@ -173,7 +179,6 @@ module Fog
           windows_config = Azure::ARM::Compute::Models::WindowsConfiguration.new
           windows_config.provision_vmagent = provision_vm_agent
           windows_config.enable_automatic_updates = enable_automatic_updates
-
           os_profile.windows_configuration = windows_config
           os_profile.computer_name = vm_name
           os_profile.admin_username = username

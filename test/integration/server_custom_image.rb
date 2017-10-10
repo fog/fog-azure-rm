@@ -103,7 +103,7 @@ begin
     disable_password_authentication: false,
     network_interface_card_ids: ["/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-CustomVM/providers/Microsoft.Network/networkInterfaces/NetInt"],
     platform: 'linux',
-    vhd_path: 'https://imagergdisks695.blob.core.windows.net/vhds/test-vm20171004153054.vhd'
+    vhd_path: 'https://myblob.blob.core.windows.net/vhds/myvhd.vhd'
   )
   puts "Created custom image un-managed virtual machine: #{custom_image_virtual_machine.name}"
 
@@ -122,7 +122,7 @@ begin
     disable_password_authentication: false,
     network_interface_card_ids: ["/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-CustomVM/providers/Microsoft.Network/networkInterfaces/NetInt2"],
     platform: 'linux',
-    vhd_path: 'https://imagergdisks695.blob.core.windows.net/vhds/test-vm20171004153054.vhd',
+    vhd_path: 'https://myblob.blob.core.windows.net/vhds/myvhd.vhd',
     managed_disk_storage_type: Azure::ARM::Compute::Models::StorageAccountTypes::StandardLRS
   )
   puts "Created custom image managed virtual machine: #{custom_image_virtual_machine_managed.name}"

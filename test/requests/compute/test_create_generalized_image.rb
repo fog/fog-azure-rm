@@ -7,13 +7,7 @@ class TestCreateGeneralizedImage < Minitest::Test
     compute_client = @service.instance_variable_get(:@compute_mgmt_client)
     @image = compute_client.images
     @response = ApiStub::Requests::Compute::GeneralizedImage.create_generalized_image(compute_client)
-    @input_params = {
-      resource_group: 'fog-test-rg',
-      vm_name: 'fog-test-server',
-      location: 'westus',
-      platform: 'Linux',
-      new_vhd_path: 'https://mystorageaccount.blob.core.windows.net/osimages/osimage.vhd'
-    }
+    @input_params = ApiStub::Requests::Compute::GeneralizedImage.generalized_image_params
   end
 
   def test_create_generalized_image_success

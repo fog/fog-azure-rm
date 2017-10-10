@@ -36,10 +36,16 @@ azure_compute_service.servers.check_vm_exists(<Resource Group name>, <VM Name>)
 Create a new linux server
 
 **Info:**
+
 Attribute **network_interface_card_ids** is an array of NICs ids. The NIC id at index zero will become primary NIC of this server(virtual machine) by default.
 
 **Info:**
-When using **managed_disk_storage_type** you should not pass the **vhd_path** as the managed disk will be used for the OS disk. Also, data disks cannot be attached to a VM which uses managed disks for the OS disk.
+
+To create VM with managed OS disk, use the _managed_disk_storage_type_ argument
+
+To create VM with unmanaged OS disk, use the _storage_account_name_ argument
+
+Either _managed_disk_storage_type_ or _storage_account_name_ is required
 
 ```ruby
     azure_compute_service.servers.create(
@@ -47,7 +53,7 @@ When using **managed_disk_storage_type** you should not pass the **vhd_path** as
         location: 'West US',
         resource_group: '<Resource Group Name>',
         vm_size: 'Basic_A0',
-        storage_account_name: '<Storage Account Name>',
+        storage_account_name: '<Storage Account Name>',    # Optional if managed_disk_storage_type is passed
         username: '<Username for VM>',
         password: '<Password for VM>',             # Optional, if 'platform' partameter is 'Linux'.
         disable_password_authentication: false,
@@ -61,7 +67,7 @@ When using **managed_disk_storage_type** you should not pass the **vhd_path** as
         vhd_path: '<Path of VHD>',                 # Optional, if you want to create the VM from a custom image.
         custom_data: 'echo customData',            # Optional, if you want to add custom data in this VM.
         os_disk_caching: Fog::ARM::Compute::Models::CachingTypes::None, # Optional, can be one of None, ReadOnly, ReadWrite
-        managed_disk_storage_type: Azure::ARM::Compute::Models::StorageAccountTypes::StandardLRS, # Optional, can be StandardLRS or PremiumLRS
+        managed_disk_storage_type: Azure::ARM::Compute::Models::StorageAccountTypes::StandardLRS, # Optional if storage_account_name is passed, can be StandardLRS or PremiumLRS
         os_disk_size: <Disk Size>                  # Optional, size of the os disk in GB (upto 1023)
     )
 ```

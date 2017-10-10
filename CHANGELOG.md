@@ -1,3 +1,11 @@
+## 0.3.5
+
+**Added:**
+- Compute Service - Added platform update domain and platform fault domain for server
+
+**Changed:**
+- Compute Service - Changed required arguments for server create method
+
 ## 0.3.4
 
 **Added:**

@@ -47,13 +47,14 @@ To create VM with unmanaged OS disk, use the _storage_account_name_ argument
 
 Either _managed_disk_storage_type_ or _storage_account_name_ is required
 
+### Virtual Machine (Managed OS Disk)
+
 ```ruby
     azure_compute_service.servers.create(
         name: '<VM Name>',
         location: 'West US',
         resource_group: '<Resource Group Name>',
         vm_size: 'Basic_A0',
-        storage_account_name: '<Storage Account Name>',    # Optional if managed_disk_storage_type is passed
         username: '<Username for VM>',
         password: '<Password for VM>',             # Optional, if 'platform' partameter is 'Linux'.
         disable_password_authentication: false,
@@ -72,7 +73,7 @@ Either _managed_disk_storage_type_ or _storage_account_name_ is required
     )
 ```
 
-Create a new windows server
+### Virtual Machine (Unmanaged OS Disk)
 
 ```ruby
     azure_compute_service.servers.create(
@@ -93,7 +94,6 @@ Create a new windows server
         platform: 'Windows',
         vhd_path: '<Path of VHD>',                       # Optional, if you want to create the VM from a custom image.
         custom_data: 'echo customData',                  # Optional, if you want to add custom data in this VM.
-        managed_disk_storage_type: Azure::ARM::Compute::Models::StorageAccountTypes::StandardLRS, # Optional, can be StandardLRS or PremiumLRS
         os_disk_size: <Disk Size>                        # Optional, size of the os disk in GB (upto 1023)
     )
 ```

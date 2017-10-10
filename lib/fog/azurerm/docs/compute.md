@@ -42,6 +42,8 @@ azure_compute_service.servers.check_vm_exists(<Resource Group name>, <VM Name>)
 
 ### Virtual Machine (Managed OS Disk)
 
+### Virtual Machine (Managed OS Disk)
+
 ```ruby
     azure_compute_service.servers.create(
         name: '<VM Name>',

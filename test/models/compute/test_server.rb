@@ -57,7 +57,9 @@ class TestServer < Minitest::Test
       :availability_set_id,
       :managed_disk_storage_type,
       :os_disk_size,
-      :tags
+      :tags,
+      :platform_update_domain,
+      :platform_fault_domain
     ]
     attributes.each do |attribute|
       assert_respond_to @server, attribute

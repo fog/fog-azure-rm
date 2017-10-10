@@ -1,10 +1,13 @@
-## 0.3.5
+## 0.3.5 (Upcoming)
 
 **Added:**
 - Compute Service - Added platform update domain and platform fault domain for server
 
 **Changed:**
 - Compute Service - Changed required arguments for server create method
+
+**Fixed**
+- Compute Service - Fixed issue with creating VM with custom image
 
 ## 0.3.4
 

@@ -79,6 +79,15 @@ begin
     private_ip_allocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Dynamic
   )
 
+  network.network_interfaces.create(
+    name: 'NetInt2',
+    resource_group: 'TestRG-CustomVM',
+    location: LOCATION,
+    subnet_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-CustomVM/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/mysubnet",
+    ip_configuration_name: 'testIpConfiguration',
+    private_ip_allocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Dynamic
+  )
+
   ########################################################################################################################
   ######################                                Create Server                               ######################
   ########################################################################################################################
@@ -94,23 +103,50 @@ begin
     disable_password_authentication: false,
     network_interface_card_ids: ["/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-CustomVM/providers/Microsoft.Network/networkInterfaces/NetInt"],
     platform: 'linux',
-    vhd_path: 'https://custimagestorage.blob.core.windows.net/newcustomvhd/trusty-server-cloudimg-amd64-disk1-zeeshan.vhd'
+    vhd_path: 'https://myblob.blob.core.windows.net/vhds/myvhd.vhd'
   )
-  puts "Created custom image virtual machine: #{custom_image_virtual_machine.name}"
+  puts "Created custom image un-managed virtual machine: #{custom_image_virtual_machine.name}"
+
+  ########################################################################################################################
+  #################                                Create Managed Server                               ###################
+  ########################################################################################################################
+
+  custom_image_virtual_machine_managed = compute.servers.create(
+    name: 'TestVM-Managed',
+    location: LOCATION,
+    resource_group: 'TestRG-CustomVM',
+    vm_size: 'Basic_A0',
+    storage_account_name: storage_account_name,
+    username: 'testuser',
+    password: 'Confiz=123',
+    disable_password_authentication: false,
+    network_interface_card_ids: ["/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-CustomVM/providers/Microsoft.Network/networkInterfaces/NetInt2"],
+    platform: 'linux',
+    vhd_path: 'https://myblob.blob.core.windows.net/vhds/myvhd.vhd',
+    managed_disk_storage_type: Azure::ARM::Compute::Models::StorageAccountTypes::StandardLRS
+  )
+  puts "Created custom image managed virtual machine: #{custom_image_virtual_machine_managed.name}"
 
   ########################################################################################################################
   ######################                            Get and Delete Server                           ######################
   ########################################################################################################################
 
   custom_image_virtual_machine = compute.servers.get('TestRG-CustomVM', 'TestVM')
-  puts "Get custom image virtual machine: #{custom_image_virtual_machine.name}"
-  puts "Deleted custom image virtual machine: #{custom_image_virtual_machine.destroy}"
+  puts "Get custom image un-managed virtual machine: #{custom_image_virtual_machine.name}"
+  puts "Deleted custom image un-managed virtual machine: #{custom_image_virtual_machine.destroy}"
+
+  custom_image_virtual_machine_managed = compute.servers.get('TestRG-CustomVM', 'TestVM-Managed')
+  puts "Get custom image managed virtual machine: #{custom_image_virtual_machine_managed.name}"
+  puts "Deleted custom image managed virtual machine: #{custom_image_virtual_machine_managed.destroy}"
 
   ########################################################################################################################
   ######################                                   CleanUp                                  ######################
   ########################################################################################################################
 
   nic = network.network_interfaces.get('TestRG-CustomVM', 'NetInt')
+  nic.destroy
+
+  nic = network.network_interfaces.get('TestRG-CustomVM', 'NetInt2')
   nic.destroy
 
   vnet = network.virtual_networks.get('TestRG-CustomVM', 'testVnet')

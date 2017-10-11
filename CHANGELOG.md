@@ -2,7 +2,7 @@
 
 **Added:**
 - Compute Service - Added platform update domain and platform fault domain propertied in server model
-- Compute Service - Added support to custom image for managed VM
+- Compute Service - Added custom image support for managed VM
 
 **Changed:**
 - Compute Service - Changed required arguments for server create method

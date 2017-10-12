@@ -1,4 +1,11 @@
-## 0.3.5 (Upcoming)
+## 0.3.5
+
+**Added:**
+- Compute Service - Added platform update domain and platform fault domain propertied in server model
+- Compute Service - Added custom image support for managed VM
+
+**Changed:**
+- Compute Service - Changed required arguments for server create method
 
 **Fixed**
 - Compute Service - Fixed issue with creating VM with custom image

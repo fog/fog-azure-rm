@@ -33,6 +33,8 @@ module Fog
         attribute :managed_disk_storage_type
         attribute :os_disk_size
         attribute :tags
+        attribute :platform_update_domain
+        attribute :platform_fault_domain
 
         def self.parse(vm)
           hash = {}
@@ -80,13 +82,19 @@ module Fog
           hash['availability_set_id'] = vm.availability_set.id unless vm.availability_set.nil?
           hash['tags'] = vm.tags
 
+          unless vm.instance_view.nil?
+            hash['platform_update_domain'] = vm.instance_view.platform_update_domain
+            hash['platform_fault_domain'] = vm.instance_view.platform_fault_domain
+          end
+
           hash
         end
 
         def save(async = false)
-          requires :name, :location, :resource_group, :vm_size, :storage_account_name,
-                   :username, :network_interface_card_ids
+          requires :name, :location, :resource_group, :vm_size, :username, :network_interface_card_ids
           requires :publisher, :offer, :sku, :version if vhd_path.nil? && managed_disk_storage_type.nil?
+          requires :storage_account_name if managed_disk_storage_type.nil?
+          requires :managed_disk_storage_type if storage_account_name.nil?
 
           if platform_is_linux?(platform)
             requires :disable_password_authentication

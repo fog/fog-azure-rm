@@ -105,7 +105,8 @@ module Fog
           ssh_key_path = "/home/#{username}/.ssh/authorized_keys" unless ssh_key_data.nil?
 
           if async
-            service.create_virtual_machine(virtual_machine_params(ssh_key_path), true)
+            response = service.create_virtual_machine(virtual_machine_params(ssh_key_path), true)
+            create_fog_async_response(response,true)
           else
             vm = service.create_virtual_machine(virtual_machine_params(ssh_key_path))
             merge_attributes(Fog::Compute::AzureRM::Server.parse(vm))
@@ -182,9 +183,9 @@ module Fog
           platform.strip.casecmp(PLATFORM_LINUX).zero?
         end
 
-        def create_fog_async_response(response)
+        def create_fog_async_response(response,flag = false)
           server = Fog::Compute::AzureRM::Server.new(service: service)
-          Fog::AzureRM::AsyncResponse.new(server, response)
+          Fog::AzureRM::AsyncResponse.new(server, response, flag)
         end
 
         def virtual_machine_params(ssh_key_path)

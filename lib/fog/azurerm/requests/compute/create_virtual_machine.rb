@@ -54,6 +54,7 @@ module Fog
           virtual_machine.network_profile = define_network_profile(vm_config[:network_interface_card_ids])
           virtual_machine.location = vm_config[:location]
           virtual_machine.tags = vm_config[:tags]
+          puts virtual_machine.inspect
           begin
             response = if async
                          @compute_mgmt_client.virtual_machines.create_or_update_async(vm_config[:resource_group], vm_config[:name], virtual_machine)
@@ -63,9 +64,12 @@ module Fog
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
-
-          is_managed_custom_vm = !vm_config[:vhd_path].nil? && !vm_config[:managed_disk_storage_type].nil?
-          delete_generalized_image(vm_config[:resource_group], vm_config[:name]) if is_managed_custom_vm
+          puts async.inspect
+          puts vm_config[:storage_account_name]
+          unless async
+            is_managed_custom_vm = !vm_config[:vhd_path].nil? && !vm_config[:managed_disk_storage_type].nil?
+            delete_generalized_image(vm_config[:resource_group], vm_config[:name]) if is_managed_custom_vm
+          end
           Fog::Logger.debug "Virtual Machine #{vm_config[:name]} Created Successfully." unless async
           response
         end
@@ -92,7 +96,7 @@ module Fog
           storage_profile.image_reference = image_reference(publisher, offer, sku, version) if vhd_path.nil?
           os_disk = Azure::ARM::Compute::Models::OSDisk.new
 
-          new_vhd_path = copy_vhd_to_storage_account(resource_group, storage_account_name, vhd_path) unless vhd_path.nil?
+          new_vhd_path = copy_vhd_to_storage_account(resource_group, storage_account_name, vhd_path, location) unless vhd_path.nil?
 
           if managed_disk_storage_type.nil?
             vhd = Azure::ARM::Compute::Models::VirtualHardDisk.new
@@ -116,7 +120,6 @@ module Fog
             managed_disk.storage_account_type = managed_disk_storage_type
             os_disk.managed_disk = managed_disk
           end
-
           storage_profile.os_disk = configure_os_disk_object(os_disk, os_disk_caching, os_disk_size, platform, vm_name)
           storage_profile
         end
@@ -129,7 +132,6 @@ module Fog
             resource_group: resource_group,
             vm_name: vm_name
           }
-          image_config
         end
 
         def configure_os_disk_object(os_disk, os_disk_caching, os_disk_size, platform, vm_name)
@@ -150,13 +152,25 @@ module Fog
           os_disk
         end
 
-        def copy_vhd_to_storage_account(resource_group, storage_account_name, vhd_path)
+        def copy_vhd_to_storage_account(resource_group, storage_account_name, vhd_path, location)
           # Copy if VHD does not exist belongs to same storage account.
           vhd_storage_account = (vhd_path.split('/')[2]).split('.')[0]
           if storage_account_name != vhd_storage_account
-            storage_account = @storage_service.storage_accounts.get(resource_group, storage_account_name)
+            if storage_account_name.nil?
+              new_time = current_time
+              storage_account_name = "sa#{new_time}"
+              storage_account = @storage_service.storage_accounts.create( 
+                name: storage_account_name,
+                location: location,
+                resource_group: resource_group,
+                account_type: 'Standard',
+                replication: 'LRS',
+                tags: {generalized_image: 'delete'})
+            else
+              storage_account = @storage_service.storage_accounts.get(resource_group, storage_account_name)
+            end
             access_key = storage_account.get_access_keys.first.value
-            storage_data = Fog::Storage::AzureRM.new(provider: 'AzureRM', azure_storage_account_name: storage_account_name, azure_storage_access_key: access_key)
+            storage_data = Fog::Storage::AzureRM.new(azure_storage_account_name: storage_account_name, azure_storage_access_key: access_key)
             new_time = current_time
             container_name = "customvhd#{new_time}"
             blob_name = "vhd_image#{new_time}.vhd"
@@ -171,6 +185,7 @@ module Fog
           else
             new_vhd_path = vhd_path
           end
+          puts new_vhd_path.inspect
           new_vhd_path
         end
 

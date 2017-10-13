@@ -178,7 +178,7 @@ module Fog
 
         def delete_extra_resources(fog_model)
           is_managed_custom_vm = !fog_model.vhd_path.nil? && !fog_model.managed_disk_storage_type.nil?
-          delete_generalized_image(fog_model.resource_group, fog_model.name) if is_managed_custom_vm
+          service.delete_generalized_image(fog_model.resource_group, fog_model.name) if is_managed_custom_vm
           delete_storage_account_or_container(fog_model.resource_group, fog_model.storage_account_name, fog_model.name) if is_managed_custom_vm
         end
 

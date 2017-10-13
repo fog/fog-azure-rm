@@ -153,46 +153,6 @@ module Fog
           os_disk
         end
 
-        def copy_vhd_to_storage_account(resource_group, storage_account_name, vhd_path, location, vm_name)
-          # Copy if VHD does not exist belongs to same storage account.
-          vhd_storage_account = (vhd_path.split('/')[2]).split('.')[0]
-          if storage_account_name != vhd_storage_account
-            if storage_account_name.nil?
-              new_time = current_time
-              storage_account_name = "sa#{new_time}"
-              storage_account = @storage_service.storage_accounts.create(
-                name: storage_account_name,
-                location: location,
-                resource_group: resource_group,
-                account_type: 'Standard',
-                replication: 'LRS',
-                tags:
-                {
-                  generalized_image: 'delete'
-                }
-              )
-            else
-              storage_account = @storage_service.storage_accounts.get(resource_group, storage_account_name)
-            end
-            access_key = storage_account.get_access_keys.first.value
-            storage_data = Fog::Storage::AzureRM.new(azure_storage_account_name: storage_account_name, azure_storage_access_key: access_key)
-            new_time = current_time
-            container_name = "customvhd-#{vm_name.downcase}-os-image"
-            blob_name = "vhd_image#{new_time}.vhd"
-            storage_data.directories.create(key: container_name)
-            storage_data.copy_blob_from_uri(container_name, blob_name, vhd_path)
-            until storage_data.get_blob_properties(container_name, blob_name).properties[:copy_status] == 'success'
-              Fog::Logger.debug 'Waiting disk to ready'
-              sleep(10)
-            end
-            new_vhd_path = get_blob_endpoint(storage_account_name) + "/#{container_name}/#{blob_name}"
-            Fog::Logger.debug "Path:#{new_vhd_path}. | Copy done"
-          else
-            new_vhd_path = vhd_path
-          end
-          new_vhd_path
-        end
-
         def define_windows_os_profile(vm_name, username, password, provision_vm_agent, enable_automatic_updates, encoded_data)
           os_profile = Azure::ARM::Compute::Models::OSProfile.new
           windows_config = Azure::ARM::Compute::Models::WindowsConfiguration.new
@@ -226,6 +186,53 @@ module Fog
           os_profile.admin_password = password
           os_profile.custom_data = encoded_data
           os_profile
+        end
+
+        def copy_vhd_to_storage_account(resource_group, storage_account_name, vhd_path, location, vm_name)
+          # Copy if VHD does not exist belongs to same storage account.
+          vhd_storage_account = (vhd_path.split('/')[2]).split('.')[0]
+          if storage_account_name != vhd_storage_account
+            if storage_account_name.nil?
+              new_time = current_time
+              storage_account_name = "sa#{new_time}"
+              storage_account = @storage_service.storage_accounts.create(
+                storage_account_config_params(location, resource_group, storage_account_name)
+              )
+            else
+              storage_account = @storage_service.storage_accounts.get(resource_group, storage_account_name)
+            end
+            access_key = storage_account.get_access_keys.first.value
+            storage_data = Fog::Storage::AzureRM.new(azure_storage_account_name: storage_account_name, azure_storage_access_key: access_key)
+            new_time = current_time
+            container_name = "customvhd-#{vm_name.downcase}-os-image"
+            blob_name = "vhd_image#{new_time}.vhd"
+            storage_data.directories.create(key: container_name)
+            storage_data.copy_blob_from_uri(container_name, blob_name, vhd_path)
+            until storage_data.get_blob_properties(container_name, blob_name).properties[:copy_status] == 'success'
+              Fog::Logger.debug 'Waiting disk to ready'
+              sleep(10)
+            end
+            new_vhd_path = get_blob_endpoint(storage_account_name) + "/#{container_name}/#{blob_name}"
+            Fog::Logger.debug "Path:#{new_vhd_path}. | Copy done"
+          else
+            new_vhd_path = vhd_path
+          end
+          new_vhd_path
+        end
+
+        def storage_account_config_params(location, resource_group, storage_account_name)
+          storage_account_params = {
+            name: storage_account_name,
+            location: location,
+            resource_group: resource_group,
+            account_type: 'Standard',
+            replication: 'LRS',
+            tags:
+                {
+                  generalized_image: 'delete'
+                }
+          }
+          storage_account_params
         end
 
         def define_network_profile(network_interface_card_ids)

@@ -105,8 +105,7 @@ module Fog
           ssh_key_path = "/home/#{username}/.ssh/authorized_keys" unless ssh_key_data.nil?
 
           if async
-            response = service.create_virtual_machine(virtual_machine_params(ssh_key_path), true)
-            create_fog_async_response(response,true)
+            service.create_virtual_machine(virtual_machine_params(ssh_key_path), true)
           else
             vm = service.create_virtual_machine(virtual_machine_params(ssh_key_path))
             merge_attributes(Fog::Compute::AzureRM::Server.parse(vm))
@@ -177,13 +176,41 @@ module Fog
           async ? create_fog_async_response(response) : merge_attributes(Fog::Compute::AzureRM::Server.parse(response))
         end
 
+        def delete_extra_resources(fog_model)
+          is_managed_custom_vm = !fog_model.vhd_path.nil? && !fog_model.managed_disk_storage_type.nil?
+          delete_generalized_image(fog_model.resource_group, fog_model.name) if is_managed_custom_vm
+          delete_storage_account_or_container(fog_model.resource_group, fog_model.storage_account_name, fog_model.name) if is_managed_custom_vm
+        end
+
+        def delete_storage_account_or_container(resource_group, storage_account_name, vm_name)
+          delete_storage_account(resource_group) if storage_account_name.nil?
+          delete_storage_container(resource_group, storage_account_name, vm_name) unless storage_account_name.nil?
+        end
+
+        def delete_storage_container(resource_group, storage_account_name, vm_name)
+          @storage_service = service.instance_variable_get(:@storage_service)
+          storage_account = @storage_service.storage_accounts.get(resource_group, storage_account_name)
+          access_key = storage_account.get_access_keys.first.value
+          storage_data = Fog::Storage::AzureRM.new(azure_storage_account_name: storage_account_name, azure_storage_access_key: access_key)
+          container_name = "customvhd-#{vm_name.downcase}-os-image"
+          storage_data.directories.destroy(container_name)
+        end
+
+        def delete_storage_account(resource_group)
+          @storage_service = service.instance_variable_get(:@storage_service)
+          storage_accounts = @storage_service.storage_accounts(resource_group: resource_group)
+          storage_accounts.each do |account|
+            account.destroy if account.tags['generalized_image'].eql? 'delete'
+          end
+        end
+
         private
 
         def platform_is_linux?(platform)
           platform.strip.casecmp(PLATFORM_LINUX).zero?
         end
 
-        def create_fog_async_response(response,flag = false)
+        def create_fog_async_response(response, flag = false)
           server = Fog::Compute::AzureRM::Server.new(service: service)
           Fog::AzureRM::AsyncResponse.new(server, response, flag)
         end

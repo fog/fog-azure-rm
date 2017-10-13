@@ -2,22 +2,17 @@ module Fog
   module AzureRM
     # class for Async Response
     class AsyncResponse
-      def initialize(model, promise, flag = false)
+      def initialize(model, promise, service = nil, delete_extra_resource = false)
         @fog_model = model
         @promise = promise
-        @flag = flag
+        @delete_extra_resource = delete_extra_resource
+        @service = service
       end
 
       def value
-        puts @promise.value.env.inspect
-        puts @fog_model.inspect
-        puts @flag.inspect
-        response = @promise.value.env.body
+        response = @promise.value.body
         @fog_model.merge_attributes(@fog_model.class.parse(response))
-        if @flag
-          is_managed_custom_vm = !@fog_model.vhd_path.nil? && !@fog_model.managed_disk_storage_type.nil?
-          delete_generalized_image(@fog_model.resource_group, @fog_model.name) if is_managed_custom_vm
-        end
+        @service.delete_extra_resources(@fog_model) if @delete_extra_resource
         @fog_model
       end
 

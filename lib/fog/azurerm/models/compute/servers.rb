@@ -19,7 +19,7 @@ module Fog
         def create_async(attributes = {})
           server = new(attributes)
           async_response = server.save(true)
-          Fog::AzureRM::AsyncResponse.new(server, async_response, true)
+          Fog::AzureRM::AsyncResponse.new(server, async_response, service, true)
         end
 
         def get(resource_group_name, virtual_machine_name, async = false)

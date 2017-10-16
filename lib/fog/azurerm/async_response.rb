@@ -11,7 +11,7 @@ module Fog
       def value
         response = @promise.value.body
         @fog_model.merge_attributes(@fog_model.class.parse(response))
-        @fog_model.delete_extra_resources(@fog_model) if @delete_extra_resource
+        @fog_model.delete_extra_resources if @delete_extra_resource
         @fog_model
       end
 

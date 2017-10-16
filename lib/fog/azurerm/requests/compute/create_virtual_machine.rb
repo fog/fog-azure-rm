@@ -125,14 +125,13 @@ module Fog
         end
 
         def image_config_params(location, new_vhd_path, platform, resource_group, vm_name)
-          image_config = {
+          {
             location: location,
             new_vhd_path: new_vhd_path,
             platform: platform,
             resource_group: resource_group,
             vm_name: vm_name
           }
-          image_config
         end
 
         def configure_os_disk_object(os_disk, os_disk_caching, os_disk_size, platform, vm_name)
@@ -221,18 +220,17 @@ module Fog
         end
 
         def storage_account_config_params(location, resource_group, storage_account_name)
-          storage_account_params = {
+          {
             name: storage_account_name,
             location: location,
             resource_group: resource_group,
             account_type: 'Standard',
             replication: 'LRS',
             tags:
-                {
-                  generalized_image: 'delete'
-                }
+            {
+              GENERALIZED_IMAGE_TAG_KEY => GENERALIZED_IMAGE_TAG_VALUE
+            }
           }
-          storage_account_params
         end
 
         def define_network_profile(network_interface_card_ids)
@@ -255,18 +253,12 @@ module Fog
         end
 
         def delete_storage_container(resource_group, storage_account_name, vm_name)
-          storage_account = @storage_service.storage_accounts.get(resource_group, storage_account_name)
-          access_key = storage_account.get_access_keys.first.value
-          storage_data = Fog::Storage::AzureRM.new(azure_storage_account_name: storage_account_name, azure_storage_access_key: access_key)
-          container_name = "customvhd-#{vm_name.downcase}-os-image"
-          storage_data.directories.destroy(container_name)
+          access_key = @storage_service.storage_accounts.get_storage_account_accesss_key(resource_group, storage_account_name)
+          @storage_service.directories.delete_temporary_storage_container(storage_account_name, access_key, vm_name)
         end
 
         def delete_storage_account(resource_group)
-          storage_accounts = @storage_service.storage_accounts(resource_group: resource_group)
-          storage_accounts.each do |account|
-            account.destroy if account.tags['generalized_image'].eql? 'delete'
-          end
+          @storage_service.storage_accounts.delete_storage_account_from_tag(resource_group, GENERALIZED_IMAGE_TAG_KEY, GENERALIZED_IMAGE_TAG_VALUE)
         end
       end
       # This class provides the mock implementation for unit tests.

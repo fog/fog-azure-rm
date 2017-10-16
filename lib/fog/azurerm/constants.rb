@@ -61,3 +61,7 @@ HASH_OF_4MB_EMPTY_CONTENT = 'b5cfa9d6c8febd618f91ac2843d50a1c'.freeze
 REST_CLIENT_API_VERSION = %w(2014-04-01-preview 2016-05-01).freeze
 AS_SKU_CLASSIC = 'Classic'.freeze
 AS_SKU_ALIGNED = 'Aligned'.freeze
+
+# The tag key and tag value for creating a generalized image temporary storage account
+GENERALIZED_IMAGE_TAG_KEY = 'generalized_image'.freeze
+GENERALIZED_IMAGE_TAG_VALUE = 'delete'.freeze

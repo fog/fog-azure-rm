@@ -61,6 +61,12 @@ module Fog
           raise error
         end
 
+        def delete_temporary_storage_container(storage_account_name, access_key, vm_name)
+          storage_data = Fog::Storage::AzureRM.new(azure_storage_account_name: storage_account_name, azure_storage_access_key: access_key)
+          container_name = "customvhd-#{vm_name.downcase}-os-image"
+          storage_data.delete_container(container_name)
+        end
+
         def check_container_exists(name)
           service.check_container_exists(name)
         end

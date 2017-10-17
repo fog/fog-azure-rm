@@ -114,7 +114,7 @@ begin
     disable_password_authentication: false,
     network_interface_card_ids: ["/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/#{rg_name}/providers/Microsoft.Network/networkInterfaces/NetInt"],
     platform: 'linux',
-    vhd_path: 'https://myblob.blob.core.windows.net/vhds/myvhd.vhd',
+    vhd_path: 'https://myblob.blob.core.windows.net/vhds/myvhd.vhd'
   )
 
   puts "Created custom image un-managed virtual machine: #{custom_image_virtual_machine.name}"

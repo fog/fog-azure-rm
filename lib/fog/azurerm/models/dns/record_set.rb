@@ -22,6 +22,7 @@ module Fog
           hash['zone_name'] = get_record_set_from_id(recordset.id)
           hash['type'] = recordset.type
           type = get_type_from_recordset_type(recordset.type)
+
           hash['records'] = []
           if type == 'A'
             record_entries = recordset.arecords
@@ -31,10 +32,25 @@ module Fog
           end
           if type == 'CNAME'
             record_entries = recordset.cname_record
-            hash['records'] << record_entries
+            hash['records'] << record_entries.cname
           end
-          hash['a_records'] = recordset.arecords if type == 'A'
-          hash['cname_record'] = recordset.cname_record if type == 'CNAME'
+
+          unless recordset.arecords.nil?
+            a_record_fog_arr = []
+            recordset.arecords.each do |record|
+              a_record_fog = Fog::DNS::AzureRM::ARecord.new
+              a_record_fog.merge_attributes(Fog::DNS::AzureRM::ARecord.parse(record))
+              a_record_fog_arr.push(a_record_fog)
+            end
+            hash['a_records'] = a_record_fog_arr
+          end
+
+          unless recordset.cname_record.nil?
+            cname_record_fog = Fog::DNS::AzureRM::CnameRecord.new
+            cname_record_fog.merge_attributes(Fog::DNS::AzureRM::CnameRecord.parse(recordset.cname_record))
+            hash['cname_record'] = cname_record_fog
+          end
+
           hash['ttl'] = recordset.ttl
           hash
         end

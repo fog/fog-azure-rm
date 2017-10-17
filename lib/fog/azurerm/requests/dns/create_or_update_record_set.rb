@@ -34,9 +34,10 @@ module Fog
             end
             record_set.arecords = a_type_records_array
           when 'CNAME'
-            record_set.cname_record = record_set_params[:records].first # because cname only has 1 value and we know the object is an array passed in.
+            cname_record = Azure::ARM::Dns::Models::CnameRecord.new
+            cname_record.cname = record_set_params[:records].first # because cname only has 1 value and we know the object is an array passed in.
+            record_set.cname_record = cname_record
           end
-
           record_set
         end
       end

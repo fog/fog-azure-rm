@@ -114,7 +114,7 @@ begin
     disable_password_authentication: false,
     network_interface_card_ids: ["/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/#{rg_name}/providers/Microsoft.Network/networkInterfaces/NetInt"],
     platform: 'linux',
-    vhd_path: 'https://imagergdisks695.blob.core.windows.net/vhds/test-vm20171004153054.vhd?sv=2017-04-17&ss=b&srt=sco&sp=rwdlac&se=2017-10-31T19:08:14Z&st=2017-10-01T11:08:14Z&spr=https&sig=CgP6G45bg3Ej%2Fq%2Bdrn4xc9sWZbCmVFAajE%2B0QTzb6LM%3D'
+    vhd_path: 'https://myblob.blob.core.windows.net/vhds/myvhd.vhd',
   )
 
   puts "Created custom image un-managed virtual machine: #{custom_image_virtual_machine.name}"
@@ -134,7 +134,7 @@ begin
     disable_password_authentication: false,
     network_interface_card_ids: ["/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/#{rg_name}/providers/Microsoft.Network/networkInterfaces/NetInt2"],
     platform: 'linux',
-    vhd_path: 'https://imagergdisks695.blob.core.windows.net/vhds/test-vm20171004153054.vhd?sv=2017-04-17&ss=b&srt=sco&sp=rwdlac&se=2017-10-31T19:08:14Z&st=2017-10-01T11:08:14Z&spr=https&sig=CgP6G45bg3Ej%2Fq%2Bdrn4xc9sWZbCmVFAajE%2B0QTzb6LM%3D',
+    vhd_path: 'https://myblob.blob.core.windows.net/vhds/myvhd.vhd',
     managed_disk_storage_type: Azure::ARM::Compute::Models::StorageAccountTypes::StandardLRS
   )
 
@@ -155,7 +155,7 @@ begin
     disable_password_authentication: false,
     network_interface_card_ids: ["/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/#{rg_name}/providers/Microsoft.Network/networkInterfaces/NetInt3"],
     platform: 'linux',
-    vhd_path: 'https://imagergdisks695.blob.core.windows.net/vhds/test-vm20171004153054.vhd?sv=2017-04-17&ss=b&srt=sco&sp=rwdlac&se=2017-10-31T19:08:14Z&st=2017-10-01T11:08:14Z&spr=https&sig=CgP6G45bg3Ej%2Fq%2Bdrn4xc9sWZbCmVFAajE%2B0QTzb6LM%3D',
+    vhd_path: 'https://myblob.blob.core.windows.net/vhds/myvhd.vhd',
     managed_disk_storage_type: Azure::ARM::Compute::Models::StorageAccountTypes::StandardLRS
   )
 
@@ -212,8 +212,7 @@ begin
 
   resource_group = rs.resource_groups.get(rg_name)
   resource_group.destroy
-rescue Exception => e
-  raise(e)
+rescue
   puts 'Integration Test for custom image virtual machine is failing'
   resource_group.destroy unless resource_group.nil?
 end

@@ -253,7 +253,7 @@ module Fog
         end
 
         def delete_storage_container(resource_group, storage_account_name, vm_name)
-          access_key = @storage_service.storage_accounts.get_storage_account_accesss_key(resource_group, storage_account_name)
+          access_key = @storage_service.get_storage_access_keys(resource_group, storage_account_name).first.value
           @storage_service.directories.delete_temporary_storage_container(storage_account_name, access_key, vm_name)
         end
 

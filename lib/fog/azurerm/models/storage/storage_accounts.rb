@@ -38,11 +38,6 @@ module Fog
           end
         end
 
-        def get_storage_account_accesss_key(resource_group, storage_account_name)
-          storage_account = service.storage_accounts.get(resource_group, storage_account_name)
-          storage_account.get_access_keys.first.value
-        end
-
         def check_storage_account_exists(resource_group_name, storage_account_name)
           service.check_storage_account_exists(resource_group_name, storage_account_name)
         end

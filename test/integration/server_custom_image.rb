@@ -40,9 +40,11 @@ network = Fog::Network::AzureRM.new(
 ######################                                 Prerequisites                              ######################
 ########################################################################################################################
 
+RG_NAME = 'TestRG-CustomVM'.freeze
+
 begin
   resource_group = rs.resource_groups.create(
-    name: 'TestRG-CustomVM',
+    name: RG_NAME,
     location: LOCATION
   )
 
@@ -51,7 +53,7 @@ begin
   storage.storage_accounts.create(
     name: storage_account_name,
     location: LOCATION,
-    resource_group: 'TestRG-CustomVM',
+    resource_group: RG_NAME,
     account_type: 'Standard',
     replication: 'LRS'
   )
@@ -59,31 +61,40 @@ begin
   network.virtual_networks.create(
     name:             'testVnet',
     location:         LOCATION,
-    resource_group:   'TestRG-CustomVM',
+    resource_group:   RG_NAME,
     network_address_list:  '10.1.0.0/16,10.2.0.0/16'
   )
 
   network.subnets.create(
     name: 'mysubnet',
-    resource_group: 'TestRG-CustomVM',
+    resource_group: RG_NAME,
     virtual_network_name: 'testVnet',
     address_prefix: '10.2.0.0/24'
   )
 
   network.network_interfaces.create(
     name: 'NetInt',
-    resource_group: 'TestRG-CustomVM',
+    resource_group: RG_NAME,
     location: LOCATION,
-    subnet_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-CustomVM/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/mysubnet",
+    subnet_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/#{RG_NAME}/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/mysubnet",
     ip_configuration_name: 'testIpConfiguration',
     private_ip_allocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Dynamic
   )
 
   network.network_interfaces.create(
     name: 'NetInt2',
-    resource_group: 'TestRG-CustomVM',
+    resource_group: RG_NAME,
     location: LOCATION,
-    subnet_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-CustomVM/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/mysubnet",
+    subnet_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/#{RG_NAME}/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/mysubnet",
+    ip_configuration_name: 'testIpConfiguration',
+    private_ip_allocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Dynamic
+  )
+
+  network.network_interfaces.create(
+    name: 'NetInt3',
+    resource_group: RG_NAME,
+    location: LOCATION,
+    subnet_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/#{RG_NAME}/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/mysubnet",
     ip_configuration_name: 'testIpConfiguration',
     private_ip_allocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Dynamic
   )
@@ -95,16 +106,17 @@ begin
   custom_image_virtual_machine = compute.servers.create(
     name: 'TestVM',
     location: LOCATION,
-    resource_group: 'TestRG-CustomVM',
-    vm_size: 'Basic_A0',
+    resource_group: RG_NAME,
     storage_account_name: storage_account_name,
+    vm_size: 'Basic_A0',
     username: 'testuser',
     password: 'Confiz=123',
     disable_password_authentication: false,
-    network_interface_card_ids: ["/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-CustomVM/providers/Microsoft.Network/networkInterfaces/NetInt"],
+    network_interface_card_ids: ["/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/#{RG_NAME}/providers/Microsoft.Network/networkInterfaces/NetInt"],
     platform: 'linux',
-    vhd_path: 'https://myblob.blob.core.windows.net/vhds/myvhd.vhd'
+    vhd_path: 'https://myblob.blob.core.windows.net/vhds/my_vhd.vhd'
   )
+
   puts "Created custom image un-managed virtual machine: #{custom_image_virtual_machine.name}"
 
   ########################################################################################################################
@@ -114,48 +126,91 @@ begin
   custom_image_virtual_machine_managed = compute.servers.create(
     name: 'TestVM-Managed',
     location: LOCATION,
-    resource_group: 'TestRG-CustomVM',
-    vm_size: 'Basic_A0',
+    resource_group: RG_NAME,
     storage_account_name: storage_account_name,
+    vm_size: 'Basic_A0',
     username: 'testuser',
     password: 'Confiz=123',
     disable_password_authentication: false,
-    network_interface_card_ids: ["/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-CustomVM/providers/Microsoft.Network/networkInterfaces/NetInt2"],
+    network_interface_card_ids: ["/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/#{RG_NAME}/providers/Microsoft.Network/networkInterfaces/NetInt2"],
     platform: 'linux',
-    vhd_path: 'https://myblob.blob.core.windows.net/vhds/myvhd.vhd',
+    vhd_path: 'https://myblob.blob.core.windows.net/vhds/my_vhd.vhd',
     managed_disk_storage_type: Azure::ARM::Compute::Models::StorageAccountTypes::StandardLRS
   )
+
   puts "Created custom image managed virtual machine: #{custom_image_virtual_machine_managed.name}"
+
+  ########################################################################################################################
+  ##############                                Create Managed Server Async                               ################
+  ########################################################################################################################
+
+  async_response = compute.servers.create_async(
+    name: 'TestVM-ManagedAsync',
+    location: LOCATION,
+    resource_group: RG_NAME,
+    storage_account_name: storage_account_name,
+    vm_size: 'Basic_A0',
+    username: 'testuser',
+    password: 'Confiz=123',
+    disable_password_authentication: false,
+    network_interface_card_ids: ["/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/#{RG_NAME}/providers/Microsoft.Network/networkInterfaces/NetInt3"],
+    platform: 'linux',
+    vhd_path: 'https://myblob.blob.core.windows.net/vhds/my_vhd.vhd',
+    managed_disk_storage_type: Azure::ARM::Compute::Models::StorageAccountTypes::StandardLRS
+  )
+
+  loop do
+    puts async_response.state
+
+    sleep(2) if async_response.pending?
+
+    if async_response.fulfilled?
+      puts "Created custom image managed virtual machine: #{async_response.value.name}"
+      break
+    end
+
+    if async_response.rejected?
+      puts async_response.reason.inspect
+      break
+    end
+  end
 
   ########################################################################################################################
   ######################                            Get and Delete Server                           ######################
   ########################################################################################################################
 
-  custom_image_virtual_machine = compute.servers.get('TestRG-CustomVM', 'TestVM')
+  custom_image_virtual_machine = compute.servers.get(RG_NAME, 'TestVM')
   puts "Get custom image un-managed virtual machine: #{custom_image_virtual_machine.name}"
   puts "Deleted custom image un-managed virtual machine: #{custom_image_virtual_machine.destroy}"
 
-  custom_image_virtual_machine_managed = compute.servers.get('TestRG-CustomVM', 'TestVM-Managed')
+  custom_image_virtual_machine_managed = compute.servers.get(RG_NAME, 'TestVM-Managed')
   puts "Get custom image managed virtual machine: #{custom_image_virtual_machine_managed.name}"
   puts "Deleted custom image managed virtual machine: #{custom_image_virtual_machine_managed.destroy}"
+
+  custom_image_virtual_machine_managed_async = compute.servers.get(RG_NAME, 'TestVM-ManagedAsync')
+  puts "Get custom image managed virtual machine async: #{custom_image_virtual_machine_managed_async.name}"
+  puts "Deleted custom image managed virtual machine async: #{custom_image_virtual_machine_managed_async.destroy}"
 
   ########################################################################################################################
   ######################                                   CleanUp                                  ######################
   ########################################################################################################################
 
-  nic = network.network_interfaces.get('TestRG-CustomVM', 'NetInt')
+  nic = network.network_interfaces.get(RG_NAME, 'NetInt')
   nic.destroy
 
-  nic = network.network_interfaces.get('TestRG-CustomVM', 'NetInt2')
+  nic = network.network_interfaces.get(RG_NAME, 'NetInt2')
   nic.destroy
 
-  vnet = network.virtual_networks.get('TestRG-CustomVM', 'testVnet')
+  nic = network.network_interfaces.get(RG_NAME, 'NetInt3')
+  nic.destroy
+
+  vnet = network.virtual_networks.get(RG_NAME, 'testVnet')
   vnet.destroy
 
-  storage = storage.storage_accounts.get('TestRG-CustomVM', storage_account_name)
+  storage = storage.storage_accounts.get(RG_NAME, storage_account_name)
   storage.destroy
 
-  resource_group = rs.resource_groups.get('TestRG-CustomVM')
+  resource_group = rs.resource_groups.get(RG_NAME)
   resource_group.destroy
 rescue
   puts 'Integration Test for custom image virtual machine is failing'

@@ -31,6 +31,13 @@ module Fog
           service.check_storage_account_name_availability(name, type)
         end
 
+        def delete_storage_account_from_tag(resource_group_name, tag_key, tag_value)
+          storage_accounts = service.storage_accounts(resource_group: resource_group_name)
+          storage_accounts.each do |account|
+            account.destroy if account.tags[tag_key].eql? tag_value
+          end
+        end
+
         def check_storage_account_exists(resource_group_name, storage_account_name)
           service.check_storage_account_exists(resource_group_name, storage_account_name)
         end

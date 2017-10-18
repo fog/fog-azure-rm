@@ -39,9 +39,6 @@ azure_compute_service.servers.check_vm_exists(<Resource Group name>, <VM Name>)
 - To create VM with managed OS disk, use the _managed_disk_storage_type_ argument
 - To create VM with unmanaged OS disk, use the _storage_account_name_ argument
 
-
-### Virtual Machine (Managed OS Disk)
-
 ### Virtual Machine (Managed OS Disk)
 
 ```ruby

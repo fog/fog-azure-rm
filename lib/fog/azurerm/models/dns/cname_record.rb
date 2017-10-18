@@ -6,8 +6,7 @@ module Fog
         attribute :cname
 
         def self.parse(cnamerecord)
-          hash = {}
-          hash['cname'] = cnamerecord.cname
+          hash = get_hash_from_object(cnamerecord)
           hash
         end
       end

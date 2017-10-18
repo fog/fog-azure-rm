@@ -6,8 +6,7 @@ module Fog
         attribute :ipv4address
 
         def self.parse(arecord)
-          hash = {}
-          hash['ipv4address'] = arecord.ipv4address
+          hash = get_hash_from_object(arecord)
           hash
         end
       end

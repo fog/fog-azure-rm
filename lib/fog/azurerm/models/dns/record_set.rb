@@ -15,12 +15,9 @@ module Fog
         attribute :a_records
 
         def self.parse(recordset)
-          hash = {}
-          hash['id'] = recordset.id
-          hash['name'] = recordset.name
+          hash = get_hash_from_object(recordset)
           hash['resource_group'] = get_resource_group_from_id(recordset.id)
           hash['zone_name'] = get_record_set_from_id(recordset.id)
-          hash['type'] = recordset.type
           type = get_type_from_recordset_type(recordset.type)
 
           hash['records'] = []
@@ -36,22 +33,21 @@ module Fog
           end
 
           unless recordset.arecords.nil?
-            a_record_fog_arr = []
+            a_records = []
             recordset.arecords.each do |record|
-              a_record_fog = Fog::DNS::AzureRM::ARecord.new
-              a_record_fog.merge_attributes(Fog::DNS::AzureRM::ARecord.parse(record))
-              a_record_fog_arr.push(a_record_fog)
+              a_record = Fog::DNS::AzureRM::ARecord.new
+              a_record.merge_attributes(Fog::DNS::AzureRM::ARecord.parse(record))
+              a_records.push(a_record)
             end
-            hash['a_records'] = a_record_fog_arr
+            hash['a_records'] = a_records
           end
 
           unless recordset.cname_record.nil?
-            cname_record_fog = Fog::DNS::AzureRM::CnameRecord.new
-            cname_record_fog.merge_attributes(Fog::DNS::AzureRM::CnameRecord.parse(recordset.cname_record))
-            hash['cname_record'] = cname_record_fog
+            cname_record = Fog::DNS::AzureRM::CnameRecord.new
+            cname_record.merge_attributes(Fog::DNS::AzureRM::CnameRecord.parse(recordset.cname_record))
+            hash['cname_record'] = cname_record
           end
 
-          hash['ttl'] = recordset.ttl
           hash
         end
 

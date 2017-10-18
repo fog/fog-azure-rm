@@ -56,7 +56,7 @@ module Fog
           end
           directory.files.load(blobs)
           directory
-        rescue => error
+        rescue Exception => error
           return nil if error.message == 'NotFound'
           raise error
         end

@@ -177,7 +177,7 @@ module Fog
         end
 
         def delete_extra_resources
-          unless (vhd_path.nil? || !managed_disk_storage_type.nil?)
+          unless vhd_path.nil? || !managed_disk_storage_type.nil?
             service.delete_generalized_image(resource_group, name)
             delete_storage_account_or_container(resource_group, storage_account_name, name)
           end

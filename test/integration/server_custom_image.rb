@@ -212,8 +212,7 @@ begin
 
   resource_group = rs.resource_groups.get(RG_NAME)
   resource_group.destroy
-rescue Exception => e
-  raise(e)
+rescue
   puts 'Integration Test for custom image virtual machine is failing'
   resource_group.destroy unless resource_group.nil?
 end

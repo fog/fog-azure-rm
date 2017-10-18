@@ -64,7 +64,7 @@ module Fog
             raise_azure_exception(e, msg)
           end
           unless async
-            unless (vm_config[:vhd_path].nil? || vm_config[:managed_disk_storage_type].nil?)
+            unless vm_config[:vhd_path].nil? || vm_config[:managed_disk_storage_type].nil?
               delete_generalized_image(vm_config[:resource_group], vm_config[:name])
               delete_storage_account_or_container(vm_config[:resource_group], vm_config[:storage_account_name], vm_config[:name])
             end

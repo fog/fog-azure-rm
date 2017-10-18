@@ -5,7 +5,7 @@ PUBLIC_IP = 'Public-IP-Address'.freeze
 NETWORK_SECURITY_GROUP = 'Network-Security-Group'.freeze
 STANDARD_STORAGE = 'Standard'.freeze
 PREMIUM_STORAGE = 'Premium'.freeze
-ALLOWED_STANDARD_REPLICATION = %w(LRS ZRS GRS RAGRS).freeze
+ALLOWED_STANDARD_REPLICATION = %w[LRS ZRS GRS RAGRS].freeze
 API_VERSION = '2016-06-01'.freeze
 FAULT_DOMAIN_COUNT = 2
 UPDATE_DOMAIN_COUNT = 5
@@ -17,7 +17,7 @@ RESOURCE_PROVIDER_NAMESPACE = 6
 RESOURCE_TYPE = 7
 RESOURCE_NAME = 8
 ENDPOINT_PREFIX = 'Microsoft.Network/trafficManagerProfiles'.freeze
-DISK_PREFIX = 'Microsoft.Compute/disks'
+DISK_PREFIX = 'Microsoft.Compute/disks'.freeze
 AZURE_ENDPOINTS = 'azureEndpoints'.freeze
 EXTERNAL_ENDPOINTS = 'externalEndpoints'.freeze
 NESTED_ENDPOINTS = 'nestedEndpoints'.freeze
@@ -58,10 +58,10 @@ MAXIMUM_CHUNK_SIZE = 4 * 1024 * 1024
 
 # The hash value of 4MB empty content
 HASH_OF_4MB_EMPTY_CONTENT = 'b5cfa9d6c8febd618f91ac2843d50a1c'.freeze
-REST_CLIENT_API_VERSION = %w(2014-04-01-preview 2016-05-01).freeze
+REST_CLIENT_API_VERSION = %w[2014-04-01-preview 2016-05-01].freeze
 AS_SKU_CLASSIC = 'Classic'.freeze
 AS_SKU_ALIGNED = 'Aligned'.freeze
 
-# The tag key and tag value for creating a generalized image temporary storage account
+# The tag key and tag value for creating a temporary storage account for generalized image
 TEMPORARY_STORAGE_ACCOUNT_TAG_KEY = 'generalized_image'.freeze
 TEMPORARY_STORAGE_ACCOUNT_TAG_VALUE = 'delete'.freeze

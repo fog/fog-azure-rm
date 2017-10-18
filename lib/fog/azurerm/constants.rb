@@ -63,5 +63,5 @@ AS_SKU_CLASSIC = 'Classic'.freeze
 AS_SKU_ALIGNED = 'Aligned'.freeze
 
 # The tag key and tag value for creating a generalized image temporary storage account
-GENERALIZED_IMAGE_TAG_KEY = 'generalized_image'.freeze
-GENERALIZED_IMAGE_TAG_VALUE = 'delete'.freeze
+TEMPORARY_STORAGE_ACCOUNT_TAG_KEY = 'generalized_image'.freeze
+TEMPORARY_STORAGE_ACCOUNT_TAG_VALUE = 'delete'.freeze

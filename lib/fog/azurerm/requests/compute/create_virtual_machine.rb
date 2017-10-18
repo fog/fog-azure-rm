@@ -64,8 +64,7 @@ module Fog
             raise_azure_exception(e, msg)
           end
           unless async
-            is_managed_custom_vm = !vm_config[:vhd_path].nil? && !vm_config[:managed_disk_storage_type].nil?
-            if is_managed_custom_vm
+            unless (vm_config[:vhd_path].nil? || vm_config[:managed_disk_storage_type].nil?)
               delete_generalized_image(vm_config[:resource_group], vm_config[:name])
               delete_storage_account_or_container(vm_config[:resource_group], vm_config[:storage_account_name], vm_config[:name])
             end
@@ -228,7 +227,7 @@ module Fog
             replication: 'LRS',
             tags:
             {
-              GENERALIZED_IMAGE_TAG_KEY => GENERALIZED_IMAGE_TAG_VALUE
+              TEMPORARY_STORAGE_ACCOUNT_TAG_KEY => TEMPORARY_STORAGE_ACCOUNT_TAG_VALUE
             }
           }
         end
@@ -254,11 +253,12 @@ module Fog
 
         def delete_storage_container(resource_group, storage_account_name, vm_name)
           access_key = @storage_service.get_storage_access_keys(resource_group, storage_account_name).first.value
-          @storage_service.directories.delete_temporary_storage_container(storage_account_name, access_key, vm_name)
+          container_name = "customvhd-#{vm_name.downcase}-os-image"
+          @storage_service.directories.delete_temporary_container(storage_account_name, access_key, container_name)
         end
 
         def delete_storage_account(resource_group)
-          @storage_service.storage_accounts.delete_storage_account_from_tag(resource_group, GENERALIZED_IMAGE_TAG_KEY, GENERALIZED_IMAGE_TAG_VALUE)
+          @storage_service.storage_accounts.delete_storage_account_from_tag(resource_group, TEMPORARY_STORAGE_ACCOUNT_TAG_KEY, TEMPORARY_STORAGE_ACCOUNT_TAG_VALUE)
         end
       end
       # This class provides the mock implementation for unit tests.

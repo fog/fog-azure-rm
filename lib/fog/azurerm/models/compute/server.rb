@@ -177,27 +177,10 @@ module Fog
         end
 
         def delete_extra_resources
-          is_managed_custom_vm = !vhd_path.nil? && !managed_disk_storage_type.nil?
-          if is_managed_custom_vm
+          unless (vhd_path.nil? || !managed_disk_storage_type.nil?)
             service.delete_generalized_image(resource_group, name)
             delete_storage_account_or_container(resource_group, storage_account_name, name)
           end
-        end
-
-        def delete_storage_account_or_container(resource_group, storage_account_name, vm_name)
-          delete_storage_account(resource_group) if storage_account_name.nil?
-          delete_storage_container(resource_group, storage_account_name, vm_name) unless storage_account_name.nil?
-        end
-
-        def delete_storage_container(resource_group, storage_account_name, vm_name)
-          @storage_service = service.instance_variable_get(:@storage_service)
-          access_key = @storage_service.get_storage_access_keys(resource_group, storage_account_name).first.value
-          @storage_service.directories.delete_temporary_storage_container(storage_account_name, access_key, vm_name)
-        end
-
-        def delete_storage_account(resource_group)
-          @storage_service = service.instance_variable_get(:@storage_service)
-          @storage_service.storage_accounts.delete_storage_account_from_tag(resource_group, GENERALIZED_IMAGE_TAG_KEY, GENERALIZED_IMAGE_TAG_VALUE)
         end
 
         private
@@ -206,9 +189,9 @@ module Fog
           platform.strip.casecmp(PLATFORM_LINUX).zero?
         end
 
-        def create_fog_async_response(response, flag = false)
+        def create_fog_async_response(response, delete_extra_resource = false)
           server = Fog::Compute::AzureRM::Server.new(service: service)
-          Fog::AzureRM::AsyncResponse.new(server, response, flag)
+          Fog::AzureRM::AsyncResponse.new(server, response, delete_extra_resource)
         end
 
         def virtual_machine_params(ssh_key_path)
@@ -250,6 +233,23 @@ module Fog
             storage_account_name: storage_account,
             disk_resource_group: disk_resource_group
           }
+        end
+
+        def delete_storage_account_or_container(resource_group, storage_account_name, vm_name)
+          delete_storage_account(resource_group) if storage_account_name.nil?
+          delete_storage_container(resource_group, storage_account_name, vm_name) unless storage_account_name.nil?
+        end
+
+        def delete_storage_container(resource_group, storage_account_name, vm_name)
+          @storage_service = service.instance_variable_get(:@storage_service)
+          access_key = @storage_service.get_storage_access_keys(resource_group, storage_account_name).first.value
+          container_name = "customvhd-#{vm_name.downcase}-os-image"
+          @storage_service.directories.delete_temporary_container(storage_account_name, access_key, container_name)
+        end
+
+        def delete_storage_account(resource_group)
+          @storage_service = service.instance_variable_get(:@storage_service)
+          @storage_service.storage_accounts.delete_storage_account_from_tag(resource_group, TEMPORARY_STORAGE_ACCOUNT_TAG_KEY, TEMPORARY_STORAGE_ACCOUNT_TAG_VALUE)
         end
       end
     end

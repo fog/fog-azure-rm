@@ -1,0 +1,2 @@
+New Fog models for RecordSet types 'A' and 'CNAME' have been created. Now instead of using the Azure SDK models for 'A' 
+and 'CNAME' type RecordSets we have our very own Fog models present. Changes have been incorporated and tested.

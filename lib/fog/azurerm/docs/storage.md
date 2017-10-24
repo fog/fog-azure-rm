@@ -15,15 +15,14 @@ require 'fog/azurerm'
 Next, create a connection to the Storage Service:
 
 ```ruby
-azure_storage_service = Fog::Storage.new(
-  :provider => 'AzureRM',
-  :tenant_id => '<Tenantid>',                                                       # Tenant id of Azure Active Directory Application
-  :client_id =>    '<Clientid>',                                                    # Client id of Azure Active Directory Application
-  :client_secret => '<ClientSecret>',                                               # Client Secret of Azure Active Directory Application
-  :subscription_id => '<Subscriptionid>',                                           # Subscription id of an Azure Account
-  :azure_storage_account_name => '<StorageAccountName>',                            # Name of an Azure Storage Account
-  :azure_storage_access_key => '<StorageAccountKey>',                               # Key of an Azure Storage Account
-  :environment => '<AzureCloud/AzureChinaCloud/AzureUSGovernment/AzureGermanCloud>' # Azure cloud environment. Default is AzureCloud.
+azure_storage_service = Fog::Storage::AzureRM.new(
+  tenant_id: '<Tenantid>',                                                       # Tenant id of Azure Active Directory Application
+  client_id:    '<Clientid>',                                                    # Client id of Azure Active Directory Application
+  client_secret: '<ClientSecret>',                                               # Client Secret of Azure Active Directory Application
+  subscription_id: '<Subscriptionid>',                                           # Subscription id of an Azure Account
+  azure_storage_account_name: '<StorageAccountName>',                            # Name of an Azure Storage Account
+  azure_storage_access_key: '<StorageAccountKey>',                               # Key of an Azure Storage Account
+  environment: '<AzureCloud/AzureChinaCloud/AzureUSGovernment/AzureGermanCloud>' # Azure cloud environment. Default is AzureCloud.
 )
 ```
 

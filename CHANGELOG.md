@@ -1,3 +1,14 @@
+## 0.3.6
+
+**Added:**
+- Compute Service - Added support for custom image provisioning with managed disk
+- DNS Service - Fog Models for RecordSet Types 'A' and 'CNAME'
+- Automated gem publishing on release tagging
+
+**Changed:**
+- Loosened dependency on fog-core
+- Updated documentation
+
 ## 0.3.5
 
 **Added:**

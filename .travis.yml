@@ -23,11 +23,23 @@ matrix:
 notifications:
   email:
     recipients:
-      - oneops_azure@confiz.com
+      - dev-oneops@confiz.com
     on_success: always
     on_failure: always
-  
-  
+
 addons:
-    code_climate:
-        repo_token: b1401494baa004d90402414cb33a7fc6420fd3693e60c677a120ddefd7d84cfd
+  code_climate:
+    repo_token: b1401494baa004d90402414cb33a7fc6420fd3693e60c677a120ddefd7d84cfd
+
+jobs:
+  include:
+    - stage: gem release
+      deploy:
+        provider: rubygems
+        api_key:
+          secure: "aKIOqa6gFMQOcwdNBNsfRoAQm+LVCRf9JpEFnDH8YLRp9A+roj0BL3hZ+pP+pb2sQSEQqU46bfBBrhB2b6Xmjnmv5d0878bl+eYOXeu90CfqRf+v/y+2k/pMsVsKs3Su7M0bHGOeHYT+segRqDHaZaJHkAW8RwLLm5A+0TyEeVjkkpFcyX8fjr5sfvD+XbEmXmmPWPuShQjKTTj1HFYJknRLLNXVYd7ZM9eKgiQfuyomdUTk8yguqNDBWW1BjiEE/0JYqx4wJxdGKPHYT+enP1xIebJVx1gEEnc/OgyBZqtmOirlh2Rnuk58NZfArzwMzIvVclJvPmynmEAlHEWtXwUgQMW5Wu/RYpxRRpr5tDRfru99hll4N9bcA439GlsNHTNJf82zmGNFIdDJ8kUJ08tVPwTvEnWGzLIdKAKWyRV+SESmZb5u3m9e4VTd06/q8gdbW9pG9UGmoes/j32lKzk9DkheCVzQjdxfRs81Z/7uTB3OhhpQnrRlf7qa2OnMDZKrip67UQHiruzAX6naQ7D5fEHR64DGZG7fQ/xRi0oG21UdNl1n/Bioj6ChFXLyInKeA0fiEwwquWK2S/2Sr5ERTBzbv9TkvbJ/1vv8FWcYYmb7bL22699V9yWcsOxEdZEYDucg71g6OrPeNeFZDsJ1749fZzW2X444+4Xtwys="
+        gem: fog-azure-rm
+        gemspec: fog-azure-rm.gemspec
+        on:
+          tags: true
+          branch: master

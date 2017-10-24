@@ -7,6 +7,7 @@
 
 **Changed:**
 - Loosened dependency on fog-core
+- Updated documentation
 
 ## 0.3.5
 

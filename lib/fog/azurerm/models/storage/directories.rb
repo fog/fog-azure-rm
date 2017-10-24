@@ -56,9 +56,14 @@ module Fog
           end
           directory.files.load(blobs)
           directory
-        rescue => error
+        rescue Exception => error
           return nil if error.message == 'NotFound'
           raise error
+        end
+
+        def delete_temporary_container(storage_account_name, access_key, container_name)
+          storage_data = Fog::Storage::AzureRM.new(azure_storage_account_name: storage_account_name, azure_storage_access_key: access_key)
+          storage_data.delete_container(container_name)
         end
 
         def check_container_exists(name)

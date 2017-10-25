@@ -1,3 +1,8 @@
+## 0.3.7
+
+**Fixed:**
+- DNS Service - Fixed bug in DNS service
+
 ## 0.3.6
 
 **Added:**

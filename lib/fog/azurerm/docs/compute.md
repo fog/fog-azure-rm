@@ -198,7 +198,7 @@ Get a server object from the get method(described above) and then destroy that s
 
 ## Attach a Data Disk to Server
 
-Get the server object and attach a Data Disk to it.
+Get the server object and attach a Data Disk to it. The data disk attached is blob based.
 
 ```ruby
       server.attach_data_disk('<Disk Name>', <Size in GB>, '<Storage Account Name>')

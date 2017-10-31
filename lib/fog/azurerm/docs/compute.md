@@ -38,6 +38,7 @@ azure_compute_service.servers.check_vm_exists(<Resource Group name>, <VM Name>)
 - To create VM with managed OS disk, use the _managed_disk_storage_type_ argument
 - To create VM with unmanaged OS disk, use the _storage_account_name_ argument
 
+
 ### Virtual Machine (Managed OS Disk)
 
 ```ruby
@@ -45,6 +46,7 @@ azure_compute_service.servers.check_vm_exists(<Resource Group name>, <VM Name>)
         name: '<VM Name>',
         location: 'West US',
         resource_group: '<Resource Group Name>',
+		tags: tags,					#tags = { key1: 'value1', key2: 'value2' }
         vm_size: 'Basic_A0',
         username: '<Username for VM>',
         password: '<Password for VM>',             # Optional, if 'platform' partameter is 'Linux'.
@@ -71,6 +73,7 @@ azure_compute_service.servers.check_vm_exists(<Resource Group name>, <VM Name>)
         name: '<VM Name>',
         location: 'West US',
         resource_group: '<Resource Group Name>',
+		tags: tags,					#tags = { key1: 'value1', key2: 'value2' }
         vm_size: 'Basic_A0',
         storage_account_name: '<Storage Account Name>',
         username: '<Username for VM>',
@@ -98,6 +101,7 @@ Create a new linux server asynchronously
         name: '<VM Name>',
         location: 'West US',
         resource_group: '<Resource Group Name>',
+		tags: tags,					#tags = { key1: 'value1', key2: 'value2' }
         vm_size: 'Basic_A0',
         storage_account_name: '<Storage Account Name>',
         username: '<Username for VM>',
@@ -172,38 +176,6 @@ Get a single record of Server
       puts "#{server.name}"
 ```
 
-## Attach a Data Disk to Server
-
-Get the server object and attach a Data Disk to it.
-
-```ruby
-      server.attach_data_disk('<Disk Name>', <Size in GB>, '<Storage Account Name>')
-```
-
-## Detach a Data Disk from Server
-
-Get the server object and detach a Data Disk from it.
-
-```ruby
-      server.detach_data_disk('<Disk Name>')
-```
-
-## Attach a Managed Data Disk to Server
-
-Get the server object and attach a Data Disk to it.
-
-```ruby
-      server.attach_managed_disk('<Disk Name>', '<Disk Resource Group Name>')
-```
-
-## Detach a Managed Data Disk from Server
-
-Get the server object and detach a Data Disk from it.
-
-```ruby
-      server.detach_managed_disk('<Disk Name>')
-```
-
 ## Get a Server's status
 
 Check the status of a Server
@@ -222,6 +194,136 @@ Get a server object from the get method(described above) and then destroy that s
 
 ```ruby
       server.destroy
+```
+
+## Attach a Data Disk to Server
+
+Get the server object and attach a Data Disk to it.
+
+```ruby
+      server.attach_data_disk('<Disk Name>', <Size in GB>, '<Storage Account Name>')
+```
+
+## Detach a Data Disk from Server
+
+Get the server object and detach a Data Disk from it.
+
+```ruby
+      server.detach_data_disk('<Disk Name>')
+```
+
+## Create Managed Disk
+
+Create a new Premium Managed Disk
+
+```ruby
+    azure_compute_service.managed_disks.create(
+        name: 'disk_name',
+        location: 'east us',
+        resource_group_name: 'resource_group_name',
+        account_type: 'Premium_LRS',
+        disk_size_gb: 1023,
+        creation_data: {
+          create_option: 'Empty'
+        }
+    )
+```
+
+Create a new Standard Managed Disk
+
+```ruby
+    azure_compute_service.managed_disks.create(
+        name: 'disk_name',
+        location: 'east us',
+        resource_group_name: 'resource_group_name',
+        account_type: 'Standard_LRS',
+        disk_size_gb: 1023,
+        creation_data: {
+          create_option: 'Empty'
+        }
+    )
+```
+
+## Attach a Managed Data Disk to Server
+
+Get the server object and attach a Data Disk to it.
+
+```ruby
+      server.attach_managed_disk('<Disk Name>', '<Disk Resource Group Name>')
+```
+
+## Detach a Managed Data Disk from Server
+
+Get the server object and detach a Data Disk from it.
+
+```ruby
+      server.detach_managed_disk('<Disk Name>')
+```
+
+## List Managed Disks in a Resource Group
+
+List managed disks in a resource group
+
+```ruby
+    managed_disks  = azure_compute_service.managed_disks(resource_group: '<Resource Group name>')
+    mnaged_disks.each do |disk|
+        puts "#{disk.name}"
+        puts "#{disk.location}"
+    end
+```
+
+## List Managed Disks in a Subscription
+
+List managed disks in a subscription
+
+```ruby
+    azure_compute_service.managed_disks.each do |disk|
+        puts "#{disk.name}"
+        puts "#{disk.location}"
+    end
+```
+
+## Grant Access to a Managed Disk
+
+Grant access to a managed disk
+
+```ruby
+    access_sas = azure_compute_service.managed_disks.grant_access('<resource_group_name>', '<disk_name>', 'Read', 1000)
+    puts "Access SAS: #{access_sas}"
+```
+
+## Revoke Access from a Managed Disk
+
+Revoke access from a managed disk
+
+```ruby
+    response = azure_compute_service.managed_disks.revoke_access('<resource_group_name>', '<disk_name>')
+    puts "Revoke Access response status: #{response.status}"
+```
+
+## Check Managed Disk Existence
+
+```ruby
+    azure_compute_service.managed_disks.check_managed_disk_exists(<Resource Group name>, <Disk name>)
+```
+
+## Retrieve a single Managed Disk
+
+Get a single record of managed disks
+
+```ruby
+      managed_disk = azure_compute_service
+                          .managed_disks
+                          .get('<Resource Group name>','<Disk name>')
+      puts "#{managed_disk.name}"
+```
+
+## Destroy a single Managed Disk
+
+Get an managed disk object from the get method and then destroy that managed disk.
+
+```ruby
+      managed_disk.destroy
 ```
 
 ## Check Availability Set Existence
@@ -332,106 +434,6 @@ Destroy the given extension from the virtual machine
 ```ruby
     vm_extension.destroy
 ```
-
-
-## Create Managed Disk
-
-Create a new Premium Managed Disk
-
-```ruby
-    azure_compute_service.managed_disks.create(
-        name: 'disk_name',
-        location: 'east us',
-        resource_group_name: 'resource_group_name',
-        account_type: 'Premium_LRS',
-        disk_size_gb: 1023,
-        creation_data: {
-          create_option: 'Empty'
-        }
-    )
-```
-
-Create a new Standard Managed Disk
-
-```ruby
-    azure_compute_service.managed_disks.create(
-        name: 'disk_name',
-        location: 'east us',
-        resource_group_name: 'resource_group_name',
-        account_type: 'Standard_LRS',
-        disk_size_gb: 1023,
-        creation_data: {
-          create_option: 'Empty'
-        }
-    )
-```
-
-## List Managed Disks in a Resource Group
-
-List managed disks in a resource group
-
-```ruby
-    managed_disks  = azure_compute_service.managed_disks(resource_group: '<Resource Group name>')
-    mnaged_disks.each do |disk|
-        puts "#{disk.name}"
-        puts "#{disk.location}"
-    end
-```
-
-## List Managed Disks in a Subscription
-
-List managed disks in a subscription
-
-```ruby
-    azure_compute_service.managed_disks.each do |disk|
-        puts "#{disk.name}"
-        puts "#{disk.location}"
-    end
-```
-
-## Grant Access to a Managed Disk
-
-Grant access to a managed disk
-
-```ruby
-    access_sas = azure_compute_service.managed_disks.grant_access('<resource_group_name>', '<disk_name>', 'Read', 1000)
-    puts "Access SAS: #{access_sas}"
-```
-
-## Revoke Access from a Managed Disk
-
-Revoke access from a managed disk
-
-```ruby
-    response = azure_compute_service.managed_disks.revoke_access('<resource_group_name>', '<disk_name>')
-    puts "Revoke Access response status: #{response.status}"
-```
-
-## Check Managed Disk Existence
-
-```ruby
-    azure_compute_service.managed_disks.check_managed_disk_exists(<Resource Group name>, <Disk name>)
-```
-
-## Retrieve a single Managed Disk
-
-Get a single record of managed disks
-
-```ruby
-      managed_disk = azure_compute_service
-                          .managed_disks
-                          .get('<Resource Group name>','<Disk name>')
-      puts "#{managed_disk.name}"
-```
-
-## Destroy a single Managed Disk
-
-Get an managed disk object from the get method and then destroy that managed disk.
-
-```ruby
-      managed_disk.destroy
-```
-
 
 ## Support and Feedback
 Your feedback is appreciated! If you have specific issues with the fog ARM, you should file an issue via Github.

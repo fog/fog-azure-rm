@@ -115,7 +115,8 @@ There can be two ways of giving `frontend_ip_configurations` while creating appl
 
 1. When giving public IP, then we need to provide `public_ip_address_id` as follows
 
-	```frontend_ip_configurations:
+```ruby
+	frontend_ip_configurations:
 	[
 		{
 			name: '<Frontend IP Config Name>',
@@ -128,7 +129,8 @@ There can be two ways of giving `frontend_ip_configurations` while creating appl
 
 2. When giving subnet id, then we need to provide `subnet_id` as follows
 
-	```frontend_ip_configurations:
+	```ruby
+	frontend_ip_configurations:
 	[
 		{
 			name: '<Frontend IP Config Name>',

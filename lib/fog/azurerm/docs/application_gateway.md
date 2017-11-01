@@ -117,26 +117,27 @@ There can be two ways of giving `frontend_ip_configurations` while creating appl
 
 	```frontend_ip_configurations:
 	[
-	      {
-	         name: '<Frontend IP Config Name>',
-	         private_ip_allocation_method: '<Static/ Dynamic>',
-		     public_ip_address_id: '/subscriptions/<Subscription_id>/resourcegroups/<Resource Group Name>/providers/Microsoft.Network/publicIPAddresses/<Public IP Address Name>',
-			 private_ip_address: '<IP Address>'
-		  }
-	]```
+		{
+			name: '<Frontend IP Config Name>',
+			private_ip_allocation_method: '<Static/ Dynamic>',
+			public_ip_address_id: '/subscriptions/<Subscription_id>/resourcegroups/<Resource Group Name>/providers/Microsoft.Network/publicIPAddresses/<Public IP Address Name>',
+			private_ip_address: '<IP Address>'
+		}
+	]
+```
 
 2. When giving subnet id, then we need to provide `subnet_id` as follows
 
 	```frontend_ip_configurations:
 	[
-			{
-				name: '<Frontend IP Config Name>',
-				private_ip_allocation_method: '<Static/ Dynamic>',
-				subnet_id: '<Subnet ID>',
-				private_ip_address: '<IP Address>'
-			}
-	]```
-
+		{
+			name: '<Frontend IP Config Name>',
+			private_ip_allocation_method: '<Static/ Dynamic>',
+			subnet_id: '<Subnet ID>',
+			private_ip_address: '<IP Address>'
+		}
+	]
+```
 
 ## List Application Gateways
 

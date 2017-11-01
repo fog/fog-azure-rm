@@ -115,7 +115,7 @@ There can be two ways of giving `frontend_ip_configurations` while creating appl
 
 1. When giving public IP, then we need to provide `public_ip_address_id` as follows
 
-```ruby
+	```ruby
 	frontend_ip_configurations:
 	[
 		{
@@ -140,6 +140,7 @@ There can be two ways of giving `frontend_ip_configurations` while creating appl
 		}
 	]
 ```
+
 
 ## List Application Gateways
 

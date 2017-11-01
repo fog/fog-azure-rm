@@ -52,7 +52,7 @@ gateway = azure_application_gateway_service.gateways.create(
             [
                 {
                     name: '<Frontend IP Config Name>',
-                    private_ip_allocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Dynamic,
+                    private_ip_allocation_method: '<Static/ Dynamic>',
                     public_ip_address_id: '/subscriptions/<Subscription_id>/resourcegroups/<Resource Group Name>/providers/Microsoft.Network/publicIPAddresses/<Public IP Address Name>',
                     private_ip_address: '<IP Address>'
                 }
@@ -115,7 +115,7 @@ There can be two ways of giving `frontend_ip_configurations` while creating appl
 
 1. When giving public IP, then we need to provide `public_ip_address_id` as follows
 
-	`frontend_ip_configurations:
+	```frontend_ip_configurations:
 	[
 	      {
 	         name: '<Frontend IP Config Name>',
@@ -123,11 +123,11 @@ There can be two ways of giving `frontend_ip_configurations` while creating appl
 		     public_ip_address_id: '/subscriptions/<Subscription_id>/resourcegroups/<Resource Group Name>/providers/Microsoft.Network/publicIPAddresses/<Public IP Address Name>',
 			 private_ip_address: '<IP Address>'
 		  }
-	]`
+	]```
 
 2. When giving subnet id, then we need to provide `subnet_id` as follows
 
-	`frontend_ip_configurations:
+	```frontend_ip_configurations:
 	[
 			{
 				name: '<Frontend IP Config Name>',
@@ -135,7 +135,7 @@ There can be two ways of giving `frontend_ip_configurations` while creating appl
 				subnet_id: '<Subnet ID>',
 				private_ip_address: '<IP Address>'
 			}
-	]`
+	]```
 
 
 ## List Application Gateways

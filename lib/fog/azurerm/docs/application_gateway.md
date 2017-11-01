@@ -26,7 +26,7 @@ azure_application_gateway_service = Fog::ApplicationGateway::AzureRM.new(
 ## Check Application Gateway Existence
 
 ```ruby
-azure_application_gateway_service.gateways.check_application_gateway_exists(<Resource Group name>, <Gateway Name>)
+azure_application_gateway_service.gateways.check_application_gateway_exists(<Resource Group Name>, <Gateway Name>)
 ```
 
 ## Create Application Gateway
@@ -45,7 +45,7 @@ gateway = azure_application_gateway_service.gateways.create(
             [
                 {
                     name: '<Gateway IP Config Name>',
-                    subnet_id: '/subscriptions/<Subscription_id>/resourcegroups/<Resource Group name>/providers/Microsoft.Network/virtualNetworks/<Virtual Network Name>/subnets/<Subnet Name>'
+                    subnet_id: '/subscriptions/<Subscription_id>/resourcegroups/<Resource Group Name>/providers/Microsoft.Network/virtualNetworks/<Virtual Network Name>/subnets/<Subnet Name>'
                 }
             ],
         frontend_ip_configurations:
@@ -53,7 +53,7 @@ gateway = azure_application_gateway_service.gateways.create(
                 {
                     name: '<Frontend IP Config Name>',
                     private_ip_allocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Dynamic,
-                    public_ip_address_id: '/subscriptions/<Subscription_id>/resourcegroups/<Resource Group name>/providers/Microsoft.Network/publicIPAddresses/<Public IP Address Name>',
+                    public_ip_address_id: '/subscriptions/<Subscription_id>/resourcegroups/<Resource Group Name>/providers/Microsoft.Network/publicIPAddresses/<Public IP Address Name>',
                     private_ip_address: '<IP Address>'
                 }
             ],
@@ -82,18 +82,18 @@ gateway = azure_application_gateway_service.gateways.create(
                     port: <Port Number>,
                     protocol: '<Protocol Name>',
                     cookie_based_affinity: 'Enabled',
-                    request_timeout: '<Timeout Time in Milliseconds>'
+                    request_timeout: '<Timeout Time>'
                 }
             ],
         http_listeners:
             [
                 {
                     name: '<Gateway Listener Name>',
-                    frontend_ip_config_id: '/subscriptions/<Subscription_id>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/applicationGateways/<Gateway Name>/frontendIPConfigurations/<Frontend IP Config Name>',
-                    frontend_port_id: '/subscriptions/<Subscription_id>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/applicationGateways/<Gateway Name>/frontendPorts/<Frontend Port Name>',
+                    frontend_ip_config_id: '/subscriptions/<Subscription_id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/applicationGateways/<Gateway Name>/frontendIPConfigurations/<Frontend IP Config Name>',
+                    frontend_port_id: '/subscriptions/<Subscription_id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/applicationGateways/<Gateway Name>/frontendPorts/<Frontend Port Name>',
                     protocol: '<Protocol Name>',
                     host_name: '',
-                    require_server_name_indication: 'false'
+                    require_server_name_indication: '<True/ False>'
                 }
             ],
         request_routing_rules:
@@ -101,13 +101,13 @@ gateway = azure_application_gateway_service.gateways.create(
                 {
                     name: '<Gateway Request Route Rule Name>',
                     type: '<Type>',
-                    http_listener_id: '/subscriptions/<Subscription_id>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/applicationGateways/<Gateway Name>/httpListeners/<Gateway Listener Name>',
-                    backend_address_pool_id: '/subscriptions/<Subscription_id>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/applicationGateways/<Gateway Name>/backendAddressPools/<Backend Address Pool Name>',
-                    backend_http_settings_id: '/subscriptions/<Subscription_id>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/applicationGateways/<Gateway Name>/backendHttpSettingsCollection/<Gateway Settings Name>',
+                    http_listener_id: '/subscriptions/<Subscription_id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/applicationGateways/<Gateway Name>/httpListeners/<Gateway Listener Name>',
+                    backend_address_pool_id: '/subscriptions/<Subscription_id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/applicationGateways/<Gateway Name>/backendAddressPools/<Backend Address Pool Name>',
+                    backend_http_settings_id: '/subscriptions/<Subscription_id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/applicationGateways/<Gateway Name>/backendHttpSettingsCollection/<Gateway Settings Name>',
                     url_path_map: ''
                 }
             ],
-	tags: { key1: "value1", key2: "value2", keyN: "valueN" }                          # [Optional]
+	 tags: { key1: "value1", key2: "value2", keyN: "valueN" }                          # [Optional]
 )
 ```
 
@@ -119,8 +119,8 @@ There can be two ways of giving `frontend_ip_configurations` while creating appl
 	[
 	      {
 	         name: '<Frontend IP Config Name>',
-	         private_ip_allocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Dynamic,
-		     public_ip_address_id: '/subscriptions/<Subscription_id>/resourcegroups/<Resource Group name>/providers/Microsoft.Network/publicIPAddresses/<Public IP Address Name>',
+	         private_ip_allocation_method: '<Static/ Dynamic>',
+		     public_ip_address_id: '/subscriptions/<Subscription_id>/resourcegroups/<Resource Group Name>/providers/Microsoft.Network/publicIPAddresses/<Public IP Address Name>',
 			 private_ip_address: '<IP Address>'
 		  }
 	]`
@@ -131,7 +131,7 @@ There can be two ways of giving `frontend_ip_configurations` while creating appl
 	[
 			{
 				name: '<Frontend IP Config Name>',
-				private_ip_allocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Dynamic,
+				private_ip_allocation_method: '<Static/ Dynamic>',
 				subnet_id: '<Subnet ID>',
 				private_ip_address: '<IP Address>'
 			}
@@ -170,10 +170,10 @@ ag.update_sku('<SKU Name>', '<SKU Capacity>')
 ## Update gateway IP configuration (Subnet id) 
 
 ```ruby
-ag.update_gateway_ip_configuration("/subscriptions/<Subscription_id>/<Resource Group name>/<Gateway Name>/providers/Microsoft.Network/virtualNetworks/<Virtual Network Name>/subnets/<Subnet Name>")
+ag.update_gateway_ip_configuration("/subscriptions/<Subscription_id>/<Resource Group Name>/<Gateway Name>/providers/Microsoft.Network/virtualNetworks/<Virtual Network Name>/subnets/<Subnet Name>")
 ```
 
-## Add/Remove SSL Certificates 
+## Add/ Remove SSL Certificates 
 
 ```ruby
 ag.add_ssl_certificate(
@@ -195,7 +195,7 @@ ag.remove_ssl_certificate(
 )
 ```
 
-## Add/Remove Frontend ports    
+## Add/ Remove Frontend ports    
 
 ```ruby
 ag.add_frontend_port({name: '<Frontend Port Name>', port: <Port Number>})
@@ -203,7 +203,7 @@ ag.add_frontend_port({name: '<Frontend Port Name>', port: <Port Number>})
 ag.remove_frontend_port({name: '<Frontend Port Name>', port: <Port Number>})
 ```
 
-## Add/Remove Probes    
+## Add/ Remove Probes    
 
 ```ruby
 ag.add_probe(

@@ -107,7 +107,7 @@ gateway = azure_application_gateway_service.gateways.create(
                     url_path_map: ''
                 }
             ],
-		tags: { key1: "value1", key2: "value2", keyN: "valueN" }                          # [Optional]
+	tags: { key1: "value1", key2: "value2", keyN: "valueN" }                          # [Optional]
 )
 ```
 

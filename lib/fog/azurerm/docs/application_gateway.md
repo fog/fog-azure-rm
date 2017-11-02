@@ -1,6 +1,6 @@
 # Application Gateway
 
-This document explains how to get started using Azure Network Service with Fog to manage Application Gateway. With this gem you can create/update/list/delete Application Gateway.
+This document explains how to get started using Azure Network Service with Fog to manage Application Gateway. With this gem you can create, update, list or delete Application Gateway.
 
 ## Usage
 
@@ -15,18 +15,18 @@ Next, create a connection to the Application Gateway Service:
 
 ```ruby
 azure_application_gateway_service = Fog::ApplicationGateway::AzureRM.new(
-      tenant_id:        '<TenantId>',                                                     # Tenant id of Azure Active Directory Application
-      client_id:        '<ClientId>',                                                     # Client id of Azure Active Directory Application
-      client_secret:    '<ClientSecret>',                                                 # Client Secret of Azure Active Directory Application
-      subscription_id:  '<SubscriptionId>',                                               # Subscription id of an Azure Account
-      environment:      '<AzureCloud/AzureChinaCloud/AzureUSGovernment/AzureGermanCloud>' # Azure cloud environment. Default is AzureCloud.
+      tenant_id:        '<TenantId>',                                                           # Tenant id of Azure Active Directory Application
+      client_id:        '<ClientId>',                                                           # Client id of Azure Active Directory Application
+      client_secret:    '<ClientSecret>',                                                       # Client Secret of Azure Active Directory Application
+      subscription_id:  '<SubscriptionId>',                                                     # Subscription id of an Azure Account
+      environment:      '<AzureCloud/ AzureChinaCloud/ AzureUSGovernment/ AzureGermanCloud>'    # Azure cloud environment. Default is AzureCloud.
 )
 ```
 
 ## Check Application Gateway Existence
 
 ```ruby
-azure_application_gateway_service.gateways.check_application_gateway_exists(<Resource Group Name>, <Gateway Name>)
+azure_application_gateway_service.gateways.check_application_gateway_exists('<Resource Group Name>', '<Gateway Name>')
 ```
 
 ## Create Application Gateway
@@ -39,21 +39,21 @@ gateway = azure_application_gateway_service.gateways.create(
         location: '<Location>',
         resource_group: '<Resource Group name>',
         sku_name: '<SKU Name>',
-        sku_tier: '<SKU Tier Type>',
+        sku_tier: '<SKU Tier>',
         sku_capacity: '<SKU Capacity>',
         gateway_ip_configurations:
             [
                 {
                     name: '<Gateway IP Config Name>',
-                    subnet_id: '/subscriptions/<Subscription_id>/resourcegroups/<Resource Group Name>/providers/Microsoft.Network/virtualNetworks/<Virtual Network Name>/subnets/<Subnet Name>'
+                    subnet_id: '/subscriptions/<Subscription Id>/resourcegroups/<Resource Group Name>/providers/Microsoft.Network/virtualNetworks/<Virtual Network Name>/subnets/<Subnet Name>'
                 }
             ],
         frontend_ip_configurations:
             [
                 {
                     name: '<Frontend IP Config Name>',
-                    private_ip_allocation_method: '<Static/ Dynamic>',
-                    public_ip_address_id: '/subscriptions/<Subscription_id>/resourcegroups/<Resource Group Name>/providers/Microsoft.Network/publicIPAddresses/<Public IP Address Name>',
+                    private_ip_allocation_method: '<IP Allocation Method>',
+                    public_ip_address_id: '/subscriptions/<Subscription Id>/resourcegroups/<Resource Group Name>/providers/Microsoft.Network/publicIPAddresses/<Public IP Address Name>',
                     private_ip_address: '<IP Address>'
                 }
             ],
@@ -81,7 +81,7 @@ gateway = azure_application_gateway_service.gateways.create(
                     name: '<Gateway Settings Name>',
                     port: <Port Number>,
                     protocol: '<Protocol Name>',
-                    cookie_based_affinity: 'Enabled',
+                    cookie_based_affinity: '<Enabled/ Disabled>',
                     request_timeout: '<Timeout Time>'
                 }
             ],
@@ -89,8 +89,8 @@ gateway = azure_application_gateway_service.gateways.create(
             [
                 {
                     name: '<Gateway Listener Name>',
-                    frontend_ip_config_id: '/subscriptions/<Subscription_id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/applicationGateways/<Gateway Name>/frontendIPConfigurations/<Frontend IP Config Name>',
-                    frontend_port_id: '/subscriptions/<Subscription_id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/applicationGateways/<Gateway Name>/frontendPorts/<Frontend Port Name>',
+                    frontend_ip_config_id: '/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/applicationGateways/<Gateway Name>/frontendIPConfigurations/<Frontend IP Config Name>',
+                    frontend_port_id: '/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/applicationGateways/<Gateway Name>/frontendPorts/<Frontend Port Name>',
                     protocol: '<Protocol Name>',
                     host_name: '',
                     require_server_name_indication: '<True/ False>'
@@ -101,13 +101,13 @@ gateway = azure_application_gateway_service.gateways.create(
                 {
                     name: '<Gateway Request Route Rule Name>',
                     type: '<Type>',
-                    http_listener_id: '/subscriptions/<Subscription_id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/applicationGateways/<Gateway Name>/httpListeners/<Gateway Listener Name>',
-                    backend_address_pool_id: '/subscriptions/<Subscription_id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/applicationGateways/<Gateway Name>/backendAddressPools/<Backend Address Pool Name>',
-                    backend_http_settings_id: '/subscriptions/<Subscription_id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/applicationGateways/<Gateway Name>/backendHttpSettingsCollection/<Gateway Settings Name>',
+                    http_listener_id: '/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/applicationGateways/<Gateway Name>/httpListeners/<Gateway Listener Name>',
+                    backend_address_pool_id: '/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/applicationGateways/<Gateway Name>/backendAddressPools/<Backend Address Pool Name>',
+                    backend_http_settings_id: '/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/applicationGateways/<Gateway Name>/backendHttpSettingsCollection/<Gateway Settings Name>',
                     url_path_map: ''
                 }
             ],
-	 tags: { key1: "value1", key2: "value2", keyN: "valueN" }                          # [Optional]
+	 tags: { key1: 'value1', key2: 'value2', keyN: 'valueN' }                          # [Optional]
 )
 ```
 
@@ -120,13 +120,11 @@ There can be two ways of giving `frontend_ip_configurations` while creating appl
 	[
 		{
 			name: '<Frontend IP Config Name>',
-			private_ip_allocation_method: '<Static/ Dynamic>',
-			public_ip_address_id: '/subscriptions/<Subscription_id>/resourcegroups/<Resource Group Name>/providers/Microsoft.Network/publicIPAddresses/<Public IP Address Name>',
+			private_ip_allocation_method: '<IP Allocation Method>',
+			public_ip_address_id: '/subscriptions/<Subscription Id>/resourcegroups/<Resource Group Name>/providers/Microsoft.Network/publicIPAddresses/<Public IP Address Name>',
 			private_ip_address: '<IP Address>'
 		}
 	]
-```
-
 2. When giving subnet id, then we need to provide `subnet_id` as follows
 
 	```ruby
@@ -134,14 +132,11 @@ There can be two ways of giving `frontend_ip_configurations` while creating appl
 	[
 		{
 			name: '<Frontend IP Config Name>',
-			private_ip_allocation_method: '<Static/ Dynamic>',
+			private_ip_allocation_method: '<IP Allocation Method>',
 			subnet_id: '<Subnet ID>',
 			private_ip_address: '<IP Address>'
 		}
 	]
-```
-
-
 ## List Application Gateways
 
 List all application gateways in a resource group
@@ -160,7 +155,7 @@ Get a single record of Application Gateway
 ```ruby
 gateway = azure_application_gateway_service
                             .gateways
-                            .get('<Resource Group name>', '<Application Gateway Name>')
+                            .get('<Resource Group Name>', '<Application Gateway Name>')
 puts "#{gateway.name}"
 ```
 
@@ -174,7 +169,7 @@ ag.update_sku('<SKU Name>', '<SKU Capacity>')
 ## Update gateway IP configuration (Subnet id) 
 
 ```ruby
-ag.update_gateway_ip_configuration("/subscriptions/<Subscription_id>/<Resource Group Name>/<Gateway Name>/providers/Microsoft.Network/virtualNetworks/<Virtual Network Name>/subnets/<Subnet Name>")
+ag.update_gateway_ip_configuration('/subscriptions/<Subscription Id>/<Resource Group Name>/<Gateway Name>/providers/Microsoft.Network/virtualNetworks/<Virtual Network Name>/subnets/<Subnet Name>')
 ```
 
 ## Add/ Remove SSL Certificates 

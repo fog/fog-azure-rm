@@ -15,7 +15,7 @@ require 'fog/azurerm'
 Next, create a connection to the Resources Service:
 
 ```ruby
-azure_resources_service = Fog::Resources::AzureRM.new(
+fog_resources_service = Fog::Resources::AzureRM.new(
       tenant_id:        '<Tenantid>',                                                         # Tenant id of Azure Active Directory Application
       client_id:        '<Clientid>',                                                         # Client id of Azure Active Directory Application
       client_secret:    '<ClientSecret>',                                                     # Client Secret of Azure Active Directory Application
@@ -27,7 +27,7 @@ azure_resources_service = Fog::Resources::AzureRM.new(
 ## Check Resource Group Existence
 
 ```ruby
-azure_resources_service.resource_groups.check_resource_group_exists('<Resource Group Name>')
+fog_resources_service.resource_groups.check_resource_group_exists('<Resource Group Name>')
 ```
 
 ## Create Resource Group
@@ -35,7 +35,7 @@ azure_resources_service.resource_groups.check_resource_group_exists('<Resource G
 Create a new resource group
 
 ```ruby
-azure_resources_service.resource_groups.create(
+fog_resources_service.resource_groups.create(
         name:     '<Resource Group name>',
         location: '<Location>',
         tags:     { key1: 'value1', key2: 'value2', keyN: 'valueN' }                        # [Optional]
@@ -44,7 +44,7 @@ azure_resources_service.resource_groups.create(
 ## List Resource Groups
 
 ```ruby
-azure_resources_service.resource_groups.each do |resource_group|
+fog_resources_service.resource_groups.each do |resource_group|
         puts "#{resource_group.name}"
         puts "#{resource_group.location}"
 end
@@ -55,7 +55,7 @@ end
 Get a single record of Resource Group
 
 ```ruby
-resource_group = azure_resources_service
+resource_group = fog_resources_service
                           .resource_groups
                           .get('<Resource Group Name>')
 puts "#{resource_group.name}"
@@ -73,7 +73,7 @@ resource_group.destroy
 You can tag a Resource as following:
 
 ```ruby
-azure_resources_service.tag_resource(
+fog_resources_service.tag_resource(
         '<Resource ID>',
         '<Tag Key>',
         '<Tag Value>',
@@ -84,7 +84,7 @@ azure_resources_service.tag_resource(
 ## List Tagged Resources in a Subscription
 
 ```ruby
-azure_resources_service.azure_resources(tag_name: '<Tag Key>', tag_value: '<Tag Value>').each do |resource|
+fog_resources_service.azure_resources(tag_name: '<Tag Key>', tag_value: '<Tag Value>').each do |resource|
         puts "#{resource.name}"
         puts "#{resource.location}"
         puts "#{resource.type}"        
@@ -92,7 +92,7 @@ end
 ```
 OR
 ```ruby
-azure_resources_service.azure_resources(tag_name: '<Tag Key>').each do |resource|
+fog_resources_service.azure_resources(tag_name: '<Tag Key>').each do |resource|
         puts "#{resource.name}"
         puts "#{resource.location}"
         puts "#{resource.type}"        
@@ -103,7 +103,7 @@ end
 Get a single record of Tagged Resources
 
 ```ruby
-resource = azure_resources_service
+resource = fog_resources_service
                           .azure_resources(tag_name: '<Tag Key>')
                           .get('<Resource Id>')
 puts "#{resource.name}"
@@ -113,7 +113,7 @@ puts "#{resource.name}"
 Remove tag from a resource as following:
 
 ```ruby
-azure_resources_service.delete_resource_tag(
+fog_resources_service.delete_resource_tag(
         '<Resource Id>',
         '<Tag Key>',
         '<Tag Value>',
@@ -124,13 +124,13 @@ azure_resources_service.delete_resource_tag(
 ## Check Resource Existence
 
 ```ruby
-azure_resources_service.azure_resources.check_azure_resource_exists('<Resource Id>', '<API Version>')
+fog_resources_service.azure_resources.check_azure_resource_exists('<Resource Id>', '<API Version>')
 ```
 
 ## Check Deployment Existence
 
 ```ruby
-azure_resources_service.deployments.check_deployment_exists('<Resource Group Name>', '<Deployment Name>')
+fog_resources_service.deployments.check_deployment_exists('<Resource Group Name>', '<Deployment Name>')
 ```
 
 ## Create Deployment
@@ -138,7 +138,7 @@ azure_resources_service.deployments.check_deployment_exists('<Resource Group Nam
 Create a Deployment
 
 ```ruby
-azure_resources_service.deployments.create(
+fog_resources_service.deployments.create(
         name:            '<Deployment Name>',
         resource_group:  '<Resource Group Name>',
         template_link:   '<Template Link>',
@@ -150,7 +150,7 @@ azure_resources_service.deployments.create(
 List Deployments in a resource group
 
 ```ruby
-azure_resources_service.deployments(resource_group: '<Resource Group Name>').each do |deployment|
+fog_resources_service.deployments(resource_group: '<Resource Group Name>').each do |deployment|
         puts "#{deployment.name}"
 end
 ```
@@ -160,7 +160,7 @@ end
 Get a single record of Deployment
 
 ```ruby
-deployment = azure_resources_service
+deployment = fog_resources_service
                        .deployments
                        .get('<Resource Group Name>', '<Deployment Name>')
 puts "#{deployment.name}"

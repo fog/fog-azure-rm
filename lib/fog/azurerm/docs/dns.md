@@ -15,7 +15,7 @@ require 'fog/azurerm'
 Next, create a connection to the DNS Service:
 
 ```ruby
-azure_dns_service = Fog::DNS::AzureRM.new(
+fog_dns_service = Fog::DNS::AzureRM.new(
         tenant_id:       '<Tenantid>',                                                           # Tenant id of Azure Active Directory Application
         client_id:       '<Clientid>',                                                           # Client id of Azure Active Directory Application
         client_secret:   '<ClientSecret>',                                                       # Client Secret of Azure Active Directory Application
@@ -27,7 +27,7 @@ azure_dns_service = Fog::DNS::AzureRM.new(
 ## Check Zone Existence
 
 ```ruby
-azure_dns_service.zones.check_zone_exists('<Resource Group Name>', '<Zone Name>')
+fog_dns_service.zones.check_zone_exists('<Resource Group Name>', '<Zone Name>')
 ```
 
 ## Create Zone
@@ -35,7 +35,7 @@ azure_dns_service.zones.check_zone_exists('<Resource Group Name>', '<Zone Name>'
 Create a new Zone
 
 ```ruby
-azure_dns_service.zones.create(
+fog_dns_service.zones.create(
         name: '<Zone Name>',
         resource_group: '<Resource Group Name>',
         tags: {
@@ -46,7 +46,7 @@ azure_dns_service.zones.create(
 ## List Zones
 
 ```ruby
-azure_dns_service.zones.each do |zone|
+fog_dns_service.zones.each do |zone|
      puts "#{zone.name}"
      puts "#{zone.resource_group}"
 end
@@ -57,7 +57,7 @@ end
 Get a single record of Zone
 
 ```ruby
-zone = azure_dns_service
+zone = fog_dns_service
              .zones
              .get('<Resource Group Name>', '<Zone Name>')
 puts "#{zone.name}"
@@ -74,7 +74,7 @@ zone.destroy
 ## Check Record Set Existence
 
 ```ruby
-azure_dns_service.record_sets.check_record_set_exists('<Resource Group Name>', '<Record Set Name>', '<Zone Name>', '<Record Type(A/ CNAME)>')
+fog_dns_service.record_sets.check_record_set_exists('<Resource Group Name>', '<Record Set Name>', '<Zone Name>', '<Record Type(A/ CNAME)>')
 ```
 
 ## Create Record Set
@@ -82,7 +82,7 @@ azure_dns_service.record_sets.check_record_set_exists('<Resource Group Name>', '
 Create a new Record Set
 
 ```ruby
-azure_dns_service.record_sets.create(
+fog_dns_service.record_sets.create(
         name:           '<Record Set Name>',
         resource_group: '<Resource Group Name>',
         zone_name:      '<Zone Name>',
@@ -95,7 +95,7 @@ azure_dns_service.record_sets.create(
 ## List Record Sets
 
 ```ruby
-azure_dns_service.record_sets(
+fog_dns_service.record_sets(
         resource_group: '<Resource Group Name>',
         zone_name:      '<Zone Name>'
       ).each do |record_set|
@@ -109,7 +109,7 @@ end
 Get a single record of Record Set
 
 ```ruby
-record_set = azure_dns_service
+record_set = fog_dns_service
                   .record_sets
                   .get('<Resource Group Name>', '<Record Set Name>', '<Zone Name>', '<Record Type>')
 puts "#{record_set.name}"

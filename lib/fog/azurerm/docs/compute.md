@@ -15,7 +15,7 @@ require 'fog/azurerm'
 Next, create a connection to the Compute Service:
 
 ```ruby
-azure_compute_service = Fog::Compute::AzureRM.new(
+fog_compute_service = Fog::Compute::AzureRM.new(
       tenant_id:        '<Tenantid>',                                                             # Tenant id of Azure Active Directory Application
       client_id:        '<Clientid>',                                                             # Client id of Azure Active Directory Application
       client_secret:    '<ClientSecret>',                                                         # Client Secret of Azure Active Directory Application
@@ -27,7 +27,7 @@ azure_compute_service = Fog::Compute::AzureRM.new(
 ## Check Server Existence
 
 ```ruby
-azure_compute_service.servers.check_vm_exists('<Resource Group Name>', '<VM Name>')
+fog_compute_service.servers.check_vm_exists('<Resource Group Name>', '<VM Name>')
 ```
 
 ## Create Server
@@ -42,7 +42,7 @@ azure_compute_service.servers.check_vm_exists('<Resource Group Name>', '<VM Name
 ### Virtual Machine (Managed OS Disk)
 
 ```ruby
-azure_compute_service.servers.create(
+fog_compute_service.servers.create(
         name: '<VM Name>',
         location: '<Location>',
         resource_group: '<Resource Group Name>',
@@ -69,7 +69,7 @@ azure_compute_service.servers.create(
 ### Virtual Machine (Unmanaged OS Disk)
 
 ```ruby
-    azure_compute_service.servers.create(
+    fog_compute_service.servers.create(
         name: '<VM Name>',
         location: '<Location>',
         resource_group: '<Resource Group Name>',
@@ -97,7 +97,7 @@ azure_compute_service.servers.create(
 Create a new linux server asynchronously
 
 ```ruby
-    async_response = azure_compute_service.servers.create_async(
+    async_response = fog_compute_service.servers.create_async(
         name: '<VM Name>',
         location: '<Location>',
         resource_group: '<Resource Group Name>',
@@ -158,7 +158,7 @@ For more information about custom_data, see link: https://msdn.microsoft.com/en-
 List servers in a resource group
 
 ```ruby
-servers  = azure_compute_service.servers(resource_group: '<Resource Group Name>')
+servers  = fog_compute_service.servers(resource_group: '<Resource Group Name>')
 servers.each do |server|
         puts "#{server.name}"
         puts "#{server.location}"
@@ -170,7 +170,7 @@ end
 Get a single record of Server
 
 ```ruby
-server = azure_compute_service
+server = fog_compute_service
                   .servers(resource_group: '<Resource Group Name>')
                   .get('<Resource Group Name>', 'Server Name>')
 puts "#{server.name}"
@@ -181,7 +181,7 @@ puts "#{server.name}"
 Check the status of a Server
 
 ```ruby 
-status = azure_compute_service
+status = fog_compute_service
                       .servers
                       .get('<Resource Group Name>', '<Server Name>')
                       .vm_status
@@ -217,7 +217,7 @@ server.detach_data_disk('<Disk Name>')
 Create a new Premium Managed Disk
 
 ```ruby
-azure_compute_service.managed_disks.create(
+fog_compute_service.managed_disks.create(
         name: '<Disk Name>',
         location: '<Location>',
         resource_group_name: '<Resource Group Name>',
@@ -232,7 +232,7 @@ azure_compute_service.managed_disks.create(
 Create a new Standard Managed Disk
 
 ```ruby
-azure_compute_service.managed_disks.create(
+fog_compute_service.managed_disks.create(
         name: '<Disk Name>',
         location: '<Location>',
         resource_group_name: '<Resource Group Name>',
@@ -265,7 +265,7 @@ server.detach_managed_disk('<Disk Name>')
 List managed disks in a resource group
 
 ```ruby
-managed_disks  = azure_compute_service.managed_disks(resource_group: '<Resource Group Name>')
+managed_disks  = fog_compute_service.managed_disks(resource_group: '<Resource Group Name>')
 mnaged_disks.each do |disk|
       puts "#{disk.name}"
       puts "#{disk.location}"
@@ -277,7 +277,7 @@ end
 List managed disks in a subscription
 
 ```ruby
-azure_compute_service.managed_disks.each do |disk|
+fog_compute_service.managed_disks.each do |disk|
      puts "#{disk.name}"
      puts "#{disk.location}"
 end
@@ -288,7 +288,7 @@ end
 Grant access to a managed disk
 
 ```ruby
-access_sas = azure_compute_service.managed_disks.grant_access('<Resource Group Name>', '<Disk Name>', '<Access Type>', <Duration In Seconds>)
+access_sas = fog_compute_service.managed_disks.grant_access('<Resource Group Name>', '<Disk Name>', '<Access Type>', <Duration In Seconds>)
 puts "Access SAS: #{access_sas}"
 ```
 
@@ -297,14 +297,14 @@ puts "Access SAS: #{access_sas}"
 Revoke access from a managed disk
 
 ```ruby
-response = azure_compute_service.managed_disks.revoke_access('<Resource Group Name>', '<Disk Name>')
+response = fog_compute_service.managed_disks.revoke_access('<Resource Group Name>', '<Disk Name>')
 puts "Revoke Access response status: #{response.status}"
 ```
 
 ## Check Managed Disk Existence
 
 ```ruby
-azure_compute_service.managed_disks.check_managed_disk_exists('<Resource Group Name>', '<Disk Name>')
+fog_compute_service.managed_disks.check_managed_disk_exists('<Resource Group Name>', '<Disk Name>')
 ```
 
 ## Retrieve a single Managed Disk
@@ -312,7 +312,7 @@ azure_compute_service.managed_disks.check_managed_disk_exists('<Resource Group N
 Get a single record of managed disks
 
 ```ruby
-managed_disk = azure_compute_service
+managed_disk = fog_compute_service
                        .managed_disks
                        .get('<Resource Group Name>', '<Disk Name>')
 puts "#{managed_disk.name}"
@@ -329,7 +329,7 @@ managed_disk.destroy
 ## Check Availability Set Existence
 
 ```ruby
-azure_compute_service.availability_sets.check_availability_set_exists('<Resource Group Name>', '<Availability Set Name>')
+fog_compute_service.availability_sets.check_availability_set_exists('<Resource Group Name>', '<Availability Set Name>')
 ```
 
 ## Create Availability Set
@@ -337,7 +337,7 @@ azure_compute_service.availability_sets.check_availability_set_exists('<Resource
 Create a new availability set
 
 ```ruby
-azure_compute_service.availability_sets.create(
+fog_compute_service.availability_sets.create(
     name: '<Availability Set Name>',
     location: '<Location>',
     resource_group: '<Resource Group Name>'
@@ -351,7 +351,7 @@ azure_compute_service.availability_sets.create(
 List availability sets in a resource group
 
 ```ruby
-availability_sets  = azure_compute_service.availability_sets(resource_group: '<Resource Group Name>')
+availability_sets  = fog_compute_service.availability_sets(resource_group: '<Resource Group Name>')
 availability_sets.each do |availability_set|
      puts "#{availability_set.name}"
      puts "#{availability_set.location}"
@@ -363,7 +363,7 @@ end
 Get a single record of Availability Set
 
 ```ruby
-availability_set = azure_compute_service
+availability_set = fog_compute_service
                         .availability_sets
                         .get('<Resource Group Name>','<Availability Set Name>')
 puts "#{availability_set.name}"
@@ -380,7 +380,7 @@ availability_set.destroy
 ## Check Virtual Machine Extension Existence
 
 ```ruby
-azure_compute_service.virtual_machine_extensions.check_vm_extension_exists('<Resource Group Name>', '<Virtual Machine Name>', '<Extension Name>')
+fog_compute_service.virtual_machine_extensions.check_vm_extension_exists('<Resource Group Name>', '<Virtual Machine Name>', '<Extension Name>')
 ```
 
 ## Create Virtual Machine Extension
@@ -388,7 +388,7 @@ azure_compute_service.virtual_machine_extensions.check_vm_extension_exists('<Res
 Installs an extension to the specified virtual machine.
 
 ```ruby
-azure_compute_service.virtual_machine_extensions.create(
+fog_compute_service.virtual_machine_extensions.create(
         name: '<Extension Name>',
         resource_group: '<Resource Group Name>',
         location: '<Location>',
@@ -407,7 +407,7 @@ azure_compute_service.virtual_machine_extensions.create(
 Retrieves the given extension from the virtual machine
 
 ```ruby
-vm_extension = azure_compute_service.virtual_machine_extensions.get(
+vm_extension = fog_compute_service.virtual_machine_extensions.get(
         '<Resource Group Name>', '<Virtual Machine Name>', '<Extension Name>'
 )
 ```

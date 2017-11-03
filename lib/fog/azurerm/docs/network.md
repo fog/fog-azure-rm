@@ -14,7 +14,7 @@ require 'fog/azurerm'
 Next, create a connection to the Network Service:
 
 ```ruby
-azure_network_service = Fog::Network::AzureRM.new(
+fog_network_service = Fog::Network::AzureRM.new(
         tenant_id: '<Tenantid>',                                                             # Tenant id of Azure Active Directory Application
         client_id:    '<Clientid>',                                                          # Client id of Azure Active Directory Application
         client_secret: '<ClientSecret>',                                                     # Client Secret of Azure Active Directory Application
@@ -26,7 +26,7 @@ azure_network_service = Fog::Network::AzureRM.new(
 ## Check Virtual Network Existence
 
 ```ruby
- azure_network_service.virtual_networks.check_virtual_network_exists('<Resource Group Name>', '<Virtual Network Name>')
+ fog_network_service.virtual_networks.check_virtual_network_exists('<Resource Group Name>', '<Virtual Network Name>')
 ```
 
 ## Create Virtual Network
@@ -38,7 +38,7 @@ Create a new virtual network
 **Optional parameters for Subnet**: network_security_group_id, route_table_id & address_prefix
 
 ```ruby
-vnet = azure_network_service.virtual_networks.create(
+vnet = fog_network_service.virtual_networks.create(
       name:             '<Virtual Network Name>',
       location:         '<Location>',
       resource_group:   '<Resource Group Name>',
@@ -59,7 +59,7 @@ vnet = azure_network_service.virtual_networks.create(
 List all virtual networks in a resource group
 
 ```ruby
-vnets  = azure_network_service.virtual_networks(resource_group: '<Resource Group Name>')
+vnets  = fog_network_service.virtual_networks(resource_group: '<Resource Group Name>')
 vnets.each do |vnet|
       puts "#{vnet.name}"
       puts "#{vnet.location}"
@@ -71,7 +71,7 @@ end
 List all virtual networks in a subscription
 
 ```ruby
-vnets  = azure_network_service.virtual_networks
+vnets  = fog_network_service.virtual_networks
 vnets.each do |vnet|
       puts "#{vnet.name}"
       puts "#{vnet.location}"
@@ -83,7 +83,7 @@ end
 Get a single record of virtual network
 
 ```ruby
-vnet = azure_network_service.virtual_networks.get('<Resource Group Name>', '<Virtual Network Name>')
+vnet = fog_network_service.virtual_networks.get('<Resource Group Name>', '<Virtual Network Name>')
 puts "#{vnet.name}"
 ```
 
@@ -143,7 +143,7 @@ vnet.destroy
 ## Check Subnet Existence
 
 ```ruby
-azure_network_service.subnets.check_subnet_exists('<Resource Group Name>', '<Virtual Network Name>', '<Subnet Name>')
+fog_network_service.subnets.check_subnet_exists('<Resource Group Name>', '<Virtual Network Name>', '<Subnet Name>')
 ```
 
 ## Create Subnet
@@ -153,7 +153,7 @@ Create a new Subnet
 Optional parameters: network_security_group_id, route_table_id & address_prefix
 
 ```ruby
-subnet = azure_network_service.subnets.create(
+subnet = fog_network_service.subnets.create(
       name: '<Subnet Name>',
       resource_group: '<Resource Group Name>',
       virtual_network_name: '<Virtual Network Name>',
@@ -168,7 +168,7 @@ subnet = azure_network_service.subnets.create(
 List subnets in a resource group and a virtual network
 
 ```ruby
-subnets  = azure_network_service.subnets(resource_group: '<Resource Group Name>', virtual_network_name: '<Virtual Network Name>')
+subnets  = fog_network_service.subnets(resource_group: '<Resource Group Name>', virtual_network_name: '<Virtual Network Name>')
 subnets.each do |subnet|
       puts "#{subnet.name}"
 end
@@ -179,7 +179,7 @@ end
 Get a single record of Subnet
 
 ```ruby
-subnet = azure_network_service
+subnet = fog_network_service
             .subnets
             .get('<Resource Group Name>', '<Virtual Network Name>', '<Subnet Name>')
 puts "#{subnet.name}"
@@ -190,7 +190,7 @@ puts "#{subnet.name}"
 Attach Network Security Group to Subnet
 
 ```ruby
-subnet = azure_network_service.attach_network_security_group('/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/networkSecurityGroups/<Network Security Group Name>')
+subnet = fog_network_service.attach_network_security_group('/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/networkSecurityGroups/<Network Security Group Name>')
 puts "#{subnet.network_security_group_id}"
 ```
 
@@ -199,7 +199,7 @@ puts "#{subnet.network_security_group_id}"
 Detach Network Security Group from Subnet
 
 ```ruby
-subnet = azure_network_service.detach_network_security_group
+subnet = fog_network_service.detach_network_security_group
 puts "#{subnet.network_security_group_id}"
 ```
 
@@ -208,7 +208,7 @@ puts "#{subnet.network_security_group_id}"
 Attach Route Table to Subnet
 
 ```ruby
-subnet = azure_network_service.attach_route_table('/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/routeTables/<Route Table Name>')
+subnet = fog_network_service.attach_route_table('/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/routeTables/<Route Table Name>')
 puts "#{subnet.route_table_id}"
 ```
 
@@ -217,7 +217,7 @@ puts "#{subnet.route_table_id}"
 Detach Route Table from Subnet
 
 ```ruby
-subnet = azure_network_service.detach_route_table
+subnet = fog_network_service.detach_route_table
 puts "#{subnet.route_table_id}"
 ```
 
@@ -240,7 +240,7 @@ subnet.destroy
 ## Check Network Interface Card Existence
 
 ```ruby
-azure_network_service.network_interfaces.check_network_interface_exists('<Resource Group Name>', '<Network Interface Name>')
+fog_network_service.network_interfaces.check_network_interface_exists('<Resource Group Name>', '<Network Interface Name>')
 ```
 
 ## Create Network Interface Card
@@ -248,7 +248,7 @@ azure_network_service.network_interfaces.check_network_interface_exists('<Resour
 Create a new network interface. Skip public_ip_address_id parameter to create network interface without PublicIP. The parameter, private_ip_allocation_method can be Dynamic or Static.
 
 ```ruby
-nic = azure_network_service.network_interfaces.create(
+nic = fog_network_service.network_interfaces.create(
       name: '<Network Interface Name>',
       resource_group: '<Resource Group Name>',
       location: '<Location>',
@@ -265,7 +265,7 @@ nic = azure_network_service.network_interfaces.create(
 List network interfaces in a resource group
 
 ```ruby
-nics  = azure_network_service.network_interfaces(resource_group: '<Resource Group Name>')
+nics  = fog_network_service.network_interfaces(resource_group: '<Resource Group Name>')
 nics.each do |nic|
       puts "#{nic.name}"
 end
@@ -276,7 +276,7 @@ end
 Get a single record of Network Interface
 
 ```ruby
-nic = azure_network_service
+nic = fog_network_service
            .network_interfaces
            .get('<Resource Group Name>', '<Network Interface Name>')
 puts "#{nic.name}"
@@ -322,7 +322,7 @@ nic.destroy
 ## Check Public IP Existence
 
 ```ruby
-azure_network_service.public_ips.check_public_ip_exists('<Resource Group Name>', '<Public IP Name>')
+fog_network_service.public_ips.check_public_ip_exists('<Resource Group Name>', '<Public IP Name>')
 ```
 
 ## Create Public IP
@@ -330,7 +330,7 @@ azure_network_service.public_ips.check_public_ip_exists('<Resource Group Name>',
 Create a new public IP. The parameter, type can be Dynamic or Static.
 
 ```ruby
-public_ip = azure_network_service.public_ips.create(
+public_ip = fog_network_service.public_ips.create(
      name: '<Public IP name>',
      resource_group: '<Resource Group Name>',
      location: '<Location>',
@@ -344,7 +344,7 @@ public_ip = azure_network_service.public_ips.create(
 Checks if the Public IP already exists or not.
 
 ```ruby
-azure_network_service.public_ips.check_if_exists('<Public IP Name>', '<Resource Group Name>')
+fog_network_service.public_ips.check_if_exists('<Public IP Name>', '<Resource Group Name>')
 ```
 
 ## List Public IPs
@@ -352,7 +352,7 @@ azure_network_service.public_ips.check_if_exists('<Public IP Name>', '<Resource 
 List network interfaces in a resource group
 
 ```ruby
-public_ips  = azure_network_service.public_ips(resource_group: '<Resource Group Name>')
+public_ips  = fog_network_service.public_ips(resource_group: '<Resource Group Name>')
 public_ips.each do |pubip|
       puts "#{public_ip.name}"
 end
@@ -363,7 +363,7 @@ end
 Get a single record of Public IP
 
 ```ruby
-public_ip = azure_network_service
+public_ip = fog_network_service
              .public_ips
              .get('<Resource Group Name>', '<Public IP Name>')
 puts "#{public_ip.name}"
@@ -392,7 +392,7 @@ public_ip.destroy
 ## Check Network Security Group Existence
 
 ```ruby
-azure_network_service.network_security_groups.check_net_sec_group_exists('<Resource Group Name>', '<Network Security Group Name>')
+fog_network_service.network_security_groups.check_net_sec_group_exists('<Resource Group Name>', '<Network Security Group Name>')
 ```
 
 ## Create Network Security Group
@@ -400,7 +400,7 @@ azure_network_service.network_security_groups.check_net_sec_group_exists('<Resou
 Network security group requires a resource group to create. 
 
 ```ruby
-azure_network_service.network_security_groups.create(
+fog_network_service.network_security_groups.create(
        name: '<Network Security Group Name>',
        resource_group: '<Resource Group Name>',
        location: '<Location>',
@@ -424,7 +424,7 @@ azure_network_service.network_security_groups.create(
 List all the network security groups in a resource group
 
 ```ruby
-network_security_groups = azure_network_service.network_security_groups(resource_group: '<Resource Group Name>')       
+network_security_groups = fog_network_service.network_security_groups(resource_group: '<Resource Group Name>')       
 network_security_groups.each do |nsg|
       puts "#{nsg.name}"
 end
@@ -435,7 +435,7 @@ end
 Get a single record of Network Security Group
 
 ```ruby
-nsg = azure_network_service
+nsg = fog_network_service
                   .network_security_groups
                   .get('<Resource Group Name>','<Network Security Group Name>')
 puts "#{nsg.name}"
@@ -504,7 +504,7 @@ nsg.destroy
 ## Check Network Security Rule Existence
 
 ```ruby
-azure_network_service.network_security_rules.check_net_sec_rule_exists('<Resource Group Name>', '<Network Security Group Name>', '<Security Rule Name>')
+fog_network_service.network_security_rules.check_net_sec_rule_exists('<Resource Group Name>', '<Network Security Group Name>', '<Security Rule Name>')
 ```
 
 ## Create Network Security Rule
@@ -512,7 +512,7 @@ azure_network_service.network_security_rules.check_net_sec_rule_exists('<Resourc
 Network security rule requires a resource group and network security group to create. 
 
 ```ruby
-azure_network_service.network_security_rules.create(
+fog_network_service.network_security_rules.create(
        name: '<Security Rule Name>',
        resource_group: '<Resource Group Name>',
        protocol: '<Security Rule Protocol>',
@@ -532,7 +532,7 @@ azure_network_service.network_security_rules.create(
 List all the network security rules in a resource group and network security group
 
 ```ruby
-network_security_rules = azure_network_service.network_security_rules(resource_group: '<Resource Group Name>', network_security_group_name: '<Network Security Group Name>')
+network_security_rules = fog_network_service.network_security_rules(resource_group: '<Resource Group Name>', network_security_group_name: '<Network Security Group Name>')
 network_security_rules.each do |network_security_rule|
       puts network_security_rule.name
 end
@@ -543,7 +543,7 @@ end
 Get a single record of Network Security Rule
 
 ```ruby
-network_security_rule = azure_network_service
+network_security_rule = fog_network_service
                   .network_security_rules
                   .get('<Resource Group Name>','<Network Security Group Name>', '<Security Rule Name>')
 puts "#{network_security_rule.name}"              
@@ -560,7 +560,7 @@ network_security_rule.destroy
 ## Check External Load Balancer Existence
 
 ```ruby
-azure_network_service.load_balancers.check_load_balancer_exists('<Resource Group Name>', '<Load Balancer Name>')
+fog_network_service.load_balancers.check_load_balancer_exists('<Resource Group Name>', '<Load Balancer Name>')
 ```
 
 ## Create External Load Balancer
@@ -568,7 +568,7 @@ azure_network_service.load_balancers.check_load_balancer_exists('<Resource Group
 Create a new load balancer.
 
 ```ruby
-lb = azure_network_service.load_balancers.create(
+lb = fog_network_service.load_balancers.create(
         name: '<Load Balancer Name>',
         resource_group: '<Resource Group Name>',
         location: '<Location>',
@@ -615,7 +615,7 @@ lb = azure_network_service.load_balancers.create(
 ## Create Internal Load Balancer
 
 ```ruby
-lb = azure_network_service.load_balancers.create(
+lb = fog_network_service.load_balancers.create(
     name: '<Load Balancer Name>',
     resource_group: '<Resource Group Name>',
     location: '<Location>',
@@ -682,7 +682,7 @@ lb = azure_network_service.load_balancers.create(
 List all load balancers in a resource group
 
 ```ruby
-lbs = azure_network_service.load_balancers(resource_group: '<Resource Group Name>')       
+lbs = fog_network_service.load_balancers(resource_group: '<Resource Group Name>')       
 lbs.each do |lb|
       puts "#{lb.name}"
 end
@@ -693,7 +693,7 @@ end
 List all load balancers in a subscription
 
 ```ruby
-lbs = azure_network_service.load_balancers
+lbs = fog_network_service.load_balancers
 lbs.each do |lb|
       puts "#{lb.name}"
 end
@@ -704,7 +704,7 @@ end
 Get a single record of Load Balancer
 
 ```ruby
-lb = azure_network_service
+lb = fog_network_service
          .load_balancers
          .get('<Resource Group Name>', '<Load Balancer Name>')
 puts "#{lb.name}"
@@ -721,7 +721,7 @@ lb.destroy
 ## Check Virtual Network Gateway Existence
 
 ```ruby
-azure_network_service.virtual_network_gateways.check_vnet_gateway_exists('<Resource Group Name>', '<Virtual Network Gateway Name>')
+fog_network_service.virtual_network_gateways.check_vnet_gateway_exists('<Resource Group Name>', '<Virtual Network Gateway Name>')
 ```
 
 ## Create Virtual Network Gateway
@@ -808,7 +808,7 @@ network_gateway.destroy
 ## Check Local Network Gateway Existence
 
 ```ruby
-azure_network_service.local_network_gateways.check_local_net_gateway_exists('<Resource Group Name>', '<Local Network Gateway Name>')
+fog_network_service.local_network_gateways.check_local_net_gateway_exists('<Resource Group Name>', '<Local Network Gateway Name>')
 ```
 
 ## Create Local Network Gateway
@@ -872,7 +872,7 @@ The Circuit represents the entity created by customer to register with an expres
 ## Check Express Route Circuit Existence
 
 ```ruby
-azure_network_service.express_route_circuits.check_express_route_circuit_exists('<Resource Group Name>', '<Circuit Name>')
+fog_network_service.express_route_circuits.check_express_route_circuit_exists('<Resource Group Name>', '<Circuit Name>')
 ```
 
 ## Create an Express Route Circuit
@@ -941,7 +941,7 @@ Authorization is part of Express Route circuit.
 ## Check Express Route Circuit Authorization Existence
 
 ```ruby
-azure_network_service.express_route_circuit_authorizations.check_express_route_cir_auth_exists('<Resource Group Name>', '<Circuit Name>', '<Authorization Name>')
+fog_network_service.express_route_circuit_authorizations.check_express_route_cir_auth_exists('<Resource Group Name>', '<Circuit Name>', '<Authorization Name>')
 ```
 
 ## Create an Express Route Circuit Authorization
@@ -1052,7 +1052,7 @@ puts service_providers
 ## Check Virtual Network Gateway Connection Existence
 
 ```ruby
-azure_network_service.virtual_network_gateway_connections.check_vnet_gateway_connection_exists('<Resource Group Name>', '<Virtual Network Gateway Connection Name>')
+fog_network_service.virtual_network_gateway_connections.check_vnet_gateway_connection_exists('<Resource Group Name>', '<Virtual Network Gateway Connection Name>')
 ```
 
 ## Create Virtual Network Gateway Connection

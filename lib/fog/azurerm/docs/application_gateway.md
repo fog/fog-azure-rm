@@ -14,7 +14,7 @@ require 'fog/azurerm'
 Next, create a connection to the Application Gateway Service:
 
 ```ruby
-azure_application_gateway_service = Fog::ApplicationGateway::AzureRM.new(
+fog_application_gateway_service = Fog::ApplicationGateway::AzureRM.new(
       tenant_id:        '<TenantId>',                                                           # Tenant id of Azure Active Directory Application
       client_id:        '<ClientId>',                                                           # Client id of Azure Active Directory Application
       client_secret:    '<ClientSecret>',                                                       # Client Secret of Azure Active Directory Application
@@ -26,7 +26,7 @@ azure_application_gateway_service = Fog::ApplicationGateway::AzureRM.new(
 ## Check Application Gateway Existence
 
 ```ruby
-azure_application_gateway_service.gateways.check_application_gateway_exists('<Resource Group Name>', '<Gateway Name>')
+fog_application_gateway_service.gateways.check_application_gateway_exists('<Resource Group Name>', '<Gateway Name>')
 ```
 
 ## Create Application Gateway
@@ -34,7 +34,7 @@ azure_application_gateway_service.gateways.check_application_gateway_exists('<Re
 Create a new Application Gateway.
 
 ```ruby
-gateway = azure_application_gateway_service.gateways.create(
+gateway = fog_application_gateway_service.gateways.create(
         name: '<Gateway Name>',
         location: '<Location>',
         resource_group: '<Resource Group name>',
@@ -142,7 +142,7 @@ There can be two ways of giving `frontend_ip_configurations` while creating appl
 List all application gateways in a resource group
 
 ```ruby
-gateways = azure_application_gateway_service.gateways(resource_group: '<Resource Group Name>')
+gateways = fog_application_gateway_service.gateways(resource_group: '<Resource Group Name>')
 gateways.each do |gateway|
 	puts "#{gateway.name}"
 end
@@ -153,7 +153,7 @@ end
 Get a single record of Application Gateway
 
 ```ruby
-gateway = azure_application_gateway_service
+gateway = fog_application_gateway_service
                             .gateways
                             .get('<Resource Group Name>', '<Application Gateway Name>')
 puts "#{gateway.name}"

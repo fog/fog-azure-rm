@@ -16,11 +16,11 @@ Next, create a connection to the Compute Service:
 
 ```ruby
 fog_compute_service = Fog::Compute::AzureRM.new(
-      tenant_id:        '<Tenantid>',                                                             # Tenant id of Azure Active Directory Application
-      client_id:        '<Clientid>',                                                             # Client id of Azure Active Directory Application
-      client_secret:    '<ClientSecret>',                                                         # Client Secret of Azure Active Directory Application
-      subscription_id:  '<Subscriptionid>',                                                       # Subscription id of an Azure Account
-      environment:      '<AzureCloud/ AzureChinaCloud/ AzureUSGovernment/ AzureGermanCloud>'      # Azure cloud environment. Default is AzureCloud.
+      tenant_id:        '<Tenant Id>',                                                             # Tenant Id of Azure Active Directory Application
+      client_id:        '<Client Id>',                                                             # Client Id of Azure Active Directory Application
+      client_secret:    '<Client Secret>',                                                         # Client Secret of Azure Active Directory Application
+      subscription_id:  '<Subscription Id>',                                                       # Subscription Id of an Azure Account
+      environment:      '<AzureCloud/AzureChinaCloud/AzureUSGovernment/AzureGermanCloud>'          # Azure cloud environment. Default is AzureCloud.
 )
 ```
 
@@ -34,7 +34,7 @@ fog_compute_service.servers.check_vm_exists('<Resource Group Name>', '<VM Name>'
 
 **Info:**
 
-- Attribute **network_interface_card_ids** is an array of NICs ids. The NIC id at index zero will become primary NIC of this server (virtual machine) by default.
+- Attribute **network_interface_card_ids** is an array of NICs Ids. The NIC Id at index zero will become primary NIC of this server (virtual machine) by default.
 - To create VM with managed OS disk, use the _managed_disk_storage_type_ argument
 - To create VM with unmanaged OS disk, use the _storage_account_name_ argument
 
@@ -48,8 +48,8 @@ fog_compute_service.servers.create(
         resource_group: '<Resource Group Name>',
 	tags: { key1: 'value1', key2: 'value2', keyN: 'valueN' },
         vm_size: '<Virtual Machine Size>',
-        username: '<Username for VM>',
-        disable_password_authentication: <True/ False>,
+        username: '<Username>',
+        disable_password_authentication: <True/False>,
         network_interface_card_ids: ['/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/networkInterfaces/<Network Interface Id>'],
         publisher: '<Publisher Name>',                          # Not required if custom image is being used 
         offer: '<Offer Name>',                                  # Not required if custom image is being used
@@ -57,7 +57,7 @@ fog_compute_service.servers.create(
         version: '<Version>',                                   # Not required if custom image is being used
         platform: '<OS Type>',
         availability_set_id: '<Availability Set Id>',           # [Optional]
-        password: '<Password for VM>',                          # [Optional], if 'platform' partameter is 'Linux'.
+        password: '<Password>',                                 # [Optional], if 'platform' partameter is 'Linux'.
         vhd_path: '<Path of VHD>',                              # [Optional], if you want to create the VM from a custom image.
         custom_data: '<Custom Data Value>',                     # [Optional], if you want to add custom data in this VM.
         os_disk_caching: '<Caching Type>',                      # [Optional], can be one of None, ReadOnly, ReadWrite
@@ -76,9 +76,9 @@ fog_compute_service.servers.create(
 	tags: { key1: 'value1', key2: 'value2', keyN: 'valueN' },
         vm_size: '<Virtual Machine Size>',
         storage_account_name: '<Storage Account Name>',
-        username: '<Username for VM>',
-        password: '<Password for VM>',
-        disable_password_authentication: <True/ False>,
+        username: '<Username>',
+        password: '<Password>',
+        disable_password_authentication: <True/False>,
         network_interface_card_ids: ['/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/networkInterfaces/<Network Interface Id>'],
         publisher: '<Publisher Name>',                    # Not required if custom image is being used
         offer: '<Offer Name>',                            # Not required if custom image is being used  
@@ -105,7 +105,7 @@ Create a new linux server asynchronously
         vm_size: '<Virtual Machine Size>',
         storage_account_name: '<Storage Account Name>',
         username: '<Username for VM>',
-        disable_password_authentication: <True/ False>,
+        disable_password_authentication: <True/False>,
         network_interface_card_ids: ['/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/networkInterfaces/<Network Interface Id>'],
         publisher: '<Publisher Name>',                       # Not required if custom image is being used 
         offer: '<Offer Name>',                               # Not required if custom image is being used
@@ -113,7 +113,7 @@ Create a new linux server asynchronously
         version: '<Version>' ,                               # Not required if custom image is being used
         platform: '<OS Type>', 
         availability_set_id: '<Availability Set Id>',        # [Optional]
-        password: '<Password for VM>',                       # [Optional], if 'platform' partameter is 'Linux'.
+        password: '<Password>',                              # [Optional], if 'platform' partameter is 'Linux'.
         vhd_path: '<Path of VHD>',                           # [Optional], if you want to create the VM from a custom image.
         custom_data: '<Custom Data Value>',                  # [Optional], if you want to add custom data in this VM.
         os_disk_caching: '<Caching Type>',                   # [Optional], can be one of None, ReadOnly, ReadWrite
@@ -201,7 +201,7 @@ server.destroy
 Get the server object and attach a Data Disk to it. The data disk attached is blob based.
 
 ```ruby
-server.attach_data_disk('<Disk Name>', <Size In GB>, '<Storage Account Name>')
+server.attach_data_disk('<Disk Name>', <Size in GBs>, '<Storage Account Name>')
 ```
 
 ## Detach a Data Disk from Server
@@ -222,7 +222,7 @@ fog_compute_service.managed_disks.create(
         location: '<Location>',
         resource_group_name: '<Resource Group Name>',
         account_type: '<Storage Account Type>',
-        disk_size_gb: <Disk Size In GBs>,
+        disk_size_gb: <Disk Size in GBs>,
         creation_data: {
             create_option: '<Create Option Value>'
         }
@@ -237,7 +237,7 @@ fog_compute_service.managed_disks.create(
         location: '<Location>',
         resource_group_name: '<Resource Group Name>',
         account_type: '<Storage Account Type>',
-        disk_size_gb: <Disk Size In GBs>,
+        disk_size_gb: <Disk Size in GBs>,
         creation_data: {
             create_option: '<Create Option Value>'
         }
@@ -288,7 +288,7 @@ end
 Grant access to a managed disk
 
 ```ruby
-access_sas = fog_compute_service.managed_disks.grant_access('<Resource Group Name>', '<Disk Name>', '<Access Type>', <Duration In Seconds>)
+access_sas = fog_compute_service.managed_disks.grant_access('<Resource Group Name>', '<Disk Name>', '<Access Type>', <Duration in Seconds>)
 puts "Access SAS: #{access_sas}"
 ```
 
@@ -341,8 +341,8 @@ fog_compute_service.availability_sets.create(
     name: '<Availability Set Name>',
     location: '<Location>',
     resource_group: '<Resource Group Name>'
-    platform_fault_domain_count: <No Of Fault Domains>,     # [Optional] Default => 2
-    platform_update_domain_count: <No Of Update Domains>,   # [Optional] Default => 5
+    platform_fault_domain_count: <No of Fault Domains>,     # [Optional] Default => 2
+    platform_update_domain_count: <No of Update Domains>,   # [Optional] Default => 5
     use_managed_disk: true                                  # [Optional] Possible values true or false
 )
 ```
@@ -398,7 +398,7 @@ fog_compute_service.virtual_machine_extensions.create(
         type_handler_version: '<Extension Version>',
         settings: {JSON object},                      # Format: {"key": "value", "key": {"key": "value"}}
         protected_settings: {JSON object},
-        auto_upgrade_minor_version: <True/ False> ,   # Optional
+        auto_upgrade_minor_version: <True/False> ,   # Optional
 )
 ```
 
@@ -421,7 +421,7 @@ Update the given extension. The attributes that can be modified are
 
 ```ruby
 vm_extension.update(
-        auto_upgrade_minor_version: <True/ False>,
+        auto_upgrade_minor_version: <True/False>,
         settings: {JSON object},
         protected_settings: {JSON object}
 )

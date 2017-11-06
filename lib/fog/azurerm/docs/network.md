@@ -15,11 +15,11 @@ Next, create a connection to the Network Service:
 
 ```ruby
 fog_network_service = Fog::Network::AzureRM.new(
-        tenant_id: '<Tenantid>',                                                             # Tenant id of Azure Active Directory Application
-        client_id:    '<Clientid>',                                                          # Client id of Azure Active Directory Application
-        client_secret: '<ClientSecret>',                                                     # Client Secret of Azure Active Directory Application
-        subscription_id: '<Subscriptionid>',                                                 # Subscription id of an Azure Account
-        environment: '<AzureCloud/ AzureChinaCloud/ AzureUSGovernment/ AzureGermanCloud>'    # Azure cloud environment. Default is AzureCloud.
+        tenant_id: '<Tenant Id>',                                                             # Tenant Id of Azure Active Directory Application
+        client_id:    '<Client Id>',                                                          # Client Id of Azure Active Directory Application
+        client_secret: '<Client Secret>',                                                     # Client Secret of Azure Active Directory Application
+        subscription_id: '<Subscription Id>',                                                 # Subscription Id of an Azure Account
+        environment: '<AzureCloud/AzureChinaCloud/AzureUSGovernment/AzureGermanCloud>'        # Azure cloud environment. Default is AzureCloud.
 )
 ```
 
@@ -226,7 +226,7 @@ puts "#{subnet.route_table_id}"
 The parameter is a boolean which checks if the Virtual Network the Subnet belongs to is attached to an Express Route Circuit or not
 
 ```ruby
-puts "#{subnet.get_available_ipaddresses_count(<True/ False>)}"
+puts "#{subnet.get_available_ipaddresses_count(<True/False>)}"
 ```
 
 ## Destroy a single Subnet
@@ -293,7 +293,7 @@ nic.update(private_ip_allocation_method: '<IP Allocation Method Name>', private_
 
 Attach Subnet, Public-IP or Network-Security-Group as following
 ```ruby
-subnet_id = '<Subnet ID>'
+subnet_id = '<Subnet Id>'
 nic.attach_subnet(subnet_id)
     
 public_ip_id = '<Public IP Id>'
@@ -376,7 +376,7 @@ Get a Public IP object from the get method and then update that public IP. You c
 ```ruby
 public_ip.update(
       public_ip_allocation_method: '<IP Allocation Method Name>',
-      idle_timeout_in_minutes: '<Idle Timeout In Minutes>',
+      idle_timeout_in_minutes: '<Idle Timeout in Minutes>',
       domain_name_label: '<Domain Name Label>'
 )
 ```
@@ -593,8 +593,8 @@ lb = fog_network_service.load_balancers.create(
                                         protocol: '<Protocol Name>',
                                         frontend_port: '<Frontend Port Number>',
                                         backend_port: '<Backend Port Number>',
-                                        enable_floating_ip: <True/ False>,
-                                        idle_timeout_in_minutes: <Timeout In Minutes>,
+                                        enable_floating_ip: <True/False>,
+                                        idle_timeout_in_minutes: <Timeout in Minutes>,
                                         load_distribution: '<Load Distribution Value>'
                                     }
                                 ],
@@ -669,8 +669,8 @@ lb = fog_network_service.load_balancers.create(
             protocol: '<Protocol Name>',
             request_path: '<Probe Request Path>',
             port: '<Port Number>',
-            interval_in_seconds: <Interval In Seconds>,
-            number_of_probes: <Number Of Probes>
+            interval_in_seconds: <Interval in Seconds>,
+            number_of_probes: <Number of Probes>
         }
         ],
     tags: { key: 'value' }                  # [Optional]
@@ -746,7 +746,7 @@ network_gateway = network.virtual_network_gateways.create(
       sku_tier: '<SKU Tier>',
       sku_capacity: <SKU Capacity>,
       gateway_type: '<Gateway Type>',
-      enable_bgp: <True/ False>,
+      enable_bgp: <True/False>,
       gateway_size: <Gateway Size>,
       asn: <ASN Value>,
       bgp_peering_address: <Peering Address>,
@@ -897,7 +897,7 @@ circuit = network.express_route_circuits.create(
             	peer_asn: <ASN Value>,
             	primary_peer_address_prefix: '<Primary Peer IP Address Range>',
             	secondary_peer_address_prefix: '<Secondary Peer IP Address Range>',
-            	vlan_id: <Id Value>
+            	vlan_id: <VLAN Id>
         	}
     	],
         tags: {                                     # [Optional]
@@ -1004,7 +1004,7 @@ peering = network.express_route_circuit_peerings.create(
     	peer_asn: <ASN Value>,
     	primary_peer_address_prefix: '<Primary Peer IP Address Range>',
     	secondary_peer_address_prefix:'<Secondary Peer IP Address Range>',
-    	vlan_id: <Id Value>
+    	vlan_id: <VLAN Id>
 )
 ```
 

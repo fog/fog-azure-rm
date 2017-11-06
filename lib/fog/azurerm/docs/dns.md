@@ -16,11 +16,11 @@ Next, create a connection to the DNS Service:
 
 ```ruby
 fog_dns_service = Fog::DNS::AzureRM.new(
-        tenant_id:       '<Tenantid>',                                                           # Tenant id of Azure Active Directory Application
-        client_id:       '<Clientid>',                                                           # Client id of Azure Active Directory Application
-        client_secret:   '<ClientSecret>',                                                       # Client Secret of Azure Active Directory Application
-        subscription_id: '<Subscriptionid>',                                                     # Subscription id of an Azure Account
-        environment:     '<AzureCloud/ AzureChinaCloud/ AzureUSGovernment/ AzureGermanCloud>'    # Azure cloud environment. Default is AzureCloud.
+        tenant_id:       '<Tenant Id>',                                                           # Tenant Id of Azure Active Directory Application
+        client_id:       '<Client Id>',                                                           # Client Id of Azure Active Directory Application
+        client_secret:   '<Client Secret>',                                                       # Client Secret of Azure Active Directory Application
+        subscription_id: '<Subscription Id>',                                                     # Subscription Id of an Azure Account
+        environment:     '<AzureCloud/AzureChinaCloud/AzureUSGovernment/AzureGermanCloud>'        # Azure cloud environment. Default is AzureCloud.
 )
 ```
 
@@ -74,7 +74,7 @@ zone.destroy
 ## Check Record Set Existence
 
 ```ruby
-fog_dns_service.record_sets.check_record_set_exists('<Resource Group Name>', '<Record Set Name>', '<Zone Name>', '<Record Type(A/ CNAME)>')
+fog_dns_service.record_sets.check_record_set_exists('<Resource Group Name>', '<Record Set Name>', '<Zone Name>', '<Record Type(A/CNAME)>')
 ```
 
 ## Create Record Set
@@ -86,8 +86,8 @@ fog_dns_service.record_sets.create(
         name:           '<Record Set Name>',
         resource_group: '<Resource Group Name>',
         zone_name:      '<Zone Name>',
-        records:        '<String Array Of Records>',
-        type:           '<Record Type (A/ CNAME)>',
+        records:        '<String Array of Records>',
+        type:           '<Record Type (A/CNAME)>',
         ttl:            <Time To Live (Integer)>
 )
 ```

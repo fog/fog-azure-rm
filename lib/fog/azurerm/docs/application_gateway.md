@@ -15,11 +15,11 @@ Next, create a connection to the Application Gateway Service:
 
 ```ruby
 fog_application_gateway_service = Fog::ApplicationGateway::AzureRM.new(
-      tenant_id:        '<TenantId>',                                                           # Tenant id of Azure Active Directory Application
-      client_id:        '<ClientId>',                                                           # Client id of Azure Active Directory Application
-      client_secret:    '<ClientSecret>',                                                       # Client Secret of Azure Active Directory Application
-      subscription_id:  '<SubscriptionId>',                                                     # Subscription id of an Azure Account
-      environment:      '<AzureCloud/ AzureChinaCloud/ AzureUSGovernment/ AzureGermanCloud>'    # Azure cloud environment. Default is AzureCloud.
+      tenant_id:        '<Tenant Id>',                                                           # Tenant Id of Azure Active Directory Application
+      client_id:        '<Client Id>',                                                           # Client Id of Azure Active Directory Application
+      client_secret:    '<Client Secret>',                                                       # Client Secret of Azure Active Directory Application
+      subscription_id:  '<Subscription Id>',                                                     # Subscription Id of an Azure Account
+      environment:      '<AzureCloud/AzureChinaCloud/AzureUSGovernment/AzureGermanCloud>'        # Azure cloud environment. Default is AzureCloud.
 )
 ```
 
@@ -81,7 +81,7 @@ gateway = fog_application_gateway_service.gateways.create(
                     name: '<Gateway Settings Name>',
                     port: <Port Number>,
                     protocol: '<Protocol Name>',
-                    cookie_based_affinity: '<Enabled/ Disabled>',
+                    cookie_based_affinity: '<Enabled/Disabled>',
                     request_timeout: '<Timeout Time>'
                 }
             ],
@@ -93,7 +93,7 @@ gateway = fog_application_gateway_service.gateways.create(
                     frontend_port_id: '/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/applicationGateways/<Gateway Name>/frontendPorts/<Frontend Port Name>',
                     protocol: '<Protocol Name>',
                     host_name: '',
-                    require_server_name_indication: '<True/ False>'
+                    require_server_name_indication: '<True/False>'
                 }
             ],
         request_routing_rules:
@@ -166,7 +166,7 @@ puts "#{gateway.name}"
 ag.update_sku('<SKU Name>', '<SKU Capacity>')
 ```
 
-## Update gateway IP configuration (Subnet id) 
+## Update gateway IP configuration (Subnet Id) 
 
 ```ruby
 ag.update_gateway_ip_configuration('/subscriptions/<Subscription Id>/<Resource Group Name>/<Gateway Name>/providers/Microsoft.Network/virtualNetworks/<Virtual Network Name>/subnets/<Subnet Name>')
@@ -194,7 +194,7 @@ ag.remove_ssl_certificate(
 )
 ```
 
-## Add/ Remove Frontend ports    
+## Add/Remove Frontend ports    
 
 ```ruby
 ag.add_frontend_port({name: '<Frontend Port Name>', port: <Port Number>})
@@ -202,7 +202,7 @@ ag.add_frontend_port({name: '<Frontend Port Name>', port: <Port Number>})
 ag.remove_frontend_port({name: '<Frontend Port Name>', port: <Port Number>})
 ```
 
-## Add/ Remove Probes    
+## Add/Remove Probes    
 
 ```ruby
 ag.add_probe(
@@ -213,7 +213,7 @@ ag.add_probe(
     path: '<Probe Path>',
     interval: <Interval Time>, 
     timeout: <Timeout Time>,
-    unhealthy_threshold: <Threshold Number>
+    unhealthy_threshold: <Threshold Value>
   }
 )
 
@@ -225,7 +225,7 @@ ag.remove__probe(
     path: '<Probe Path>',
     interval: <Interval Time>, 
     timeout: <Timeout Time>,
-    unhealthy_threshold: <Threshold Number>
+    unhealthy_threshold: <Threshold Value>
   }
 )
 ```

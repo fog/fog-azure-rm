@@ -15,10 +15,10 @@ Next, create a connection to the Key Vault Service:
 
 ```ruby
 fog_key_vault_service = Fog::KeyVault::AzureRM.new(
-        tenant_id: '<Tenantid>',                  # Tenant id of Azure Active Directory Application
-        client_id:    '<Clientid>',               # Client id of Azure Active Directory Application
-        client_secret: '<ClientSecret>',          # Client Secret of Azure Active Directory Application
-        subscription_id: '<Subscriptionid>'       # Subscription id of an Azure Account
+        tenant_id: '<Tenant Id>',                  # Tenant Id of Azure Active Directory Application
+        client_id:    '<Client Id>',               # Client Id of Azure Active Directory Application
+        client_secret: '<Client Secret>',          # Client Secret of Azure Active Directory Application
+        subscription_id: '<Subscription Id>'       # Subscription Id of an Azure Account
 )
 ```
 

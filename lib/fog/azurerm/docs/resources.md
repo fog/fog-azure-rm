@@ -16,11 +16,11 @@ Next, create a connection to the Resources Service:
 
 ```ruby
 fog_resources_service = Fog::Resources::AzureRM.new(
-      tenant_id:        '<Tenantid>',                                                         # Tenant id of Azure Active Directory Application
-      client_id:        '<Clientid>',                                                         # Client id of Azure Active Directory Application
-      client_secret:    '<ClientSecret>',                                                     # Client Secret of Azure Active Directory Application
-      subscription_id:  '<Subscriptionid>',                                                   # Subscription id of an Azure Account
-      environment:      '<AzureCloud/ AzureChinaCloud/ AzureUSGovernment/ AzureGermanCloud>'  # Azure cloud environment. Default is AzureCloud.
+      tenant_id:        '<Tenant Id>',                                                         # Tenant Id of Azure Active Directory Application
+      client_id:        '<Client Id>',                                                         # Client Id of Azure Active Directory Application
+      client_secret:    '<Client Secret>',                                                     # Client Secret of Azure Active Directory Application
+      subscription_id:  '<Subscription Id>',                                                   # Subscription Id of an Azure Account
+      environment:      '<AzureCloud/AzureChinaCloud/AzureUSGovernment/AzureGermanCloud>'      # Azure cloud environment. Default is AzureCloud.
 )
 ```
 
@@ -74,7 +74,7 @@ You can tag a Resource as following:
 
 ```ruby
 fog_resources_service.tag_resource(
-        '<Resource ID>',
+        '<Resource Id>',
         '<Tag Key>',
         '<Tag Value>',
         '<API Version>'

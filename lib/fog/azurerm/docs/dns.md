@@ -88,7 +88,7 @@ fog_dns_service.record_sets.create(
         zone_name:      '<Zone Name>',
         records:        '<String Array of Records>',
         type:           '<Record Type (A/CNAME)>',
-        ttl:            <Time To Live (Integer)>
+        ttl:            <TTL>
 )
 ```
 

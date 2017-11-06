@@ -39,7 +39,7 @@ profile = fog_traffic_manager_service.traffic_manager_profiles.create(
         resource_group: '<Resource Group Name>',
         traffic_routing_method: '<Routing Method Name>',
         relative_name: '<Profile Relative Name>',
-        ttl: '<ttl Value>',
+        ttl: '<TTL>',
         protocol: '<Protocol Name>',
         port: '<Port Number>',
         path: '<Path>',
@@ -76,7 +76,7 @@ Get a Traffic Manager Profile object from the get method and then update that Tr
 ```ruby
 profile.update(
               traffic_routing_method: '<Routing Method Name>',
-              ttl: '<ttl Value>',
+              ttl: '<TTL>',
               protocol: '<Protocol Name>',
               port: '<Port Number>',
               path: '<Path>'

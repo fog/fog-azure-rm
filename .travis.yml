@@ -21,7 +21,11 @@ matrix:
     - rvm: jruby-head
 
 notifications:
-  email: false
+  email:
+    recipients:
+      - dev-oneops@confiz.com
+    on_success: always
+    on_failure: always
 
 addons:
   code_climate:

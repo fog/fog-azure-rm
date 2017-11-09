@@ -4,6 +4,7 @@ sudo: false
 before_install:
   - gem install bundler
   - gem update bundler
+  - gem uninstall -aIx nokogiri -i /home/travis/.rvm/gems/ruby-2.4.1@global nokogiri
 
 script: bash ./rake-script.sh
 
@@ -21,7 +22,11 @@ matrix:
     - rvm: jruby-head
 
 notifications:
-  email: false
+  email:
+    recipients:
+      - dev-oneops@confiz.com
+    on_success: always
+    on_failure: always
 
 addons:
   code_climate:

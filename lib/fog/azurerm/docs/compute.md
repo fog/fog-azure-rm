@@ -69,7 +69,7 @@ fog_compute_service.servers.create(
 ### Virtual Machine (Unmanaged OS Disk)
 
 ```ruby
-    fog_compute_service.servers.create(
+fog_compute_service.servers.create(
         name: '<VM Name>',
         location: '<Location>',
         resource_group: '<Resource Group Name>',
@@ -89,7 +89,7 @@ fog_compute_service.servers.create(
         vhd_path: '<Path of VHD>',                        # [Optional], if you want to create the VM from a custom image.
         custom_data: '<Custom Data Value>',               # [Optional], if you want to add custom data in this VM.
         os_disk_size: <Disk Size>                         # [Optional], size of the os disk in GB (upto 1023)
-    )
+)
 ```
 
 ## Create Server Asynchronously
@@ -97,7 +97,7 @@ fog_compute_service.servers.create(
 Create a new linux server asynchronously
 
 ```ruby
-    async_response = fog_compute_service.servers.create_async(
+async_response = fog_compute_service.servers.create_async(
         name: '<VM Name>',
         location: '<Location>',
         resource_group: '<Resource Group Name>',
@@ -119,7 +119,7 @@ Create a new linux server asynchronously
         os_disk_caching: '<Caching Type>',                   # [Optional], can be one of None, ReadOnly, ReadWrite
         managed_disk_storage_type: '<Storage Account Type>', # [Optional], can be StandardLRS or PremiumLRS
         os_disk_size: <Disk Size>                            # [Optional], size of the os disk in GB (upto 1023)
-    )
+)
 ```
 Following methods are available to handle async respoonse:
 - state

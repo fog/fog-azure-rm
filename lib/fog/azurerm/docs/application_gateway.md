@@ -27,6 +27,7 @@ fog_application_gateway_service = Fog::ApplicationGateway::AzureRM.new(
 
 ```ruby
 fog_application_gateway_service.gateways.check_application_gateway_exists('<Resource Group Name>', '<Gateway Name>')
+
 ```
 
 ## Create Application Gateway
@@ -35,6 +36,7 @@ Create a new Application Gateway.
 
 ```ruby
 gateway = fog_application_gateway_service.gateways.create(
+
         name: '<Gateway Name>',
         location: '<Location>',
         resource_group: '<Resource Group name>',
@@ -168,6 +170,7 @@ ag.update_sku('<SKU Name>', '<SKU Capacity>')
 
 ## Update gateway IP configuration (Subnet Id) 
 
+
 ```ruby
 ag.update_gateway_ip_configuration('/subscriptions/<Subscription Id>/<Resource Group Name>/<Gateway Name>/providers/Microsoft.Network/virtualNetworks/<Virtual Network Name>/subnets/<Subnet Name>')
 ```
@@ -194,7 +197,7 @@ ag.remove_ssl_certificate(
 )
 ```
 
-## Add/Remove Frontend ports    
+## Add/ Remove Frontend ports    
 
 ```ruby
 ag.add_frontend_port({name: '<Frontend Port Name>', port: <Port Number>})
@@ -202,7 +205,7 @@ ag.add_frontend_port({name: '<Frontend Port Name>', port: <Port Number>})
 ag.remove_frontend_port({name: '<Frontend Port Name>', port: <Port Number>})
 ```
 
-## Add/Remove Probes    
+## Add/ Remove Probes    
 
 ```ruby
 ag.add_probe(

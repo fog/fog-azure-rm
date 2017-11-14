@@ -14,18 +14,18 @@ require 'fog/azurerm'
 Next, create a connection to the Key Vault Service:
 
 ```ruby
-azure_key_vault_service = Fog::KeyVault::AzureRM.new(
-        tenant_id: '<Tenantid>',                  # Tenant id of Azure Active Directory Application
-        client_id:    '<Clientid>',               # Client id of Azure Active Directory Application
-        client_secret: '<ClientSecret>',          # Client Secret of Azure Active Directory Application
-        subscription_id: '<Subscriptionid>'       # Subscription id of an Azure Account
+fog_key_vault_service = Fog::KeyVault::AzureRM.new(
+        tenant_id: '<Tenant Id>',                  # Tenant Id of Azure Active Directory Application
+        client_id:    '<Client Id>',               # Client Id of Azure Active Directory Application
+        client_secret: '<Client Secret>',          # Client Secret of Azure Active Directory Application
+        subscription_id: '<Subscription Id>'       # Subscription Id of an Azure Account
 )
 ```
 
 ## Check Vault Existence
 
 ```ruby
- azure_key_vault_service.vaults.check_vault_exists('<Resource Group Name>', '<Vault Name>')
+ fog_key_vault_service.vaults.check_vault_exists('<Resource Group Name>', '<Vault Name>')
 ```
 
 ## Create Vault
@@ -33,7 +33,7 @@ azure_key_vault_service = Fog::KeyVault::AzureRM.new(
 Create a new Vault.
 
 ```ruby
-vault = azure_key_vault_service.vaults.create(
+vault = fog_key_vault_service.vaults.create(
         name: '<Vault Name>',
         location: '<Location>',
         resource_group: '<Resource Group Name>',
@@ -62,7 +62,7 @@ vault = azure_key_vault_service.vaults.create(
 List all vaults in a resource group
 
 ```ruby
-vaults = azure_key_vault_service.vaults(resource_group: '<Resource Group Name>')
+vaults = fog_key_vault_service.vaults(resource_group: '<Resource Group Name>')
 vaults.each do |vault|
       puts "#{vault.name}"
 end
@@ -73,7 +73,7 @@ end
 Get a single record of Vault
 
 ```ruby
-vault = azure_key_vault_service
+vault = fog_key_vault_service
                        .vaults
                        .get('<Resource Group Name>', '<Vault Name>')
 puts "#{vault.name}"

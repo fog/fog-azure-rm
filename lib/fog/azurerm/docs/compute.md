@@ -15,26 +15,26 @@ require 'fog/azurerm'
 Next, create a connection to the Compute Service:
 
 ```ruby
-azure_compute_service = Fog::Compute::AzureRM.new(
-      tenant_id:        '<Tenantid>',                                                             # Tenant id of Azure Active Directory Application
-      client_id:        '<Clientid>',                                                             # Client id of Azure Active Directory Application
-      client_secret:    '<ClientSecret>',                                                         # Client Secret of Azure Active Directory Application
-      subscription_id:  '<Subscriptionid>',                                                       # Subscription id of an Azure Account
-      environment:      '<AzureCloud/ AzureChinaCloud/ AzureUSGovernment/ AzureGermanCloud>'      # Azure cloud environment. Default is AzureCloud.
+fog_compute_service = Fog::Compute::AzureRM.new(
+      tenant_id:        '<Tenant Id>',                                                             # Tenant Id of Azure Active Directory Application
+      client_id:        '<Client Id>',                                                             # Client Id of Azure Active Directory Application
+      client_secret:    '<Client Secret>',                                                         # Client Secret of Azure Active Directory Application
+      subscription_id:  '<Subscription Id>',                                                       # Subscription Id of an Azure Account
+      environment:      '<AzureCloud/AzureChinaCloud/AzureUSGovernment/AzureGermanCloud>'          # Azure cloud environment. Default is AzureCloud.
 )
 ```
 
 ## Check Server Existence
 
 ```ruby
-azure_compute_service.servers.check_vm_exists('<Resource Group Name>', '<VM Name>')
+fog_compute_service.servers.check_vm_exists('<Resource Group Name>', '<VM Name>')
 ```
 
 ## Create Server
 
 **Info:**
 
-- Attribute **network_interface_card_ids** is an array of NICs ids. The NIC id at index zero will become primary NIC of this server (virtual machine) by default.
+- Attribute **network_interface_card_ids** is an array of NICs Ids. The NIC Id at index zero will become primary NIC of this server (virtual machine) by default.
 - To create VM with managed OS disk, use the _managed_disk_storage_type_ argument
 - To create VM with unmanaged OS disk, use the _storage_account_name_ argument
 
@@ -42,14 +42,14 @@ azure_compute_service.servers.check_vm_exists('<Resource Group Name>', '<VM Name
 ### Virtual Machine (Managed OS Disk)
 
 ```ruby
-azure_compute_service.servers.create(
+fog_compute_service.servers.create(
         name: '<VM Name>',
         location: '<Location>',
         resource_group: '<Resource Group Name>',
 	tags: { key1: 'value1', key2: 'value2', keyN: 'valueN' },
         vm_size: '<Virtual Machine Size>',
-        username: '<Username for VM>',
-        disable_password_authentication: <True/ False>,
+        username: '<Username>',
+        disable_password_authentication: <True/False>,
         network_interface_card_ids: ['/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/networkInterfaces/<Network Interface Id>'],
         publisher: '<Publisher Name>',                          # Not required if custom image is being used 
         offer: '<Offer Name>',                                  # Not required if custom image is being used
@@ -57,7 +57,7 @@ azure_compute_service.servers.create(
         version: '<Version>',                                   # Not required if custom image is being used
         platform: '<OS Type>',
         availability_set_id: '<Availability Set Id>',           # [Optional]
-        password: '<Password for VM>',                          # [Optional], if 'platform' partameter is 'Linux'.
+        password: '<Password>',                                 # [Optional], if 'platform' partameter is 'Linux'.
         vhd_path: '<Path of VHD>',                              # [Optional], if you want to create the VM from a custom image.
         custom_data: '<Custom Data Value>',                     # [Optional], if you want to add custom data in this VM.
         os_disk_caching: '<Caching Type>',                      # [Optional], can be one of None, ReadOnly, ReadWrite
@@ -69,16 +69,16 @@ azure_compute_service.servers.create(
 ### Virtual Machine (Unmanaged OS Disk)
 
 ```ruby
-    azure_compute_service.servers.create(
+fog_compute_service.servers.create(
         name: '<VM Name>',
         location: '<Location>',
         resource_group: '<Resource Group Name>',
 	tags: { key1: 'value1', key2: 'value2', keyN: 'valueN' },
         vm_size: '<Virtual Machine Size>',
         storage_account_name: '<Storage Account Name>',
-        username: '<Username for VM>',
-        password: '<Password for VM>',
-        disable_password_authentication: <True/ False>,
+        username: '<Username>',
+        password: '<Password>',
+        disable_password_authentication: <True/False>,
         network_interface_card_ids: ['/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/networkInterfaces/<Network Interface Id>'],
         publisher: '<Publisher Name>',                    # Not required if custom image is being used
         offer: '<Offer Name>',                            # Not required if custom image is being used  
@@ -89,7 +89,7 @@ azure_compute_service.servers.create(
         vhd_path: '<Path of VHD>',                        # [Optional], if you want to create the VM from a custom image.
         custom_data: '<Custom Data Value>',               # [Optional], if you want to add custom data in this VM.
         os_disk_size: <Disk Size>                         # [Optional], size of the os disk in GB (upto 1023)
-    )
+)
 ```
 
 ## Create Server Asynchronously
@@ -97,7 +97,7 @@ azure_compute_service.servers.create(
 Create a new linux server asynchronously
 
 ```ruby
-    async_response = azure_compute_service.servers.create_async(
+async_response = fog_compute_service.servers.create_async(
         name: '<VM Name>',
         location: '<Location>',
         resource_group: '<Resource Group Name>',
@@ -105,7 +105,7 @@ Create a new linux server asynchronously
         vm_size: '<Virtual Machine Size>',
         storage_account_name: '<Storage Account Name>',
         username: '<Username for VM>',
-        disable_password_authentication: <True/ False>,
+        disable_password_authentication: <True/False>,
         network_interface_card_ids: ['/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/networkInterfaces/<Network Interface Id>'],
         publisher: '<Publisher Name>',                       # Not required if custom image is being used 
         offer: '<Offer Name>',                               # Not required if custom image is being used
@@ -113,13 +113,13 @@ Create a new linux server asynchronously
         version: '<Version>' ,                               # Not required if custom image is being used
         platform: '<OS Type>', 
         availability_set_id: '<Availability Set Id>',        # [Optional]
-        password: '<Password for VM>',                       # [Optional], if 'platform' partameter is 'Linux'.
+        password: '<Password>',                              # [Optional], if 'platform' partameter is 'Linux'.
         vhd_path: '<Path of VHD>',                           # [Optional], if you want to create the VM from a custom image.
         custom_data: '<Custom Data Value>',                  # [Optional], if you want to add custom data in this VM.
         os_disk_caching: '<Caching Type>',                   # [Optional], can be one of None, ReadOnly, ReadWrite
         managed_disk_storage_type: '<Storage Account Type>', # [Optional], can be StandardLRS or PremiumLRS
         os_disk_size: <Disk Size>                            # [Optional], size of the os disk in GB (upto 1023)
-    )
+)
 ```
 Following methods are available to handle async respoonse:
 - state
@@ -158,7 +158,7 @@ For more information about custom_data, see link: https://msdn.microsoft.com/en-
 List servers in a resource group
 
 ```ruby
-servers  = azure_compute_service.servers(resource_group: '<Resource Group Name>')
+servers  = fog_compute_service.servers(resource_group: '<Resource Group Name>')
 servers.each do |server|
         puts "#{server.name}"
         puts "#{server.location}"
@@ -170,7 +170,7 @@ end
 Get a single record of Server
 
 ```ruby
-server = azure_compute_service
+server = fog_compute_service
                   .servers(resource_group: '<Resource Group Name>')
                   .get('<Resource Group Name>', 'Server Name>')
 puts "#{server.name}"
@@ -181,7 +181,7 @@ puts "#{server.name}"
 Check the status of a Server
 
 ```ruby 
-status = azure_compute_service
+status = fog_compute_service
                       .servers
                       .get('<Resource Group Name>', '<Server Name>')
                       .vm_status
@@ -201,7 +201,7 @@ server.destroy
 Get the server object and attach a Data Disk to it. The data disk attached is blob based.
 
 ```ruby
-server.attach_data_disk('<Disk Name>', <Size In GB>, '<Storage Account Name>')
+server.attach_data_disk('<Disk Name>', <Size in GBs>, '<Storage Account Name>')
 ```
 
 ## Detach a Data Disk from Server
@@ -217,12 +217,12 @@ server.detach_data_disk('<Disk Name>')
 Create a new Premium Managed Disk
 
 ```ruby
-azure_compute_service.managed_disks.create(
+fog_compute_service.managed_disks.create(
         name: '<Disk Name>',
         location: '<Location>',
         resource_group_name: '<Resource Group Name>',
         account_type: '<Storage Account Type>',
-        disk_size_gb: <Disk Size In GBs>,
+        disk_size_gb: <Disk Size in GBs>,
         creation_data: {
             create_option: '<Create Option Value>'
         }
@@ -232,12 +232,12 @@ azure_compute_service.managed_disks.create(
 Create a new Standard Managed Disk
 
 ```ruby
-azure_compute_service.managed_disks.create(
+fog_compute_service.managed_disks.create(
         name: '<Disk Name>',
         location: '<Location>',
         resource_group_name: '<Resource Group Name>',
         account_type: '<Storage Account Type>',
-        disk_size_gb: <Disk Size In GBs>,
+        disk_size_gb: <Disk Size in GBs>,
         creation_data: {
             create_option: '<Create Option Value>'
         }
@@ -265,7 +265,7 @@ server.detach_managed_disk('<Disk Name>')
 List managed disks in a resource group
 
 ```ruby
-managed_disks  = azure_compute_service.managed_disks(resource_group: '<Resource Group Name>')
+managed_disks  = fog_compute_service.managed_disks(resource_group: '<Resource Group Name>')
 mnaged_disks.each do |disk|
       puts "#{disk.name}"
       puts "#{disk.location}"
@@ -277,7 +277,7 @@ end
 List managed disks in a subscription
 
 ```ruby
-azure_compute_service.managed_disks.each do |disk|
+fog_compute_service.managed_disks.each do |disk|
      puts "#{disk.name}"
      puts "#{disk.location}"
 end
@@ -288,7 +288,7 @@ end
 Grant access to a managed disk
 
 ```ruby
-access_sas = azure_compute_service.managed_disks.grant_access('<Resource Group Name>', '<Disk Name>', '<Access Type>', <Duration In Seconds>)
+access_sas = fog_compute_service.managed_disks.grant_access('<Resource Group Name>', '<Disk Name>', '<Access Type>', <Duration in Seconds>)
 puts "Access SAS: #{access_sas}"
 ```
 
@@ -297,14 +297,14 @@ puts "Access SAS: #{access_sas}"
 Revoke access from a managed disk
 
 ```ruby
-response = azure_compute_service.managed_disks.revoke_access('<Resource Group Name>', '<Disk Name>')
+response = fog_compute_service.managed_disks.revoke_access('<Resource Group Name>', '<Disk Name>')
 puts "Revoke Access response status: #{response.status}"
 ```
 
 ## Check Managed Disk Existence
 
 ```ruby
-azure_compute_service.managed_disks.check_managed_disk_exists('<Resource Group Name>', '<Disk Name>')
+fog_compute_service.managed_disks.check_managed_disk_exists('<Resource Group Name>', '<Disk Name>')
 ```
 
 ## Retrieve a single Managed Disk
@@ -312,7 +312,7 @@ azure_compute_service.managed_disks.check_managed_disk_exists('<Resource Group N
 Get a single record of managed disks
 
 ```ruby
-managed_disk = azure_compute_service
+managed_disk = fog_compute_service
                        .managed_disks
                        .get('<Resource Group Name>', '<Disk Name>')
 puts "#{managed_disk.name}"
@@ -329,7 +329,7 @@ managed_disk.destroy
 ## Check Availability Set Existence
 
 ```ruby
-azure_compute_service.availability_sets.check_availability_set_exists('<Resource Group Name>', '<Availability Set Name>')
+fog_compute_service.availability_sets.check_availability_set_exists('<Resource Group Name>', '<Availability Set Name>')
 ```
 
 ## Create Availability Set
@@ -337,12 +337,12 @@ azure_compute_service.availability_sets.check_availability_set_exists('<Resource
 Create a new availability set
 
 ```ruby
-azure_compute_service.availability_sets.create(
+fog_compute_service.availability_sets.create(
     name: '<Availability Set Name>',
     location: '<Location>',
     resource_group: '<Resource Group Name>'
-    platform_fault_domain_count: <No Of Fault Domains>,     # [Optional] Default => 2
-    platform_update_domain_count: <No Of Update Domains>,   # [Optional] Default => 5
+    platform_fault_domain_count: <No of Fault Domains>,     # [Optional] Default => 2
+    platform_update_domain_count: <No of Update Domains>,   # [Optional] Default => 5
     use_managed_disk: true                                  # [Optional] Possible values true or false
 )
 ```
@@ -351,7 +351,7 @@ azure_compute_service.availability_sets.create(
 List availability sets in a resource group
 
 ```ruby
-availability_sets  = azure_compute_service.availability_sets(resource_group: '<Resource Group Name>')
+availability_sets  = fog_compute_service.availability_sets(resource_group: '<Resource Group Name>')
 availability_sets.each do |availability_set|
      puts "#{availability_set.name}"
      puts "#{availability_set.location}"
@@ -363,7 +363,7 @@ end
 Get a single record of Availability Set
 
 ```ruby
-availability_set = azure_compute_service
+availability_set = fog_compute_service
                         .availability_sets
                         .get('<Resource Group Name>','<Availability Set Name>')
 puts "#{availability_set.name}"
@@ -380,7 +380,7 @@ availability_set.destroy
 ## Check Virtual Machine Extension Existence
 
 ```ruby
-azure_compute_service.virtual_machine_extensions.check_vm_extension_exists('<Resource Group Name>', '<Virtual Machine Name>', '<Extension Name>')
+fog_compute_service.virtual_machine_extensions.check_vm_extension_exists('<Resource Group Name>', '<Virtual Machine Name>', '<Extension Name>')
 ```
 
 ## Create Virtual Machine Extension
@@ -388,7 +388,7 @@ azure_compute_service.virtual_machine_extensions.check_vm_extension_exists('<Res
 Installs an extension to the specified virtual machine.
 
 ```ruby
-azure_compute_service.virtual_machine_extensions.create(
+fog_compute_service.virtual_machine_extensions.create(
         name: '<Extension Name>',
         resource_group: '<Resource Group Name>',
         location: '<Location>',
@@ -398,7 +398,7 @@ azure_compute_service.virtual_machine_extensions.create(
         type_handler_version: '<Extension Version>',
         settings: {JSON object},                      # Format: {"key": "value", "key": {"key": "value"}}
         protected_settings: {JSON object},
-        auto_upgrade_minor_version: <True/ False> ,   # Optional
+        auto_upgrade_minor_version: <True/False> ,   # Optional
 )
 ```
 
@@ -407,7 +407,7 @@ azure_compute_service.virtual_machine_extensions.create(
 Retrieves the given extension from the virtual machine
 
 ```ruby
-vm_extension = azure_compute_service.virtual_machine_extensions.get(
+vm_extension = fog_compute_service.virtual_machine_extensions.get(
         '<Resource Group Name>', '<Virtual Machine Name>', '<Extension Name>'
 )
 ```
@@ -421,7 +421,7 @@ Update the given extension. The attributes that can be modified are
 
 ```ruby
 vm_extension.update(
-        auto_upgrade_minor_version: <True/ False>,
+        auto_upgrade_minor_version: <True/False>,
         settings: {JSON object},
         protected_settings: {JSON object}
 )

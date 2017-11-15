@@ -166,3 +166,13 @@ def parse_storage_object(object)
   data['etag'].delete!('"')
   data
 end
+
+def check_resource_existence_exception(azure_operation_error)
+  unless azure_operation_error.response['status'] != HTTP_NOT_FOUND
+    if azure_operation_error.body['code']
+      !(azure_operation_error.body['code'] == ERROR_CODE_NOT_FOUND)
+    else
+      !(azure_operation_error.body['error']['code'] == ERROR_CODE_NOT_FOUND || azure_operation_error.body['error']['code'] == ERROR_CODE_RESOURCE_GROUP_NOT_FOUND || azure_operation_error.body['error']['code'] == ERROR_CODE_RESOURCE_NOT_FOUND)
+    end
+  end
+end

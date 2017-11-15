@@ -11,11 +11,11 @@ module Fog
             Fog::Logger.debug "Traffic Manager Endpoint #{traffic_manager_end_point} exists."
             true
           rescue MsRestAzure::AzureOperationError => e
-            if e.body['code'] == 'NotFound'
-              Fog::Logger.debug "Traffic Manager Endpoint #{traffic_manager_end_point} doesn't exist."
-              false
-            else
+            if check_resource_existence_exception(e)
               raise_azure_exception(e, msg)
+            else
+              Fog::Logger.debug "Traffic Manager Endpoint #{traffic_manager_end_point} doesn't exist."
+              return false
             end
           end
         end

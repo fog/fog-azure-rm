@@ -9,11 +9,11 @@ module Fog
           begin
             storage_account = @storage_mgmt_client.storage_accounts.get_properties(resource_group_name, storage_account_name)
           rescue MsRestAzure::AzureOperationError => e
-            if e.body['error']['code'] == 'ResourceNotFound'
+            if check_resource_existence_exception(e)
+              raise_azure_exception(e, msg)
+            else
               Fog::Logger.debug "Storage Account #{storage_account_name} doesn't exist."
               return false
-            else
-              raise_azure_exception(e, msg)
             end
           end
 

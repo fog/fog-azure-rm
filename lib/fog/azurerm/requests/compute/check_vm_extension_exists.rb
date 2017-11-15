@@ -11,11 +11,11 @@ module Fog
             Fog::Logger.debug "Virtual Machine Extension #{vm_extension_name} exists."
             true
           rescue MsRestAzure::AzureOperationError => e
-            if e.body['error']['code'] == 'ResourceNotFound'
-              Fog::Logger.debug "Virtual machine #{vm_extension_name} doesn't exist."
-              false
-            else
+            if check_resource_existence_exception(e)
               raise_azure_exception(e, msg)
+            else
+              Fog::Logger.debug "Virtual Machine Extension #{vm_extension_name} doesn't exist."
+              false
             end
           end
         end

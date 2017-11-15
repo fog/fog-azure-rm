@@ -34,6 +34,7 @@ ENVIRONMENT_AZURE_GERMAN_CLOUD = 'AzureGermanCloud'.freeze
 # MsRestAzure::AzureOperationError class Error Codes
 ERROR_CODE_RESOURCE_NOT_FOUND = 'ResourceNotFound'.freeze
 ERROR_CODE_NOT_FOUND = 'NotFound'.freeze
+ERROR_CODE_RESOURCE_GROUP_NOT_FOUND = 'ResourceGroupNotFound'.freeze
 
 PLATFORM_LINUX = 'linux'.freeze
 
@@ -65,3 +66,5 @@ AS_SKU_ALIGNED = 'Aligned'.freeze
 # The tag key and tag value for creating a temporary storage account for generalized image
 TEMPORARY_STORAGE_ACCOUNT_TAG_KEY = 'generalized_image'.freeze
 TEMPORARY_STORAGE_ACCOUNT_TAG_VALUE = 'delete'.freeze
+
+HTTP_NOT_FOUND = 404

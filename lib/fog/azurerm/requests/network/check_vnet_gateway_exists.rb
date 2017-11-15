@@ -11,11 +11,11 @@ module Fog
             Fog::Logger.debug "Virtual Network Gateway #{network_gateway_name} exists."
             true
           rescue MsRestAzure::AzureOperationError => e
-            if e.body['error']['code'] == 'ResourceNotFound'
+            if check_resource_existence_exception(e)
+              raise_azure_exception(e, msg)
+            else
               Fog::Logger.debug "Virtual Network Gateway #{network_gateway_name} doesn't exist."
               false
-            else
-              raise_azure_exception(e, msg)
             end
           end
         end

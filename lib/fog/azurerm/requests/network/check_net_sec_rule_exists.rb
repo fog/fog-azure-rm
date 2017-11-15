@@ -11,11 +11,11 @@ module Fog
             Fog::Logger.debug "Network Security Rule #{security_rule_name} exists."
             true
           rescue MsRestAzure::AzureOperationError => e
-            if !e.body['error'].nil? && (e.body['error']['code'] == ERROR_CODE_RESOURCE_NOT_FOUND || e.body['error']['code'] == ERROR_CODE_NOT_FOUND)
+            if check_resource_existence_exception(e)
+              raise_azure_exception(e, msg)
+            else
               Fog::Logger.debug "Network Security Rule #{security_rule_name} doesn't exist."
               false
-            else
-              raise_azure_exception(e, msg)
             end
           end
         end

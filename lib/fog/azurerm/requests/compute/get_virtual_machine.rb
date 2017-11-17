@@ -1,4 +1,4 @@
-INSTANCE_VIEW = 'instanceView'
+INSTANCE_VIEW = 'instanceView'.freeze
 
 module Fog
   module Compute

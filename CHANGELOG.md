@@ -1,3 +1,11 @@
+## 0.3.8
+
+**Changed:**
+- Updated documentation
+
+**Fixed:**
+- Compute Service - Fixed issue with fault/update domain not populating
+
 ## 0.3.7
 
 **Fixed:**

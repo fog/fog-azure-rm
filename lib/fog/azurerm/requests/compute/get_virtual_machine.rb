@@ -1,3 +1,5 @@
+INSTANCE_VIEW = 'instanceView'
+
 module Fog
   module Compute
     class AzureRM
@@ -8,9 +10,9 @@ module Fog
           Fog::Logger.debug msg
           begin
             if async
-              response = @compute_mgmt_client.virtual_machines.get_async(resource_group, name, 'instanceView')
+              response = @compute_mgmt_client.virtual_machines.get_async(resource_group, name, INSTANCE_VIEW)
             else
-              response = @compute_mgmt_client.virtual_machines.get(resource_group, name, 'instanceView')
+              response = @compute_mgmt_client.virtual_machines.get(resource_group, name, INSTANCE_VIEW)
             end
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)

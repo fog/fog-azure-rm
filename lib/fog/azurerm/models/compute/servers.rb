@@ -19,7 +19,7 @@ module Fog
         def create_async(attributes = {})
           server = new(attributes)
           promise = server.save(true)
-          Fog::AzureRM::AsyncResponse.new(server, promise, true)
+          Fog::AzureRM::AsyncResponse.new(server, promise, true, 'update_attributes')
         end
 
         def get(resource_group_name, virtual_machine_name, async = false)

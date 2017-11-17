@@ -108,6 +108,7 @@ module Fog
             service.create_virtual_machine(virtual_machine_params(ssh_key_path), true)
           else
             vm = service.create_virtual_machine(virtual_machine_params(ssh_key_path))
+            vm = service.get_virtual_machine(resource_group, name, false)
             merge_attributes(Fog::Compute::AzureRM::Server.parse(vm))
           end
         end
@@ -181,6 +182,11 @@ module Fog
             service.delete_generalized_image(resource_group, name)
             delete_storage_account_or_container(resource_group, storage_account_name, name)
           end
+        end
+
+        def update_attributes
+          vm = service.get_virtual_machine(resource_group, name, false)
+          merge_attributes(Fog::Compute::AzureRM::Server.parse(vm))
         end
 
         private

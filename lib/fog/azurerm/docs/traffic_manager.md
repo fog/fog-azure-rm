@@ -14,19 +14,19 @@ require 'fog/azurerm'
 Next, create a connection to the Traffic Manager Service:
 
 ```ruby
-azure_traffic_manager_service = Fog::TrafficManager::AzureRM.new(
-      tenant_id:        '<Tenantid>',                                                          # Tenant id of Azure Active Directory Application
-      client_id:        '<Clientid>',                                                          # Client id of Azure Active Directory Application
-      client_secret:    '<ClientSecret>',                                                      # Client Secret of Azure Active Directory Application
-      subscription_id:  '<Subscriptionid>',                                                    # Subscription id of an Azure Account
-      environment:      '<AzureCloud/ AzureChinaCloud/ AzureUSGovernment/ AzureGermanCloud>'   # Azure cloud environment. Default is AzureCloud.
+fog_traffic_manager_service = Fog::TrafficManager::AzureRM.new(
+      tenant_id:        '<Tenant Id>',                                                          # Tenant Id of Azure Active Directory Application
+      client_id:        '<Client Id>',                                                          # Client Id of Azure Active Directory Application
+      client_secret:    '<Client Secret>',                                                      # Client Secret of Azure Active Directory Application
+      subscription_id:  '<Subscription Id>',                                                    # Subscription Id of an Azure Account
+      environment:      '<AzureCloud/AzureChinaCloud/AzureUSGovernment/AzureGermanCloud>'       # Azure cloud environment. Default is AzureCloud.
 )
 ```
 
 ## Check Traffic Manager Profile Existence
 
 ```ruby
-azure_traffic_manager_service.traffic_manager_profiles.check_traffic_manager_profile_exists('<Resource Group Name>', '<Profile Name>')
+fog_traffic_manager_service.traffic_manager_profiles.check_traffic_manager_profile_exists('<Resource Group Name>', '<Profile Name>')
 ```
 
 ## Create Traffic Manager Profile
@@ -34,12 +34,12 @@ azure_traffic_manager_service.traffic_manager_profiles.check_traffic_manager_pro
 Create a new Traffic Manager Profile. The parameter 'traffic_routing_method' can be 'Performance', 'Weighted' or 'Priority'.
 
 ```ruby
-profile = azure_traffic_manager_service.traffic_manager_profiles.create(
+profile = fog_traffic_manager_service.traffic_manager_profiles.create(
         name: '<Profile Name>',
         resource_group: '<Resource Group Name>',
         traffic_routing_method: '<Routing Method Name>',
         relative_name: '<Profile Relative Name>',
-        ttl: '<ttl Value>',
+        ttl: '<TTL>',
         protocol: '<Protocol Name>',
         port: '<Port Number>',
         path: '<Path>',
@@ -52,7 +52,7 @@ profile = azure_traffic_manager_service.traffic_manager_profiles.create(
 List Traffic Manager Profiles in a resource group
 
 ```ruby
-profiles  = azure_traffic_manager_service.traffic_manager_profiles(resource_group: '<Resource Group Name>')
+profiles  = fog_traffic_manager_service.traffic_manager_profiles(resource_group: '<Resource Group Name>')
 profiles.each do |profile|
     puts "#{profile.name}"
 end
@@ -63,7 +63,7 @@ end
 Get a single record of Traffic Manager Profile
 
 ```ruby
-profile = azure_traffic_manager_service
+profile = fog_traffic_manager_service
              .traffic_manager_profiles
              .get('<Resource Group Name>', '<Profile Name>')
 puts "#{profile.name}"
@@ -76,7 +76,7 @@ Get a Traffic Manager Profile object from the get method and then update that Tr
 ```ruby
 profile.update(
               traffic_routing_method: '<Routing Method Name>',
-              ttl: '<ttl Value>',
+              ttl: '<TTL>',
               protocol: '<Protocol Name>',
               port: '<Port Number>',
               path: '<Path>'
@@ -122,7 +122,7 @@ endpoint = azure_network_service.traffic_manager_end_points.create(
 List Traffic Manager Endpoints in a resource group.
 
 ```ruby
-endpoints  = azure_traffic_manager_service.traffic_manager_end_points(resource_group: '<Resource Group Name>', traffic_manager_profile_name: '<Profile Name>')
+endpoints  = fog_traffic_manager_service.traffic_manager_end_points(resource_group: '<Resource Group Name>', traffic_manager_profile_name: '<Profile Name>')
 endpoints.each do |endpoint|
    puts "#{endpoint.name}"
 end
@@ -133,7 +133,7 @@ end
 Get a single Traffic Manager Endpoint.
 
 ```ruby
-endpoint = azure_traffic_manager_service
+endpoint = fog_traffic_manager_service
                  .traffic_manager_end_points
                  .get('<Resource Group Name>', '<Profile Name>', '<Endpoint name>', '<Endpoint Type>')
 puts "#{endpoint.name}"

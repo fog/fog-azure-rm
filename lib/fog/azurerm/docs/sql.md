@@ -15,12 +15,12 @@ require 'fog/azurerm'
 Next, create a connection to the SQL Service:
 
 ```ruby
-azure_sql_service = Fog::Sql::AzureRM.new(
-      tenant_id:        '<Tenantid>',                                                      # Tenant id of Azure Active Directory Application
-      client_id:        '<Clientid>',                                                      # Client id of Azure Active Directory Application
-      client_secret:    '<ClientSecret>',                                                  # Client Secret of Azure Active Directory Application
-      subscription_id:  '<Subscriptionid>',                                                # Subscription id of an Azure Account
-      environment:      '<AzureCloud/AzureChinaCloud/AzureUSGovernment/AzureGermanCloud>'  # Azure cloud environment. Default is AzureCloud.
+fog_sql_service = Fog::Sql::AzureRM.new(
+      tenant_id:        '<Tenant Id>',                                                      # Tenant Id of Azure Active Directory Application
+      client_id:        '<Client Id>',                                                      # Client Id of Azure Active Directory Application
+      client_secret:    '<Client Secret>',                                                  # Client Secret of Azure Active Directory Application
+      subscription_id:  '<Subscription Id>',                                                # Subscription Id of an Azure Account
+      environment:      '<AzureCloud/AzureChinaCloud/AzureUSGovernment/AzureGermanCloud>'   # Azure cloud environment. Default is AzureCloud.
 )
 ```
 
@@ -32,7 +32,7 @@ The _server-name_ and _database-name_ value must be set using all lowercase ANSI
 Create a new Server
 
 ```ruby
-azure_sql_service.sql_servers.create(
+fog_sql_service.sql_servers.create(
         name: '<Unique Server Name>',
         resource_group: '<Resource Group Name>',
         location: '<Location>',
@@ -47,7 +47,7 @@ For more information, see link: https://msdn.microsoft.com/en-us/library/azure/m
 ## List SQL Servers
 Get a list of servers in given resource group
 ```ruby
-servers  = azure_sql_service.sql_servers(resource_group: '<Resource Group Name>')
+servers  = fog_sql_service.sql_servers(resource_group: '<Resource Group Name>')
 servers.each do |server|
     puts "Listing : #{server.name}"
 end
@@ -58,7 +58,7 @@ end
 Get a single record of SQL Server
 
 ```ruby
-server = azure_sql_service.sql_servers
+server = fog_sql_service.sql_servers
               .get('<Resource Group Name>', '<Server Name>')
 puts "Server Name: #{server.name}"
 ```
@@ -80,7 +80,7 @@ In parameter _create_mode_: 'Copy', 'NonReadableSecondary', and 'OnlineSecondary
 If parameter _edition_ is set to DataWarehouse, the acceptable values for parameter _requested_service_objective_name_ are: ['DW100', 'DW200', 'DW300', 'DW400', 'DW500', 'DW600', 'DW1000', 'DW1200', 'DW1500', 'DW2000', 'DW3000', 'DW6000'] 
 
 ```ruby
-azure_sql_service.sql_databases.create(
+fog_sql_service.sql_databases.create(
         resource_group: '<Resource Group Name>',
         location: '<Location>',
         server_name: '<Server Name>',
@@ -102,7 +102,7 @@ For more information see link: https://msdn.microsoft.com/en-us/library/azure/mt
 Get a list of databases in given resource group
 
 ```ruby
-databases  = azure_sql_service.sql_databases(resource_group: '<Resource Group Name>', server_name: '<Server Name>')
+databases  = fog_sql_service.sql_databases(resource_group: '<Resource Group Name>', server_name: '<Server Name>')
 databases.each do |database|
    puts "Listing : #{database.name}"
 end
@@ -113,7 +113,7 @@ end
 Get a single record of SQL Database
 
 ```ruby
-database = azure_sql_service.sql_databases
+database = fog_sql_service.sql_databases
                 .get('<Resource Group Name>', '<Server Name>', '<Database Name>')
 puts "Database Name: #{database.name}"
 ```
@@ -131,7 +131,7 @@ database.destroy
 Create a new Firewall Rule
 
 ```ruby
-azure_sql_service.firewall_rules.create(
+fog_sql_service.firewall_rules.create(
         name: '<Firewall Rule Name>',
         resource_group: '<Resource Group Name>',
         server_location: '<Server Name>',
@@ -144,7 +144,7 @@ azure_sql_service.firewall_rules.create(
 ## List Firewall Rules
 Get a list of Firewall Rules on a SQL Server in given resource group
 ```ruby
-firewall_rules  = azure_sql_service.firewall_rules(resource_group: '<Resource Group Name>', server_name: '<Server Name>')
+firewall_rules  = fog_sql_service.firewall_rules(resource_group: '<Resource Group Name>', server_name: '<Server Name>')
 firewall_rules.each do |firewall_rule|
     puts "Listing : #{firewall_rule.name}"
 end
@@ -153,7 +153,7 @@ end
 ## Retrieve a single Firewall Rule
 Get a single record of Firewall rule on SQL Server
 ```ruby
-firewall_rule = azure_sql_service.firewall_rules
+firewall_rule = fog_sql_service.firewall_rules
                    .get('<Resource Group Name>', '<Server Name>', '<Firewall Rule Name>')
 puts "Get: Firewall Rule Name: #{firewall_rule.name}"
 ```

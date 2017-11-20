@@ -9,11 +9,11 @@ module Fog
           begin
             zone = @dns_client.zones.get(resource_group, name)
           rescue MsRestAzure::AzureOperationError => e
-            if check_resource_existence_exception(e)
-              raise_azure_exception(e, msg)
-            else
+            if resource_not_found?(e)
               Fog::Logger.debug "Zone #{name} doesn't exist."
               zone = nil
+            else
+              raise_azure_exception(e, msg)
             end
           rescue => e
             Fog::Logger.debug e[:error][:code]

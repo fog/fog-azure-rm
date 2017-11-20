@@ -13,11 +13,11 @@ module Fog
               @compute_mgmt_client.virtual_machines.get(resource_group, name, 'instanceView')
             end
           rescue MsRestAzure::AzureOperationError => e
-            if check_resource_existence_exception(e)
-              raise_azure_exception(e, msg)
-            else
+            if resource_not_found?(e)
               Fog::Logger.debug "Virtual machine #{name} doesn't exist."
               return false
+            else
+              raise_azure_exception(e, msg)
             end
           end
           if async

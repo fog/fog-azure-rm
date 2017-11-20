@@ -11,11 +11,11 @@ module Fog
             Fog::Logger.debug "Network Interface #{nic_name} exists."
             true
           rescue MsRestAzure::AzureOperationError => e
-            if check_resource_existence_exception(e)
-              raise_azure_exception(e, msg)
-            else
+            if resource_not_found?(e)
               Fog::Logger.debug "Network Interface #{nic_name} doesn't exist."
               false
+            else
+              raise_azure_exception(e, msg)
             end
           end
         end

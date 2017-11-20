@@ -35,6 +35,7 @@ ENVIRONMENT_AZURE_GERMAN_CLOUD = 'AzureGermanCloud'.freeze
 ERROR_CODE_RESOURCE_NOT_FOUND = 'ResourceNotFound'.freeze
 ERROR_CODE_NOT_FOUND = 'NotFound'.freeze
 ERROR_CODE_RESOURCE_GROUP_NOT_FOUND = 'ResourceGroupNotFound'.freeze
+ERROR_CODE_PARENT_RESOURCE_NOT_FOUND = 'ParentResourceNotFound'.freeze
 
 PLATFORM_LINUX = 'linux'.freeze
 

@@ -49,6 +49,10 @@ module ApiStub
                     'id' => '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/networkInterfaces/fogtestnetworkinterface'
                   }
                 ]
+              },
+              'instanceView' => {
+                'platformUpgradeDomain' => 5,
+                'platformFaultDomain' => 2
               }
             }
           }
@@ -100,6 +104,10 @@ module ApiStub
                     'id' => '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/networkInterfaces/fogtestnetworkinterface'
                   }
                 ]
+              },
+              'instanceView' => {
+                'platformUpgradeDomain' => 5,
+                'platformFaultDomain' => 2
               }
             }
           }
@@ -179,6 +187,10 @@ module ApiStub
                     'id' => '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/networkInterfaces/fogtestnetworkinterface'
                   }
                 ]
+              },
+              'instanceView' => {
+                'platformUpgradeDomain' => 5,
+                'platformFaultDomain' => 2
               }
             }
           }
@@ -240,6 +252,10 @@ module ApiStub
                     'id' => '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Network/networkInterfaces/fogtestnetworkinterface'
                   }
                 ]
+              },
+              'instanceView' => {
+                'platformUpgradeDomain' => 5,
+                'platformFaultDomain' => 2
               }
             }
           }

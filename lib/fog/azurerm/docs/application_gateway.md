@@ -14,19 +14,20 @@ require 'fog/azurerm'
 Next, create a connection to the Application Gateway Service:
 
 ```ruby
-azure_application_gateway_service = Fog::ApplicationGateway::AzureRM.new(
-      tenant_id:        '<TenantId>',                                                           # Tenant id of Azure Active Directory Application
-      client_id:        '<ClientId>',                                                           # Client id of Azure Active Directory Application
-      client_secret:    '<ClientSecret>',                                                       # Client Secret of Azure Active Directory Application
-      subscription_id:  '<SubscriptionId>',                                                     # Subscription id of an Azure Account
-      environment:      '<AzureCloud/ AzureChinaCloud/ AzureUSGovernment/ AzureGermanCloud>'    # Azure cloud environment. Default is AzureCloud.
+fog_application_gateway_service = Fog::ApplicationGateway::AzureRM.new(
+      tenant_id:        '<Tenant Id>',                                                           # Tenant Id of Azure Active Directory Application
+      client_id:        '<Client Id>',                                                           # Client Id of Azure Active Directory Application
+      client_secret:    '<Client Secret>',                                                       # Client Secret of Azure Active Directory Application
+      subscription_id:  '<Subscription Id>',                                                     # Subscription Id of an Azure Account
+      environment:      '<AzureCloud/AzureChinaCloud/AzureUSGovernment/AzureGermanCloud>'        # Azure cloud environment. Default is AzureCloud.
 )
 ```
 
 ## Check Application Gateway Existence
 
 ```ruby
-azure_application_gateway_service.gateways.check_application_gateway_exists('<Resource Group Name>', '<Gateway Name>')
+fog_application_gateway_service.gateways.check_application_gateway_exists('<Resource Group Name>', '<Gateway Name>')
+
 ```
 
 ## Create Application Gateway
@@ -34,7 +35,8 @@ azure_application_gateway_service.gateways.check_application_gateway_exists('<Re
 Create a new Application Gateway.
 
 ```ruby
-gateway = azure_application_gateway_service.gateways.create(
+gateway = fog_application_gateway_service.gateways.create(
+
         name: '<Gateway Name>',
         location: '<Location>',
         resource_group: '<Resource Group name>',
@@ -81,7 +83,7 @@ gateway = azure_application_gateway_service.gateways.create(
                     name: '<Gateway Settings Name>',
                     port: <Port Number>,
                     protocol: '<Protocol Name>',
-                    cookie_based_affinity: '<Enabled/ Disabled>',
+                    cookie_based_affinity: '<Enabled/Disabled>',
                     request_timeout: '<Timeout Time>'
                 }
             ],
@@ -93,7 +95,7 @@ gateway = azure_application_gateway_service.gateways.create(
                     frontend_port_id: '/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/applicationGateways/<Gateway Name>/frontendPorts/<Frontend Port Name>',
                     protocol: '<Protocol Name>',
                     host_name: '',
-                    require_server_name_indication: '<True/ False>'
+                    require_server_name_indication: '<True/False>'
                 }
             ],
         request_routing_rules:
@@ -142,7 +144,7 @@ There can be two ways of giving `frontend_ip_configurations` while creating appl
 List all application gateways in a resource group
 
 ```ruby
-gateways = azure_application_gateway_service.gateways(resource_group: '<Resource Group Name>')
+gateways = fog_application_gateway_service.gateways(resource_group: '<Resource Group Name>')
 gateways.each do |gateway|
 	puts "#{gateway.name}"
 end
@@ -153,7 +155,7 @@ end
 Get a single record of Application Gateway
 
 ```ruby
-gateway = azure_application_gateway_service
+gateway = fog_application_gateway_service
                             .gateways
                             .get('<Resource Group Name>', '<Application Gateway Name>')
 puts "#{gateway.name}"
@@ -166,7 +168,8 @@ puts "#{gateway.name}"
 ag.update_sku('<SKU Name>', '<SKU Capacity>')
 ```
 
-## Update gateway IP configuration (Subnet id) 
+## Update gateway IP configuration (Subnet Id) 
+
 
 ```ruby
 ag.update_gateway_ip_configuration('/subscriptions/<Subscription Id>/<Resource Group Name>/<Gateway Name>/providers/Microsoft.Network/virtualNetworks/<Virtual Network Name>/subnets/<Subnet Name>')
@@ -213,7 +216,7 @@ ag.add_probe(
     path: '<Probe Path>',
     interval: <Interval Time>, 
     timeout: <Timeout Time>,
-    unhealthy_threshold: <Threshold Number>
+    unhealthy_threshold: <Threshold Value>
   }
 )
 
@@ -225,7 +228,7 @@ ag.remove__probe(
     path: '<Probe Path>',
     interval: <Interval Time>, 
     timeout: <Timeout Time>,
-    unhealthy_threshold: <Threshold Number>
+    unhealthy_threshold: <Threshold Value>
   }
 )
 ```

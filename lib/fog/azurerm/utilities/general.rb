@@ -167,12 +167,17 @@ def parse_storage_object(object)
   data
 end
 
-def check_resource_existence_exception(azure_operation_error)
-  unless azure_operation_error.response['status'] != HTTP_NOT_FOUND
+def resource_not_found?(azure_operation_error)
+  is_found = false
+  if azure_operation_error.response.status == HTTP_NOT_FOUND
     if azure_operation_error.body['code']
-      !(azure_operation_error.body['code'] == ERROR_CODE_NOT_FOUND)
-    else
-      !(azure_operation_error.body['error']['code'] == ERROR_CODE_NOT_FOUND || azure_operation_error.body['error']['code'] == ERROR_CODE_RESOURCE_GROUP_NOT_FOUND || azure_operation_error.body['error']['code'] == ERROR_CODE_RESOURCE_NOT_FOUND)
+      is_found = azure_operation_error.body['code'] == ERROR_CODE_NOT_FOUND
+    elsif azure_operation_error.body['error']
+      is_found = azure_operation_error.body['error']['code'] == ERROR_CODE_NOT_FOUND ||
+                 azure_operation_error.body['error']['code'] == ERROR_CODE_RESOURCE_GROUP_NOT_FOUND ||
+                 azure_operation_error.body['error']['code'] == ERROR_CODE_RESOURCE_NOT_FOUND ||
+                 azure_operation_error.body['error']['code'] == ERROR_CODE_PARENT_RESOURCE_NOT_FOUND
     end
   end
+  is_found
 end

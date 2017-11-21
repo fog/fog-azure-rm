@@ -40,7 +40,7 @@ module Fog
         def save
           requires :name, :location, :resource_group_name, :creation_data
           requires :disk_size_gb, :account_type
-          validate_creation_data_params(creation_data)
+          validate_creation_data_params(creation_data.is_a?(Hash) ? creation_data : creation_data.attributes)
 
           disk = service.create_or_update_managed_disk(managed_disk_params)
           merge_attributes(Fog::Compute::AzureRM::ManagedDisk.parse(disk))

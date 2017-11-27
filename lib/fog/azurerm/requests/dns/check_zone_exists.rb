@@ -11,7 +11,7 @@ module Fog
           rescue MsRestAzure::AzureOperationError => e
             if resource_not_found?(e)
               Fog::Logger.debug "Zone #{name} doesn't exist."
-              zone = nil
+              return false
             else
               raise_azure_exception(e, msg)
             end

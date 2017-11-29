@@ -16,16 +16,16 @@ class TestCheckManagedDiskExists < Minitest::Test
   end
 
   def test_check_managed_disk_exists_failure
-    response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceNotFound' }) }
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, get_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceNotFound' }) }
     @managed_disks.stub :get, response do
       assert !@service.check_managed_disk_exists('myrg1', 'mydisk1')
     end
   end
 
   def test_check_managed_disk_exists_exception
-    response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceGroupNotFound' }) }
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, get_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceGroupNotFound' }) }
     @managed_disks.stub :get, response do
-      assert_raises(RuntimeError) { @service.check_managed_disk_exists('myrg1', 'mydisk1') }
+      assert !@service.check_managed_disk_exists('myrg1', 'mydisk1')
     end
   end
 end

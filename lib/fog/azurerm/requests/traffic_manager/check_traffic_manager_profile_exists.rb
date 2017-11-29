@@ -11,7 +11,7 @@ module Fog
             Fog::Logger.debug "Traffic Manager Profile #{traffic_manager_profile_name} exists."
             true
           rescue MsRestAzure::AzureOperationError => e
-            if e.body['error']['code'] == 'ResourceNotFound'
+            if resource_not_found?(e)
               Fog::Logger.debug "Traffic Manager Profile #{traffic_manager_profile_name} doesn't exist."
               false
             else

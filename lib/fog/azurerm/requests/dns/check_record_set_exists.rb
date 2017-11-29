@@ -11,7 +11,7 @@ module Fog
             Fog::Logger.debug "Record set #{name} exists."
             true
           rescue MsRestAzure::AzureOperationError => e
-            if e.body['code'] == 'NotFound'
+            if resource_not_found?(e)
               Fog::Logger.debug "Record set #{name} doesn't exist."
               false
             else

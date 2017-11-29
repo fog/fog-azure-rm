@@ -824,3 +824,7 @@ def key_vault(service)
     service: service
   )
 end
+
+def get_mock_response
+  mock_response = Faraday::Response.new({'status' => 404})
+end

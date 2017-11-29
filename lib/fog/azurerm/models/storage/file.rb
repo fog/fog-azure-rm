@@ -1,3 +1,4 @@
+require 'mime-types'
 module Fog
   module Storage
     class AzureRM

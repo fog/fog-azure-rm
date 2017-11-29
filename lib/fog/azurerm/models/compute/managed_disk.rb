@@ -47,8 +47,8 @@ module Fog
           merge_attributes(Fog::Compute::AzureRM::ManagedDisk.parse(disk))
         end
 
-        def destroy
-          service.delete_managed_disk(resource_group_name, name)
+        def destroy(async = false)
+          service.delete_managed_disk(resource_group_name, name, async)
         end
 
         def creation_data=(new_creation_data)

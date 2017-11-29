@@ -21,13 +21,6 @@ matrix:
   allow_failures:
     - rvm: jruby-head
 
-notifications:
-  email:
-    recipients:
-      - dev-oneops@confiz.com
-    on_success: always
-    on_failure: always
-
 addons:
   code_climate:
     repo_token: b1401494baa004d90402414cb33a7fc6420fd3693e60c677a120ddefd7d84cfd

@@ -66,4 +66,10 @@ class TestManagedDisk < Minitest::Test
       assert_instance_of Fog::AzureRM::AsyncResponse, @managed_disk.destroy(true)
     end
   end
+
+  def test_destroy_method_can_take_params_async
+    @service.stub :delete_managed_disk, true do
+      assert @managed_disk.destroy(true)
+    end
+  end
 end

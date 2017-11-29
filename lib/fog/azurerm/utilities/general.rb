@@ -169,10 +169,13 @@ end
 
 def resource_not_found?(azure_operation_error)
   is_found = false
+  puts "HAHAHAHAHAHA #{azure_operation_error.inspect}"
   if azure_operation_error.response.status == HTTP_NOT_FOUND
     if azure_operation_error.body['code']
+      puts "#{azure_operation_error.body['code']}"
       is_found = azure_operation_error.body['code'] == ERROR_CODE_NOT_FOUND
     elsif azure_operation_error.body['error']
+      puts "#{azure_operation_error.body['error']['code']}"
       is_found = azure_operation_error.body['error']['code'] == ERROR_CODE_NOT_FOUND ||
                  azure_operation_error.body['error']['code'] == ERROR_CODE_RESOURCE_GROUP_NOT_FOUND ||
                  azure_operation_error.body['error']['code'] == ERROR_CODE_RESOURCE_NOT_FOUND ||

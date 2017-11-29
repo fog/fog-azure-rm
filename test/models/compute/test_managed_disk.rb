@@ -50,13 +50,19 @@ class TestManagedDisk < Minitest::Test
 
   def test_destroy_method_true_response
     @service.stub :delete_managed_disk, true do
-      assert @managed_disk.destroy
+      assert @managed_disk.destroy(false)
     end
   end
 
   def test_destroy_method_false_response
     @service.stub :delete_managed_disk, false do
-      assert !@managed_disk.destroy
+      assert !@managed_disk.destroy(false)
+    end
+  end
+
+  def test_destroy_method_can_take_params_async
+    @service.stub :delete_managed_disk, true do
+      assert @managed_disk.destroy(true)
     end
   end
 end

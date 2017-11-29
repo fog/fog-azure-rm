@@ -324,6 +324,8 @@ Get an managed disk object from the get method and then destroy that managed dis
 
 ```ruby
 managed_disk.destroy
+# Can be made asynchronously (is synchronous by default)
+managed_disk.destroy(true)
 ```
 
 ## Check Availability Set Existence

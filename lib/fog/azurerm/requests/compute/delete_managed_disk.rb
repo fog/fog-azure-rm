@@ -4,11 +4,15 @@ module Fog
     class AzureRM
       # Real class for Compute Request
       class Real
-        def delete_managed_disk(resource_group_name, disk_name)
+        def delete_managed_disk(resource_group_name, disk_name, async)
           msg = "Deleting Managed Disk: #{disk_name}"
           Fog::Logger.debug msg
           begin
-            @compute_mgmt_client.disks.delete(resource_group_name, disk_name)
+            if async
+              @compute_mgmt_client.disks.delete_async(resource_group_name, disk_name)
+            else
+              @compute_mgmt_client.disks.delete(resource_group_name, disk_name)
+            end
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end

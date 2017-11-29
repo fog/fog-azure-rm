@@ -16,14 +16,14 @@ class TestCheckVirtualMachineExists < Minitest::Test
   end
 
   def test_check_vm_exists_failure
-    response = proc { raise MsRestAzure::AzureOperationError.new(nil, get_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceNotFound' }) }
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceNotFound' }) }
     @virtual_machines.stub :get, response do
       assert !@service.check_vm_exists('fog-test-rg', 'fog-test-server', false)
     end
   end
 
   def test_check_vm_exists_exception
-    response = proc { raise MsRestAzure::AzureOperationError.new(nil, get_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceGroupNotFound' }) }
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceGroupNotFound' }) }
     @virtual_machines.stub :get, response do
       assert !@service.check_vm_exists('fog-test-rg', 'fog-test-server', false)
     end

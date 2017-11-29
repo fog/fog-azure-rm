@@ -16,16 +16,16 @@ class TestCheckVirtualNetworkGatewayConnectionExists < Minitest::Test
   end
 
   def test_check_vnet_gateway_connection_exists_failure
-    response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceNotFound' }) }
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, get_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceNotFound' }) }
     @gateway_connections.stub :get, response do
       assert !@service.check_vnet_gateway_connection_exists('fog-test-rg', 'fog-test-gateway-connection')
     end
   end
 
   def test_check_vnet_gateway_connection_exists_exception
-    response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceGroupNotFound' }) }
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, get_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceGroupNotFound' }) }
     @gateway_connections.stub :get, response do
-      assert_raises(RuntimeError) { @service.check_vnet_gateway_connection_exists('fog-test-rg', 'fog-test-gateway-connection') }
+      assert !@service.check_vnet_gateway_connection_exists('fog-test-rg', 'fog-test-gateway-connection')
     end
   end
 end

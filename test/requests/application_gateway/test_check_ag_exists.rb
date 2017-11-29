@@ -16,15 +16,14 @@ class TestCheckAGExists < Minitest::Test
   end
 
   def test_check_ag_exists_failure
-    response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceNotFound' }) }
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, get_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceNotFound' }) }
     @gateways.stub :get, response do
       assert !@service.check_ag_exists('fog-test-rg', 'fogRM-rg')
     end
-
   end
 
   def test_check_ag_exists_exception
-    response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceGroupNotFound' }) }
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, get_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceGroupNotFound' }) }
     @gateways.stub :get, response do
       assert !@service.check_ag_exists('fog-test-rg', 'fogRM-rg')
     end

@@ -1,3 +1,5 @@
+require 'mime/types'
+
 module Fog
   module Storage
     class AzureRM
@@ -90,7 +92,6 @@ module Fog
           options = options.reject { |_key, value| value.nil? || value.to_s.empty? }
 
           if update_body
-            require 'mime/types'
             blob = save_blob(options)
 
             data = parse_storage_object(blob)

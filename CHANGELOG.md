@@ -1,3 +1,32 @@
+## 0.3.9
+
+**Changed**
+- Fixed Fog::Storage issue of requiring the 'mime-types' gem
+
+## 0.3.8
+
+**Changed:**
+- Updated documentation
+
+**Fixed:**
+- Compute Service - Fixed issue with fault/update domain not populating
+
+## 0.3.7
+
+**Fixed:**
+- DNS Service - Fixed bug in DNS service
+
+## 0.3.6
+
+**Added:**
+- Compute Service - Added support for custom image provisioning with managed disk
+- DNS Service - Fog Models for RecordSet Types 'A' and 'CNAME'
+- Automated gem publishing on release tagging
+
+**Changed:**
+- Loosened dependency on fog-core
+- Updated documentation
+
 ## 0.3.5
 
 **Added:**

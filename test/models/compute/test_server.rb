@@ -69,7 +69,9 @@ class TestServer < Minitest::Test
   def test_save_method_response_for_linux_vm
     response = ApiStub::Models::Compute::Server.create_linux_virtual_machine_response(@compute_client)
     @service.stub :create_virtual_machine, response do
-      assert_instance_of Fog::Compute::AzureRM::Server, @server.save
+      @service.stub :get_virtual_machine, response do
+        assert_instance_of Fog::Compute::AzureRM::Server, @server.save
+      end
     end
 
     # Async
@@ -82,8 +84,10 @@ class TestServer < Minitest::Test
   def test_save_method_response_for_windows_vm
     response = ApiStub::Models::Compute::Server.create_windows_virtual_machine_response(@compute_client)
     @service.stub :create_virtual_machine, response do
-      assert_instance_of Fog::Compute::AzureRM::Server, @server.save
-      refute @server.save.disable_password_authentication
+      @service.stub :get_virtual_machine, response do
+        assert_instance_of Fog::Compute::AzureRM::Server, @server.save
+        refute @server.save.disable_password_authentication
+      end
     end
   end
 

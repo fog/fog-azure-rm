@@ -57,13 +57,13 @@ begin
     type: 'CNAME',
     ttl: 60
   )
-  puts "Created CNAME type record set: #{record_set.name}"
+  puts "Created CNAME type record set: #{record_set.inspect}"
 
   ########################################################################################################################
   ######################                        Create A Type Record Set in a Zone                   ######################
   ########################################################################################################################
 
-  dns.record_sets.create(
+  record_set = dns.record_sets.create(
     name: 'TestRS2',
     resource_group: 'TestRG-RS',
     zone_name: 'test-zone.com',
@@ -71,14 +71,14 @@ begin
     type: 'A',
     ttl: 60
   )
-  puts "Created A type record set: #{record_set.name}"
+  puts "Created A type record set: #{record_set.inspect}"
 
   ########################################################################################################################
   ######################                Get And Destroy CNAME Type Record Set in a Zone             ######################
   ########################################################################################################################
 
   record_set = dns.record_sets.get('TestRG-RS', 'TestRS1', 'test-zone.com', 'CNAME')
-  puts "Get CNAME Type record set: #{record_set.name}"
+  puts "Get CNAME Type record set: #{record_set.inspect}"
   record_set.destroy
 
   ########################################################################################################################
@@ -86,7 +86,7 @@ begin
   ########################################################################################################################
 
   record_set = dns.record_sets.get('TestRG-RS', 'TestRS2', 'test-zone.com', 'A')
-  puts "Get A Type record set: #{record_set.name}"
+  puts "Get A Type record set: #{record_set.inspect}"
 
   ########################################################################################################################
   ######################                               Update a Record Set                          ######################

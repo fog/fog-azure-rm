@@ -26,7 +26,9 @@ module Fog
       collection :zones
       model :record_set
       collection :record_sets
-
+      model :a_record
+      model :cname_record
+      
       # This class provides the mock implementation for unit tests.
       class Mock
         def initialize(_options = {})

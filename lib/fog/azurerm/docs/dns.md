@@ -1,4 +1,4 @@
-#DNS
+# DNS
 
 This document explains how to get started using Azure DNS Service with Fog.
 
@@ -15,19 +15,19 @@ require 'fog/azurerm'
 Next, create a connection to the DNS Service:
 
 ```ruby
-    azure_dns_service = Fog::DNS::AzureRM.new(
-        tenant_id:       '<Tenantid>',                                                    # Tenant id of Azure Active Directory Application
-        client_id:       '<Clientid>',                                                    # Client id of Azure Active Directory Application
-        client_secret:   '<ClientSecret>',                                                # Client Secret of Azure Active Directory Application
-        subscription_id: '<Subscriptionid>',                                              # Subscription id of an Azure Account
-        :environment => '<AzureCloud/AzureChinaCloud/AzureUSGovernment/AzureGermanCloud>' # Azure cloud environment. Default is AzureCloud.
+fog_dns_service = Fog::DNS::AzureRM.new(
+        tenant_id:       '<Tenant Id>',                                                           # Tenant Id of Azure Active Directory Application
+        client_id:       '<Client Id>',                                                           # Client Id of Azure Active Directory Application
+        client_secret:   '<Client Secret>',                                                       # Client Secret of Azure Active Directory Application
+        subscription_id: '<Subscription Id>',                                                     # Subscription Id of an Azure Account
+        environment:     '<AzureCloud/AzureChinaCloud/AzureUSGovernment/AzureGermanCloud>'        # Azure cloud environment. Default is AzureCloud.
 )
 ```
 
 ## Check Zone Existence
 
 ```ruby
-azure_dns_service.zones.check_zone_exists(<Resource Group name>, <Zone name>)
+fog_dns_service.zones.check_zone_exists('<Resource Group Name>', '<Zone Name>')
 ```
 
 ## Create Zone
@@ -35,21 +35,21 @@ azure_dns_service.zones.check_zone_exists(<Resource Group name>, <Zone name>)
 Create a new Zone
 
 ```ruby
-    azure_dns_service.zones.create(
-        name:           '<Zone name>',
-        resource_group: '<Resource Group name>',
+fog_dns_service.zones.create(
+        name: '<Zone Name>',
+        resource_group: '<Resource Group Name>',
         tags: {
-            key: 'value'
-        }               'Optional'
- )
+            key: 'value'                    # [Optional]
+        }
+)
 ```
 ## List Zones
 
 ```ruby
-    azure_dns_service.zones.each do |zone|
-        puts "#{zone.name}"
-        puts "#{zone.resource_group}"
-    end
+fog_dns_service.zones.each do |zone|
+     puts "#{zone.name}"
+     puts "#{zone.resource_group}"
+end
 ```
 
 ## Retrieve a single Zone
@@ -57,10 +57,10 @@ Create a new Zone
 Get a single record of Zone
 
 ```ruby
-      zone = azure_dns_service
-                          .zones
-                          .get('<Resource Group name>', '<Zone name>')
-      puts "#{zone.name}"
+zone = fog_dns_service
+             .zones
+             .get('<Resource Group Name>', '<Zone Name>')
+puts "#{zone.name}"
 ```
 
 ## Destroy a single Zone
@@ -68,13 +68,13 @@ Get a single record of Zone
 Get Zone object from the get method(described above) and then destroy that Zone.
 
 ```ruby
-      zone.destroy
+zone.destroy
 ```
 
 ## Check Record Set Existence
 
 ```ruby
-azure_dns_service.record_sets.check_record_set_exists(<Resource Group name>, <Record Set name>, <Zone name>, <Record Type(A/CNAME)>)
+fog_dns_service.record_sets.check_record_set_exists('<Resource Group Name>', '<Record Set Name>', '<Zone Name>', '<Record Type(A/CNAME)>')
 ```
 
 ## Create Record Set
@@ -82,26 +82,26 @@ azure_dns_service.record_sets.check_record_set_exists(<Resource Group name>, <Re
 Create a new Record Set
 
 ```ruby
-    azure_dns_service.record_sets.create(
-        name:           '<Record Set name>',
-        resource_group: '<Resource Group name>',
+fog_dns_service.record_sets.create(
+        name:           '<Record Set Name>',
+        resource_group: '<Resource Group Name>',
         zone_name:      '<Zone Name>',
-        records:        <String array of Records>,
-        type:           '<Record Type(A/CNAME)>',
-        ttl:            <Time to live(Integer)>
- )
+        records:        '<String Array of Records>',
+        type:           '<Record Type (A/CNAME)>',
+        ttl:            <TTL>
+)
 ```
 
 ## List Record Sets
 
 ```ruby
-    azure_dns_service.record_sets(
+fog_dns_service.record_sets(
         resource_group: '<Resource Group Name>',
         zone_name:      '<Zone Name>'
-    ).each do |record_set|
+      ).each do |record_set|
         puts "#{record_set.name}"
         puts "#{record_set.resource_group}"
-    end
+end
 ```
 
 ## Retrieve a single Record Set
@@ -109,10 +109,10 @@ Create a new Record Set
 Get a single record of Record Set
 
 ```ruby
-      record_set = azure_dns_service
-                      .record_sets
-                      .get('<Resource Group Name>', '<Record Set name>', '<Zone Name>', '<Record Type>')
-      puts "#{record_set.name}"
+record_set = fog_dns_service
+                  .record_sets
+                  .get('<Resource Group Name>', '<Record Set Name>', '<Zone Name>', '<Record Type>')
+puts "#{record_set.name}"
 ```
 
 ## Update TTL
@@ -120,9 +120,7 @@ Get a single record of Record Set
 Get an object of record set and then update TTL 
 
 ```ruby
-      record_set.update_ttl(
-        ttl:            '<Time to live(Integer)>, 
-)
+record_set.update_ttl(ttl: <Time to live (Integer)>)
 ```
 
 ## Add/Remove Record set in Existing Record sets
@@ -130,13 +128,13 @@ Get an object of record set and then update TTL
 Add a record by giving the value of record set in the form of string.
 
 ```ruby
-      record_set.add_a_type_record('<Record>')
+record_set.add_a_type_record('<Record>')
 ```
 
 Remove record from existing records by giving its value in the form of string.
 
 ```ruby
-      record_set.remove_a_type_record('<Record>')
+record_set.remove_a_type_record('<Record>')
 ```
 
 ## Destroy a single Record Set
@@ -144,7 +142,7 @@ Remove record from existing records by giving its value in the form of string.
 Get Record Set object from the get method(described above) and then destroy that Record Set.
 
 ```ruby
-      record_set.destroy
+record_set.destroy
 ```
 
 ## Support and Feedback

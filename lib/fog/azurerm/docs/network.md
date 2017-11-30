@@ -1,6 +1,6 @@
 # Network
 
-This document explains how to get started using Azure Network Service with Fog. With this gem you can create/update/list/delete virtual networks, subnets, public IPs and network interfaces.
+This document explains how to get started using Azure Network Service with Fog. With this gem you can create, update, list or delete virtual networks, subnets, public IPs and network interfaces.
 
 ## Usage
 
@@ -14,43 +14,44 @@ require 'fog/azurerm'
 Next, create a connection to the Network Service:
 
 ```ruby
-    azure_network_service = Fog::Network::AzureRM.new(
-        tenant_id: '<Tenantid>',                                                          # Tenant id of Azure Active Directory Application
-        client_id:    '<Clientid>',                                                       # Client id of Azure Active Directory Application
-        client_secret: '<ClientSecret>',                                                  # Client Secret of Azure Active Directory Application
-        subscription_id: '<Subscriptionid>',                                              # Subscription id of an Azure Account
-        :environment => '<AzureCloud/AzureChinaCloud/AzureUSGovernment/AzureGermanCloud>' # Azure cloud environment. Default is AzureCloud.
+fog_network_service = Fog::Network::AzureRM.new(
+        tenant_id: '<Tenant Id>',                                                             # Tenant Id of Azure Active Directory Application
+        client_id:    '<Client Id>',                                                          # Client Id of Azure Active Directory Application
+        client_secret: '<Client Secret>',                                                     # Client Secret of Azure Active Directory Application
+        subscription_id: '<Subscription Id>',                                                 # Subscription Id of an Azure Account
+        environment: '<AzureCloud/AzureChinaCloud/AzureUSGovernment/AzureGermanCloud>'        # Azure cloud environment. Default is AzureCloud.
 )
 ```
 
 ## Check Virtual Network Existence
 
 ```ruby
- azure_network_service.virtual_networks.check_virtual_network_exists(<Resource Group name>, <Virtual Network Name>)
+ fog_network_service.virtual_networks.check_virtual_network_exists('<Resource Group Name>', '<Virtual Network Name>')
 ```
 
 ## Create Virtual Network
 
 Create a new virtual network
 
-Optional parameters for Virtual Network: subnets, dns_servers & address_prefixes
-Optional parameters for Subnet: network_security_group_id, route_table_id & address_prefix
+**Optional parameters for Virtual Network**: subnets, dns_servers & address_prefixes
+
+**Optional parameters for Subnet**: network_security_group_id, route_table_id & address_prefix
 
 ```ruby
-    vnet = azure_network_service.virtual_networks.create(
+vnet = fog_network_service.virtual_networks.create(
       name:             '<Virtual Network Name>',
-      location:         'westus',
+      location:         '<Location>',
       resource_group:   '<Resource Group Name>',
       subnets:          [{
         name: '<Subnet Name>',
-        address_prefix: '10.1.0.0/24',
-        network_security_group_id: '/subscriptions/<Subscription Id>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/networkSecurityGroups/<Network Security Group Name>',
-        route_table_id: '/subscriptions/<Subscription Id>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/routeTables/<Route Table Name>'
+        address_prefix: '<Subnet IP Range>',
+        network_security_group_id: '/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/networkSecurityGroups/<Network Security Group Name>',
+        route_table_id: '/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/routeTables/<Route Table Name>'
       }],
-      dns_servers:       ['10.1.0.0','10.2.0.0'],
-      address_prefixes:  ['10.1.0.0/16','10.2.0.0/16'],
-      tags: { key: 'value' }            # Optional
-    )
+      dns_servers:       ['<IP Address>','<IP Address>'],
+      address_prefixes:  ['<IP Address Range>','<IP Address Range>'],
+      tags: { key: 'value' }            # [Optional]
+)
 ```
 
 ## List Virtual Networks in Resource Group
@@ -58,11 +59,11 @@ Optional parameters for Subnet: network_security_group_id, route_table_id & addr
 List all virtual networks in a resource group
 
 ```ruby
-    vnets  = azure_network_service.virtual_networks(resource_group: '<Resource Group Name>')
-    vnets.each do |vnet|
+vnets  = fog_network_service.virtual_networks(resource_group: '<Resource Group Name>')
+vnets.each do |vnet|
       puts "#{vnet.name}"
       puts "#{vnet.location}"
-    end
+end
 ```
 
 ## List Virtual Networks in Subscription
@@ -70,11 +71,11 @@ List all virtual networks in a resource group
 List all virtual networks in a subscription
 
 ```ruby
-    vnets  = azure_network_service.virtual_networks
-    vnets.each do |vnet|
+vnets  = fog_network_service.virtual_networks
+vnets.each do |vnet|
       puts "#{vnet.name}"
       puts "#{vnet.location}"
-    end
+end
 ```
 
 ## Retrieve a single Virtual Network
@@ -82,8 +83,8 @@ List all virtual networks in a subscription
 Get a single record of virtual network
 
 ```ruby
-     vnet = azure_network_service.virtual_networks.get('<Resource Group Name>', '<Virtual Network name>')
-     puts "#{vnet.name}"
+vnet = fog_network_service.virtual_networks.get('<Resource Group Name>', '<Virtual Network Name>')
+puts "#{vnet.name}"
 ```
 
 ## Add/Remove DNS Servers to/from Virtual Network
@@ -91,8 +92,8 @@ Get a single record of virtual network
 Add/Remove DNS Servers to/from Virtual Network
 
 ```ruby
-     vnet.add_dns_servers(['10.3.0.0','10.4.0.0'])
-     vnet.remove_dns_servers(['10.3.0.0','10.4.0.0'])
+vnet.add_dns_servers(['<IP Address>','<IP Address>'])
+vnet.remove_dns_servers(['10.3.0.0','10.4.0.0'])
 ```
 
 ## Add/Remove Address Prefixes to/from Virtual Network
@@ -100,8 +101,8 @@ Add/Remove DNS Servers to/from Virtual Network
 Add/Remove Address Prefixes to/from Virtual Network
 
 ```ruby
-     vnet.add_address_prefixes(['10.2.0.0/16', '10.3.0.0/16'])
-     vnet.remove_address_prefixes(['10.2.0.0/16'])
+vnet.add_address_prefixes(['<IP Address Range>', '<IP Address Range>'])
+vnet.remove_address_prefixes(['<IP Address Range>'])
 ```
 
 ## Add/Remove Subnets to/from Virtual Network
@@ -109,12 +110,12 @@ Add/Remove Address Prefixes to/from Virtual Network
 Add/Remove Subnets to/from Virtual Network
 
 ```ruby
-     vnet.add_subnets([{
-       name: 'test-subnet',
-       address_prefix: '10.3.0.0/24'
-     }])
+vnet.add_subnets([{
+       name: '<Subnet Name>',
+       address_prefix: '<Subnet Range>'
+}])
 
-     vnet.remove_subnets(['test-subnet'])
+vnet.remove_subnets(['<Subnet Name>'])
 ```
 
 ## Update Virtual Network
@@ -122,13 +123,13 @@ Add/Remove Subnets to/from Virtual Network
 Update Virtual Network
 
 ```ruby
-     vnet.update({
+vnet.update({
        subnets:[{
-         name: 'fog-subnet',
-         address_prefix: '10.3.0.0/16'
+          name: '<Subnet Name>',
+          address_prefix: '<Subnet Range>'
        }],
-       dns_servers: ['10.3.0.0','10.4.0.0']
-     })
+       dns_servers: ['<IP Address>','<IP Address>']
+})
 ```
 
 ## Destroy a single virtual network
@@ -136,13 +137,13 @@ Update Virtual Network
 Get virtual network object from the get method and then destroy that virtual network.
 
 ```ruby
-    vnet.destroy
+vnet.destroy
 ```
 
 ## Check Subnet Existence
 
 ```ruby
- azure_network_service.subnets.check_subnet_exists(<Resource Group name>, <Virtual Network Name>, <Subnet Name>)
+fog_network_service.subnets.check_subnet_exists('<Resource Group Name>', '<Virtual Network Name>', '<Subnet Name>')
 ```
 
 ## Create Subnet
@@ -152,14 +153,14 @@ Create a new Subnet
 Optional parameters: network_security_group_id, route_table_id & address_prefix
 
 ```ruby
-    subnet = azure_network_service.subnets.create(
+subnet = fog_network_service.subnets.create(
       name: '<Subnet Name>',
       resource_group: '<Resource Group Name>',
       virtual_network_name: '<Virtual Network Name>',
-      address_prefix: '10.0.0.0/24',
+      address_prefix: '<Subnet Range>',
       network_security_group_id: '/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/networkSecurityGroups/<Network Security Group Name>',
       route_table_id: '/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/routeTables/<Route Table Name>'
-    )
+)
 ```
 
 ## List Subnets
@@ -167,10 +168,10 @@ Optional parameters: network_security_group_id, route_table_id & address_prefix
 List subnets in a resource group and a virtual network
 
 ```ruby
-    subnets  = azure_network_service.subnets(resource_group: '<Resource Group name>', virtual_network_name: '<Virtual Network name>')
-    subnets.each do |subnet|
+subnets  = fog_network_service.subnets(resource_group: '<Resource Group Name>', virtual_network_name: '<Virtual Network Name>')
+subnets.each do |subnet|
       puts "#{subnet.name}"
-    end
+end
 ```
 
 ## Retrieve a single Subnet
@@ -178,10 +179,10 @@ List subnets in a resource group and a virtual network
 Get a single record of Subnet
 
 ```ruby
-     subnet = azure_network_service
-       .subnets
-       .get('<Resource Group name>', '<Virtual Network name>', '<Subnet name>')
-     puts "#{subnet.name}"
+subnet = fog_network_service
+            .subnets
+            .get('<Resource Group Name>', '<Virtual Network Name>', '<Subnet Name>')
+puts "#{subnet.name}"
 ```
 
 ## Attach Network Security Group to Subnet
@@ -189,8 +190,8 @@ Get a single record of Subnet
 Attach Network Security Group to Subnet
 
 ```ruby
-     subnet = azure_network_service.attach_network_security_group('/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/networkSecurityGroups/<Network Security Group Name>')
-     puts "#{subnet.network_security_group_id}"
+subnet = fog_network_service.attach_network_security_group('/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/networkSecurityGroups/<Network Security Group Name>')
+puts "#{subnet.network_security_group_id}"
 ```
 
 ## Detach Network Security Group from Subnet
@@ -198,8 +199,8 @@ Attach Network Security Group to Subnet
 Detach Network Security Group from Subnet
 
 ```ruby
-     subnet = azure_network_service.detach_network_security_group
-     puts "#{subnet.network_security_group_id}"
+subnet = fog_network_service.detach_network_security_group
+puts "#{subnet.network_security_group_id}"
 ```
 
 ## Attach Route Table to Subnet
@@ -207,8 +208,8 @@ Detach Network Security Group from Subnet
 Attach Route Table to Subnet
 
 ```ruby
-     subnet = azure_network_service.attach_route_table('/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/routeTables/<Route Table Name>')
-     puts "#{subnet.route_table_id}"
+subnet = fog_network_service.attach_route_table('/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/routeTables/<Route Table Name>')
+puts "#{subnet.route_table_id}"
 ```
 
 ## Detach Route Table from Subnet
@@ -216,8 +217,8 @@ Attach Route Table to Subnet
 Detach Route Table from Subnet
 
 ```ruby
-     subnet = azure_network_service.detach_route_table
-     puts "#{subnet.route_table_id}"
+subnet = fog_network_service.detach_route_table
+puts "#{subnet.route_table_id}"
 ```
 
 ## List Number of Available IP Addresses in Subnet
@@ -225,7 +226,7 @@ Detach Route Table from Subnet
 The parameter is a boolean which checks if the Virtual Network the Subnet belongs to is attached to an Express Route Circuit or not
 
 ```ruby
-    puts "#{subnet.get_available_ipaddresses_count(false)}"
+puts "#{subnet.get_available_ipaddresses_count(<True/False>)}"
 ```
 
 ## Destroy a single Subnet
@@ -233,13 +234,13 @@ The parameter is a boolean which checks if the Virtual Network the Subnet belong
 Get a subnet object from the get method and then destroy that subnet.
 
 ```ruby
-    subnet.destroy
+subnet.destroy
 ```
 
 ## Check Network Interface Card Existence
 
 ```ruby
- azure_network_service.network_interfaces.check_network_interface_exists(<Resource Group name>, <Network Interface name>)
+fog_network_service.network_interfaces.check_network_interface_exists('<Resource Group Name>', '<Network Interface Name>')
 ```
 
 ## Create Network Interface Card
@@ -247,16 +248,16 @@ Get a subnet object from the get method and then destroy that subnet.
 Create a new network interface. Skip public_ip_address_id parameter to create network interface without PublicIP. The parameter, private_ip_allocation_method can be Dynamic or Static.
 
 ```ruby
-    nic = azure_network_service.network_interfaces.create(
-      name: '<Network Interface name>',
-      resource_group: '<Resource Group name>',
-      location: 'eastus',
-      subnet_id: '/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/virtualNetworks/<Virtual Network name>/subnets/<Subnet name>',
-      public_ip_address_id: '/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/publicIPAddresses/<Public IP name>',
-      ip_configuration_name: '<Ip Configuration Name>',
-      private_ip_allocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Dynamic,
-      tags: { key: 'value' }                    # Optional
- )
+nic = fog_network_service.network_interfaces.create(
+      name: '<Network Interface Name>',
+      resource_group: '<Resource Group Name>',
+      location: '<Location>',
+      subnet_id: '/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/virtualNetworks/<Virtual Network Name>/subnets/<Subnet Name>',
+      public_ip_address_id: '/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/publicIPAddresses/<Public IP Name>',
+      ip_configuration_name: '<IP Configuration Name>',
+      private_ip_allocation_method: '<IP Allocation Method Name>',
+      tags: { key: 'value' }                    # [Optional]
+)
 ```
 
 ## List Network Interface Cards
@@ -264,10 +265,10 @@ Create a new network interface. Skip public_ip_address_id parameter to create ne
 List network interfaces in a resource group
 
 ```ruby
-    nics  = azure_network_service.network_interfaces(resource_group: '<Resource Group name>')
-    nics.each do |nic|
+nics  = fog_network_service.network_interfaces(resource_group: '<Resource Group Name>')
+nics.each do |nic|
       puts "#{nic.name}"
-    end
+end
 ```
 
 ## Retrieve a single Network Interface Card
@@ -275,10 +276,10 @@ List network interfaces in a resource group
 Get a single record of Network Interface
 
 ```ruby
-     nic = azure_network_service
+nic = fog_network_service
            .network_interfaces
-           .get('<Resource Group name>', '<Network Interface name>')
-     puts "#{nic.name}"
+           .get('<Resource Group Name>', '<Network Interface Name>')
+puts "#{nic.name}"
 ```
 
 ## Update Network Interface Card
@@ -286,29 +287,27 @@ Get a single record of Network Interface
 You can update network interface by passing only updated attributes, in the form of hash.
 For example,
 ```ruby
-     nic.update(private_ip_allocation_method: 'Static', private_ip_address: '10.0.0.0')
+nic.update(private_ip_allocation_method: '<IP Allocation Method Name>', private_ip_address: '<Private IP Address>')
 ```
 ## Attach/Detach resources to Network Interface Card
 
 Attach Subnet, Public-IP or Network-Security-Group as following
 ```ruby
-    subnet_id = "<NEW-SUBNET-ID>"
-    nic.attach_subnet(subnet_id)
+subnet_id = '<Subnet Id>'
+nic.attach_subnet(subnet_id)
     
-    public_ip_id = "<NEW-PUBLIC_IP-ID>"
-    nic.attach_public_ip(public_ip_id)
+public_ip_id = '<Public IP Id>'
+nic.attach_public_ip(public_ip_id)
     
-    nsg_id = "<NEW-NSG-ID>"
-    nic.attach_network_security_group(nsg_id)
-
+nsg_id = '<NSG Id>'
+nic.attach_network_security_group(nsg_id)
 ```
 Detach Public-IP or Network-Security-Group as following
 
 ```ruby 
-    nic.detach_public_ip
+nic.detach_public_ip
 
-    nic.detach_network_security_group
-
+nic.detach_network_security_group
 ```
 `Note: You can't detach subnet from Network Interface.`
 
@@ -317,13 +316,13 @@ Detach Public-IP or Network-Security-Group as following
 Get a network interface object from the get method and then destroy that network interface.
 
 ```ruby
-     nic.destroy
+nic.destroy
 ```
 
 ## Check Public IP Existence
 
 ```ruby
- azure_network_service.public_ips.check_public_ip_exists(<Resource Group name>, <Public IP name>>)
+fog_network_service.public_ips.check_public_ip_exists('<Resource Group Name>', '<Public IP Name>')
 ```
 
 ## Create Public IP
@@ -331,13 +330,13 @@ Get a network interface object from the get method and then destroy that network
 Create a new public IP. The parameter, type can be Dynamic or Static.
 
 ```ruby
-   pubip = azure_network_service.public_ips.create(
+public_ip = fog_network_service.public_ips.create(
      name: '<Public IP name>',
-     resource_group: '<Resource Group name>',
-     location: 'westus',
-     public_ip_allocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Static,
-     tags: { key: 'value' }                 # Optional
-   )
+     resource_group: '<Resource Group Name>',
+     location: '<Location>',
+     public_ip_allocation_method: '<IP Allocation Method Name>',
+     tags: { key: 'value' }                 # [Optional]
+)
 ```
 
 ## Check for Public IP
@@ -345,7 +344,7 @@ Create a new public IP. The parameter, type can be Dynamic or Static.
 Checks if the Public IP already exists or not.
 
 ```ruby
-    azure_network_service.public_ips.check_if_exists('<Public IP name>', '<Resource Group name>')
+fog_network_service.public_ips.check_if_exists('<Public IP Name>', '<Resource Group Name>')
 ```
 
 ## List Public IPs
@@ -353,47 +352,47 @@ Checks if the Public IP already exists or not.
 List network interfaces in a resource group
 
 ```ruby
-    pubips  = azure_network_service.public_ips(resource_group: '<Resource Group name>')
-    pubips.each do |pubip|
-      puts "#{pubip.name}"
-    end
+public_ips  = fog_network_service.public_ips(resource_group: '<Resource Group Name>')
+public_ips.each do |pubip|
+      puts "#{public_ip.name}"
+end
 ```
 
-## Retrieve a single Public Ip
+## Retrieve a single Public IP
 
-Get a single record of Public Ip
+Get a single record of Public IP
 
 ```ruby
-     pubip = azure_network_service
+public_ip = fog_network_service
              .public_ips
-             .get('<Resource Group name>', '<Public IP name>')
-     puts "#{pubip.name}"
+             .get('<Resource Group Name>', '<Public IP Name>')
+puts "#{public_ip.name}"
 ```
 
-## Update Public Ip
+## Update Public IP
 
 Get a Public IP object from the get method and then update that public IP. You can update the Public IP by passing the modifiable attributes in the form of a hash.
 
 ```ruby
-    pubip.update(
-      public_ip_allocation_method: '<IP Allocation Method>',
-      idle_timeout_in_minutes: '<Idle Timeout In Minutes>',
+public_ip.update(
+      public_ip_allocation_method: '<IP Allocation Method Name>',
+      idle_timeout_in_minutes: '<Idle Timeout in Minutes>',
       domain_name_label: '<Domain Name Label>'
-    )
+)
 ```
 
-## Destroy a single Public Ip
+## Destroy a single Public IP
 
 Get a Public IP object from the get method and then destroy that public IP.
 
 ```ruby
-    pubip.destroy
+public_ip.destroy
 ```
 
 ## Check Network Security Group Existence
 
 ```ruby
- azure_network_service.network_security_groups.check_net_sec_group_exists(<Resource Group name>, <Network Security Group name>)
+fog_network_service.network_security_groups.check_net_sec_group_exists('<Resource Group Name>', '<Network Security Group Name>')
 ```
 
 ## Create Network Security Group
@@ -401,23 +400,23 @@ Get a Public IP object from the get method and then destroy that public IP.
 Network security group requires a resource group to create. 
 
 ```ruby
-     azure_network_service.network_security_groups.create(
-       name: '<Network Security Group name>',
-       resource_group: '<Resource Group name>',
-       location: 'eastus',
+fog_network_service.network_security_groups.create(
+       name: '<Network Security Group Name>',
+       resource_group: '<Resource Group Name>',
+       location: '<Location>',
        security_rules: [{
-         name: '<Security Rule name>',
-         protocol: Fog::ARM::Network::Models::SecurityRuleProtocol::Tcp,
-         source_port_range: '22',
-         destination_port_range: '22',
-         source_address_prefix: '0.0.0.0/0',
-         destination_address_prefix: '0.0.0.0/0',
-         access: Fog::ARM::Network::Models::SecurityRuleAccess::Allow,
-         priority: '100',
-         direction: Fog::ARM::Network::Models::SecurityRuleDirection::Inbound
+            name: '<Security Rule Name>',
+            protocol: '<Protocol Name>',
+            source_port_range: '<Source Port Range>',
+            destination_port_range: '<Destination Port Range>',
+            source_address_prefix: '<Source IP Address Range>',
+            destination_address_prefix: 'Destination IP Address Range',
+            access: '<Security Rule Access Type>',
+            priority: '<Priority Number>',
+            direction: '<Security Rule Direction>'
        }],
-       tags: { key: 'value' }                   # Optional
-     )
+       tags: { key: 'value' }                   # [Optional]
+)
 ```
 
 ## List Network Security Groups 
@@ -425,10 +424,10 @@ Network security group requires a resource group to create.
 List all the network security groups in a resource group
 
 ```ruby
-    network_security_groups = azure_network_service.network_security_groups(resource_group: '<Resource Group name>')       
-    network_security_groups.each do |nsg|
+network_security_groups = fog_network_service.network_security_groups(resource_group: '<Resource Group Name>')       
+network_security_groups.each do |nsg|
       puts "#{nsg.name}"
-    end
+end
 ```
 
 ## Retrieve a single Network Security Group
@@ -436,10 +435,10 @@ List all the network security groups in a resource group
 Get a single record of Network Security Group
 
 ```ruby
-    nsg = azure_network_service
+nsg = fog_network_service
                   .network_security_groups
-                  .get('<Resource Group Name>','<Network Security Group name>')
-    puts "#{nsg.name}"
+                  .get('<Resource Group Name>','<Network Security Group Name>')
+puts "#{nsg.name}"
 ```
 
 ## Update Security Rules
@@ -447,22 +446,22 @@ Get a single record of Network Security Group
 You can update security rules by passing the modified attributes in the form of hash.  
 
 ```ruby
-      nsg.update_security_rules(
+nsg.update_security_rules(
         security_rules:
-            [
+        [
                 {
-                    name: '<Security Rule name>',
-                    protocol: Fog::ARM::Network::Models::SecurityRuleProtocol::Tcp,
-                    source_port_range: '*',
-                    destination_port_range: '*',
-                    source_address_prefix: '0.0.0.0/0',
-                    destination_address_prefix: '0.0.0.0/0',
-                    access: Fog::ARM::Network::Models::SecurityRuleAccess::Allow,
-                    priority: '100',
-                    direction: Fog::ARM::Network::Models::SecurityRuleDirection::Inbound
+                    name: '<Security Rule Name>',
+                    protocol: '<Security Rule Protocol>',
+                    source_port_range: '<Port Range>',
+                    destination_port_range: '<Port Range>',
+                    source_address_prefix: '<Source IP Address Range>',
+                    destination_address_prefix: '<Destination IP Address Range>',
+                    access: '<Security Rule Access Type>',
+                    priority: '<Priority Number>',
+                    direction: '<Security Rule Direction>'
                 }
-            ]
-      )
+        ]
+)
 ```
 `Note: You can't modify Name of a security rule.`
 
@@ -471,27 +470,27 @@ You can update security rules by passing the modified attributes in the form of 
 Add array of security rules in the form of hash.
 
 ```ruby
-      nsg.add_security_rules(
-            [
+nsg.add_security_rules(
+           [
                 {
-                    name: '<Security Rule name>',
-                    protocol: Fog::ARM::Network::Models::SecurityRuleProtocol::Tcp,
-                    source_port_range: '3389',
-                    destination_port_range: '3389',
-                    source_address_prefix: '0.0.0.0/0',
-                    destination_address_prefix: '0.0.0.0/0',
-                    access: Fog::ARM::Network::Models::SecurityRuleAccess::Allow,
-                    priority: '102',
-                    direction: Fog::ARM::Network::Models::SecurityRuleDirection::Inbound
+                    name: '<Security Rule Name>',
+                    protocol: '<Security Rule Protocol>',
+                    source_port_range: '<Port Range>',
+                    destination_port_range: '<Port Range>',
+                    source_address_prefix: '<Source IP Address Range>',
+                    destination_address_prefix: '<Destination IP Address Range>',
+                    access: '<Security Rule Access Type>',
+                    priority: '<Priority Number>',
+                    direction: '<Security Rule Direction>'
                 }
-            ]
-      )
+           ]
+)
 ```
 
 Delete security rule by providing its name.
 
 ```ruby
-      nsg.remove_security_rule('<Security Rule name>')
+nsg.remove_security_rule('<Security Rule Name>')
 ```
 
 ## Destroy a Network Security Group
@@ -499,13 +498,13 @@ Delete security rule by providing its name.
 Get a network security group object from the get method and then destroy that network security group.
 
 ```ruby
-    nsg.destroy
+nsg.destroy
 ```
 
 ## Check Network Security Rule Existence
 
 ```ruby
- azure_network_service.network_security_rules.check_net_sec_rule_exists(<Resource Group name>, <Network Security Group name>, <Security Rule name>)
+fog_network_service.network_security_rules.check_net_sec_rule_exists('<Resource Group Name>', '<Network Security Group Name>', '<Security Rule Name>')
 ```
 
 ## Create Network Security Rule
@@ -513,19 +512,19 @@ Get a network security group object from the get method and then destroy that ne
 Network security rule requires a resource group and network security group to create. 
 
 ```ruby
-     azure_network_service.network_security_rules.create(
-       name: '<Security Rule name>',
-       resource_group: '<Resource Group name>',
-       protocol: Fog::ARM::Network::Models::SecurityRuleProtocol::Tcp,
-       network_security_group_name: '<Network Security Group name>',
-       source_port_range: '22',
-       destination_port_range: '22',
-       source_address_prefix: '0.0.0.0/0',
-       destination_address_prefix: '0.0.0.0/0',
-       access: Fog::ARM::Network::Models::SecurityRuleAccess::Allow,
-       priority: '100',
-       direction: Fog::ARM::Network::Models::SecurityRuleDirection::Inbound
-     )
+fog_network_service.network_security_rules.create(
+       name: '<Security Rule Name>',
+       resource_group: '<Resource Group Name>',
+       protocol: '<Security Rule Protocol>',
+       network_security_group_name: '<Network Security Group Name>',
+       source_port_range: '<Source Port Range>',
+       destination_port_range: '<Destination Port Range>',
+       source_address_prefix: 'Source IP Address Range',
+       destination_address_prefix: 'Destination IP Address Range',
+       access: '<Security Rule Access Type>',
+       priority: '<Priority Number>',
+       direction: '<Security Rule Direction>'
+)
 ```
 
 ## List Network Security Rules 
@@ -533,11 +532,10 @@ Network security rule requires a resource group and network security group to cr
 List all the network security rules in a resource group and network security group
 
 ```ruby
-    network_security_rules = azure_network_service.network_security_rules(resource_group: '<Resource Group name>',
-                                                            network_security_group_name: '<Network Security Group name>')
-    network_security_rules.each do |network_security_rule|
+network_security_rules = fog_network_service.network_security_rules(resource_group: '<Resource Group Name>', network_security_group_name: '<Network Security Group Name>')
+network_security_rules.each do |network_security_rule|
       puts network_security_rule.name
-    end
+end
 ```
 
 ## Retrieve a single Network Security Rule
@@ -545,10 +543,10 @@ List all the network security rules in a resource group and network security gro
 Get a single record of Network Security Rule
 
 ```ruby
-    network_security_rule = azure_network_service
+network_security_rule = fog_network_service
                   .network_security_rules
-                  .get(<Resource Group Name>','<Network Security Group name>', '<Security Rule name>')
-    puts "#{network_security_rule.name}"              
+                  .get('<Resource Group Name>','<Network Security Group Name>', '<Security Rule Name>')
+puts "#{network_security_rule.name}"              
 ```
 
 ## Destroy a Network Security Rule
@@ -556,13 +554,13 @@ Get a single record of Network Security Rule
 Get a network security rule object from the get method and then destroy that network security rule.
 
 ```ruby
-    network_security_rule.destroy
+network_security_rule.destroy
 ```
 
 ## Check External Load Balancer Existence
 
 ```ruby
- azure_network_service.load_balancers.check_load_balancer_exists(<Resource Group name>, <Load Balancer name>)
+fog_network_service.load_balancers.check_load_balancer_exists('<Resource Group Name>', '<Load Balancer Name>')
 ```
 
 ## Create External Load Balancer
@@ -570,112 +568,112 @@ Get a network security rule object from the get method and then destroy that net
 Create a new load balancer.
 
 ```ruby
-    lb = azure_network_service.load_balancers.create(
-    name: '<Load Balancer name>',
-    resource_group: '<Resource Group name>',
-    location: 'westus',
-
-    frontend_ip_configurations: 
+lb = fog_network_service.load_balancers.create(
+        name: '<Load Balancer Name>',
+        resource_group: '<Resource Group Name>',
+        location: '<Location>',
+        frontend_ip_configurations: 
                                 [
                                     {                                         
-                                         name: 'fic',
-                                         private_ipallocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Dynamic,
-                                         public_ipaddress_id: '/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/publicIPAddresses/<Public-IP-Name>'                                         
+                                         name: '<Frontend IP Config Name>',
+                                         private_ipallocation_method: '<Private IP Allocation Method>',
+                                         public_ipaddress_id: '/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/publicIPAddresses/<Public IP Name>'                                         
                                     }
                                 ],
-    backend_address_pool_names:
+        backend_address_pool_names:
                                 [
-                                    'pool1'
+                                    '<Backend Address Pool Name>'
                                 ],
-    load_balancing_rules:
-                                [
-                                    {
-                                        name: 'lb_rule_1',
-                                        frontend_ip_configuration_id: '/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/loadBalancers/<Load Balancer name>/frontendIPConfigurations/fic',
-                                        backend_address_pool_id: '/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/loadBalancers/<Load Balancer name>/backendAddressPools/pool1',
-                                        protocol: 'Tcp',
-                                        frontend_port: '80',
-                                        backend_port: '8080',
-                                        enable_floating_ip: false,
-                                        idle_timeout_in_minutes: 4,
-                                        load_distribution: "Default"
-                                    }
-                                ],
-    inbound_nat_rules: 
+        load_balancing_rules:
                                 [
                                     {
-                                        name: 'RDP-Traffic',
-                                        frontend_ip_configuration_id: '/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/loadBalancers/<Load Balancer name>/frontendIPConfigurations/fic',
-                                        protocol: 'Tcp',
-                                        frontend_port: 3389,
-                                        backend_port: 3389
+                                        name: '<Rule Name>',
+                                        frontend_ip_configuration_id: '/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/loadBalancers/<Load Balancer Name>/frontendIPConfigurations/<Frontend IP Config Name>',
+                                        backend_address_pool_id: '/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/loadBalancers/<Load Balancer Name>/backendAddressPools/<Backend Address Pool Name>',
+                                        protocol: '<Protocol Name>',
+                                        frontend_port: '<Frontend Port Number>',
+                                        backend_port: '<Backend Port Number>',
+                                        enable_floating_ip: <True/False>,
+                                        idle_timeout_in_minutes: <Timeout in Minutes>,
+                                        load_distribution: '<Load Distribution Value>'
                                     }
                                 ],
-    tags: { key: 'value' }                  # Optional
+        inbound_nat_rules: 
+                                [
+                                    {
+                                        name: 'NAT Rule Name',
+                                        frontend_ip_configuration_id: '/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/loadBalancers/<Load Balancer name>/frontendIPConfigurations/<Frontend IP Config Name>',
+                                        protocol: '<Protocol Name>',
+                                        frontend_port: '<Frontend Port Number>',
+                                        backend_port: '<Backend Port Number>'
+                                    }
+                                ],
+        tags: { key: 'value' }                  # [Optional]
 )
 ```
 
 ## Create Internal Load Balancer
 
 ```ruby
-lb = azure_network_service.load_balancers.create(
-    name: '<Load Balancer name>',
-    resource_group: '<Resource Group name>',
-    location: 'westus',
+lb = fog_network_service.load_balancers.create(
+    name: '<Load Balancer Name>',
+    resource_group: '<Resource Group Name>',
+    location: '<Location>',
     frontend_ip_configurations:
         [
-        {
-            name: 'LB-Frontend',
-            private_ipallocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Static,
-            private_ipaddress: '10.1.2.5',
-            subnet_id: subnet.id
-        }
+             {
+                 name: '<Frontend IP Config Name>',
+                 private_ipallocation_method: '<Private IP Allocation Method>',
+                 private_ipaddress: 'IP Address',
+                 subnet_id: '<Subnet Id>'
+             }
         ],
     backend_address_pool_names:
         [
-        'LB-backend'
+             '<Backend Address Pool Name>'
         ],
     load_balancing_rules:
         [
-        {
-            name: 'HTTP',
-            frontend_ip_configuration_id: "/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/loadBalancers/<Load-Balancer-Name>/frontendIPConfigurations/LB-Frontend",
-            backend_address_pool_id: "/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/loadBalancers/<Load-Balancer-Name>/backendAddressPools/LB-backend",
-            probe_id: "/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/loadBalancers<Load-Balancer-Name>lb/probes/HealthProbe",
-            protocol: 'Tcp',
-            frontend_port: '80',
-            backend_port: '80'
-        }
+            {
+                 name: 'Rule Name',
+                 frontend_ip_configuration_id: "/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/loadBalancers/<Load Balancer Name>/frontendIPConfigurations/<Frontend IP Config Name>",
+                 backend_address_pool_id: "/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/loadBalancers/<Load Balancer Name>/backendAddressPools/<Backend Address Pool Name>",
+                 probe_id: "/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/loadBalancers<Load Balancer Name>lb/probes/<Probe Name>",
+                 protocol: '<Protocol Name>',
+                 frontend_port: '<Frontend Port Number>',
+                 backend_port: '<Backend Port Number>'
+            }
         ],
     inbound_nat_rules:
         [
-        {
-            name: 'RDP1',
-            frontend_ip_configuration_id: "/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/loadBalancers/<Load-Balancer-Name>/frontendIPConfigurations/LB-Frontend",
-            protocol: 'Tcp',
-            frontend_port: 3441,
-            backend_port: 3389
-        },
-        {
-            name: 'RDP2',
-            frontend_ip_configuration_id: "/subscriptions/<Subscriptionid>/resourceGroups/<Resource Group name>/providers/Microsoft.Network/loadBalancers/<Load-Balancer-Name>/frontendIPConfigurations/LB-Frontend",
-            protocol: 'Tcp',
-            frontend_port: 3442,
-            backend_port: 3389
-        }
+            {
+                 name: '<Rule Name>',
+                 frontend_ip_configuration_id: "/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/loadBalancers/<Load Balancer Name>/frontendIPConfigurations/<Frontend IP Config Name>",
+                 protocol: '<Protocol Name>',
+                 frontend_port: '<Frontend Port Number>',
+                 backend_port: '<Backend Port Number>'
+            },
+
+            {
+                 name: '<Rule Name>',
+                 frontend_ip_configuration_id: "/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/loadBalancers/<Load Balancer Name>/frontendIPConfigurations/<Frontend IP Config Name>",
+                 protocol: '<Protocol Name>',
+                 frontend_port: '<Frontend Port Number>',
+                 backend_port: '<Backend Port Number>'
+            }
         ],
     probes:
         [
         {
-            name: 'HealthProbe',
-            protocol: 'http',
-            request_path: 'HealthProbe.aspx',
-            port: '80',
-            interval_in_seconds: 15,
-            number_of_probes: 2
+            name: '<Probe Name>',
+            protocol: '<Protocol Name>',
+            request_path: '<Probe Request Path>',
+            port: '<Port Number>',
+            interval_in_seconds: <Interval in Seconds>,
+            number_of_probes: <Number of Probes>
         }
         ],
-    tags: { key: 'value' }                  # Optional
+    tags: { key: 'value' }                  # [Optional]
 )
 ```
 
@@ -684,10 +682,10 @@ lb = azure_network_service.load_balancers.create(
 List all load balancers in a resource group
 
 ```ruby
-    lbs = azure_network_service.load_balancers(resource_group: '<Resource Group name>')       
-    lbs.each do |lb|
+lbs = fog_network_service.load_balancers(resource_group: '<Resource Group Name>')       
+lbs.each do |lb|
       puts "#{lb.name}"
-    end
+end
 ```
 
 ## List Load Balancers in subscription
@@ -695,10 +693,10 @@ List all load balancers in a resource group
 List all load balancers in a subscription
 
 ```ruby
-    lbs = azure_network_service.load_balancers
-    lbs.each do |lb|
+lbs = fog_network_service.load_balancers
+lbs.each do |lb|
       puts "#{lb.name}"
-    end
+end
 ```
 
 ## Retrieve a single Load Balancer
@@ -706,10 +704,10 @@ List all load balancers in a subscription
 Get a single record of Load Balancer
 
 ```ruby
-    lb = azure_network_service
+lb = fog_network_service
          .load_balancers
-         .get('<Resource Group name>', '<Load Balancer name>')
-    puts "#{lb.name}"
+         .get('<Resource Group Name>', '<Load Balancer Name>')
+puts "#{lb.name}"
 ```
 
 ## Destroy a Load Balancer
@@ -717,13 +715,13 @@ Get a single record of Load Balancer
 Get a load balancer object from the get method and then destroy that load balancer.
 
 ```ruby
-    lb.destroy
+lb.destroy
 ```
 
 ## Check Virtual Network Gateway Existence
 
 ```ruby
- azure_network_service.virtual_network_gateways.check_vnet_gateway_exists(<Resource Group name>, <Virtual Network Gateway Name>)
+fog_network_service.virtual_network_gateways.check_vnet_gateway_exists('<Resource Group Name>', '<Virtual Network Gateway Name>')
 ```
 
 ## Create Virtual Network Gateway
@@ -731,50 +729,50 @@ Get a load balancer object from the get method and then destroy that load balanc
 Create a new Virtual Network Gateway.
 
 ```ruby
-    network_gateway = network.virtual_network_gateways.create(
+network_gateway = network.virtual_network_gateways.create(
       name: '<Virtual Network Gateway Name>',
-      location: 'eastus',
-      tags: {                   # Optional
-        key1: 'value1',
-        key2: 'value2'
-      },
+      location: '<Location>',
       ip_configurations: [
         {
-          name: 'default',
-          private_ipallocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Dynamic,
-          public_ipaddress_id: '/subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/Microsoft.Network/publicIPAddresses/{public_ip_name}',
-          subnet_id: '/subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/Microsoft.Network/virtualNetworks/{virtual_network_name}/subnets/{subnet_name}',
-          private_ipaddress: nil
+          name: '<IP Config Name>',
+          private_ipallocation_method:'<Private IP Allocation Method>',
+          public_ipaddress_id: '/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/publicIPAddresses/<Public IP Name>',
+          subnet_id: '/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/virtualNetworks/<Virtual Network Name>/subnets/<Subnet Name>',
+          private_ipaddress: <IP Address Value>         # could be 'nil'
         }
       ],
-      resource_group: 'learn_fog',
-      sku_name: 'Standard',
-      sku_tier: 'Standard',
-      sku_capacity: 2,
-      gateway_type: 'ExpressRoute',
-      enable_bgp: true,
-      gateway_size: nil,
-      asn: 100,
-      bgp_peering_address: nil,
-      peer_weight: 3,
-      vpn_type: 'RouteBased',
+      resource_group: '<Resource Group Name>',
+      sku_name: '<SKU Name>',
+      sku_tier: '<SKU Tier>',
+      sku_capacity: <SKU Capacity>,
+      gateway_type: '<Gateway Type>',
+      enable_bgp: <True/False>,
+      gateway_size: <Gateway Size>,
+      asn: <ASN Value>,
+      bgp_peering_address: <Peering Address>,
+      peer_weight: <Peer Weight>,
+      vpn_type: '<VPN Type>',
       vpn_client_address_pool: [],
-      gateway_default_site: '/subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/Microsoft.Network/localNetworkGateways/{local_network_gateway_name}',
+      gateway_default_site: '/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/localNetworkGateways/<Local Network Gateway Name>',
       default_sites: [],
       vpn_client_configuration: {
-        address_pool: ['192.168.0.4', '192.168.0.5'],
+        address_pool: ['<IP Address>', '<IP Address>'],
         root_certificates: [
           {
-            name: 'root',
-            public_cert_data: 'certificate data'
+            name: '<Certificate Name>',
+            public_cert_data: '<Certificate Data>'
           }
         ],
         revoked_certificates: [
           {
-            name: 'revoked',
-            thumbprint: 'thumb print detail'
+            name: '<Certificate Name>',
+            thumbprint: '<Thumb Print Detail>'
           }
         ]
+      },
+      tags: {                   # [Optional]
+           key1: 'value1',
+           key2: 'value2'
       }
     )
 ```
@@ -784,10 +782,10 @@ Create a new Virtual Network Gateway.
 List all virtual network gateways in a resource group
 
 ```ruby
-    network_gateways = network.virtual_network_gateways(resource_group: '<Resource Group Name>')
-	network_gateways.each do |gateway|
+network_gateways = network.virtual_network_gateways(resource_group: '<Resource Group Name>')
+network_gateways.each do |gateway|
     	puts "#{gateway.name}"
-	end
+end
 ```
 
 ## Retrieve single Virtual Network Gateway
@@ -795,8 +793,8 @@ List all virtual network gateways in a resource group
 Get single record of Virtual Network Gateway
 
 ```ruby
-    network_gateway = network.virtual_network_gateways.get('<Resource Group Name>', '<Virtual Network Gateway Name>')
-	puts "#{network_gateway.name}"
+network_gateway = network.virtual_network_gateways.get('<Resource Group Name>', '<Virtual Network Gateway Name>')
+puts "#{network_gateway.name}"
 ```
 
 ## Destroy single Virtual Network Gateway
@@ -804,13 +802,13 @@ Get single record of Virtual Network Gateway
 Get a virtual network gateway object from the get method and then destroy that virtual network gateway.
 
 ```ruby
-	network_gateway.destroy
+network_gateway.destroy
 ```
 
 ## Check Local Network Gateway Existence
 
 ```ruby
- azure_network_service.local_network_gateways.check_local_net_gateway_exists(<Resource Group name>, <Local Network Gateway Name>)
+fog_network_service.local_network_gateways.check_local_net_gateway_exists('<Resource Group Name>', '<Local Network Gateway Name>')
 ```
 
 ## Create Local Network Gateway
@@ -818,20 +816,20 @@ Get a virtual network gateway object from the get method and then destroy that v
 Create a new Local Network Gateway.
 
 ```ruby
-    local_network_gateway = network.local_network_gateways.create(
+local_network_gateway = network.local_network_gateways.create(
         name: "<Local Network Gateway Name>",
-        location: "eastus",
-        tags: {                 # Optional
-          key1: "value1",
-          key2: "value2"
-        },
+        location: '<Location>',
         resource_group: "<Resource Group Name>",
-        gateway_ip_address: '192.168.1.1',
+        gateway_ip_address: '<IP Address>',
         local_network_address_space_prefixes: [],
-        asn: 100,
-        bgp_peering_address: '192.168.1.2',
-        peer_weight: 3
-  )
+        asn: <ASN Value>,
+        bgp_peering_address: '<Peering IP Address>',
+        peer_weight: <Peer Weight>,
+        tags: {                     # [Optional]
+                key1: 'value1',
+                key2: 'value2'
+        },
+)
 ```
 
 ## List Local Network Gateways
@@ -839,10 +837,10 @@ Create a new Local Network Gateway.
 List all local network gateways in a resource group
 
 ```ruby
-    local_network_gateways = network.local_network_gateways(resource_group: '<Resource Group Name>')
-	local_network_gateways.each do |gateway|
+local_network_gateways = network.local_network_gateways(resource_group: '<Resource Group Name>')
+local_network_gateways.each do |gateway|
     	puts "#{gateway.name}"
-	end
+end
 ```
 
 ## Retrieve single Local Network Gateway
@@ -850,8 +848,8 @@ List all local network gateways in a resource group
 Get single record of Local Network Gateway
 
 ```ruby
-    local_network_gateway = network.local_network_gateways.get('<Resource Group Name>', '<Local Network Gateway Name>')
-	puts "#{local_network_gateway.name}"
+local_network_gateway = network.local_network_gateways.get('<Resource Group Name>', '<Local Network Gateway Name>')
+puts "#{local_network_gateway.name}"
 ```
 
 ## Destroy single Local Network Gateway
@@ -859,10 +857,10 @@ Get single record of Local Network Gateway
 Get a local network gateway object from the get method and then destroy that local network gateway.
 
 ```ruby
-	local_network_gateway.destroy
+local_network_gateway.destroy
 ```
 
-## Express Route
+# Express Route
 
 Microsoft Azure ExpressRoute lets you extend your on-premises networks into the Microsoft cloud over a dedicated private connection facilitated by a connectivity provider.
 For more details about express route [click here](https://azure.microsoft.com/en-us/documentation/articles/expressroute-introduction/).
@@ -874,7 +872,7 @@ The Circuit represents the entity created by customer to register with an expres
 ## Check Express Route Circuit Existence
 
 ```ruby
- azure_network_service.express_route_circuits.check_express_route_circuit_exists(<Resource Group name>, <Circuit Name>)
+fog_network_service.express_route_circuits.check_express_route_circuit_exists('<Resource Group Name>', '<Circuit Name>')
 ```
 
 ## Create an Express Route Circuit
@@ -882,31 +880,31 @@ The Circuit represents the entity created by customer to register with an expres
 Create a new Express Route Circuit.
 
 ```ruby
-    circuit = network.express_route_circuits.create(
-    	"name": "<Circuit Name>",
-    	"location": "eastus",
-    	"resource_group": "<Resource Group Name>",
-    	"tags": {                   # Optional
-    		"key1": 'value1',
-    		"key2": 'value2'
-  		},
-    	"sku_name": "Standard_MeteredData",
-    	"sku_tier": "Standard",
-    	"sku_family": "MeteredData",
-    	"service_provider_name": "Telenor",
-    	"peering_location": "London",
-    	"bandwidth_in_mbps": 100,
-    	"peerings": [
+circuit = network.express_route_circuits.create(
+    	name: '<Circuit Name>',
+    	location: '<Location>',
+    	resource_group: '<Resource Group Name>',
+    	sku_name: '<SKU Name>',
+    	sku_tier: '<SKU Tier>',
+    	sku_family: '<SKU Family>',
+    	service_provider_name: '<Security Provider Name>',
+    	peering_location: '<Peering Location Name>',
+    	bandwidth_in_mbps: <Bandwidth Value>,
+    	peerings: [
         	{
-            	"name": "AzurePublicPeering",
-            	"peering_type": "AzurePublicPeering",
-            	"peer_asn": 100,
-            	"primary_peer_address_prefix": "192.168.1.0/30",
-            	"secondary_peer_address_prefix": "192.168.2.0/30",
-            	"vlan_id": 200
+            	name: '<Peering Name>',
+            	peering_type: '<Peering Type>',
+            	peer_asn: <ASN Value>,
+            	primary_peer_address_prefix: '<Primary Peer IP Address Range>',
+            	secondary_peer_address_prefix: '<Secondary Peer IP Address Range>',
+            	vlan_id: <VLAN Id>
         	}
-    	]
-	)
+    	],
+        tags: {                                     # [Optional]
+    	        	key1: 'value1',
+    		        key2: 'value2'
+  	}
+)
 ```
 
 ## List Express Route Circuits
@@ -914,10 +912,10 @@ Create a new Express Route Circuit.
 List all express route circuits in a resource group
 
 ```ruby
-    circuits  = network.express_route_circuits(resource_group: '<Resource Group Name>')
-	circuits.each do |circuit|
+circuits  = network.express_route_circuits(resource_group: '<Resource Group Name>')
+circuits.each do |circuit|
     	puts "#{circuit.name}"
-	end
+end
 ```
 
 ## Retrieve a single Express Route Circuit
@@ -925,8 +923,8 @@ List all express route circuits in a resource group
 Get a single record of Express Route Circuit
 
 ```ruby
-    circuit = network.express_route_circuits.get("<Resource Group Name>", "<Circuit Name>")
-	puts "#{circuit.name}"
+circuit = network.express_route_circuits.get('<Resource Group Name>', '<Circuit Name>')
+puts "#{circuit.name}"
 ```
 
 ## Destroy a single Express Route Circuit
@@ -934,7 +932,7 @@ Get a single record of Express Route Circuit
 Get an express route circuit object from the get method and then destroy that express route circuit.
 
 ```ruby
-    circuit.destroy
+circuit.destroy
 ```
 # Express Route Authorization
 
@@ -943,7 +941,7 @@ Authorization is part of Express Route circuit.
 ## Check Express Route Circuit Authorization Existence
 
 ```ruby
- azure_network_service.express_route_circuit_authorizations.check_express_route_cir_auth_exists(<Resource Group name>, <Circuit Name>, <Authorization-Name>)
+fog_network_service.express_route_circuit_authorizations.check_express_route_cir_auth_exists('<Resource Group Name>', '<Circuit Name>', '<Authorization Name>')
 ```
 
 ## Create an Express Route Circuit Authorization
@@ -951,13 +949,13 @@ Authorization is part of Express Route circuit.
 Create a new Express Route Circuit Authorization. Parameter 'authorization_status' can be 'Available' or 'InUse'.
 
 ```ruby
-    authorization = network.express_route_circuit_authorizations.create(
-    	"resource_group": "<Resourse Group Name>",
-    	"name": "<Resource-Unique-Name>",
-    	"circuit_name": "<Circuit Name>",
-    	"authorization_status": "Available",
-    	"authorization_name": "<Authorization-Name>",
-	)
+authorization = network.express_route_circuit_authorizations.create(
+    	resource_group: '<Resourse Group Name>',
+    	name: '<Resource Unique Name>',
+    	circuit_name: '<Circuit Name>',
+    	authorization_status: '<Status Value>',
+    	authorization_name: '<Authorization Name>'
+)
 ```
 
 ## List Express Route Circuit Authorizations
@@ -965,10 +963,10 @@ Create a new Express Route Circuit Authorization. Parameter 'authorization_statu
 List all express route circuit authorizations in a resource group.
 
 ```ruby
-    authorizations  = network.express_route_circuit_authorizations(resource_group: '<Resource Group Name>', circuit_name: '<Circuit Name>')
-	authorizations.each do |authorization|
+authorizations  = network.express_route_circuit_authorizations(resource_group: '<Resource Group Name>', circuit_name: '<Circuit Name>')
+authorizations.each do |authorization|
     	puts "#{authorization.name}"
-	end
+end
 ```
 
 ## Retrieve single Express Route Circuit Authorization
@@ -976,8 +974,8 @@ List all express route circuit authorizations in a resource group.
 Get a single record of Express Route Circuit Authorization.
 
 ```ruby
-    authorization = network.express_route_circuit_authorizations.get("<Resource Group Name>", "Circuit Name", "Authorization Name")
-	puts "#{authorization.name}"
+authorization = network.express_route_circuit_authorizations.get('<Resource Group Name>', '<Circuit Name>', '<Authorization Name>')
+puts "#{authorization.name}"
 ```
 
 ## Destroy single Express Route Circuit Authorization
@@ -985,7 +983,7 @@ Get a single record of Express Route Circuit Authorization.
 Get an express route circuit authorization object from the get method and then destroy that express route circuit authorization.
 
 ```ruby
-    authorization.destroy
+authorization.destroy
 ```
 
 
@@ -998,16 +996,16 @@ BGP Peering is part of Express Route circuit and defines the type of connectivit
 Create a new Express Route Circuit Peering.
 
 ```ruby
-    peering = network.express_route_circuit_peerings.create(
-    	"name": "AzurePrivatePeering",
-    	"circuit_name": "<Circuit Name>",
-    	"resource_group": "<Resourse Group Name>",
-    	"peering_type": "AzurePrivatePeering",
-    	"peer_asn": 100,
-    	"primary_peer_address_prefix": "192.168.3.0/30",
-    	"secondary_peer_address_prefix": "192.168.4.0/30",
-    	"vlan_id": 200
-	)
+peering = network.express_route_circuit_peerings.create(
+    	name: '<Peering Name>',
+    	circuit_name: '<Circuit Name>',
+    	resource_group: '<Resourse Group Name>',
+    	peering_type: '<Peering Type>',
+    	peer_asn: <ASN Value>,
+    	primary_peer_address_prefix: '<Primary Peer IP Address Range>',
+    	secondary_peer_address_prefix:'<Secondary Peer IP Address Range>',
+    	vlan_id: <VLAN Id>
+)
 ```
 
 ## List Express Route Circuit Peerings
@@ -1015,10 +1013,10 @@ Create a new Express Route Circuit Peering.
 List all express route circuit peerings in a resource group
 
 ```ruby
-    peerings  = network.express_route_circuit_peerings(resource_group: '<Resource Group Name>', circuit_name: '<Circuit Name>')
-	peerings.each do |peering|
+peerings  = network.express_route_circuit_peerings(resource_group: '<Resource Group Name>', circuit_name: '<Circuit Name>')
+peerings.each do |peering|
     	puts "#{peering.name}"
-	end
+end
 ```
 
 ## Retrieve single Express Route Circuit Peering
@@ -1026,8 +1024,8 @@ List all express route circuit peerings in a resource group
 Get a single record of Express Route Circuit Peering
 
 ```ruby
-    peering = network.express_route_circuit_peerings.get("<Resource Group Name>", "<Peering Name>", "Circuit Name")
-	puts "#{peering.peering_type}"
+peering = network.express_route_circuit_peerings.get('<Resource Group Name>', '<Peering Name>', '<Circuit Name>')
+puts "#{peering.peering_type}"
 ```
 
 ## Destroy single Express Route Circuit Peering
@@ -1035,7 +1033,7 @@ Get a single record of Express Route Circuit Peering
 Get an express route circuit peering object from the get method and then destroy that express route circuit peering.
 
 ```ruby
-    peering.destroy
+peering.destroy
 ```
 
 # Express Route Service Provider
@@ -1047,14 +1045,14 @@ Express Route Service Providers are telcos and exchange providers who are approv
 List all express route service providers
 
 ```ruby
-    service_providers = network.express_route_service_providers
-	puts service_providers
+service_providers = network.express_route_service_providers
+puts service_providers
 ```
 
 ## Check Virtual Network Gateway Connection Existence
 
 ```ruby
- azure_network_service.virtual_network_gateway_connections.check_vnet_gateway_connection_exists(<Resource Group name>, <Virtual Network Gateway Connection Name>)
+fog_network_service.virtual_network_gateway_connections.check_vnet_gateway_connection_exists('<Resource Group Name>', '<Virtual Network Gateway Connection Name>')
 ```
 
 ## Create Virtual Network Gateway Connection
@@ -1062,24 +1060,24 @@ List all express route service providers
 Create a new Virtual Network Gateway Connection.
 
 ```ruby
-    gateway_connection = network.virtual_network_gateway_connections.create(
+gateway_connection = network.virtual_network_gateway_connections.create(
       name: '<Virtual Network Gateway Connection Name>',
-      location: 'eastus',
-      tags: {                       # Optional
-        key1: 'value1',
-        key2: 'value2'
-      },
+      location: '<Location>',
       resource_group: '<Resource Group Name>',
       virtual_network_gateway1: {
-        name: 'firstgateway',
+        name: '<VN Gateway Name>',
         resource_group: '<Resource Group Name>'
       },
       virtual_network_gateway2: {
-        name: 'secondgateway',
+        name: '<VN Gateway Name>',
         resource_group: '<Resource Group Name>'
       }
-      connection_type: 'VNet-to-VNet'
-    )
+      connection_type: '<Connection Type>',
+      tags: {                             # [Optional]
+               key1: 'value1',
+               key2: 'value2'
+      },
+)
 ```
 
 ## List Virtual Network Gateway Connections
@@ -1087,10 +1085,10 @@ Create a new Virtual Network Gateway Connection.
 List all virtual network gateway connections in a resource group
 
 ```ruby
-    gateway_connections = network.virtual_network_gateway_connections(resource_group: '<Resource Group Name>')
-	gateway_connections.each do |connection|
+gateway_connections = network.virtual_network_gateway_connections(resource_group: '<Resource Group Name>')
+gateway_connections.each do |connection|
     	puts "#{connection.name}"
-	end
+end
 ```
 
 ## Retrieve single Virtual Network Gateway Connection
@@ -1098,8 +1096,8 @@ List all virtual network gateway connections in a resource group
 Get single record of Virtual Network Gateway Connection
 
 ```ruby
-    gateway_connection = network.virtual_network_gateway_connections.get('<Resource Group Name>', '<Virtual Network Gateway Connection Name>')
-	puts "#{gateway_connection.name}"
+gateway_connection = network.virtual_network_gateway_connections.get('<Resource Group Name>', '<Virtual Network Gateway Connection Name>')
+puts "#{gateway_connection.name}"
 ```
 
 ## Destroy single Virtual Network Gateway Connection
@@ -1107,26 +1105,26 @@ Get single record of Virtual Network Gateway Connection
 Get a virtual network gateway connection object from the get method and then destroy that virtual network gateway connection.
 
 ```ruby
-	gateway_connection.destroy
+gateway_connection.destroy
 ```
 
 ## Get the shared key for a connection
 
 ```ruby
-	shared_key = network.get_connection_shared_key('<Resource Group Name>', '<Virtual Network Gateway Connection Name>')
-    puts gateway_connection
+shared_key = network.get_connection_shared_key('<Resource Group Name>', '<Virtual Network Gateway Connection Name>')
+puts gateway_connection
 ```
 
 ## Set the shared key for a connection
 
 ```ruby
-	network.set_connection_shared_key('<Resource Group Name>', '<Virtual Network Gateway Connection Name>', 'Value')
+network.set_connection_shared_key('<Resource Group Name>', '<Virtual Network Gateway Connection Name>', 'Value')
 ```
 
 ## Reset the shared key for a connection
 
 ```ruby
-	network.reset_connection_shared_key('<Resource Group Name>', '<Virtual Network Gateway Connection Name>', <Key Length in Integer>)
+network.reset_connection_shared_key('<Resource Group Name>', '<Virtual Network Gateway Connection Name>', '<Key Length In Integer>')
 ```
 
 

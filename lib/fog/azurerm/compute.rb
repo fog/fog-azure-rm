@@ -44,6 +44,7 @@ module Fog
       request :create_image
       request :delete_image
       request :get_image
+      request :create_or_update_snapshot
       request :list_snapshots_by_rg
       request :list_snapshots_in_subscription
       request :get_snapshot

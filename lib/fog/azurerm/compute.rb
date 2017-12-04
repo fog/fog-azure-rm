@@ -46,6 +46,7 @@ module Fog
       request :get_image
       request :list_snapshots_by_rg
       request :list_snapshots_in_subscription
+      request :get_snapshot
 
       model_path 'fog/azurerm/models/compute'
       model :availability_set

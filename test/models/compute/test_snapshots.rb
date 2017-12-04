@@ -7,10 +7,11 @@ class TestSnapshots < Minitest::Test
     @snapshots = Fog::Compute::AzureRM::Snapshots.new(resource_group: 'fog-test-rg', service: @service)
     @client = @service.instance_variable_get(:@compute_mgmt_client)
     @snapshot_list = [ApiStub::Models::Compute::Snapshot.create_snapshot_response(@client)]
+    @snapshot = ApiStub::Models::Compute::Snapshot.create_snapshot_response(@client)
   end
 
   def test_collection_methods
-    methods = %i(all)
+    methods = %i(all get)
     methods.each do |method|
       assert_respond_to @snapshots, method
     end
@@ -27,6 +28,12 @@ class TestSnapshots < Minitest::Test
       @snapshots.all.each do |disk|
         assert_instance_of Fog::Compute::AzureRM::Snapshot, disk
       end
+    end
+  end
+
+  def test_get_method_response
+    @service.stub :get_snapshot, @snapshot do
+      assert_instance_of Fog::Compute::AzureRM::Snapshot, @snapshots.get('fog-test-rg', 'fog-test-snapshot')
     end
   end
 end

@@ -18,6 +18,12 @@ module Fog
 
           load(snapshots)
         end
+
+        def get(resource_group_name, snap_name)
+          snapshot = service.get_snapshot(resource_group_name, snap_name)
+          snapshot_fog = Fog::Compute::AzureRM::Snapshot.new(service: service)
+          snapshot_fog.merge_attributes(Fog::Compute::AzureRM::Snapshot.parse(snapshot))
+        end
       end
     end
   end

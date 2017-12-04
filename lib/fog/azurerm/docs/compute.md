@@ -416,6 +416,16 @@ snapshots.each do |snap|
 end
 ```
 
+## Get one Snapshot in a Resource Group
+
+get one Snapshot in a Resource Group
+
+```ruby
+snap = fog_compute_service.snapshots.get('<Resource Group Name>', 'snapshot-name')
+puts "#{snap.name}"
+puts "#{snap.location}
+```
+
 ## Check Availability Set Existence
 
 ```ruby

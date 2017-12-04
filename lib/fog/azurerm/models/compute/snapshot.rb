@@ -31,6 +31,10 @@ module Fog
           snap
         end
 
+        def destroy(async = false)
+          service.delete_snapshot(resource_group_name, name, async)
+        end
+
         def creation_data=(new_creation_data)
           attributes[:creation_data] =
             if new_creation_data.is_a?(Hash)

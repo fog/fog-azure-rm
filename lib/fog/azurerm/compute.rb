@@ -47,6 +47,7 @@ module Fog
       request :get_snapshot
       request :create_generalized_image
       request :delete_generalized_image
+      request :delete_snapshot
 
       model_path 'fog/azurerm/models/compute'
       model :availability_set

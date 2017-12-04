@@ -1,3 +1,8 @@
+## 0.3.9
+
+**Changed**
+- Fixed Fog::Storage issue of requiring the 'mime-types' gem
+
 ## 0.3.8
 
 **Changed:**

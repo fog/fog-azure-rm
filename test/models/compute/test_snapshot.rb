@@ -32,6 +32,15 @@ class TestSnapshot < Minitest::Test
     end
   end
 
+  def test_model_methods
+    methods = [
+      :destroy
+    ]
+    methods.each do |method|
+      assert_respond_to @snapshot, method
+    end
+  end
+
   def test_parse_method
     snap_hash = Fog::Compute::AzureRM::Snapshot.parse(@response)
     @response.instance_variables.each do |attribute|
@@ -64,5 +73,23 @@ class TestSnapshot < Minitest::Test
     fog_snap.creation_data = data_hash
     # test assign is successsed
     assert_equal fog_snap.creation_data.source_resource_id, creation_data.source_resource_id
+  end
+
+  def test_destroy_method_true_response
+    @service.stub :delete_snapshot, true do
+      assert @snapshot.destroy
+    end
+  end
+
+  def test_destroy_async_method_true_response
+    @service.stub :delete_snapshot, true do
+      assert @snapshot.destroy(async: true)
+    end
+  end
+
+  def test_destroy_method_false_response
+    @service.stub :delete_snapshot, false do
+      assert !@snapshot.destroy
+    end
   end
 end

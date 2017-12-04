@@ -41,9 +41,10 @@ module Fog
       request :list_managed_disks_in_subscription
       request :revoke_access_to_managed_disk
       request :grant_access_to_managed_disk
-      request :create_image
-      request :delete_image
-      request :get_image
+      request :list_snapshots_by_rg
+      request :list_snapshots_in_subscription
+      request :create_generalized_image
+      request :delete_generalized_image
 
       model_path 'fog/azurerm/models/compute'
       model :availability_set

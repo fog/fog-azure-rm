@@ -2,7 +2,7 @@ module Fog
   module Compute
     class AzureRM
       # This class is giving implementation of all/list, get and
-      # check existence for snapshots of snapshots.
+      # check existence for snapshots of managedisk.
       class Snapshots < Fog::Collection
         model Fog::Compute::AzureRM::Snapshot
         attribute :resource_group

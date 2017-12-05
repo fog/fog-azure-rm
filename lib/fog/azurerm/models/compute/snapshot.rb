@@ -52,6 +52,33 @@ module Fog
         end
 
         private_class_method :parse_creation_data, :parse_encryption_settings_object
+
+        def save
+          requires :name, :location, :resource_group_name, :creation_data
+          validate_creation_data_params(creation_data)
+
+          snapshot = service.create_or_update_snapshot(snapshot_params)
+          merge_attributes(Fog::Compute::AzureRM::Snapshot.parse(snapshot))
+        end
+
+        private
+
+        def validate_creation_data_params(creation_data)
+          if !creation_data || creation_data.create_option.nil?
+            raise(ArgumentError, 'creation_data.create_option is required for this operation')
+          end
+        end
+
+        def snapshot_params
+          {
+            name: name,
+            location: location,
+            resource_group_name: resource_group_name,
+            tags: tags,
+            creation_data: creation_data.attributes,
+            encryption_settings: encryption_settings
+          }
+        end
       end
     end
   end

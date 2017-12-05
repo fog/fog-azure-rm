@@ -53,6 +53,8 @@ module Fog
       collection :virtual_machine_extensions
       model :managed_disk
       collection :managed_disks
+      model :snapshot
+      collection :snapshots
       model :data_disk
       model :creation_data
       model :disk_create_option

@@ -25,7 +25,7 @@ class TestCheckZoneExists < Minitest::Test
   end
 
   def test_check_zone_exists_exception
-    response = proc { raise MsRestAzure::AzureOperationError.new(nil, mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceNotFound' }) }
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, create_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceNotFound' }) }
     @zones.stub :get, response do
       assert !@service.check_zone_exists('fog-test-rg', 'zone_name')
     end

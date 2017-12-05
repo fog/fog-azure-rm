@@ -16,14 +16,14 @@ class TestCheckNetworkSecurityGroupExists < Minitest::Test
   end
 
   def test_check_net_sec_group_exists_failure
-    response = proc { raise MsRestAzure::AzureOperationError.new(nil, mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceNotFound' }) }
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, create_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceNotFound' }) }
     @network_security_groups.stub :get, response do
       assert !@service.check_net_sec_group_exists('fog-test-rg', 'fog-test-nsg')
     end
   end
 
   def test_check_net_sec_group_exists_exception
-    response = proc { raise MsRestAzure::AzureOperationError.new(nil, mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceGroupNotFound' }) }
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, create_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceGroupNotFound' }) }
     @network_security_groups.stub :get, response do
       assert !@service.check_net_sec_group_exists('fog-test-rg', 'fog-test-nsg')
     end

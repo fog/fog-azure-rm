@@ -266,7 +266,7 @@ List managed disks in a resource group
 
 ```ruby
 managed_disks  = fog_compute_service.managed_disks(resource_group: '<Resource Group Name>')
-mnaged_disks.each do |disk|
+managed_disks.each do |disk|
       puts "#{disk.name}"
       puts "#{disk.location}"
 end
@@ -326,6 +326,40 @@ Get an managed disk object from the get method and then destroy that managed dis
 managed_disk.destroy
 # Can be made asynchronously (is synchronous by default)
 managed_disk.destroy(true)
+```
+
+## List Snapshots in a Resource Group
+
+List Snapshots in a Resource Group
+
+```ruby
+snapshots = fog_compute_service.snapshots(resource_group: '<Resource Group Name>')
+snapshots.each do |snap|
+      puts "#{snap.name}"
+      puts "#{snap.location}"
+end
+```
+
+## List Snapshots in a Subscription
+
+List Snapshots in a subscription
+
+```ruby
+snapshots = fog_compute_service.snapshots
+snapshots.each do |snap|
+      puts "#{snap.name}"
+      puts "#{snap.location}
+end
+```
+
+## Get one Snapshot in a Resource Group
+
+get one Snapshot in a Resource Group
+
+```ruby
+snap = fog_compute_service.snapshots.get('<Resource Group Name>', 'snapshot-name')
+puts "#{snap.name}"
+puts "#{snap.location}
 ```
 
 ## Check Availability Set Existence

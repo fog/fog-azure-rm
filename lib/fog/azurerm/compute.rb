@@ -41,6 +41,9 @@ module Fog
       request :list_managed_disks_in_subscription
       request :revoke_access_to_managed_disk
       request :grant_access_to_managed_disk
+      request :list_snapshots_by_rg
+      request :list_snapshots_in_subscription
+      request :get_snapshot
       request :create_generalized_image
       request :delete_generalized_image
 

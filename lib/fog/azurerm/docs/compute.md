@@ -2,7 +2,7 @@
 
 This document explains how to get started using Azure Compute Service with Fog. With this gem you can create, update, list or delete availability sets and virtual machines.
 
-## Usage 
+## Usage
 
 First of all, you need to require the Fog library by executing:
 
@@ -51,7 +51,7 @@ fog_compute_service.servers.create(
         username: '<Username>',
         disable_password_authentication: <True/False>,
         network_interface_card_ids: ['/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/networkInterfaces/<Network Interface Id>'],
-        publisher: '<Publisher Name>',                          # Not required if custom image is being used 
+        publisher: '<Publisher Name>',                          # Not required if custom image is being used
         offer: '<Offer Name>',                                  # Not required if custom image is being used
         sku: '<SKU Name>',                                      # Not required if custom image is being used
         version: '<Version>',                                   # Not required if custom image is being used
@@ -81,7 +81,7 @@ fog_compute_service.servers.create(
         disable_password_authentication: <True/False>,
         network_interface_card_ids: ['/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/networkInterfaces/<Network Interface Id>'],
         publisher: '<Publisher Name>',                    # Not required if custom image is being used
-        offer: '<Offer Name>',                            # Not required if custom image is being used  
+        offer: '<Offer Name>',                            # Not required if custom image is being used
         sku: '<SKU Name>',                                # Not required if custom image is being used
         version: '<Version>',                             # Not required if custom image is being used
         platform: '<OS Type>',
@@ -107,11 +107,11 @@ async_response = fog_compute_service.servers.create_async(
         username: '<Username for VM>',
         disable_password_authentication: <True/False>,
         network_interface_card_ids: ['/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/networkInterfaces/<Network Interface Id>'],
-        publisher: '<Publisher Name>',                       # Not required if custom image is being used 
+        publisher: '<Publisher Name>',                       # Not required if custom image is being used
         offer: '<Offer Name>',                               # Not required if custom image is being used
         sku: '<SKU Name>',                                   # Not required if custom image is being used
         version: '<Version>' ,                               # Not required if custom image is being used
-        platform: '<OS Type>', 
+        platform: '<OS Type>',
         availability_set_id: '<Availability Set Id>',        # [Optional]
         password: '<Password>',                              # [Optional], if 'platform' partameter is 'Linux'.
         vhd_path: '<Path of VHD>',                           # [Optional], if you want to create the VM from a custom image.
@@ -134,7 +134,7 @@ An example of handling async response is given below:
 ```ruby
 while 1
     puts async_response.state
-    
+
     if async_response.pending?
       sleep(2)
     end
@@ -150,7 +150,7 @@ while 1
     end
  end
 ```
- 
+
 For more information about custom_data, see link: https://msdn.microsoft.com/en-us/library/azure/mt163591.aspx
 
 ## List Servers
@@ -180,7 +180,7 @@ puts "#{server.name}"
 
 Check the status of a Server
 
-```ruby 
+```ruby
 status = fog_compute_service
                       .servers
                       .get('<Resource Group Name>', '<Server Name>')
@@ -266,7 +266,7 @@ List managed disks in a resource group
 
 ```ruby
 managed_disks  = fog_compute_service.managed_disks(resource_group: '<Resource Group Name>')
-mnaged_disks.each do |disk|
+managed_disks.each do |disk|
       puts "#{disk.name}"
       puts "#{disk.location}"
 end
@@ -324,6 +324,49 @@ Get an managed disk object from the get method and then destroy that managed dis
 
 ```ruby
 managed_disk.destroy
+# Can be made asynchronously (is synchronous by default)
+managed_disk.destroy(true)
+```
+
+## List Snapshots in a Resource Group
+
+List Snapshots in a Resource Group
+
+```ruby
+snapshots = fog_compute_service.snapshots(resource_group: '<Resource Group Name>')
+snapshots.each do |snap|
+      puts "#{snap.name}"
+      puts "#{snap.location}"
+end
+```
+
+## List Snapshots in a Subscription
+
+List Snapshots in a subscription
+
+```ruby
+snapshots = fog_compute_service.snapshots
+snapshots.each do |snap|
+      puts "#{snap.name}"
+      puts "#{snap.location}
+end
+```
+
+## Get one Snapshot in a Resource Group
+
+get one Snapshot in a Resource Group
+
+```ruby
+snap = fog_compute_service.snapshots.get('<Resource Group Name>', 'snapshot-name')
+puts "#{snap.name}"
+puts "#{snap.location}
+```
+
+## Destroy a Snapshot
+Destroy a Snapshot
+
+```ruby
+snapshot.destroy
 ```
 
 ## Check Availability Set Existence
@@ -346,7 +389,7 @@ fog_compute_service.availability_sets.create(
     use_managed_disk: true                                  # [Optional] Possible values true or false
 )
 ```
-## List Availability Sets 
+## List Availability Sets
 
 List availability sets in a resource group
 

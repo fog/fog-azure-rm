@@ -3,32 +3,32 @@ module Fog
     class AzureRM
       # This class provides the actual implementation for service calls.
       class Real
-        def create_generalized_image(image_config)
-          msg = "Creating/Updating Generalized Image: #{image_config[:vm_name]}-osImage"
+        def create_image(image_config)
+          msg = "Creating/Updating Image: #{image_config[:vm_name]}-osImage"
           Fog::Logger.debug msg
           image_name = "#{image_config[:vm_name]}-osImage"
-          image = setup_image_params(image_config)
+          image = setup_params(image_config)
           begin
             image_obj = @compute_mgmt_client.images.create_or_update(image_config[:resource_group], image_name, image)
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
-          Fog::Logger.debug "Generalized Image #{image_name} created/updated successfully."
+          Fog::Logger.debug "Image #{image_name} created/updated successfully."
           image_obj
         end
 
         private
 
-        def setup_image_params(image_config)
+        def setup_params(image_config)
           storage_profile_image = Azure::ARM::Compute::Models::ImageStorageProfile.new
-          storage_profile_image.os_disk = create_os_disk_image(image_config)
+          storage_profile_image.os_disk = create_generalized_os_disk_image(image_config)
           image = Azure::ARM::Compute::Models::Image.new
           image.storage_profile = storage_profile_image
           image.location = image_config[:location]
           image
         end
 
-        def create_os_disk_image(image_config)
+        def create_generalized_os_disk_image(image_config)
           os_disk_image = Azure::ARM::Compute::Models::ImageOSDisk.new
           os_disk_image.os_type = image_config[:platform]
           os_disk_image.os_state = 'Generalized'
@@ -37,9 +37,10 @@ module Fog
           os_disk_image
         end
       end
+
       # This class provides the mock implementation for unit tests.
       class Mock
-        def create_generalized_image(*)
+        def create_image(*)
           image_obj = {
             'location' => 'West US',
             'tags' => {

@@ -65,6 +65,42 @@ fog_compute_service.servers.create(
 )
 ```
 
+**Info:**
+
+- To create VM from Image, pass in the Image ID in `image_ref` attribute
+
+**Limitation:**
+
+- Image should be in the same region
+- ONLY managed VM can be created from image
+
+### Virtual Machine (Managed OS Disk from Image)
+
+```ruby
+fog_compute_service.servers.create(
+        name: '<VM Name>',
+        location: '<Location>',
+        resource_group: '<Resource Group Name>',
+	tags: { key1: 'value1', key2: 'value2', keyN: 'valueN' },
+        vm_size: '<Virtual Machine Size>',
+        username: '<Username>',
+        disable_password_authentication: <True/False>,
+        network_interface_card_ids: ['/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/networkInterfaces/<Network Interface Id>'],
+        publisher: '<Publisher Name>',                          # Not required if custom image is being used 
+        offer: '<Offer Name>',                                  # Not required if custom image is being used
+        sku: '<SKU Name>',                                      # Not required if custom image is being used
+        version: '<Version>',                                   # Not required if custom image is being used
+        platform: '<OS Type>',
+        availability_set_id: '<Availability Set Id>',           # [Optional]
+        password: '<Password>',                                 # [Optional], if 'platform' partameter is 'Linux'.
+        image_ref: '<Image ID>',                                # [Optional], if you want to create the VM from a custom image.
+        custom_data: '<Custom Data Value>',                     # [Optional], if you want to add custom data in this VM.
+        os_disk_caching: '<Caching Type>',                      # [Optional], can be one of None, ReadOnly, ReadWrite
+        managed_disk_storage_type: '<Storage Account Type>',    # [Optional], if storage_account_name is passed, can be StandardLRS or PremiumLRS
+        os_disk_size: <Disk Size>                               # [Optional], size of the os disk in GB (upto 1023)
+)
+```
+
 ### Virtual Machine (Unmanaged OS Disk)
 
 ```ruby

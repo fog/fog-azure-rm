@@ -59,10 +59,10 @@ begin
   )
 
   network.virtual_networks.create(
-    name:             'testVnet',
-    location:         LOCATION,
-    resource_group:   RG_NAME,
-    network_address_list:  '10.1.0.0/16,10.2.0.0/16'
+    name: 'testVnet',
+    location: LOCATION,
+    resource_group: RG_NAME,
+    network_address_list: '10.1.0.0/16,10.2.0.0/16'
   )
 
   network.subnets.create(
@@ -103,6 +103,8 @@ begin
   ######################                                Create Server                               ######################
   ########################################################################################################################
 
+  vhd_path = 'https://myblob.blob.core.windows.net/vhds/my_vhd.vhd'.freeze
+
   custom_image_virtual_machine = compute.servers.create(
     name: 'TestVM',
     location: LOCATION,
@@ -114,7 +116,7 @@ begin
     disable_password_authentication: false,
     network_interface_card_ids: ["/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/#{RG_NAME}/providers/Microsoft.Network/networkInterfaces/NetInt"],
     platform: 'linux',
-    vhd_path: 'https://myblob.blob.core.windows.net/vhds/my_vhd.vhd'
+    vhd_path: vhd_path
   )
 
   puts "Created custom image un-managed virtual machine: #{custom_image_virtual_machine.name}"
@@ -134,7 +136,7 @@ begin
     disable_password_authentication: false,
     network_interface_card_ids: ["/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/#{RG_NAME}/providers/Microsoft.Network/networkInterfaces/NetInt2"],
     platform: 'linux',
-    vhd_path: 'https://myblob.blob.core.windows.net/vhds/my_vhd.vhd',
+    vhd_path: vhd_path,
     managed_disk_storage_type: Azure::ARM::Compute::Models::StorageAccountTypes::StandardLRS
   )
 
@@ -143,6 +145,8 @@ begin
   ########################################################################################################################
   ##############                                Create Managed Server Async                               ################
   ########################################################################################################################
+
+  print 'Creating Virtual Machine asynchronously...'
 
   async_response = compute.servers.create_async(
     name: 'TestVM-ManagedAsync',
@@ -155,22 +159,23 @@ begin
     disable_password_authentication: false,
     network_interface_card_ids: ["/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/#{RG_NAME}/providers/Microsoft.Network/networkInterfaces/NetInt3"],
     platform: 'linux',
-    vhd_path: 'https://myblob.blob.core.windows.net/vhds/my_vhd.vhd',
+    vhd_path: vhd_path,
     managed_disk_storage_type: Azure::ARM::Compute::Models::StorageAccountTypes::StandardLRS
   )
 
   loop do
-    puts async_response.state
-
-    sleep(2) if async_response.pending?
+    if async_response.pending?
+      sleep(2)
+      print '.'
+    end
 
     if async_response.fulfilled?
-      puts "Created custom image managed virtual machine: #{async_response.value.name}"
+      puts "\nCreated custom image managed virtual machine: #{async_response.value.name}"
       break
     end
 
     if async_response.rejected?
-      puts async_response.reason.inspect
+      puts "\nERROR: Async VM creation failed!\n#{async_response.reason.inspect}"
       break
     end
   end
@@ -195,6 +200,8 @@ begin
   ######################                                   CleanUp                                  ######################
   ########################################################################################################################
 
+  puts 'Cleaning up...'
+
   nic = network.network_interfaces.get(RG_NAME, 'NetInt')
   nic.destroy
 
@@ -212,6 +219,8 @@ begin
 
   resource_group = rs.resource_groups.get(RG_NAME)
   resource_group.destroy
+
+  puts 'Integration Test for virtual machine ran successfully!'
 rescue
   puts 'Integration Test for custom image virtual machine is failing'
   resource_group.destroy unless resource_group.nil?

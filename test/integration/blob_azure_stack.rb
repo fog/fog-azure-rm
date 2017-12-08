@@ -6,33 +6,15 @@ require 'yaml'
 ######################                              Keep it Uncommented!                          ######################
 ########################################################################################################################
 
-azure_credentials = YAML.load_file(File.expand_path('credentials/azure.yml', __dir__))
-
-location = azure_credentials['location']
-
-rs = Fog::Resources::AzureRM.new(
-  tenant_id: azure_credentials['tenant_id'],
-  client_id: azure_credentials['client_id'],
-  client_secret: azure_credentials['client_secret'],
-  subscription_id: azure_credentials['subscription_id'],
-  environment: azure_credentials['environment']
-)
-
-storage = Fog::Storage::AzureRM.new(
-  tenant_id: azure_credentials['tenant_id'],
-  client_id: azure_credentials['client_id'],
-  client_secret: azure_credentials['client_secret'],
-  subscription_id: azure_credentials['subscription_id'],
-  environment: azure_credentials['environment']
-)
+azure_credentials = YAML.load_file(File.expand_path('credentials/azure-stack-storage.yml', __dir__))
 
 ########################################################################################################################
 ######################                               Resource names                                #####################
 ########################################################################################################################
 
 time = current_time
-resource_group_name = "Blob-RG-#{time}"
-storage_account_name = "sa#{time}"
+storage_account_name = azure_credentials['storage_account_name']
+access_key = azure_credentials['storage_account_access_key']
 container_name = "con#{time}"
 test_container_name = "tcon#{time}"
 
@@ -41,27 +23,13 @@ test_container_name = "tcon#{time}"
 ########################################################################################################################
 
 begin
-  resource_group = rs.resource_groups.create(
-    name: resource_group_name,
-    location: location
-  )
-
-  storage_account = storage.storage_accounts.create(
-    name: storage_account_name,
-    location: location,
-    resource_group: resource_group_name
-  )
-
-  access_key = storage_account.get_access_keys[0].value
-  Fog::Logger.debug access_key.inspect
-
   options = {
     provider: 'AzureRM',
-    azure_storage_account_name: storage_account.name,
+    azure_storage_account_name: storage_account_name,
     azure_storage_access_key: access_key,
     environment: azure_credentials['environment']
   }
-  options[:storage_dns_suffix] = azure_credentials['azure_storage_dns_suffix'] unless azure_credentials['azure_storage_dns_suffix'].nil?
+  options[:azure_storage_dns_suffix] = azure_credentials['storage_dns_suffix'] unless azure_credentials['storage_dns_suffix'].nil?
 
   storage_data = Fog::Storage.new(options)
 
@@ -297,8 +265,13 @@ begin
 
   blob = container.files.head(large_blob_name)
   puts "Deleted blob: #{blob.destroy}"
+
+  ########################################################################################################################
+  ######################                                Deleted Container                           ######################
+  ########################################################################################################################
+
+  puts "Deleted container: #{container.destroy}"
+  puts "Deleted test container: #{test_container.destroy}"
 rescue => ex
   puts "Integration Test for blob is failing: #{ex.inspect}\n#{ex.backtrace.join("\n")}"
-ensure
-  resource_group.destroy unless resource_group.nil?
 end

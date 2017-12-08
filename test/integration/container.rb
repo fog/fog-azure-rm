@@ -8,11 +8,14 @@ require 'yaml'
 
 azure_credentials = YAML.load_file(File.expand_path('credentials/azure.yml', __dir__))
 
+location = azure_credentials['location']
+
 rs = Fog::Resources::AzureRM.new(
   tenant_id: azure_credentials['tenant_id'],
   client_id: azure_credentials['client_id'],
   client_secret: azure_credentials['client_secret'],
-  subscription_id: azure_credentials['subscription_id']
+  subscription_id: azure_credentials['subscription_id'],
+  environment: azure_credentials['environment']
 )
 
 storage = Fog::Storage::AzureRM.new(
@@ -40,25 +43,27 @@ test_container_name = "tcon#{time}"
 begin
   resource_group = rs.resource_groups.create(
     name: resource_group_name,
-    location: LOCATION
+    location: location
   )
 
   storage_account_name = "sa#{current_time}"
 
   storage_account = storage.storage_accounts.create(
     name: storage_account_name,
-    location: LOCATION,
+    location: location,
     resource_group: resource_group_name
   )
 
   keys = storage_account.get_access_keys
   access_key = keys.first.value
 
-  storage_data = Fog::Storage::AzureRM.new(
+  options = {
     azure_storage_account_name: storage_account.name,
     azure_storage_access_key: access_key,
     environment: azure_credentials['environment']
-  )
+  }
+  options[:storage_dns_suffix] = azure_credentials['azure_storage_dns_suffix'] unless azure_credentials['azure_storage_dns_suffix'].nil?
+  storage_data = Fog::Storage::AzureRM.new(options)
 
   ########################################################################################################################
   ######################                             Check Container Exists                         ######################
@@ -76,7 +81,7 @@ begin
   )
   puts "Created container: #{container.key}"
 
-  storage_data.directories.create(
+  container = storage_data.directories.create(
     key: test_container_name,
     public: true
   )

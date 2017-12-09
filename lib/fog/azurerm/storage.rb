@@ -126,6 +126,7 @@ module Fog
           client_options = {
             storage_account_name: @azure_storage_account_name,
             storage_access_key: @azure_storage_access_key,
+            user_agent_prefix: telemetry
           }
           client_options[:storage_dns_suffix] = if @environment == ENVIRONMENT_AZURE_STACK
                                                   @azure_storage_dns_suffix.nil? ? 'local.azurestack.external' : @azure_storage_dns_suffix

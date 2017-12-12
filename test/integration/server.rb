@@ -57,10 +57,10 @@ begin
   )
 
   network.virtual_networks.create(
-    name:             'testVnet',
-    location:         LOCATION,
-    resource_group:   'TestRG-VM',
-    network_address_list:  '10.1.0.0/16,10.2.0.0/16'
+    name: 'testVnet',
+    location: LOCATION,
+    resource_group: 'TestRG-VM',
+    network_address_list: '10.1.0.0/16,10.2.0.0/16'
   )
 
   network.subnets.create(
@@ -79,7 +79,6 @@ begin
     private_ip_allocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Dynamic
   )
 
-  # TODO: Create new NIC for managed VM
   network.network_interfaces.create(
     name: 'NetInt2',
     resource_group: 'TestRG-VM',
@@ -94,11 +93,13 @@ begin
   ########################################################################################################################
 
   flag = compute.servers.check_vm_exists('TestRG-VM', 'TestVM')
-  puts "Virtual Machine doesn't exist." unless flag
+  puts 'Virtual Machine does NOT exist!' unless flag
 
   ########################################################################################################################
   ######################                                  Create Server                             ######################
   ########################################################################################################################
+
+  puts 'Creating un-managed Virtual Machine...'
 
   tags = { key1: 'value1', key2: 'value2' }
 
@@ -126,6 +127,9 @@ begin
   ########################################################################################################################
   ######################                            Create Managed Server                           ######################
   ########################################################################################################################
+
+  puts 'Creating managed Virtual Machine...'
+
   managed_vm = compute.servers.create(
     name: 'TestVM-Managed',
     location: LOCATION,
@@ -151,6 +155,8 @@ begin
   ######################                                Create Server Async                           ####################
   ########################################################################################################################
 
+  print 'Creating Virtual Machine asynchronously...'
+
   async_response = compute.servers.create_async(
     name: 'TestVM',
     location: LOCATION,
@@ -172,17 +178,18 @@ begin
   )
 
   loop do
-    puts async_response.state
-
-    sleep(2) if async_response.pending?
+    if async_response.pending?
+      sleep(2)
+      print '.'
+    end
 
     if async_response.fulfilled?
-      puts async_response.value.inspect
+      puts "\nCreated VM asynchronously! [#{async_response.value.name}]"
       break
     end
 
     if async_response.rejected?
-      puts async_response.reason.inspect
+      puts "\nERROR: Async VM creation failed!\n#{async_response.reason.inspect}"
       break
     end
   end
@@ -193,7 +200,7 @@ begin
 
   virtual_machine = compute.servers.get('TestRG-VM', 'TestVM')
   virtual_machine.attach_data_disk('datadisk1', 10, storage_account_name)
-  puts 'Attached Data Disk to VM'
+  puts 'Attached Data Disk to VM!'
 
   ########################################################################################################################
   ######################                          Detach Data Disk from VM                          ######################
@@ -201,7 +208,7 @@ begin
 
   virtual_machine = compute.servers.get('TestRG-VM', 'TestVM')
   virtual_machine.detach_data_disk('datadisk1')
-  puts 'Detached Data Disk from VM'
+  puts 'Detached Data Disk from VM!'
 
   ########################################################################################################################
   ######################                                Delete Data Disk                            ######################
@@ -218,6 +225,7 @@ begin
   ########################################################################################################################
   ######################                       Create a Managed Data Disk                           ######################
   ########################################################################################################################
+
   managed_disk = compute.managed_disks.create(
     name: 'ManagedDataDisk',
     location: LOCATION,
@@ -233,30 +241,32 @@ begin
   ########################################################################################################################
   ######################                          Attach Managed Data Disk to VM                    ######################
   ########################################################################################################################
+
   managed_vm.attach_managed_disk('ManagedDataDisk', 'TestRG-VM')
-  puts 'Attached Managed Data Disk to VM'
+  puts 'Attached Managed Data Disk to VM!'
 
   ########################################################################################################################
   ######################                          Detach Data Disk from VM                          ######################
   ########################################################################################################################
 
   managed_vm.detach_managed_disk('ManagedDataDisk')
-  puts 'Detached Managed Data Disk from VM'
+  puts 'Detached Managed Data Disk from VM!'
 
   ########################################################################################################################
   ######################                         Delete Managed Data Disk                           ######################
   ########################################################################################################################
+
   managed_disk.destroy
-  puts 'Deleted managed data disk'
+  puts 'Deleted managed data disk!'
 
   ########################################################################################################################
   ######################                      List VM in a resource group                           ######################
   ########################################################################################################################
 
   virtual_machines = compute.servers(resource_group: 'TestRG-VM')
-  puts 'List virtual machines ina resource group:'
-  virtual_machines.each do |a_virtual_machine|
-    puts a_virtual_machine.name
+  puts 'List virtual machines in a resource group:'
+  virtual_machines.each do |vm|
+    puts "- #{vm.name}"
   end
 
   #######################################################################################################################
@@ -270,10 +280,10 @@ begin
   ######################                      List available sizes in VM                            ######################
   ########################################################################################################################
 
+  puts 'List of available sizes for Virtual Machine:'
   available_sizes_for_vm = virtual_machine.list_available_sizes
-  puts 'List available sizes in virtual machines:'
   available_sizes_for_vm.each do |available_size|
-    puts available_size.inspect
+    puts "- #{available_size.name}"
   end
 
   ########################################################################################################################
@@ -295,7 +305,7 @@ begin
   ########################################################################################################################
 
   virtual_machine.deallocate
-  puts 'Virtual machine deallocated!'
+  puts 'Virtual machine de-allocated!'
 
   ########################################################################################################################
   ######################                                 Start VM                                   ######################
@@ -316,11 +326,13 @@ begin
   ########################################################################################################################
 
   puts "Deleted virtual machine: #{virtual_machine.destroy}"
-  puts "Deleted virutal machine: #{managed_vm.destroy}"
+  puts "Deleted virtual machine: #{managed_vm.destroy}"
 
   ########################################################################################################################
   ######################                                   CleanUp                                  ######################
   ########################################################################################################################
+
+  puts 'Cleaning up...'
 
   nic = network.network_interfaces.get('TestRG-VM', 'NetInt')
   nic.destroy
@@ -337,8 +349,8 @@ begin
   resource_group = rs.resource_groups.get('TestRG-VM')
   resource_group.destroy
 
-  puts 'Integration Test for virtual machine ran successfully'
+  puts 'Integration Test for virtual machine ran successfully!'
 rescue
-  puts 'Integration Test for virtual machine is failing'
+  puts 'Integration Test for virtual machine is failing!'
   resource_group.destroy unless resource_group.nil?
 end

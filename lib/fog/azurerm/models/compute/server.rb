@@ -35,6 +35,7 @@ module Fog
         attribute :tags
         attribute :platform_update_domain
         attribute :platform_fault_domain
+        attribute :image_ref
 
         def self.parse(vm)
           hash = {}
@@ -92,7 +93,7 @@ module Fog
 
         def save(async = false)
           requires :name, :location, :resource_group, :vm_size, :username, :network_interface_card_ids
-          requires :publisher, :offer, :sku, :version if vhd_path.nil? && managed_disk_storage_type.nil?
+          requires :publisher, :offer, :sku, :version if vhd_path.nil? && image_ref.nil?
           requires :storage_account_name if managed_disk_storage_type.nil?
           requires :managed_disk_storage_type if storage_account_name.nil?
 
@@ -179,7 +180,7 @@ module Fog
 
         def delete_extra_resources
           unless vhd_path.nil? || !managed_disk_storage_type.nil?
-            service.delete_generalized_image(resource_group, name)
+            service.delete_image(resource_group, name)
             delete_storage_account_or_container(resource_group, storage_account_name, name)
           end
         end
@@ -226,7 +227,8 @@ module Fog
             os_disk_caching: os_disk_caching,
             managed_disk_storage_type: managed_disk_storage_type,
             os_disk_size: os_disk_size,
-            tags: tags
+            tags: tags,
+            image_ref: image_ref
           }
         end
 
@@ -242,8 +244,11 @@ module Fog
         end
 
         def delete_storage_account_or_container(resource_group, storage_account_name, vm_name)
-          delete_storage_account(resource_group) if storage_account_name.nil?
-          delete_storage_container(resource_group, storage_account_name, vm_name) unless storage_account_name.nil?
+          if storage_account_name.nil?
+            delete_storage_account(resource_group)
+          else
+            delete_storage_container(resource_group, storage_account_name, vm_name)
+          end
         end
 
         def delete_storage_container(resource_group, storage_account_name, vm_name)

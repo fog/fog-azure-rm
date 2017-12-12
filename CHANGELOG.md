@@ -1,3 +1,8 @@
+## 0.4.0
+
+**Added**
+- Support added for custom vm image reference 
+
 ## 0.3.9
 
 **Changed**

@@ -166,3 +166,7 @@ def parse_storage_object(object)
   data['etag'].delete!('"')
   data
 end
+
+def get_image_name(id)
+  id.split('/').last
+end

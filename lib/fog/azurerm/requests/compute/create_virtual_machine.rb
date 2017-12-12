@@ -17,7 +17,7 @@ module Fog
           vm = Azure::ARM::Compute::Models::VirtualMachine.new
           vm.location = vm_config[:location]
           vm.tags = vm_config[:tags]
-          vm.availability_set = get_availability_set(vm_config[:availability_set_id])
+          vm.availability_set = get_vm_availability_set(vm_config[:availability_set_id])
           vm.hardware_profile = get_hardware_profile(vm_config[:vm_size])
           vm.os_profile = get_os_profile(vm_config)
           vm.network_profile = get_network_profile(vm_config[:network_interface_card_ids])
@@ -46,7 +46,7 @@ module Fog
 
         private
 
-        def get_availability_set(availability_set_id)
+        def get_vm_availability_set(availability_set_id)
           sub_resource = nil
           unless availability_set_id.nil?
             sub_resource = MsRestAzure::SubResource.new

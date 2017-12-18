@@ -22,10 +22,17 @@ class TestCheckLoadBalancerExists < Minitest::Test
     end
   end
 
-  def test_check_load_balancer_exists_exception
+  def test_check_load_balancer_resource_group_exists_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, create_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceGroupNotFound' }) }
     @load_balancers.stub :get, response do
       assert !@service.check_load_balancer_exists('fog-test-rg', 'mylb1')
+    end
+  end
+
+  def test_check_load_balancer_exists_exception
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, create_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'Exception' }) }
+    @load_balancers.stub :get, response do
+      assert_raises(RuntimeError) { @service.check_load_balancer_exists('fog-test-rg', 'mylb1') }
     end
   end
 end

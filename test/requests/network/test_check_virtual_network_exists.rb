@@ -22,11 +22,19 @@ class TestCheckVirtualNetworkExists < Minitest::Test
     end
   end
 
-  def test_check_virtual_network_exists_exception
+  def test_check_virtual_network_resource_group_exists_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, create_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceGroupNotFound' }) }
 
     @virtual_networks.stub :get, response do
       assert !@service.check_virtual_network_exists('fog-test-rg', 'fog-test-virtual-network')
+    end
+  end
+
+  def test_check_virtual_network_exists_exception
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, create_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'Exception' }) }
+
+    @virtual_networks.stub :get, response do
+      assert_raises(RuntimeError) { @service.check_virtual_network_exists('fog-test-rg', 'fog-test-virtual-network') }
     end
   end
 end

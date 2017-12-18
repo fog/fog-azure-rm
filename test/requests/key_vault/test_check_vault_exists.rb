@@ -22,10 +22,17 @@ class TestCheckVaultExists < Minitest::Test
     end
   end
 
-  def test_check_vault_exists_exception
+  def test_check_vault_resource_group_exists_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, create_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceGroupNotFound' }) }
     @vaults.stub :get, response do
       assert !@service.check_vault_exists('fog-test-rg', 'fog-test-kv')
+    end
+  end
+
+  def test_check_vault_exists_exception
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, create_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'Exception' }) }
+    @vaults.stub :get, response do
+      assert_raises(RuntimeError) { @service.check_vault_exists('fog-test-rg', 'fog-test-kv') }
     end
   end
 end

@@ -22,10 +22,17 @@ class TestCheckTrafficManagerEndpointExists < Minitest::Test
     end
   end
 
-  def test_check_traffic_manager_endpoint_exists_exception
+  def test_check_traffic_manager_endpoint_resource_group_exists_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, create_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceGroupNotFound' }) }
     @end_points.stub :get, response do
       assert !@service.check_traffic_manager_endpoint_exists('fog-test-rg', 'fog-test-profile', 'fog-test-endpoint-name', 'fog-test-endpoint-type')
+    end
+  end
+
+  def test_check_traffic_manager_endpoint_exists_exception
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, create_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'Exception' }) }
+    @end_points.stub :get, response do
+      assert_raises(RuntimeError) { @service.check_traffic_manager_endpoint_exists('fog-test-rg', 'fog-test-profile', 'fog-test-endpoint-name', 'fog-test-endpoint-type') }
     end
   end
 end

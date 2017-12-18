@@ -22,10 +22,17 @@ class TestCheckSubnetExists < Minitest::Test
     end
   end
 
-  def test_check_subnet_exists_exception
+  def test_check_subnet_resource_group_exists_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, create_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceGroupNotFound' }) }
     @subnets.stub :get, response do
       assert !@service.check_subnet_exists('fog-test-rg', 'fog-test-virtual-network', 'fog-test-subnet')
+    end
+  end
+
+  def test_check_subnet_exists_exception
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, create_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'Exception' }) }
+    @subnets.stub :get, response do
+      assert_raises(RuntimeError) { @service.check_subnet_exists('fog-test-rg', 'fog-test-virtual-network', 'fog-test-subnet') }
     end
   end
 end

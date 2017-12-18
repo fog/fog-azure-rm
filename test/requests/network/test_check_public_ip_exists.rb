@@ -21,10 +21,17 @@ class TestCheckPublicIpExists < Minitest::Test
     end
   end
 
-  def test_check_public_ip_exists_exception
+  def test_check_public_ip_resource_group_exists_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, create_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceGroupNotFound' }) }
     @public_ips.stub :get, response do
       assert !@service.check_public_ip_exists('fog-test-rg', 'fog-test-public-ip')
+    end
+  end
+
+  def test_check_public_ip_exists_exception
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, create_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'Exception' }) }
+    @public_ips.stub :get, response do
+      assert_raises(RuntimeError) { @service.check_public_ip_exists('fog-test-rg', 'fog-test-public-ip') }
     end
   end
 end

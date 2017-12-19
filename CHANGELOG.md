@@ -1,3 +1,9 @@
+## 0.4.1
+
+**Fixed:**
+- Fixed check existence methods for all resources
+- Fixed mime-types dependency issue
+
 ## 0.4.0
 
 **Added**

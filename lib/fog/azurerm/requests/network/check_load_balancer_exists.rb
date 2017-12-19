@@ -11,7 +11,7 @@ module Fog
             Fog::Logger.debug "Load Balancer #{load_balancer_name} exists."
             true
           rescue MsRestAzure::AzureOperationError => e
-            if e.body['error']['code'] == 'ResourceNotFound'
+            if resource_not_found?(e)
               Fog::Logger.debug "Load Balancer #{load_balancer_name} doesn't exist."
               false
             else

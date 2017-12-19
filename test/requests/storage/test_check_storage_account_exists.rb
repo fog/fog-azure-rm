@@ -25,8 +25,15 @@ class TestCheckStorageAccountExists < Minitest::Test
     end
   end
 
+  def test_check_storage_account_resource_group_exists_failure
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, create_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceGroupNotFound' }) }
+    @storage_accounts.stub :get_properties, response do
+      assert !@service.check_storage_account_exists('fog_test_rg', 'fogtestsasecond')
+    end
+  end
+
   def test_check_storage_account_exists_exception
-    response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceGroupNotFound' }) }
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, create_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'Exception' }) }
     @storage_accounts.stub :get_properties, response do
       assert_raises(RuntimeError) { @service.check_storage_account_exists('fog_test_rg', 'fogtestsasecond') }
     end

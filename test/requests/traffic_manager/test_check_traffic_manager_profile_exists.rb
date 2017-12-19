@@ -16,14 +16,21 @@ class TestCheckTrafficManagerProfileExists < Minitest::Test
   end
 
   def test_check_traffic_manager_profile_exists_failure
-    response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceNotFound' }) }
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, create_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceNotFound' }) }
+    @profiles.stub :get, response do
+      assert !@service.check_traffic_manager_profile_exists('fog-test-rg', 'fog-test-profile')
+    end
+  end
+
+  def test_check_traffic_manager_profile_resource_group_exists_failure
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, create_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceGroupNotFound' }) }
     @profiles.stub :get, response do
       assert !@service.check_traffic_manager_profile_exists('fog-test-rg', 'fog-test-profile')
     end
   end
 
   def test_check_traffic_manager_profile_exists_exception
-    response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceGroupNotFound' }) }
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, create_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'Exception' }) }
     @profiles.stub :get, response do
       assert_raises(RuntimeError) { @service.check_traffic_manager_profile_exists('fog-test-rg', 'fog-test-profile') }
     end

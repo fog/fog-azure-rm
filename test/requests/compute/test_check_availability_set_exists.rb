@@ -16,14 +16,21 @@ class TestCheckAvailabilitySetExists < Minitest::Test
   end
 
   def test_check_availability_set_exists_failure
-    response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceNotFound' }) }
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, create_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceNotFound' }) }
+    @availability_sets.stub :get, response do
+      assert !@service.check_availability_set_exists('myrg1', 'myavset1')
+    end
+  end
+
+  def test_check_availability_set_resource_group_exists_failure
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, create_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceGroupNotFound' }) }
     @availability_sets.stub :get, response do
       assert !@service.check_availability_set_exists('myrg1', 'myavset1')
     end
   end
 
   def test_check_availability_set_exists_exception
-    response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceGroupNotFound' }) }
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, create_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'Exception' }) }
     @availability_sets.stub :get, response do
       assert_raises(RuntimeError) { @service.check_availability_set_exists('myrg1', 'myavset1') }
     end

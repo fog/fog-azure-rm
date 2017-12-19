@@ -16,9 +16,9 @@ module Fog
           msg = "Checking Resource #{resource_name}"
           Fog::Logger.debug msg
           begin
-            @rmc.resources.check_existence(resource_group_name, resource_provider_namespace, parent_resource_id, resource_type, resource_name, api_version)
-            Fog::Logger.debug "Resource #{resource_name} exists."
-            true
+            resource_exists = @rmc.resources.check_existence(resource_group_name, resource_provider_namespace, parent_resource_id, resource_type, resource_name, api_version)
+            Fog::Logger.debug "Resource #{resource_name} exists." if resource_exists
+            resource_exists
           rescue MsRestAzure::AzureOperationError => e
             if e.response.status == 405
               Fog::Logger.debug "Resource #{resource_name} doesn't exist."

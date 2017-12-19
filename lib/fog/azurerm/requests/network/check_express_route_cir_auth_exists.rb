@@ -11,7 +11,7 @@ module Fog
             Fog::Logger.debug "Express Route Circuit Authorization #{authorization_name} exists."
             true
           rescue MsRestAzure::AzureOperationError => e
-            if e.body['error']['code'] == 'NotFound'
+            if resource_not_found?(e)
               Fog::Logger.debug "Express Route Circuit Authorization #{authorization_name} doesn't exist."
               false
             else

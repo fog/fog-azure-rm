@@ -11,7 +11,7 @@ module Fog
             Fog::Logger.debug "Managed Disk #{disk_name} exist."
             true
           rescue MsRestAzure::AzureOperationError => e
-            if e.error_code == 'ResourceNotFound'
+            if resource_not_found?(e)
               Fog::Logger.debug "Managed Disk #{disk_name} doesn't exist."
               false
             else

@@ -16,14 +16,21 @@ class TestCheckNetworkSecurityRuleExists < Minitest::Test
   end
 
   def test_check_net_sec_rule_exists_failure
-    response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceNotFound' }) }
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, create_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceNotFound' }) }
+    @network_security_rules.stub :get, response do
+      assert !@service.check_net_sec_rule_exists('fog-test-rg', 'fog-test-nsg', 'fog-test-nsr')
+    end
+  end
+
+  def test_check_net_sec_rule_resource_group_exists_failure
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, create_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceGroupNotFound' }) }
     @network_security_rules.stub :get, response do
       assert !@service.check_net_sec_rule_exists('fog-test-rg', 'fog-test-nsg', 'fog-test-nsr')
     end
   end
 
   def test_check_net_sec_rule_exists_exception
-    response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceGroupNotFound' }) }
+    response = proc { raise MsRestAzure::AzureOperationError.new(nil, create_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'Exception' }) }
     @network_security_rules.stub :get, response do
       assert_raises(RuntimeError) { @service.check_net_sec_rule_exists('fog-test-rg', 'fog-test-nsg', 'fog-test-nsr') }
     end

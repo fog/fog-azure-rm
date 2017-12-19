@@ -181,3 +181,7 @@ def resource_not_found?(azure_operation_error)
   end
   is_found
 end
+
+def get_image_name(id)
+  id.split('/').last
+end

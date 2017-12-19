@@ -1,3 +1,13 @@
+## 0.4.0
+
+**Added**
+- Support added for custom vm image reference 
+
+## 0.3.9
+
+**Changed**
+- Fixed Fog::Storage issue of requiring the 'mime-types' gem
+
 ## 0.3.8
 
 **Changed:**

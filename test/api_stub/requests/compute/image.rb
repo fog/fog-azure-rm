@@ -2,8 +2,8 @@ module ApiStub
   module Requests
     module Compute
       # Mock class for Virtual Machine Requests
-      class GeneralizedImage
-        def self.generalized_image_params
+      class Image
+        def self.image_params
           {
             resource_group: 'fog-test-rg',
             vm_name: 'fog-test-server',
@@ -13,7 +13,7 @@ module ApiStub
           }
         end
 
-        def self.create_generalized_image(compute_client)
+        def self.create_image(compute_client)
           body = {
             'location' => 'West US',
             'tags' => {

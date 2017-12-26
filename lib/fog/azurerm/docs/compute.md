@@ -223,6 +223,31 @@ status = fog_compute_service
 puts status
 ```
 
+## Start a Server
+```ruby
+server.start
+```
+
+## Power Off a Server
+```ruby
+server.power_off
+```
+
+## Restart a Server
+```ruby
+server.restart
+```
+
+## Deallocate a Server
+```ruby
+server.deallocate
+```
+
+## Redeploy a Server
+```ruby
+server.redeploy
+```
+
 ## Destroy a single Server
 
 Get a server object from the get method (described above) and then destroy that server.

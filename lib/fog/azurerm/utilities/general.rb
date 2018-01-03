@@ -47,16 +47,8 @@ def get_record_type(type)
 end
 
 def raise_azure_exception(exception, msg)
-  if exception.respond_to? 'body'
-    message = if exception.body['error'].nil?
-                exception.body['message']
-              else
-                exception.body['error']['message']
-              end
-    exception_message = "Exception in #{msg} #{message} Type: #{exception.class}\n#{exception.backtrace.join("\n")}"
-  else
-    exception_message = "#{exception.inspect}\n#{exception.backtrace.join("\n")}"
-  end
+  description = exception.is_a?(Azure::Core::Http::HTTPError) ? exception.description : exception.error_message
+  exception_message = "Exception in #{msg} #{description} Type: #{exception.class}\n#{exception.backtrace.join('\n')}"
 
   Fog::Logger.debug exception.backtrace
   raise exception_message

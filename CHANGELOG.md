@@ -1,3 +1,8 @@
+## 0.4.2
+
+**Fixed:**
+- Fixed 'raise_azure_exception' method
+
 ## 0.4.1
 
 **Fixed:**

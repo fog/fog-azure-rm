@@ -1,3 +1,8 @@
+## 0.4.4
+
+**Fixed:**
+- Compute Service - Fixed customData Update Issue
+
 ## 0.4.3
 
 **Fixed:**

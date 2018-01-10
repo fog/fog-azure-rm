@@ -74,7 +74,7 @@ module Fog
           vm_name = vm_config[:name]
           username = vm_config[:username]
           password = vm_config[:password]
-          custom_data = vm_config[:custom_data]
+          custom_data = vm_config[:custom_data] unless vm_config[:custom_data].nil?
           provision_vm_agent = vm_config[:provision_vm_agent]
           enable_automatic_updates = vm_config[:enable_automatic_updates]
           disable_password_auth = vm_config[:disable_password_authentication]
@@ -86,7 +86,7 @@ module Fog
           os_profile.computer_name = vm_name
           os_profile.admin_username = username
           os_profile.admin_password = password
-          os_profile.custom_data = Base64.strict_encode64(custom_data.nil? ? WHITE_SPACE : custom_data)
+          os_profile.custom_data = Base64.strict_encode64(custom_data) unless vm_config[:custom_data].nil?
 
           if platform.casecmp(WINDOWS).zero?
             os_profile.windows_configuration = get_windows_config(provision_vm_agent, enable_automatic_updates)

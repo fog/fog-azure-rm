@@ -1,4 +1,5 @@
 require 'ms_rest_azure'
+require 'azure/core/http/http_error'
 require 'erb'
 require 'fog/azurerm/config'
 require 'fog/azurerm/constants'

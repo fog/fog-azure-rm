@@ -165,8 +165,7 @@ module Fog
           # Set OS disk VHD path
           os_disk = Azure::ARM::Compute::Models::OSDisk.new
           vhd = Azure::ARM::Compute::Models::VirtualHardDisk.new
-          # vhd.uri = os_disk_vhd_uri.nil? ? get_blob_endpoint(storage_account_name) + "/vhds/#{vm_name}_os_disk.vhd" : os_disk_vhd_uri
-          vhd.uri = os_disk_vhd_uri.nil? ? get_blob_endpoint(storage_account_name) + "/vhds/hello_world.vhd" : os_disk_vhd_uri
+          vhd.uri = os_disk_vhd_uri.nil? ? get_blob_endpoint(storage_account_name) + "/vhds/#{vm_name}_os_disk.vhd" : os_disk_vhd_uri
           os_disk.vhd = vhd
 
           if vhd_path.nil? && image_ref.nil?
@@ -208,7 +207,6 @@ module Fog
           vm_name = vm_config[:name]
           image_ref = vm_config[:image_ref]
           os_disk_name = vm_config[:os_disk_name]
-          os_disk_vhd_uri = vm_config[:os_disk_vhd_uri]
 
           # Build storage profile
           storage_profile = Azure::ARM::Compute::Models::StorageProfile.new
@@ -347,7 +345,7 @@ module Fog
 
           begin
             vm = get_virtual_machine(resource_group, virtual_machine_name, false)
-          rescue RuntimeError => e
+          rescue
             return os_disk_parameters
           end
 

@@ -1,3 +1,8 @@
+## 0.4.3
+
+**Fixed:**
+- Compute Service - Fixed Server Update Scenario
+
 ## 0.4.2
 
 **Fixed:**

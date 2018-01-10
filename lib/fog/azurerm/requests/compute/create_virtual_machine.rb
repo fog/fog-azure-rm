@@ -349,11 +349,13 @@ module Fog
 
           begin
             vm = get_virtual_machine(resource_group, virtual_machine_name, false)
-            vm_hash = Fog::Compute::AzureRM::Server.parse(vm)
-            os_disk_parameters[:os_disk_name] = vm_hash[:os_disk_name]
-            os_disk_parameters[:os_disk_vhd_uri] = vm_hash[:os_disk_vhd_uri]
           rescue
             return os_disk_parameters
+          end
+
+          unless vm.storage_profile.nil?
+            os_disk_parameters[:os_disk_name] = vm.storage_profile.os_disk.name
+            os_disk_parameters[:os_disk_vhd_uri] = vm.storage_profile.os_disk.vhd.uri unless vm.storage_profile.os_disk.vhd.nil?
           end
 
           os_disk_parameters

@@ -11,6 +11,9 @@ module Fog
           vm_name = vm_config[:name]
           rg_name = vm_config[:resource_group]
 
+          # In case of updating the VM, we check if the user has passed any value for os_disk_name
+          # If the user has not passed any value, we try to retrieve the value of os_disk_name from the VM
+          # If the VM exists then the os_disk_name is retrieved; else it remains nil
           os_disk_parameters = get_os_disk_parameters(rg_name, vm_name) if vm_config[:os_disk_name].nil? || vm_config[:os_disk_vhd_uri].nil?
           vm_config[:os_disk_name] = os_disk_parameters[:os_disk_name] if vm_config[:os_disk_name].nil?
           vm_config[:os_disk_vhd_uri] = os_disk_parameters[:os_disk_vhd_uri] if vm_config[:os_disk_vhd_uri].nil?
@@ -257,6 +260,7 @@ module Fog
         end
 
         def configure_os_disk_object(os_disk, os_disk_name, os_disk_caching, os_disk_size, platform, vm_name)
+          # It will use the os_disk_name provided or it will generate a name for itself if it is nil
           os_disk.name = os_disk_name.nil? ? "#{vm_name}_os_disk" : os_disk_name
           os_disk.os_type = platform
           os_disk.disk_size_gb = os_disk_size unless os_disk_size.nil?
@@ -345,13 +349,11 @@ module Fog
 
           begin
             vm = get_virtual_machine(resource_group, virtual_machine_name, false)
+            vm_hash = Fog::Compute::AzureRM::Server.parse(vm)
+            os_disk_parameters[:os_disk_name] = vm_hash[:os_disk_name]
+            os_disk_parameters[:os_disk_vhd_uri] = vm_hash[:os_disk_vhd_uri]
           rescue
             return os_disk_parameters
-          end
-
-          unless vm.storage_profile.nil?
-            os_disk_parameters[:os_disk_name] = vm.storage_profile.os_disk.name
-            os_disk_parameters[:os_disk_vhd_uri] = vm.storage_profile.os_disk.vhd.uri unless vm.storage_profile.os_disk.vhd.nil?
           end
 
           os_disk_parameters

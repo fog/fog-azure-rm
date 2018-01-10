@@ -163,7 +163,7 @@ module Fog
           image_ref = vm_config[:image_ref]
           os_disk_name = vm_config[:os_disk_name]
           os_disk_vhd_uri = vm_config[:os_disk_vhd_uri]
-          
+
           storage_profile = Azure::ARM::Compute::Models::StorageProfile.new
           # Set OS disk VHD path
           os_disk = Azure::ARM::Compute::Models::OSDisk.new
@@ -357,7 +357,7 @@ module Fog
             os_disk_parameters[:os_disk_name] = vm.storage_profile.os_disk.name
             os_disk_parameters[:os_disk_vhd_uri] = vm.storage_profile.os_disk.vhd.uri unless vm.storage_profile.os_disk.vhd.nil?
           end
-          
+
           os_disk_parameters
         end
       end

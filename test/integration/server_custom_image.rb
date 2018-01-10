@@ -103,7 +103,7 @@ begin
   ######################                                Create Server                               ######################
   ########################################################################################################################
 
-  vhd_path = 'https://sa15155822121391697.blob.core.windows.net/vhds/hello_world.vhd'.freeze
+  vhd_path = 'https://myblob.blob.core.windows.net/vhds/my_vhd.vhd'.freeze
 
   custom_image_virtual_machine = compute.servers.create(
     name: 'TestVM',
@@ -125,104 +125,103 @@ begin
   #################                                Create Managed Server                               ###################
   ########################################################################################################################
 
-  # custom_image_virtual_machine_managed = compute.servers.create(
-  #   name: 'TestVM-Managed',
-  #   location: LOCATION,
-  #   resource_group: RG_NAME,
-  #   storage_account_name: storage_account_name,
-  #   vm_size: 'Basic_A0',
-  #   username: 'testuser',
-  #   password: 'Confiz=123',
-  #   disable_password_authentication: false,
-  #   network_interface_card_ids: ["/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/#{RG_NAME}/providers/Microsoft.Network/networkInterfaces/NetInt2"],
-  #   platform: 'linux',
-  #   vhd_path: vhd_path,
-  #   managed_disk_storage_type: Azure::ARM::Compute::Models::StorageAccountTypes::StandardLRS
-  # )
+  custom_image_virtual_machine_managed = compute.servers.create(
+    name: 'TestVM-Managed',
+    location: LOCATION,
+    resource_group: RG_NAME,
+    storage_account_name: storage_account_name,
+    vm_size: 'Basic_A0',
+    username: 'testuser',
+    password: 'Confiz=123',
+    disable_password_authentication: false,
+    network_interface_card_ids: ["/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/#{RG_NAME}/providers/Microsoft.Network/networkInterfaces/NetInt2"],
+    platform: 'linux',
+    vhd_path: vhd_path,
+    managed_disk_storage_type: Azure::ARM::Compute::Models::StorageAccountTypes::StandardLRS
+  )
 
-  # puts "Created custom image managed virtual machine: #{custom_image_virtual_machine_managed.name}"
+  puts "Created custom image managed virtual machine: #{custom_image_virtual_machine_managed.name}"
 
-  # ########################################################################################################################
-  # ##############                                Create Managed Server Async                               ################
-  # ########################################################################################################################
+  ########################################################################################################################
+  ##############                                Create Managed Server Async                               ################
+  ########################################################################################################################
 
-  # print 'Creating Virtual Machine asynchronously...'
+  print 'Creating Virtual Machine asynchronously...'
 
-  # async_response = compute.servers.create_async(
-  #   name: 'TestVM-ManagedAsync',
-  #   location: LOCATION,
-  #   resource_group: RG_NAME,
-  #   storage_account_name: storage_account_name,
-  #   vm_size: 'Basic_A0',
-  #   username: 'testuser',
-  #   password: 'Confiz=123',
-  #   disable_password_authentication: false,
-  #   network_interface_card_ids: ["/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/#{RG_NAME}/providers/Microsoft.Network/networkInterfaces/NetInt3"],
-  #   platform: 'linux',
-  #   vhd_path: vhd_path,
-  #   managed_disk_storage_type: Azure::ARM::Compute::Models::StorageAccountTypes::StandardLRS
-  # )
+  async_response = compute.servers.create_async(
+    name: 'TestVM-ManagedAsync',
+    location: LOCATION,
+    resource_group: RG_NAME,
+    storage_account_name: storage_account_name,
+    vm_size: 'Basic_A0',
+    username: 'testuser',
+    password: 'Confiz=123',
+    disable_password_authentication: false,
+    network_interface_card_ids: ["/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/#{RG_NAME}/providers/Microsoft.Network/networkInterfaces/NetInt3"],
+    platform: 'linux',
+    vhd_path: vhd_path,
+    managed_disk_storage_type: Azure::ARM::Compute::Models::StorageAccountTypes::StandardLRS
+  )
 
-  # loop do
-  #   if async_response.pending?
-  #     sleep(2)
-  #     print '.'
-  #   end
+  loop do
+    if async_response.pending?
+      sleep(2)
+      print '.'
+    end
 
-  #   if async_response.fulfilled?
-  #     puts "\nCreated custom image managed virtual machine: #{async_response.value.name}"
-  #     break
-  #   end
+    if async_response.fulfilled?
+      puts "\nCreated custom image managed virtual machine: #{async_response.value.name}"
+      break
+    end
 
-  #   if async_response.rejected?
-  #     puts "\nERROR: Async VM creation failed!\n#{async_response.reason.inspect}"
-  #     break
-  #   end
-  # end
+    if async_response.rejected?
+      puts "\nERROR: Async VM creation failed!\n#{async_response.reason.inspect}"
+      break
+    end
+  end
 
-  # ########################################################################################################################
-  # ######################                            Get and Delete Server                           ######################
-  # ########################################################################################################################
+  ########################################################################################################################
+  ######################                            Get and Delete Server                           ######################
+  ########################################################################################################################
 
-  # custom_image_virtual_machine = compute.servers.get(RG_NAME, 'TestVM')
-  # puts "Get custom image un-managed virtual machine: #{custom_image_virtual_machine.name}"
-  # puts "Deleted custom image un-managed virtual machine: #{custom_image_virtual_machine.destroy}"
+  custom_image_virtual_machine = compute.servers.get(RG_NAME, 'TestVM')
+  puts "Get custom image un-managed virtual machine: #{custom_image_virtual_machine.name}"
+  puts "Deleted custom image un-managed virtual machine: #{custom_image_virtual_machine.destroy}"
 
-  # custom_image_virtual_machine_managed = compute.servers.get(RG_NAME, 'TestVM-Managed')
-  # puts "Get custom image managed virtual machine: #{custom_image_virtual_machine_managed.name}"
-  # puts "Deleted custom image managed virtual machine: #{custom_image_virtual_machine_managed.destroy}"
+  custom_image_virtual_machine_managed = compute.servers.get(RG_NAME, 'TestVM-Managed')
+  puts "Get custom image managed virtual machine: #{custom_image_virtual_machine_managed.name}"
+  puts "Deleted custom image managed virtual machine: #{custom_image_virtual_machine_managed.destroy}"
 
-  # custom_image_virtual_machine_managed_async = compute.servers.get(RG_NAME, 'TestVM-ManagedAsync')
-  # puts "Get custom image managed virtual machine async: #{custom_image_virtual_machine_managed_async.name}"
-  # puts "Deleted custom image managed virtual machine async: #{custom_image_virtual_machine_managed_async.destroy}"
+  custom_image_virtual_machine_managed_async = compute.servers.get(RG_NAME, 'TestVM-ManagedAsync')
+  puts "Get custom image managed virtual machine async: #{custom_image_virtual_machine_managed_async.name}"
+  puts "Deleted custom image managed virtual machine async: #{custom_image_virtual_machine_managed_async.destroy}"
 
-  # ########################################################################################################################
-  # ######################                                   CleanUp                                  ######################
-  # ########################################################################################################################
+  ########################################################################################################################
+  ######################                                   CleanUp                                  ######################
+  ########################################################################################################################
 
-  # puts 'Cleaning up...'
+  puts 'Cleaning up...'
 
-  # nic = network.network_interfaces.get(RG_NAME, 'NetInt')
-  # nic.destroy
+  nic = network.network_interfaces.get(RG_NAME, 'NetInt')
+  nic.destroy
 
-  # nic = network.network_interfaces.get(RG_NAME, 'NetInt2')
-  # nic.destroy
+  nic = network.network_interfaces.get(RG_NAME, 'NetInt2')
+  nic.destroy
 
-  # nic = network.network_interfaces.get(RG_NAME, 'NetInt3')
-  # nic.destroy
+  nic = network.network_interfaces.get(RG_NAME, 'NetInt3')
+  nic.destroy
 
-  # vnet = network.virtual_networks.get(RG_NAME, 'testVnet')
-  # vnet.destroy
+  vnet = network.virtual_networks.get(RG_NAME, 'testVnet')
+  vnet.destroy
 
-  # storage = storage.storage_accounts.get(RG_NAME, storage_account_name)
-  # storage.destroy
+  storage = storage.storage_accounts.get(RG_NAME, storage_account_name)
+  storage.destroy
 
-  # resource_group = rs.resource_groups.get(RG_NAME)
-  # resource_group.destroy
+  resource_group = rs.resource_groups.get(RG_NAME)
+  resource_group.destroy
 
   puts 'Integration Test for virtual machine ran successfully!'
-rescue Exception => e
+rescue
   puts 'Integration Test for custom image virtual machine is failing'
-  raise e
   resource_group.destroy unless resource_group.nil?
 end

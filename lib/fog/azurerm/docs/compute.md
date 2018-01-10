@@ -61,7 +61,8 @@ fog_compute_service.servers.create(
         custom_data: '<Custom Data Value>',                     # [Optional], if you want to add custom data in this VM.
         os_disk_caching: '<Caching Type>',                      # [Optional], can be one of None, ReadOnly, ReadWrite
         managed_disk_storage_type: '<Storage Account Type>',    # [Optional], if storage_account_name is passed, can be StandardLRS or PremiumLRS
-        os_disk_size: <Disk Size>                               # [Optional], size of the os disk in GB (upto 1023)
+        os_disk_size: <Disk Size>,                              # [Optional], size of the os disk in GB (upto 1023)
+        os_disk_name: '<Disk Name>'                             # [Optional], name of the os disk
 )
 ```
 
@@ -97,7 +98,8 @@ fog_compute_service.servers.create(
         custom_data: '<Custom Data Value>',                     # [Optional], if you want to add custom data in this VM.
         os_disk_caching: '<Caching Type>',                      # [Optional], can be one of None, ReadOnly, ReadWrite
         managed_disk_storage_type: '<Storage Account Type>',    # [Optional], if storage_account_name is passed, can be StandardLRS or PremiumLRS
-        os_disk_size: <Disk Size>                               # [Optional], size of the os disk in GB (upto 1023)
+        os_disk_size: <Disk Size>,                              # [Optional], size of the os disk in GB (upto 1023)
+        os_disk_name: '<Disk Name>'                             # [Optional], name of the os disk
 )
 ```
 
@@ -123,7 +125,8 @@ fog_compute_service.servers.create(
         availability_set_id: '<Availability Set Id>',     # [Optional]
         vhd_path: '<Path of VHD>',                        # [Optional], if you want to create the VM from a custom image.
         custom_data: '<Custom Data Value>',               # [Optional], if you want to add custom data in this VM.
-        os_disk_size: <Disk Size>                         # [Optional], size of the os disk in GB (upto 1023)
+        os_disk_size: <Disk Size>,                        # [Optional], size of the os disk in GB (upto 1023)
+        os_disk_name: '<Disk Name>'                       # [Optional], name of the os disk
 )
 ```
 
@@ -153,7 +156,8 @@ async_response = fog_compute_service.servers.create_async(
         custom_data: '<Custom Data Value>',                  # [Optional], if you want to add custom data in this VM.
         os_disk_caching: '<Caching Type>',                   # [Optional], can be one of None, ReadOnly, ReadWrite
         managed_disk_storage_type: '<Storage Account Type>', # [Optional], can be StandardLRS or PremiumLRS
-        os_disk_size: <Disk Size>                            # [Optional], size of the os disk in GB (upto 1023)
+        os_disk_size: <Disk Size>,                           # [Optional], size of the os disk in GB (upto 1023)
+        os_disk_name: '<Disk Name>'                          # [Optional], name of the os disk
 )
 ```
 Following methods are available to handle async respoonse:

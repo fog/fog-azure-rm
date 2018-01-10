@@ -228,7 +228,9 @@ module Fog
             managed_disk_storage_type: managed_disk_storage_type,
             os_disk_size: os_disk_size,
             tags: tags,
-            image_ref: image_ref
+            image_ref: image_ref,
+            os_disk_name: os_disk_name,
+            os_disk_vhd_uri: os_disk_vhd_uri
           }
         end
 

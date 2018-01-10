@@ -11,6 +11,13 @@ module Fog
           vm_name = vm_config[:name]
           rg_name = vm_config[:resource_group]
 
+          # In case of updating the VM, we check if the user has passed any value for os_disk_name
+          # If the user has not passed any value, we try to retrieve the value of os_disk_name from the VM
+          # If the VM exists then the os_disk_name is retrieved; else it remains nil
+          os_disk_parameters = get_os_disk_parameters(rg_name, vm_name) if vm_config[:os_disk_name].nil? || vm_config[:os_disk_vhd_uri].nil?
+          vm_config[:os_disk_name] = os_disk_parameters[:os_disk_name] if vm_config[:os_disk_name].nil?
+          vm_config[:os_disk_vhd_uri] = os_disk_parameters[:os_disk_vhd_uri] if vm_config[:os_disk_vhd_uri].nil?
+
           msg = "Creating Virtual Machine '#{vm_name}' in Resource Group '#{rg_name}'..."
           Fog::Logger.debug msg
 
@@ -154,12 +161,14 @@ module Fog
           os_disk_size = vm_config[:os_disk_size]
           location = vm_config[:location]
           image_ref = vm_config[:image_ref]
+          os_disk_name = vm_config[:os_disk_name]
+          os_disk_vhd_uri = vm_config[:os_disk_vhd_uri]
 
           storage_profile = Azure::ARM::Compute::Models::StorageProfile.new
           # Set OS disk VHD path
           os_disk = Azure::ARM::Compute::Models::OSDisk.new
           vhd = Azure::ARM::Compute::Models::VirtualHardDisk.new
-          vhd.uri = get_blob_endpoint(storage_account_name) + "/vhds/#{vm_name}_os_disk.vhd"
+          vhd.uri = os_disk_vhd_uri.nil? ? get_blob_endpoint(storage_account_name) + "/vhds/#{vm_name}_os_disk.vhd" : os_disk_vhd_uri
           os_disk.vhd = vhd
 
           if vhd_path.nil? && image_ref.nil?
@@ -180,7 +189,7 @@ module Fog
             storage_profile.image_reference.id = image.id
           end
 
-          storage_profile.os_disk = configure_os_disk_object(os_disk, os_disk_caching, os_disk_size, platform, vm_name)
+          storage_profile.os_disk = configure_os_disk_object(os_disk, os_disk_name, os_disk_caching, os_disk_size, platform, vm_name)
           storage_profile
         end
 
@@ -200,6 +209,7 @@ module Fog
           platform = vm_config[:platform]
           vm_name = vm_config[:name]
           image_ref = vm_config[:image_ref]
+          os_disk_name = vm_config[:os_disk_name]
 
           # Build storage profile
           storage_profile = Azure::ARM::Compute::Models::StorageProfile.new
@@ -226,7 +236,7 @@ module Fog
             storage_profile.image_reference.id = image.id
           end
 
-          storage_profile.os_disk = configure_os_disk_object(os_disk, os_disk_caching, os_disk_size, platform, vm_name)
+          storage_profile.os_disk = configure_os_disk_object(os_disk, os_disk_name, os_disk_caching, os_disk_size, platform, vm_name)
           storage_profile
         end
 
@@ -249,8 +259,9 @@ module Fog
           }
         end
 
-        def configure_os_disk_object(os_disk, os_disk_caching, os_disk_size, platform, vm_name)
-          os_disk.name = "#{vm_name}_os_disk"
+        def configure_os_disk_object(os_disk, os_disk_name, os_disk_caching, os_disk_size, platform, vm_name)
+          # It will use the os_disk_name provided or it will generate a name for itself if it is nil
+          os_disk.name = os_disk_name.nil? ? "#{vm_name}_os_disk" : os_disk_name
           os_disk.os_type = platform
           os_disk.disk_size_gb = os_disk_size unless os_disk_size.nil?
           os_disk.create_option = Azure::ARM::Compute::Models::DiskCreateOptionTypes::FromImage
@@ -331,6 +342,21 @@ module Fog
           @storage_service.storage_accounts.delete_storage_account_from_tag(resource_group,
                                                                             TEMPORARY_STORAGE_ACCOUNT_TAG_KEY,
                                                                             TEMPORARY_STORAGE_ACCOUNT_TAG_VALUE)
+        end
+
+        def get_os_disk_parameters(resource_group, virtual_machine_name)
+          os_disk_parameters = {}
+
+          begin
+            vm = get_virtual_machine(resource_group, virtual_machine_name, false)
+            vm_hash = Fog::Compute::AzureRM::Server.parse(vm)
+            os_disk_parameters[:os_disk_name] = vm_hash[:os_disk_name]
+            os_disk_parameters[:os_disk_vhd_uri] = vm_hash[:os_disk_vhd_uri]
+          rescue
+            return os_disk_parameters
+          end
+
+          os_disk_parameters
         end
       end
 

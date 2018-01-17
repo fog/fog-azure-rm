@@ -1,3 +1,7 @@
+## 0.4.5
+**Changed:**
+- Updated dependency of fog-json to (~> 1.0.2)
+
 ## 0.4.4
 
 **Fixed:**

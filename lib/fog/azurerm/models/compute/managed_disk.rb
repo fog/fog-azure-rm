@@ -47,7 +47,9 @@ module Fog
         end
 
         def destroy(async = false)
-          service.delete_managed_disk(resource_group_name, name, async)
+          response = service.delete_managed_disk(resource_group_name, name,
+                                                 async)
+          async ? create_fog_async_response(response) : response
         end
 
         private
@@ -70,6 +72,11 @@ module Fog
             creation_data: creation_data,
             encryption_settings: encryption_settings
           }
+        end
+
+        def create_fog_async_response(response, delete_extra_resource = false)
+          disk = Fog::Compute::AzureRM::ManagedDisk.new(service: service)
+          Fog::AzureRM::AsyncResponse.new(disk, response, delete_extra_resource)
         end
       end
     end

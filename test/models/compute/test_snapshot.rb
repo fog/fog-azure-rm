@@ -81,9 +81,10 @@ class TestSnapshot < Minitest::Test
     end
   end
 
-  def test_destroy_async_method_true_response
-    @service.stub :delete_snapshot, true do
-      assert @snapshot.destroy(async: true)
+  def test_destroy_async_method_response
+    async_response = Concurrent::Promise.execute { 10 }
+    @service.stub :delete_snapshot, async_response do
+      assert_instance_of Fog::AzureRM::AsyncResponse, @snapshot.destroy(async: true)
     end
   end
 

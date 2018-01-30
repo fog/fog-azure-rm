@@ -32,7 +32,8 @@ module Fog
         end
 
         def destroy(async = false)
-          service.delete_snapshot(resource_group_name, name, async)
+          response = service.delete_snapshot(resource_group_name, name, async)
+          async ? create_fog_async_response(response) : response
         end
 
         def creation_data=(new_creation_data)
@@ -82,6 +83,11 @@ module Fog
             creation_data: creation_data.attributes,
             encryption_settings: encryption_settings
           }
+        end
+
+        def create_fog_async_response(response, delete_extra_resource = false)
+          snapshot = Fog::Compute::AzureRM::Snapshot.new(service: service)
+          Fog::AzureRM::AsyncResponse.new(snapshot, response, delete_extra_resource)
         end
       end
     end

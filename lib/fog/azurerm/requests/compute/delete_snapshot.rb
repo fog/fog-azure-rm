@@ -9,15 +9,19 @@ module Fog
           Fog::Logger.debug msg
           begin
             if async
-              @compute_mgmt_client.snapshots.delete_async(resource_group_name, snapshot_name)
+              response = @compute_mgmt_client.snapshots.delete_async(resource_group_name, snapshot_name)
             else
               @compute_mgmt_client.snapshots.delete(resource_group_name, snapshot_name)
             end
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
-          Fog::Logger.debug "Snapshot #{snapshot_name} deleted successfully."
-          true
+          if async
+            response
+          else
+            Fog::Logger.debug "Snapshot #{snapshot_name} deleted successfully."
+            true
+          end
         end
       end
 

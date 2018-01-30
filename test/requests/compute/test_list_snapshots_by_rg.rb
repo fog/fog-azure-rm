@@ -1,6 +1,6 @@
 require File.expand_path '../../test_helper', __dir__
 
-# Test class for List Snapshots by Ressource Group Request
+# Test class for List Snapshots by Resource Group Request
 class TestListSnapshotsByRG < Minitest::Test
   def setup
     @service = Fog::Compute::AzureRM.new(credentials)

@@ -23,7 +23,7 @@ module Fog
           snapshot.name = snapshot_params[:name]
           snapshot.type = SNAPSHOT_PREFIX
           snapshot.location = snapshot_params[:location]
-          snapshot.tags = snapshot_params[:tags] if snapshot.tags.nil?
+          snapshot.tags = snapshot_params[:tags] unless snapshot.tags.nil?
 
           creation_data = snapshot_params[:creation_data]
           snapshot.creation_data = get_creation_data_object(creation_data) unless creation_data.nil?

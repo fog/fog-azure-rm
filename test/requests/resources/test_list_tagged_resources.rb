@@ -18,7 +18,7 @@ class TestListTags < Minitest::Test
   def test_list_tagged_resources_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @resources.stub :list_as_lazy, response do
-      assert_raises(RuntimeError) { @service.list_tagged_resources('test_key') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.list_tagged_resources('test_key') }
     end
   end
 end

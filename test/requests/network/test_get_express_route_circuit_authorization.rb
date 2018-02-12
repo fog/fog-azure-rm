@@ -18,7 +18,7 @@ class TestGetExpressRouteCircuitAuthorization < Minitest::Test
   def test_get_express_route_circuit_authorization_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @circuit_authorization.stub :get, response do
-      assert_raises(RuntimeError) { @service.get_express_route_circuit_authorization('Fog-rg', 'testCircuit', 'auth-name') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.get_express_route_circuit_authorization('Fog-rg', 'testCircuit', 'auth-name') }
     end
   end
 end

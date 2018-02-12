@@ -18,7 +18,7 @@ class TestDeleteExpressRouteCircuitPeering < Minitest::Test
   def test_delete_express_route_circuit_peering_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @circuit_peering.stub :delete, response do
-      assert_raises(RuntimeError) { @service.delete_express_route_circuit_peering('Fog-rg', 'AzurePrivatePeering', 'testCircuit') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.delete_express_route_circuit_peering('Fog-rg', 'AzurePrivatePeering', 'testCircuit') }
     end
   end
 end

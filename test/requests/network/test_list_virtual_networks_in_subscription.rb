@@ -18,7 +18,7 @@ class TestListVirtualNetworksInSubscription < Minitest::Test
   def test_list_virtual_networks_in_subscription_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @virtual_networks.stub :list_all, response do
-      assert_raises(RuntimeError) { @service.list_virtual_networks_in_subscription }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.list_virtual_networks_in_subscription }
     end
   end
 end

@@ -18,7 +18,7 @@ class TestGetStorageAccessKeys < Minitest::Test
   def test_get_storage_access_keys_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @storage_accounts.stub :list_keys, response do
-      assert_raises(RuntimeError) { @service.get_storage_access_keys('fog-test-rg', 'fogstorageaccount') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.get_storage_access_keys('fog-test-rg', 'fogstorageaccount') }
     end
   end
 end

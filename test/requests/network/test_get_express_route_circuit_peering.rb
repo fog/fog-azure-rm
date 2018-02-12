@@ -18,7 +18,7 @@ class TestGetExpressRouteCircuitPeering < Minitest::Test
   def test_get_express_route_circuit_peering_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @circuit_peering.stub :get, response do
-      assert_raises(RuntimeError) { @service.get_express_route_circuit_peering('Fog-rg', 'AzurePrivatePeering', 'testCircuit') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.get_express_route_circuit_peering('Fog-rg', 'AzurePrivatePeering', 'testCircuit') }
     end
   end
 end

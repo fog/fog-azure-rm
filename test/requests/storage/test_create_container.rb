@@ -24,7 +24,7 @@ class TestCreateContainer < Minitest::Test
   def test_create_container_http_exception
     http_exception = ->(*) { raise Azure::Core::Http::HTTPError.new(@mocked_response) }
     @blob_client.stub :create_container, http_exception do
-      assert_raises(RuntimeError) do
+      assert_raises(Azure::Core::Http::HTTPError) do
         @service.create_container('test_container')
       end
     end

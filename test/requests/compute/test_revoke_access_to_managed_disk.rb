@@ -18,7 +18,7 @@ class TestRevokeAccessFromManagedDisk < Minitest::Test
   def test_revoke_access_from_managed_disk_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @managed_disks.stub :revoke_access, response do
-      assert_raises(RuntimeError) { @service.revoke_access_to_managed_disk('myrg1', 'myavset1') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.revoke_access_to_managed_disk('myrg1', 'myavset1') }
     end
   end
 end

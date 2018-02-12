@@ -18,7 +18,7 @@ class TestListSubnets < Minitest::Test
   def test_list_subnets_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @subnets.stub :list_as_lazy, response do
-      assert_raises(RuntimeError) { @service.list_subnets('fog-test-rg', 'fog-test-virtual-network') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.list_subnets('fog-test-rg', 'fog-test-virtual-network') }
     end
   end
 end

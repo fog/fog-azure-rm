@@ -18,7 +18,7 @@ class TestGetRecordSet < Minitest::Test
   def test_get_record_set_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @record_sets.stub :get, response do
-      assert_raises(RuntimeError) { @service.get_record_set('fog-test-rg', 'fog-test-result', 'fog-test-zone', 'CNAME') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.get_record_set('fog-test-rg', 'fog-test-result', 'fog-test-zone', 'CNAME') }
     end
   end
 end

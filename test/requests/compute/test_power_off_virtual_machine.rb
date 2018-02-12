@@ -22,11 +22,11 @@ class TestPowerOffVirtualMachine < Minitest::Test
   def test_power_off_virtual_machine_failure
     response = proc { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @virtual_machines.stub :power_off, response do
-      assert_raises(RuntimeError) { @service.power_off_virtual_machine('fog-test-rg', 'fog-test-server', false) }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.power_off_virtual_machine('fog-test-rg', 'fog-test-server', false) }
     end
 
     @virtual_machines.stub :power_off_async, response do
-      assert_raises(RuntimeError) { @service.power_off_virtual_machine('fog-test-rg', 'fog-test-server', true) }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.power_off_virtual_machine('fog-test-rg', 'fog-test-server', true) }
     end
   end
 end

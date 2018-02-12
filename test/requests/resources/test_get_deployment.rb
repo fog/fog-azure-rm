@@ -18,7 +18,7 @@ class TestGetDeployment < Minitest::Test
   def test_list_deployment_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @deployments.stub :get, response do
-      assert_raises(RuntimeError) { @service.get_deployment('fog-test-rg', 'fog-test-deployment') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.get_deployment('fog-test-rg', 'fog-test-deployment') }
     end
   end
 end

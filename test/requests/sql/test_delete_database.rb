@@ -17,7 +17,7 @@ class TestDeleteDatabase < Minitest::Test
   def test_delete_database_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @databases.stub :delete, response do
-      assert_raises(RuntimeError) { @service.delete_database('fog-test-rg', 'fog-test-server-name', 'database-name') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.delete_database('fog-test-rg', 'fog-test-server-name', 'database-name') }
     end
   end
 end

@@ -19,7 +19,7 @@ class TestCreateTrafficManagerProfile < Minitest::Test
   def test_create_traffic_manager_profile_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @profiles.stub :create_or_update, response do
-      assert_raises(RuntimeError) { @service.create_or_update_traffic_manager_profile(@profile_hash) }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.create_or_update_traffic_manager_profile(@profile_hash) }
     end
   end
 end

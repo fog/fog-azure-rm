@@ -17,7 +17,7 @@ class TestDeleteManagedDisk < Minitest::Test
   def test_delete_managed_disk_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @managed_disks.stub :delete, response do
-      assert_raises(RuntimeError) { @service.delete_managed_disk('fog-test-rg', 'test-disk') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.delete_managed_disk('fog-test-rg', 'test-disk') }
     end
   end
 end

@@ -20,7 +20,7 @@ class TestGrantAccessToManagedDisk < Minitest::Test
   def test_grant_access_to_managed_disk_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @managed_disks.stub :grant_access, response do
-      assert_raises(RuntimeError) { @service.grant_access_to_managed_disk('myrg1', 'disk1', 'Read', 100) }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.grant_access_to_managed_disk('myrg1', 'disk1', 'Read', 100) }
     end
   end
 end

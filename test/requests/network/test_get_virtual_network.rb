@@ -18,7 +18,7 @@ class TestGetVirtualNetwork < Minitest::Test
   def test_get_virtual_network_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @virtual_networks.stub :get, response do
-      assert_raises RuntimeError do
+      assert_raises MsRestAzure::AzureOperationError do
         @service.get_virtual_network('fog-test-rg', 'fog-test-virtual-network')
       end
     end

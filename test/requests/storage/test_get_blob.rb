@@ -38,7 +38,7 @@ class TestGetBlob < Minitest::Test
   def test_get_blob_http_exception
     http_exception = ->(*) { raise Azure::Core::Http::HTTPError.new(@mocked_response) }
     @blob_client.stub :get_blob, http_exception do
-      assert_raises(RuntimeError) do
+      assert_raises(Azure::Core::Http::HTTPError) do
         @service.get_blob('test_container', 'test_blob')
       end
     end
@@ -112,7 +112,7 @@ class TestGetBlob < Minitest::Test
   def test_get_blob_with_block_given_not_exist
     http_exception = ->(*) { raise Azure::Core::Http::HTTPError.new(@mocked_response) }
     @blob_client.stub :get_blob_properties, http_exception do
-      assert_raises(RuntimeError) do
+      assert_raises(Azure::Core::Http::HTTPError) do
         @service.get_blob('test_container', 'test_blob') do |*chunk|
         end
       end
@@ -123,7 +123,7 @@ class TestGetBlob < Minitest::Test
     http_exception = ->(*) { raise Azure::Core::Http::HTTPError.new(@mocked_response) }
     @blob_client.stub :get_blob_properties, @raw_cloud_blob do
       @blob_client.stub :get_blob, http_exception do
-        assert_raises(RuntimeError) do
+        assert_raises(Azure::Core::Http::HTTPError) do
           @service.get_blob('test_container', 'test_blob') do |*chunk|
           end
         end

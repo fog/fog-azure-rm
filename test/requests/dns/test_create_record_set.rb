@@ -38,7 +38,7 @@ class TestCreateRecordSet < Minitest::Test
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     record_set_params = { records: %w(1.2.3.4 1.2.3.3) }
     @record_sets.stub :create_or_update, response do
-      assert_raises RuntimeError do
+      assert_raises MsRestAzure::AzureOperationError do
         @service.create_or_update_record_set(record_set_params, 'CNAME')
       end
     end

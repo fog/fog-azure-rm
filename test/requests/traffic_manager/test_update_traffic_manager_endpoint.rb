@@ -19,7 +19,7 @@ class TestUpdateTrafficManagerEndPoint < Minitest::Test
   def test_update_traffic_manager_profile_exception_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @end_points.stub :create_or_update, response do
-      assert_raises RuntimeError do
+      assert_raises MsRestAzure::AzureOperationError do
         @service.create_or_update_traffic_manager_endpoint(resource_group: 'resource-group', name: 'name', traffic_manager_profile_name: 'traffic_manager_profile_name', type: 'type')
       end
     end

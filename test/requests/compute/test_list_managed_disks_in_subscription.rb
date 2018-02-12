@@ -18,7 +18,7 @@ class TestListManagedDisksInSubscription < Minitest::Test
   def test_list_managed_disks_in_subscription_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @managed_disks.stub :list, response do
-      assert_raises(RuntimeError) { @service.list_managed_disks_in_subscription }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.list_managed_disks_in_subscription }
     end
   end
 end

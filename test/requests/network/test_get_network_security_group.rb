@@ -18,7 +18,7 @@ class TestGetNetworkSecurityGroup < Minitest::Test
   def test_get_network_security_group_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @network_security_groups.stub :get, response do
-      assert_raises RuntimeError do
+      assert_raises MsRestAzure::AzureOperationError do
         @service.get_network_security_group('fog-test-rg', 'fog-test-nsg')
       end
     end

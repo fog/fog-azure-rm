@@ -19,7 +19,7 @@ class TestGetStorageAccount < Minitest::Test
   def test_list_storage_accounts_exeception
     raise_exception = proc { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @storage_accounts.stub :get_properties, raise_exception do
-      assert_raises(RuntimeError) { @service.get_storage_account('fog_test_rg', 'fogtestsasecond') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.get_storage_account('fog_test_rg', 'fogtestsasecond') }
     end
   end
 end

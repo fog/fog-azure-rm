@@ -18,7 +18,7 @@ class TestGetVault < Minitest::Test
   def test_get_vault_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @vaults.stub :get, response do
-      assert_raises(RuntimeError) { @service.get_vault('fog-test-rg', 'fog-test-kv') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.get_vault('fog-test-rg', 'fog-test-kv') }
     end
   end
 end

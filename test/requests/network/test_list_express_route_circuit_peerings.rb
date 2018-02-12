@@ -18,7 +18,7 @@ class TestListExpressRouteCircuitPeerings < Minitest::Test
   def test_list_express_route_circuit_peerings_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @circuit_peering.stub :list, response do
-      assert_raises(RuntimeError) { @service.list_express_route_circuit_peerings('fogRM-rg', 'testCircuit') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.list_express_route_circuit_peerings('fogRM-rg', 'testCircuit') }
     end
   end
 end

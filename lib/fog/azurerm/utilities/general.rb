@@ -49,11 +49,12 @@ def get_record_type(type)
 end
 
 def raise_azure_exception(exception, msg)
-  case exception
-  when exception.is_a?(Azure::Core::Http::HTTPError)
+  if exception.is_a?(Azure::Core::Http::HTTPError)
     raise Fog::AzureRM::CustomAzureCoreHttpError.new(exception)
-  when exception.is_a?(MsRestAzure::AzureOperationError)
+  elsif exception.is_a?(MsRestAzure::AzureOperationError)
     raise Fog::AzureRM::CustomAzureOperationError.new(msg, exception)
+  else
+    raise exception
   end
 end
 

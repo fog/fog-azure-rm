@@ -16,6 +16,7 @@ require 'fog/azurerm/models/network/security_rule_protocol'
 require 'fog/azurerm/models/storage/sku_name'
 require 'fog/azurerm/models/storage/sku_tier'
 require 'fog/azurerm/models/storage/kind'
+require 'faraday'
 
 module Fog
   # Autoload Module for Credentials

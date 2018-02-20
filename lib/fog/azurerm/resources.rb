@@ -64,6 +64,13 @@ module Fog
           @rmc = ::Azure::ARM::Resources::ResourceManagementClient.new(credentials, resource_manager_endpoint_url(options[:environment]))
           @rmc.subscription_id = options[:subscription_id]
           @rmc.add_user_agent_information(telemetry)
+
+          @tenant_id = options[:tenant_id]
+          @client_id = options[:client_id]
+          @subscription_id = options[:subscription_id]
+          @client_secret = options[:client_secret]
+
+          @token = Fog::Credentials::AzureRM.get_token(@tenant_id, @client_id, @client_secret)
         end
       end
     end

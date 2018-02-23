@@ -177,3 +177,8 @@ end
 def get_image_name(id)
   id.split('/').last
 end
+
+def parse_response(response)
+  status_code = response.env.status
+  STATUS_CODES[:success].include? status_code ? SUCCESS : FAILURE
+end

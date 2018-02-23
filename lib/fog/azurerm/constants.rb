@@ -69,3 +69,15 @@ TEMPORARY_STORAGE_ACCOUNT_TAG_KEY = 'generalized_image'.freeze
 TEMPORARY_STORAGE_ACCOUNT_TAG_VALUE = 'delete'.freeze
 
 HTTP_NOT_FOUND = 404
+
+GET_METHOD = 'get'.freeze
+PUT_METHOD = 'put'.freeze
+DELETE_METHOD = 'delete'.freeze
+
+SUCCESS = 'success'.freeze
+FAILURE = 'failure'.freeze
+
+STATUS_CODES = {
+  success: [200, 201, 202, 203, 204],
+  failure: [400, 401, 402, 403, 404, 500, 501, 502, 503]
+}

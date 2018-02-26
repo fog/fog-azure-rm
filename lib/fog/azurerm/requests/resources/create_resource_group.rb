@@ -26,7 +26,7 @@ module Fog
             Fog::Logger.debug "Resource Group #{name} created successfully."
             response.env.body
           else
-            raise Fog::AzureRM::CustomException(response)
+            raise Fog::AzureRM::CustomException.new(response)
           end
         end
 

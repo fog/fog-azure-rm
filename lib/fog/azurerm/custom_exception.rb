@@ -10,9 +10,13 @@ module Fog
       def initialize(exception)
         @request = exception.env.request
         @response = exception.env.response
-        @body = exception.env.body
-        @error_message = @body.error.message
-        @error_code = @body.error.code
+        @body = JSON.decode(exception.env.body)
+        @error_message = @body['error']['message']
+        @error_code = @body['error']['code']
+      end
+
+      def to_s
+        puts "#{@body}"
       end
     end
   end

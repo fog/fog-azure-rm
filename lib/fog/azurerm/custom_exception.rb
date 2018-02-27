@@ -13,10 +13,19 @@ module Fog
         @body = JSON.decode(exception.env.body)
         @error_message = @body['error']['message']
         @error_code = @body['error']['code']
+        super
       end
 
       def to_s
-        puts "#{@body}"
+        exception = {}
+        
+        exception['message'] = @error_message
+        exception['code'] = @error_code
+        exception['body'] = @body
+        exception['request'] = @request
+        exception['response'] = @response
+
+        Fog::JSON.encode(exception)
       end
     end
   end

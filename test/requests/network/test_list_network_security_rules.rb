@@ -18,7 +18,7 @@ class TestListNetworkSecurityRule < Minitest::Test
   def test_list_network_security_rule_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @network_security_rules.stub :list_as_lazy, response do
-      assert_raises RuntimeError do
+      assert_raises MsRestAzure::AzureOperationError do
         @service.list_network_security_rules('fog-test-rg', 'fog-test-nsg')
       end
     end

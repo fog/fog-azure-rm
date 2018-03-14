@@ -32,7 +32,7 @@ class TestCheckAvailabilitySetExists < Minitest::Test
   def test_check_availability_set_exists_exception
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, create_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'Exception' }) }
     @availability_sets.stub :get, response do
-      assert_raises(RuntimeError) { @service.check_availability_set_exists('myrg1', 'myavset1') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.check_availability_set_exists('myrg1', 'myavset1') }
     end
   end
 end

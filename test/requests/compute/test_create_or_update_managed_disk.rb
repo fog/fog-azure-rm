@@ -31,7 +31,7 @@ class TestCreateManagedDisk < Minitest::Test
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @managed_disks.stub :validate_params, true do
       @managed_disks.stub :create_or_update, response do
-        assert_raises(RuntimeError) { @service.create_or_update_managed_disk(@disk) }
+        assert_raises(MsRestAzure::AzureOperationError) { @service.create_or_update_managed_disk(@disk) }
       end
     end
   end

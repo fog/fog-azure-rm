@@ -24,7 +24,7 @@ class TestPutBlobMetadata < Minitest::Test
   def test_put_blob_metadata_http_exception
     http_exception = ->(*) { raise Azure::Core::Http::HTTPError.new(@mocked_response) }
     @blob_client.stub :set_blob_metadata, http_exception do
-      assert_raises(RuntimeError) do
+      assert_raises(Azure::Core::Http::HTTPError) do
         @service.put_blob_metadata('test_container', 'test_blob', @metadata)
       end
     end

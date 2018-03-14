@@ -35,7 +35,7 @@ class TestCreateNetworkInterface < Minitest::Test
   def test_create_network_interface_exception_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @network_interfaces.stub :create_or_update, response do
-      assert_raises RuntimeError do
+      assert_raises MsRestAzure::AzureOperationError do
         @service.create_or_update_network_interface('fog-test-rg', 'fog-test-network-interface', 'West US', 'fog-test-subnet-id', 'fog-test-ip-address-id', 'fog-test-nsg-id', 'fog-test-ip-configuration', 'Dynamic', '10.0.0.8', ['id-1', 'id-2'], ['id-1', 'id-2'], @tags)
       end
     end

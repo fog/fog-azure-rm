@@ -32,7 +32,7 @@ class TestCheckVirtualNetworkGatewayConnectionExists < Minitest::Test
   def test_check_vnet_gateway_connection_exists_exception
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, create_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'Exception' }) }
     @gateway_connections.stub :get, response do
-      assert_raises(RuntimeError) { @service.check_vnet_gateway_connection_exists('fog-test-rg', 'fog-test-gateway-connection') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.check_vnet_gateway_connection_exists('fog-test-rg', 'fog-test-gateway-connection') }
     end
   end
 end

@@ -29,7 +29,7 @@ class TestCreateExpressRouteCircuitPeering < Minitest::Test
     circuit_peering_parameters = { peering_type: 'AzurePrivatePeering' }
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @circuit_peerings.stub :create_or_update, response do
-      assert_raises RuntimeError do
+      assert_raises MsRestAzure::AzureOperationError do
         @service.create_or_update_express_route_circuit_peering(circuit_peering_parameters)
       end
     end

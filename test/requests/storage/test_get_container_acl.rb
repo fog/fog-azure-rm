@@ -25,7 +25,7 @@ class TestGetContainerAcl < Minitest::Test
   def test_get_container_acl_http_exception
     http_exception = ->(*) { raise Azure::Core::Http::HTTPError.new(@mocked_response) }
     @blob_client.stub :get_container_acl, http_exception do
-      assert_raises(RuntimeError) do
+      assert_raises(Azure::Core::Http::HTTPError) do
         @service.get_container_acl('test_container')
       end
     end

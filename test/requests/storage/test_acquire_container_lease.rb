@@ -24,7 +24,7 @@ class TestAcquireContainerLease < Minitest::Test
   def test_acquire_container_lease_http_exception
     http_exception = ->(*) { raise Azure::Core::Http::HTTPError.new(@mocked_response) }
     @blob_client.stub :acquire_container_lease, http_exception do
-      assert_raises(RuntimeError) do
+      assert_raises(Azure::Core::Http::HTTPError) do
         @service.acquire_container_lease('test_container')
       end
     end

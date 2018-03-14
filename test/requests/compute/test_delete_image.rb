@@ -17,7 +17,7 @@ class TestDeleteImage < Minitest::Test
   def test_delete_image_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @image.stub :delete, response do
-      assert_raises(RuntimeError) { @service.delete_image('fog-test-rg', 'fog-test-server-osImage') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.delete_image('fog-test-rg', 'fog-test-server-osImage') }
     end
   end
 end

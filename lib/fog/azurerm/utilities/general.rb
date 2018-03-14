@@ -1,3 +1,5 @@
+require File.expand_path('../../custom_fog_errors.rb', __FILE__)
+
 # Pick Resource Group name from Azure Resource Id(String)
 def get_resource_group_from_id(id)
   id.split('/')[4]
@@ -47,11 +49,9 @@ def get_record_type(type)
 end
 
 def raise_azure_exception(exception, msg)
-  description = exception.is_a?(Azure::Core::Http::HTTPError) ? exception.description : exception.error_message
-  exception_message = "Exception in #{msg} #{description} Type: #{exception.class}\n#{exception.backtrace.join('\n')}"
-
-  Fog::Logger.debug exception.backtrace
-  raise exception_message
+  raise Fog::AzureRM::CustomAzureCoreHttpError.new(exception) if exception.is_a?(Azure::Core::Http::HTTPError)
+  raise Fog::AzureRM::CustomAzureOperationError.new(msg, exception) if exception.is_a?(MsRestAzure::AzureOperationError)
+  raise exception
 end
 
 # Make sure if input_params(Hash) contains all keys present in required_params(Array)

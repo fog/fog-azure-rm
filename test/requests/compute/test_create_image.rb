@@ -19,7 +19,7 @@ class TestCreateImage < Minitest::Test
   def test_create_image_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @image.stub :create_or_update, response do
-      assert_raises RuntimeError do
+      assert_raises MsRestAzure::AzureOperationError do
         @service.create_image(@input_params)
       end
     end

@@ -96,7 +96,7 @@ class TestCreateVirtualMachine < Minitest::Test
   def test_create_virtual_machine_failure
     @virtual_machines.stub :create_or_update, @error_response do
       @virtual_machines.stub :get, @error_response do
-        assert_raises RuntimeError do
+        assert_raises MsRestAzure::AzureOperationError do
           @service.create_virtual_machine(@linux_virtual_machine_hash)
         end
       end
@@ -105,7 +105,7 @@ class TestCreateVirtualMachine < Minitest::Test
     # Async
     @virtual_machines.stub :create_or_update_async, @error_response do
       @virtual_machines.stub :get, @error_response do
-        assert_raises RuntimeError do
+        assert_raises MsRestAzure::AzureOperationError do
           @service.create_virtual_machine(@linux_virtual_machine_hash, true)
         end
       end

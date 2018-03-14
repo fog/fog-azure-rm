@@ -23,11 +23,11 @@ class TestListAvailableSizesForVirtualMachine < Minitest::Test
   def test_list_available_sizes_for_virtual_machine_failure
     response = proc { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @virtual_machines.stub :list_available_sizes, response do
-      assert_raises(RuntimeError) { @service.list_available_sizes_for_virtual_machine('fog-test-rg', 'fog-test-server', false) }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.list_available_sizes_for_virtual_machine('fog-test-rg', 'fog-test-server', false) }
     end
 
     @virtual_machines.stub :list_available_sizes_async, response do
-      assert_raises(RuntimeError) { @service.list_available_sizes_for_virtual_machine('fog-test-rg', 'fog-test-server', true) }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.list_available_sizes_for_virtual_machine('fog-test-rg', 'fog-test-server', true) }
     end
   end
 end

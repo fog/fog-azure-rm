@@ -32,7 +32,7 @@ class TestCheckManagedDiskExists < Minitest::Test
   def test_check_managed_disk_exists_exception
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, create_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'Exception' }) }
     @managed_disks.stub :get, response do
-      assert_raises(RuntimeError) { @service.check_managed_disk_exists('myrg1', 'mydisk1') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.check_managed_disk_exists('myrg1', 'mydisk1') }
     end
   end
 end

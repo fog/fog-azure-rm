@@ -17,7 +17,7 @@ class TestDeleteVault < Minitest::Test
   def test_delete_vault_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @vaults.stub :delete, response do
-      assert_raises(RuntimeError) { @service.delete_vault('fog-test-rg', 'fog-test-kv') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.delete_vault('fog-test-rg', 'fog-test-kv') }
     end
   end
 end

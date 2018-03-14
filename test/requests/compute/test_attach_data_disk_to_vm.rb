@@ -62,7 +62,7 @@ class TestAttachDataDiskToVM < Minitest::Test
     @virtual_machines.stub :get, @get_vm_response do
       @storage_accounts.stub :list_keys, @storage_access_keys_response do
         @virtual_machines.stub :create_or_update, update_vm_response do
-          assert_raises RuntimeError do
+          assert_raises Azure::Core::Http::HTTPError do
             @service.attach_data_disk_to_vm(@input_params, false)
           end
         end
@@ -75,7 +75,7 @@ class TestAttachDataDiskToVM < Minitest::Test
     @virtual_machines.stub :get, @get_vm_response do
       @storage_accounts.stub :list_keys, @storage_access_keys_response do
         @virtual_machines.stub :create_or_update, update_vm_response do
-          assert_raises RuntimeError do
+          assert_raises Azure::Core::Http::HTTPError do
             @service.attach_data_disk_to_vm(@input_params, false)
           end
         end
@@ -86,7 +86,7 @@ class TestAttachDataDiskToVM < Minitest::Test
   def test_get_vm_failure
     get_vm_response = proc { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @virtual_machines.stub :get, get_vm_response do
-      assert_raises RuntimeError do
+      assert_raises MsRestAzure::AzureOperationError do
         @service.attach_data_disk_to_vm(@input_params, false)
       end
     end
@@ -96,7 +96,7 @@ class TestAttachDataDiskToVM < Minitest::Test
     storage_access_keys_response = proc { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @virtual_machines.stub :get, @get_vm_response do
       @storage_accounts.stub :list_keys, storage_access_keys_response do
-        assert_raises RuntimeError do
+        assert_raises MsRestAzure::AzureOperationError do
           @service.attach_data_disk_to_vm(@input_params, false)
         end
       end

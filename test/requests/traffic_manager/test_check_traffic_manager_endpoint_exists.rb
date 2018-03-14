@@ -32,7 +32,7 @@ class TestCheckTrafficManagerEndpointExists < Minitest::Test
   def test_check_traffic_manager_endpoint_exists_exception
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, create_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'Exception' }) }
     @end_points.stub :get, response do
-      assert_raises(RuntimeError) { @service.check_traffic_manager_endpoint_exists('fog-test-rg', 'fog-test-profile', 'fog-test-endpoint-name', 'fog-test-endpoint-type') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.check_traffic_manager_endpoint_exists('fog-test-rg', 'fog-test-profile', 'fog-test-endpoint-name', 'fog-test-endpoint-type') }
     end
   end
 end

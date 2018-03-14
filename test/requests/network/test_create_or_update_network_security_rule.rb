@@ -20,7 +20,7 @@ class TestCreateOrUpdateNetworkSecurityRule < Minitest::Test
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     security_rule_params = ApiStub::Requests::Network::NetworkSecurityRule.network_security_rule_paramteres_hash
     @network_security_rules.stub :create_or_update, response do
-      assert_raises RuntimeError do
+      assert_raises MsRestAzure::AzureOperationError do
         @service.create_or_update_network_security_rule(security_rule_params)
       end
     end

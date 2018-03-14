@@ -22,11 +22,11 @@ class TestDeallocateVirtualMachine < Minitest::Test
   def test_deallocate_virtual_machine_failure
     response = proc { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @virtual_machines.stub :deallocate, response do
-      assert_raises(RuntimeError) { @service.deallocate_virtual_machine('fog-test-rg', 'fog-test-server', false) }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.deallocate_virtual_machine('fog-test-rg', 'fog-test-server', false) }
     end
 
     @virtual_machines.stub :deallocate_async, response do
-      assert_raises(RuntimeError) { @service.deallocate_virtual_machine('fog-test-rg', 'fog-test-server', true) }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.deallocate_virtual_machine('fog-test-rg', 'fog-test-server', true) }
     end
   end
 end

@@ -17,7 +17,7 @@ class TestDeleteAvailabilitySet < Minitest::Test
   def test_delete_availability_set_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @availability_sets.stub :delete, response do
-      assert_raises(RuntimeError) { @service.delete_availability_set('fog-test-rg', 'fog-test-as') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.delete_availability_set('fog-test-rg', 'fog-test-as') }
     end
   end
 end

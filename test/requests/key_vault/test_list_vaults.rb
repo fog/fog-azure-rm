@@ -18,7 +18,7 @@ class TestListVaults < Minitest::Test
   def test_list_vaults_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @vaults.stub :list_by_resource_group_as_lazy, response do
-      assert_raises(RuntimeError) { @service.list_vaults('fog-test-rg') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.list_vaults('fog-test-rg') }
     end
   end
 end

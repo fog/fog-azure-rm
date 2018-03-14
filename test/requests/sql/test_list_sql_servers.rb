@@ -18,7 +18,7 @@ class TestListSqlServers < Minitest::Test
   def test_list_sql_servers_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @server.stub :list_by_resource_group, response do
-      assert_raises(RuntimeError) { @service.list_sql_servers('fog-test-rg') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.list_sql_servers('fog-test-rg') }
     end
   end
 end

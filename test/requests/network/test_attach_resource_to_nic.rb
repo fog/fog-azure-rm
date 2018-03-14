@@ -37,7 +37,7 @@ class TestAttachResourceToNIC < Minitest::Test
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceGroupNotFound' }) }
 
     @network_interfaces.stub :get, response do
-      assert_raises(RuntimeError) { @service.attach_resource_to_nic('fog-test-rg', 'fog-test-network-interface', 'Network-Security-Group', '/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups/myNSG1') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.attach_resource_to_nic('fog-test-rg', 'fog-test-network-interface', 'Network-Security-Group', '/subscriptions/{guid}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups/myNSG1') }
     end
   end
 end

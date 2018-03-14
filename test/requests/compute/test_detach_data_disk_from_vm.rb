@@ -23,7 +23,7 @@ class TestDetachDataDiskFromVM < Minitest::Test
     update_vm_response = proc { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @virtual_machines.stub :get, get_vm_response do
       @virtual_machines.stub :create_or_update, update_vm_response do
-        assert_raises RuntimeError do
+        assert_raises MsRestAzure::AzureOperationError do
           @service.detach_data_disk_from_vm('fog-test-rg', 'fog-test-vm', 'mydatadisk1', false)
         end
       end

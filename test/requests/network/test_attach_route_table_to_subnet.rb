@@ -18,7 +18,7 @@ class TestAttachRouteTableToSubnet < Minitest::Test
   def test_attach_route_table_to_subnet_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @subnets.stub :create_or_update, response do
-      assert_raises RuntimeError do
+      assert_raises MsRestAzure::AzureOperationError do
         @service.attach_route_table_to_subnet('fog-test-rg', 'fog-test-subnet', 'fog-test-virtual-network', '10.1.0.0/24', 'myNSG1', 'myRT1')
       end
     end

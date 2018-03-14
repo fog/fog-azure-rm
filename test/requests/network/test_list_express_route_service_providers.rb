@@ -18,7 +18,7 @@ class TestListExpressServiceProviders < Minitest::Test
   def test_list_express_route_service_providers_failure
     response = -> { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @service_provider.stub :list, response do
-      assert_raises(RuntimeError) { @service.list_express_route_service_providers }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.list_express_route_service_providers }
     end
   end
 end

@@ -71,7 +71,7 @@ class TestCreateAvailabilitySet < Minitest::Test
 
     @availability_sets.stub :validate_params, true do
       @availability_sets.stub :create_or_update, response do
-        assert_raises(RuntimeError) { @service.create_availability_set(avail_set_params) }
+        assert_raises(MsRestAzure::AzureOperationError) { @service.create_availability_set(avail_set_params) }
       end
     end
   end
@@ -105,7 +105,7 @@ class TestCreateAvailabilitySet < Minitest::Test
 
     @availability_sets.stub :validate_params, true do
       @availability_sets.stub :create_or_update, response do
-        assert_raises(RuntimeError) { @service.create_availability_set(avail_set_params) }
+        assert_raises(MsRestAzure::AzureOperationError) { @service.create_availability_set(avail_set_params) }
       end
     end
   end

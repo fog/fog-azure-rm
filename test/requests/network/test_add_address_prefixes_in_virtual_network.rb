@@ -21,7 +21,7 @@ class TestAddAddressPrefixesInVirtualNetwork < Minitest::Test
   def test_add_address_prefixes_in_virtual_network_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @virtual_networks.stub :get, response do
-      assert_raises RuntimeError do
+      assert_raises MsRestAzure::AzureOperationError do
         @service.add_address_prefixes_in_virtual_network('fog-test-rg', 'fog-test-virtual-network', ['10.1.0.0/16', '10.2.0.0/16'])
       end
     end

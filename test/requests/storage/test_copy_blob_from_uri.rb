@@ -24,7 +24,7 @@ class TestCopyBlobFromUri < Minitest::Test
   def test_copy_blob_from_uri_http_exception
     http_exception = ->(*) { raise Azure::Core::Http::HTTPError.new(@mocked_response) }
     @blob_client.stub :copy_blob_from_uri, http_exception do
-      assert_raises(RuntimeError) do
+      assert_raises(Azure::Core::Http::HTTPError) do
         @service.copy_blob_from_uri('destination_container', 'destination_blob', 'source_uri')
       end
     end

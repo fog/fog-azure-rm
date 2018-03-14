@@ -18,7 +18,7 @@ class TestGetNetworkInterface < Minitest::Test
   def test_get_network_interface_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @network_interfaces.stub :get, response do
-      assert_raises(RuntimeError) { @service.get_network_interface('fog-test-rg', 'fog-test-network-interface') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.get_network_interface('fog-test-rg', 'fog-test-network-interface') }
     end
   end
 end

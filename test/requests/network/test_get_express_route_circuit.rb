@@ -18,7 +18,7 @@ class TestGetExpressRouteCircuit < Minitest::Test
   def test_get_express_route_circuit_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @circuit.stub :get, response do
-      assert_raises(RuntimeError) { @service.get_express_route_circuit('fog-test-rg', 'testCircuit') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.get_express_route_circuit('fog-test-rg', 'testCircuit') }
     end
   end
 end

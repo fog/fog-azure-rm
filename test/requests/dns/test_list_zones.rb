@@ -18,7 +18,7 @@ class TestListZones < Minitest::Test
   def test_list_zones_exception
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @zones.stub :list, response do
-      assert_raises RuntimeError do
+      assert_raises MsRestAzure::AzureOperationError do
         @service.list_zones
       end
     end

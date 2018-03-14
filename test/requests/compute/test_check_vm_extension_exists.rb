@@ -32,7 +32,7 @@ class TestCheckVMExtensionExists < Minitest::Test
   def test_check_vm_extension_exists_exception
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, create_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'Exception' }) }
     @vm_extension.stub :get, response do
-      assert_raises(RuntimeError) { @service.check_vm_extension_exists('fog-test-rg', 'fog-test-vm', 'fog-test-extension') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.check_vm_extension_exists('fog-test-rg', 'fog-test-vm', 'fog-test-extension') }
     end
   end
 end

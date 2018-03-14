@@ -19,7 +19,7 @@ class TestCreateOrUpdateVault < Minitest::Test
   def test_create_vault_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @vaults.stub :create_or_update, response do
-      assert_raises(RuntimeError) { @service.create_or_update_vault(name: 'fog-test-kv') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.create_or_update_vault(name: 'fog-test-kv') }
     end
   end
 end

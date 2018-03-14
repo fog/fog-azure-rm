@@ -22,7 +22,7 @@ class TestCreatePageBlob < Minitest::Test
   def test_create_page_blob_http_exception
     http_exception = ->(*) { raise Azure::Core::Http::HTTPError.new(@mocked_response) }
     @blob_client.stub :create_page_blob, http_exception do
-      assert_raises(RuntimeError) do
+      assert_raises(Azure::Core::Http::HTTPError) do
         @service.create_page_blob('test_container', 'test_blob', 1_024)
       end
     end

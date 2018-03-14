@@ -24,7 +24,7 @@ class TestCompareContainerBlobs < Minitest::Test
   def test_compare_container_blobs_http_exception
     http_exception = ->(*) { raise Azure::Core::Http::HTTPError.new(@mocked_response) }
     @service.stub :get_identical_blobs_from_containers, http_exception do
-      assert_raises(RuntimeError) do
+      assert_raises(Azure::Core::Http::HTTPError) do
         @service.compare_container_blobs('test_container1', 'test_container2')
       end
     end

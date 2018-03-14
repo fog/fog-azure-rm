@@ -32,7 +32,7 @@ class TestCheckLoadBalancerExists < Minitest::Test
   def test_check_load_balancer_exists_exception
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, create_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'Exception' }) }
     @load_balancers.stub :get, response do
-      assert_raises(RuntimeError) { @service.check_load_balancer_exists('fog-test-rg', 'mylb1') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.check_load_balancer_exists('fog-test-rg', 'mylb1') }
     end
   end
 end

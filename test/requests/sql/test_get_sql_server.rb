@@ -18,7 +18,7 @@ class TestGetSqlServer < Minitest::Test
   def test_get_sql_server_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @servers.stub :get_by_resource_group, response do
-      assert_raises(RuntimeError) { @service.get_sql_server('fog-test-rg', 'fog-test-server-name') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.get_sql_server('fog-test-rg', 'fog-test-server-name') }
     end
   end
 end

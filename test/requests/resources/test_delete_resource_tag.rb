@@ -23,7 +23,7 @@ class TestDeleteResourceTag < Minitest::Test
     @resources.stub :get, @resource_response do
       @resources.stub :create_or_update, response do
         resource_id = '/subscriptions/########-####-####-####-############/resourceGroups/{RESOURCE-GROUP}/providers/Microsoft.Network/{PROVIDER-NAME}/{RESOURCE-NAME}'
-        assert_raises(RuntimeError) { @service.delete_resource_tag(resource_id, 'tag_name', 'tag_value', 'api_version') }
+        assert_raises(MsRestAzure::AzureOperationError) { @service.delete_resource_tag(resource_id, 'tag_name', 'tag_value', 'api_version') }
       end
     end
   end

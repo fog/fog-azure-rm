@@ -18,7 +18,7 @@ class TestListDatabases < Minitest::Test
   def test_list_databases_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @database.stub :list_by_server, response do
-      assert_raises(RuntimeError) { @service.list_databases('fog-test-rg', 'fog-test-server-name') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.list_databases('fog-test-rg', 'fog-test-server-name') }
     end
   end
 end

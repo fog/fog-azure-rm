@@ -23,7 +23,6 @@ describe 'Integration Testing of Network Security Group' do
 
     @location = 'eastus'
     @net_sec_group_name = 'testNetSecGroup'
-    @tags = { key1: 'value1', key2: 'value2' }
     @security_rules = [
       {
           name: 'testRule',
@@ -56,6 +55,8 @@ describe 'Integration Testing of Network Security Group' do
 
   describe 'Create' do
     before :all do
+      @tags = { key1: 'value1', key2: 'value2' }
+      
       @network_security_group = @network.network_security_groups.create(
         name: @net_sec_group_name,
         resource_group: @resource_group.name,

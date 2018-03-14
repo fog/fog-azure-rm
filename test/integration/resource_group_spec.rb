@@ -16,11 +16,11 @@ describe 'Integration testing of ResourceGroup' do
 
     @resource_group_name = 'TestRG-RG'
     @location = 'eastus'
-    @tags = { key1: 'value1', key2: 'value2' }
   end
 
   describe 'Create' do
     before :all do
+      @tags = { key1: 'value1', key2: 'value2' }
       @resource_group = @resource_service.resource_groups.create(name: @resource_group_name, location: @location, tags: @tags)
     end
 

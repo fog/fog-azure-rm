@@ -17,7 +17,7 @@ class TestDeleteNetworkSecurityRule < Minitest::Test
   def test_delete_network_security_rule_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @network_security_rules.stub :delete, response do
-      assert_raises RuntimeError do
+      assert_raises MsRestAzure::AzureOperationError do
         @service.delete_network_security_rule('fog-test-rg', 'fog-test-nsg', 'fog-test-nsr')
       end
     end

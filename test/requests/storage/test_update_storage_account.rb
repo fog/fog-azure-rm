@@ -28,7 +28,7 @@ class TestCreateStorageAccount < Minitest::Test
   def test_update_storage_account_exception
     raise_exception = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @storage_accounts.stub :update, raise_exception do
-      assert_raises(RuntimeError) { @azure_credentials.update_storage_account(@storage_account_arguments) }
+      assert_raises(MsRestAzure::AzureOperationError) { @azure_credentials.update_storage_account(@storage_account_arguments) }
     end
   end
 end

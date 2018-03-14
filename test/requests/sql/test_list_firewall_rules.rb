@@ -18,7 +18,7 @@ class TestListFirewallRules < Minitest::Test
   def test_list_sql_servers_firewall_rules_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @server.stub :list_firewall_rules, response do
-      assert_raises(RuntimeError) { @service.list_firewall_rules('fog-test-rg', 'server-name') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.list_firewall_rules('fog-test-rg', 'server-name') }
     end
   end
 end

@@ -28,7 +28,7 @@ class TestCreateVirtualNetworkGatewayConnection < Minitest::Test
     network_gateway_parms = { name: 'temp', resource_group_name: 'Test' }
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @gateway_connections.stub :create_or_update, response do
-      assert_raises RuntimeError do
+      assert_raises MsRestAzure::AzureOperationError do
         @service.create_or_update_virtual_network_gateway_connection(network_gateway_parms)
       end
     end

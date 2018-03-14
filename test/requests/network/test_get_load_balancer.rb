@@ -18,7 +18,7 @@ class TestGetLoadBalancer < Minitest::Test
   def test_get_load_balancer_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @load_balancers.stub :get, response do
-      assert_raises(RuntimeError) { @service.get_load_balancer('fog-test-rg', 'mylb1') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.get_load_balancer('fog-test-rg', 'mylb1') }
     end
   end
 end

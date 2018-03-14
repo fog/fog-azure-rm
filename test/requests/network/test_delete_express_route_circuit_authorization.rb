@@ -17,7 +17,7 @@ class TestDeleteExpressRouteCircuitAuthorization < Minitest::Test
   def test_delete_express_route_circuit_authorization_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @circuit_authorization.stub :delete, response do
-      assert_raises(RuntimeError) { @service.delete_express_route_circuit_authorization('Fog-rg', 'testCircuit', 'auth-name') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.delete_express_route_circuit_authorization('Fog-rg', 'testCircuit', 'auth-name') }
     end
   end
 end

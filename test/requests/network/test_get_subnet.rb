@@ -18,7 +18,7 @@ class TestGetSubnet < Minitest::Test
   def test_get_subnet_exception_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @subnets.stub :get, response do
-      assert_raises RuntimeError do
+      assert_raises MsRestAzure::AzureOperationError do
         @service.get_subnet('fog-test-rg', 'fog-test-virtual-network', 'fog-test-subnet')
       end
     end

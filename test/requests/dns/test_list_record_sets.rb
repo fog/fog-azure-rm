@@ -27,7 +27,7 @@ class TestListRecordSets < Minitest::Test
   def test_list_record_sets_exception
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @record_sets.stub :list_by_dns_zone, response do
-      assert_raises RuntimeError do
+      assert_raises MsRestAzure::AzureOperationError do
         @service.list_record_sets('fog-test-rg', 'fog-test-zone')
       end
     end

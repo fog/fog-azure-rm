@@ -27,7 +27,7 @@ class TestGetZone < Minitest::Test
   def test_get_zone_exception
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @zones.stub :get, response do
-      assert_raises RuntimeError do
+      assert_raises MsRestAzure::AzureOperationError do
         @service.get_zone('fog-test-rg', 'zone_name')
       end
     end

@@ -17,7 +17,7 @@ class TestDeleteTrafficManagerEndPoint < Minitest::Test
   def test_delete_traffic_manager_endpoint_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @end_points.stub :delete, response do
-      assert_raises(RuntimeError) { @service.delete_traffic_manager_endpoint('fog-test-rg', 'fog-test-end-point', 'fog-test-profile', 'external') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.delete_traffic_manager_endpoint('fog-test-rg', 'fog-test-end-point', 'fog-test-profile', 'external') }
     end
   end
 end

@@ -19,7 +19,7 @@ class TestCreateOrUpdateFirewallRule < Minitest::Test
   def test_create_or_update_sql_server_firewall_rule_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @firewall_rule.stub :create_or_update_firewall_rule, response do
-      assert_raises(RuntimeError) { @service.create_or_update_firewall_rule(@data_hash) }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.create_or_update_firewall_rule(@data_hash) }
     end
   end
 end

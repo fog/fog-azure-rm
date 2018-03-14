@@ -32,7 +32,7 @@ class TestCheckRecordSetExists < Minitest::Test
   def test_check_record_set_exists_exception
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, create_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'Exception' }) }
     @record_sets.stub :get, response do
-      assert_raises(RuntimeError) { @service.check_record_set_exists('fog-test-rg', 'fog-test-result', 'fog-test-zone', 'CNAME') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.check_record_set_exists('fog-test-rg', 'fog-test-result', 'fog-test-zone', 'CNAME') }
     end
   end
 end

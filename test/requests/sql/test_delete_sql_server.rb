@@ -17,7 +17,7 @@ class TestDeleteSqlServer < Minitest::Test
   def test_delete_sql_server_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @servers.stub :delete, response do
-      assert_raises(RuntimeError) { @service.delete_sql_server('fog-test-rg', 'fog-test-server-name') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.delete_sql_server('fog-test-rg', 'fog-test-server-name') }
     end
   end
 end

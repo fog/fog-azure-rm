@@ -18,7 +18,7 @@ class TestDeleteVirtualNetworkGateway < Minitest::Test
   def test_delete_virtual_network_gateway_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @network_gateways.stub :delete, response do
-      assert_raises(RuntimeError) { @service.delete_virtual_network_gateway('fog-test-rg', 'fog-test-network-gateway') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.delete_virtual_network_gateway('fog-test-rg', 'fog-test-network-gateway') }
     end
   end
 end

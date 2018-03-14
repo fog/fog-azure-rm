@@ -32,7 +32,7 @@ class TestCheckLocalNetworkGatewayExists < Minitest::Test
   def test_check_local_net_gateway_exists_exception
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, create_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'Exception' }) }
     @local_network_gateways.stub :get, response do
-      assert_raises(RuntimeError) { @service.check_local_net_gateway_exists('fog-test-rg', 'fog-test-local-network-gateway') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.check_local_net_gateway_exists('fog-test-rg', 'fog-test-local-network-gateway') }
     end
   end
 end

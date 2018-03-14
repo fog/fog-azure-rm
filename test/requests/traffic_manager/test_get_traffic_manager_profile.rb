@@ -18,7 +18,7 @@ class TestGetTrafficManagerProfile < Minitest::Test
   def test_get_traffic_manager_profile_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @profiles.stub :get, response do
-      assert_raises(RuntimeError) { @service.get_traffic_manager_profile('fog-test-rg', 'fog-test-profile') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.get_traffic_manager_profile('fog-test-rg', 'fog-test-profile') }
     end
   end
 end

@@ -21,7 +21,7 @@ class TestRemoveDnsServersInVirtualNetwork < Minitest::Test
   def test_remove_dns_servers_in_virtual_network_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @virtual_networks.stub :get, response do
-      assert_raises RuntimeError do
+      assert_raises MsRestAzure::AzureOperationError do
         @service.remove_dns_servers_from_virtual_network('fog-test-rg', 'fog-test-virtual-network', ['10.1.0.5'])
       end
     end

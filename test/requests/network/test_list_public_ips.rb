@@ -18,7 +18,7 @@ class TestListPublicIps < Minitest::Test
   def test_list_public_ips_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @public_ips.stub :list_as_lazy, response do
-      assert_raises(RuntimeError) { @service.list_public_ips('fog-test-rg') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.list_public_ips('fog-test-rg') }
     end
   end
 end

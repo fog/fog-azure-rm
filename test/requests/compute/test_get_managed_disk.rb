@@ -18,7 +18,7 @@ class TestGetManagedDisk < Minitest::Test
   def test_get_managed_disk_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @managed_disks.stub :get, response do
-      assert_raises(RuntimeError) { @service.get_managed_disk('myrg1', 'disk1') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.get_managed_disk('myrg1', 'disk1') }
     end
   end
 end

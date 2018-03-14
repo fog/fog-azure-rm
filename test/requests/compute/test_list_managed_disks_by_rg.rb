@@ -18,7 +18,7 @@ class TestListManagedDisksByRG < Minitest::Test
   def test_list_managed_disks_by_rg_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @managed_disks.stub :list_by_resource_group, response do
-      assert_raises(RuntimeError) { @service.list_managed_disks_by_rg('fog-test-rg') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.list_managed_disks_by_rg('fog-test-rg') }
     end
   end
 end

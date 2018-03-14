@@ -29,7 +29,7 @@ class TestCheckStorageAccountNameAvailability < Minitest::Test
   def test_check_storage_account_name_availability_exception
     raise_exception = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception', 'code' => 'ResourceGroupNotFound' }) }
     @storage_accounts.stub :check_name_availability, raise_exception do
-      assert_raises(RuntimeError) { @azure_credentials.check_storage_account_name_availability('teststorageaccount', 'Microsoft.Storage/storageAccounts') }
+      assert_raises(MsRestAzure::AzureOperationError) { @azure_credentials.check_storage_account_name_availability('teststorageaccount', 'Microsoft.Storage/storageAccounts') }
     end
   end
 end

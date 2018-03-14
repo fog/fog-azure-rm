@@ -18,7 +18,7 @@ class TestGetConnectionSharedKey < Minitest::Test
   def test_get_connection_shared_key_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @gateway_connections.stub :get_shared_key, response do
-      assert_raises(RuntimeError) { @service.get_connection_shared_key('fog-test-rg', 'fog-test-gateway-connection') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.get_connection_shared_key('fog-test-rg', 'fog-test-gateway-connection') }
     end
   end
 end

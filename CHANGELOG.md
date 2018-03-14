@@ -1,4 +1,10 @@
+## 0.4.6
+
+**Added:**
+- Created Custom Fog Exceptions
+
 ## 0.4.5
+
 **Changed:**
 - Updated dependency of fog-json to (~> 1.0.2)
 

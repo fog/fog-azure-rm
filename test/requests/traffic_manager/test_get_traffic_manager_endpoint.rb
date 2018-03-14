@@ -18,7 +18,7 @@ class TestGetTrafficManagerEndpoint < Minitest::Test
   def test_get_traffic_manager_endpoint_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @end_points.stub :get, response do
-      assert_raises(RuntimeError) { @service.get_traffic_manager_end_point('fog-test-rg', 'fog-test-profile', 'wrong-param', 'wrong-param') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.get_traffic_manager_end_point('fog-test-rg', 'fog-test-profile', 'wrong-param', 'wrong-param') }
     end
   end
 end

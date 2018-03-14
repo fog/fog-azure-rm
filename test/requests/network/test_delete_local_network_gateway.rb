@@ -17,7 +17,7 @@ class TestDeleteLocalNetworkGateway < Minitest::Test
   def test_delete_local_network_gateway_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @local_network_gateways.stub :delete, response do
-      assert_raises(RuntimeError) { @service.delete_local_network_gateway('fog-test-rg', 'fog-test-local-network-gateway') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.delete_local_network_gateway('fog-test-rg', 'fog-test-local-network-gateway') }
     end
   end
 end

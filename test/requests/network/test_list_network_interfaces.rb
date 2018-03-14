@@ -18,7 +18,7 @@ class TestListNetworkInterfaces < Minitest::Test
   def test_list_network_interfaces_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @network_interfaces.stub :list_as_lazy, response do
-      assert_raises(RuntimeError) { @service.list_network_interfaces('fog-test-rg') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.list_network_interfaces('fog-test-rg') }
     end
   end
 end

@@ -42,7 +42,7 @@ class TestCreateLoadBalancer < Minitest::Test
     inbound_nat_rule = ApiStub::Requests::Network::LoadBalancer.inbound_nat_rule
     inbound_nat_pool = ApiStub::Requests::Network::LoadBalancer.inbound_nat_pool
     @load_balancers.stub :create_or_update, response do
-      assert_raises RuntimeError do
+      assert_raises MsRestAzure::AzureOperationError do
         @service.create_load_balancer('mylb1', 'North US', 'testRG', frontend_ip_config, backend_address_pool, load_balancing_rule, probe, inbound_nat_rule, inbound_nat_pool, @tags)
       end
     end

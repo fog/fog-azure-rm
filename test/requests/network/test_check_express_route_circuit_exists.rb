@@ -32,7 +32,7 @@ class TestCheckExpressRouteCircuitExists < Minitest::Test
   def test_check_express_route_circuit_exists_exception
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, create_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'Exception' }) }
     @circuit.stub :get, response do
-      assert_raises(RuntimeError) { @service.check_express_route_circuit_exists('fog-test-rg', 'testCircuit') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.check_express_route_circuit_exists('fog-test-rg', 'testCircuit') }
     end
   end
 end

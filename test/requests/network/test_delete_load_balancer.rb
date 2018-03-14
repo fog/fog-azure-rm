@@ -18,7 +18,7 @@ class TestDeleteLoadBalancer < Minitest::Test
   def test_delete_load_balancer_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @load_balancers.stub :delete, response do
-      assert_raises(RuntimeError) { @service.delete_load_balancer('fog-test-rg', 'fog-test-load-balancer') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.delete_load_balancer('fog-test-rg', 'fog-test-load-balancer') }
     end
   end
 end

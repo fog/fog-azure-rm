@@ -49,7 +49,7 @@ class TestCreateOrUpdatevirtualNetwork < Minitest::Test
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
 
     @virtual_networks.stub :create_or_update, response do
-      assert_raises RuntimeError do
+      assert_raises MsRestAzure::AzureOperationError do
         @service.create_or_update_virtual_network('fog-test-rg', 'fog-test-virtual-network', 'westus', ['10.1.0.5', '10.1.0.6'], @subnets, ['10.1.0.0/16', '10.2.0.0/16'], @tags)
       end
     end

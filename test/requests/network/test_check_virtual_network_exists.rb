@@ -34,7 +34,7 @@ class TestCheckVirtualNetworkExists < Minitest::Test
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, create_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'Exception' }) }
 
     @virtual_networks.stub :get, response do
-      assert_raises(RuntimeError) { @service.check_virtual_network_exists('fog-test-rg', 'fog-test-virtual-network') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.check_virtual_network_exists('fog-test-rg', 'fog-test-virtual-network') }
     end
   end
 end

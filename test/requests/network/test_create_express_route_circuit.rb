@@ -31,7 +31,7 @@ class TestCreateExpressRouteCircuit < Minitest::Test
     peerings = ApiStub::Requests::Network::ExpressRouteCircuit.peerings
     express_route_circuit_parameters = { peerings: peerings }
     @circuit.stub :create_or_update, response do
-      assert_raises RuntimeError do
+      assert_raises MsRestAzure::AzureOperationError do
         @service.create_or_update_express_route_circuit(express_route_circuit_parameters)
       end
     end

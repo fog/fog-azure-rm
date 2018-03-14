@@ -17,7 +17,7 @@ class TestGetImage < Minitest::Test
   def test_get_image_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @image.stub :get, response do
-      assert_raises(RuntimeError) { @service.get_image('fog-test-rg', 'TestImage') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.get_image('fog-test-rg', 'TestImage') }
     end
   end
 end

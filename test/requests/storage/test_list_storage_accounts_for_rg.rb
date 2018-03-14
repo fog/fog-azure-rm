@@ -31,7 +31,7 @@ class TestListStorageAccountsForRG < Minitest::Test
   def test_list_storage_accounts_for_rg_exception
     raise_exception = proc { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @storage_accounts.stub :list_by_resource_group, raise_exception do
-      assert_raises(RuntimeError) { @azure_credentials.list_storage_account_for_rg('gateway-RG') }
+      assert_raises(MsRestAzure::AzureOperationError) { @azure_credentials.list_storage_account_for_rg('gateway-RG') }
     end
   end
 end

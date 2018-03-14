@@ -32,7 +32,7 @@ class TestCheckNetworkSecurityRuleExists < Minitest::Test
   def test_check_net_sec_rule_exists_exception
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, create_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'Exception' }) }
     @network_security_rules.stub :get, response do
-      assert_raises(RuntimeError) { @service.check_net_sec_rule_exists('fog-test-rg', 'fog-test-nsg', 'fog-test-nsr') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.check_net_sec_rule_exists('fog-test-rg', 'fog-test-nsg', 'fog-test-nsr') }
     end
   end
 end

@@ -22,11 +22,11 @@ class TestRestartVirtualMachine < Minitest::Test
   def test_restart_virtual_machine_failure
     response = proc { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @virtual_machines.stub :restart, response do
-      assert_raises(RuntimeError) { @service.restart_virtual_machine('fog-test-rg', 'fog-test-server', false) }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.restart_virtual_machine('fog-test-rg', 'fog-test-server', false) }
     end
 
     @virtual_machines.stub :restart_async, response do
-      assert_raises(RuntimeError) { @service.restart_virtual_machine('fog-test-rg', 'fog-test-server', true) }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.restart_virtual_machine('fog-test-rg', 'fog-test-server', true) }
     end
   end
 end

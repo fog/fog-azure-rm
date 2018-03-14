@@ -18,7 +18,7 @@ class TestListLocalNetwrokGateways < Minitest::Test
   def test_list_local_network_gateways_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @local_network_gateways.stub :list_as_lazy, response do
-      assert_raises(RuntimeError) { @service.list_local_network_gateways('fog-test-rg') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.list_local_network_gateways('fog-test-rg') }
     end
   end
 end

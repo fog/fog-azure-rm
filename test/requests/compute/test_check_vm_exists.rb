@@ -32,7 +32,7 @@ class TestCheckVirtualMachineExists < Minitest::Test
   def test_check_vm_exists_exception
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, create_mock_response, 'error' => { 'message' => 'mocked exception', 'code' => 'Exception' }) }
     @virtual_machines.stub :get, response do
-      assert_raises(RuntimeError) { @service.check_vm_exists('fog-test-rg', 'fog-test-server', false) }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.check_vm_exists('fog-test-rg', 'fog-test-server', false) }
     end
   end
 end

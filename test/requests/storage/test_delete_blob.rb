@@ -30,7 +30,7 @@ class TestDeleteBlob < Minitest::Test
   def test_delete_blob_http_exception
     http_exception = ->(*) { raise Azure::Core::Http::HTTPError.new(@mocked_response) }
     @blob_client.stub :delete_blob, http_exception do
-      assert_raises(RuntimeError) do
+      assert_raises(Azure::Core::Http::HTTPError) do
         @service.delete_blob('test_container', 'test_blob')
       end
     end

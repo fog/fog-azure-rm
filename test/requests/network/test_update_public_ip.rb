@@ -27,7 +27,7 @@ class TestUpdatePublicIp < Minitest::Test
   def test_update_public_ip_exception_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @public_ips.stub :create_or_update, response do
-      assert_raises RuntimeError do
+      assert_raises MsRestAzure::AzureOperationError do
         @service.create_or_update_public_ip('fog-test-rg', 'fog-test-public-ip', 'West US', 'Dynamic', '4', 'mylabel', @tags)
       end
     end

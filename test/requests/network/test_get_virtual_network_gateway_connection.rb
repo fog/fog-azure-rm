@@ -18,7 +18,7 @@ class TestGetVirtualNetworkGatewayConnection < Minitest::Test
   def test_get_virtual_network_gateway_connection_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @gateway_connections.stub :get, response do
-      assert_raises(RuntimeError) { @service.get_virtual_network_gateway_connection('fog-test-rg', 'fog-test-gateway-connection') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.get_virtual_network_gateway_connection('fog-test-rg', 'fog-test-gateway-connection') }
     end
   end
 end

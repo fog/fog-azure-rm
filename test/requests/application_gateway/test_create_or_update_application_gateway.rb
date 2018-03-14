@@ -27,7 +27,7 @@ class TestCreateOrUpdateApplicationGateway < Minitest::Test
   def test_create_or_update_application_gateway_exception_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @gateways.stub :create_or_update, response do
-      assert_raises RuntimeError do
+      assert_raises MsRestAzure::AzureOperationError do
         @service.create_or_update_application_gateway(@gateway_params)
       end
     end

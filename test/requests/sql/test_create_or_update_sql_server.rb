@@ -19,7 +19,7 @@ class TestCreateOrUpdateSqlServer < Minitest::Test
   def test_create_or_update_sql_server_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @server.stub :create_or_update, response do
-      assert_raises(RuntimeError) { @service.create_or_update_sql_server(@data_hash) }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.create_or_update_sql_server(@data_hash) }
     end
   end
 end

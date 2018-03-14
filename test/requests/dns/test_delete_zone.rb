@@ -18,7 +18,7 @@ class TestDeleteZone < Minitest::Test
   def test_delete_zone_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @zones.stub :delete, response do
-      assert_raises(RuntimeError) { @service.delete_zone('fog-test-rg', 'fog-test-zone') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.delete_zone('fog-test-rg', 'fog-test-zone') }
     end
   end
 end

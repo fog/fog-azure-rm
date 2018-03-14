@@ -17,7 +17,7 @@ class TestDeleteFirewallRule < Minitest::Test
   def test_delete_sql_server_firewall_rule_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @firewall_rules.stub :delete_firewall_rule, response do
-      assert_raises(RuntimeError) { @service.delete_firewall_rule('fog-test-rg', 'fog-test-server-name', 'rule-name') }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.delete_firewall_rule('fog-test-rg', 'fog-test-server-name', 'rule-name') }
     end
   end
 end

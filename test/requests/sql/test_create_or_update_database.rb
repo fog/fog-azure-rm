@@ -19,7 +19,7 @@ class TestCreateOrUpdateDatabase < Minitest::Test
   def test_create_or_update_database_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @databases.stub :create_or_update, response do
-      assert_raises(RuntimeError) { @service.create_or_update_database(@database_hash) }
+      assert_raises(MsRestAzure::AzureOperationError) { @service.create_or_update_database(@database_hash) }
     end
   end
 end

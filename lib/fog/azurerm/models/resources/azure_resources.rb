@@ -26,6 +26,14 @@ module Fog
         def check_azure_resource_exists(resource_id, api_version)
           service.check_azure_resource_exists(resource_id, api_version)
         end
+
+        def list_resources_in_resource_group(resource_group_name)
+          resources = []
+          service.list_resources_in_resource_group(resource_group_name).each do |resource|
+            resources.push(Fog::Resources::AzureRM::AzureResource.parse(resource))
+          end
+          load(resources)
+        end
       end
     end
   end

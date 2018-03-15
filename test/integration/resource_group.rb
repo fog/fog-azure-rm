@@ -17,7 +17,6 @@ resource = Fog::Resources::AzureRM.new(
 resource_group_name = "RG-#{current_time}"
 
 begin
-
   ########################################################################################################################
   ######################                   Check Resource Group Exists?                             ######################
   ########################################################################################################################
@@ -50,6 +49,16 @@ begin
 
   resource_group = resource_groups.get(resource_group_name)
   puts "Get resource group: #{resource_group.name}"
+
+  ########################################################################################################################
+  ######################             Get All Resources in a Resource Group                          ######################
+  ########################################################################################################################
+
+  resources = resource.azure_resources.list_resources_in_resource_group(resource_group_name)
+  puts 'List resources in resource groups:'
+  resources.each do |a_resource|
+    puts a_resource.name
+  end
 
   ########################################################################################################################
   ######################                           Destroy Resource Group                           ######################

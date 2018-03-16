@@ -20,14 +20,14 @@ describe 'Integration testing of Sql Server' do
       client_secret: azure_credentials['client_secret'],
       subscription_id: azure_credentials['subscription_id']
     )
-    
+
     @resource_group_name = 'TestRG-SQL'
     @location = 'eastus2'
     @tags = { key1: 'value1', key2: 'value2' }
     @server_name = rand(0...999_99)
     @database_name = rand(0...999_99)
     @version = '12.0'
-    @administrator_login = 'testserveradmin',
+    @administrator_username = 'testserveradmin',
     @administrator_login_password = 'db@admin=123'
     @resource_group = @resource_service.resource_groups.create(name: @resource_group_name, location: @location)
   end
@@ -50,7 +50,7 @@ describe 'Integration testing of Sql Server' do
         location: @location,
         tags: @tags,
         version: @version,
-        administrator_login: @administrator_login,
+        administrator_username: @administrator_username,
         administrator_login_password: @administrator_login_password
       )
     end
@@ -60,7 +60,7 @@ describe 'Integration testing of Sql Server' do
     end
 
     it 'should exist in resource group: \'TestRG-SQL\'' do
-        expect(@sql_server.resource_group).to eq(@resource_group_name)
+      expect(@sql_server.resource_group).to eq(@resource_group_name)
     end
 
     it 'it\'s in eastus' do
@@ -75,12 +75,12 @@ describe 'Integration testing of Sql Server' do
 
   describe 'Check Sql Database Existence' do
     before :all do
-        @sql_database = @azure_sql_service.sql_databases.check_database_exists(@resource_group_name, @server_name, @database_name)
-      end
+      @sql_database = @azure_sql_service.sql_databases.check_database_exists(@resource_group_name, @server_name, @database_name)
+    end
 
-      it "should have name: '#{@database_name}'" do
-        expect(@sql_database.name).to eq(@database_name)
-      end
+    it "should have name: '#{@database_name}'" do
+      expect(@sql_database.name).to eq(@database_name)
+    end
   end
 
   describe 'Create Sql Database' do
@@ -92,27 +92,27 @@ describe 'Integration testing of Sql Server' do
         tags: @tags,
         server_name: @server_name
       )
-      end
+    end
 
-      it "it\'s name is #{@database_name}" do
-        expect(@sql_database.name).to eq(@database_name)
-      end
-  
-      it 'should exist in resource group: \'TestRG-SQL\'' do
-          expect(@sql_database.resource_group).to eq(@resource_group_name)
-      end
-  
-      it 'it\'s in eastus' do
-        expect(@sql_database.location).to eq(@location)
-      end
+    it "it\'s name is #{@database_name}" do
+      expect(@sql_database.name).to eq(@database_name)
+    end
 
-      it "it's in sql server: '#{@server_name}'" do
-        expect(@sql_database.server_name).to eq(@server_name)
-      end
-  
-      it 'it\'s tag values are \'value1\' and \'value2\'' do
-        expect(@sql_database.tags['key1']).to eq(@tags[:key1])
-        expect(@sql_database.tags['key2']).to eq(@tags[:key2])
-      end
+    it 'should exist in resource group: \'TestRG-SQL\'' do
+      expect(@sql_database.resource_group).to eq(@resource_group_name)
+    end
+
+    it 'it\'s in eastus' do
+      expect(@sql_database.location).to eq(@location)
+    end
+
+    it "it's in sql server: '#{@server_name}'" do
+      expect(@sql_database.server_name).to eq(@server_name)
+    end
+
+    it 'it\'s tag values are \'value1\' and \'value2\'' do
+      expect(@sql_database.tags['key1']).to eq(@tags[:key1])
+      expect(@sql_database.tags['key2']).to eq(@tags[:key2])
+    end
   end
 end

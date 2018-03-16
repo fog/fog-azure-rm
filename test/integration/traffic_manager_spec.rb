@@ -20,7 +20,7 @@ describe 'Integration testing of Traffic Manager' do
       client_secret: azure_credentials['client_secret'],
       subscription_id: azure_credentials['subscription_id']
     )
-    
+
     @resource_group_name = 'TestRG-TM'
     @location = 'eastus'
     @traffic_manager_profile_name = 'test-tmp'
@@ -69,7 +69,7 @@ describe 'Integration testing of Traffic Manager' do
     end
 
     it 'should exist in resource group: \'TestRG-TM\'' do
-        expect(@traffic_manager_profile.resource_group).to eq(@resource_group_name.downcase)
+      expect(@traffic_manager_profile.resource_group).to eq(@resource_group_name.downcase)
     end
 
     it 'it\'s in global' do
@@ -82,15 +82,15 @@ describe 'Integration testing of Traffic Manager' do
     end
 
     it 'it\'s traffic routing method is \'Performance\'' do
-        expect(@traffic_manager_profile.traffic_routing_method).to eq('Performance')
+      expect(@traffic_manager_profile.traffic_routing_method).to eq('Performance')
     end
 
     it 'it\'s ttl is \'30\'' do
-        expect(@traffic_manager_profile.ttl).to eq(30)
+      expect(@traffic_manager_profile.ttl).to eq(30)
     end
 
     it 'it\'s protocol is \'HTTP\'' do
-        expect(@traffic_manager_profile.protocol).to eq('HTTP')
+      expect(@traffic_manager_profile.protocol).to eq('HTTP')
     end
 
     it 'it\'s port is \'80\'' do
@@ -125,7 +125,7 @@ describe 'Integration testing of Traffic Manager' do
     end
 
     it 'should exist in resource group: \'TestRG-TM\'' do
-        expect(@traffic_manager_endpoint.resource_group).to eq(@resource_group_name.downcase)
+      expect(@traffic_manager_endpoint.resource_group).to eq(@resource_group_name.downcase)
     end
 
     it 'it\'s endpoint location is: \'East US\'' do
@@ -133,11 +133,11 @@ describe 'Integration testing of Traffic Manager' do
     end
 
     it 'it\'s type is: \'externalEndpoints\'' do
-        expect(@traffic_manager_endpoint.type).to eq(@endpoint_type)
+      expect(@traffic_manager_endpoint.type).to eq(@endpoint_type)
     end
 
     it 'it\'s in: \'test-tmp\' profile' do
-        expect(@traffic_manager_endpoint.traffic_manager_profile_name).to eq(@traffic_manager_profile_name)
+      expect(@traffic_manager_endpoint.traffic_manager_profile_name).to eq(@traffic_manager_profile_name)
     end
 
     it 'it\'s target is: \'test-app1.com\'' do
@@ -147,15 +147,15 @@ describe 'Integration testing of Traffic Manager' do
 
   describe 'Get Endpoint' do
     before :all do
-        @traffic_manager_endpoint = @traffic_manager_service.traffic_manager_end_points.get(@resource_group_name, @traffic_manager_profile_name, @traffic_manager_endpoint_name, @endpoint_type)
-      end
+      @traffic_manager_endpoint = @traffic_manager_service.traffic_manager_end_points.get(@resource_group_name, @traffic_manager_profile_name, @traffic_manager_endpoint_name, @endpoint_type)
+    end
 
-      it 'should have name: \'myendpoint\'' do
-        expect(@traffic_manager_endpoint.name).to eq(@traffic_manager_endpoint_name)
-      end
-      it 'should have profile: \'test-tmp\'' do
-        expect(@traffic_manager_endpoint.traffic_manager_profile_name).to eq(@traffic_manager_profile_name)
-      end
+    it 'should have name: \'myendpoint\'' do
+      expect(@traffic_manager_endpoint.name).to eq(@traffic_manager_endpoint_name)
+    end
+    it 'should have profile: \'test-tmp\'' do
+      expect(@traffic_manager_endpoint.traffic_manager_profile_name).to eq(@traffic_manager_profile_name)
+    end
   end
 
   describe 'Update Endpoint' do
@@ -173,7 +173,7 @@ describe 'Integration testing of Traffic Manager' do
     end
 
     it 'it\'s type is \'externalEndpoints\'' do
-        expect(@traffic_manager_endpoint.type).to eq(@endpoint_type)
+      expect(@traffic_manager_endpoint.type).to eq(@endpoint_type)
     end
 
     it 'it\'s target is: \'test-app2.com\'' do
@@ -184,21 +184,21 @@ describe 'Integration testing of Traffic Manager' do
   describe 'Delete Endpoint' do
     before :all do
       @traffic_manager_endpoint = @traffic_manager_service.traffic_manager_end_points.get(@resource_group_name, @traffic_manager_profile_name, @traffic_manager_endpoint_name, @endpoint_type)
-      end
+    end
 
     it 'should not exist anymore' do
-        expect(@traffic_manager_endpoint.destroy).to eq(true)
+      expect(@traffic_manager_endpoint.destroy).to eq(true)
     end
   end
 
   describe 'Get Profile' do
     before :all do
-        @traffic_manager_profile = @traffic_manager_service.traffic_manager_profiles.get(@resource_group_name, @traffic_manager_profile_name)
-      end
+      @traffic_manager_profile = @traffic_manager_service.traffic_manager_profiles.get(@resource_group_name, @traffic_manager_profile_name)
+    end
 
-      it 'should have name: \'test-tmp\'' do
-        expect(@traffic_manager_profile.name).to eq(@traffic_manager_profile_name)
-      end
+    it 'should have name: \'test-tmp\'' do
+      expect(@traffic_manager_profile.name).to eq(@traffic_manager_profile_name)
+    end
   end
 
   describe 'Update Profile' do
@@ -218,11 +218,11 @@ describe 'Integration testing of Traffic Manager' do
     end
 
     it 'it\'s ttl is \'35\'' do
-        expect(@traffic_manager_profile.ttl).to eq(35)
+      expect(@traffic_manager_profile.ttl).to eq(35)
     end
 
     it 'it\'s protocol is \'HTTPS\'' do
-        expect(@traffic_manager_profile.protocol).to eq('HTTPS')
+      expect(@traffic_manager_profile.protocol).to eq('HTTPS')
     end
 
     it 'it\'s port is \'90\'' do
@@ -233,11 +233,11 @@ describe 'Integration testing of Traffic Manager' do
   describe 'Delete Profile' do
     before :all do
       @traffic_manager_profile = @traffic_manager_service.traffic_manager_profiles.get(@resource_group_name, @traffic_manager_profile_name)
-      end
+    end
 
     it 'should not exist anymore' do
-        expect(@traffic_manager_profile.destroy).to eq(true)
-        expect(@resource_group.destroy).to eq(true)
+      expect(@traffic_manager_profile.destroy).to eq(true)
+      expect(@resource_group.destroy).to eq(true)
     end
   end
 end

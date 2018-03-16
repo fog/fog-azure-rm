@@ -20,7 +20,7 @@ describe 'Integration testing of Public Ip' do
       client_secret: azure_credentials['client_secret'],
       subscription_id: azure_credentials['subscription_id']
     )
-    
+
     @resource_group_name = 'TestRG-PB'
     @location = 'eastus'
     @public_ip_name = 'Test-Public-IP'
@@ -58,7 +58,7 @@ describe 'Integration testing of Public Ip' do
     end
 
     it 'should exist in resource group: \'TestRG-PB\'' do
-        expect(@public_ip.resource_group).to eq(@resource_group_name)
+      expect(@public_ip.resource_group).to eq(@resource_group_name)
     end
 
     it 'it\'s in eastus' do
@@ -71,59 +71,59 @@ describe 'Integration testing of Public Ip' do
     end
 
     it 'it\'s idle timeout in minutes is \'4\'' do
-        expect(@public_ip.idle_timeout_in_minutes).to eq(4)
+      expect(@public_ip.idle_timeout_in_minutes).to eq(4)
     end
 
     it 'it\'s public IP allocation method is \'Dynamic\'' do
-        expect(@public_ip.public_ip_allocation_method).to eq(@public_ip_allocation_method)
+      expect(@public_ip.public_ip_allocation_method).to eq(@public_ip_allocation_method)
     end
 
     it 'it\'s domain name label is \'nil\'' do
-        expect(@public_ip.domain_name_label).to eq(nil)
+      expect(@public_ip.domain_name_label).to eq(nil)
     end
   end
 
   describe 'Get' do
     before :all do
-        @public_ip = @network_service.public_ips.get(@resource_group_name, @public_ip_name)
-      end
+      @public_ip = @network_service.public_ips.get(@resource_group_name, @public_ip_name)
+    end
 
-      it 'should have name: \'Test-Public-IP\'' do
-        expect(@public_ip.name).to eq(@public_ip_name)
-      end
+    it 'should have name: \'Test-Public-IP\'' do
+      expect(@public_ip.name).to eq(@public_ip_name)
+    end
   end
 
   describe 'Update' do
     before :all do
-        @public_ip = @network_service.public_ips.get(@resource_group_name, @public_ip_name)
-        @public_ip.update(
-            public_ip_allocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Dynamic,
-            idle_timeout_in_minutes: '10',
-            domain_name_label: @domain_label
-        )
-      end
+      @public_ip = @network_service.public_ips.get(@resource_group_name, @public_ip_name)
+      @public_ip.update(
+        public_ip_allocation_method: Fog::ARM::Network::Models::IPAllocationMethod::Dynamic,
+        idle_timeout_in_minutes: '10',
+        domain_name_label: @domain_label
+      )
+    end
 
-      it 'it\'s idle timeout in minutes is \'10\'' do
-        expect(@public_ip.idle_timeout_in_minutes).to eq(10)
+    it 'it\'s idle timeout in minutes is \'10\'' do
+      expect(@public_ip.idle_timeout_in_minutes).to eq(10)
     end
 
     it 'it\'s public IP allocation method is \'Dynamic\'' do
-        expect(@public_ip.public_ip_allocation_method).to eq(@public_ip_allocation_method)
+      expect(@public_ip.public_ip_allocation_method).to eq(@public_ip_allocation_method)
     end
 
     it 'it\'s domain name label is \'newdomainlabel\'' do
-        expect(@public_ip.domain_name_label).to eq(@domain_label)
+      expect(@public_ip.domain_name_label).to eq(@domain_label)
     end
   end
 
   describe 'Delete' do
     before :all do
-        @public_ip = @network_service.public_ips.get(@resource_group_name, @public_ip_name)
-      end
+      @public_ip = @network_service.public_ips.get(@resource_group_name, @public_ip_name)
+    end
 
     it 'should not exist anymore' do
-        expect(@public_ip.destroy).to eq(true)
-        expect(@resource_group.destroy).to eq(true)
+      expect(@public_ip.destroy).to eq(true)
+      expect(@resource_group.destroy).to eq(true)
     end
   end
 end

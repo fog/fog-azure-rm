@@ -22,12 +22,12 @@ describe 'Integration Testing of Un-Managed Availability Set' do
       environment: azure_credentials['environment']
     )
 
-    @resource_group_name       = 'TestRG-AS-U'
+    @resource_group_name = 'TestRG-AS-U'
     @location = 'eastus'
     @unmanaged_as_name_default = 'ASUnmanagedDefault'
-    @unmanaged_as_name_custom  = 'ASUnmanagedCustom'
-    @managed_as_name_default   = 'ASManagedDefault'
-    @managed_as_name_custom    = 'ASManagedCustom'
+    @unmanaged_as_name_custom = 'ASUnmanagedCustom'
+    @managed_as_name_default = 'ASManagedDefault'
+    @managed_as_name_custom = 'ASManagedCustom'
 
     @resource_group = @resource.resource_groups.create(
       name: @resource_group_name,

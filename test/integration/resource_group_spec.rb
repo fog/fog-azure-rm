@@ -46,7 +46,6 @@ describe 'Integration testing of ResourceGroup' do
     it 'it\'s name is TestRG-RG' do
       expect(@resource_group.name).to eq(@resource_group_name)
     end
-
   end
 
   describe 'List' do

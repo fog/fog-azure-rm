@@ -97,7 +97,6 @@ describe 'Integration Testing of Managed Availability Set' do
       before :all do
         @fault_domain_count = 3
         @update_domain_count = 10
-        
         @avail_set = @compute.availability_sets.create(
           name: @managed_as_name_custom,
           location: @location,
@@ -140,7 +139,6 @@ describe 'Integration Testing of Managed Availability Set' do
     end
   end
 
-  
   describe 'Get' do
     context 'Managed Default Availability Set' do
       before :all do

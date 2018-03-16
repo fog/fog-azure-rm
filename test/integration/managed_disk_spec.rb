@@ -22,9 +22,9 @@ describe 'Integration Testing of Managed Disk' do
       environment: azure_credentials['environment']
     )
 
-    time                 = current_time
+    time = current_time
     @resource_group_name = 'TestRG-MD'
-    @disk_name           = 'MD'
+    @disk_name = 'MD'
     @location = 'eastus'
     @tags = { key1: 'value1', key2: 'value2' }
     @disk_account_type = 'Premium_LRS'
@@ -142,7 +142,7 @@ describe 'Integration Testing of Managed Disk' do
 
       it 'should contain managed disk \'MD\'' do
         contains_md = false
-          @managed_disks_list.each do |managed_disk|
+        @managed_disks_list.each do |managed_disk|
           contains_md = true if managed_disk.name == @disk_name
         end
         expect(contains_md).to eq(true)

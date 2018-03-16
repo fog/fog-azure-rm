@@ -25,18 +25,17 @@ describe 'Integration Testing of Network Security Group' do
     @net_sec_group_name = 'testNetSecGroup'
     @security_rules = [
       {
-          name: 'testRule',
-          protocol: Fog::ARM::Network::Models::SecurityRuleProtocol::Tcp,
-          source_port_range: '22',
-          destination_port_range: '22',
-          source_address_prefix: '0.0.0.0/0',
-          destination_address_prefix: '0.0.0.0/0',
-          access: Fog::ARM::Network::Models::SecurityRuleAccess::Allow,
-          priority: 500,
-          direction: Fog::ARM::Network::Models::SecurityRuleDirection::Inbound
+        name: 'testRule',
+        protocol: Fog::ARM::Network::Models::SecurityRuleProtocol::Tcp,
+        source_port_range: '22',
+        destination_port_range: '22',
+        source_address_prefix: '0.0.0.0/0',
+        destination_address_prefix: '0.0.0.0/0',
+        access: Fog::ARM::Network::Models::SecurityRuleAccess::Allow,
+        priority: 500,
+        direction: Fog::ARM::Network::Models::SecurityRuleDirection::Inbound
       }
     ]
-    
     @resource_group = @rs.resource_groups.create(
       name: 'TestRG-NSG',
       location: @location
@@ -56,7 +55,6 @@ describe 'Integration Testing of Network Security Group' do
   describe 'Create' do
     before :all do
       @tags = { key1: 'value1', key2: 'value2' }
-      
       @network_security_group = @network.network_security_groups.create(
         name: @net_sec_group_name,
         resource_group: @resource_group.name,
@@ -112,7 +110,7 @@ describe 'Integration Testing of Network Security Group' do
     before 'updates security rule' do
       @network_security_group = @network.network_security_groups.get(@resource_group.name, @net_sec_group_name)
       @security_rules[0][:priority] = 500
-      temp_nsg_hash = {security_rules: @security_rules}
+      temp_nsg_hash = { security_rules: @security_rules }
       @updated_nsg = @network_security_group.update_security_rules(temp_nsg_hash)
     end
 
@@ -134,7 +132,6 @@ describe 'Integration Testing of Network Security Group' do
   describe 'Add Security Rule' do
     before 'adds a new security rule' do
       @network_security_group = @network.network_security_groups.get(@resource_group.name, @net_sec_group_name)
-      
       new_security_rules = [
         {
           name: 'testRule2',
@@ -206,5 +203,4 @@ describe 'Integration Testing of Network Security Group' do
       expect(@resource_group.destroy).to eq(true)
     end
   end
-
 end

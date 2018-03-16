@@ -20,7 +20,7 @@ describe 'Integration testing of Resource Tag' do
       client_secret: azure_credentials['client_secret'],
       subscription_id: azure_credentials['subscription_id']
     )
-    
+
     @resource_group_name = 'TestRG-RT'
     @location = 'eastus'
     @resource_name = 'Test-Public-IP'
@@ -62,29 +62,29 @@ describe 'Integration testing of Resource Tag' do
 
   describe 'Get' do
     before :all do
-        @resources = @resource_service.azure_resources(tag_name: 'test-key', tag_value: 'test-value')
-        @resource = @resource_service.azure_resources(tag_name: 'test-key').get(@resource_id)
-      end
+      @resources = @resource_service.azure_resources(tag_name: 'test-key', tag_value: 'test-value')
+      @resource = @resource_service.azure_resources(tag_name: 'test-key').get(@resource_id)
+    end
 
-      it 'should have resources' do
-        expect(@resources.length).not_to eq(0)
-      end
+    it 'should have resources' do
+      expect(@resources.length).not_to eq(0)
+    end
 
-      it 'should have a resource attached' do
-        expect(@resource.id).to eq(@resource_id)
-      end
+    it 'should have a resource attached' do
+      expect(@resource.id).to eq(@resource_id)
+    end
   end
 
   describe 'Delete' do
     before :all do
-        @public_ip = @network_service.public_ips.get(@resource_group_name, @resource_name)
-        @resource_tag_removed = @resource_service.delete_resource_tag(
-          @resource_id,
-          'test-key',
-          'test-value',
-          '2016-06-01'
-        )
-      end
+      @public_ip = @network_service.public_ips.get(@resource_group_name, @resource_name)
+      @resource_tag_removed = @resource_service.delete_resource_tag(
+        @resource_id,
+        'test-key',
+        'test-value',
+        '2016-06-01'
+      )
+    end
 
     it 'should not exist anymore' do
       expect(@resource_tag_removed).to eq(true)

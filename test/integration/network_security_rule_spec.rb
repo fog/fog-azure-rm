@@ -81,7 +81,7 @@ describe 'Integration Testing of Network Security Rule' do
     it 'should have protocol: \'TCP\'' do
       expect(@network_security_rule.protocol).to eq(@security_rule[:protocol])
     end
-    
+
     it 'should have priority: \'100\'' do
       expect(@network_security_rule.priority).to eq(@security_rule[:priority].to_i)
     end
@@ -143,5 +143,4 @@ describe 'Integration Testing of Network Security Rule' do
       expect(@resource_group.destroy).to eq(true)
     end
   end
-
 end

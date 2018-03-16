@@ -28,7 +28,6 @@ describe 'Integration Testing of Local Network Gateway' do
       name: 'TestRG-LNG',
       location: @location
     )
-
   end
 
   describe 'Check Existence' do
@@ -43,12 +42,11 @@ describe 'Integration Testing of Local Network Gateway' do
 
   describe 'Create' do
     before :all do
-
       @tags = {
         key1: 'value1',
         key2: 'value2'
       }
-      @gateway_IP = '192.168.1.1'
+      @gateway_ip = '192.168.1.1'
       @asn = 100
       @bgp_peering_address = '192.168.1.2'
       @peer_weight = 3
@@ -58,7 +56,7 @@ describe 'Integration Testing of Local Network Gateway' do
         location: @location,
         tags: @tags,
         resource_group: @resource_group.name,
-        gateway_ip_address: @gateway_IP,
+        gateway_ip_address: @gateway_ip,
         local_network_address_space_prefixes: [],
         asn: @asn,
         bgp_peering_address: @bgp_peering_address,
@@ -79,9 +77,9 @@ describe 'Integration Testing of Local Network Gateway' do
     end
 
     it 'should have gateway IP address: \'192.168.1.1\'' do
-      expect(@local_network_gateway.gateway_ip_address).to eq(@gateway_IP)
+      expect(@local_network_gateway.gateway_ip_address).to eq(@gateway_ip)
     end
-    
+
     it 'should have peer weight: \'3\'' do
       expect(@local_network_gateway.peer_weight).to eq(@peer_weight)
     end
@@ -142,5 +140,4 @@ describe 'Integration Testing of Local Network Gateway' do
       expect(@resource_group.destroy).to eq(true)
     end
   end
-
 end

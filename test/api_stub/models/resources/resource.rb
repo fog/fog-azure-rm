@@ -52,11 +52,7 @@ module ApiStub
             }
           }'
           result_mapper = Azure::ARM::Resources::Models::GenericResource.mapper
-<<<<<<< HEAD
           client.deserialize(result_mapper, Fog::JSON.decode(resources), 'result.body')
-=======
-          client.deserialize(result_mapper, Fog::JSON.decode(resources), 'result.body').value
->>>>>>> 1e072253804cbaa130b739afc141a95bb1c03f9e
         end
       end
     end

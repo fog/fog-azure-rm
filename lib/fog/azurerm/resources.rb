@@ -23,6 +23,7 @@ module Fog
       request :list_tagged_resources
       request :tag_resource
       request :check_azure_resource_exists
+      request :list_resources_in_resource_group
 
       model_path 'fog/azurerm/models/resources'
       model :resource_group

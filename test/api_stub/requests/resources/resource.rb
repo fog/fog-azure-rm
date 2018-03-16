@@ -39,6 +39,23 @@ module ApiStub
           result_mapper = Azure::ARM::Resources::Models::ResourceListResult.mapper
           client.deserialize(result_mapper, Fog::JSON.decode(body), 'result.body')
         end
+
+        def self.list_resources_in_resource_group(client)
+          body = '{
+            "id": "/subscriptions/########-####-####-####-############/resourceGroups/{RESOURCE-GROUP}/providers/Microsoft.Network/{PROVIDER-NAME}/{RESOURCE-NAME}",
+            "name": "your-resource-name",
+            "type": "providernamespace/resourcetype",
+            "location": "westus",
+            "tags": {
+            "tag_name": "tag_value"
+            },
+            "plan": {
+            "name": "free"
+            }
+          }'
+          result_mapper = Azure::ARM::Resources::Models::GenericResource.mapper
+          client.deserialize(result_mapper, Fog::JSON.decode(body), 'result.body')
+        end
       end
     end
   end

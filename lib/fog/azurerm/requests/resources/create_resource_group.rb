@@ -6,16 +6,35 @@ module Fog
         def create_resource_group(name, location, tags)
           msg = "Creating Resource Group: #{name}."
           Fog::Logger.debug msg
-          resource_group = Azure::ARM::Resources::Models::ResourceGroup.new
-          resource_group.location = location
-          resource_group.tags = tags
+
+          body = create_resource_group_body(location, tags).to_json
+
+          url = "subscriptions/#{@subscription_id}/resourcegroups/#{name}?api-version=2017-05-10"
           begin
-            resource_group = @rmc.resource_groups.create_or_update(name, resource_group)
-          rescue  MsRestAzure::AzureOperationError => e
-            raise_azure_exception(e, msg)
+            response = Fog::AzureRM::NetworkAdapter.put(
+              url,
+              @token,
+              body
+            )
+          rescue => e
+            raise e
           end
-          Fog::Logger.debug "Resource Group #{name} created successfully."
-          resource_group
+
+          response_status = parse_response(response)
+
+          if response_status.eql?(SUCCESS)
+            Fog::Logger.debug "Resource Group #{name} created successfully."
+            response.env.body
+          else
+            raise Fog::AzureRM::CustomException.new(response)
+          end
+        end
+
+        def create_resource_group_body(location, tags)
+          parameters = {
+            location: location,
+            properties: {}
+          }
         end
       end
 

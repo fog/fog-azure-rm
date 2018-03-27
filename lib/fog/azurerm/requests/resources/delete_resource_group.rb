@@ -6,10 +6,16 @@ module Fog
         def delete_resource_group(name)
           msg = "Deleting Resource Group: #{name}."
           Fog::Logger.debug msg
+
+          url = "subscriptions/#{@subscription_id}/resourcegroups/#{name}?api-version=2017-05-10"
+
           begin
-            @rmc.resource_groups.delete(name)
-          rescue  MsRestAzure::AzureOperationError => e
-            raise_azure_exception(e, msg)
+            Fog::AzureRM::NetworkAdapter.delete(
+              url,
+              @token
+            )
+          rescue => e
+            raise e
           end
           Fog::Logger.debug "Resource Group #{name} deleted successfully."
           true

@@ -16,6 +16,7 @@ require 'fog/azurerm/models/network/security_rule_protocol'
 require 'fog/azurerm/models/storage/sku_name'
 require 'fog/azurerm/models/storage/sku_tier'
 require 'fog/azurerm/models/storage/kind'
+require 'faraday'
 
 module Fog
   # Autoload Module for Credentials
@@ -68,9 +69,11 @@ module Fog
     autoload :AzureRM, File.expand_path('azurerm/key_vault', __dir__)
   end
 
-  # Autoload Module for Response::Asynchronous
+  # Autoload Module for Response::Asynchronous, NetworkAdapter and CustomException
   module AzureRM
     autoload :AsyncResponse, File.expand_path('azurerm/async_response', __dir__)
+    autoload :NetworkAdapter, File.expand_path('azurerm/network_adapter', __dir__)
+    autoload :CustomException, File.expand_path('azurerm/custom_exception', __dir__)
   end
 
   # Main AzureRM fog Provider Module

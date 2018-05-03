@@ -1,3 +1,9 @@
+## 0.4.7
+
+**Added:**
+- Support added to list resources in a resource group
+- Added OS disk id attribute to the 'Compute' model 
+
 ## 0.4.6
 
 **Added:**

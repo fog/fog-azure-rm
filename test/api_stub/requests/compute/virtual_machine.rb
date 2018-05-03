@@ -243,6 +243,7 @@ module ApiStub
                 },
                 "osDisk": {
                   "name":"myosdisk1",
+                  "id":"/subscriptions/{subscription-id}/resourceGroups/fog-test-rg/providers/Microsoft.Compute/disks/myosdisk1",
                   "vhd": {
                     "uri":"http://mystorage1.blob.core.windows.net/vhds/myosdisk1.vhd"
                   },
@@ -320,6 +321,7 @@ module ApiStub
                 },
                 "osDisk": {
                   "name":"myosdisk1",
+                  "id":"/subscriptions/{subscription-id}/resourceGroups/fog-test-rg/providers/Microsoft.Compute/disks/myosdisk1",
                   "vhd": {
                     "uri":"http://mystorage1.blob.core.windows.net/vhds/myosdisk1.vhd"
                   },
@@ -397,6 +399,7 @@ module ApiStub
                 },
                 "osDisk": {
                   "name":"myosdisk1",
+                  "id":"/subscriptions/{subscription-id}/resourceGroups/fog-test-rg/providers/Microsoft.Compute/disks/myosdisk1",
                   "vhd": {
                     "uri":"https://custimagestorage.blob.core.windows.net/customimage/trusty-server-cloudimg-amd64-disk1.vhd"
                   },
@@ -474,6 +477,7 @@ module ApiStub
                 },
                 "osDisk": {
                   "name":"myosdisk1",
+                  "id":"/subscriptions/{subscription-id}/resourceGroups/fog-test-rg/providers/Microsoft.Compute/disks/myosdisk1",
                   "vhd": {
                     "uri":"http://mystorage1.blob.core.windows.net/vhds/myosdisk1.vhd"
                   },
@@ -546,6 +550,7 @@ module ApiStub
                     'osDisk' =>
                       {
                         'name' => 'myosdisk1',
+                        'id' => '/subscriptions/{subscription-id}/resourceGroups/fog-test-rg/providers/Microsoft.Compute/disks/myosdisk1',
                         'vhd' =>
                           {
                             'uri' => 'http://mystorage1.blob.core.windows.net/vhds/myosdisk1.vhd'
@@ -651,6 +656,7 @@ module ApiStub
                     },
                     "osDisk": {
                       "name":"myosdisk1",
+                      "id":"/subscriptions/{subscription-id}/resourceGroups/fog-test-rg/providers/Microsoft.Compute/disks/myosdisk1",
                       "vhd": {
                         "uri":"http://mystorage1.blob.core.windows.net/vhds/myosdisk1.vhd"
                       },
@@ -809,6 +815,7 @@ module ApiStub
                     },
                     "osDisk": {
                       "name":"myosdisk1",
+                      "id":"/subscriptions/{subscription-id}/resourceGroups/fog-test-rg/providers/Microsoft.Compute/disks/myosdisk1",
                       "vhd": {
                         "uri":"http://mystorage1.blob.core.windows.net/vhds/myosdisk1.vhd"
                       },
@@ -896,6 +903,7 @@ module ApiStub
                     },
                     "osDisk": {
                       "name":"myosdisk1",
+                      "id":"/subscriptions/{subscription-id}/resourceGroups/fog-test-rg/providers/Microsoft.Compute/disks/myosdisk1",
                       "vhd": {
                         "uri":"http://mystorage1.blob.core.windows.net/vhds/myosdisk1.vhd"
                       },

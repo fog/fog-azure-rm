@@ -177,3 +177,7 @@ end
 def get_image_name(id)
   id.split('/').last
 end
+
+def get_subscription_id(id)
+  id.split('/')[2]
+end

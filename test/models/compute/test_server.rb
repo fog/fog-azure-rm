@@ -38,6 +38,7 @@ class TestServer < Minitest::Test
       :vm_size,
       :storage_account_name,
       :os_disk_name,
+      :os_disk_id,
       :os_disk_vhd_uri,
       :os_disk_caching,
       :publisher,

@@ -11,6 +11,7 @@ module Fog
         attribute :vm_size
         attribute :storage_account_name
         attribute :os_disk_name
+        attribute :os_disk_id
         attribute :os_disk_vhd_uri
         attribute :os_disk_caching
         attribute :publisher
@@ -46,6 +47,10 @@ module Fog
           hash['vm_size'] = vm.hardware_profile.vm_size unless vm.hardware_profile.vm_size.nil?
           unless vm.storage_profile.nil?
             hash['os_disk_name'] = vm.storage_profile.os_disk.name
+
+            subscription_id = get_subscription_id(vm.id)
+            hash['os_disk_id'] = "/subscriptions/#{subscription_id}/resourceGroups/#{hash['resource_group']}/providers/Microsoft.Compute/disks/#{hash['os_disk_name']}"
+
             hash['os_disk_size'] = vm.storage_profile.os_disk.disk_size_gb
             if vm.storage_profile.os_disk.vhd.nil?
               hash['managed_disk_storage_type'] = vm.storage_profile.os_disk.managed_disk.storage_account_type

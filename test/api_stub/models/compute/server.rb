@@ -21,6 +21,7 @@ module ApiStub
                 },
                 'osDisk' => {
                   'name' => 'fog-test-server_os_disk',
+                  'id' => '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Compute/disks/fog-test-server_os_disk',
                   'vhd' => {
                     'uri' => 'http://storageAccount.blob.core.windows.net/vhds/fog-test-server_os_disk.vhd'
                   }

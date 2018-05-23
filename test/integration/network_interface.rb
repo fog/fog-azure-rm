@@ -140,18 +140,19 @@ begin
   ######################                                   CleanUp                                  ######################
   ########################################################################################################################
 
-  puts "Deleted network interface: #{nic.destroy}"
+  # puts "Deleted network interface: #{nic.destroy}"
 
-  pubip = network.public_ips.get('TestRG-NI', 'mypubip')
-  pubip.destroy
+  # pubip = network.public_ips.get('TestRG-NI', 'mypubip')
+  # pubip.destroy
 
-  vnet = network.virtual_networks.get('TestRG-NI', 'testVnet')
-  vnet.destroy
+  # vnet = network.virtual_networks.get('TestRG-NI', 'testVnet')
+  # vnet.destroy
 
-  rg = rs.resource_groups.get('TestRG-NI')
-  rg.destroy
+  # rg = rs.resource_groups.get('TestRG-NI')
+  # rg.destroy
   puts 'Integration Test for network interface ran successfully'
-rescue
+rescue Exception => e
   puts 'Integration Test for network interface is failing'
   resource_group.destroy unless resource_group.nil?
+  puts e.inspect
 end

@@ -107,7 +107,8 @@ begin
     public_ip_address_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-NI/providers/Microsoft.Network/publicIPAddresses/mypubip",
     ip_configuration_name: 'testIpConfiguration',
     private_ip_allocation_method: 'Dynamic',
-    tags: { key: 'value' }
+    tags: { key: 'value' },
+    enable_accelerated_networking: true
   )
   puts "Created network interface: #{network_interface.name}"
 
@@ -140,19 +141,18 @@ begin
   ######################                                   CleanUp                                  ######################
   ########################################################################################################################
 
-  # puts "Deleted network interface: #{nic.destroy}"
+  puts "Deleted network interface: #{nic.destroy}"
 
-  # pubip = network.public_ips.get('TestRG-NI', 'mypubip')
-  # pubip.destroy
+  pubip = network.public_ips.get('TestRG-NI', 'mypubip')
+  pubip.destroy
 
-  # vnet = network.virtual_networks.get('TestRG-NI', 'testVnet')
-  # vnet.destroy
+  vnet = network.virtual_networks.get('TestRG-NI', 'testVnet')
+  vnet.destroy
 
-  # rg = rs.resource_groups.get('TestRG-NI')
-  # rg.destroy
+  rg = rs.resource_groups.get('TestRG-NI')
+  rg.destroy
   puts 'Integration Test for network interface ran successfully'
-rescue Exception => e
+rescue
   puts 'Integration Test for network interface is failing'
   resource_group.destroy unless resource_group.nil?
-  puts e.inspect
 end

@@ -45,7 +45,8 @@ class TestNetworkInterface < Minitest::Test
       :applied_dns_servers,
       :internal_dns_name_label,
       :internal_fqd,
-      :tags
+      :tags,
+      :enable_accelerated_networking
     ]
     attributes.each do |attribute|
       assert_respond_to @network_interface, attribute

@@ -107,7 +107,8 @@ begin
     public_ip_address_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-NI/providers/Microsoft.Network/publicIPAddresses/mypubip",
     ip_configuration_name: 'testIpConfiguration',
     private_ip_allocation_method: 'Dynamic',
-    tags: { key: 'value' }
+    tags: { key: 'value' },
+    enable_accelerated_networking: true
   )
   puts "Created network interface: #{network_interface.name}"
 

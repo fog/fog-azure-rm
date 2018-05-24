@@ -256,7 +256,8 @@ nic = fog_network_service.network_interfaces.create(
       public_ip_address_id: '/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/publicIPAddresses/<Public IP Name>',
       ip_configuration_name: '<IP Configuration Name>',
       private_ip_allocation_method: '<IP Allocation Method Name>',
-      tags: { key: 'value' }                    # [Optional]
+      tags: { key: 'value' }                    # [Optional],
+      enable_accelerated_networking: true       # [Optional] false by default
 )
 ```
 

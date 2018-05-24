@@ -1,3 +1,8 @@
+## 0.4.8
+
+**Added:**
+- Added enable_accelerated_networking attribute for NIC
+
 ## 0.4.7
 
 **Added:**

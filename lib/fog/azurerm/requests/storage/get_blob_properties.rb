@@ -20,11 +20,13 @@ module Fog
 
       # This class provides the mock implementation for unit tests.
       class Mock
+        require 'azure/storage'
+
         def get_blob_properties(*)
-          {
-            'name' => 'test_blob',
-            'metadata' => {},
-            'properties' => {
+          blob = Azure::Storage::Blob::Blob.new
+          blob.name = 'test_blob'
+          blob.metadata = {}
+          blob.properties = {
               'last_modified' => 'Mon, 04 Jul 2016 09:30:31 GMT',
               'etag' => '0x8D3A3EDD7C2B777',
               'lease_status' => 'unlocked',
@@ -47,7 +49,7 @@ module Fog
               'copy_status_description' => nil,
               'accept_ranges' => 0
             }
-          }
+          blob
         end
       end
     end

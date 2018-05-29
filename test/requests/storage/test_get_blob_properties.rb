@@ -40,6 +40,8 @@ class TestGetBlobProperties < Minitest::Test
   end
 
   def test_get_blob_properties_mock
-    assert_equal @blob, @mock_service.get_blob_properties('test_container', 'test_blob')
+    mock_blob_properties = @mock_service.get_blob_properties('test_container', 'test_blob')
+    assert_equal @blob.name, mock_blob_properties.name
+    assert_equal @blob.properties, mock_blob_properties.properties
   end
 end

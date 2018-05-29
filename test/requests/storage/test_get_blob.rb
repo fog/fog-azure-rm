@@ -13,7 +13,7 @@ class TestGetBlob < Minitest::Test
     @blob_client = @service.instance_variable_get(:@blob_client)
 
     @raw_cloud_blob = storage_blob
-    @blob = ApiStub::Requests::Storage::File.blob
+    @blob = ApiStub::Requests::Storage::File.blob_as_hash
     @blob_with_content = [
       @blob,
       'content'

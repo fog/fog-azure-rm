@@ -5,6 +5,15 @@ module ApiStub
       # Below data should be as same as those in Mock classes in lib/fog/azurerm/requests/storage/*.rb
       class File
         def self.blob
+          blob_data = blob_as_hash
+          blob = Azure::Storage::Blob::Blob.new
+          blob.name = blob_data['name']
+          blob.metadata = blob_data['metadata']
+          blob.properties = blob_data['properties']
+          blob
+        end
+
+        def self.blob_as_hash
           {
             'name' => 'test_blob',
             'metadata' => {},

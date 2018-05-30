@@ -20,8 +20,6 @@ module Fog
 
       # This class provides the mock implementation for unit tests.
       class Mock
-        require 'azure/storage'
-
         def get_blob_properties(*)
           blob = Azure::Storage::Blob::Blob.new
           blob.name = 'test_blob'

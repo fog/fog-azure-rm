@@ -12,7 +12,7 @@ module ApiStub
           # properties = {}
           # blob_data['properties'].keys.each { |key| properties[key.to_sym] = blob_data['properties'][key] }
           # blob.properties = properties
-          blob.properties = blob_data['properties'].map { |k,v| { k.to_sym => v } }.reduce({}, &:merge!)
+          blob.properties = blob_data['properties'].map { |k, v| { k.to_sym => v } }.reduce({}, &:merge!)
           blob
         end
 

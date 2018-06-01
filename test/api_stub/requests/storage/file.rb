@@ -9,9 +9,6 @@ module ApiStub
           blob = Azure::Storage::Blob::Blob.new
           blob.name = blob_data['name']
           blob.metadata = blob_data['metadata']
-          # properties = {}
-          # blob_data['properties'].keys.each { |key| properties[key.to_sym] = blob_data['properties'][key] }
-          # blob.properties = properties
           blob.properties = blob_data['properties'].map { |k, v| { k.to_sym => v } }.reduce({}, &:merge!)
           blob
         end

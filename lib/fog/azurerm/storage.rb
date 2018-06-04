@@ -12,6 +12,7 @@ module Fog
       # Recognizes when creating data client
       recognizes :azure_storage_account_name
       recognizes :azure_storage_access_key
+      recognizes :azure_storage_dns_suffix
       recognizes :debug
 
       request_path 'fog/azurerm/requests/storage'
@@ -120,10 +121,20 @@ module Fog
 
           @azure_storage_account_name = options[:azure_storage_account_name]
           @azure_storage_access_key = options[:azure_storage_access_key]
+          @azure_storage_dns_suffix = options[:azure_storage_dns_suffix]
 
-          azure_client = Azure::Storage::Client.create(storage_account_name: @azure_storage_account_name,
-                                                       storage_access_key: @azure_storage_access_key)
-          azure_client.storage_blob_host = get_blob_endpoint(@azure_storage_account_name, true, @environment)
+          client_options = {
+            storage_account_name: @azure_storage_account_name,
+            storage_access_key: @azure_storage_access_key,
+            user_agent_prefix: telemetry
+          }
+          client_options[:storage_dns_suffix] = if @environment == ENVIRONMENT_AZURE_STACK
+                                                  @azure_storage_dns_suffix.nil? ? 'local.azurestack.external' : @azure_storage_dns_suffix
+                                                else
+                                                  storage_endpoint_suffix(@environment)[1..-1]
+                                                end
+
+          azure_client = Azure::Storage::Client.create(client_options)
           @blob_client = azure_client.blob_client
           @blob_client.with_filter(Azure::Storage::Core::Filter::ExponentialRetryPolicyFilter.new)
           @blob_client.with_filter(Azure::Core::Http::DebugFilter.new) if @debug

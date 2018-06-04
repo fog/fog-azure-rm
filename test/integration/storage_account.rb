@@ -8,11 +8,14 @@ require 'yaml'
 
 azure_credentials = YAML.load_file(File.expand_path('credentials/azure.yml', __dir__))
 
+location = azure_credentials['location']
+
 rs = Fog::Resources::AzureRM.new(
   tenant_id: azure_credentials['tenant_id'],
   client_id: azure_credentials['client_id'],
   client_secret: azure_credentials['client_secret'],
-  subscription_id: azure_credentials['subscription_id']
+  subscription_id: azure_credentials['subscription_id'],
+  environment: azure_credentials['environment']
 )
 
 storage = Fog::Storage::AzureRM.new(
@@ -41,7 +44,7 @@ premium_storage_acc = "premsa#{time}"
 begin
   resource_group = rs.resource_groups.create(
     name: resource_group_name,
-    location: LOCATION
+    location: location
   )
 
   ########################################################################################################################
@@ -66,7 +69,7 @@ begin
 
   storage_account = storage.storage_accounts.create(
     name: lrs_storage_account,
-    location: LOCATION,
+    location: location,
     resource_group: resource_group_name,
     tags: tags
   )
@@ -78,7 +81,7 @@ begin
 
   storage_account = storage.storage_accounts.create(
     name: grs_storage_account,
-    location: LOCATION,
+    location: location,
     resource_group: resource_group_name,
     sku_name: Fog::ARM::Storage::Models::SkuTier::Standard,
     replication: 'GRS',
@@ -93,7 +96,7 @@ begin
 
   storage_account = storage.storage_accounts.create(
     name: premium_storage_acc,
-    location: LOCATION,
+    location: location,
     resource_group: resource_group_name,
     sku_name: Fog::ARM::Storage::Models::SkuTier::Premium,
     replication: 'LRS',

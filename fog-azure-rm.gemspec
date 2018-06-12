@@ -22,7 +22,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'minitest', '~> 5.8.4'
   spec.add_development_dependency 'simplecov'
   spec.add_development_dependency 'codeclimate-test-reporter' , '~> 1.0.0'
-  spec.add_dependency 'fog-core', '~> 1.43'
+  spec.add_dependency 'fog-core', '~> 2.0'
   spec.add_dependency 'fog-json', '~> 1.1'
   spec.add_dependency 'azure_mgmt_compute', '~> 0.9.0'
   spec.add_dependency 'azure_mgmt_resources', '~> 0.9.0'

@@ -80,7 +80,9 @@ Use following command for the complete list of services, Fog provides for Azure 
 ```ruby
 Fog::AzureRM.services
 ```
+# Documentation 
 
+https://www.rubydoc.info/github/fog/fog-azure-rm/master
   
 ## Contributing
 

@@ -45,6 +45,10 @@ module Fog
 
           hash
         end
+
+        def destroy
+          service.delete_image(resource_group_name, name)
+        end
       end
     end
   end

@@ -30,10 +30,23 @@ class TestImage < Minitest::Test
     end
   end
 
+  def test_collection_methods
+    methods = %i(destroy)
+    methods.each do |method|
+      assert_respond_to @image, method
+    end
+  end
+
   def test_parse_method
     snap_hash = Fog::Compute::AzureRM::Image.parse(@response)
     @response.instance_variables.each do |attribute|
       assert_equal @response.instance_variable_get(attribute), snap_hash[attribute.to_s.delete('@')]
+    end
+  end
+
+  def test_destroy_method_response
+    @service.stub :delete_image, true do
+      assert @image.destroy
     end
   end
 end

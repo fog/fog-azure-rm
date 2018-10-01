@@ -15,6 +15,7 @@ module ApiStub
 
         def self.create_image(compute_client)
           body = {
+            'id' => '/subscriptions/{subscription_id}/resourceGroups/ManagedRG/providers/Microsoft.Compute/image/image-name',
             'location' => 'West US',
             'tags' => {
               'key' => 'value'

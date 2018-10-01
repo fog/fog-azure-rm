@@ -61,6 +61,7 @@ module Fog
       model :image_disk_reference
       model :operation_status_response
       model :image
+      collection :images
 
       # This class provides the mock implementation for unit tests.
       class Mock

@@ -29,4 +29,11 @@ class TestImage < Minitest::Test
       assert_respond_to @image, attribute
     end
   end
+
+  def test_parse_method
+    snap_hash = Fog::Compute::AzureRM::Image.parse(@response)
+    @response.instance_variables.each do |attribute|
+      assert_equal @response.instance_variable_get(attribute), snap_hash[attribute.to_s.delete('@')]
+    end
+  end
 end

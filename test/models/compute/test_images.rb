@@ -13,7 +13,7 @@ class TestImages < Minitest::Test
   end
 
   def test_collection_methods
-    methods = %i(get)
+    methods = %i(get create)
     methods.each do |method|
       assert_respond_to @images, method
     end
@@ -22,6 +22,19 @@ class TestImages < Minitest::Test
   def test_get_method_response
     @service.stub :get_image, @image do
       assert_instance_of Fog::Compute::AzureRM::Image, @images.get('fog-test-rg', 'fog-test-image')
+    end
+  end
+
+  def test_create_method_response
+    params = {
+      resource_group_name: 'fog-test-rg',
+      name: 'fog-test-image',
+      location: 'location',
+      source_server_id: '/subscriptions/{subscription}/resourceGroups/fog-test-rg/providers/Microsoft.Compute/virtualMachines/vm-name'
+    }
+
+    @service.stub :create_image, @image do
+      assert_instance_of Fog::Compute::AzureRM::Image, @images.create(params)
     end
   end
 end

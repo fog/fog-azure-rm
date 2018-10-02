@@ -5,6 +5,11 @@ module Fog
         attribute :resource_group
         model Fog::Compute::AzureRM::Image
 
+        def create(attributes)
+          image = new attributes
+          image.save
+        end
+
         def get(resource_group_name, image_name)
           response = service.get_image(resource_group_name, image_name)
           image = Fog::Compute::AzureRM::Image.new(service: service)

@@ -46,8 +46,30 @@ module Fog
           hash
         end
 
+        def save
+          requires :name, :location, :resource_group_name
+
+          image = service.create_image(image_params)
+          merge_attributes(Fog::Compute::AzureRM::Image.parse(image))
+        end
+
         def destroy
           service.delete_image(resource_group_name, name)
+        end
+
+        private
+
+        def image_params
+          {
+            name: name,
+            location: location,
+            resource_group: resource_group_name,
+            source_virtual_machine_id: source_server_id,
+            platform: os_disk_type,
+            managed_disk_id: managed_disk_id,
+            # kept for backward compatibility
+            vm_name: source_server_name
+          }
         end
       end
     end

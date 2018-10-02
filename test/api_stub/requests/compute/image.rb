@@ -3,14 +3,25 @@ module ApiStub
     module Compute
       # Mock class for Virtual Machine Requests
       class Image
-        def self.image_params
+        def self.base_image_params
           {
             resource_group: 'fog-test-rg',
             vm_name: 'fog-test-server',
             location: 'westus',
-            platform: 'Linux',
-            new_vhd_path: 'https://mystorageaccount.blob.core.windows.net/osimages/osimage.vhd'
+            platform: 'Linux'
           }
+        end
+
+        def self.image_params
+          base_image_params.merge(new_vhd_path: 'https://mystorageaccount.blob.core.windows.net/osimages/osimage.vhd')
+        end
+
+        def self.image_params_from_virtual_machine
+          base_image_params.merge(source_virtual_machine_id: '/subscriptions/{subscription_id}/resourceGroups/ManagedRG/providers/Microsoft.Compute/virtualMachines/fog-test-server')
+        end
+
+        def self.image_params_from_managed_disk
+          base_image_params.merge(managed_disk_id: '/subscriptions/{subscription_id}/resourceGroups/ManagedRG/providers/Microsoft.Compute/disks/ManagedDataDisk1')
         end
 
         def self.create_image(compute_client)

@@ -4,8 +4,8 @@ class TestImage < Minitest::Test
   def setup
     @service = Fog::Compute::AzureRM.new(credentials)
     @image = image(@service)
-    compute_client = @service.instance_variable_get(:@compute_mgmt_client)
-    @response = ApiStub::Requests::Compute::Image.create_image(compute_client)
+    @compute_client = @service.instance_variable_get(:@compute_mgmt_client)
+    @response = ApiStub::Models::Compute::Image.image_response(@compute_client)
   end
 
   def test_model_attributes
@@ -31,7 +31,7 @@ class TestImage < Minitest::Test
   end
 
   def test_collection_methods
-    methods = %i(destroy)
+    methods = %i(destroy save)
     methods.each do |method|
       assert_respond_to @image, method
     end
@@ -47,6 +47,12 @@ class TestImage < Minitest::Test
   def test_destroy_method_response
     @service.stub :delete_image, true do
       assert @image.destroy
+    end
+  end
+
+  def test_save_method_response
+    @service.stub :create_image, @response do
+      assert_instance_of Fog::Compute::AzureRM::Image, @image.save
     end
   end
 end

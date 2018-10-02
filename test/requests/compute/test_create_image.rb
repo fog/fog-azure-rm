@@ -16,6 +16,20 @@ class TestCreateImage < Minitest::Test
     end
   end
 
+  def test_create_image_from_vm_success
+    input_params = ApiStub::Requests::Compute::Image.image_params_from_virtual_machine
+    @image.stub :create_or_update, @response do
+      assert_equal @service.create_image(input_params), @response
+    end
+  end
+
+  def test_create_image_from_managed_disk_success
+    input_params = ApiStub::Requests::Compute::Image.image_params_from_managed_disk
+    @image.stub :create_or_update, @response do
+      assert_equal @service.create_image(input_params), @response
+    end
+  end
+
   def test_create_image_failure
     response = proc { raise MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }
     @image.stub :create_or_update, response do

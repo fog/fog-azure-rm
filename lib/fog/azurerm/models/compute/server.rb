@@ -178,8 +178,13 @@ module Fog
           async ? create_fog_async_response(response) : merge_attributes(Fog::Compute::AzureRM::Server.parse(response))
         end
 
+        # kept for backward compatibility
         def detach_managed_disk(disk_name, async = false)
-          response = service.detach_data_disk_from_vm(resource_group, name, disk_name, async)
+          detach_managed_disks(disk_name, async)
+        end
+
+        def detach_managed_disks(disk_names, async = false)
+          response = service.detach_data_disk_from_vm(resource_group, name, disk_names, async)
           async ? create_fog_async_response(response) : merge_attributes(Fog::Compute::AzureRM::Server.parse(response))
         end
 

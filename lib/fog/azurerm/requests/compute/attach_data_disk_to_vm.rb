@@ -7,26 +7,25 @@ module Fog
           # Variable un-packing for easy access
           vm_name = disk_params[:vm_name]
           vm_resource_group = disk_params[:vm_resource_group]
-          disk_name = disk_params[:disk_name]
+          disk_names = disk_params[:disk_name]
           disk_resource_group = disk_params[:disk_resource_group]
           disk_size = disk_params[:disk_size_gb]
           storage_account_name = disk_params[:storage_account_name]
 
-          msg = "Attaching Data Disk #{disk_name} to Virtual Machine #{vm_name} in Resource Group #{vm_resource_group}"
+          disk_names = disk_names.is_a?(Array) ? disk_names : [disk_names]
+
+          msg = "Attaching Data Disk #{disk_names.join(', ')} to Virtual Machine #{vm_name} in Resource Group #{vm_resource_group}"
           Fog::Logger.debug msg
           vm = get_virtual_machine_instance(vm_resource_group, vm_name)
           lun = get_logical_unit_number(vm.storage_profile.data_disks)
+          access_key = get_storage_access_key(vm_resource_group, storage_account_name) if storage_account_name
 
-          # Attach data disk to VM
-          if storage_account_name
-            # Un-managed data disk
-            access_key = get_storage_access_key(vm_resource_group, storage_account_name)
-            data_disk = get_unmanaged_disk_object(disk_name, disk_size, lun, storage_account_name, access_key)
-          elsif disk_resource_group
-            # Managed data disk
-            data_disk = get_data_disk_object(disk_resource_group, disk_name, lun)
+          data_disks = get_list_data_disks(disk_names, disk_size, lun, storage_account_name, access_key, disk_resource_group)
+
+          data_disks.each do |data_disk|
+            vm.storage_profile.data_disks.push(data_disk)
           end
-          vm.storage_profile.data_disks.push(data_disk)
+
           begin
             if async
               response = @compute_mgmt_client.virtual_machines.create_or_update_async(vm_resource_group, vm_name, vm)
@@ -43,12 +42,28 @@ module Fog
           if async
             response
           else
-            Fog::Logger.debug "Data Disk #{disk_name} attached to Virtual Machine #{vm_name} successfully."
+            Fog::Logger.debug "Data Disk #{disk_names.join(', ')} attached to Virtual Machine #{vm_name} successfully."
             virtual_machine
           end
         end
 
         private
+
+        def get_list_data_disks(disk_names, disk_size, lun, storage_account_name, access_key, disk_resource_group)
+          data_disks = []
+          disk_names.each do |disk_name|
+            # Attach data disk to VM
+            if storage_account_name
+              # Un-managed data disk
+              data_disk = get_unmanaged_disk_object(disk_name, disk_size, lun, storage_account_name, access_key)
+            elsif disk_resource_group
+              # Managed data disk
+              data_disk = get_data_disk_object(disk_resource_group, disk_name, lun)
+            end
+            data_disks += [data_disk]
+          end
+          data_disks
+        end
 
         def get_virtual_machine_instance(resource_group, vm_name)
           msg = "Getting Virtual Machine #{vm_name} from Resource Group #{resource_group}"

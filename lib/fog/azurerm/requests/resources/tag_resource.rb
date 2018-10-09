@@ -3,7 +3,7 @@ module Fog
     class AzureRM
       # This class provides the actual implementation for service calls.
       class Real
-        def tag_resource(resource_id, tag_name, tag_value, api_version = API_VERSION)
+        def tag_resource(resource_id, tag_name, tag_value, api_version = API_VERSION, async = false)
           split_resource = resource_id.split('/') unless resource_id.nil?
           if split_resource.count != 9
             raise 'Invalid Resource Id'
@@ -22,7 +22,12 @@ module Fog
             resource = @rmc.resources.get(resource_group_name, resource_provider_namespace, parent_resource_id, resource_type, resource_name, api_version)
             resource.tags = {} if resource.tags.nil?
             resource.tags[tag_name] = tag_value
-            @rmc.resources.create_or_update(resource_group_name, resource_provider_namespace, parent_resource_id, resource_type, resource_name, api_version, resource)
+
+            if async
+              @rmc.resources.create_or_update_async(resource_group_name, resource_provider_namespace, parent_resource_id, resource_type, resource_name, api_version, resource, nil)
+            else
+              @rmc.resources.create_or_update(resource_group_name, resource_provider_namespace, parent_resource_id, resource_type, resource_name, api_version, resource)
+            end
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end

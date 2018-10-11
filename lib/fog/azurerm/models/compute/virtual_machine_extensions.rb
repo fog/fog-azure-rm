@@ -10,7 +10,7 @@ module Fog
         def all
           requires :resource_group, :vm_name
           vm_extensions = []
-          service.get_virtual_machine(resource_group, vm_name).resources.compact.each do |extension|
+          service.get_virtual_machine(resource_group, vm_name, false).resources.compact.each do |extension|
             vm_extensions << Fog::Compute::AzureRM::VirtualMachineExtension.parse(extension)
           end
           load(vm_extensions)

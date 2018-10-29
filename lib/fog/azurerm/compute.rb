@@ -53,6 +53,7 @@ module Fog
       collection :servers
       model :virtual_machine_extension
       collection :virtual_machine_extensions
+      model :virtual_machine_size
       model :managed_disk
       collection :managed_disks
       model :data_disk

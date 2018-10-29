@@ -19,4 +19,11 @@ class TestVirtualMachineSize < Minitest::Test
       assert_respond_to @virtual_machine_size, attribute
     end
   end
+
+  def test_parse_method
+    virtual_machine_size_hash = Fog::Compute::AzureRM::VirtualMachineSize.parse(@response)
+    @response.instance_variables.each do |attribute|
+      assert_equal @response.instance_variable_get(attribute), virtual_machine_size_hash[attribute.to_s.delete('@')]
+    end
+  end
 end

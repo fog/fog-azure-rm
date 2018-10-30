@@ -13,9 +13,20 @@ class TestImages < Minitest::Test
   end
 
   def test_collection_methods
-    methods = %i(get create)
+    methods = %i(all get create)
     methods.each do |method|
       assert_respond_to @images, method
+    end
+  end
+
+  def test_all_method_response
+    @service.stub :list_images, [@image] do
+      images_list = @images.all
+      assert_instance_of Fog::Compute::AzureRM::Images, images_list
+      assert images_list.size >= 1
+      images_list.each do |image|
+        assert_instance_of Fog::Compute::AzureRM::Image, image
+      end
     end
   end
 

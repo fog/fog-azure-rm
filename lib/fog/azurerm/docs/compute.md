@@ -526,6 +526,12 @@ fog_compute_service.images.create(
 )
 ```
 
+## List Images
+
+```ruby
+images = fog_compute_service..images(resource_group: '<Resource Group Name>').all
+```
+
 ## Get Image
 
 Retrieves the given image

@@ -3,6 +3,28 @@ module ApiStub
     module Compute
       # Mock class for Virtual Machine Requests
       class Image
+        def self.list_response(compute_client)
+          images = '[{
+            "id": "/subscriptions/########-####-####-####-############/resourceGroups/TestRG/providers/Microsoft.Compute/images/TestImage",
+            "name": "TestImage",
+            "resource_group": "TestRG",
+            "location": "West US",
+            "storage_profile": {
+              "os_disk": {
+                "os_type": "Linux",
+                "os_state": "Generalized",
+                "blob_uri": "https://myblob.blob.core.windows.net/images/testimage.vhd",
+                "caching": "ReadWrite",
+                "disk_size_gb": "5"
+              },
+              "data_disks": []
+            },
+            "provisioning_state": "Succeeded"
+          }]'
+          image_mapper = Azure::ARM::Compute::Models::ImageListResult.mapper
+          compute_client.deserialize(image_mapper, images, 'result.body')
+        end
+
         def self.base_image_params
           {
             resource_group: 'fog-test-rg',

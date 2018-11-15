@@ -18,6 +18,7 @@ module Fog
       request :delete_virtual_machine
       request :get_virtual_machine
       request :list_virtual_machines
+      request :list_virtual_machines_in_subscription
       request :list_available_sizes_for_virtual_machine
       request :generalize_virtual_machine
       request :deallocate_virtual_machine

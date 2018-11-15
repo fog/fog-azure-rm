@@ -18,8 +18,16 @@ module Fog
           load(managed_disks)
         end
 
-        def get(resource_group_name, disk_name)
-          disk = service.get_managed_disk(resource_group_name, disk_name)
+        def get(resource_group_name, disk_name = nil)
+          # Monkey patch for fog-core-2 compatibility
+          if disk_name.nil?
+            disks = service.list_managed_disks_in_subscription
+            disk = disks.each do |disk|
+              break disk if disk.name == resource_group_name
+            end
+          else
+            disk = service.get_managed_disk(resource_group_name, disk_name)
+          end
           managed_disk_fog = Fog::Compute::AzureRM::ManagedDisk.new(service: service)
           managed_disk_fog.merge_attributes(Fog::Compute::AzureRM::ManagedDisk.parse(disk))
         end

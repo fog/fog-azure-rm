@@ -1,9 +1,11 @@
+require "fog/compute/models/server"
+
 module Fog
   module Compute
     class AzureRM
       # This class is giving implementation of create/save and
       # delete/destroy for Virtual Machine.
-      class Server < Fog::Model
+      class Server < Fog::Compute::Server
         attribute :id
         identity  :name
         attribute :location
@@ -24,6 +26,7 @@ module Fog
         attribute :disable_password_authentication
         attribute :ssh_key_path
         attribute :ssh_key_data
+        attribute :ssh_ip_address
         attribute :platform
         attribute :provision_vm_agent
         attribute :enable_automatic_updates
@@ -195,7 +198,53 @@ module Fog
           merge_attributes(Fog::Compute::AzureRM::Server.parse(vm))
         end
 
+        def network_service
+          storage_service = service.instance_variable_get(:@storage_service)
+          @network_Service ||= Fog::Network::AzureRM.new({
+            tenant_id: storage_service.instance_variable_get(:@tenant_id),
+            client_id: storage_service.instance_variable_get(:@client_id),
+            client_secret: storage_service.instance_variable_get(:@client_secret),
+            subscription_id: storage_service.instance_variable_get(:@subscription_id),
+            environment: storage_service.instance_variable_get(:@environment)
+          })
+        end
+
+        def public_ip_address
+          @public_ip_addresses.first
+        end
+
+        def public_ip_addresses(force = false)
+          return @public_ip_addresses if !@public_ip_addresses.nil? || force
+          build_public_ip_addresses
+        end
+
+        def ready?
+          vm_status == "running"
+        end
+
         private
+
+        def build_public_ip_addresses
+          @public_ip_addresses = []
+          network_interface_card_ids.each do |nic_id|
+            nic = network_service
+                  .network_interfaces
+                  .get(
+                    resource_group,
+                    nic_id.split("/").last
+                  )
+            @public_ip_addresses.push(
+              network_service
+              .public_ips
+              .get(
+                resource_group,
+                nic.public_ip_address_id.split("/").last
+              )
+              .ip_address
+            )
+          end
+          @public_ip_addresses
+        end
 
         def platform_is_linux?(platform)
           platform.strip.casecmp(PLATFORM_LINUX).zero?

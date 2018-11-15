@@ -63,6 +63,10 @@ module Fog
             end
         end
 
+        def ready?
+          provisioning_state == "Succeeded"
+        end
+
         private
 
         def validate_creation_data_params(creation_data)

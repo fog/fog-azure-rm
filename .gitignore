@@ -1,5 +1,4 @@
 .idea
-*.gem
 Gemfile.lock
 .arcconfig
 coverage

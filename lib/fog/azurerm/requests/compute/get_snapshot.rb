@@ -56,7 +56,7 @@ module Fog
             'id' => '/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot1',
             'name' => 'mySnapshot'
           }
-          snapshot_mapper = Azure::ARM::Compute::Models::Snapshot.mapper
+          snapshot_mapper = Azure::Compute::Profiles::Latest::Mgmt::Models::Snapshot.mapper
           @compute_mgmt_client.deserialize(snapshot_mapper, snapshots, 'result.body')
         end
       end

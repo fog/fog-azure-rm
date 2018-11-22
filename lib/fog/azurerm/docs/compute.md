@@ -87,7 +87,7 @@ fog_compute_service.servers.create(
         username: '<Username>',
         disable_password_authentication: <True/False>,
         network_interface_card_ids: ['/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/networkInterfaces/<Network Interface Id>'],
-        publisher: '<Publisher Name>',                          # Not required if custom image is being used 
+        publisher: '<Publisher Name>',                          # Not required if custom image is being used
         offer: '<Offer Name>',                                  # Not required if custom image is being used
         sku: '<SKU Name>',                                      # Not required if custom image is being used
         version: '<Version>',                                   # Not required if custom image is being used
@@ -285,7 +285,10 @@ fog_compute_service.managed_disks.create(
         name: '<Disk Name>',
         location: '<Location>',
         resource_group_name: '<Resource Group Name>',
-        account_type: '<Storage Account Type>',
+        # See https://www.rubydoc.info/gems/azure_mgmt_compute/Azure/Compute/Mgmt/V2018_06_01/Models/DiskSku#tier-instance_method
+        sku: {
+          name: '<Storage Account Type>',
+        },
         disk_size_gb: <Disk Size in GBs>,
         creation_data: {
             create_option: '<Create Option Value>'
@@ -300,7 +303,10 @@ fog_compute_service.managed_disks.create(
         name: '<Disk Name>',
         location: '<Location>',
         resource_group_name: '<Resource Group Name>',
-        account_type: '<Storage Account Type>',
+        # See https://www.rubydoc.info/gems/azure_mgmt_compute/Azure/Compute/Mgmt/V2018_06_01/Models/DiskSku#tier-instance_method
+        sku: {
+          name: '<Storage Account Type>',
+        },
         disk_size_gb: <Disk Size in GBs>,
         creation_data: {
             create_option: '<Create Option Value>'
@@ -392,6 +398,20 @@ managed_disk.destroy
 managed_disk.destroy(true)
 ```
 
+## Create a snapshot
+
+```ruby
+fog_compute_service.create_or_update_snapshot({
+        name: snapshot_name,
+        location: location,
+        resource_group_name: resource_group,
+        creation_data: {
+          create_option: "Copy",
+          source_uri: disk.id
+        }
+})
+```
+
 ## List Snapshots in a Resource Group
 
 List Snapshots in a Resource Group
@@ -425,6 +445,24 @@ snap = fog_compute_service.snapshots.get('<Resource Group Name>', 'snapshot-name
 puts "#{snap.name}"
 puts "#{snap.location}
 ```
+
+## Create a Disk from a Snapshot
+
+```ruby
+fog_compute_service.managed_disks.create(
+        name: disk_name,
+        location: location,
+        resource_group_name: resource_group,
+        # See https://docs.microsoft.com/en-us/azure/storage/common/storage-redundancy-lrs
+        account_type: 'Standard_LRS',
+        creation_data: {
+          create_option: 'Copy',
+          source_uri: snapshot.id
+        },
+        disk_size_gb: snapshot.disk_size_gb,
+)
+```
+
 
 ## Destroy a Snapshot
 Destroy a Snapshot

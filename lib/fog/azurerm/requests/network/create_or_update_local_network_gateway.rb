@@ -21,7 +21,7 @@ module Fog
         private
 
         def get_local_network_gateway_object(local_network_gateway_params)
-          local_network_gateway = Azure::ARM::Network::Models::LocalNetworkGateway.new
+          local_network_gateway = Azure::Network::Profiles::Latest::Mgmt::Models::LocalNetworkGateway.new
           local_network_gateway.local_network_address_space = get_local_network_address_space_object(local_network_gateway_params[:local_network_address_space_prefixes]) if local_network_gateway_params[:local_network_address_space_prefixes]
           local_network_gateway.gateway_ip_address = local_network_gateway_params[:gateway_ip_address] if local_network_gateway_params[:gateway_ip_address]
           local_network_gateway.bgp_settings = get_bgp_settings_object(local_network_gateway_params)
@@ -35,13 +35,13 @@ module Fog
         end
 
         def get_local_network_address_space_object(local_network_address_space_prefixes)
-          address_space = Azure::ARM::Network::Models::AddressSpace.new
+          address_space = Azure::Network::Profiles::Latest::Mgmt::Models::AddressSpace.new
           address_space.address_prefixes = local_network_address_space_prefixes
           address_space
         end
 
         def get_bgp_settings_object(local_network_gateway_params)
-          bgp_settings = Azure::ARM::Network::Models::BgpSettings.new
+          bgp_settings = Azure::Network::Profiles::Latest::Mgmt::Models::BgpSettings.new
           bgp_settings.asn = local_network_gateway_params[:asn]
           bgp_settings.bgp_peering_address = local_network_gateway_params[:bgp_peering_address]
           bgp_settings.peer_weight = local_network_gateway_params[:peer_weight]
@@ -70,7 +70,7 @@ module Fog
                 }
               }
           }
-          local_network_gateway_mapper = Azure::ARM::Network::Models::LocalNetworkGateway.mapper
+          local_network_gateway_mapper = Azure::Network::Profiles::Latest::Mgmt::Models::LocalNetworkGateway.mapper
           @network_client.deserialize(local_network_gateway_mapper, local_network_gateway, 'result.body')
         end
       end

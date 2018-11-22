@@ -55,7 +55,7 @@ module Fog
             'id' => '/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myManagedDisk1',
             'name' => 'myManagedDisk1'
           }
-          disk_mapper = Azure::ARM::Compute::Models::Disk.mapper
+          disk_mapper = Azure::Compute::Profiles::Latest::Mgmt::Models::Disk.mapper
           @compute_mgmt_client.deserialize(disk_mapper, disk, 'result.body')
         end
       end

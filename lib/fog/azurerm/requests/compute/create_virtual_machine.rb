@@ -21,7 +21,7 @@ module Fog
           msg = "Creating Virtual Machine '#{vm_name}' in Resource Group '#{rg_name}'..."
           Fog::Logger.debug msg
 
-          vm = Azure::ARM::Compute::Models::VirtualMachine.new
+          vm = Azure::Compute::Profiles::Latest::Mgmt::Models::VirtualMachine.new
           vm.location = vm_config[:location]
           vm.tags = vm_config[:tags]
           vm.availability_set = get_vm_availability_set(vm_config[:availability_set_id])
@@ -63,7 +63,7 @@ module Fog
         end
 
         def get_hardware_profile(vm_size)
-          hw_profile = Azure::ARM::Compute::Models::HardwareProfile.new
+          hw_profile = Azure::Compute::Profiles::Latest::Mgmt::Models::HardwareProfile.new
           hw_profile.vm_size = vm_size
           hw_profile
         end
@@ -82,7 +82,7 @@ module Fog
           ssh_key_data = vm_config[:ssh_key_data]
 
           # Build and return os profile object
-          os_profile = Azure::ARM::Compute::Models::OSProfile.new
+          os_profile = Azure::Compute::Profiles::Latest::Mgmt::Models::OSProfile.new
           os_profile.computer_name = vm_name
           os_profile.admin_username = username
           os_profile.admin_password = password
@@ -98,19 +98,19 @@ module Fog
         end
 
         def get_windows_config(provision_vm_agent, enable_automatic_updates)
-          windows_config = Azure::ARM::Compute::Models::WindowsConfiguration.new
+          windows_config = Azure::Compute::Profiles::Latest::Mgmt::Models::WindowsConfiguration.new
           windows_config.provision_vmagent = provision_vm_agent
           windows_config.enable_automatic_updates = enable_automatic_updates
           windows_config
         end
 
         def get_linux_config(disable_password_auth, ssh_key_path, ssh_key_data)
-          linux_config = Azure::ARM::Compute::Models::LinuxConfiguration.new
+          linux_config = Azure::Compute::Profiles::Latest::Mgmt::Models::LinuxConfiguration.new
           linux_config.disable_password_authentication = disable_password_auth
 
           unless ssh_key_path.nil? || ssh_key_data.nil?
-            ssh_config = Azure::ARM::Compute::Models::SshConfiguration.new
-            ssh_public_key = Azure::ARM::Compute::Models::SshPublicKey.new
+            ssh_config = Azure::Compute::Profiles::Latest::Mgmt::Models::SshConfiguration.new
+            ssh_public_key = Azure::Compute::Profiles::Latest::Mgmt::Models::SshPublicKey.new
             ssh_public_key.path = ssh_key_path
             ssh_public_key.key_data = ssh_key_data
             ssh_config.public_keys = [ssh_public_key]
@@ -123,13 +123,13 @@ module Fog
         def get_network_profile(network_interface_card_ids)
           network_interface_cards = []
           network_interface_card_ids.each_with_index do |id, index|
-            nic = Azure::ARM::Compute::Models::NetworkInterfaceReference.new
+            nic = Azure::Compute::Profiles::Latest::Mgmt::Models::NetworkInterfaceReference.new
             nic.id = id
             nic.primary = index == PRIMARY_NIC_INDEX
             network_interface_cards << nic
           end
 
-          network_profile = Azure::ARM::Compute::Models::NetworkProfile.new
+          network_profile = Azure::Compute::Profiles::Latest::Mgmt::Models::NetworkProfile.new
           network_profile.network_interfaces = network_interface_cards
           network_profile
         end
@@ -164,10 +164,10 @@ module Fog
           os_disk_name = vm_config[:os_disk_name]
           os_disk_vhd_uri = vm_config[:os_disk_vhd_uri]
 
-          storage_profile = Azure::ARM::Compute::Models::StorageProfile.new
+          storage_profile = Azure::Compute::Profiles::Latest::Mgmt::Models::StorageProfile.new
           # Set OS disk VHD path
-          os_disk = Azure::ARM::Compute::Models::OSDisk.new
-          vhd = Azure::ARM::Compute::Models::VirtualHardDisk.new
+          os_disk = Azure::Compute::Profiles::Latest::Mgmt::Models::OSDisk.new
+          vhd = Azure::Compute::Profiles::Latest::Mgmt::Models::VirtualHardDisk.new
           vhd.uri = os_disk_vhd_uri.nil? ? get_blob_endpoint(storage_account_name) + "/vhds/#{vm_name}_os_disk.vhd" : os_disk_vhd_uri
           os_disk.vhd = vhd
 
@@ -177,7 +177,7 @@ module Fog
           elsif !vhd_path.nil? && image_ref.nil?
             # VHD
             new_vhd_path = copy_vhd_to_storage_account(resource_group, storage_account_name, vhd_path, location, vm_name)
-            img_vhd = Azure::ARM::Compute::Models::VirtualHardDisk.new
+            img_vhd = Azure::Compute::Profiles::Latest::Mgmt::Models::VirtualHardDisk.new
             img_vhd.uri = new_vhd_path
             os_disk.image = img_vhd
           else
@@ -185,7 +185,7 @@ module Fog
             image_resource_group = get_resource_group_from_id(image_ref)
             image_name = get_image_name(image_ref)
             image = get_image(image_resource_group, image_name)
-            storage_profile.image_reference = Azure::ARM::Compute::Models::ImageReference.new
+            storage_profile.image_reference = Azure::Compute::Profiles::Latest::Mgmt::Models::ImageReference.new
             storage_profile.image_reference.id = image.id
           end
 
@@ -212,9 +212,9 @@ module Fog
           os_disk_name = vm_config[:os_disk_name]
 
           # Build storage profile
-          storage_profile = Azure::ARM::Compute::Models::StorageProfile.new
-          os_disk = Azure::ARM::Compute::Models::OSDisk.new
-          managed_disk = Azure::ARM::Compute::Models::ManagedDiskParameters.new
+          storage_profile = Azure::Compute::Profiles::Latest::Mgmt::Models::StorageProfile.new
+          os_disk = Azure::Compute::Profiles::Latest::Mgmt::Models::OSDisk.new
+          managed_disk = Azure::Compute::Profiles::Latest::Mgmt::Models::ManagedDiskParameters.new
           managed_disk.storage_account_type = managed_disk_storage_type
           os_disk.managed_disk = managed_disk
 
@@ -225,14 +225,14 @@ module Fog
             # VHD
             new_vhd_path = copy_vhd_to_storage_account(resource_group, storage_account_name, vhd_path, location, vm_name)
             image = create_image(image_config_params(location, new_vhd_path, platform, resource_group, vm_name))
-            storage_profile.image_reference = Azure::ARM::Compute::Models::ImageReference.new
+            storage_profile.image_reference = Azure::Compute::Profiles::Latest::Mgmt::Models::ImageReference.new
             storage_profile.image_reference.id = image.id
           else
             # Image
             image_resource_group = get_resource_group_from_id(image_ref)
             image_name = get_image_name(image_ref)
             image = get_image(image_resource_group, image_name)
-            storage_profile.image_reference = Azure::ARM::Compute::Models::ImageReference.new
+            storage_profile.image_reference = Azure::Compute::Profiles::Latest::Mgmt::Models::ImageReference.new
             storage_profile.image_reference.id = image.id
           end
 
@@ -241,7 +241,7 @@ module Fog
         end
 
         def image_reference(publisher, offer, sku, version)
-          image_reference = Azure::ARM::Compute::Models::ImageReference.new
+          image_reference = Azure::Compute::Profiles::Latest::Mgmt::Models::ImageReference.new
           image_reference.publisher = publisher
           image_reference.offer = offer
           image_reference.sku = sku
@@ -264,15 +264,15 @@ module Fog
           os_disk.name = os_disk_name.nil? ? "#{vm_name}_os_disk" : os_disk_name
           os_disk.os_type = platform
           os_disk.disk_size_gb = os_disk_size unless os_disk_size.nil?
-          os_disk.create_option = Azure::ARM::Compute::Models::DiskCreateOptionTypes::FromImage
+          os_disk.create_option = Azure::Compute::Profiles::Latest::Mgmt::Models::DiskCreateOptionTypes::FromImage
           os_disk.caching = unless os_disk_caching.nil?
                               case os_disk_caching
                               when 'None'
-                                Azure::ARM::Compute::Models::CachingTypes::None
+                                Azure::Compute::Profiles::Latest::Mgmt::Models::CachingTypes::None
                               when 'ReadOnly'
-                                Azure::ARM::Compute::Models::CachingTypes::ReadOnly
+                                Azure::Compute::Profiles::Latest::Mgmt::Models::CachingTypes::ReadOnly
                               when 'ReadWrite'
-                                Azure::ARM::Compute::Models::CachingTypes::ReadWrite
+                                Azure::Compute::Profiles::Latest::Mgmt::Models::CachingTypes::ReadWrite
                               end
                             end
           os_disk
@@ -422,7 +422,7 @@ module Fog
             }
           }
 
-          vm_mapper = Azure::ARM::Compute::Models::VirtualMachine.mapper
+          vm_mapper = Azure::Compute::Profiles::Latest::Mgmt::Models::VirtualMachine.mapper
           @compute_mgmt_client.deserialize(vm_mapper, vm, 'result.body')
         end
       end

@@ -18,7 +18,7 @@ module Fog
         private
 
         def get_reset_shared_key_object(shared_key_length)
-          shared_key = Azure::ARM::Network::Models::ConnectionResetSharedKey.new
+          shared_key = Azure::Network::Profiles::Latest::Mgmt::Models::ConnectionResetSharedKey.new
           shared_key.key_length = shared_key_length
           shared_key
         end

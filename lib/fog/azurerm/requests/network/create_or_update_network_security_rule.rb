@@ -17,7 +17,7 @@ module Fog
         end
 
         def get_security_rule_params(security_rule_hash)
-          security_rule = Azure::ARM::Network::Models::SecurityRule.new
+          security_rule = Azure::Network::Profiles::Latest::Mgmt::Models::SecurityRule.new
           security_rule.protocol = security_rule_hash[:protocol]
           security_rule.source_port_range = security_rule_hash[:source_port_range]
           security_rule.destination_port_range = security_rule_hash[:destination_port_range]
@@ -50,7 +50,7 @@ module Fog
               "direction":"Inbound"
             }
           }'
-          network_security_rule_mapper = Azure::ARM::Network::Models::SecurityRule.mapper
+          network_security_rule_mapper = Azure::Network::Profiles::Latest::Mgmt::Models::SecurityRule.mapper
           @network_client.deserialize(network_security_rule_mapper, JSON.load(network_security_rule), 'result.body')
         end
       end

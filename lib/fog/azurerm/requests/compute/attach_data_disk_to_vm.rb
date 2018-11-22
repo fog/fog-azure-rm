@@ -83,13 +83,13 @@ module Fog
             Fog::Logger.debug msg
             raise_azure_exception(e, msg)
           end
-          managed_disk = Azure::ARM::Compute::Models::DataDisk.new
+          managed_disk = Azure::Compute::Profiles::Latest::Mgmt::Models::DataDisk.new
           managed_disk.name = disk_name
           managed_disk.lun = lun
-          managed_disk.create_option = Azure::ARM::Compute::Models::DiskCreateOptionTypes::Attach
+          managed_disk.create_option = Azure::Compute::Profiles::Latest::Mgmt::Models::DiskCreateOptionTypes::Attach
 
           # Managed disk parameter
-          managed_disk_params = Azure::ARM::Compute::Models::ManagedDiskParameters.new
+          managed_disk_params = Azure::Compute::Profiles::Latest::Mgmt::Models::ManagedDiskParameters.new
           managed_disk_params.id = disk.id
           managed_disk.managed_disk = managed_disk_params
 
@@ -109,17 +109,17 @@ module Fog
         end
 
         def get_unmanaged_disk_object(disk_name, disk_size, lun, storage_account_name, access_key)
-          data_disk = Azure::ARM::Compute::Models::DataDisk.new
+          data_disk = Azure::Compute::Profiles::Latest::Mgmt::Models::DataDisk.new
           data_disk.name = disk_name
           data_disk.lun = lun
           data_disk.disk_size_gb = disk_size.to_s
-          data_disk.vhd = Azure::ARM::Compute::Models::VirtualHardDisk.new
+          data_disk.vhd = Azure::Compute::Profiles::Latest::Mgmt::Models::VirtualHardDisk.new
           data_disk.vhd.uri = "https://#{storage_account_name}.blob.core.windows.net/vhds/#{storage_account_name}-#{disk_name}.vhd"
-          data_disk.caching = Azure::ARM::Compute::Models::CachingTypes::ReadWrite
+          data_disk.caching = Azure::Compute::Profiles::Latest::Mgmt::Models::CachingTypes::ReadWrite
           blob_name = "#{storage_account_name}-#{disk_name}.vhd"
           disk_exist = check_blob_exist(storage_account_name, blob_name, access_key)
-          data_disk.create_option = Azure::ARM::Compute::Models::DiskCreateOptionTypes::Empty
-          data_disk.create_option = Azure::ARM::Compute::Models::DiskCreateOptionTypes::Attach if disk_exist
+          data_disk.create_option = Azure::Compute::Profiles::Latest::Mgmt::Models::DiskCreateOptionTypes::Empty
+          data_disk.create_option = Azure::Compute::Profiles::Latest::Mgmt::Models::DiskCreateOptionTypes::Attach if disk_exist
           data_disk
         end
 
@@ -199,7 +199,7 @@ module Fog
                 'provisioningState' => 'Succeeded'
               }
           }
-          vm_mapper = Azure::ARM::Compute::Models::VirtualMachine.mapper
+          vm_mapper = Azure::Compute::Profiles::Latest::Mgmt::Models::VirtualMachine.mapper
           @compute_mgmt_client.deserialize(vm_mapper, vm, 'result.body')
         end
       end

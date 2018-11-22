@@ -8,7 +8,7 @@ module Fog
         identity  :name
         attribute :location
         attribute :resource_group_name
-        attribute :account_type
+        attribute :sku
         attribute :disk_size_gb
         attribute :tags
         attribute :time_created

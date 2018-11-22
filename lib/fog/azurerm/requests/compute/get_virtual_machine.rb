@@ -10,9 +10,9 @@ module Fog
           Fog::Logger.debug msg
           begin
             if async
-              response = @compute_mgmt_client.virtual_machines.get_async(resource_group, name, INSTANCE_VIEW)
+              response = @compute_mgmt_client.virtual_machines.get_async(resource_group, name, expand: INSTANCE_VIEW)
             else
-              response = @compute_mgmt_client.virtual_machines.get(resource_group, name, INSTANCE_VIEW)
+              response = @compute_mgmt_client.virtual_machines.get(resource_group, name, expand: INSTANCE_VIEW)
             end
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
@@ -79,7 +79,7 @@ module Fog
               'provisioningState' => 'Succeeded'
             }
           }
-          vm_mapper = Azure::ARM::Compute::Models::VirtualMachine.mapper
+          vm_mapper = Azure::Compute::Profiles::Latest::Mgmt::Models::VirtualMachine.mapper
           @compute_mgmt_client.deserialize(vm_mapper, vm, 'result.body')
         end
       end

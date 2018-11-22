@@ -41,7 +41,7 @@ module ApiStub
             'id' => '/subscriptions/subscriptionId/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot',
             'name' => 'mySnapshot'
           }
-          result_mapper = Azure::ARM::Compute::Models::Snapshot.mapper
+          result_mapper = Azure::Compute::Profiles::Latest::Mgmt::Models::Snapshot.mapper
           sdk_compute_client.deserialize(result_mapper, snap, 'result.body')
         end
       end

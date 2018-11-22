@@ -32,7 +32,7 @@ module Fog
                 'provisioningState' => 'Succeeded'
               }
           }
-          public_ip_mapper = Azure::ARM::Network::Models::PublicIPAddress.mapper
+          public_ip_mapper = Azure::Network::Profiles::Latest::Mgmt::Models::PublicIPAddress.mapper
           @network_client.deserialize(public_ip_mapper, public_ip, 'result.body')
         end
       end

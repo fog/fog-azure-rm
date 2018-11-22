@@ -19,11 +19,11 @@ module Fog
         private
 
         def get_managed_disk_object(managed_disk_params)
-          managed_disk = Azure::ARM::Compute::Models::Disk.new
+          managed_disk = Azure::Compute::Profiles::Latest::Mgmt::Models::Disk.new
           managed_disk.name = managed_disk_params[:name]
           managed_disk.type = DISK_PREFIX
           managed_disk.location = managed_disk_params[:location]
-          managed_disk.account_type = managed_disk_params[:account_type]
+          managed_disk.sku = get_sku_object(managed_disk_params[:sku])
           managed_disk.os_type = managed_disk_params[:os_type]
           managed_disk.disk_size_gb = managed_disk_params[:disk_size_gb]
           managed_disk.tags = managed_disk_params[:tags] if managed_disk.tags.nil?
@@ -37,8 +37,15 @@ module Fog
           managed_disk
         end
 
+        def get_sku_object(sku_params)
+          sku = Azure::Compute::Profiles::Latest::Mgmt::Models::Sku.new
+          sku.name = sku_params[:name]
+          sku.tier = sku_params[:tier]
+          sku
+        end
+
         def get_creation_data_object(data)
-          creation_data = Azure::ARM::Compute::Models::CreationData.new
+          creation_data = Azure::Compute::Profiles::Latest::Mgmt::Models::CreationData.new
           creation_data.create_option = data[:create_option]
           creation_data.storage_account_id = data[:storage_account_id]
           creation_data.source_uri = data[:source_uri]
@@ -46,7 +53,7 @@ module Fog
 
           image_reference = data[:image_reference]
           unless image_reference.nil?
-            image_disk_reference = Azure::ARM::Compute::Models::ImageDiskReference.new
+            image_disk_reference = Azure::Compute::Profiles::Latest::Mgmt::Models::ImageDiskReference.new
             image_disk_reference.id = image_reference[:id]
             image_disk_reference.lun = image_reference[:lun]
 
@@ -56,15 +63,15 @@ module Fog
         end
 
         def get_encryption_settings_object(settings)
-          encryption_settings = Azure::ARM::Compute::Models::EncryptionSettings.new
-          disk_encryption_key = Azure::ARM::Compute::Models::KeyVaultAndSecretReference.new
+          encryption_settings = Azure::Compute::Profiles::Latest::Mgmt::Models::EncryptionSettings.new
+          disk_encryption_key = Azure::Compute::Profiles::Latest::Mgmt::Models::KeyVaultAndSecretReference.new
           disk_encryption_key.secret_url = settings[:secret_url]
           disk_encryption_key.source_vault.id = settings[:disk_source_vault_id]
           encryption_settings.disk_encryption_key = disk_encryption_key
 
           encryption_settings.enabled = settings[:enabled]
 
-          key_encryption_key = Azure::ARM::Compute::Models::KeyVaultAndKeyReference.new
+          key_encryption_key = Azure::Compute::Profiles::Latest::Mgmt::Models::KeyVaultAndKeyReference.new
           key_encryption_key.key_url = settings[:key_uri]
           key_encryption_key.source_vault = settings[:key_source_vault_id]
           encryption_settings.key_encryption_key = key_encryption_key
@@ -112,7 +119,7 @@ module Fog
             'id' => '/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myManagedDisk1',
             'name' => 'myManagedDisk1'
           }
-          disk_mapper = Azure::ARM::Compute::Models::Disk.mapper
+          disk_mapper = Azure::Compute::Profiles::Latest::Mgmt::Models::Disk.mapper
           @compute_mgmt_client.deserialize(disk_mapper, disk, 'result.body')
         end
       end

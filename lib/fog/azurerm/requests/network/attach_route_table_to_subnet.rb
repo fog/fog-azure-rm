@@ -19,9 +19,9 @@ module Fog
         private
 
         def get_subnet_object_for_attach_route_table(address_prefix, network_security_group_id, route_table_id)
-          subnet = Azure::ARM::Network::Models::Subnet.new
-          network_security_group = Azure::ARM::Network::Models::NetworkSecurityGroup.new
-          route_table = Azure::ARM::Network::Models::RouteTable.new
+          subnet = Azure::Network::Profiles::Latest::Mgmt::Models::Subnet.new
+          network_security_group = Azure::Network::Profiles::Latest::Mgmt::Models::NetworkSecurityGroup.new
+          route_table = Azure::Network::Profiles::Latest::Mgmt::Models::RouteTable.new
 
           network_security_group.id = network_security_group_id
           route_table.id = route_table_id
@@ -48,7 +48,7 @@ module Fog
               },
             'name' => 'fog-subnet'
           }
-          subnet_mapper = Azure::ARM::Network::Models::Subnet.mapper
+          subnet_mapper = Azure::Network::Profiles::Latest::Mgmt::Models::Subnet.mapper
           @network_client.deserialize(subnet_mapper, subnet, 'result.body')
         end
       end

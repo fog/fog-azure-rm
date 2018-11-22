@@ -8,9 +8,9 @@ module Fog
           Fog::Logger.debug msg
           begin
             if async
-              response = @compute_mgmt_client.virtual_machines.get_async(resource_group, name, 'instanceView')
+              response = @compute_mgmt_client.virtual_machines.get_async(resource_group, name, expand: 'instanceView')
             else
-              @compute_mgmt_client.virtual_machines.get(resource_group, name, 'instanceView')
+              @compute_mgmt_client.virtual_machines.get(resource_group, name, expand: 'instanceView')
             end
           rescue MsRestAzure::AzureOperationError => e
             if resource_not_found?(e)

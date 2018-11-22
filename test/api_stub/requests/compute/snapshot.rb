@@ -14,7 +14,7 @@ module ApiStub
                       }
                     }
                   }'
-          snap_mapper = Azure::ARM::Compute::Models::Snapshot.mapper
+          snap_mapper = Azure::Compute::Profiles::Latest::Mgmt::Models::Snapshot.mapper
           sdk_compute_client.deserialize(snap_mapper, Fog::JSON.decode(body), 'result.body')
         end
 
@@ -28,7 +28,7 @@ module ApiStub
                       "diskSizeGB": "256"
                     }
                   }'
-          snap_mapper = Azure::ARM::Compute::Models::Snapshot.mapper
+          snap_mapper = Azure::Compute::Profiles::Latest::Mgmt::Models::Snapshot.mapper
           sdk_compute_client.deserialize(snap_mapper, Fog::JSON.decode(body), 'result.body')
         end
 
@@ -68,7 +68,7 @@ module ApiStub
                    },
                    "id": "/subscriptions/subscriptionId/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot",
                    "name": "mySnapshot"}'
-          snap_mapper = Azure::ARM::Compute::Models::Snapshot.mapper
+          snap_mapper = Azure::Compute::Profiles::Latest::Mgmt::Models::Snapshot.mapper
           sdk_compute_client.deserialize(snap_mapper, Fog::JSON.decode(body), 'result.body')
         end
 
@@ -110,7 +110,7 @@ module ApiStub
                       "id": "/subscriptions/subscriptionId/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot1",
                       "name": "mySnapshot1"
                     }] }'
-          snap_mapper = Azure::ARM::Compute::Models::Snapshot.mapper
+          snap_mapper = Azure::Compute::Profiles::Latest::Mgmt::Models::Snapshot.mapper
           sdk_compute_client.deserialize(snap_mapper, Fog::JSON.decode(body), 'result.body')
         end
 
@@ -120,7 +120,7 @@ module ApiStub
             'status' => 'success',
             'error' => 'ERROR'
           }
-          response_mapper = Azure::ARM::Compute::Models::OperationStatusResponse.mapper
+          response_mapper = Azure::Compute::Profiles::Latest::Mgmt::Models::OperationStatusResponse.mapper
           sdk_compute_client.deserialize(response_mapper, response, 'result.body')
         end
       end

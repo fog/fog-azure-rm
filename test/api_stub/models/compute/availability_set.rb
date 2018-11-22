@@ -15,7 +15,7 @@ module ApiStub
               'name' => 'Classic'
             }
           }
-          result_mapper = Azure::ARM::Compute::Models::AvailabilitySet.mapper
+          result_mapper = Azure::Compute::Profiles::Latest::Mgmt::Models::AvailabilitySet.mapper
           sdk_compute_client.deserialize(result_mapper, avail_set, 'result.body')
         end
 
@@ -31,7 +31,7 @@ module ApiStub
               'name' => 'Aligned'
             }
           }
-          result_mapper = Azure::ARM::Compute::Models::AvailabilitySet.mapper
+          result_mapper = Azure::Compute::Profiles::Latest::Mgmt::Models::AvailabilitySet.mapper
           sdk_compute_client.deserialize(result_mapper, avail_set, 'result.body')
         end
 
@@ -44,7 +44,7 @@ module ApiStub
               'platformUpdateDomainCount' => UPDATE_DOMAIN_COUNT,
               'platformFaultDomainCount' => FAULT_DOMAIN_COUNT
           }
-          result_mapper = Azure::ARM::Compute::Models::AvailabilitySet.mapper
+          result_mapper = Azure::Compute::Profiles::Latest::Mgmt::Models::AvailabilitySet.mapper
           sdk_compute_client.deserialize(result_mapper, avail_set, 'result.body')
         end
 
@@ -60,7 +60,7 @@ module ApiStub
                 'name' => 'Classic'
               }
           }
-          result_mapper = Azure::ARM::Compute::Models::AvailabilitySet.mapper
+          result_mapper = Azure::Compute::Profiles::Latest::Mgmt::Models::AvailabilitySet.mapper
           sdk_compute_client.deserialize(result_mapper, avail_set, 'result.body')
         end
       end

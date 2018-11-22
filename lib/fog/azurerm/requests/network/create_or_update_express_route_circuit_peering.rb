@@ -30,7 +30,7 @@ module Fog
         end
 
         def create_express_route_circuit_peering(peering_type, peer_asn, primary_peer_address_prefix, secondary_peer_address_prefix, vlan_id, name)
-          circuit_peering = Azure::ARM::Network::Models::ExpressRouteCircuitPeering.new
+          circuit_peering = Azure::Network::Profiles::Latest::Mgmt::Models::ExpressRouteCircuitPeering.new
           circuit_peering.peering_type = peering_type
           circuit_peering.peer_asn = peer_asn
           circuit_peering.primary_peer_address_prefix = primary_peer_address_prefix
@@ -41,7 +41,7 @@ module Fog
         end
 
         def create_express_route_circuit_peering_config(advertised_public_prefixes, advertised_public_prefix_state, customer_asn, routing_registry_name)
-          peering_config = Azure::ARM::Network::Models::ExpressRouteCircuitPeeringConfig.new
+          peering_config = Azure::Network::Profiles::Latest::Mgmt::Models::ExpressRouteCircuitPeeringConfig.new
           peering_config.advertised_public_prefixes = advertised_public_prefixes
           peering_config.advertised_public_prefixes_state = advertised_public_prefix_state
           peering_config.customer_asn = customer_asn

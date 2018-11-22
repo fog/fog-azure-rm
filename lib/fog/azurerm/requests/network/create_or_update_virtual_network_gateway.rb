@@ -20,7 +20,7 @@ module Fog
         private
 
         def get_network_gateway_object(virtual_network_params)
-          network_gateway = Azure::ARM::Network::Models::VirtualNetworkGateway.new
+          network_gateway = Azure::Network::Profiles::Latest::Mgmt::Models::VirtualNetworkGateway.new
 
           network_gateway.enable_bgp = virtual_network_params[:enable_bgp]
           network_gateway.gateway_type = virtual_network_params[:gateway_type]
@@ -54,7 +54,7 @@ module Fog
         end
 
         def get_bgp_settings(virtual_network_params)
-          bgp_settings = Azure::ARM::Network::Models::BgpSettings.new
+          bgp_settings = Azure::Network::Profiles::Latest::Mgmt::Models::BgpSettings.new
           bgp_settings.asn = virtual_network_params[:asn]
           bgp_settings.bgp_peering_address = virtual_network_params[:bgp_peering_address]
           bgp_settings.peer_weight = virtual_network_params[:peer_weight]
@@ -62,7 +62,7 @@ module Fog
         end
 
         def get_virtual_network_gateway_sku(virtual_network_params)
-          sku = Azure::ARM::Network::Models::VirtualNetworkGatewaySku.new
+          sku = Azure::Network::Profiles::Latest::Mgmt::Models::VirtualNetworkGatewaySku.new
           sku.name = virtual_network_params[:sku_name]
           sku.capacity = virtual_network_params[:sku_capacity]
           sku.tier = virtual_network_params[:sku_tier]
@@ -70,9 +70,9 @@ module Fog
         end
 
         def get_vpn_client_config(vpn_client_config)
-          client_config = Azure::ARM::Network::Models::VpnClientConfiguration.new
+          client_config = Azure::Network::Profiles::Latest::Mgmt::Models::VpnClientConfiguration.new
 
-          address_pool = Azure::ARM::Network::Models::AddressSpace.new
+          address_pool = Azure::Network::Profiles::Latest::Mgmt::Models::AddressSpace.new
           address_pool.address_prefixes = vpn_client_config[:address_pool]
           client_config.vpn_client_address_pool = address_pool
 
@@ -91,7 +91,7 @@ module Fog
         def get_root_certificates(root_certificates)
           root_certs = []
           root_certificates.each do |root_cert|
-            root_certificate = Azure::ARM::Network::Models::VpnClientRootCertificate.new
+            root_certificate = Azure::Network::Profiles::Latest::Mgmt::Models::VpnClientRootCertificate.new
             root_certificate.public_cert_data = root_cert[:public_cert_data]
             root_certificate.provisioning_state = root_cert[:provisioning_state]
             root_certificate.name = root_cert[:name]
@@ -103,7 +103,7 @@ module Fog
         def get_revoked_certificates(revoked_certificates)
           revoked_certs = []
           revoked_certificates.each do |revoked_cert|
-            revoked_certificate = Azure::ARM::Network::Models::VpnClientRevokedCertificate.new
+            revoked_certificate = Azure::Network::Profiles::Latest::Mgmt::Models::VpnClientRevokedCertificate.new
             revoked_certificate.thumbprint = revoked_cert[:thumbprint]
             revoked_certificate.provisioning_state = revoked_cert[:provisioning_state]
             revoked_certificate.name = revoked_cert[:name]
@@ -115,15 +115,15 @@ module Fog
         def get_ip_configurations(ip_configurations)
           ip_configs = []
           ip_configurations.each do |ip_config|
-            ip_configuration = Azure::ARM::Network::Models::VirtualNetworkGatewayIPConfiguration.new
+            ip_configuration = Azure::Network::Profiles::Latest::Mgmt::Models::VirtualNetworkGatewayIPConfiguration.new
             ip_configuration.private_ipallocation_method = ip_config[:private_ipallocation_method]
             unless ip_config[:subnet_id].nil?
-              subnet = Azure::ARM::Network::Models::Subnet.new
+              subnet = Azure::Network::Profiles::Latest::Mgmt::Models::Subnet.new
               subnet.id = ip_config[:subnet_id]
               ip_configuration.subnet = subnet
             end
             unless ip_config[:public_ipaddress_id].nil?
-              pip = Azure::ARM::Network::Models::PublicIPAddress.new
+              pip = Azure::Network::Profiles::Latest::Mgmt::Models::PublicIPAddress.new
               pip.id = ip_config[:public_ipaddress_id]
               ip_configuration.public_ipaddress = pip
             end
@@ -150,7 +150,7 @@ module Fog
               'defaultSites' => ['mysite1']
             }
           }
-          gateway_mapper = Azure::ARM::Network::Models::VirtualNetworkGateway.mapper
+          gateway_mapper = Azure::Network::Profiles::Latest::Mgmt::Models::VirtualNetworkGateway.mapper
           @network_client.deserialize(gateway_mapper, gateway, 'result.body')
         end
       end

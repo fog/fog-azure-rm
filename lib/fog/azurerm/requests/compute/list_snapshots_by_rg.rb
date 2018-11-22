@@ -58,7 +58,7 @@ module Fog
               'name' => 'mySnapshot'
             }
           ]
-          snapshot_mapper = Azure::ARM::Compute::Models::SnapshotList.mapper
+          snapshot_mapper = Azure::Compute::Profiles::Latest::Mgmt::Models::SnapshotList.mapper
           @compute_mgmt_client.deserialize(snapshot_mapper, snapshots, 'result.body').value
         end
       end

@@ -9,7 +9,11 @@ module Fog
         attribute :type
         attribute :location
         attribute :resource_group_name
+        # Either one of them is needed for disk creation, sku is new, account_type kept for
+        # compatibility reasons
+        attribute :sku
         attribute :account_type
+        ##
         attribute :disk_size_gb
         attribute :owner_id
         attribute :provisioning_state
@@ -39,10 +43,17 @@ module Fog
 
         def save
           requires :name, :location, :resource_group_name, :creation_data
-          requires :disk_size_gb, :account_type
+          requires :disk_size_gb
+
+          if self.sku.nil? && !self.account_type.nil?
+            self.sku = {
+              name: self.account_type
+            }
+          elsif self.account_type.nil? && self.sku.nil?
+            raise(ArgumentError, 'Either account_type or sku is needed for this operation')
+          end
 
           validate_creation_data_params(creation_data)
-
           disk = service.create_or_update_managed_disk(managed_disk_params)
           merge_attributes(Fog::Compute::AzureRM::ManagedDisk.parse(disk))
         end
@@ -80,7 +91,7 @@ module Fog
             name: name,
             location: location,
             resource_group_name: resource_group_name,
-            account_type: account_type,
+            sku: sku,
             os_type: os_type,
             disk_size_gb: disk_size_gb,
             tags: tags,

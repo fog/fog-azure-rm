@@ -150,7 +150,7 @@ module Fog
               "provisioningState": "Succeeded"
             }
           }'
-          gateway_mapper = Azure::ARM::Network::Models::ApplicationGateway.mapper
+          gateway_mapper = Azure::Network::Profiles::Latest::Mgmt::Models::ApplicationGateway.mapper
           @network_client.deserialize(gateway_mapper, JSON.load(response), 'result.body')
         end
       end

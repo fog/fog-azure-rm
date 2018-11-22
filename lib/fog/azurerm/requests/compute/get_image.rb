@@ -36,7 +36,7 @@ module Fog
             },
             'provisioning_state' => 'Succeeded'
           }
-          image_mapper = Azure::ARM::Compute::Models::Image.mapper
+          image_mapper = Azure::Compute::Profiles::Latest::Mgmt::Models::Image.mapper
           @compute_mgmt_client.deserialize(image_mapper, body, 'result.body')
         end
       end

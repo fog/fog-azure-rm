@@ -24,7 +24,7 @@ module Fog
             'status' => 200,
             'error' => 'Error Details'
           }
-          response_mapper = Azure::ARM::Compute::Models::OperationStatusResponse.mapper
+          response_mapper = Azure::Compute::Profiles::Latest::Mgmt::Models::OperationStatusResponse.mapper
           @compute_mgmt_client.deserialize(response_mapper, response, 'result.body')
         end
       end

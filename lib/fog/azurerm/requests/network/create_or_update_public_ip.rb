@@ -19,7 +19,7 @@ module Fog
         private
 
         def get_public_ip_object(name, location, public_ip_allocation_method, idle_timeout_in_minutes, domain_name_label, tags)
-          public_ip = Azure::ARM::Network::Models::PublicIPAddress.new
+          public_ip = Azure::Network::Profiles::Latest::Mgmt::Models::PublicIPAddress.new
           public_ip.name = name
           public_ip.location = location
           public_ip.public_ipallocation_method = public_ip_allocation_method unless public_ip_allocation_method.nil?
@@ -27,7 +27,7 @@ module Fog
           public_ip.tags = tags
 
           unless domain_name_label.nil?
-            public_ip.dns_settings = Azure::ARM::Network::Models::PublicIPAddressDnsSettings.new
+            public_ip.dns_settings = Azure::Network::Profiles::Latest::Mgmt::Models::PublicIPAddressDnsSettings.new
             public_ip.dns_settings.domain_name_label = domain_name_label
           end
 
@@ -52,7 +52,7 @@ module Fog
                 'provisioningState' => 'Succeeded'
               }
           }
-          public_ip_mapper = Azure::ARM::Network::Models::PublicIPAddress.mapper
+          public_ip_mapper = Azure::Network::Profiles::Latest::Mgmt::Models::PublicIPAddress.mapper
           @network_client.deserialize(public_ip_mapper, public_ip, 'result.body')
         end
       end

@@ -6,7 +6,7 @@ module Fog
         def grant_access_to_managed_disk(resource_group_name, disk_name, access_type, duration_in_sec)
           msg = "Granting access to Managed Disk: #{disk_name}"
           Fog::Logger.debug msg
-          access_data = Azure::ARM::Compute::Models::GrantAccessData.new
+          access_data = Azure::Compute::Profiles::Latest::Mgmt::Models::GrantAccessData.new
           access_data.access = access_type
           access_data.duration_in_seconds = duration_in_sec
           begin

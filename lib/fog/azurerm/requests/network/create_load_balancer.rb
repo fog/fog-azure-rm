@@ -19,7 +19,7 @@ module Fog
         private
 
         def define_load_balancer(name, location, frontend_ip_configurations, backend_address_pool_names, load_balancing_rules, probes, inbound_nat_rules, inbound_nat_pools, tags)
-          load_balancer = Azure::ARM::Network::Models::LoadBalancer.new
+          load_balancer = Azure::Network::Profiles::Latest::Mgmt::Models::LoadBalancer.new
           load_balancer.name = name
           load_balancer.location = location
           load_balancer.tags = tags
@@ -31,7 +31,7 @@ module Fog
           if backend_address_pool_names
             load_balancer.backend_address_pools = []
             backend_address_pool_names.each do |bap|
-              backend_pool = Azure::ARM::Network::Models::BackendAddressPool.new
+              backend_pool = Azure::Network::Profiles::Latest::Mgmt::Models::BackendAddressPool.new
               backend_pool.name = bap
               load_balancer.backend_address_pools.push(backend_pool)
             end
@@ -63,10 +63,10 @@ module Fog
         def define_inbound_nat_pool(inbound_nat_pools)
           inbound_nat_pool_arr = []
           inbound_nat_pools.each do |inp|
-            inbound_nat_pool = Azure::ARM::Network::Models::InboundNatPool.new
+            inbound_nat_pool = Azure::Network::Profiles::Latest::Mgmt::Models::InboundNatPool.new
 
             unless inp[:frontend_ip_configuration_id].nil?
-              frontend_ipconfigurations = Azure::ARM::Network::Models::FrontendIPConfiguration.new
+              frontend_ipconfigurations = Azure::Network::Profiles::Latest::Mgmt::Models::FrontendIPConfiguration.new
               frontend_ipconfigurations.id = inp[:frontend_ip_configuration_id]
               inbound_nat_pool.frontend_ipconfiguration = frontend_ipconfigurations
             end
@@ -85,10 +85,10 @@ module Fog
         def define_inbound_nat_rule(inbound_nat_rules)
           inbound_nat_rule_arr = []
           inbound_nat_rules.each do |inr|
-            inbound_nat_rule = Azure::ARM::Network::Models::InboundNatRule.new
+            inbound_nat_rule = Azure::Network::Profiles::Latest::Mgmt::Models::InboundNatRule.new
 
             unless inr[:frontend_ip_configuration_id].nil?
-              frontend_ipconfigurations = Azure::ARM::Network::Models::FrontendIPConfiguration.new
+              frontend_ipconfigurations = Azure::Network::Profiles::Latest::Mgmt::Models::FrontendIPConfiguration.new
               frontend_ipconfigurations.id = inr[:frontend_ip_configuration_id]
               inbound_nat_rule.frontend_ipconfiguration = frontend_ipconfigurations
             end
@@ -105,7 +105,7 @@ module Fog
         def define_probe(probes)
           probe_arr = []
           probes.each do |prb|
-            probe = Azure::ARM::Network::Models::Probe.new
+            probe = Azure::Network::Profiles::Latest::Mgmt::Models::Probe.new
 
             probe.protocol = prb[:protocol]
             probe.port = prb[:port]
@@ -122,7 +122,7 @@ module Fog
         def define_load_balancing_rule(load_balancing_rules)
           load_balancing_rule_arr = []
           load_balancing_rules.each do |lbr|
-            load_balancing_rule = Azure::ARM::Network::Models::LoadBalancingRule.new
+            load_balancing_rule = Azure::Network::Profiles::Latest::Mgmt::Models::LoadBalancingRule.new
 
             load_balancing_rule.protocol = lbr[:protocol]
             load_balancing_rule.load_distribution = lbr[:load_distribution]
@@ -132,19 +132,19 @@ module Fog
             load_balancing_rule.enable_floating_ip = lbr[:enable_floating_ip]
 
             unless lbr[:frontend_ip_configuration_id].nil?
-              frontend_ipconfigurations = Azure::ARM::Network::Models::FrontendIPConfiguration.new
+              frontend_ipconfigurations = Azure::Network::Profiles::Latest::Mgmt::Models::FrontendIPConfiguration.new
               frontend_ipconfigurations.id = lbr[:frontend_ip_configuration_id]
               load_balancing_rule.frontend_ipconfiguration = frontend_ipconfigurations
             end
 
             unless lbr[:backend_address_pool_id].nil?
-              backend_address_pool = Azure::ARM::Network::Models::BackendAddressPool.new
+              backend_address_pool = Azure::Network::Profiles::Latest::Mgmt::Models::BackendAddressPool.new
               backend_address_pool.id = lbr[:backend_address_pool_id]
               load_balancing_rule.backend_address_pool = backend_address_pool
             end
 
             unless lbr[:probe_id].nil?
-              probe = Azure::ARM::Network::Models::Probe.new
+              probe = Azure::Network::Profiles::Latest::Mgmt::Models::Probe.new
               probe.id = lbr[:probe_id]
               load_balancing_rule.probe = probe
             end
@@ -158,16 +158,16 @@ module Fog
         def define_lb_frontend_ip_configurations(frontend_ip_configurations)
           frontend_ip_configuration_arr = []
           frontend_ip_configurations.each do |fic|
-            frontend_ip_configuration = Azure::ARM::Network::Models::FrontendIPConfiguration.new
+            frontend_ip_configuration = Azure::Network::Profiles::Latest::Mgmt::Models::FrontendIPConfiguration.new
             frontend_ip_configuration.private_ipaddress = fic[:private_ipaddress]
             frontend_ip_configuration.private_ipallocation_method = fic[:private_ipallocation_method]
             unless fic[:subnet_id].nil?
-              snet = Azure::ARM::Network::Models::Subnet.new
+              snet = Azure::Network::Profiles::Latest::Mgmt::Models::Subnet.new
               snet.id = fic[:subnet_id]
               frontend_ip_configuration.subnet = snet
             end
             unless fic[:public_ipaddress_id].nil?
-              pip = Azure::ARM::Network::Models::PublicIPAddress.new
+              pip = Azure::Network::Profiles::Latest::Mgmt::Models::PublicIPAddress.new
               pip.id = fic[:public_ipaddress_id]
               frontend_ip_configuration.public_ipaddress = pip
             end

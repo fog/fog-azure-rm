@@ -216,8 +216,8 @@ module ApiStub
              }
             ]
           }'
-          result_mapper = Azure::ARM::Network::Models::NetworkInterfaceListResult.mapper
-          network_client.deserialize(result_mapper, Fog::JSON.decode(nsg_list), 'result.body')
+          result_mapper = Azure::ARM::Network::Models::NetworkSecurityGroupListResult.mapper
+          network_client.deserialize(result_mapper, Fog::JSON.decode(nsg_list), 'result.body').value
         end
       end
     end

@@ -1,3 +1,15 @@
+## 0.4.9
+
+**Added**
+- Current Ruby versions added in .travis.yml for testing
+- Asynchronous deletion of Managed Disk added
+
+**Changed**
+
+- List method which handles pagination by default has been updated for Network Security Group.
+- .travis.yml updated to handle bundler gem dependency on Ruby 2.3+
+- Mocks for Azure::Blobs updated
+
 ## 0.4.8
 
 **Added:**

@@ -102,4 +102,15 @@ class TestAttachDataDiskToVM < Minitest::Test
       end
     end
   end
+
+  def test_detach_multiple_data_disks_from_vm_success
+    @virtual_machines.stub :get, @get_vm_response do
+      @disks.stub :get, @get_managed_disk_response do
+        @virtual_machines.stub :create_or_update, @get_vm_managed_disk_response do
+          input_params = { vm_name: 'fog-test-vm', vm_resource_group: 'fog-test-rg', disk_name: %w(mydatadisk1 mydatadisk2), disk_size_gb: nil, storage_account_name: nil }
+          assert_equal @service.attach_data_disk_to_vm(input_params, false), @get_vm_managed_disk_response
+        end
+      end
+    end
+  end
 end

@@ -234,4 +234,15 @@ class TestServer < Minitest::Test
       assert_instance_of Fog::AzureRM::AsyncResponse, @server.detach_managed_disk('managed_disk_name', true)
     end
   end
+
+  def test_attach_managed_disks_response
+    response = ApiStub::Models::Compute::Server.create_linux_virtual_machine_response(@compute_client)
+    @service.stub :attach_data_disk_to_vm, response do
+      assert_instance_of Fog::Compute::AzureRM::Server, @server.attach_managed_disks(%w(managed_disk_name1 managed_disk_name2), 'resoure_group')
+    end
+    async_response = Concurrent::Promise.execute { 10 }
+    @service.stub :attach_data_disk_to_vm, async_response do
+      assert_instance_of Fog::AzureRM::AsyncResponse, @server.attach_managed_disks(%w(managed_disk_name1 managed_disk_name2), 'resoure_group', true)
+    end
+  end
 end

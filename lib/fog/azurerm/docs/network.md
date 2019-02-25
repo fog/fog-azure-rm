@@ -261,6 +261,24 @@ nic = fog_network_service.network_interfaces.create(
 )
 ```
 
+## Create Network Interface Card Asynchronously
+
+Create a new network interface asynchronously. Skip public_ip_address_id parameter to create network interface without PublicIP. The parameter, private_ip_allocation_method can be Dynamic or Static.
+
+```ruby
+nic = fog_network_service.network_interfaces.create_async(
+      name: '<Network Interface Name>',
+      resource_group: '<Resource Group Name>',
+      location: '<Location>',
+      subnet_id: '/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/virtualNetworks/<Virtual Network Name>/subnets/<Subnet Name>',
+      public_ip_address_id: '/subscriptions/<Subscription Id>/resourceGroups/<Resource Group Name>/providers/Microsoft.Network/publicIPAddresses/<Public IP Name>',
+      ip_configuration_name: '<IP Configuration Name>',
+      private_ip_allocation_method: '<IP Allocation Method Name>',
+      tags: { key: 'value' }                    # [Optional],
+      enable_accelerated_networking: true       # [Optional] false by default
+)
+```
+
 ## List Network Interface Cards
 
 List network interfaces in a resource group

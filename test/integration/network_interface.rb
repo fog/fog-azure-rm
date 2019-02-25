@@ -67,6 +67,13 @@ begin
     public_ip_allocation_method: 'Dynamic'
   )
 
+  network.public_ips.create(
+    name: 'mypubip2',
+    resource_group: 'TestRG-NI',
+    location: LOCATION,
+    public_ip_allocation_method: 'Dynamic'
+  )
+
   nsg = network.network_security_groups.create(
     name: 'test_nsg',
     resource_group: 'TestRG-NI',
@@ -113,6 +120,40 @@ begin
   puts "Created network interface: #{network_interface.name}"
 
   ########################################################################################################################
+  ######################                       Create Network Interface Async                       ######################
+  ########################################################################################################################
+
+  async_response = network.network_interfaces.create_async(
+    name: 'NetInt_Async',
+    resource_group: 'TestRG-NI',
+    location: LOCATION,
+    network_security_group_id: nsg.id,
+    subnet_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-NI/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/mysubnet",
+    public_ip_address_id: "/subscriptions/#{azure_credentials['subscription_id']}/resourceGroups/TestRG-NI/providers/Microsoft.Network/publicIPAddresses/mypubip2",
+    ip_configuration_name: 'testIpConfiguration',
+    private_ip_allocation_method: 'Dynamic',
+    tags: { key: 'value' },
+    enable_accelerated_networking: true
+  )
+
+  loop do
+    if async_response.pending?
+      sleep(2)
+      print '.'
+    end
+
+    if async_response.fulfilled?
+      puts "\nCreated/Updated NIC asynchronously! [#{async_response.value.name}]"
+      break
+    end
+
+    if async_response.rejected?
+      puts "\nERROR: Async NIC creation failed!\n#{async_response.reason.inspect}"
+      break
+    end
+  end
+
+  ########################################################################################################################
   ######################                       Get Network Interface and Update Resources           ######################
   ########################################################################################################################
 
@@ -142,6 +183,9 @@ begin
   ########################################################################################################################
 
   puts "Deleted network interface: #{nic.destroy}"
+
+  nic_async = network.network_interfaces.get('TestRG-NI', 'NetInt_Async')
+  puts "Deleted network interface #{nic_async.name}: #{nic_async.destroy}"
 
   pubip = network.public_ips.get('TestRG-NI', 'mypubip')
   pubip.destroy

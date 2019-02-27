@@ -3,7 +3,7 @@ module Fog
     class AzureRM
       # This class provides the actual implementation for service calls.
       class Real
-        def attach_data_disk_to_vm(disk_params, async)
+        def attach_data_disk_to_vm(disk_params, async, caching = 'None')
           # Variable un-packing for easy access
           vm_name = disk_params[:vm_name]
           vm_resource_group = disk_params[:vm_resource_group]
@@ -24,7 +24,7 @@ module Fog
             data_disk = get_unmanaged_disk_object(disk_name, disk_size, lun, storage_account_name, access_key)
           elsif disk_resource_group
             # Managed data disk
-            data_disk = get_data_disk_object(disk_resource_group, disk_name, lun)
+            data_disk = get_data_disk_object(disk_resource_group, disk_name, lun, caching)
           end
           vm.storage_profile.data_disks.push(data_disk)
           begin
@@ -75,7 +75,7 @@ module Fog
           lun_range_list[0]
         end
 
-        def get_data_disk_object(disk_resource_group, disk_name, lun)
+        def get_data_disk_object(disk_resource_group, disk_name, lun, caching = 'None')
           msg = "Getting Managed Disk #{disk_name} from Resource Group #{disk_resource_group}"
           begin
             disk = @compute_mgmt_client.disks.get(disk_resource_group, disk_name)
@@ -87,6 +87,17 @@ module Fog
           managed_disk.name = disk_name
           managed_disk.lun = lun
           managed_disk.create_option = Azure::ARM::Compute::Models::DiskCreateOptionTypes::Attach
+          case caching
+          when 'ReadOnly'
+            managed_disk.caching = Azure::ARM::Compute::Models::CachingTypes::ReadOnly
+            puts 'ReadOnly'
+          when 'ReadWrite'
+            managed_disk.caching = Azure::ARM::Compute::Models::CachingTypes::ReadWrite
+            puts 'ReadWrite'
+          else
+            managed_disk.caching = Azure::ARM::Compute::Models::CachingTypes::None
+            puts 'None'
+          end
 
           # Managed disk parameter
           managed_disk_params = Azure::ARM::Compute::Models::ManagedDiskParameters.new

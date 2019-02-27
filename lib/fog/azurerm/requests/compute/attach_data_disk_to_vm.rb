@@ -3,7 +3,7 @@ module Fog
     class AzureRM
       # This class provides the actual implementation for service calls.
       class Real
-        def attach_data_disk_to_vm(disk_params, async, caching = 'None')
+        def attach_data_disk_to_vm(disk_params, async)
           # Variable un-packing for easy access
           vm_name = disk_params[:vm_name]
           vm_resource_group = disk_params[:vm_resource_group]
@@ -11,6 +11,7 @@ module Fog
           disk_resource_group = disk_params[:disk_resource_group]
           disk_size = disk_params[:disk_size_gb]
           storage_account_name = disk_params[:storage_account_name]
+          caching = disk_params[:caching] || 'None'
 
           msg = "Attaching Data Disk #{disk_name} to Virtual Machine #{vm_name} in Resource Group #{vm_resource_group}"
           Fog::Logger.debug msg
@@ -75,7 +76,7 @@ module Fog
           lun_range_list[0]
         end
 
-        def get_data_disk_object(disk_resource_group, disk_name, lun, caching = 'None')
+        def get_data_disk_object(disk_resource_group, disk_name, lun, caching)
           msg = "Getting Managed Disk #{disk_name} from Resource Group #{disk_resource_group}"
           begin
             disk = @compute_mgmt_client.disks.get(disk_resource_group, disk_name)
@@ -87,17 +88,16 @@ module Fog
           managed_disk.name = disk_name
           managed_disk.lun = lun
           managed_disk.create_option = Azure::ARM::Compute::Models::DiskCreateOptionTypes::Attach
-          case caching
-          when 'ReadOnly'
-            managed_disk.caching = Azure::ARM::Compute::Models::CachingTypes::ReadOnly
-            puts 'ReadOnly'
-          when 'ReadWrite'
-            managed_disk.caching = Azure::ARM::Compute::Models::CachingTypes::ReadWrite
-            puts 'ReadWrite'
-          else
-            managed_disk.caching = Azure::ARM::Compute::Models::CachingTypes::None
-            puts 'None'
-          end
+
+          # Managed Disk Caching Type
+          managed_disk.caching = case caching
+                                 when 'ReadOnly'
+                                   Azure::ARM::Compute::Models::CachingTypes::ReadOnly
+                                 when 'ReadWrite'
+                                   Azure::ARM::Compute::Models::CachingTypes::ReadWrite
+                                 else
+                                   Azure::ARM::Compute::Models::CachingTypes::None
+                                 end
 
           # Managed disk parameter
           managed_disk_params = Azure::ARM::Compute::Models::ManagedDiskParameters.new

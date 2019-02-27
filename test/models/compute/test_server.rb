@@ -216,10 +216,16 @@ class TestServer < Minitest::Test
     @service.stub :attach_data_disk_to_vm, response do
       assert_instance_of Fog::Compute::AzureRM::Server, @server.attach_managed_disk('disk_name', 'resoure_group')
     end
+    @service.stub :attach_data_disk_to_vm, response do
+      assert_instance_of Fog::Compute::AzureRM::Server, @server.attach_managed_disk('disk_name', 'resoure_group', 'ReadOnly')
+    end
+    @service.stub :attach_data_disk_to_vm, response do
+      assert_instance_of Fog::Compute::AzureRM::Server, @server.attach_managed_disk('disk_name', 'resoure_group', 'ReadWrite')
+    end
 
     async_response = Concurrent::Promise.execute { 10 }
     @service.stub :attach_data_disk_to_vm, async_response do
-      assert_instance_of Fog::AzureRM::AsyncResponse, @server.attach_managed_disk('managed_disk_name', 'resoure_group', true)
+      assert_instance_of Fog::AzureRM::AsyncResponse, @server.attach_managed_disk('managed_disk_name', 'resoure_group', nil, true)
     end
   end
 

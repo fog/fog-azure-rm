@@ -7,7 +7,7 @@ require 'yaml'
 ########################################################################################################################
 
 azure_credentials = YAML.load_file(File.expand_path('credentials/azure.yml', __dir__))
-puts azure_credentials
+
 rs = Fog::Resources::AzureRM.new(
   tenant_id: azure_credentials['tenant_id'],
   client_id: azure_credentials['client_id'],
@@ -261,6 +261,7 @@ begin
     }
   )
   puts "Created Managed Disk: #{managed_disk_rw.name}"
+
   ########################################################################################################################
   ######################                          Attach Managed Data Disk to VM                    ######################
   ########################################################################################################################
@@ -268,11 +269,11 @@ begin
   managed_vm.attach_managed_disk('ManagedDataDisk', 'TestRG-VM')
   puts 'Attached Managed Data Disk to VM!'
 
-  managed_vm.attach_managed_disk('ManagedDataDiskRO', 'TestRG-VM', false, 'ReadOnly')
-  puts 'Attached Managed Data Disk ReadOnly to VM!'
+  managed_vm.attach_managed_disk('ManagedDataDiskRO', 'TestRG-VM', 'ReadOnly')
+  puts 'Attached Managed Data Disk with Disk Caching ReadOnly to VM!'
 
-  managed_vm.attach_managed_disk('ManagedDataDiskRW', 'TestRG-VM', false, 'ReadWrite')
-  puts 'Attached Managed Data Disk ReadWrite to VM!'
+  managed_vm.attach_managed_disk('ManagedDataDiskRW', 'TestRG-VM', 'ReadWrite')
+  puts 'Attached Managed Data Disk with Disk Caching ReadWrite to VM!'
 
   ########################################################################################################################
   ######################                          Detach Data Disk from VM                          ######################
@@ -282,10 +283,10 @@ begin
   puts 'Detached Managed Data Disk from VM!'
 
   managed_vm.detach_managed_disk('ManagedDataDiskRO')
-  puts 'Detached Managed Data Disk ReadOnly from VM!'
+  puts 'Detached Managed Data Disk with Disk Caching ReadOnly from VM!'
 
   managed_vm.detach_managed_disk('ManagedDataDiskRW')
-  puts 'Detached Managed Data Disk ReadWrite from VM!'
+  puts 'Detached Managed Data Disk with Disk Caching ReadWrite from VM!'
 
   ########################################################################################################################
   ######################                         Delete Managed Data Disk                           ######################
@@ -295,10 +296,10 @@ begin
   puts 'Deleted managed data disk!'
 
   managed_disk_ro.destroy
-  puts 'Deleted managed data disk ReadOnly!'
+  puts 'Deleted managed data disk with Disk Caching ReadOnly!'
 
   managed_disk_rw.destroy
-  puts 'Deleted managed data disk ReadWrite!'
+  puts 'Deleted managed data disk with Disk Caching ReadWrite!'
 
   ########################################################################################################################
   ######################                      List VM in a resource group                           ######################

@@ -45,16 +45,16 @@ class TestAttachDataDiskToVM < Minitest::Test
     @virtual_machines.stub :get, @get_vm_response do
       @disks.stub :get, @get_managed_disk_response do
         @virtual_machines.stub :create_or_update, @get_vm_managed_disk_response do
-          input_params = { vm_name: 'ManagedVM', vm_resource_group: 'ManagedRG', disk_name: 'ManagedDataDisk1', disk_size_gb: 100, disk_resource_group: 'ManagedRG' }
-          assert_equal @service.attach_data_disk_to_vm(input_params, false, 'ReadOnly'), @get_vm_managed_disk_response
+          input_params = { vm_name: 'ManagedVM', vm_resource_group: 'ManagedRG', disk_name: 'ManagedDataDisk1', disk_size_gb: 100, disk_resource_group: 'ManagedRG', caching: 'ReadOnly' }
+          assert_equal @service.attach_data_disk_to_vm(input_params, false), @get_vm_managed_disk_response
         end
       end
     end
     @virtual_machines.stub :get, @get_vm_response do
       @disks.stub :get, @get_managed_disk_response do
         @virtual_machines.stub :create_or_update, @get_vm_managed_disk_response do
-          input_params = { vm_name: 'ManagedVM', vm_resource_group: 'ManagedRG', disk_name: 'ManagedDataDisk1', disk_size_gb: 100, disk_resource_group: 'ManagedRG' }
-          assert_equal @service.attach_data_disk_to_vm(input_params, false, 'ReadWrite'), @get_vm_managed_disk_response
+          input_params = { vm_name: 'ManagedVM', vm_resource_group: 'ManagedRG', disk_name: 'ManagedDataDisk1', disk_size_gb: 100, disk_resource_group: 'ManagedRG', caching: 'ReadWrite' }
+          assert_equal @service.attach_data_disk_to_vm(input_params, false), @get_vm_managed_disk_response
         end
       end
     end

@@ -1,3 +1,8 @@
+## 0.5.0
+
+**Added**
+- Asynchronous creation of Network Interface Card 
+
 ## 0.4.9
 
 **Added**

@@ -310,10 +310,10 @@ fog_compute_service.managed_disks.create(
 
 ## Attach a Managed Data Disk to Server
 
-Get the server object and attach a Data Disk with Disk Caching Type to it. Possible <Disk Caching Type> values include: "None", "ReadOnly", "ReadWrite". By Default "None" set.
+Get the server object and attach a Data Disk with Disk Caching Option to it. Possible <Disk Caching Option> values include: "None", "ReadOnly", "ReadWrite". By Default "None" set.
 
 ```ruby
-server.attach_managed_disk('<Disk Name>', '<Disk Resource Group Name>', '<Disk Caching Type>')
+server.attach_managed_disk('<Disk Name>', '<Disk Resource Group Name>', '<Async Option>', '<Disk Caching Option>')
 ```
 
 ## Detach a Managed Data Disk from Server

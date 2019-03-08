@@ -269,10 +269,10 @@ begin
   managed_vm.attach_managed_disk('ManagedDataDisk', 'TestRG-VM')
   puts 'Attached Managed Data Disk to VM!'
 
-  managed_vm.attach_managed_disk('ManagedDataDiskRO', 'TestRG-VM', 'ReadOnly')
+  managed_vm.attach_managed_disk('ManagedDataDiskRO', 'TestRG-VM', false, 'ReadOnly')
   puts 'Attached Managed Data Disk with Disk Caching ReadOnly to VM!'
 
-  managed_vm.attach_managed_disk('ManagedDataDiskRW', 'TestRG-VM', 'ReadWrite')
+  managed_vm.attach_managed_disk('ManagedDataDiskRW', 'TestRG-VM', false, 'ReadWrite')
   puts 'Attached Managed Data Disk with Disk Caching ReadWrite to VM!'
 
   ########################################################################################################################

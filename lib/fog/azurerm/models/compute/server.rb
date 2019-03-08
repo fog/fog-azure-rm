@@ -173,7 +173,7 @@ module Fog
           async ? create_fog_async_response(response) : merge_attributes(Fog::Compute::AzureRM::Server.parse(response))
         end
 
-        def attach_managed_disk(disk_name, disk_resource_group, caching = 'None', async = false)
+        def attach_managed_disk(disk_name, disk_resource_group, async = false, caching = 'None')
           response = service.attach_data_disk_to_vm(data_disk_params(disk_name, nil, nil, disk_resource_group, caching), async)
           async ? create_fog_async_response(response) : merge_attributes(Fog::Compute::AzureRM::Server.parse(response))
         end

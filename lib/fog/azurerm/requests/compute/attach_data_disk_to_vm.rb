@@ -11,7 +11,7 @@ module Fog
           disk_resource_group = disk_params[:disk_resource_group]
           disk_size = disk_params[:disk_size_gb]
           storage_account_name = disk_params[:storage_account_name]
-          caching = disk_params[:caching] || 'None'
+          caching = disk_params[:caching] || nil
 
           msg = "Attaching Data Disk #{disk_name} to Virtual Machine #{vm_name} in Resource Group #{vm_resource_group}"
           Fog::Logger.debug msg
@@ -95,8 +95,10 @@ module Fog
                                    Azure::ARM::Compute::Models::CachingTypes::ReadOnly
                                  when 'ReadWrite'
                                    Azure::ARM::Compute::Models::CachingTypes::ReadWrite
-                                 else
+                                 when 'None', nil
                                    Azure::ARM::Compute::Models::CachingTypes::None
+                                 else
+                                   raise "Invalid Disk Caching Option: #{caching}"
                                  end
 
           # Managed disk parameter

@@ -134,7 +134,7 @@ begin
     name: 'TestVM-Managed',
     location: LOCATION,
     resource_group: 'TestRG-VM',
-    vm_size: 'Basic_A0',
+    vm_size: 'Standard_B2s',
     storage_account_name: nil,
     username: 'testuser',
     password: 'Confiz=123',
@@ -238,12 +238,42 @@ begin
   )
   puts "Created Managed Disk: #{managed_disk.name}"
 
+  managed_disk_ro = compute.managed_disks.create(
+    name: 'ManagedDataDiskRO',
+    location: LOCATION,
+    resource_group_name: 'TestRG-VM',
+    account_type: 'Standard_LRS',
+    disk_size_gb: 100,
+    creation_data: {
+      create_option: 'Empty'
+    }
+  )
+  puts "Created Managed Disk: #{managed_disk_ro.name}"
+
+  managed_disk_rw = compute.managed_disks.create(
+    name: 'ManagedDataDiskRW',
+    location: LOCATION,
+    resource_group_name: 'TestRG-VM',
+    account_type: 'Standard_LRS',
+    disk_size_gb: 100,
+    creation_data: {
+      create_option: 'Empty'
+    }
+  )
+  puts "Created Managed Disk: #{managed_disk_rw.name}"
+
   ########################################################################################################################
   ######################                          Attach Managed Data Disk to VM                    ######################
   ########################################################################################################################
 
   managed_vm.attach_managed_disk('ManagedDataDisk', 'TestRG-VM')
   puts 'Attached Managed Data Disk to VM!'
+
+  managed_vm.attach_managed_disk('ManagedDataDiskRO', 'TestRG-VM', false, 'ReadOnly')
+  puts 'Attached Managed Data Disk with Disk Caching ReadOnly to VM!'
+
+  managed_vm.attach_managed_disk('ManagedDataDiskRW', 'TestRG-VM', false, 'ReadWrite')
+  puts 'Attached Managed Data Disk with Disk Caching ReadWrite to VM!'
 
   ########################################################################################################################
   ######################                          Detach Data Disk from VM                          ######################
@@ -252,12 +282,24 @@ begin
   managed_vm.detach_managed_disk('ManagedDataDisk')
   puts 'Detached Managed Data Disk from VM!'
 
+  managed_vm.detach_managed_disk('ManagedDataDiskRO')
+  puts 'Detached Managed Data Disk with Disk Caching ReadOnly from VM!'
+
+  managed_vm.detach_managed_disk('ManagedDataDiskRW')
+  puts 'Detached Managed Data Disk with Disk Caching ReadWrite from VM!'
+
   ########################################################################################################################
   ######################                         Delete Managed Data Disk                           ######################
   ########################################################################################################################
 
   managed_disk.destroy
   puts 'Deleted managed data disk!'
+
+  managed_disk_ro.destroy
+  puts 'Deleted managed data disk with Disk Caching ReadOnly!'
+
+  managed_disk_rw.destroy
+  puts 'Deleted managed data disk with Disk Caching ReadWrite!'
 
   ########################################################################################################################
   ######################                      List VM in a resource group                           ######################

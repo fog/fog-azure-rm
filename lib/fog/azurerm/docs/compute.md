@@ -160,7 +160,7 @@ async_response = fog_compute_service.servers.create_async(
         os_disk_name: '<Disk Name>'                          # [Optional], name of the os disk
 )
 ```
-Following methods are available to handle async respoonse:
+Following methods are available to handle async response:
 - state
 - pending?
 - rejected?
@@ -310,10 +310,10 @@ fog_compute_service.managed_disks.create(
 
 ## Attach a Managed Data Disk to Server
 
-Get the server object and attach a Data Disk to it.
+Get the server object and attach a Data Disk with Disk Caching Option to it. Possible <Disk Caching Option> values include: "None", "ReadOnly", "ReadWrite". By Default "None" set.
 
 ```ruby
-server.attach_managed_disk('<Disk Name>', '<Disk Resource Group Name>')
+server.attach_managed_disk('<Disk Name>', '<Disk Resource Group Name>', '<Async Option>', '<Disk Caching Option>')
 ```
 
 ## Detach a Managed Data Disk from Server

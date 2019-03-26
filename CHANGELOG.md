@@ -1,3 +1,8 @@
+## 0.5.1
+
+**Added**
+- Added Managed Disk Caching Option
+
 ## 0.5.0
 
 **Added**

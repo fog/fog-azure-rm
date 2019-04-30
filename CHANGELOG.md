@@ -1,3 +1,8 @@
+## 0.5.2
+
+**Added**
+- Printing Information from `AzureOperationError` Response Headers
+
 ## 0.5.1
 
 **Added**

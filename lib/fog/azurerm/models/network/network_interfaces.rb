@@ -15,6 +15,12 @@ module Fog
           load(network_interfaces)
         end
 
+        def create_async(attributes = {})
+          network_interface = new(attributes)
+          promise = network_interface.save(true)
+          Fog::AzureRM::AsyncResponse.new(network_interface, promise)
+        end
+
         def get(resource_group_name, name)
           network_interface_card = service.get_network_interface(resource_group_name, name)
           network_interface_card_fog = Fog::Network::AzureRM::NetworkInterface.new(service: service)

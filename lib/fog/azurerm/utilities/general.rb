@@ -50,8 +50,11 @@ end
 
 def raise_azure_exception(exception, msg)
   raise Fog::AzureRM::CustomAzureCoreHttpError.new(exception) if exception.is_a?(Azure::Core::Http::HTTPError)
-  raise Fog::AzureRM::CustomAzureOperationError.new(msg, exception) if exception.is_a?(MsRestAzure::AzureOperationError)
-  raise exception
+  raise exception unless exception.is_a?(MsRestAzure::AzureOperationError)
+
+  azure_operation_error = Fog::AzureRM::CustomAzureOperationError.new(msg, exception)
+  azure_operation_error.print_subscription_limits_information if !azure_operation_error.request.nil? && !azure_operation_error.response.nil?
+  raise azure_operation_error
 end
 
 # Make sure if input_params(Hash) contains all keys present in required_params(Array)

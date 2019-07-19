@@ -21,7 +21,7 @@ module Fog
         attribute :time_created
         attribute :creation_data
         attribute :os_type
-        attribute :encryption_settings
+        attribute :encryption_settings_collection
 
         def self.parse(managed_disk)
           disk = get_hash_from_object(managed_disk)
@@ -31,9 +31,9 @@ module Fog
             disk['creation_data'] = creation_data.merge_attributes(Fog::Compute::AzureRM::CreationData.parse(managed_disk.creation_data))
           end
 
-          unless managed_disk.encryption_settings.nil?
-            encryption_settings = Fog::Compute::AzureRM::EncryptionSettings.new
-            disk['encryption_settings'] = encryption_settings.merge_attributes(Fog::Compute::AzureRM::EncryptionSettings.parse(managed_disk.encryption_settings))
+          unless managed_disk.encryption_settings_collection.nil?
+            encryption_settings = Fog::Compute::AzureRM::EncryptionSettingsCollection.new
+            disk['encryption_settings'] = encryption_settings.merge_attributes(Fog::Compute::AzureRM::EncryptionSettingsCollection.parse(managed_disk.encryption_settings))
           end
 
           disk['resource_group_name'] = get_resource_group_from_id(managed_disk.id)
@@ -96,7 +96,7 @@ module Fog
             disk_size_gb: disk_size_gb,
             tags: tags,
             creation_data: creation_data.attributes,
-            encryption_settings: encryption_settings
+            encryption_settings: encryption_settings_collection
           }
         end
 

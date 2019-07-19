@@ -92,11 +92,11 @@ module Fog
           # Managed Disk Caching Type
           managed_disk.caching = case caching
                                  when 'ReadOnly'
-                                   Azure::ARM::Compute::Models::CachingTypes::ReadOnly
+                                   Azure::Compute::Profiles::Latest::Mgmt::Models::CachingTypes::ReadOnly
                                  when 'ReadWrite'
-                                   Azure::ARM::Compute::Models::CachingTypes::ReadWrite
+                                   Azure::Compute::Profiles::Latest::Mgmt::Models::CachingTypes::ReadWrite
                                  when 'None', nil
-                                   Azure::ARM::Compute::Models::CachingTypes::None
+                                   Azure::Compute::Profiles::Latest::Mgmt::Models::CachingTypes::None
                                  else
                                    raise "Invalid Disk Caching Option: #{caching}"
                                  end

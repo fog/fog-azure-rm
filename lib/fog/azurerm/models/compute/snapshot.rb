@@ -13,7 +13,7 @@ module Fog
         attribute :tags
         attribute :time_created
         attribute :creation_data
-        attribute :encryption_settings
+        attribute :encryption_settings_collection
         attribute :type
         attribute :owner_id
         attribute :provisioning_state
@@ -52,8 +52,8 @@ module Fog
         end
 
         def self.parse_encryption_settings_object(azure_sdk_encryption_settings)
-          encryption_settings = Fog::Compute::AzureRM::EncryptionSettings.new
-          encryption_settings.merge_attributes(Fog::Compute::AzureRM::EncryptionSettings.parse(azure_sdk_encryption_settings))
+          encryption_settings = Fog::Compute::AzureRM::EncryptionSettingsCollection.new
+          encryption_settings.merge_attributes(Fog::Compute::AzureRM::EncryptionSettingsCollection.parse(azure_sdk_encryption_settings))
         end
 
         private_class_method :parse_creation_data, :parse_encryption_settings_object
@@ -81,7 +81,7 @@ module Fog
             resource_group_name: resource_group_name,
             tags: tags,
             creation_data: creation_data.attributes,
-            encryption_settings: encryption_settings
+            encryption_settings: encryption_settings_collection
           }
         end
 

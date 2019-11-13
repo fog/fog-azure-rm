@@ -27,7 +27,7 @@ module Fog
 
         # create the properties object for creating availability sets
         def get_availability_set_properties(location, fault_domain_count, update_domain_count, use_managed_disk, tags)
-          avail_set = Azure::ARM::Compute::Models::AvailabilitySet.new
+          avail_set = Azure::Compute::Profiles::Latest::Mgmt::Models::AvailabilitySet.new
           avail_set.location = location
           avail_set.sku = create_availability_set_sku(use_managed_disk)
           avail_set.platform_fault_domain_count = fault_domain_count.nil? ? FAULT_DOMAIN_COUNT : fault_domain_count
@@ -37,7 +37,7 @@ module Fog
         end
 
         def create_availability_set_sku(use_managed_disk)
-          sku = Azure::ARM::Compute::Models::Sku.new
+          sku = Azure::Compute::Profiles::Latest::Mgmt::Models::Sku.new
           sku.name = use_managed_disk ? AS_SKU_ALIGNED : AS_SKU_CLASSIC
           sku
         end

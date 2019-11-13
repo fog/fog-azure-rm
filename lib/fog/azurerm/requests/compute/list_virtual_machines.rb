@@ -60,7 +60,7 @@ module Fog
               }
             ]
           }
-          vm_mapper = Azure::ARM::Compute::Models::VirtualMachineListResult.mapper
+          vm_mapper = Azure::Compute::Profiles::Latest::Mgmt::Models::VirtualMachineListResult.mapper
           @compute_mgmt_client.deserialize(vm_mapper, vms, 'result.body').value
         end
       end

@@ -36,7 +36,7 @@ module Fog
               'defaultSites' => ['mysite1']
             }
           }
-          gateway_mapper = Azure::ARM::Network::Models::VirtualNetworkGateway.mapper
+          gateway_mapper = Azure::Network::Profiles::Latest::Mgmt::Models::VirtualNetworkGateway.mapper
           @network_client.deserialize(gateway_mapper, gateway, 'result.body')
         end
       end

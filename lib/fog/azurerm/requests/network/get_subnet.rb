@@ -28,7 +28,7 @@ module Fog
               },
             'name' => 'fog-subnet'
           }
-          subnet_mapper = Azure::ARM::Network::Models::Subnet.mapper
+          subnet_mapper = Azure::Network::Profiles::Latest::Mgmt::Models::Subnet.mapper
           @network_client.deserialize(subnet_mapper, subnet, 'result.body')
         end
       end

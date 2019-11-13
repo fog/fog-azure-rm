@@ -162,7 +162,7 @@ module ApiStub
             'disk_size_gb' => 100,
             'provisioning_state' => 'Succeeded'
           }
-          vm_mapper = Azure::ARM::Compute::Models::Disk.mapper
+          vm_mapper = Azure::Compute::Profiles::Latest::Mgmt::Models::Disk.mapper
           compute_client.deserialize(vm_mapper, body, 'result.body')
         end
 
@@ -214,7 +214,7 @@ module ApiStub
             'vm_id' => '73f38ae6-4767-4325-bd78-9ba4e74337d9'
           }
 
-          vm_mapper = Azure::ARM::Compute::Models::VirtualMachine.mapper
+          vm_mapper = Azure::Compute::Profiles::Latest::Mgmt::Models::VirtualMachine.mapper
           compute_client.deserialize(vm_mapper, body, 'result.body')
         end
 
@@ -292,7 +292,7 @@ module ApiStub
               }
             }
           }'
-          vm_mapper = Azure::ARM::Compute::Models::VirtualMachine.mapper
+          vm_mapper = Azure::Compute::Profiles::Latest::Mgmt::Models::VirtualMachine.mapper
           compute_client.deserialize(vm_mapper, Fog::JSON.decode(body), 'result.body')
         end
 
@@ -370,7 +370,7 @@ module ApiStub
               }
             }
           }'
-          vm_mapper = Azure::ARM::Compute::Models::VirtualMachine.mapper
+          vm_mapper = Azure::Compute::Profiles::Latest::Mgmt::Models::VirtualMachine.mapper
           compute_client.deserialize(vm_mapper, Fog::JSON.decode(body), 'result.body')
         end
 
@@ -448,7 +448,7 @@ module ApiStub
               }
             }
           }'
-          vm_mapper = Azure::ARM::Compute::Models::VirtualMachine.mapper
+          vm_mapper = Azure::Compute::Profiles::Latest::Mgmt::Models::VirtualMachine.mapper
           compute_client.deserialize(vm_mapper, Fog::JSON.decode(body), 'result.body')
         end
 
@@ -518,7 +518,7 @@ module ApiStub
               }
             }
           }'
-          vm_mapper = Azure::ARM::Compute::Models::VirtualMachine.mapper
+          vm_mapper = Azure::Compute::Profiles::Latest::Mgmt::Models::VirtualMachine.mapper
           compute_client.deserialize(vm_mapper, Fog::JSON.decode(body), 'result.body')
         end
 
@@ -625,7 +625,7 @@ module ApiStub
                   }
               }
           }
-          vm_mapper = Azure::ARM::Compute::Models::VirtualMachine.mapper
+          vm_mapper = Azure::Compute::Profiles::Latest::Mgmt::Models::VirtualMachine.mapper
           compute_client.deserialize(vm_mapper, body, 'result.body')
         end
 
@@ -707,7 +707,7 @@ module ApiStub
               }
             ]
           }'
-          vm_mapper = Azure::ARM::Compute::Models::VirtualMachineListResult.mapper
+          vm_mapper = Azure::Compute::Profiles::Latest::Mgmt::Models::VirtualMachineListResult.mapper
           compute_client.deserialize(vm_mapper, Fog::JSON.decode(body), 'result.body')
         end
 
@@ -724,7 +724,7 @@ module ApiStub
               }
             ]
           }'
-          vm_mapper = Azure::ARM::Compute::Models::VirtualMachineSizeListResult.mapper
+          vm_mapper = Azure::Compute::Profiles::Latest::Mgmt::Models::VirtualMachineSizeListResult.mapper
           compute_client.deserialize(vm_mapper, Fog::JSON.decode(body), 'result.body')
         end
 
@@ -781,7 +781,7 @@ module ApiStub
                   }
               }
             }'
-          vm_mapper = Azure::ARM::Compute::Models::VirtualMachine.mapper
+          vm_mapper = Azure::Compute::Profiles::Latest::Mgmt::Models::VirtualMachine.mapper
           compute_client.deserialize(vm_mapper, Fog::JSON.decode(body), 'result.body')
         end
 
@@ -873,7 +873,7 @@ module ApiStub
                   }
                 }
               }'
-          vm_mapper = Azure::ARM::Compute::Models::VirtualMachine.mapper
+          vm_mapper = Azure::Compute::Profiles::Latest::Mgmt::Models::VirtualMachine.mapper
           compute_client.deserialize(vm_mapper, Fog::JSON.decode(body), 'result.body')
         end
 
@@ -1017,7 +1017,7 @@ module ApiStub
                   }
                 }
               }'
-          vm_mapper = Azure::ARM::Compute::Models::VirtualMachine.mapper
+          vm_mapper = Azure::Compute::Profiles::Latest::Mgmt::Models::VirtualMachine.mapper
           compute_client.deserialize(vm_mapper, Fog::JSON.decode(body), 'result.body')
         end
       end

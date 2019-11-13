@@ -9,7 +9,7 @@ class TestGrantAccessToManagedDisk < Minitest::Test
   end
 
   def test_grant_access_to_managed_disk_success
-    mocked_response = Azure::ARM::Compute::Models::AccessUri.new
+    mocked_response = Azure::Compute::Profiles::Latest::Mgmt::Models::AccessUri.new
     mocked_response.stub :access_sas, 'xxxxxxxx-xxxx-xxxx-xxxxxxxx' do
       @managed_disks.stub :grant_access, mocked_response do
         assert_equal @service.grant_access_to_managed_disk('myrg1', 'disk1', 'Read', 100), 'xxxxxxxx-xxxx-xxxx-xxxxxxxx'

@@ -25,18 +25,18 @@ module Fog
 
         def get_network_interface_object(name, location, subnet_id, public_ip_address_id, network_security_group_id, ip_config_name, private_ip_allocation_method, private_ip_address, load_balancer_backend_address_pools_ids, load_balancer_inbound_nat_rules_ids, tags, enable_accelerated_networking)
           if public_ip_address_id
-            public_ipaddress = Azure::ARM::Network::Models::PublicIPAddress.new
+            public_ipaddress = Azure::Network::Profiles::Latest::Mgmt::Models::PublicIPAddress.new
             public_ipaddress.id = public_ip_address_id
           end
 
-          ip_configs = Azure::ARM::Network::Models::NetworkInterfaceIPConfiguration.new
+          ip_configs = Azure::Network::Profiles::Latest::Mgmt::Models::NetworkInterfaceIPConfiguration.new
           ip_configs.name = ip_config_name
           ip_configs.private_ipallocation_method = private_ip_allocation_method
           ip_configs.private_ipaddress = private_ip_address
           ip_configs.public_ipaddress = public_ipaddress unless public_ip_address_id.nil?
 
           if subnet_id
-            subnet = Azure::ARM::Network::Models::Subnet.new
+            subnet = Azure::Network::Profiles::Latest::Mgmt::Models::Subnet.new
             subnet.id = subnet_id
             ip_configs.subnet = subnet
           end
@@ -44,7 +44,7 @@ module Fog
           if load_balancer_backend_address_pools_ids
             ip_configs.load_balancer_backend_address_pools = []
             load_balancer_backend_address_pools_ids.each do |load_balancer_backend_address_pools_id|
-              backend_pool = Azure::ARM::Network::Models::BackendAddressPool.new
+              backend_pool = Azure::Network::Profiles::Latest::Mgmt::Models::BackendAddressPool.new
               backend_pool.id = load_balancer_backend_address_pools_id
               ip_configs.load_balancer_backend_address_pools.push(backend_pool)
             end
@@ -53,13 +53,13 @@ module Fog
           if load_balancer_inbound_nat_rules_ids
             ip_configs.load_balancer_inbound_nat_rules = []
             load_balancer_inbound_nat_rules_ids.each do |load_balancer_inbound_nat_rules_id|
-              inbound_nat_rule = Azure::ARM::Network::Models::InboundNatRule.new
+              inbound_nat_rule = Azure::Network::Profiles::Latest::Mgmt::Models::InboundNatRule.new
               inbound_nat_rule.id = load_balancer_inbound_nat_rules_id
               ip_configs.load_balancer_inbound_nat_rules.push(inbound_nat_rule)
             end
           end
 
-          network_interface = Azure::ARM::Network::Models::NetworkInterface.new
+          network_interface = Azure::Network::Profiles::Latest::Mgmt::Models::NetworkInterface.new
           network_interface.name = name
           network_interface.location = location
           network_interface.ip_configurations = [ip_configs]
@@ -67,7 +67,7 @@ module Fog
           network_interface.enable_accelerated_networking = enable_accelerated_networking
 
           if network_security_group_id
-            network_security_group = Azure::ARM::Network::Models::NetworkSecurityGroup.new
+            network_security_group = Azure::Network::Profiles::Latest::Mgmt::Models::NetworkSecurityGroup.new
             network_security_group.id = network_security_group_id
             network_interface.network_security_group = network_security_group
           end
@@ -117,7 +117,7 @@ module Fog
                 'provisioningState' => 'Succeeded'
               }
           }
-          network_interface_mapper = Azure::ARM::Network::Models::NetworkInterface.mapper
+          network_interface_mapper = Azure::Network::Profiles::Latest::Mgmt::Models::NetworkInterface.mapper
           @network_client.deserialize(network_interface_mapper, nic, 'result.body')
         end
       end

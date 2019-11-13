@@ -19,7 +19,7 @@ module Fog
         private
 
         def define_application_gateway(gateway_params)
-          application_gateway = Azure::ARM::Network::Models::ApplicationGateway.new
+          application_gateway = Azure::Network::Profiles::Latest::Mgmt::Models::ApplicationGateway.new
           application_gateway.name = gateway_params[:name]
           application_gateway.location = gateway_params[:location]
 
@@ -35,7 +35,7 @@ module Fog
           application_gateway.request_routing_rules = define_request_routing_rules(gateway_params[:request_routing_rules]) if gateway_params[:request_routing_rules]
           application_gateway.tags = gateway_params[:tags]
 
-          gateway_sku = Azure::ARM::Network::Models::ApplicationGatewaySku.new
+          gateway_sku = Azure::Network::Profiles::Latest::Mgmt::Models::ApplicationGatewaySku.new
           gateway_sku.name = gateway_params[:sku_name]
           gateway_sku.tier = gateway_params[:sku_tier]
           gateway_sku.capacity = gateway_params[:sku_capacity]
@@ -47,10 +47,10 @@ module Fog
         def define_gateway_ip_configuration(gateway_ip_configurations)
           gateway_ip_configuration_arr = []
           gateway_ip_configurations.each do |ip_configuration|
-            configuration = Azure::ARM::Network::Models::ApplicationGatewayIPConfiguration.new
+            configuration = Azure::Network::Profiles::Latest::Mgmt::Models::ApplicationGatewayIPConfiguration.new
             configuration.provisioning_state = ip_configuration[:provisioning_state]
             if ip_configuration[:subnet_id]
-              subnet = Azure::ARM::Network::Models::Subnet.new
+              subnet = Azure::Network::Profiles::Latest::Mgmt::Models::Subnet.new
               subnet.id = ip_configuration[:subnet_id]
               configuration.subnet = subnet
             end
@@ -64,7 +64,7 @@ module Fog
         def define_ssl_certificate(ssl_certificates)
           ssl_certificate_arr = []
           ssl_certificates.each do |ssl_certificate|
-            certificate = Azure::ARM::Network::Models::ApplicationGatewaySslCertificate.new
+            certificate = Azure::Network::Profiles::Latest::Mgmt::Models::ApplicationGatewaySslCertificate.new
             certificate.data = ssl_certificate[:data]
             certificate.password = ssl_certificate[:password]
             certificate.public_cert_data = ssl_certificate[:public_cert_data]
@@ -78,19 +78,19 @@ module Fog
         def define_frontend_ip_configurations(frontend_ip_configurations)
           frontend_ip_configuration_arr = []
           frontend_ip_configurations.each do |fic|
-            frontend_ip_configuration = Azure::ARM::Network::Models::ApplicationGatewayFrontendIPConfiguration.new
+            frontend_ip_configuration = Azure::Network::Profiles::Latest::Mgmt::Models::ApplicationGatewayFrontendIPConfiguration.new
 
             frontend_ip_configuration.private_ipaddress = fic[:private_ip_address]
             frontend_ip_configuration.private_ipallocation_method = fic[:private_ip_allocation_method]
 
             if fic[:subnet_id]
-              subnet = Azure::ARM::Network::Models::Subnet.new
+              subnet = Azure::Network::Profiles::Latest::Mgmt::Models::Subnet.new
               subnet.id = fic[:subnet_id]
               frontend_ip_configuration.subnet = subnet
             end
 
             unless fic[:public_ip_address_id].nil?
-              pip = Azure::ARM::Network::Models::PublicIPAddress.new
+              pip = Azure::Network::Profiles::Latest::Mgmt::Models::PublicIPAddress.new
               pip.id = fic[:public_ip_address_id]
               frontend_ip_configuration.public_ipaddress = pip
             end
@@ -105,7 +105,7 @@ module Fog
         def define_frontend_ports(frontend_ports)
           frontend_port_arr = []
           frontend_ports.each do |port|
-            frontend_port = Azure::ARM::Network::Models::ApplicationGatewayFrontendPort.new
+            frontend_port = Azure::Network::Profiles::Latest::Mgmt::Models::ApplicationGatewayFrontendPort.new
 
             frontend_port.port = port[:port]
             frontend_port.name = port[:name]
@@ -118,7 +118,7 @@ module Fog
         def define_probes(probes)
           probe_arr = []
           probes.each do |probe|
-            ag_probe = Azure::ARM::Network::Models::ApplicationGatewayProbe.new
+            ag_probe = Azure::Network::Profiles::Latest::Mgmt::Models::ApplicationGatewayProbe.new
             ag_probe.protocol = probe[:protocol]
             ag_probe.host = probe[:host]
             ag_probe.path = probe[:path]
@@ -136,12 +136,12 @@ module Fog
           backend_address_pool_arr = []
 
           backend_address_pools.each do |bap|
-            backend_pool = Azure::ARM::Network::Models::ApplicationGatewayBackendAddressPool.new
+            backend_pool = Azure::Network::Profiles::Latest::Mgmt::Models::ApplicationGatewayBackendAddressPool.new
 
             backend_addresses1 = bap[:ip_addresses]
             addresses = []
             backend_addresses1.each do |address|
-              backend_add = Azure::ARM::Network::Models::ApplicationGatewayBackendAddress.new
+              backend_add = Azure::Network::Profiles::Latest::Mgmt::Models::ApplicationGatewayBackendAddress.new
               backend_add.ip_address = address[:ipAddress]
               addresses.push(backend_add)
             end
@@ -157,13 +157,13 @@ module Fog
           backend_http_setting_arr = []
 
           backend_http_settings_list.each do |http_setting|
-            backend_http_setting = Azure::ARM::Network::Models::ApplicationGatewayBackendHttpSettings.new
+            backend_http_setting = Azure::Network::Profiles::Latest::Mgmt::Models::ApplicationGatewayBackendHttpSettings.new
             backend_http_setting.port = http_setting[:port]
             backend_http_setting.protocol = http_setting[:protocol]
             backend_http_setting.cookie_based_affinity = http_setting[:cookie_based_affinity]
             backend_http_setting.request_timeout = http_setting[:request_timeout]
             if http_setting[:probe]
-              probe = Azure::ARM::Network::Models::Probe.new
+              probe = Azure::Network::Profiles::Latest::Mgmt::Models::Probe.new
               probe.id = http_setting[:probe]
               backend_http_setting.probe = probe
             end
@@ -178,23 +178,23 @@ module Fog
           http_listener_arr = []
 
           http_listeners.each do |listener|
-            http_listener = Azure::ARM::Network::Models::ApplicationGatewayHttpListener.new
+            http_listener = Azure::Network::Profiles::Latest::Mgmt::Models::ApplicationGatewayHttpListener.new
 
             http_listener.protocol = listener[:protocol]
             http_listener.host_name = listener[:host_name]
             http_listener.require_server_name_indication = listener[:require_server_name_indication]
             if listener[:frontend_ip_config_id]
-              frontend_ip = Azure::ARM::Network::Models::FrontendIPConfiguration.new
+              frontend_ip = Azure::Network::Profiles::Latest::Mgmt::Models::FrontendIPConfiguration.new
               frontend_ip.id = listener[:frontend_ip_config_id]
               http_listener.frontend_ipconfiguration = frontend_ip
             end
             if listener[:frontend_port_id]
-              frontend_port = Azure::ARM::Network::Models::ApplicationGatewayFrontendPort.new
+              frontend_port = Azure::Network::Profiles::Latest::Mgmt::Models::ApplicationGatewayFrontendPort.new
               frontend_port.id = listener[:frontend_port_id]
               http_listener.frontend_port = frontend_port
             end
             if listener[:ssl_certificate_id]
-              ssl_cert = Azure::ARM::Network::Models::ApplicationGatewaySslCertificate.new
+              ssl_cert = Azure::Network::Profiles::Latest::Mgmt::Models::ApplicationGatewaySslCertificate.new
               ssl_cert.id = listener[:ssl_certificate_id]
               http_listener.ssl_certificate = ssl_cert
             end
@@ -209,15 +209,15 @@ module Fog
           url_path_map_arr = []
 
           url_path_maps.each do |map|
-            url_path_map = Azure::ARM::Network::Models::ApplicationGatewayUrlPathMap.new
+            url_path_map = Azure::Network::Profiles::Latest::Mgmt::Models::ApplicationGatewayUrlPathMap.new
 
             if map[:default_backend_address_pool_id]
-              default_backend_address_pool = Azure::ARM::Network::Models::BackendAddressPool.new
+              default_backend_address_pool = Azure::Network::Profiles::Latest::Mgmt::Models::BackendAddressPool.new
               default_backend_address_pool.id = map[:default_backend_address_pool_id]
               url_path_map.default_backend_address_pool = default_backend_address_pool
             end
             if map[:default_backend_http_settings_id]
-              default_backend_http_setting = Azure::ARM::Network::Models::ApplicationGatewayBackendHttpSettings.new
+              default_backend_http_setting = Azure::Network::Profiles::Latest::Mgmt::Models::ApplicationGatewayBackendHttpSettings.new
               default_backend_http_setting.id = map[:default_backend_http_settings_id]
               url_path_map.default_backend_http_settings = default_backend_http_setting
             end
@@ -237,14 +237,14 @@ module Fog
         def define_path_rules(path_rules)
           path_rule_arr = []
           path_rules.each do |rule|
-            path_rule = Azure::ARM::Network::Models::ApplicationGatewayPathRule.new
+            path_rule = Azure::Network::Profiles::Latest::Mgmt::Models::ApplicationGatewayPathRule.new
             if rule[:backend_address_pool_id]
-              backend_address_pool = Azure::ARM::Network::Models::BackendAddressPool.new
+              backend_address_pool = Azure::Network::Profiles::Latest::Mgmt::Models::BackendAddressPool.new
               backend_address_pool.id = rule[:backend_address_pool_id]
               path_rule.backend_address_pool = backend_address_pool
             end
             if rule[:backend_http_settings_id]
-              backend_http_setting = Azure::ARM::Network::Models::ApplicationGatewayBackendHttpSettings.new
+              backend_http_setting = Azure::Network::Profiles::Latest::Mgmt::Models::ApplicationGatewayBackendHttpSettings.new
               backend_http_setting.id = rule[:backend_http_settings_id]
               path_rule.backend_http_settings = backend_http_setting
             end
@@ -266,21 +266,21 @@ module Fog
           request_routing_rule_arr = []
 
           request_routing_rules.each do |rule|
-            request_routing_rule = Azure::ARM::Network::Models::ApplicationGatewayRequestRoutingRule.new
+            request_routing_rule = Azure::Network::Profiles::Latest::Mgmt::Models::ApplicationGatewayRequestRoutingRule.new
 
             request_routing_rule.rule_type = rule[:type]
             if rule[:http_listener_id]
-              http_listener = Azure::ARM::Network::Models::ApplicationGatewayHttpListener.new
+              http_listener = Azure::Network::Profiles::Latest::Mgmt::Models::ApplicationGatewayHttpListener.new
               http_listener.id = rule[:http_listener_id]
               request_routing_rule.http_listener = http_listener
             end
             if rule[:backend_address_pool_id]
-              backend_address_pool = Azure::ARM::Network::Models::BackendAddressPool.new
+              backend_address_pool = Azure::Network::Profiles::Latest::Mgmt::Models::BackendAddressPool.new
               backend_address_pool.id = rule[:backend_address_pool_id]
               request_routing_rule.backend_address_pool = backend_address_pool
             end
             if rule[:backend_http_settings_id]
-              backend_http_setting = Azure::ARM::Network::Models::ApplicationGatewayBackendHttpSettings.new
+              backend_http_setting = Azure::Network::Profiles::Latest::Mgmt::Models::ApplicationGatewayBackendHttpSettings.new
               backend_http_setting.id = rule[:backend_http_settings_id]
               request_routing_rule.backend_http_settings = backend_http_setting
             end

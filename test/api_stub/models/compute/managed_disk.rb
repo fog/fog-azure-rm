@@ -40,7 +40,7 @@ module ApiStub
             'id' => '/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myManagedDisk1',
             'name' => 'myManagedDisk1'
           }
-          result_mapper = Azure::ARM::Compute::Models::Disk.mapper
+          result_mapper = Azure::Compute::Profiles::Latest::Mgmt::Models::Disk.mapper
           sdk_compute_client.deserialize(result_mapper, disk, 'result.body')
         end
 
@@ -50,7 +50,7 @@ module ApiStub
             'status' => 'success',
             'error' => 'ERROR'
           }
-          response_mapper = Azure::ARM::Compute::Models::OperationStatusResponse.mapper
+          response_mapper = Azure::Compute::Profiles::Latest::Mgmt::Models::OperationStatusResponse.mapper
           sdk_compute_client.deserialize(response_mapper, response, 'result.body')
         end
       end

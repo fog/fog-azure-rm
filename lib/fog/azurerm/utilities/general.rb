@@ -91,13 +91,13 @@ end
 def resource_manager_endpoint_url(environment = ENVIRONMENT_AZURE_CLOUD)
   case environment
   when ENVIRONMENT_AZURE_CHINA_CLOUD
-    MsRestAzure::AzureEnvironments::AzureChina.resource_manager_endpoint_url
+    MsRestAzure::AzureEnvironments::ChinaCloud.resource_manager_endpoint_url
   when ENVIRONMENT_AZURE_US_GOVERNMENT
-    MsRestAzure::AzureEnvironments::AzureUSGovernment.resource_manager_endpoint_url
+    MsRestAzure::AzureEnvironments::USGovernment.resource_manager_endpoint_url
   when ENVIRONMENT_AZURE_GERMAN_CLOUD
-    MsRestAzure::AzureEnvironments::AzureGermanCloud.resource_manager_endpoint_url
+    MsRestAzure::AzureEnvironments::GermanCloud.resource_manager_endpoint_url
   else
-    MsRestAzure::AzureEnvironments::Azure.resource_manager_endpoint_url
+    MsRestAzure::AzureEnvironments::AzureCloud.resource_manager_endpoint_url
   end
 end
 

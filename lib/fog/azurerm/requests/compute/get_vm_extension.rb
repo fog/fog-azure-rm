@@ -37,7 +37,7 @@ module Fog
               'protected_settings' => {}
             }
           }
-          extension_mapper = Azure::ARM::Compute::Models::VirtualMachineExtension.mapper
+          extension_mapper = Azure::Compute::Profiles::Latest::Mgmt::Models::VirtualMachineExtension.mapper
           @compute_mgmt_client.deserialize(extension_mapper, body, 'result.body')
         end
       end

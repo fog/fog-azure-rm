@@ -54,13 +54,13 @@ module Fog
             retry if require('rubygems')
             raise e.message
           end
-          
+
           telemetry = "fog-azure-rm/#{Fog::AzureRM::VERSION}"
 
           options[:environment] = 'AzureCloud' if options[:environment].nil?
 
           credentials = Fog::Credentials::AzureRM.get_credentials(options[:tenant_id], options[:client_id], options[:client_secret], options[:environment])
-          @network_client = ::Azure::ARM::Network::NetworkManagementClient.new(credentials, resource_manager_endpoint_url(options[:environment]))
+          @network_client = ::Azure::Network::Profiles::Latest::Mgmt::NetworkManagementClient.new(credentials, resource_manager_endpoint_url(options[:environment]))
           @network_client.subscription_id = options[:subscription_id]
           @network_client.add_user_agent_information(telemetry)
           @tenant_id = options[:tenant_id]

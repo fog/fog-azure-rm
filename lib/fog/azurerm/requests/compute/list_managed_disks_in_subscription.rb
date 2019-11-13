@@ -57,7 +57,7 @@ module Fog
               'name' => 'myManagedDisk1'
             }
           ]
-          disk_mapper = Azure::ARM::Compute::Models::DiskList.mapper
+          disk_mapper = Azure::Compute::Profiles::Latest::Mgmt::Models::DiskList.mapper
           @compute_mgmt_client.deserialize(disk_mapper, disks, 'result.body').value
         end
       end

@@ -9,7 +9,11 @@ module Fog
         attribute :type
         attribute :location
         attribute :resource_group_name
+        # Either one of them is needed for disk creation, sku is new, account_type kept for
+        # compatibility reasons
+        attribute :sku
         attribute :account_type
+        ##
         attribute :disk_size_gb
         attribute :owner_id
         attribute :provisioning_state
@@ -17,7 +21,7 @@ module Fog
         attribute :time_created
         attribute :creation_data
         attribute :os_type
-        attribute :encryption_settings
+        attribute :encryption_settings_collection
 
         def self.parse(managed_disk)
           disk = get_hash_from_object(managed_disk)
@@ -27,9 +31,9 @@ module Fog
             disk['creation_data'] = creation_data.merge_attributes(Fog::Compute::AzureRM::CreationData.parse(managed_disk.creation_data))
           end
 
-          unless managed_disk.encryption_settings.nil?
-            encryption_settings = Fog::Compute::AzureRM::EncryptionSettings.new
-            disk['encryption_settings'] = encryption_settings.merge_attributes(Fog::Compute::AzureRM::EncryptionSettings.parse(managed_disk.encryption_settings))
+          unless managed_disk.encryption_settings_collection.nil?
+            encryption_settings = Fog::Compute::AzureRM::EncryptionSettingsCollection.new
+            disk['encryption_settings'] = encryption_settings.merge_attributes(Fog::Compute::AzureRM::EncryptionSettingsCollection.parse(managed_disk.encryption_settings))
           end
 
           disk['resource_group_name'] = get_resource_group_from_id(managed_disk.id)
@@ -39,9 +43,17 @@ module Fog
 
         def save
           requires :name, :location, :resource_group_name, :creation_data
-          requires :disk_size_gb, :account_type
-          validate_creation_data_params(creation_data)
+          requires :disk_size_gb
 
+          if self.sku.nil? && !self.account_type.nil?
+            self.sku = {
+              name: self.account_type
+            }
+          elsif self.account_type.nil? && self.sku.nil?
+            raise(ArgumentError, 'Either account_type or sku is needed for this operation')
+          end
+
+          validate_creation_data_params(creation_data)
           disk = service.create_or_update_managed_disk(managed_disk_params)
           merge_attributes(Fog::Compute::AzureRM::ManagedDisk.parse(disk))
         end
@@ -52,11 +64,25 @@ module Fog
           async ? create_fog_async_response(response) : response
         end
 
+        def creation_data=(new_creation_data)
+          attributes[:creation_data] =
+            if new_creation_data.is_a?(Hash)
+              creation_data = Fog::Compute::AzureRM::CreationData.new
+              creation_data.merge_attributes(new_creation_data)
+            else
+              new_creation_data
+            end
+        end
+
+        def ready?
+          provisioning_state == "Succeeded"
+        end
+
         private
 
         def validate_creation_data_params(creation_data)
-          unless creation_data.key?(:create_option)
-            raise(ArgumentError, ':create_option is required for this operation')
+          if !creation_data || creation_data.create_option.nil?
+            raise(ArgumentError, 'creation_data.create_option is required for this operation')
           end
         end
 
@@ -65,12 +91,12 @@ module Fog
             name: name,
             location: location,
             resource_group_name: resource_group_name,
-            account_type: account_type,
+            sku: sku,
             os_type: os_type,
             disk_size_gb: disk_size_gb,
             tags: tags,
-            creation_data: creation_data,
-            encryption_settings: encryption_settings
+            creation_data: creation_data.attributes,
+            encryption_settings: encryption_settings_collection
           }
         end
 

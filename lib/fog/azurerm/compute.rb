@@ -18,6 +18,7 @@ module Fog
       request :delete_virtual_machine
       request :get_virtual_machine
       request :list_virtual_machines
+      request :list_virtual_machines_in_subscription
       request :list_available_sizes_for_virtual_machine
       request :generalize_virtual_machine
       request :deallocate_virtual_machine
@@ -44,6 +45,11 @@ module Fog
       request :create_image
       request :delete_image
       request :get_image
+      request :create_or_update_snapshot
+      request :list_snapshots_by_rg
+      request :list_snapshots_in_subscription
+      request :get_snapshot
+      request :delete_snapshot
 
       model_path 'fog/azurerm/models/compute'
       model :availability_set
@@ -54,6 +60,8 @@ module Fog
       collection :virtual_machine_extensions
       model :managed_disk
       collection :managed_disks
+      model :snapshot
+      collection :snapshots
       model :data_disk
       model :creation_data
       model :disk_create_option
@@ -88,10 +96,10 @@ module Fog
 
           telemetry = "fog-azure-rm/#{Fog::AzureRM::VERSION}"
           credentials = Fog::Credentials::AzureRM.get_credentials(options[:tenant_id], options[:client_id], options[:client_secret], options[:environment])
-          @compute_mgmt_client = ::Azure::ARM::Compute::ComputeManagementClient.new(credentials, resource_manager_endpoint_url(options[:environment]))
+          @compute_mgmt_client = ::Azure::Compute::Profiles::Latest::Mgmt::Client.new(options)
           @compute_mgmt_client.subscription_id = options[:subscription_id]
           @compute_mgmt_client.add_user_agent_information(telemetry)
-          @storage_mgmt_client = ::Azure::ARM::Storage::StorageManagementClient.new(credentials, resource_manager_endpoint_url(options[:environment]))
+          @storage_mgmt_client = ::Azure::Compute::Profiles::Latest::Mgmt::Client.new(options)
           @storage_mgmt_client.subscription_id = options[:subscription_id]
           @storage_mgmt_client.add_user_agent_information(telemetry)
           @storage_service = Fog::Storage::AzureRM.new(tenant_id: options[:tenant_id], client_id: options[:client_id], client_secret: options[:client_secret], subscription_id: options[:subscription_id], environment: options[:environment])

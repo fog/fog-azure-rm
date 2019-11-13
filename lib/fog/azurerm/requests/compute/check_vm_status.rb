@@ -7,7 +7,7 @@ module Fog
           msg = "Checking Virtual Machine #{name} status"
           Fog::Logger.debug msg
           begin
-            virtual_machine = @compute_mgmt_client.virtual_machines.get(resource_group, name, 'instanceView')
+            virtual_machine = @compute_mgmt_client.virtual_machines.get(resource_group, name, expand: 'instanceView')
           rescue  MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end

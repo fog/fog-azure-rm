@@ -18,7 +18,7 @@ module Fog
       # Mock class for Network Request
       class Mock
         def list_application_gateways(_resource_group)
-          ag = Azure::ARM::Network::Models::ApplicationGateway.new
+          ag = Azure::Network::Profiles::Latest::Mgmt::Models::ApplicationGateway.new
           ag.name = 'fogtestgateway'
           ag.location = 'East US'
           [ag]

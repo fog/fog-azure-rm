@@ -26,7 +26,7 @@ module Fog
               'authorizationUseStatus' => 'Available'
             }
           }
-          authorization_mapper = Azure::ARM::Network::Models::ExpressRouteCircuitAuthorization.mapper
+          authorization_mapper = Azure::Network::Profiles::Latest::Mgmt::Models::ExpressRouteCircuitAuthorization.mapper
           @network_client.deserialize(authorization_mapper, authorization, 'result.body')
         end
       end

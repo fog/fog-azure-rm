@@ -23,21 +23,21 @@ module Fog
         end
 
         def define_vnet_object(location, address_prefixes, dns_servers, subnets, tags)
-          virtual_network = Azure::ARM::Network::Models::VirtualNetwork.new
+          virtual_network = Azure::Network::Profiles::Latest::Mgmt::Models::VirtualNetwork.new
           virtual_network.location = location
           virtual_network.tags = tags
 
           if address_prefixes.nil? || !address_prefixes.any?
-            address_space = Azure::ARM::Network::Models::AddressSpace.new
+            address_space = Azure::Network::Profiles::Latest::Mgmt::Models::AddressSpace.new
             address_space.address_prefixes = DEFAULT_ADDRESS_PREFIXES
           else
-            address_space = Azure::ARM::Network::Models::AddressSpace.new
+            address_space = Azure::Network::Profiles::Latest::Mgmt::Models::AddressSpace.new
             address_space.address_prefixes = address_prefixes
           end
           virtual_network.address_space = address_space
 
           if !dns_servers.nil? && dns_servers.any?
-            dhcp_options = Azure::ARM::Network::Models::DhcpOptions.new
+            dhcp_options = Azure::Network::Profiles::Latest::Mgmt::Models::DhcpOptions.new
             dhcp_options.dns_servers = dns_servers
             virtual_network.dhcp_options = dhcp_options
           end
@@ -53,13 +53,13 @@ module Fog
         def define_subnet_objects(subnets)
           subnet_objects = []
           subnets.each do |subnet|
-            network_security_group = Azure::ARM::Network::Models::NetworkSecurityGroup.new
+            network_security_group = Azure::Network::Profiles::Latest::Mgmt::Models::NetworkSecurityGroup.new
             network_security_group.id = subnet[:network_security_group_id]
 
-            route_table = Azure::ARM::Network::Models::RouteTable.new
+            route_table = Azure::Network::Profiles::Latest::Mgmt::Models::RouteTable.new
             route_table.id = subnet[:route_table_id]
 
-            subnet_object = Azure::ARM::Network::Models::Subnet.new
+            subnet_object = Azure::Network::Profiles::Latest::Mgmt::Models::Subnet.new
             subnet_object.name = subnet[:name]
             subnet_object.address_prefix = subnet[:address_prefix]
             subnet_object.network_security_group = network_security_group unless subnet[:network_security_group_id].nil?
@@ -102,7 +102,7 @@ module Fog
                 'provisioningState' => 'Succeeded'
               }
           }
-          vnet_mapper = Azure::ARM::Network::Models::VirtualNetwork.mapper
+          vnet_mapper = Azure::Network::Profiles::Latest::Mgmt::Models::VirtualNetwork.mapper
           @network_client.deserialize(vnet_mapper, virtual_network, 'result.body')
         end
       end

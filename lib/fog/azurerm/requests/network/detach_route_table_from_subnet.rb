@@ -19,8 +19,8 @@ module Fog
         private
 
         def get_subnet_object_for_detach_route_table(address_prefix, network_security_group_id)
-          subnet = Azure::ARM::Network::Models::Subnet.new
-          network_security_group = Azure::ARM::Network::Models::NetworkSecurityGroup.new
+          subnet = Azure::Network::Profiles::Latest::Mgmt::Models::Subnet.new
+          network_security_group = Azure::Network::Profiles::Latest::Mgmt::Models::NetworkSecurityGroup.new
 
           network_security_group.id = network_security_group_id
           subnet.address_prefix = address_prefix
@@ -42,7 +42,7 @@ module Fog
               },
             'name' => 'fog-subnet'
           }
-          subnet_mapper = Azure::ARM::Network::Models::Subnet.mapper
+          subnet_mapper = Azure::Network::Profiles::Latest::Mgmt::Models::Subnet.mapper
           @network_client.deserialize(subnet_mapper, subnet, 'result.body')
         end
       end

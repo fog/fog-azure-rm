@@ -18,7 +18,7 @@ module Fog
         private
 
         def get_shared_key_object(shared_key_value)
-          shared_key = Azure::ARM::Network::Models::ConnectionSharedKey.new
+          shared_key = Azure::Network::Profiles::Latest::Mgmt::Models::ConnectionSharedKey.new
           shared_key.value = shared_key_value
           shared_key
         end

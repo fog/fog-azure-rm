@@ -16,7 +16,7 @@ module Fog
         def get_virtual_network_object_for_add_dns!(resource_group_name, virtual_network_name, dns_servers)
           virtual_network = get_vnet(resource_group_name, virtual_network_name)
           if virtual_network.dhcp_options.nil?
-            dhcp_options = Azure::ARM::Network::Models::DhcpOptions.new
+            dhcp_options = Azure::Network::Profiles::Latest::Mgmt::Models::DhcpOptions.new
             dhcp_options.dns_servers = dns_servers
             virtual_network.dhcp_options = dhcp_options
           else
@@ -67,7 +67,7 @@ module Fog
                 'provisioningState' => 'Succeeded'
               }
           }
-          vnet_mapper = Azure::ARM::Network::Models::VirtualNetwork.mapper
+          vnet_mapper = Azure::Network::Profiles::Latest::Mgmt::Models::VirtualNetwork.mapper
           @network_client.deserialize(vnet_mapper, virtual_network, 'result.body')
         end
       end

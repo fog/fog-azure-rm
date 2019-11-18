@@ -1,3 +1,8 @@
+## 0.5.3
+
+**Fixed**
+- Added Null Check for `path_params` hash for `AzureOperationError` Request Headers
+
 ## 0.5.2
 
 **Added**

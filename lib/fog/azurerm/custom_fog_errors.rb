@@ -9,7 +9,7 @@ module Fog
 
       def print_subscription_limits_information
         request_method = @request.method
-        subscription_id = @request.path_params['subscriptionId']
+        subscription_id = @request.path_params['subscriptionId'] unless @request.path_params.nil?
 
         limit_value = remaining_subscription_request_limits(@response)
 

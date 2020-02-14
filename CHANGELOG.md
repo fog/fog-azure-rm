@@ -1,3 +1,7 @@
+## 0.5.4
+
+**Fixed**
+- Changed `azure-storage` dependency to `0.15.0.preview` in order to remove dependecy of Nokogiri gem (version ~> 1.6.0) that has multiple serious security vulnerabilities
 ## 0.5.3
 
 **Fixed**

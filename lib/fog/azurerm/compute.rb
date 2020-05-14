@@ -44,6 +44,7 @@ module Fog
       request :create_image
       request :delete_image
       request :get_image
+      request :list_images
 
       model_path 'fog/azurerm/models/compute'
       model :availability_set
@@ -60,6 +61,8 @@ module Fog
       model :encryption_settings
       model :image_disk_reference
       model :operation_status_response
+      model :image
+      collection :images
 
       # This class provides the mock implementation for unit tests.
       class Mock

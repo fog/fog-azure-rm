@@ -33,7 +33,7 @@ module Fog
 
       # Mock class for DNS Request
       class Mock
-        def create_or_update_zone(zone_params)
+        def create_or_update_zone(*)
           {
             'id' => '/subscriptions/########-####-####-####-############/resourceGroups/resource_group/providers/Microsoft.Network/dnszones/name',
             'name' => 'name',

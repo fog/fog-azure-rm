@@ -33,10 +33,10 @@ module Fog
 
       # Mock class for DNS Request
       class Mock
-        def create_or_update_zone(*)
+        def create_or_update_zone(zone_params)
           {
             'id' => '/subscriptions/########-####-####-####-############/resourceGroups/resource_group/providers/Microsoft.Network/dnszones/name',
-            'name' => name,
+            'name' => 'name',
             'type' => 'Microsoft.Network/dnszones',
             'etag' => '00000002-0000-0000-76c2-f7ad90b5d101',
             'location' => 'global',
@@ -46,7 +46,7 @@ module Fog
                 'maxNumberOfRecordSets' => 5000,
                 'nameServers' => %w(ns1-05.azure-dns.com. ns2-05.azure-dns.net. ns3-05.azure-dns.org. ns4-05.azure-dns.info.),
                 'numberOfRecordSets' => 2,
-                'parentResourceGroupName' => resource_group
+                'parentResourceGroupName' => 'zone.resource_group'
               }
           }
         end

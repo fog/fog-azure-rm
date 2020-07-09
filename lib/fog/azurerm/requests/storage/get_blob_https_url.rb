@@ -14,7 +14,8 @@ module Fog
         # @see https://msdn.microsoft.com/en-us/library/azure/mt584140.aspx
         #
         def get_blob_https_url(container_name, blob_name, expires)
-          relative_path = "#{container_name}/#{blob_name}"
+          relative_path = "#{container_name}/#{URI.encode(blob_name)}"
+          relative_path_sas = "#{container_name}/#{blob_name}"
           params = {
             service: 'b',
             resource: 'b',
@@ -22,7 +23,7 @@ module Fog
             expiry: expires.utc.iso8601,
             protocol: 'https'
           }
-          token = @signature_client.generate_service_sas_token(relative_path, params)
+          token = @signature_client.generate_service_sas_token(relative_path_sas, params)
           uri = @blob_client.generate_uri(relative_path)
           "#{uri}?#{token}"
         end

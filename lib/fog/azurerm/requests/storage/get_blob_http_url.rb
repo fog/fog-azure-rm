@@ -15,13 +15,14 @@ module Fog
         #
         def get_blob_http_url(container_name, blob_name, expires)
           relative_path = "#{container_name}/#{blob_name}"
+          relative_path_sas = "#{container_name}/#{blob_name}"
           params = {
             service: 'b',
             resource: 'b',
             permissions: 'r',
             expiry: expires.utc.iso8601
           }
-          token = @signature_client.generate_service_sas_token(relative_path, params)
+          token = @signature_client.generate_service_sas_token(relative_path_sas, params)
           uri = @blob_client.generate_uri(relative_path)
           url = "#{uri}?#{token}"
           url.gsub('https:', 'http:')

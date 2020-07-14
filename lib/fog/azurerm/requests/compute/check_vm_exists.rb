@@ -30,7 +30,7 @@ module Fog
       end
       # This class provides the mock implementation for unit tests.
       class Mock
-        def check_vm_exists(_resource_group, _name)
+        def check_vm_exists(_resource_group, _name, _async)
           true
         end
       end

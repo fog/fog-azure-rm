@@ -75,6 +75,10 @@ module Fog
 
   # Main AzureRM fog Provider Module
   module AzureRM
+    # We cannot necessarily set the DEBUG environment variable for fog-azure-rm because
+    # that would log the complete HTTP body since this variable is also used by the Azure storage SDK.
+    # Instead let's offer another way to enable fog-azure-rm debug logging
+    Fog::Logger[:debug] = ::STDERR if ENV["FOG_DEBUG"]
     extend Fog::Provider
     service(:resources, 'Resources')
     service(:dns, 'DNS')

@@ -4,19 +4,19 @@ module Fog
       # This class provides the actual implementation for service calls.
       class Real
         def create_block_blob(container_name, blob_name, body, options = {})
-          myOptions = options.clone
-          myOptions[:request_id] = SecureRandom.uuid
-          if myOptions[:create_block_blob_timeout] then
-            Fog::Logger.debug "create_block_blob: Setting blob operation timeout to #{myOptions[:create_block_blob_timeout]} seconds"
-            myOptions[:timeout] = myOptions[:create_block_blob_timeout] 
+          my_options = options.clone
+          my_options[:request_id] = SecureRandom.uuid
+          if my_options[:create_block_blob_timeout]
+            Fog::Logger.debug "create_block_blob: Setting blob operation timeout to #{my_options[:create_block_blob_timeout]} seconds"
+            my_options[:timeout] = my_options[:create_block_blob_timeout]
           else
             # Server side default is 10 minutes per megabyte on average, lets use an avg. speed of at least 100KiB/s
             # => 64MiB (max for create block) should be uploaded in 67108864B / 102400B/s = 655.36s
-            Fog::Logger.debug "create_block_blob: Setting blob operation timeout to default of 656 seconds"
-            myOptions[:timeout] = 656
+            Fog::Logger.debug 'create_block_blob: Setting blob operation timeout to default of 656 seconds'
+            my_options[:timeout] = 656
           end
 
-          msg = "create_block_blob #{blob_name} to the container #{container_name}. options: #{myOptions}"
+          msg = "create_block_blob #{blob_name} to the container #{container_name}. options: #{my_options}"
           Fog::Logger.debug msg
 
           begin
@@ -33,13 +33,13 @@ module Fog
               data = body.read
             else
               data = Fog::Storage.parse_data(body)
-              myOptions[:content_length] = data[:headers]['Content-Length']
-              myOptions[:content_type] = data[:headers]['Content-Type']
+              my_options[:content_length] = data[:headers]['Content-Length']
+              my_options[:content_type] = data[:headers]['Content-Type']
               data = data[:body]
             end
 
             raise ArgumentError.new('The maximum size for a block blob created via create_block_blob is 64 MB.') if !data.nil? && Fog::Storage.get_body_size(data) > 64 * 1024 * 1024
-            blob = @blob_client.create_block_blob(container_name, blob_name, data, myOptions)
+            blob = @blob_client.create_block_blob(container_name, blob_name, data, my_options)
           rescue Azure::Core::Http::HTTPError => ex
             raise_azure_exception(ex, msg)
           end

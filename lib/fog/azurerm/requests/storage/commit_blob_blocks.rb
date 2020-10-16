@@ -4,12 +4,13 @@ module Fog
       # This class provides the actual implementation for service calls.
       class Real
         def commit_blob_blocks(container_name, blob_name, blocks, options = {})
-          options[:request_id] = SecureRandom.uuid
-          msg = "commit_blob_blocks: Complete uploading #{blob_name} to the container #{container_name}. options: #{options}"
+          myOptions = options.clone
+          myOptions[:request_id] = SecureRandom.uuid
+          msg = "commit_blob_blocks: Complete uploading #{blob_name} to the container #{container_name}. options: #{myOptions}"
           Fog::Logger.debug msg
 
           begin
-            @blob_client.commit_blob_blocks(container_name, blob_name, blocks, options)
+            @blob_client.commit_blob_blocks(container_name, blob_name, blocks, myOptions)
           rescue Azure::Core::Http::HTTPError => ex
             raise_azure_exception(ex, msg)
           end

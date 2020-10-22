@@ -47,6 +47,10 @@ jobs:
       <<: *shared_job
     - rvm: 2.5.1
       <<: *shared_job
+    - rvm: 2.6.6
+      <<: *shared_job
+    - rvm: 2.7.2
+      <<: *shared_job
     - rvm: jruby-head
       <<: *shared_job
     - stage: gem release

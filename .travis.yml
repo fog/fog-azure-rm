@@ -1,26 +1,9 @@
 language: ruby
-sudo: false
+dist: xenial
+os: linux
 
 before_install:
-  - gem install bundler
-  - gem update bundler
-  - gem uninstall -aIx nokogiri -i /home/travis/.rvm/gems/ruby-2.4.1@global nokogiri
-
-script: bash ./rake-script.sh
-
-rvm:
-  - 2.0.0
-  - 2.1.0
-  - 2.1.1
-  - 2.1.5
-  - 2.2.0
-  - 2.3.0
-  - jruby-head
-
-matrix:
-  fast_finish: true
-  allow_failures:
-    - rvm: jruby-head
+  - gem install bundler -v 1.17.3
 
 notifications:
   email:
@@ -33,9 +16,46 @@ addons:
   code_climate:
     repo_token: b1401494baa004d90402414cb33a7fc6420fd3693e60c677a120ddefd7d84cfd
 
+_shared_job_leg: &shared_job_leg
+  install: bundle install --jobs=3 --retry=3 --with legacy
+  script:
+  - bash ./rake-script.sh
+
+_shared_job: &shared_job
+  install: bundle install --jobs=3 --retry=3
+  script:
+  - bash ./rake-script.sh
+
 jobs:
+  fast_finish: true
+  allow_failures:
+    - rvm: jruby-head
   include:
+    - rvm: 2.0.0
+      <<: *shared_job_leg
+    - rvm: 2.1.0
+      <<: *shared_job_leg
+    - rvm: 2.1.1
+      <<: *shared_job_leg
+    - rvm: 2.1.5
+      <<: *shared_job_leg
+    - rvm: 2.2.10
+      <<: *shared_job_leg
+    - rvm: 2.3.7
+      <<: *shared_job
+    - rvm: 2.4.4
+      <<: *shared_job
+    - rvm: 2.5.1
+      <<: *shared_job
+    - rvm: 2.6.6
+      <<: *shared_job
+    - rvm: 2.7.2
+      <<: *shared_job
+    - rvm: jruby-head
+      <<: *shared_job
     - stage: gem release
+      rvm: 2.0.0
+      <<: *shared_job_leg
       deploy:
         provider: rubygems
         api_key:

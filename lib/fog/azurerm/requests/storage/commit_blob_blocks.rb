@@ -8,9 +8,7 @@ module Fog
           my_options[:request_id] = SecureRandom.uuid
 
           correlation_id = SecureRandom.uuid
-          if !my_options[:fog_correlation_id].nil?
-            correlation_id = my_options.delete(:fog_correlation_id)
-          end
+          correlation_id = my_options.delete(:fog_correlation_id) unless my_options[:fog_correlation_id].nil?
 
           msg = "commit_blob_blocks: Complete uploading #{blob_name} to the container #{container_name}. options: #{my_options}, correlation id: #{correlation_id}."
           Fog::Logger.debug msg

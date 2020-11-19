@@ -8,9 +8,7 @@ module Fog
           my_options[:request_id] = SecureRandom.uuid
 
           correlation_id = SecureRandom.uuid
-          if !my_options[:fog_correlation_id].nil?
-            correlation_id = my_options.delete(:fog_correlation_id)
-          end
+          correlation_id = my_options.delete(:fog_correlation_id) unless my_options[:fog_correlation_id].nil?
 
           if my_options[:create_block_blob_timeout]
             Fog::Logger.debug "create_block_blob: Setting blob operation timeout to #{my_options[:create_block_blob_timeout]} seconds, correlation id: #{correlation_id}."

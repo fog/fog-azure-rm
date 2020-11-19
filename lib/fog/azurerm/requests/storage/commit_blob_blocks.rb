@@ -6,16 +6,26 @@ module Fog
         def commit_blob_blocks(container_name, blob_name, blocks, options = {})
           my_options = options.clone
           my_options[:request_id] = SecureRandom.uuid
-          msg = "commit_blob_blocks: Complete uploading #{blob_name} to the container #{container_name}. options: #{my_options}"
+          
+          correlation_id = SecureRandom.uuid
+          if my_options[:fog_correlation_id] != nil
+            correlation_id = my_options.delete(:fog_correlation_id)
+          end
+
+          msg = "commit_blob_blocks: Complete uploading #{blob_name} to the container #{container_name}. options: #{my_options}, correlation id: #{correlation_id}."
           Fog::Logger.debug msg
 
           begin
             @blob_client.commit_blob_blocks(container_name, blob_name, blocks, my_options)
           rescue Azure::Core::Http::HTTPError => ex
+            Fog::Logger.warning "Azure error #{e.inspect}, correlation id: #{correlation_id}."
             raise_azure_exception(ex, msg)
+          rescue => e
+            Fog::Logger.warning "Unknown error #{e.inspect}, correlation id: #{correlation_id}."
+            raise e
           end
 
-          Fog::Logger.debug "Block blob #{blob_name} is uploaded successfully."
+          Fog::Logger.debug "Block blob #{blob_name} is uploaded successfully, correlation id: #{correlation_id}."
           true
         end
       end

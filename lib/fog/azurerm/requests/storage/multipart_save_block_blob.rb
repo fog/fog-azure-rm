@@ -54,26 +54,31 @@ module Fog
         def multipart_save_block_blob(container_name, blob_name, body, options)
           threads_num = options.delete(:worker_thread_num)
           threads_num = UPLOAD_BLOB_WORKER_THREAD_COUNT if threads_num.nil? || !threads_num.is_a?(Integer) || threads_num < 1
-
+          correlation_id = SecureRandom.uuid
+          
           begin
             # Initiate the upload
-            Fog::Logger.debug "Creating the block blob #{container_name}/#{blob_name}. options: #{options}"
+            Fog::Logger.debug "Creating the block blob #{container_name}/#{blob_name}. options: #{options}, correlation id: #{correlation_id}."
             content_md5 = options.delete(:content_md5)
             create_block_blob(container_name, blob_name, nil, options)
 
             # Uploading parts
-            Fog::Logger.debug "Starting to upload parts for the block blob #{container_name}/#{blob_name}."
+            Fog::Logger.debug "Starting to upload parts for the block blob #{container_name}/#{blob_name}, correlation id: #{correlation_id}."
             iostream = BlockFileStream.new(body)
 
             threads = []
             threads_num.times do |id|
               thread = Thread.new do
-                Fog::Logger.debug "Created upload thread #{id}."
+                my_thread_options = options.clone
+                correlation_id_thread = "#{correlation_id}##{id}"
+                my_thread_options[:fog_correlation_id] = correlation_id_thread
+
+                Fog::Logger.debug "Created upload thread #{id}, correlation id: #{correlation_id_thread}."
                 while (chunk = iostream.read(MAXIMUM_CHUNK_SIZE))
-                  Fog::Logger.debug "Upload thread #{id} is uploading #{chunk.id}, size: #{chunk.data.size}, options: #{options}."
-                  put_blob_block(container_name, blob_name, chunk.block_id, chunk.data, options)
+                  Fog::Logger.debug "Upload thread #{id} is uploading #{chunk.id}, size: #{chunk.data.size}, options: #{my_thread_options}, correlation id: #{correlation_id_thread}."
+                  put_blob_block(container_name, blob_name, chunk.block_id, chunk.data, my_thread_options)
                 end
-                Fog::Logger.debug "Upload thread #{id} finished."
+                Fog::Logger.debug "Upload thread #{id} finished, correlation id: #{correlation_id_thread}."
               end
               thread.abort_on_exception = true
               threads << thread
@@ -82,19 +87,19 @@ module Fog
             threads.each(&:join)
             # Complete the upload
             options[:content_md5] = content_md5 unless content_md5.nil?
-            Fog::Logger.debug "Commiting the block blob #{container_name}/#{blob_name}. options: #{options}"
+            Fog::Logger.debug "Commiting the block blob #{container_name}/#{blob_name}. options: #{options}, correlation id: #{correlation_id}."
             commit_blob_blocks(container_name, blob_name, iostream.blocks, options)
           rescue
             # Abort the upload & reraise
             begin
               delete_blob(container_name, blob_name)
             rescue => ex
-              Fog::Logger.debug "Cannot delete the blob: #{container_name}/#{blob_name} after multipart_save_block_blob failed. #{ex.inspect}"
+              Fog::Logger.debug "Cannot delete the blob: #{container_name}/#{blob_name} after multipart_save_block_blob failed. #{ex.inspect}, correlation id: #{correlation_id}."
             end
             raise
           end
 
-          Fog::Logger.debug "Successfully save the block blob: #{container_name}/#{blob_name}."
+          Fog::Logger.debug "Successfully save the block blob: #{container_name}/#{blob_name}, correlation id: #{correlation_id}."
           true
         end
       end

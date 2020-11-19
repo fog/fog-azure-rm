@@ -6,9 +6,9 @@ module Fog
         def commit_blob_blocks(container_name, blob_name, blocks, options = {})
           my_options = options.clone
           my_options[:request_id] = SecureRandom.uuid
-          
+
           correlation_id = SecureRandom.uuid
-          if my_options[:fog_correlation_id] != nil
+          if !my_options[:fog_correlation_id].nil?
             correlation_id = my_options.delete(:fog_correlation_id)
           end
 
@@ -20,7 +20,7 @@ module Fog
           rescue Azure::Core::Http::HTTPError => ex
             Fog::Logger.warning "Azure error #{e.inspect}, correlation id: #{correlation_id}."
             raise_azure_exception(ex, msg)
-          rescue => e
+          rescue StandardError => e
             Fog::Logger.warning "Unknown error #{e.inspect}, correlation id: #{correlation_id}."
             raise e
           end

@@ -57,7 +57,7 @@ module Fog
           my_options = options.clone
 
           correlation_id = SecureRandom.uuid
-          if my_options[:fog_correlation_id] != nil
+          if !my_options[:fog_correlation_id].nil?
             correlation_id = my_options[:fog_correlation_id]
           else
             my_options[:fog_correlation_id] = correlation_id

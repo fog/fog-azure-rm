@@ -8,7 +8,7 @@ module Fog
           my_options[:request_id] = SecureRandom.uuid
           
           correlation_id = SecureRandom.uuid
-          if my_options[:fog_correlation_id] != nil
+          if !my_options[:fog_correlation_id].nil?
             correlation_id = my_options.delete(:fog_correlation_id)
           end
 
@@ -21,7 +21,7 @@ module Fog
             return true if ex.message.include?('(404)')
             Fog::Logger.warning "Azure error #{e.inspect}, correlation id: #{correlation_id}."
             raise_azure_exception(ex, msg)
-          rescue => e
+          rescue StandardError => e
             Fog::Logger.warning "Unknown error #{e.inspect}, correlation id: #{correlation_id}."
             raise e
           end

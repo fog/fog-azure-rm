@@ -30,7 +30,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'azure_mgmt_network', '~> 0.26.1'
   spec.add_dependency 'azure_mgmt_dns', '~> 0.17.5'
   spec.add_dependency 'azure_mgmt_traffic_manager', '~> 0.17.4'
-  spec.add_dependency 'azure_mgmt_sql', '~> 0.19.2'
+  spec.add_dependency 'azure_mgmt_sql', '~> 0.19.1'
   spec.add_dependency 'azure_mgmt_key_vault', '~> 0.17.7'
   spec.add_dependency 'azure-storage', '~> 0.15.0.preview'
   spec.add_dependency 'vhd', '0.0.4'

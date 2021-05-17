@@ -7,7 +7,7 @@ module Fog
         message = "Exception in #{message}"
         if azure_exception.request.nil? && azure_exception.response.nil? &&
            azure_exception.body.nil? && !azure_exception.message.nil?
-          message +=  " #{Fog::JSON.decode(azure_exception.message)['message']}"
+          message += " #{Fog::JSON.decode(azure_exception.message)['message']}"
         end
         super(azure_exception.request, azure_exception.response, azure_exception.body, message)
       end

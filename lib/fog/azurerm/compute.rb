@@ -78,7 +78,7 @@ module Fog
           begin
             require 'azure_mgmt_compute'
             require 'azure_mgmt_storage'
-            require 'azure/storage'
+            require 'azure/storage/common'
           rescue LoadError => e
             retry if require('rubygems')
             raise e.message

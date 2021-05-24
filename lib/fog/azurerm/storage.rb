@@ -90,7 +90,8 @@ module Fog
         def initialize(options)
           begin
             require 'azure_mgmt_storage'
-            require 'azure/storage'
+            require 'azure/storage/common'
+            require 'azure/storage/blob'
             require 'securerandom'
             require 'vhd'
             @debug = ENV['DEBUG'] || options[:debug]
@@ -134,11 +135,11 @@ module Fog
                                                   storage_endpoint_suffix(@environment)[1..-1]
                                                 end
 
-          azure_client = Azure::Storage::Client.create(client_options)
-          @blob_client = azure_client.blob_client
-          @blob_client.with_filter(Azure::Storage::Core::Filter::ExponentialRetryPolicyFilter.new)
+          azure_client = Azure::Storage::Common::Client.create(client_options)
+          @blob_client = Azure::Storage::Blob::BlobService.new(client: azure_client)
+          @blob_client.with_filter(Azure::Storage::Common::Core::Filter::ExponentialRetryPolicyFilter.new)
           @blob_client.with_filter(Azure::Core::Http::DebugFilter.new) if @debug
-          @signature_client = Azure::Storage::Core::Auth::SharedAccessSignature.new(@azure_storage_account_name,
+          @signature_client = Azure::Storage::Common::Core::Auth::SharedAccessSignature.new(@azure_storage_account_name,
                                                                                     @azure_storage_access_key)
         end
       end

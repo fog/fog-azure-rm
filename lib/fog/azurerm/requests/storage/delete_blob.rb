@@ -6,17 +6,25 @@ module Fog
         def delete_blob(container_name, blob_name, options = {})
           my_options = options.clone
           my_options[:request_id] = SecureRandom.uuid
-          msg = "Deleting blob: #{blob_name} in container #{container_name}. options: #{my_options}"
+          
+          correlation_id = SecureRandom.uuid
+          correlation_id = my_options.delete(:fog_correlation_id) unless my_options[:fog_correlation_id].nil?
+
+          msg = "Deleting blob: #{blob_name} in container #{container_name}. options: #{my_options}, correlation id: #{correlation_id}, correlation id: #{correlation_id}."
           Fog::Logger.debug msg
 
           begin
             @blob_client.delete_blob(container_name, blob_name, my_options)
           rescue Azure::Core::Http::HTTPError => ex
             return true if ex.message.include?('(404)')
+            Fog::Logger.warning "Azure error #{e.inspect}, correlation id: #{correlation_id}."
             raise_azure_exception(ex, msg)
+          rescue StandardError => e
+            Fog::Logger.warning "Unknown error #{e.inspect}, correlation id: #{correlation_id}."
+            raise e
           end
 
-          Fog::Logger.debug "Blob #{blob_name} deleted successfully."
+          Fog::Logger.debug "Blob #{blob_name} deleted successfully, correlation id: #{correlation_id}."
           true
         end
       end

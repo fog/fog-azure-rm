@@ -23,6 +23,7 @@ module Fog
           end
         end
       end
+
       # This class provides the mock implementation for unit tests.
       class Mock
         def list_available_sizes_for_virtual_machine(*)

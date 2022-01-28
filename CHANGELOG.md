@@ -1,3 +1,9 @@
+## 0.6.0
+
+**Changed:**
+- Updated dependency of mime-types to (~> 3.0)
+- Updated dependency of rake to (>= 12.3.3)
+
 ## 0.5.3
 
 **Fixed**

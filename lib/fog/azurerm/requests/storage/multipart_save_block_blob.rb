@@ -54,12 +54,13 @@ module Fog
         def multipart_save_block_blob(container_name, blob_name, body, options)
           threads_num = options.delete(:worker_thread_num)
           threads_num = UPLOAD_BLOB_WORKER_THREAD_COUNT if threads_num.nil? || !threads_num.is_a?(Integer) || threads_num < 1
-
+          my_options = options.dup
+          my_options[:content_length] = 0 unless my_options.key?(:content_length)
           begin
             # Initiate the upload
-            Fog::Logger.debug "Creating the block blob #{container_name}/#{blob_name}. options: #{options}"
-            content_md5 = options.delete(:content_md5)
-            create_block_blob(container_name, blob_name, nil, options)
+            Fog::Logger.debug "Creating the block blob #{container_name}/#{blob_name}. options: #{my_options}"
+            content_md5 = my_options.delete(:content_md5)
+            create_block_blob(container_name, blob_name, nil, my_options)
 
             # Uploading parts
             Fog::Logger.debug "Starting to upload parts for the block blob #{container_name}/#{blob_name}."

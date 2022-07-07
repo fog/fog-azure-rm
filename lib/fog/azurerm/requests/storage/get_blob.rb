@@ -5,7 +5,7 @@ module Fog
       class Real
         BLOCK_SIZE = 32 * 1024 * 1024 # 32 MB
 
-        def get_blob_with_block_given(container_name, blob_name, options, &_block)
+        def get_blob_with_block_given(container_name, blob_name, options, &block)
           options[:request_id] = SecureRandom.uuid
           msg = "get_blob_with_block_given: blob #{blob_name} in the container #{container_name}. options: #{options}"
           Fog::Logger.debug msg
@@ -19,7 +19,7 @@ module Fog
 
           content_length = blob.properties[:content_length]
           if content_length.zero?
-            Proc.new.call('', 0, 0)
+            block.call('', 0, 0)
             return [blob, '']
           end
 
@@ -30,7 +30,7 @@ module Fog
           raise ArgumentError.new(':end_range MUST be greater than :start_range') if start_range > end_range
 
           if start_range == end_range
-            Proc.new.call('', 0, 0)
+            block.call('', 0, 0)
             return [blob, '']
           end
 
@@ -55,7 +55,7 @@ module Fog
               raise_azure_exception(ex, msg)
             end
 
-            Proc.new.call(content, end_range - buffer_end_range, total_bytes)
+            block.call(content, end_range - buffer_end_range, total_bytes)
             buffer_start_range += buffer_size
           end
           # No need to return content when block is given.
@@ -84,7 +84,7 @@ module Fog
 
       # This class provides the mock implementation for unit tests.
       class Mock
-        def get_blob(_container_name, _blob_name, _options = {}, &_block)
+        def get_blob(_container_name, _blob_name, _options = {}, &block)
           Fog::Logger.debug 'get_blob successfully.'
           unless block_given?
             return [
@@ -122,7 +122,7 @@ module Fog
           remaining = total_bytes = data.length
           while remaining > 0
             chunk = data.read([remaining, 2].min)
-            Proc.new.call(chunk, remaining, total_bytes)
+            block.call(chunk, remaining, total_bytes)
             remaining -= 2
           end
 

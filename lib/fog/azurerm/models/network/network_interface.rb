@@ -23,6 +23,7 @@ module Fog
         attribute :internal_dns_name_label
         attribute :internal_fqd
         attribute :tags
+        attribute :enable_accelerated_networking
 
         def self.parse(nic)
           hash = {}
@@ -54,18 +55,25 @@ module Fog
             hash['internal_dns_name_label'] = nic_dns_settings.internal_dns_name_label
             hash['internal_fqd'] = nic_dns_settings.internal_fqdn
           end
+          hash['enable_accelerated_networking'] = nic.enable_accelerated_networking
           hash
         end
 
-        def save
+        def save(async = false)
           requires :name
           requires :location
           requires :resource_group
           requires :subnet_id
           requires :ip_configuration_name
           requires :private_ip_allocation_method
-          nic = service.create_or_update_network_interface(resource_group, name, location, subnet_id, public_ip_address_id, network_security_group_id, ip_configuration_name, private_ip_allocation_method, private_ip_address, load_balancer_backend_address_pools_ids, load_balancer_inbound_nat_rules_ids, tags)
-          merge_attributes(Fog::Network::AzureRM::NetworkInterface.parse(nic))
+
+          nic_response = service.create_or_update_network_interface(resource_group, name, location, subnet_id, public_ip_address_id, network_security_group_id, ip_configuration_name, private_ip_allocation_method, private_ip_address, load_balancer_backend_address_pools_ids, load_balancer_inbound_nat_rules_ids, tags, enable_accelerated_networking, async)
+
+          if async
+            nic_response
+          else
+            merge_attributes(Fog::Network::AzureRM::NetworkInterface.parse(nic_response))
+          end
         end
 
         def update(updated_attributes = {})

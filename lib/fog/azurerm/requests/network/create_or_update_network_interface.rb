@@ -4,22 +4,26 @@ module Fog
     class AzureRM
       # Real class for Network Request
       class Real
-        def create_or_update_network_interface(resource_group_name, name, location, subnet_id, public_ip_address_id, network_security_group_id, ip_config_name, private_ip_allocation_method, private_ip_address, load_balancer_backend_address_pools_ids, load_balancer_inbound_nat_rules_ids, tags)
+        def create_or_update_network_interface(resource_group_name, name, location, subnet_id, public_ip_address_id, network_security_group_id, ip_config_name, private_ip_allocation_method, private_ip_address, load_balancer_backend_address_pools_ids, load_balancer_inbound_nat_rules_ids, tags, enable_accelerated_networking = false, async = false)
           msg = "Creating/Updating Network Interface Card: #{name}"
           Fog::Logger.debug msg
-          network_interface = get_network_interface_object(name, location, subnet_id, public_ip_address_id, network_security_group_id, ip_config_name, private_ip_allocation_method, private_ip_address, load_balancer_backend_address_pools_ids, load_balancer_inbound_nat_rules_ids, tags)
+          network_interface = get_network_interface_object(name, location, subnet_id, public_ip_address_id, network_security_group_id, ip_config_name, private_ip_allocation_method, private_ip_address, load_balancer_backend_address_pools_ids, load_balancer_inbound_nat_rules_ids, tags, enable_accelerated_networking)
           begin
-            network_interface_obj = @network_client.network_interfaces.create_or_update(resource_group_name, name, network_interface)
+            nic_response = if async
+                             @network_client.network_interfaces.create_or_update_async(resource_group_name, name, network_interface)
+                           else
+                             @network_client.network_interfaces.create_or_update(resource_group_name, name, network_interface)
+                           end
           rescue MsRestAzure::AzureOperationError => e
             raise_azure_exception(e, msg)
           end
-          Fog::Logger.debug "Network Interface #{name} created/updated successfully."
-          network_interface_obj
+          Fog::Logger.debug "Network Interface #{name} created/updated successfully." unless async
+          nic_response
         end
 
         private
 
-        def get_network_interface_object(name, location, subnet_id, public_ip_address_id, network_security_group_id, ip_config_name, private_ip_allocation_method, private_ip_address, load_balancer_backend_address_pools_ids, load_balancer_inbound_nat_rules_ids, tags)
+        def get_network_interface_object(name, location, subnet_id, public_ip_address_id, network_security_group_id, ip_config_name, private_ip_allocation_method, private_ip_address, load_balancer_backend_address_pools_ids, load_balancer_inbound_nat_rules_ids, tags, enable_accelerated_networking)
           if public_ip_address_id
             public_ipaddress = Azure::ARM::Network::Models::PublicIPAddress.new
             public_ipaddress.id = public_ip_address_id
@@ -60,6 +64,7 @@ module Fog
           network_interface.location = location
           network_interface.ip_configurations = [ip_configs]
           network_interface.tags = tags
+          network_interface.enable_accelerated_networking = enable_accelerated_networking
 
           if network_security_group_id
             network_security_group = Azure::ARM::Network::Models::NetworkSecurityGroup.new

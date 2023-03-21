@@ -1,9 +1,8 @@
 [![Gem Version](https://badge.fury.io/rb/fog-azure-rm.svg)](https://badge.fury.io/rb/fog-azure-rm)
 [![Build Status](https://travis-ci.org/fog/fog-azure-rm.svg?branch=master)](https://travis-ci.org/fog/fog-azure-rm)
-[![Dependency Status](https://gemnasium.com/badges/github.com/fog/fog-azure-rm.svg)](https://gemnasium.com/github.com/fog/fog-azure-rm)
+[![security](https://hakiri.io/github/fog/fog-azure-rm/master.svg)](https://hakiri.io/github/fog/fog-azure-rm/master)
 [![Test Coverage](https://codeclimate.com/github/fog/fog-azure-rm/badges/coverage.svg)](https://codeclimate.com/github/fog/fog-azure-rm/coverage)
 [![Code Climate](https://codeclimate.com/github/fog/fog-azure-rm/badges/gpa.svg)](https://codeclimate.com/github/fog/fog-azure-rm)
-[![Stories in Ready](https://badge.waffle.io/fog/fog-azure-rm.svg?label=ready&title=Ready)](http://waffle.io/fog/fog-azure-rm)
 
 # Fog Azure Resource Manager
 
@@ -80,7 +79,9 @@ Use following command for the complete list of services, Fog provides for Azure 
 ```ruby
 Fog::AzureRM.services
 ```
+# Documentation 
 
+https://www.rubydoc.info/github/fog/fog-azure-rm/master
   
 ## Contributing
 

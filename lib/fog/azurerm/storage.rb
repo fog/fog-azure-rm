@@ -78,6 +78,7 @@ module Fog
         def initialize(_options = {})
           begin
             require 'azure_mgmt_storage'
+            require 'azure/storage'
           rescue LoadError => e
             retry if require('rubygems')
             raise e.message

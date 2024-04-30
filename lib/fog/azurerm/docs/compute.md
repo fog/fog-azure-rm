@@ -501,5 +501,11 @@ Destroy the given extension from the virtual machine
 vm_extension.destroy
 ```
 
+## List Virtual Machine Size
+
+```ruby
+fog_compute_service.virtual_machine_sizes(location: '<Location>').all
+```
+
 ## Support and Feedback
 Your feedback is appreciated! If you have specific issues with the fog ARM, you should file an issue via Github.

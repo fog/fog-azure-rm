@@ -111,6 +111,18 @@ def virtual_machine_extension(service)
   )
 end
 
+def virtual_machine_size(service)
+  Fog::Compute::AzureRM::VirtualMachineSize.new(
+    name: 'Standard_A0',
+    max_data_disk_count: 1,
+    memory_in_mb: 768,
+    number_of_cores: 1,
+    os_disk_size_in_mb: 1_047_552,
+    resource_disk_size_in_mb: 20_480,
+    service: service
+  )
+end
+
 def availability_set(service)
   Fog::Compute::AzureRM::AvailabilitySet.new(
     name: 'availability-set',

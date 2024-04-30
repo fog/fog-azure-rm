@@ -44,6 +44,7 @@ module Fog
       request :create_image
       request :delete_image
       request :get_image
+      request :list_virtual_machine_sizes
 
       model_path 'fog/azurerm/models/compute'
       model :availability_set
@@ -52,6 +53,8 @@ module Fog
       collection :servers
       model :virtual_machine_extension
       collection :virtual_machine_extensions
+      model :virtual_machine_size
+      collection :virtual_machine_sizes
       model :managed_disk
       collection :managed_disks
       model :data_disk

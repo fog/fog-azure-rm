@@ -41,6 +41,7 @@ module Fog
         def save
           requires :name, :location, :resource_group
 
+          security_rules_to_hashes!
           validate_security_rules(security_rules) unless security_rules.nil?
           nsg = service.create_or_update_network_security_group(resource_group, name, location, security_rules, tags)
           merge_attributes(Fog::Network::AzureRM::NetworkSecurityGroup.parse(nsg))
@@ -74,6 +75,18 @@ module Fog
         end
 
         private
+
+        def security_rules_to_hashes!
+          return unless security_rules.is_a? Array
+
+          self.security_rules = security_rules.map do |rule|
+            if rule.is_a? NetworkSecurityRule
+              get_hash_from_object(rule)['attributes']
+            else
+              rule
+            end
+          end
+        end
 
         def validate_security_rules(security_rules)
           if security_rules.is_a?(Array)

@@ -156,8 +156,10 @@ def parse_storage_object(object)
       end
     end
   end
-
-  data['last_modified'] = Time.parse(data['last_modified'])
+  last_modified = data['last_modified']
+  if last_modified
+    data['last_modified'] = Time.parse(last_modified)
+  end
   data['etag'].delete!('"')
   data
 end

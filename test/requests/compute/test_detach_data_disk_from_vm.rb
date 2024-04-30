@@ -18,6 +18,16 @@ class TestDetachDataDiskFromVM < Minitest::Test
     end
   end
 
+  def test_detach_multiple_data_disks_from_vm_success
+    get_vm_response = ApiStub::Requests::Compute::VirtualMachine.create_virtual_machine_response(@compute_client)
+    update_vm_response = ApiStub::Requests::Compute::VirtualMachine.detach_data_disk_from_vm_response(@compute_client)
+    @virtual_machines.stub :get, get_vm_response do
+      @virtual_machines.stub :create_or_update, update_vm_response do
+        assert_equal @service.detach_data_disk_from_vm('fog-test-rg', 'fog-test-vm', %w(mydatadisk1 mydatadisk2), false), update_vm_response
+      end
+    end
+  end
+
   def test_detach_data_disk_from_vm_failure
     get_vm_response = ApiStub::Requests::Compute::VirtualMachine.create_virtual_machine_response(@compute_client)
     update_vm_response = proc { fail MsRestAzure::AzureOperationError.new(nil, nil, 'error' => { 'message' => 'mocked exception' }) }

@@ -6,7 +6,7 @@ module Fog
         def create_image(image_config)
           msg = "Creating/Updating Image: #{image_config[:vm_name]}-osImage"
           Fog::Logger.debug msg
-          image_name = "#{image_config[:vm_name]}-osImage"
+          image_name = image_config.delete(:name) || "#{image_config[:vm_name]}-osImage"
           image = setup_params(image_config)
           begin
             image_obj = @compute_mgmt_client.images.create_or_update(image_config[:resource_group], image_name, image)
@@ -20,21 +20,45 @@ module Fog
         private
 
         def setup_params(image_config)
-          storage_profile_image = Azure::ARM::Compute::Models::ImageStorageProfile.new
-          storage_profile_image.os_disk = create_generalized_os_disk_image(image_config)
           image = Azure::ARM::Compute::Models::Image.new
-          image.storage_profile = storage_profile_image
+          if image_config[:source_virtual_machine_id]
+            image.source_virtual_machine = setup_source_virtual_machine(image_config)
+          else
+            image.storage_profile = setup_storage_profile_image(image_config)
+          end
           image.location = image_config[:location]
           image
+        end
+
+        def setup_storage_profile_image(image_config)
+          storage_profile_image = Azure::ARM::Compute::Models::ImageStorageProfile.new
+          storage_profile_image.os_disk = create_generalized_os_disk_image(image_config)
+          storage_profile_image
         end
 
         def create_generalized_os_disk_image(image_config)
           os_disk_image = Azure::ARM::Compute::Models::ImageOSDisk.new
           os_disk_image.os_type = image_config[:platform]
           os_disk_image.os_state = 'Generalized'
-          os_disk_image.blob_uri = image_config[:new_vhd_path]
+          if image_config[:new_vhd_path]
+            os_disk_image.blob_uri = image_config[:new_vhd_path]
+          elsif image_config[:managed_disk_id]
+            os_disk_image.managed_disk = create_managed_disk_image(image_config)
+          end
           os_disk_image.caching = Azure::ARM::Compute::Models::CachingTypes::ReadWrite
           os_disk_image
+        end
+
+        def create_managed_disk_image(image_config)
+          managed_disk_image = Azure::ARM::Compute::Models::Disk.new
+          managed_disk_image.id = image_config[:managed_disk_id]
+          managed_disk_image
+        end
+
+        def setup_source_virtual_machine(image_config)
+          source_virtual_machine = Azure::ARM::Compute::Models::VirtualMachine.new
+          source_virtual_machine.id = image_config[:source_virtual_machine_id]
+          source_virtual_machine
         end
       end
 

@@ -501,5 +501,53 @@ Destroy the given extension from the virtual machine
 vm_extension.destroy
 ```
 
+## Create Image
+
+Create a new Image from a Virtual Machine
+
+```ruby
+fog_compute_service.images.create(
+        name: '<Image Name>',
+        location: '<Location>',
+        resource_group_name: '<Resource Group Name>',
+        source_server_id: '<Virtual Machine Id>'
+)
+```
+
+Create a new Image from a Managed Disk
+
+```ruby
+fog_compute_service.images.create(
+        name: '<Image Name>',
+        location: '<Location>',
+        resource_group_name: '<Resource Group Name>',
+        managed_disk_id: '<Managed Disk Id>',
+        os_disk_type: '<Plateform>'
+)
+```
+
+## List Images
+
+```ruby
+images = fog_compute_service..images(resource_group: '<Resource Group Name>').all
+```
+
+## Get Image
+
+Retrieves the given image
+
+```ruby
+image = fog_compute_service.images.get('<Resource Group Name>', '<Image Name>')
+```
+
+## Destroy Image
+
+Destroy the given image
+
+```ruby
+image = fog_compute_service.images.get('<Resource Group Name>', '<Image Name>')
+image.destroy
+```
+
 ## Support and Feedback
 Your feedback is appreciated! If you have specific issues with the fog ARM, you should file an issue via Github.

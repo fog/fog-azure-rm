@@ -790,6 +790,18 @@ def sql_server_firewall_rules(service)
   )
 end
 
+def image(service)
+  Fog::Compute::AzureRM::Image.new(
+    id: '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Compute/images/image-name',
+    name: 'image',
+    location: 'East US',
+    resource_group_name: 'fog-test-rg',
+    source_server_id: '/subscriptions/########-####-####-####-############/resourceGroups/fog-test-rg/providers/Microsoft.Compute/virtualMachines/vm-name',
+    source_server_name: 'vm-name',
+    service: service
+  )
+end
+
 def managed_disk(service)
   Fog::Compute::AzureRM::ManagedDisk.new(
     name: 'managed-disk',

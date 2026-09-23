@@ -72,7 +72,7 @@ class TestSubnet < Minitest::Test
   end
 
   def test_get_available_ipaddresses_count_response
-    assert_instance_of Fixnum, @subnet.get_available_ipaddresses_count(false)
+    assert_instance_of Integer, @subnet.get_available_ipaddresses_count(false)
   end
 
   def test_destroy_method_response

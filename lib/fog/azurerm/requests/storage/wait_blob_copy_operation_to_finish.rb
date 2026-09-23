@@ -18,7 +18,7 @@ module Fog
               break if copy_status != COPY_STATUS[:PENDING]
 
               elapse_time = Time.new - start_time
-              raise TimeoutError.new("The copy operation cannot be finished in #{timeout} seconds") if !timeout.nil? && elapse_time >= timeout
+              raise Timeout::Error.new("The copy operation cannot be finished in #{timeout} seconds") if !timeout.nil? && elapse_time >= timeout
 
               copied_bytes, total_bytes = blob_props[:copy_progress].split('/').map(&:to_i)
               interval = copied_bytes.zero? ? 5 : (total_bytes - copied_bytes).to_f / copied_bytes * elapse_time

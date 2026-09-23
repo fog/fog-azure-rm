@@ -106,7 +106,7 @@ class TestWaitBlobCopyOperationToFinish < Minitest::Test
 
     @service.stub :get_blob_properties, multiple_values do
       @service.stub :delete_blob, true do
-        assert_raises(TimeoutError) do
+        assert_raises(Timeout::Error) do
           @service.wait_blob_copy_operation_to_finish('test_container', 'test_blob', copy_id, copy_status, 2)
         end
       end

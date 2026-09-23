@@ -112,7 +112,7 @@ class TestDirectory < Minitest::Test
     # Set private
     result = @directory.public = false
     assert !result
-    assert_equal nil, @directory.attributes[:acl]
+    assert_nil @directory.attributes[:acl]
   end
 
   def test_public_url_method_with_public_success
